@@ -6,7 +6,7 @@ long_description = "A Python 3 Pandas Extension of Technical Analysis Indicators
 setup(
     name = "pandas_ta",
     packages = ["pandas_ta"],
-    version = "0.0.1a",
+    version = "0.0.2a",
     description=long_description,
     long_description=long_description,
     author = "Kevin Johnson",

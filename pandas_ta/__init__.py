@@ -3,6 +3,4 @@ name = "pandas_ta"
 """
 .. moduleauthor:: Kevin Johnson
 """
-# from ._extension import *
-# from .utils import *
-# from .wrapper import *
+from .core import *
