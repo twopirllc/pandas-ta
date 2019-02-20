@@ -17,8 +17,7 @@ def combination(**kwargs):
     if kwargs.pop('repetition', False) or kwargs.pop('multichoose', False):
         n = n + r - 1
 
-    if r < 0:
-        return None
+    # if r < 0: return None
     r = min(n, n - r)
     if r == 0:
         return 1
@@ -26,14 +25,6 @@ def combination(**kwargs):
     numerator   = reduce(mul, range(n, n - r, -1), 1)
     denominator = reduce(mul, range(1, r + 1), 1)
     return numerator // denominator
-
-
-def dropna(df:pd.DataFrame):
-    """Drop rows with 'Nan' values"""
-    df = df[df < math.exp(709)] # big number
-    df = df[df != 0.0]
-    df = df.dropna()
-    return df
 
 
 def fibonacci(**kwargs):
@@ -55,7 +46,10 @@ def fibonacci(**kwargs):
 
     if weighted:
         fib_sum = np.sum(result)
-        return result / fib_sum
+        if fib_sum > 0:
+            return result / fib_sum
+        else:
+            return result
     else:
         return result
 
@@ -75,10 +69,8 @@ def pascals_triangle(**kwargs):
 
     Returns a numpy array of the nth row of Pascal's Triangle.
     """
-    n = kwargs.pop('n', 5)
+    n = int(math.fabs(kwargs.pop('n', 0)))
     weighted = kwargs.pop('weighted', False)
-
-    if n < 0: return None
     sink = kwargs.pop('all', False)
 
     # Calculation

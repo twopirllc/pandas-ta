@@ -20,8 +20,10 @@ setup(
     license="The MIT License (MIT)",
     classifiers = [
         'Programming Language :: Python :: 3.7',
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',
+        'Natural Language :: English',
+        'Framework :: Pandas',
         'Intended Audience :: Developers',
         'Intended Audience :: Financial and Insurance Industry',
         'Topic :: Office/Business :: Financial :: Investment',
