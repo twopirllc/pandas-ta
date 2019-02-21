@@ -6,7 +6,7 @@ long_description = "A Python 3 Pandas Extension of Technical Analysis Indicators
 setup(
     name = "pandas_ta",
     packages = ["pandas_ta"],
-    version = "0.0.3a",
+    version = "0.0.4a",
     description=long_description,
     long_description=long_description,
     author = "Kevin Johnson",
@@ -28,5 +28,16 @@ setup(
         'Intended Audience :: Financial and Insurance Industry',
         'Topic :: Office/Business :: Financial :: Investment',
     ],
-    # zip_safe=False,
+    package_data={
+        'data': ['data/*.csv'],
+    },
+    install_requires=['pandas'],
+
+    # List additional groups of dependencies here (e.g. development dependencies).
+    # You can install these using the following syntax, for example:
+    # $ pip install -e .[dev,test]
+    extras_require = {
+        'dev': ['ta-lib', 'jupyterlab'],
+        'test': ['ta-lib'],
+    },
 )

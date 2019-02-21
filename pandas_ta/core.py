@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import time
 import pandas as pd
-
-from .utils import *
 from pandas.core.base import PandasObject
 
+from .utils import *
+from .performance import *
 
 
 class BasePandasObject(PandasObject):
@@ -122,12 +122,10 @@ class AnalysisIndicators(BasePandasObject):
                 
                 return indicator
             else:
-                # self.help()
-                pass
+                self.help()
 
         except:
-            # self.help()
-            pass
+            self.help()
 
 
     def _append(self, result=None, **kwargs):
@@ -209,6 +207,7 @@ class AnalysisIndicators(BasePandasObject):
         header = f"pandas.ta - Technical Analysis Indicators"
         helper_methods = ['indicators', 'constants'] # Public non-indicator methods
         exclude_methods = kwargs.pop('exclude', None)
+        as_list = kwargs.pop('as_list', False)
         ta_indicators = list((x for x in dir(pd.DataFrame().ta) if not x.startswith('_') and not x.endswith('_')))
 
         for x in helper_methods:
@@ -218,6 +217,9 @@ class AnalysisIndicators(BasePandasObject):
             for x in exclude_methods:
                 ta_indicators.remove(x)
 
+        if as_list:
+            return ta_indicators
+
         total_indicators = len(ta_indicators)
         s = f"{header}\nTotal Indicators: {total_indicators}\n"
         if total_indicators > 0:            
@@ -226,3 +228,20 @@ class AnalysisIndicators(BasePandasObject):
             print(f"{s}Abbreviations:\n    {abbr_list}")
         else:
             print(s)
+
+        
+
+
+    def log_return(self, close=None, length=None, cumulative=False, percent=False, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = log_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        # print(f"result:\n{result}")
+        return result
+
+
+    def percent_return(self, close=None, length=None, cumulative=False, percent=False, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = percent_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
