@@ -124,3 +124,6 @@ Charts.ipynb
 pandas_pips
 reqs.txt
 requirements.txt
+
+test_indicator_statistics.py
+test_indicator_statistics_ext.py
