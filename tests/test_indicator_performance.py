@@ -1,15 +1,15 @@
-from unittest import TestCase
-import numpy.testing as npt
-import pandas.util.testing as pdt
-from pandas import DataFrame, read_csv, Series
+from .context import pandas_ta
+from .data import sample_data
 
-from pandas_ta import performance
+from unittest import TestCase
+from pandas import Series
+
 
 
 class TestPerformace(TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.data = read_csv('data/sample.csv', index_col=0, parse_dates=True, infer_datetime_format=False, keep_date_col=True)
+        cls.data = sample_data
         cls.close = cls.data['close']
 
     @classmethod
@@ -19,7 +19,7 @@ class TestPerformace(TestCase):
 
 
     def setUp(self):
-        self.performance = performance
+        self.performance = pandas_ta.performance
 
     def tearDown(self):
         del self.performance
@@ -40,4 +40,3 @@ class TestPerformace(TestCase):
 
         cumpercent_return = self.performance.percent_return(self.close, cumulative=True)
         self.assertEqual(cumpercent_return.name, 'CUMPCTRET_1')
-

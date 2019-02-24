@@ -1,4 +1,4 @@
-from pandas_ta import utils as utils
+from .context import pandas_ta
 
 from unittest import TestCase
 from unittest.mock import patch
@@ -7,9 +7,10 @@ import numpy as np
 import numpy.testing as npt
 from pandas import DataFrame
 
+
 class TestUtilities(TestCase):
     def setUp(self):
-        self.utils = utils
+        self.utils = pandas_ta.utils
 
     def tearDown(self):
         del self.utils

@@ -27,10 +27,29 @@ def combination(**kwargs):
     return numerator // denominator
 
 
+def df_error_analysis(dfA, dfB, **kwargs):
+    """ """
+    corr_method = kwargs.pop('corr_method', 'pearson')
+
+    # Find their differences
+    diff = dfA - dfB
+    df = pd.DataFrame({'diff': diff.describe()})
+    extra = pd.DataFrame([diff.var(), diff.mad(), diff.sem(), dfA.corr(dfB, method=corr_method)], index=['var', 'mad', 'sem', 'corr'])
+
+    # Append the differences to the DataFrame
+    df = df['diff'].append(extra, ignore_index=False)[0]
+
+    # For plotting
+    # diff.hist()
+    # if diff[diff > 0].any():
+    #     diff.plot(kind='kde')
+
+    return df
+
 def fibonacci(**kwargs):
     """Fibonacci Sequence as a numpy array"""
     n = int(math.fabs(kwargs.pop('n', 2)))
-    zero = kwargs.pop('zero', True)
+    zero = kwargs.pop('zero', False)
     weighted = kwargs.pop('weighted', False)
 
     if zero:
@@ -71,6 +90,7 @@ def pascals_triangle(**kwargs):
     """
     n = int(math.fabs(kwargs.pop('n', 0)))
     weighted = kwargs.pop('weighted', False)
+    inverse = kwargs.pop('inverse', False)
     sink = kwargs.pop('all', False)
 
     # Calculation
@@ -88,6 +108,11 @@ def pascals_triangle(**kwargs):
     if sink:
         return triangle, triangle_sum, triangle_avg, inverted, weights, inv_weights, triangle_avg
     if weighted:
+        # Needs to be fixed: n=3 => [1, 2, 1], t=4
+        # weighted: [1/4, 2/4, 1/4]
+        # 
+        # if inverse:
+        #     return inv_weights
         return weights
     else:
         return triangle
