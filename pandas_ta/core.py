@@ -3,8 +3,9 @@ import time
 import pandas as pd
 from pandas.core.base import PandasObject
 
-from .utils import *
+from .overlap import *
 from .performance import *
+from .utils import *
 
 
 class BasePandasObject(PandasObject):
@@ -115,6 +116,7 @@ class AnalysisIndicators(BasePandasObject):
                     time_diff = time.time() - stime
                     ms = time_diff * 1000
                     indicator.timed = f"{ms:2.3f} ms ({time_diff:2.3f} s)"
+                    # print(f"execution time: {indicator.timed}")
 
                 # Add an alias if passed
                 if alias:
@@ -229,9 +231,159 @@ class AnalysisIndicators(BasePandasObject):
         else:
             print(s)
 
-        
 
 
+    # Overlap Indicators
+    def dema(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = dema(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def ema(self, close=None, length=None, offset=None, adjust=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = ema(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def fwma(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = fwma(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def hl2(self, high=None, low=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        result = hl2(high=high, low=low, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def hlc3(self, high=None, low=None, close=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = hlc3(high=high, low=low, close=close, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def hma(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = hma(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def ichimoku(self, high=None, low=None, close=None, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):        
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        # result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
+        result = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        # return result, span
+        return result
+
+
+    def midpoint(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = midpoint(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)        
+        return result
+
+
+    def midprice(self, high=None, low=None, length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        result = midprice(high=high, low=low, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)        
+        return result
+
+
+    def ohlc4(self, open_=None, high=None, low=None, close=None, offset=None, **kwargs):
+        open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = ohlc4(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def pwma(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = pwma(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def rma(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = rma(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def sma(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = sma(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def t3(self, close=None, length=None, a=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = t3(close=close, length=length, a=a, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def tema(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = tema(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def trima(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = trima(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def vwap(self, high=None, low=None, close=None, volume=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = vwap(high=high, low=low, close=close, volume=volume, offset=offset, **kwargs)
+        self._append(result, **kwargs)        
+        return result
+
+
+    def vwma(self, close=None, volume=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = vwma(close=close, volume=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def wma(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = wma(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+
+    # Performance Indicators
     def log_return(self, close=None, length=None, cumulative=False, percent=False, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = log_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)

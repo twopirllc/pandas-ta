@@ -68,6 +68,34 @@ help(pd.DataFrame().ta.log_return)
 
 # Technical Analysis Indicators (by Category)
 
+## _Overlap_ (19)
+
+* _Double Exponential Moving Average_: **dema**
+* _Exponential Moving Average_: **ema**
+* _Fibonacci's Weighted Moving Average_: **fwma**
+* _High-Low Average_: **hl2**
+* _High-Low-Close Average_: **hlc3**
+    * Commonly known as 'Typical Price' in Technical Analysis literature
+* _Hull Exponential Moving Average_: **hma**
+* _Ichimoku Kinkō Hyō_: **ichimoku**
+    * Use: help(ta.ichimoku). Returns two DataFrames.
+* _Midpoint_: **midpoint**
+* _Midprice_: **midprice**
+* _Open-High-Low-Close Average_: **ohlc4**
+* _Pascal's Weighted Moving Average_: **pwma**
+* _William's Moving Average_: **rma**
+* _Simple Moving Average_: **sma**
+* _T3 Moving Average_: **t3**
+* _Triple Exponential Moving Average_: **tema**
+* _Triangular Moving Average_: **trima**
+* _Volume Weighted Average Price_: **vwap**
+* _Volume Weighted Moving Average_: **vwma**
+* _Weighted Moving Average_: **wma**
+
+| _Simple Moving Averages_ (SMA) and _Bollinger Bands_ (BBANDS) |
+|:--------:|
+| ![Example Chart](/images/TA_Chart.png) |
+
 ## _Performance_ (2)
 
 Use parameter: cumulative=**True** for cumulative results.
@@ -81,6 +109,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 
 # Inspiration
-Inspired by Bukosabino: https://github.com/bukosabino/ta
+* Original TA-LIB http://ta-lib.org/
+* Bukosabino: https://github.com/bukosabino/ta
 
 Please leave any comments, feedback, or suggestions.

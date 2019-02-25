@@ -27,10 +27,29 @@ def combination(**kwargs):
     return numerator // denominator
 
 
+def df_error_analysis(dfA, dfB, **kwargs):
+    """ """
+    corr_method = kwargs.pop('corr_method', 'pearson')
+
+    # Find their differences
+    diff = dfA - dfB
+    df = pd.DataFrame({'diff': diff.describe()})
+    extra = pd.DataFrame([diff.var(), diff.mad(), diff.sem(), dfA.corr(dfB, method=corr_method)], index=['var', 'mad', 'sem', 'corr'])
+
+    # Append the differences to the DataFrame
+    df = df['diff'].append(extra, ignore_index=False)[0]
+
+    # For plotting
+    # diff.hist()
+    # if diff[diff > 0].any():
+    #     diff.plot(kind='kde')
+
+    return df
+
 def fibonacci(**kwargs):
     """Fibonacci Sequence as a numpy array"""
     n = int(math.fabs(kwargs.pop('n', 2)))
-    zero = kwargs.pop('zero', True)
+    zero = kwargs.pop('zero', False)
     weighted = kwargs.pop('weighted', False)
 
     if zero:
@@ -68,29 +87,28 @@ def pascals_triangle(**kwargs):
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
+    n=4  => triangle: [1, 4, 6, 4, 1]
+         => weighted: [0.0625, 0.25, 0.375, 0.25, 0.0625
+         => inverse weighted: [0.9375, 0.75, 0.625, 0.75, 0.9375]
     """
     n = int(math.fabs(kwargs.pop('n', 0)))
     weighted = kwargs.pop('weighted', False)
-    sink = kwargs.pop('all', False)
+    inverse = kwargs.pop('inverse', False)
 
     # Calculation
     triangle = np.array([combination(n=n, r=i) for i in range(0, n + 1)])
-
-    # Variations and Properties
-    max_ = np.max(triangle)
-    inverted = max_ - triangle
     triangle_sum = np.sum(triangle)
-    triangle_avg = np.average(triangle)
+    triangle_weights = triangle / triangle_sum
+    inverse_weights = 1 - triangle_weights
 
-    weights = triangle / triangle_sum
-    inv_weights = inverted / triangle_sum
-
-    if sink:
-        return triangle, triangle_sum, triangle_avg, inverted, weights, inv_weights, triangle_avg
+    if weighted and inverse:
+        return inverse_weights
     if weighted:
-        return weights
-    else:
-        return triangle
+        return triangle_weights
+    if inverse:
+        return None
+
+    return triangle
 
 
 def signed_series(series:pd.Series, initial:int = None):
@@ -107,6 +125,12 @@ def verify_series(series:pd.Series):
     """If a Pandas Series return it."""
     if series is not None and isinstance(series, pd.core.series.Series):
         return series
+
+
+def weights(w):
+    def _dot(x):
+        return np.dot(w, x)
+    return _dot
 
 
 def zero(x):

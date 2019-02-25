@@ -1,4 +1,4 @@
-from pandas_ta import utils as utils
+from .context import pandas_ta
 
 from unittest import TestCase
 from unittest.mock import patch
@@ -7,9 +7,10 @@ import numpy as np
 import numpy.testing as npt
 from pandas import DataFrame
 
+
 class TestUtilities(TestCase):
     def setUp(self):
-        self.utils = utils
+        self.utils = pandas_ta.utils
 
     def tearDown(self):
         del self.utils
@@ -48,37 +49,39 @@ class TestUtilities(TestCase):
 
 
     def test_pascals_triangle(self):
-        self.assertIs(type(self.utils.pascals_triangle(weighted=False)), np.ndarray)
-        npt.assert_array_equal(self.utils.pascals_triangle(weighted=False), np.array([1]))
-        npt.assert_array_equal(self.utils.pascals_triangle(n=3, weighted=False), np.array([1, 3, 3, 1]))
+        self.assertIsNone(self.utils.pascals_triangle(inverse=True), None)
+
+        array_1 = np.array([1])
+        npt.assert_array_equal(self.utils.pascals_triangle(), array_1)
+        npt.assert_array_equal(self.utils.pascals_triangle(weighted=True), array_1)
+        npt.assert_array_equal(self.utils.pascals_triangle(weighted=True, inverse=True), np.array([0]))
+
+        array_5 = self.utils.pascals_triangle(n=5) #or np.array([1, 5, 10, 10, 5, 1])
+        array_5w = array_5 / np.sum(array_5)
+        array_5iw = 1 - array_5w
+        npt.assert_array_equal(self.utils.pascals_triangle(n=-5), array_5)
+        npt.assert_array_equal(self.utils.pascals_triangle(n=-5, weighted=True), array_5w)
+        npt.assert_array_equal(self.utils.pascals_triangle(n=-5, weighted=True, inverse=True), array_5iw)
+
+        npt.assert_array_equal(self.utils.pascals_triangle(n=5), array_5)
+        npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True), array_5w)
+        npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True, inverse=True), array_5iw)
 
 
-    def test_pascals_triangle_all(self):
-        all_ = self.utils.pascals_triangle(all=True)
-        self.assertIs(type(all_), tuple)
-        self.assertEqual(len(all_), 7)
+    # def test_pascals_triangle_all(self):
+    #     all_ = self.utils.pascals_triangle(all=True)
+    #     self.assertIs(type(all_), tuple)
+    #     self.assertEqual(len(all_), 7)
 
-        self.assertEqual(all_[1], 1)
-        self.assertEqual(all_[2], 1.0)
-        self.assertEqual(all_[6], 1.0)
-
-        self.assertIs(type(all_[0]), np.ndarray)
-        npt.assert_array_equal(all_[0], np.array([1]))
-
-        self.assertIs(type(all_[3]), np.ndarray)
-        npt.assert_array_equal(all_[3], np.array([0]))
-
-        self.assertIs(type(all_[4]), np.ndarray)
-        npt.assert_array_equal(all_[4], np.array([1.]))
-
-        self.assertIs(type(all_[5]), np.ndarray)
-        npt.assert_array_equal(all_[5], np.array([0.]))
+    #     self.assertEqual(all_[1], 1)
+    #     self.assertEqual(all_[2], 1.0)
+    #     self.assertEqual(all_[6], 1.0)
 
 
-    def test_pascals_triangle_weighted(self):
-        self.assertIs(type(self.utils.pascals_triangle(weighted=True)), np.ndarray)
-        npt.assert_array_equal(self.utils.pascals_triangle(weighted=True), np.array([1]))
-        npt.assert_array_equal(self.utils.pascals_triangle(n=3, weighted=True), np.array([1/8, 3/8, 3/8, 1/8]))
+    # def test_pascals_triangle_weighted(self):
+    #     self.assertIs(type(self.utils.pascals_triangle(weighted=True)), np.ndarray)
+    #     npt.assert_array_equal(self.utils.pascals_triangle(weighted=True), np.array([1]))
+    #     npt.assert_array_equal(self.utils.pascals_triangle(n=3, weighted=True), np.array([1/8, 3/8, 3/8, 1/8]))
 
 
     def test_zero(self):
