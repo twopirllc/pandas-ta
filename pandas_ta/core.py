@@ -116,6 +116,7 @@ class AnalysisIndicators(BasePandasObject):
                     time_diff = time.time() - stime
                     ms = time_diff * 1000
                     indicator.timed = f"{ms:2.3f} ms ({time_diff:2.3f} s)"
+                    # print(f"execution time: {indicator.timed}")
 
                 # Add an alias if passed
                 if alias:

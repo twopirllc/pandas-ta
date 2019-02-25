@@ -10,14 +10,8 @@ import pandas as pd
 #     _SCIPY_ = False
 
 from .utils import fibonacci, pascals_triangle
-from .utils import get_drift, get_offset, verify_series
+from .utils import get_drift, get_offset, verify_series, weights
 
-
-
-def weights(w):
-    def _compute(x):
-        return np.dot(w, x)
-    return _compute
 
 
 def dema(close, length=None, offset=None, **kwargs):
