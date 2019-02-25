@@ -91,7 +91,6 @@ class TestStatistics(TestCase):
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"variance has low correlation: {analysis['corr']}")
 
-
     def test_zscore(self):
         zscore = self.stats.zscore(self.close)
         self.assertIsInstance(zscore, Series)
