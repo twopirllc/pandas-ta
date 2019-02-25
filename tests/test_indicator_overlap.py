@@ -48,7 +48,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(dema, tal_dema, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(dema, tal_dema)
-            print(f"\nanalysis['corr']: {round(analysis['corr'], 3)}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {round(analysis['corr'], 3)}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"dema has low correlation: {analysis['corr']}")
 
@@ -62,7 +62,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(ema, tal_ema, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(ema, tal_ema)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"ema has low correlation: {analysis['corr']}")
 
@@ -86,7 +86,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(hlc3, tal_typicalprice, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(hlc3, tal_typicalprice)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"hlc3/typicalprice has low correlation: {analysis['corr']}")
 
@@ -112,7 +112,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(midpoint, tal_midpoint, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(midpoint, tal_midpoint)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"midpoint has low correlation: {analysis['corr']}")
 
@@ -127,7 +127,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(midprice, tal_midprice, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(midprice, tal_midprice)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"midprice has low correlation: {analysis['corr']}")
 
@@ -156,7 +156,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(sma, tal_sma, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(sma, tal_sma)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"sma has low correlation: {analysis['corr']}")
 
@@ -170,7 +170,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(t3, tal_t3, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(t3, tal_t3)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"t3 has low correlation: {analysis['corr']}")
 
@@ -184,7 +184,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(tema, tal_tema, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(tema, tal_tema)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"tema has low correlation: {analysis['corr']}")
 
@@ -198,7 +198,7 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(trima, tal_trima, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(trima, tal_trima)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"trima has low correlation: {analysis['corr']}")
 
@@ -222,6 +222,6 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(wma, tal_wma, check_names=False)
         except AssertionError as ae:
             analysis = pandas_ta.utils.df_error_analysis(wma, tal_wma)
-            print(f"\nanalysis['corr']: {analysis['corr']}") if VERBOSE else None
+            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
             if analysis['corr'] < self.correlation_threshold:
                 raise AssertionError(f"wma has low correlation: {analysis['corr']}")

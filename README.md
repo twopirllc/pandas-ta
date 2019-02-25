@@ -107,9 +107,23 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
 
+## _Statistics_ (8)
+
+* _Kurtosis_: **kurtosis**
+* _Mean Absolute Deviation_: **mad**
+* _Median_: **median**
+* _Quantile_: **quantile**
+* _Skew_: **skew**
+* _Standard Deviation_: **stdev**
+* _Variance_: **variance**
+* _Z Score_: **zscore**
+
+| _Z Score_ |
+|:--------:|
+| ![Example Z Score](/images/SPY_ZScore.png) |
 
 # Inspiration
-* Original TA-LIB http://ta-lib.org/
+* Original TA-LIB: http://ta-lib.org/
 * Bukosabino: https://github.com/bukosabino/ta
 
 Please leave any comments, feedback, or suggestions.
