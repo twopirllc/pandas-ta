@@ -68,22 +68,6 @@ class TestUtilities(TestCase):
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True, inverse=True), array_5iw)
 
 
-    # def test_pascals_triangle_all(self):
-    #     all_ = self.utils.pascals_triangle(all=True)
-    #     self.assertIs(type(all_), tuple)
-    #     self.assertEqual(len(all_), 7)
-
-    #     self.assertEqual(all_[1], 1)
-    #     self.assertEqual(all_[2], 1.0)
-    #     self.assertEqual(all_[6], 1.0)
-
-
-    # def test_pascals_triangle_weighted(self):
-    #     self.assertIs(type(self.utils.pascals_triangle(weighted=True)), np.ndarray)
-    #     npt.assert_array_equal(self.utils.pascals_triangle(weighted=True), np.array([1]))
-    #     npt.assert_array_equal(self.utils.pascals_triangle(n=3, weighted=True), np.array([1/8, 3/8, 3/8, 1/8]))
-
-
     def test_zero(self):
         self.assertEqual(self.utils.zero(-0.0000000000000001), 0)
         self.assertEqual(self.utils.zero(0), 0)

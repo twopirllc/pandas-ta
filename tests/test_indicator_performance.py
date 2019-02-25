@@ -1,9 +1,10 @@
 from .context import pandas_ta
-from .data import sample_data
+from .data import sample_data, CORRELATION_THRESHOLD
 
 from unittest import TestCase
 from pandas import Series
 
+VERBOSE = False
 
 
 class TestPerformace(TestCase):

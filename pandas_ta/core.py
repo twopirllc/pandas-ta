@@ -5,6 +5,7 @@ from pandas.core.base import PandasObject
 
 from .overlap import *
 from .performance import *
+from .statistics import *
 from .utils import *
 
 
@@ -293,7 +294,7 @@ class AnalysisIndicators(BasePandasObject):
     def midpoint(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = midpoint(close=close, length=length, offset=offset, **kwargs)
-        self._append(result, **kwargs)        
+        self._append(result, **kwargs)
         return result
 
 
@@ -301,7 +302,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         result = midprice(high=high, low=low, length=length, offset=offset, **kwargs)
-        self._append(result, **kwargs)        
+        self._append(result, **kwargs)
         return result
 
 
@@ -395,5 +396,63 @@ class AnalysisIndicators(BasePandasObject):
     def percent_return(self, close=None, length=None, cumulative=False, percent=False, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = percent_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+
+    # Statistics Indicators
+    def kurtosis(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = kurtosis(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def mad(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = mad(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def median(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = median(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def quantile(self, close=None, length=None, q=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = quantile(close=close, length=length, q=q, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def skew(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = skew(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def stdev(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = stdev(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def variance(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = variance(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def zscore(self, close=None, length=None, std=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = zscore(close=close, length=length, std=std, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
