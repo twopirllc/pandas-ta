@@ -3,3 +3,7 @@ README
 setup.cfg
 setup.py
 pandas_ta/__init__.py
+pandas_ta/core.py
+pandas_ta/overlap.py
+pandas_ta/performance.py
+pandas_ta/utils.py
