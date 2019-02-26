@@ -7,6 +7,8 @@ from .overlap import *
 from .performance import *
 from .statistics import *
 from .utils import *
+from .volatility import *
+
 
 
 class BasePandasObject(PandasObject):
@@ -241,13 +243,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def ema(self, close=None, length=None, offset=None, adjust=None, **kwargs):
         close = self._get_column(close, 'close')
         result = ema(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def fwma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -255,14 +255,12 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def hl2(self, high=None, low=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         result = hl2(high=high, low=low, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def hlc3(self, high=None, low=None, close=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
@@ -272,13 +270,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def hma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = hma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def ichimoku(self, high=None, low=None, close=None, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):        
         high = self._get_column(high, 'high')
@@ -290,13 +286,11 @@ class AnalysisIndicators(BasePandasObject):
         # return result, span
         return result
 
-
     def midpoint(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = midpoint(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def midprice(self, high=None, low=None, length=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
@@ -304,7 +298,6 @@ class AnalysisIndicators(BasePandasObject):
         result = midprice(high=high, low=low, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def ohlc4(self, open_=None, high=None, low=None, close=None, offset=None, **kwargs):
         open_ = self._get_column(open_, 'open')
@@ -315,13 +308,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def pwma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = pwma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def rma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -329,13 +320,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def sma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = sma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def t3(self, close=None, length=None, a=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -343,20 +332,17 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def tema(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = tema(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
-
     def trima(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = trima(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def vwap(self, high=None, low=None, close=None, volume=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
@@ -367,14 +353,12 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)        
         return result
 
-
     def vwma(self, close=None, volume=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
         result = vwma(close=close, volume=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def wma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -392,7 +376,6 @@ class AnalysisIndicators(BasePandasObject):
         # print(f"result:\n{result}")
         return result
 
-
     def percent_return(self, close=None, length=None, cumulative=False, percent=False, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = percent_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
@@ -408,13 +391,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def mad(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = mad(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def median(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -422,13 +403,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def quantile(self, close=None, length=None, q=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = quantile(close=close, length=length, q=q, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def skew(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -436,13 +415,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def stdev(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = stdev(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def variance(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -450,9 +427,70 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def zscore(self, close=None, length=None, std=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = zscore(close=close, length=length, std=std, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+
+    # Volatility Indicators
+    def accbands(self, high=None, low=None, close=None, length=None, c=None, mamode=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = accbands(high=high, low=low, close=close, length=length, c=c, mamode=mamode, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def atr(self, high=None, low=None, close=None, length=None, mamode=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = atr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def bbands(self, close=None, length=None, stdev=None, mamode=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = bbands(close=close, length=length, stdev=stdev, mamode=mamode, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def donchian(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = donchian(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def kc(self, high=None, low=None, close=None, length=None, scalar=None, mamode=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = kc(high=high, low=low, close=close, length=length, scalar=scalar, mamode=mamode, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def massi(self, high=None, low=None, fast=None, slow=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        result = massi(high=high, low=low, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def natr(self, high=None, low=None, close=None, length=None, mamode=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = natr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def true_range(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = true_range(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result

@@ -122,6 +122,21 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
+## _Volatility_ (8)
+
+* _Acceleration Bands_: **accbands**
+* _Average True Range_: **atr**
+* _Bollinger Bands_: **bbands**
+* _Donchian Channel_: **donchain**
+* _Keltner Channel_: **kc**
+* _Mass Index_: **massi**
+* _Normalized Average True Range_: **natr**
+* _True Range_: **true_range**
+
+| _Average True Range_ (ATR) |
+|:--------:|
+| ![Example ATR](/images/SPY_ATR.png) |
+
 # Inspiration
 * Original TA-LIB: http://ta-lib.org/
 * Bukosabino: https://github.com/bukosabino/ta
