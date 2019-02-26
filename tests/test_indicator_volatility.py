@@ -1,5 +1,5 @@
 from .context import pandas_ta
-from .data import sample_data, CORRELATION_THRESHOLD
+from .data import sample_data, CORRELATION_THRESHOLD, VERBOSE
 
 from unittest import TestCase, skip
 import pandas.util.testing as pdt
@@ -7,7 +7,6 @@ from pandas import DataFrame, Series
 
 import talib as tal
 
-VERBOSE = False
 
 
 class TestVolatility(TestCase):

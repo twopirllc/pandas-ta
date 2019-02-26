@@ -3,12 +3,6 @@ import math
 import numpy as np
 import pandas as pd
 
-# try:
-#     import scipy
-#     _SCIPY_ = True
-# except ImportError:
-#     _SCIPY_ = False
-
 from .utils import fibonacci, pascals_triangle
 from .utils import get_drift, get_offset, verify_series, weights
 

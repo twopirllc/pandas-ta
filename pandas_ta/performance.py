@@ -5,6 +5,7 @@ import pandas as pd
 from .utils import get_offset, verify_series
 
 
+
 def log_return(close, length=None, cumulative=False, offset=None, **kwargs):
     """Indicator: Log Return"""
     # Validate Arguments

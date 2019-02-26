@@ -26,9 +26,7 @@ class TestVolatilityExtension(TestCase):
     def test_accbands_ext(self):
         self.data.ta.accbands(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-3], 'ACCBL_10')
-        self.assertEqual(self.data.columns[-2], 'ACCBM_10')
-        self.assertEqual(self.data.columns[-1], 'ACCBU_10')
+        self.assertEqual(list(self.data.columns[-3:]), ['ACCBL_10', 'ACCBM_10', 'ACCBU_10'])
 
     def test_atr_ext(self):
         self.data.ta.atr(append=True)
@@ -38,23 +36,17 @@ class TestVolatilityExtension(TestCase):
     def test_bbands_ext(self):
         self.data.ta.bbands(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-3], 'BBL_20')
-        self.assertEqual(self.data.columns[-2], 'BBM_20')
-        self.assertEqual(self.data.columns[-1], 'BBU_20')
+        self.assertEqual(list(self.data.columns[-3:]), ['BBL_20', 'BBM_20', 'BBU_20'])
 
     def test_donchian_ext(self):
         self.data.ta.donchian(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-3], 'DCL_20')
-        self.assertEqual(self.data.columns[-2], 'DCM_20')
-        self.assertEqual(self.data.columns[-1], 'DCU_20')
+        self.assertEqual(list(self.data.columns[-3:]), ['DCL_20', 'DCM_20', 'DCU_20'])
 
     def test_kc_ext(self):
         self.data.ta.kc(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-3], 'KCL_20')
-        self.assertEqual(self.data.columns[-2], 'KCB_20')
-        self.assertEqual(self.data.columns[-1], 'KCU_20')
+        self.assertEqual(list(self.data.columns[-3:]), ['KCL_20', 'KCB_20', 'KCU_20'])
 
     def test_massi_ext(self):
         self.data.ta.massi(append=True)
