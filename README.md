@@ -68,6 +68,31 @@ help(pd.DataFrame().ta.log_return)
 
 # Technical Analysis Indicators (by Category)
 
+## _Momentum_ (17)
+
+* _Awesome Oscillator_: **ao**
+* _Absolute Price Oscillator_: **apo**
+* _Balance of Power_: **bop**
+* _Commodity Channel Index_: **cci**
+* _Chande Momentum Oscillator_: **cmo**
+* _Coppock Curve_: **coppock**
+* _KST Oscillator_: **kst**
+* _Moving Average Convergence Divergence_: **macd**
+* _Momentum_: **mom**
+* _Percentage Price Oscillator_: **ppo**
+* _Rate of Change_: **roc**
+* _Relative Strength Index_: **rsi**
+* _Stochastic Oscillator_: **stoch**
+* _Trix_: **trix**
+* _True strength index_: **tsi**
+* _Ultimate Oscillator_: **uo**
+* _Williams %R_: **willr**
+
+
+| _Moving Average Convergence Divergence_ (MACD) |
+|:--------:|
+| ![Example MACD](/images/SPY_MACD.png) |
+
 ## _Overlap_ (19)
 
 * _Double Exponential Moving Average_: **dema**
