@@ -18,7 +18,6 @@ class TestVolatility(TestCase):
         cls.low = cls.data['low']
         cls.close = cls.data['close']
         cls.volume = cls.data['volume']
-        cls.correlation_threshold = CORRELATION_THRESHOLD
 
     @classmethod
     def tearDownClass(cls):
@@ -47,10 +46,43 @@ class TestVolatility(TestCase):
         self.assertIsInstance(atr, Series)
         self.assertEqual(atr.name, 'ATR_14')
 
+        try:
+            tal_atr = tal.ATR(self.high, self.low, self.close)
+            pdt.assert_series_equal(atr, tal_atr, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(atr, tal_atr, col='corr')
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                print(f"\n [!] {atr.name}: {ex}")
+
     def test_bbands(self):
         bbands = self.volatility.bbands(self.close)
         self.assertIsInstance(bbands, DataFrame)
         self.assertEqual(bbands.name, 'BBANDS_20')
+
+        try:
+            tal_bbands = tal.BBANDS(self.close)
+            tal_bbandsdf = DataFrame({'BBL_20': tal_bbands[0], 'BBM_20': tal_bbands[1], 'BBU_20': tal_bbands[2]})
+            pdt.assert_frame_equal(bbands, tal_bbandsdf)
+        except AssertionError as ae:
+            try:
+                bbl_corr = pandas_ta.utils.df_error_analysis(bbands.iloc[:,0], tal_bbandsdf.iloc[:,0], col='corr')
+                self.assertGreater(bbl_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                print(f"\n [!] {bbands.iloc[:,0].name}: {ex}")
+
+            try:
+                bbm_corr = pandas_ta.utils.df_error_analysis(bbands.iloc[:,1], tal_bbandsdf.iloc[:,1], col='corr')
+                self.assertGreater(bbm_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                print(f" [!] {bbands.iloc[:,1].name}: {ex}")
+
+            try:
+                bbu_corr = pandas_ta.utils.df_error_analysis(bbands.iloc[:,2], tal_bbandsdf.iloc[:,2], col='corr')
+                self.assertGreater(bbu_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                print(f" [!] {bbands.iloc[:,2].name}: {ex}")
 
     def test_donchian(self):
         donchian = self.volatility.donchian(self.close)
@@ -72,7 +104,27 @@ class TestVolatility(TestCase):
         self.assertIsInstance(natr, Series)
         self.assertEqual(natr.name, 'NATR_14')
 
+        try:
+            tal_natr = tal.NATR(self.high, self.low, self.close)
+            pdt.assert_series_equal(natr, tal_natr, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(natr, tal_natr, col='corr')
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                print(f"\n [!] {natr.name}: {ex}")
+
     def test_true_range(self):
         true_range = self.volatility.true_range(self.high, self.low, self.close)
         self.assertIsInstance(true_range, Series)
         self.assertEqual(true_range.name, 'TRUERANGE_1')
+
+        try:
+            tal_true_range = tal.TRANGE(self.high, self.low, self.close)
+            pdt.assert_series_equal(true_range, tal_true_range, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(true_range, tal_true_range, col='corr')
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                print(f"\n [!] {true_range.name}: {ex}")

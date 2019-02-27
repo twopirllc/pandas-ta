@@ -18,7 +18,6 @@ class TestStatistics(TestCase):
         cls.low = cls.data['low']
         cls.close = cls.data['close']
         cls.volume = cls.data['volume']
-        cls.correlation_threshold = CORRELATION_THRESHOLD
 
     @classmethod
     def tearDownClass(cls):
@@ -71,10 +70,11 @@ class TestStatistics(TestCase):
             tal_stdev = tal.STDDEV(self.close, 30)
             pdt.assert_series_equal(stdev, tal_stdev, check_names=False)
         except AssertionError as ae:
-            analysis = pandas_ta.utils.df_error_analysis(stdev, tal_stdev)
-            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
-            if analysis['corr'] < self.correlation_threshold:
-                raise AssertionError(f"stdev has low correlation: {analysis['corr']}")
+            try:
+                corr = pandas_ta.utils.df_error_analysis(stdev, tal_stdev, col='corr')
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                print(f"\n [!] {stdev.name}: {ex}")
 
     def test_variance(self):
         variance = self.stats.variance(self.close)
@@ -85,10 +85,11 @@ class TestStatistics(TestCase):
             tal_variance = tal.VAR(self.close, 30)
             pdt.assert_series_equal(variance, tal_variance, check_names=False)
         except AssertionError as ae:
-            analysis = pandas_ta.utils.df_error_analysis(variance, tal_variance)
-            print(f"\n >> analysis['corr']: {analysis['corr']}") if VERBOSE else None
-            if analysis['corr'] < self.correlation_threshold:
-                raise AssertionError(f"variance has low correlation: {analysis['corr']}")
+            try:
+                corr = pandas_ta.utils.df_error_analysis(variance, tal_variance, col='corr')
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                print(f"\n [!] {variance.name}: {ex}")
 
     def test_zscore(self):
         zscore = self.stats.zscore(self.close)
