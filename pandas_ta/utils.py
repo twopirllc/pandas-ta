@@ -29,6 +29,7 @@ def combination(**kwargs):
 
 def df_error_analysis(dfA, dfB, **kwargs):
     """ """
+    col = kwargs.pop('col', None)
     corr_method = kwargs.pop('corr_method', 'pearson')
 
     # Find their differences
@@ -43,8 +44,11 @@ def df_error_analysis(dfA, dfB, **kwargs):
     # diff.hist()
     # if diff[diff > 0].any():
     #     diff.plot(kind='kde')
-
-    return df
+    
+    if col is not None:
+        return df[col]
+    else:
+        return df
 
 def fibonacci(**kwargs):
     """Fibonacci Sequence as a numpy array"""
