@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
 
-long_description = "A Python 3 Pandas Extension of Technical Analysis Indicators"
+long_description = "An easy to use Python 3 Pandas Extension of Technical Analysis Indicators"
 
 setup(
     name = "pandas_ta",
