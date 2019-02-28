@@ -1,7 +1,7 @@
 from .context import pandas_ta
 from .data import sample_data, CORRELATION_THRESHOLD, VERBOSE
 
-from unittest import TestCase, skip
+from unittest import TestCase
 import pandas.util.testing as pdt
 from pandas import DataFrame, Series
 
@@ -97,11 +97,12 @@ class TestOverlap(TestCase):
         self.assertIsInstance(hma, Series)
         self.assertEqual(hma.name, 'HMA_10')
 
-    # @skip("close index requires Daily dates")
     def test_ichimoku(self):
-        ichimoku = self.overlap.ichimoku(self.high, self.low, self.close)
+        ichimoku, span = self.overlap.ichimoku(self.high, self.low, self.close)
         self.assertIsInstance(ichimoku, DataFrame)
+        self.assertIsInstance(span, DataFrame)
         self.assertEqual(ichimoku.name, 'ICHIMOKU_9_26_52')
+        self.assertEqual(span.name, 'ICHISPAN_9_26')
 
     def test_midpoint(self):
         midpoint = self.overlap.midpoint(self.close)

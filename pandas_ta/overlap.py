@@ -216,23 +216,25 @@ def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, offset=None
     ichimokudf.name = f"ICHIMOKU_{tenkan}_{kijun}_{senkou}"
     ichimokudf.category = 'overlap'
 
-    # Prepare Span DataFrame, assuming it is a 'Daily' content
-    # Requires 'dates' from 'close' to work
+    # Prepare Span DataFrame
+    last = close.index[-1]
     if close.index.dtype == 'int64':
-        print(f"Integer indexing not implement yet")
+        ext_index = pd.RangeIndex(start=last + 1, stop=last + kijun + 1)
+        spandf = pd.DataFrame(index=ext_index, columns=[span_a.name, span_b.name])
+        _span_a.index = _span_b.index = ext_index
     else:
-        last_date = close.index[-1]
         df_freq = close.index.value_counts().mode()[0]
         tdelta = pd.Timedelta(df_freq, unit='d')
-        new_dt = pd.date_range(start=last_date + tdelta, periods=kijun, freq='B')
+        new_dt = pd.date_range(start=last + tdelta, periods=kijun, freq='B')
         spandf = pd.DataFrame(index=new_dt, columns=[span_a.name, span_b.name])
         _span_a.index = _span_b.index = new_dt
-        spandf[span_a.name] = _span_a
-        spandf[span_b.name] = _span_b
 
-        return ichimokudf, spandf
+    spandf[span_a.name] = _span_a
+    spandf[span_b.name] = _span_b
+    spandf.name = f"ICHISPAN_{tenkan}_{kijun}"
+    spandf.category = 'overlap'
 
-    return ichimokudf
+    return ichimokudf, spandf
 
 
 def midpoint(close, length=None, offset=None, **kwargs):
