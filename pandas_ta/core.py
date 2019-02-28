@@ -397,11 +397,9 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
-        # result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
-        result = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
+        result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
         self._append(result, **kwargs)
-        # return result, span
-        return result
+        return result, span
 
     def midpoint(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
