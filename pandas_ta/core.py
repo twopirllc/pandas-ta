@@ -3,6 +3,7 @@ import time
 import pandas as pd
 from pandas.core.base import PandasObject
 
+from .momentum import *
 from .overlap import *
 from .performance import *
 from .statistics import *
@@ -236,6 +237,122 @@ class AnalysisIndicators(BasePandasObject):
 
 
 
+    # Momentum Indicators
+    def ao(self, high=None, low=None, fast=None, slow=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        result = ao(high=high, low=low, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def apo(self, close=None, fast=None, slow=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = apo(close=close, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def bop(self, open_=None, high=None, low=None, close=None, percentage=False, offset=None, **kwargs):
+        open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = bop(open_=open_, high=high, low=low, close=close, percentage=percentage, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def cci(self, high=None, low=None, close=None, length=None, c=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = cci(high=high, low=low, close=close, length=length, c=c, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def cmo(self, close=None, length=None, drift=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = cmo(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def coppock(self, close=None, length=None, fast=None, slow=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = coppock(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def kst(self, close=None, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None, sma3=None, sma4=None, signal=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = kst(close=close, roc1=roc1, roc2=roc2, roc3=roc3, roc4=roc4, sma1=sma1, sma2=sma2, sma3=sma3, sma4=sma4, signal=signal, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def macd(self, close=None, fast=None, slow=None, signal=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = macd(close=close, fast=fast, slow=slow, signal=signal, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def mom(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = mom(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def ppo(self, close=None, fast=None, slow=None, percentage=True, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = ppo(close=close, fast=fast, slow=slow, percentage=percentage, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def roc(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = roc(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def rsi(self, close=None, length=None, drift=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = rsi(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def stoch(self, high=None, low=None, close=None, fast_k=None, slow_k=None, slow_d=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = stoch(high=high, low=low, close=close, fast_k=fast_k, slow_k=slow_k, slow_d=slow_d, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def trix(self, close=None, length=None, drift=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = trix(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def tsi(self, close=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = tsi(close=close, fast=fast, slow=slow, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def uo(self, high=None, low=None, close=None, fast=None, medium=None, slow=None, fast_w=None, medium_w=None, slow_w=None, drift=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = uo(high=high, low=low, close=close, fast=fast, medium=medium, slow=slow, fast_w=fast_w, medium_w=medium_w, slow_w=slow_w, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def willr(self, high=None, low=None, close=None, length=None, percentage=True, offset=None,**kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = willr(high=high, low=low, close=close, length=length, percentage=percentage, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
     # Overlap Indicators
     def dema(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -280,11 +397,9 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
-        # result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
-        result = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
+        result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
         self._append(result, **kwargs)
-        # return result, span
-        return result
+        return result, span
 
     def midpoint(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')

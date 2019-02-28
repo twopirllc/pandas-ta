@@ -56,11 +56,7 @@ class TestOverlapExtension(TestCase):
     def test_ichimoku_ext(self):
         self.data.ta.ichimoku(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-5], 'ISA_9')
-        self.assertEqual(self.data.columns[-4], 'ISB_26')
-        self.assertEqual(self.data.columns[-3], 'ITS_9')
-        self.assertEqual(self.data.columns[-2], 'IKS_26')
-        self.assertEqual(self.data.columns[-1], 'ICS_26')
+        self.assertEqual(list(self.data.columns[-5:]), ['ISA_9', 'ISB_26', 'ITS_9', 'IKS_26', 'ICS_26'])
 
     def test_midpoint_ext(self):
         self.data.ta.midpoint(append=True)

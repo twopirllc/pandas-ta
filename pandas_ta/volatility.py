@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-.. module:: volatility
-   :synopsis: Volatility Indicators.
-
-.. moduleauthor:: Dario Lopez Padial (Bukosabino)
-
-"""
 import numpy as np
 import pandas as pd
 
-from .utils import *
 from .overlap import ema, hlc3, sma
 from .statistics import variance, stdev
+from .utils import *
 
 
 
