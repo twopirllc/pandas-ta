@@ -6,4 +6,6 @@ pandas_ta/__init__.py
 pandas_ta/core.py
 pandas_ta/overlap.py
 pandas_ta/performance.py
+pandas_ta/statistics.py
 pandas_ta/utils.py
+pandas_ta/volatility.py
