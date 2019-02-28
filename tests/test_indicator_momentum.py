@@ -51,10 +51,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(apo, tal_apo, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(apo, tal_apo, col='corr')
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(apo, tal_apo, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {apo.name}: {ex}")
+                print(f"\n [!] {apo.name}['{col}']: {ex}")
 
     def test_bop(self):
         bop = self.momentum.bop(self.open, self.high, self.low, self.close)
@@ -66,10 +67,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(bop, tal_bop, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(bop, tal_bop, col='corr')
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(bop, tal_bop, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {bop.name}: {ex}")
+                print(f"\n [!] {bop.name}['{col}']: {ex}")
 
     def test_cci(self):
         cci = self.momentum.cci(self.high, self.low, self.close)
@@ -81,10 +83,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(cci, tal_cci, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(cci, tal_cci, col='corr')
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(cci, tal_cci, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {cci.name}: {ex}")
+                print(f"\n [!] {cci.name}['{col}']: {ex}")
 
     def test_cmo(self):
         cmo = self.momentum.cmo(self.close)
@@ -96,10 +99,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(cmo, tal_cmo, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(cmo, tal_cmo, col='corr')
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(cmo, tal_cmo, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {cmo.name}: {ex}")
+                print(f"\n [!] {cmo.name}['{col}']: {ex}")
 
     def test_coppock(self):
         coppock = self.momentum.coppock(self.close)
@@ -121,23 +125,24 @@ class TestMomentum(TestCase):
             tal_macddf = DataFrame({'MACD_12_26_9': tal_macd[0], 'MACDH_12_26_9': tal_macd[2], 'MACDS_12_26_9': tal_macd[1]})
             pdt.assert_frame_equal(macd, tal_macddf)
         except AssertionError as ae:
+            col = 'corr'
             try:
-                macd_corr = pandas_ta.utils.df_error_analysis(macd.iloc[:,0], tal_macddf.iloc[:,0], col='corr')
+                macd_corr = pandas_ta.utils.df_error_analysis(macd.iloc[:,0], tal_macddf.iloc[:,0], col=col)
                 self.assertGreater(macd_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {macd.iloc[:,0].name}: {ex}")
+                print(f"\n [!] {macd.iloc[:,0].name}['{col}']: {ex}")
 
             try:
-                history_corr = pandas_ta.utils.df_error_analysis(macd.iloc[:,1], tal_macddf.iloc[:,1], col='corr')
+                history_corr = pandas_ta.utils.df_error_analysis(macd.iloc[:,1], tal_macddf.iloc[:,1], col=col)
                 self.assertGreater(history_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {macd.iloc[:,1].name}: {ex}")
+                print(f"\n [!] {macd.iloc[:,1].name}['{col}']: {ex}")
 
             try:
-                signal_corr = pandas_ta.utils.df_error_analysis(macd.iloc[:,2], tal_macddf.iloc[:,2], col='corr')
+                signal_corr = pandas_ta.utils.df_error_analysis(macd.iloc[:,2], tal_macddf.iloc[:,2], col=col)
                 self.assertGreater(signal_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {macd.iloc[:,2].name}: {ex}")
+                print(f"\n [!] {macd.iloc[:,2].name}['{col}']: {ex}")
 
     def test_mom(self):
         mom = self.momentum.mom(self.close)
@@ -149,10 +154,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(mom, tal_mom, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(mom, tal_mom, col='corr')
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(mom, tal_mom, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {mom.name}: {ex}")
+                print(f"\n [!] {mom.name}['{col}']: {ex}")
 
     def test_ppo(self):
         ppo = self.momentum.ppo(self.close)
@@ -164,10 +170,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(ppo['PPO_12_26_9'], tal_ppo, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(ppo['PPO_12_26_9'], tal_ppo, col='corr')
+                col='corr'
+                corr = pandas_ta.utils.df_error_analysis(ppo['PPO_12_26_9'], tal_ppo, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {ppo['PPO_12_26_9'].name}: {ex}")
+                print(f"\n [!] {ppo['PPO_12_26_9'].name}['{col}']: {ex}")
 
     def test_roc(self):
         roc = self.momentum.roc(self.close)
@@ -179,10 +186,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(roc, tal_roc, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(roc, tal_roc, col='corr')
+                col='corr'
+                corr = pandas_ta.utils.df_error_analysis(roc, tal_roc, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {roc.name}: {ex}")
+                print(f"\n [!] {roc.name}['{col}']: {ex}")
 
     def test_rsi(self):
         rsi = self.momentum.rsi(self.close)
@@ -194,10 +202,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(rsi, tal_rsi, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(rsi, tal_rsi, col='corr')
+                col='corr'
+                corr = pandas_ta.utils.df_error_analysis(rsi, tal_rsi, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {rsi.name}: {ex}")
+                print(f"\n [!] {rsi.name}['{col}']: {ex}")
 
     def test_stoch(self):
         stoch = self.momentum.stoch(self.high, self.low, self.close)
@@ -210,29 +219,31 @@ class TestMomentum(TestCase):
             tal_stochdf = DataFrame({'STOCHF_14': tal_stochf[0], 'STOCHF_3': tal_stochf[1], 'STOCH_5': tal_stoch[0], 'STOCH_3': tal_stoch[1]})
             pdt.assert_frame_equal(stoch, tal_stochdf)
         except AssertionError as ae:
+            col='corr'
             try:
-                stochfk_corr = pandas_ta.utils.df_error_analysis(stoch.iloc[:,0], tal_stochdf.iloc[:,0], col='corr')
+                col='corr'
+                stochfk_corr = pandas_ta.utils.df_error_analysis(stoch.iloc[:,0], tal_stochdf.iloc[:,0], col=col)
                 self.assertGreater(stochfk_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {stoch.iloc[:,0].name}: {ex}")
+                print(f"\n [!] {stoch.iloc[:,0].name}['{col}']: {ex}")
 
             try:
-                stochfd_corr = pandas_ta.utils.df_error_analysis(stoch.iloc[:,1], tal_stochdf.iloc[:,1], col='corr')
+                stochfd_corr = pandas_ta.utils.df_error_analysis(stoch.iloc[:,1], tal_stochdf.iloc[:,1], col=col)
                 self.assertGreater(stochfd_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f" [!] {stoch.iloc[:,1].name}: {ex}")
+                print(f" [!] {stoch.iloc[:,1].name}['{col}']: {ex}")
 
             try:
-                stochsk_corr = pandas_ta.utils.df_error_analysis(stoch.iloc[:,2], tal_stochdf.iloc[:,2], col='corr')
+                stochsk_corr = pandas_ta.utils.df_error_analysis(stoch.iloc[:,2], tal_stochdf.iloc[:,2], col=col)
                 self.assertGreater(stochsk_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f" [!] {stoch.iloc[:,2].name}: {ex}")
+                print(f" [!] {stoch.iloc[:,2].name}['{col}']: {ex}")
 
             try:
-                stochsd_corr = pandas_ta.utils.df_error_analysis(stoch.iloc[:,3], tal_stochdf.iloc[:,3], col='corr')
+                stochsd_corr = pandas_ta.utils.df_error_analysis(stoch.iloc[:,3], tal_stochdf.iloc[:,3], col=col)
                 self.assertGreater(stochsd_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f" [!] {stoch.iloc[:,3].name}: {ex}")
+                print(f" [!] {stoch.iloc[:,3].name}['{col}']: {ex}")
 
     def test_trix(self):
         trix = self.momentum.trix(self.close)
@@ -254,10 +265,11 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(uo, tal_uo, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(uo, tal_uo, col='corr')
+                col='corr'
+                corr = pandas_ta.utils.df_error_analysis(uo, tal_uo, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {uo.name}: {ex}")
+                print(f"\n [!] {uo.name}['{col}']: {ex}")
 
     def test_willr(self):
         willr = self.momentum.willr(self.high, self.low, self.close)
@@ -269,7 +281,8 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(willr, tal_willr, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(willr, tal_willr, col='corr')
+                col='corr'
+                corr = pandas_ta.utils.df_error_analysis(willr, tal_willr, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {willr.name}: {ex}")
+                print(f"\n [!] {willr.name}['{col}']: {ex}")

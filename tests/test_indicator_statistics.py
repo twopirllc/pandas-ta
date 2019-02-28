@@ -71,10 +71,11 @@ class TestStatistics(TestCase):
             pdt.assert_series_equal(stdev, tal_stdev, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(stdev, tal_stdev, col='corr')
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(stdev, tal_stdev, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {stdev.name}: {ex}")
+                print(f"\n [!] {stdev.name}['{col}']: {ex}")
 
     def test_variance(self):
         variance = self.stats.variance(self.close)
@@ -86,10 +87,11 @@ class TestStatistics(TestCase):
             pdt.assert_series_equal(variance, tal_variance, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(variance, tal_variance, col='corr')
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(variance, tal_variance, col=col)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {variance.name}: {ex}")
+                print(f"\n [!] {variance.name}['{col}']: {ex}")
 
     def test_zscore(self):
         zscore = self.stats.zscore(self.close)

@@ -18,7 +18,6 @@ class TestOverlap(TestCase):
         cls.low = cls.data['low']
         cls.close = cls.data['close']
         cls.volume = cls.data['volume']
-        cls.correlation_threshold = CORRELATION_THRESHOLD
 
     @classmethod
     def tearDownClass(cls):
@@ -47,10 +46,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(dema, tal_dema, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(dema, tal_dema, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col='corr'
+                corr = pandas_ta.utils.df_error_analysis(dema, tal_dema, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {dema.name}: {ex}")
+                print(f"\n [!] {dema.name}['{col}']: {ex}")
 
     def test_ema(self):
         ema = self.overlap.ema(self.close, presma=False)
@@ -62,10 +62,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(ema, tal_ema, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(ema, tal_ema, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(ema, tal_ema, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {ema.name}: {ex}")
+                print(f"\n [!] {ema.name}['{col}']: {ex}")
 
     def test_fwma(self):
         fwma = self.overlap.fwma(self.close)
@@ -87,10 +88,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(hlc3, tal_typicalprice, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(hlc3, tal_typicalprice, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(hlc3, tal_typicalprice, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {hlc3.name}: {ex}")
+                print(f"\n [!] {hlc3.name}['{col}']: {ex}")
 
     def test_hma(self):
         hma = self.overlap.hma(self.close)
@@ -114,10 +116,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(midpoint, tal_midpoint, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(midpoint, tal_midpoint, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(midpoint, tal_midpoint, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {midpoint.name}: {ex}")
+                print(f"\n [!] {midpoint.name}['{col}']: {ex}")
 
     def test_midprice(self):
         midprice = self.overlap.midprice(self.high, self.low)
@@ -129,10 +132,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(midprice, tal_midprice, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(midprice, tal_midprice, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(midprice, tal_midprice, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {midprice.name}: {ex}")
+                print(f"\n [!] {midprice.name}['{col}']: {ex}")
 
     def test_ohlc4(self):
         ohlc4 = self.overlap.ohlc4(self.open, self.high, self.low, self.close)
@@ -159,10 +163,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(sma, tal_sma, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(sma, tal_sma, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(sma, tal_sma, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {sma.name}: {ex}")
+                print(f"\n [!] {sma.name}['{col}']: {ex}")
 
     def test_t3(self):
         t3 = self.overlap.t3(self.close)
@@ -174,10 +179,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(t3, tal_t3, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(t3, tal_t3, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(t3, tal_t3, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {t3.name}: {ex}")
+                print(f"\n [!] {t3.name}['{col}']: {ex}")
 
     def test_tema(self):
         tema = self.overlap.tema(self.close)
@@ -189,10 +195,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(tema, tal_tema, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(tema, tal_tema, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(tema, tal_tema, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {tema.name}: {ex}")
+                print(f"\n [!] {tema.name}['{col}']: {ex}")
 
     def test_trima(self):
         trima = self.overlap.trima(self.close)
@@ -204,10 +211,11 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(trima, tal_trima, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(trima, tal_trima, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(trima, tal_trima, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {trima.name}: {ex}")
+                print(f"\n [!] {trima.name}['{col}']: {ex}")
 
     def test_vwap(self):
         vwap = self.overlap.vwap(self.high, self.low, self.close, self.volume)
@@ -229,7 +237,8 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(wma, tal_wma, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(wma, tal_wma, col='corr')
-                self.assertGreater(corr, self.correlation_threshold)
+                col = 'corr'
+                corr = pandas_ta.utils.df_error_analysis(wma, tal_wma, col=col)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {wma.name}: {ex}")
+                print(f"\n [!] {wma.name}['{col}']: {ex}")
