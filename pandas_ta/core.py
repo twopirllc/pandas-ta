@@ -7,6 +7,7 @@ from .momentum import *
 from .overlap import *
 from .performance import *
 from .statistics import *
+from .trend import *
 from .utils import *
 from .volatility import *
 from .volume import *
@@ -546,6 +547,54 @@ class AnalysisIndicators(BasePandasObject):
     def zscore(self, close=None, length=None, std=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = zscore(close=close, length=length, std=std, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+
+    # Trend Indicators
+    def adx(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = adx(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def aroon(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = aroon(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def decreasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = decreasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def dpo(self, close=None, length=None, centered=True, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = dpo(close=close, length=length, centered=centered, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def increasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = increasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+    def vortex(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        result = vortex(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 

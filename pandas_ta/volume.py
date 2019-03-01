@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-.. module:: volume
-   :synopsis: Volume Indicators.
-
-.. moduleauthor:: Dario Lopez Padial (Bukosabino)
-
-"""
 import numpy as np
 import pandas as pd
 
