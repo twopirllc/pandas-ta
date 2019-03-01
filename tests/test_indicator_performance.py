@@ -1,5 +1,5 @@
+from .config import sample_data
 from .context import pandas_ta
-from .data import sample_data
 
 from unittest import TestCase
 from pandas import Series
@@ -26,17 +26,19 @@ class TestPerformace(TestCase):
 
 
     def test_log_return(self):
-        log_return = self.performance.log_return(self.close)
-        self.assertIsInstance(log_return, Series)
-        self.assertEqual(log_return.name, 'LOGRET_1')
+        result = self.performance.log_return(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'LOGRET_1')
 
-        cumlog_return = self.performance.log_return(self.close, cumulative=True)
-        self.assertEqual(cumlog_return.name, 'CUMLOGRET_1')
+    def test_cum_log_return(self):
+        result = self.performance.log_return(self.close, cumulative=True)
+        self.assertEqual(result.name, 'CUMLOGRET_1')
 
     def test_percent_return(self):
-        percent_return = self.performance.percent_return(self.close)
-        self.assertIsInstance(percent_return, Series)
-        self.assertEqual(percent_return.name, 'PCTRET_1')
+        result = self.performance.percent_return(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'PCTRET_1')
 
-        cumpercent_return = self.performance.percent_return(self.close, cumulative=True)
-        self.assertEqual(cumpercent_return.name, 'CUMPCTRET_1')
+    def test_cum_percent_return(self):
+        result = self.performance.percent_return(self.close, cumulative=True)
+        self.assertEqual(result.name, 'CUMPCTRET_1')

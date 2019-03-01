@@ -1,5 +1,5 @@
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
-from .data import sample_data, CORRELATION_THRESHOLD, VERBOSE
 
 from unittest import TestCase, skip
 import pandas.util.testing as pdt
@@ -37,98 +37,94 @@ class TestVolatility(TestCase):
     
 
     def test_accbands(self):
-        accbands = self.volatility.accbands(self.high, self.low, self.close)
-        self.assertIsInstance(accbands, DataFrame)
-        self.assertEqual(accbands.name, 'ACCBANDS_10')
+        result = self.volatility.accbands(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'ACCBANDS_10')
 
     def test_atr(self):
-        atr = self.volatility.atr(self.high, self.low, self.close)
-        self.assertIsInstance(atr, Series)
-        self.assertEqual(atr.name, 'ATR_14')
+        result = self.volatility.atr(self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'ATR_14')
 
         try:
-            tal_atr = tal.ATR(self.high, self.low, self.close)
-            pdt.assert_series_equal(atr, tal_atr, check_names=False)
+            expected = tal.ATR(self.high, self.low, self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                col = 'corr'
-                corr = pandas_ta.utils.df_error_analysis(atr, tal_atr, col=col)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {atr.name}['{col}']: {ex}")
+                error_analysis(result, CORRELATION, ex)
 
     def test_bbands(self):
-        bbands = self.volatility.bbands(self.close)
-        self.assertIsInstance(bbands, DataFrame)
-        self.assertEqual(bbands.name, 'BBANDS_20')
+        result = self.volatility.bbands(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'BBANDS_20')
 
         try:
-            tal_bbands = tal.BBANDS(self.close)
-            tal_bbandsdf = DataFrame({'BBL_20': tal_bbands[0], 'BBM_20': tal_bbands[1], 'BBU_20': tal_bbands[2]})
-            pdt.assert_frame_equal(bbands, tal_bbandsdf)
+            expected = tal.BBANDS(self.close)
+            expecteddf = DataFrame({'BBL_20': expected[0], 'BBM_20': expected[1], 'BBU_20': expected[2]})
+            pdt.assert_frame_equal(result, expecteddf)
         except AssertionError as ae:
-            col = 'corr'
             try:
-                bbl_corr = pandas_ta.utils.df_error_analysis(bbands.iloc[:,0], tal_bbandsdf.iloc[:,0], col=col)
+                bbl_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,0], expecteddf.iloc[:,0], col=CORRELATION)
                 self.assertGreater(bbl_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {bbands.iloc[:,0].name}['{col}']: {ex}")
+                error_analysis(result.iloc[:,0], CORRELATION, ex)
 
             try:
-                bbm_corr = pandas_ta.utils.df_error_analysis(bbands.iloc[:,1], tal_bbandsdf.iloc[:,1], col=col)
+                bbm_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,1], expecteddf.iloc[:,1], col=CORRELATION)
                 self.assertGreater(bbm_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f" [!] {bbands.iloc[:,1].name}['{col}']: {ex}")
+                error_analysis(result.iloc[:,1], CORRELATION, ex, newline=False)
 
             try:
-                bbu_corr = pandas_ta.utils.df_error_analysis(bbands.iloc[:,2], tal_bbandsdf.iloc[:,2], col=col)
+                bbu_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,2], expecteddf.iloc[:,2], col=CORRELATION)
                 self.assertGreater(bbu_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f" [!] {bbands.iloc[:,2].name}['{col}']: {ex}")
+                error_analysis(result.iloc[:,2], CORRELATION, ex, newline=False)
 
     def test_donchian(self):
-        donchian = self.volatility.donchian(self.close)
-        self.assertIsInstance(donchian, DataFrame)
-        self.assertEqual(donchian.name, 'DC_20')
+        result = self.volatility.donchian(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'DC_20')
 
     def test_kc(self):
-        kc = self.volatility.kc(self.high, self.low, self.close)
-        self.assertIsInstance(kc, DataFrame)
-        self.assertEqual(kc.name, 'KC_20')
+        result = self.volatility.kc(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'KC_20')
 
     def test_massi(self):
-        massi = self.volatility.massi(self.high, self.low)
-        self.assertIsInstance(massi, Series)
-        self.assertEqual(massi.name, 'MASSI_9_25')
+        result = self.volatility.massi(self.high, self.low)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'MASSI_9_25')
 
     def test_natr(self):
-        natr = self.volatility.natr(self.high, self.low, self.close)
-        self.assertIsInstance(natr, Series)
-        self.assertEqual(natr.name, 'NATR_14')
+        result = self.volatility.natr(self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'NATR_14')
 
         try:
-            tal_natr = tal.NATR(self.high, self.low, self.close)
-            pdt.assert_series_equal(natr, tal_natr, check_names=False)
+            expected = tal.NATR(self.high, self.low, self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                col = 'corr'
-                corr = pandas_ta.utils.df_error_analysis(natr, tal_natr, col=col)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {natr.name}['{col}']: {ex}")
+                error_analysis(result, CORRELATION, ex)
 
     def test_true_range(self):
-        true_range = self.volatility.true_range(self.high, self.low, self.close)
-        self.assertIsInstance(true_range, Series)
-        self.assertEqual(true_range.name, 'TRUERANGE_1')
+        result = self.volatility.true_range(self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'TRUERANGE_1')
 
         try:
-            tal_true_range = tal.TRANGE(self.high, self.low, self.close)
-            pdt.assert_series_equal(true_range, tal_true_range, check_names=False)
+            expected = tal.TRANGE(self.high, self.low, self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                col = 'corr'
-                corr = pandas_ta.utils.df_error_analysis(true_range, tal_true_range, col=col)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {true_range.name}['{col}']: {ex}")
+                error_analysis(result, CORRELATION, ex)

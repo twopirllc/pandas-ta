@@ -1,5 +1,5 @@
+from .config import sample_data
 from .context import pandas_ta
-from .data import sample_data
 
 from unittest import TestCase
 # import numpy.testing as npt

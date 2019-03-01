@@ -1,5 +1,5 @@
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
-from .data import sample_data, CORRELATION_THRESHOLD, VERBOSE
 
 from unittest import TestCase, skip
 import pandas.util.testing as pdt
@@ -37,63 +37,61 @@ class TestStatistics(TestCase):
     
 
     def test_kurtosis(self):
-        kurtosis = self.stats.kurtosis(self.close)
-        self.assertIsInstance(kurtosis, Series)
-        self.assertEqual(kurtosis.name, 'KURT_30')
+        result = self.stats.kurtosis(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'KURT_30')
 
     def test_mad(self):
-        mad = self.stats.mad(self.close)
-        self.assertIsInstance(mad, Series)
-        self.assertEqual(mad.name, 'MAD_30')
+        result = self.stats.mad(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'MAD_30')
 
     def test_median(self):
-        median = self.stats.median(self.close)
-        self.assertIsInstance(median, Series)
-        self.assertEqual(median.name, 'MEDIAN_30')
+        result = self.stats.median(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'MEDIAN_30')
 
     def test_quantile(self):
-        quantile = self.stats.quantile(self.close)
-        self.assertIsInstance(quantile, Series)
-        self.assertEqual(quantile.name, 'QTL_30_0.5')
+        result = self.stats.quantile(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'QTL_30_0.5')
 
     def test_skew(self):
-        skew = self.stats.skew(self.close)
-        self.assertIsInstance(skew, Series)
-        self.assertEqual(skew.name, 'SKEW_30')
+        result = self.stats.skew(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'SKEW_30')
 
     def test_stdev(self):
-        stdev = self.stats.stdev(self.close)
-        self.assertIsInstance(stdev, Series)
-        self.assertEqual(stdev.name, 'STDEV_30')
+        result = self.stats.stdev(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'STDEV_30')
 
         try:
-            tal_stdev = tal.STDDEV(self.close, 30)
-            pdt.assert_series_equal(stdev, tal_stdev, check_names=False)
+            expected = tal.STDDEV(self.close, 30)
+            pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                col = 'corr'
-                corr = pandas_ta.utils.df_error_analysis(stdev, tal_stdev, col=col)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {stdev.name}['{col}']: {ex}")
+                error_analysis(result, CORRELATION, ex)
 
     def test_variance(self):
-        variance = self.stats.variance(self.close)
-        self.assertIsInstance(variance, Series)
-        self.assertEqual(variance.name, 'VAR_30')
+        result = self.stats.variance(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'VAR_30')
 
         try:
-            tal_variance = tal.VAR(self.close, 30)
-            pdt.assert_series_equal(variance, tal_variance, check_names=False)
+            expected = tal.VAR(self.close, 30)
+            pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                col = 'corr'
-                corr = pandas_ta.utils.df_error_analysis(variance, tal_variance, col=col)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                print(f"\n [!] {variance.name}['{col}']: {ex}")
+                error_analysis(result, CORRELATION, ex)
 
     def test_zscore(self):
-        zscore = self.stats.zscore(self.close)
-        self.assertIsInstance(zscore, Series)
-        self.assertEqual(zscore.name, 'Z_30')
+        result = self.stats.zscore(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'Z_30')
