@@ -22,6 +22,12 @@ A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/exte
 
 # Getting Started and Examples
 
+## Installation (python 3)
+
+```sh
+$ pip install pandas_ta
+```
+
 ## **Quick Start** using the DataFrame Extension
 
 ```python
@@ -145,6 +151,19 @@ Use parameter: cumulative=**True** for cumulative results.
 | _Z Score_ |
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
+
+## _Trend_ (6)
+
+* _Average Directional Movement Index_: **adx**
+* _Aroon Oscillator_: **aroon**
+* _Decreasing_: **decreasing**
+* _Detrended Price Oscillator_: **dpo**
+* _Increasing_: **increasing**
+* _Vortex Indicator_: **vortex**
+
+| _Average Directional Movement Index_ (ADX) |
+|:--------:|
+| ![Example ADX](/images/SPY_ADX.png) |
 
 ## _Volatility_ (8)
 

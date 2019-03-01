@@ -1,7 +1,7 @@
 from .config import sample_data
 from .context import pandas_ta
 
-from unittest import skip, TestCase
+from unittest import TestCase
 from pandas import DataFrame
 
 
@@ -73,6 +73,7 @@ class TestVolumeExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'PVT')
 
-    @skip('Standalone and does not need to be added to the DataFrame')
     def test_vp_ext(self):
-        pass
+        result = self.data.ta.vp()
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'VP_10')
