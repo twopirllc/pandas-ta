@@ -561,13 +561,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def aroon(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = aroon(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def decreasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -575,20 +573,17 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-
     def dpo(self, close=None, length=None, centered=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = dpo(close=close, length=length, centered=centered, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
-
     def increasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = increasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
-
 
     def vortex(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
@@ -752,6 +747,4 @@ class AnalysisIndicators(BasePandasObject):
     def vp(self, close=None, volume=None, width=None, percent=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
-        result = vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
-        self._append(result, **kwargs)
-        return result
+        return vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
