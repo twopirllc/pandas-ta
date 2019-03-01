@@ -3,8 +3,7 @@ import math
 import numpy as np
 import pandas as pd
 
-from .utils import fibonacci, pascals_triangle
-from .utils import get_drift, get_offset, verify_series, weights
+from .utils import fibonacci, get_drift, get_offset, pascals_triangle, verify_series, weights
 
 
 
