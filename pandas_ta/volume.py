@@ -9,9 +9,9 @@
 import numpy as np
 import pandas as pd
 
-from .utils import get_drift, get_offset, signed_series, verify_series
 from .momentum import roc
 from .overlap import hl2, hlc3, ema
+from .utils import get_drift, get_offset, signed_series, verify_series
 
 
 def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
@@ -240,7 +240,7 @@ def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs
 
     # Name and Categorize it
     mfi.name = f"MFI_{length}"
-    mfi.category = 'momentum'
+    mfi.category = 'volume'
 
     return mfi
 
@@ -416,7 +416,7 @@ def vp(close, volume, width=None, **kwargs):
         vpdf.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name and Categorize it
-    vpdf.name = f"VP"
+    vpdf.name = f"VP_{width}"
     vpdf.category = 'volume'
 
     return vpdf

@@ -9,6 +9,7 @@ from .performance import *
 from .statistics import *
 from .utils import *
 from .volatility import *
+from .volume import *
 
 
 
@@ -607,5 +608,101 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         result = true_range(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+
+
+    # Volume Indicators
+    def ad(self, high=None, low=None, close=None, volume=None, open_=None, signed=True, offset=None, **kwargs):
+        if open_ is not None:
+            open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = ad(high=high, low=low, close=close, volume=volume, open_=open_, signed=signed, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def adosc(self, high=None, low=None, close=None, volume=None, open_=None, fast=None, slow=None, signed=True, offset=None, **kwargs):
+        if open_ is not None:
+            open_ = self._get_column(open_, 'open')        
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = adosc(high=high, low=low, close=close, volume=volume, open_=open_, fast=fast, slow=slow, signed=signed, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def cmf(self, high=None, low=None, close=None, volume=None, open_=None, length=None, offset=None, **kwargs):
+        if open_ is not None:
+            open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = cmf(high=high, low=low, close=close, volume=volume, open_=open_, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def efi(self, close=None, volume=None, length=None, mamode=None, offset=None, drift=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = efi(close=close, volume=volume, length=length, offset=offset, mamode=mamode, drift=drift, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def eom(self, high=None, low=None, close=None, volume=None, length=None, divisor=None, offset=None, drift=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = eom(high=high, low=low, close=close, volume=volume, length=length, divisor=divisor, offset=offset, drift=drift, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def mfi(self, high=None, low=None, close=None, volume=None, length=None, drift=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = mfi(high=high, low=low, close=close, volume=volume, length=length, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def nvi(self, close=None, volume=None, length=None, initial=None, signed=True, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = nvi(close=close, volume=volume, length=length, initial=initial, signed=signed, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def obv(self, close=None, volume=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = obv(close=close, volume=volume, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def pvol(self, close=None, volume=None, signed=True, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = pvol(close=close, volume=volume, signed=signed, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def pvt(self, close=None, volume=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = pvt(close=close, volume=volume, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def vp(self, close=None, volume=None, width=None, percent=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
         self._append(result, **kwargs)
         return result
