@@ -22,6 +22,12 @@ A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/exte
 
 # Getting Started and Examples
 
+## Installation (python 3)
+
+```sh
+$ pip install pandas_ta
+```
+
 ## **Quick Start** using the DataFrame Extension
 
 ```python
