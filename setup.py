@@ -6,7 +6,7 @@ long_description = "An easy to use Python 3 Pandas Extension of Technical Analys
 setup(
     name = "pandas_ta",
     packages = ["pandas_ta"],
-    version = "0.1.0a",
+    version = "0.1.1a",
     description=long_description,
     long_description=long_description,
     author = "Kevin Johnson",

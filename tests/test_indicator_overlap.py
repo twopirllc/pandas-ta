@@ -5,6 +5,7 @@ from unittest import TestCase
 import pandas.util.testing as pdt
 from pandas import DataFrame, Series
 
+import pandas as pd
 import talib as tal
 
 
@@ -102,6 +103,71 @@ class TestOverlap(TestCase):
         self.assertIsInstance(span, DataFrame)
         self.assertEqual(ichimoku.name, 'ICHIMOKU_9_26_52')
         self.assertEqual(span.name, 'ICHISPAN_9_26')
+
+    def test_linreg(self):
+        result = self.overlap.linreg(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'LR_14')
+
+        try:
+            expected = tal.LINEARREG(self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)
+
+    def test_linreg_angle(self):
+        result = self.overlap.linreg(self.close, angle=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'LRa_14')
+
+        try:
+            expected = tal.LINEARREG_ANGLE(self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)
+
+    def test_linreg_intercept(self):
+        result = self.overlap.linreg(self.close, intercept=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'LRb_14')
+
+        try:
+            expected = tal.LINEARREG_INTERCEPT(self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)
+
+    def test_linreg_r(self):
+        result = self.overlap.linreg(self.close, r=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'LRr_14')
+
+    def test_linreg_slope(self):
+        result = self.overlap.linreg(self.close, slope=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'LRm_14')
+
+        try:
+            expected = tal.LINEARREG_SLOPE(self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)
 
     def test_midpoint(self):
         result = self.overlap.midpoint(self.close)

@@ -98,7 +98,7 @@ help(pd.DataFrame().ta.log_return)
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-## _Overlap_ (19)
+## _Overlap_ (20)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -109,6 +109,7 @@ help(pd.DataFrame().ta.log_return)
 * _Hull Exponential Moving Average_: **hma**
 * _Ichimoku Kinkō Hyō_: **ichimoku**
     * Use: help(ta.ichimoku). Returns two DataFrames.
+* _Linear Regression_: **linreg**
 * _Midpoint_: **midpoint**
 * _Midprice_: **midprice**
 * _Open-High-Low-Close Average_: **ohlc4**
