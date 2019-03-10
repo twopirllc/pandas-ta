@@ -403,6 +403,12 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result, span
 
+    def linreg(self, close=None, length=None, offset=None, adjust=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = linreg(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def midpoint(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = midpoint(close=close, length=length, offset=offset, **kwargs)

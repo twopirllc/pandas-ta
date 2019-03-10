@@ -58,6 +58,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-5:]), ['ISA_9', 'ISB_26', 'ITS_9', 'IKS_26', 'ICS_26'])
 
+    def test_linreg_ext(self):
+        self.data.ta.linreg(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'LR_14')
+
     def test_midpoint_ext(self):
         self.data.ta.midpoint(append=True)
         self.assertIsInstance(self.data, DataFrame)

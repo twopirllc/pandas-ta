@@ -569,6 +569,7 @@ High-Low Range to identify trend reversals based on range expansions.
 
 Sources:
     https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:mass_index
+    mi = sum(ema(high - low, 9) / ema(ema(high - low, 9), 9), length)
 
 Calculation:
     Default Inputs:
