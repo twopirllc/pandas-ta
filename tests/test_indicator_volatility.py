@@ -39,7 +39,7 @@ class TestVolatility(TestCase):
     def test_accbands(self):
         result = self.volatility.accbands(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'ACCBANDS_10')
+        self.assertEqual(result.name, 'ACCBANDS_20')
 
     def test_atr(self):
         result = self.volatility.atr(self.high, self.low, self.close)

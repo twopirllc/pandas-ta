@@ -16,7 +16,7 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
-    length = int(length) if length and length > 0 else 10
+    length = int(length) if length and length > 0 else 20
     c = float(c) if c and c > 0 else 4
     min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
     mamode = mamode.lower() if mamode else 'sma'

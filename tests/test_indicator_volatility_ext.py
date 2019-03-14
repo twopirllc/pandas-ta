@@ -26,7 +26,7 @@ class TestVolatilityExtension(TestCase):
     def test_accbands_ext(self):
         self.data.ta.accbands(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ['ACCBL_10', 'ACCBM_10', 'ACCBU_10'])
+        self.assertEqual(list(self.data.columns[-3:]), ['ACCBL_20', 'ACCBM_20', 'ACCBU_20'])
 
     def test_atr_ext(self):
         self.data.ta.atr(append=True)

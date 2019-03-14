@@ -366,6 +366,7 @@ def vp(close, volume, width=None, **kwargs):
     close = verify_series(close)
     volume = verify_series(volume)
     width = int(width) if width and width > 0 else 10
+    sort_close = kwargs.pop('sort_close', False)
 
     # Setup
     signed_volume = signed_series(volume, initial=1)
@@ -387,7 +388,7 @@ def vp(close, volume, width=None, **kwargs):
 
     # sort_close: Sort by close before splitting into ranges. Default: False
     # If False, it sorts by date index or chronological versus by price
-    if kwargs.pop('sort_close', False):
+    if sort_close:
         vp.sort_values(by=[close_col], inplace=True)
 
     # Calculate Result
