@@ -1,4 +1,4 @@
-from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
+from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis, sample_data, VERBOSE
 from .context import pandas_ta
 
 from unittest import TestCase

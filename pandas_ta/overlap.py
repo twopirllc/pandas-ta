@@ -36,17 +36,30 @@ def ema(close, length=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length#int(0.25 * length)
-    adjust = bool(kwargs['adjust']) if 'adjust' in kwargs and kwargs['adjust'] is not None else True
+    min_periods = kwargs.pop('min_periods', length)
+    adjust = kwargs.pop('adjust', True)
     offset = get_offset(offset)
+    sma = kwargs.pop('sma', True)
 
     # Calculate Result
-    if 'presma' in kwargs and kwargs['presma']:
-        initial_sma = sma(close=close, length=length)[:length]
-        rest = close[length:]
-        close = pd.concat([initial_sma, rest])
+    if close.shape[0] < 100000:
+        alpha = 2 / (length + 1)
+        close = close.copy()
 
-    ema = close.ewm(span=length, min_periods=min_periods, adjust=adjust).mean()
+        def ema_(series):
+            # Technical Anaylsis Definition of an Exponential Moving Average
+            series.iloc[1] = alpha * (series.iloc[1] - series.iloc[0]) + series.iloc[0]
+            return series.iloc[1]
+
+        seed = close[0:length].mean() if sma else close.iloc[0]
+
+        close[:length - 1] = np.NaN
+        close.iloc[length - 1] = seed
+        ma = close[length - 1:].rolling(2, min_periods=2).apply(ema_, raw=False)[1:]
+        ema = close[:length].append(ma)
+    else:
+        # Mathematical Implementation of an Exponential Weighted Moving Average
+        ema = close.ewm(span=length, min_periods=min_periods, adjust=adjust).mean()
 
     # Offset
     if offset != 0:
@@ -869,8 +882,8 @@ Args:
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
-    adjust (bool): Default: True
-    presma (bool, optional): If True, uses SMA for initial value.
+    adjust (bool, optional): Default: True
+    sma (bool, optional): If True, uses SMA for initial value.
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 
