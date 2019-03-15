@@ -591,6 +591,13 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def qstick(self, open_=None, close=None, length=None, offset=None, **kwargs):
+        open_ = self._get_column(open_, 'open')
+        close = self._get_column(close, 'close')
+        result = qstick(open_=open_, close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def vortex(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')

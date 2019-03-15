@@ -48,6 +48,11 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'INC_1')
 
+    def test_qstick_ext(self):
+        self.data.ta.qstick(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'QS_10')
+
     def test_vortext_ext(self):
         self.data.ta.vortex(append=True)
         self.assertIsInstance(self.data, DataFrame)

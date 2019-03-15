@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 from .momentum import roc
-from .overlap import ema, midprice, rma
+from .overlap import dema, ema, hma, midprice, rma, sma
 from .utils import get_drift, get_offset, verify_series, zero
 from .volatility import atr, true_range
 
@@ -204,6 +204,41 @@ def increasing(close, length=None, asint=True, offset=None, **kwargs):
     increasing.category = 'trend'
 
     return increasing
+
+
+def qstick(open_, close, length=None, offset=None, **kwargs):
+    """Indicator: Q Stick"""
+    # Validate Arguments
+    open_ = verify_series(open_)
+    close = verify_series(close)
+    length = int(length) if length and length > 0 else 10
+    offset = get_offset(offset)
+    ma = kwargs.pop('ma', 'sma') if 'ma' in kwargs else 'sma'
+
+    # Calculate Result
+    diff = close - open_
+
+    if ma in [None, 'sma']: qstick = sma(diff, length=length)
+    if ma == 'dema': qstick = dema(diff, length=length)
+    if ma == 'ema': qstick = ema(diff, length=length)
+    if ma == 'hma': qstick = hma(diff, length=length)
+    if ma == 'rma': qstick = rma(diff, length=length)
+
+    # Offset
+    if offset != 0:
+        qstick = qstick.shift(offset)
+
+    # Handle fills
+    if 'fillna' in kwargs:
+        qstick.fillna(kwargs['fillna'], inplace=True)
+    if 'fill_method' in kwargs:
+        qstick.fillna(method=kwargs['fill_method'], inplace=True)
+
+    # Name and Categorize it
+    qstick.name = f"QS_{length}"
+    qstick.category = 'trend'
+
+    return qstick
 
 
 def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
@@ -447,6 +482,37 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 1
     asint (bool): Returns as binary.  Default: True
+    offset (int): How many periods to offset the result.  Default: 0
+
+Kwargs:
+    fillna (value, optional): pd.DataFrame.fillna(value)
+    fill_method (value, optional): Type of fill method
+
+Returns:
+    pd.Series: New feature generated.
+"""
+
+
+qstick.__doc__ = \
+"""Q Stick
+
+The Q Stick indicator, developed by Tushar Chande, attempts to quantify and identify
+trends in candlestick charts.
+
+Sources:
+    https://library.tradingtechnologies.com/trade/chrt-ti-qstick.html
+
+Calculation:
+    Default Inputs:
+        length=10
+    xMA is one of: sma (default), dema, ema, hma, rma
+    qstick = xMA(close - open, length)
+
+Args:
+    open (pd.Series): Series of 'open's
+    close (pd.Series): Series of 'close's
+    length (int): It's period.  Default: 1
+    ma (str): The type of moving average to use.  Default: None, which is 'sma'
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:

@@ -88,6 +88,11 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'INC_1')
 
+    def test_qstick(self):
+        result = self.trend.qstick(self.open, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'QS_10')
+
     def test_vortex(self):
         result = self.trend.vortex(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
