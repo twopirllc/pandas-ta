@@ -42,12 +42,16 @@ def ema(close, length=None, offset=None, **kwargs):
     sma = kwargs.pop('sma', True)
 
     # Calculate Result
-    if close.shape[0] < 100000:
+    if close.size > 100000:
+        # Mathematical Implementation of an Exponential Weighted Moving Average
+        ema = close.ewm(span=length, min_periods=min_periods, adjust=adjust).mean()
+    else:
         alpha = 2 / (length + 1)
         close = close.copy()
 
         def ema_(series):
             # Technical Anaylsis Definition of an Exponential Moving Average
+            # Slow for large series
             series.iloc[1] = alpha * (series.iloc[1] - series.iloc[0]) + series.iloc[0]
             return series.iloc[1]
 
@@ -55,11 +59,8 @@ def ema(close, length=None, offset=None, **kwargs):
 
         close[:length - 1] = np.NaN
         close.iloc[length - 1] = seed
-        ma = close[length - 1:].rolling(2, min_periods=2).apply(ema_, raw=False)[1:]
-        ema = close[:length].append(ma)
-    else:
-        # Mathematical Implementation of an Exponential Weighted Moving Average
-        ema = close.ewm(span=length, min_periods=min_periods, adjust=adjust).mean()
+        ma = close[length - 1:].rolling(2, min_periods=2).apply(ema_, raw=False)
+        ema = close[:length].append(ma[1:])
 
     # Offset
     if offset != 0:

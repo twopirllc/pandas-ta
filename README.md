@@ -28,6 +28,11 @@ A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/exte
 $ pip install pandas_ta
 ```
 
+## Latest Version
+```sh
+$ pip install -U https://github.com/twopirllc/pandas-ta.git
+```
+
 ## **Quick Start** using the DataFrame Extension
 
 ```python
@@ -171,7 +176,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Acceleration Bands_: **accbands**
 * _Average True Range_: **atr**
 * _Bollinger Bands_: **bbands**
-* _Donchian Channel_: **donchain**
+* _Donchian Channel_: **donchian**
 * _Keltner Channel_: **kc**
 * _Mass Index_: **massi**
 * _Normalized Average True Range_: **natr**
