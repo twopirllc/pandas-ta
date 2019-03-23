@@ -336,12 +336,13 @@ def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
     return pvi
 
 
-def pvol(close, volume, signed=True, offset=None, **kwargs):
+def pvol(close, volume, offset=None, **kwargs):
     """Indicator: Price-Volume (PVOL)"""
     # Validate arguments
     close = verify_series(close)
     volume = verify_series(volume)
     offset = get_offset(offset)
+    signed = kwargs.pop('signed', False)
 
     # Calculate Result
     if signed:

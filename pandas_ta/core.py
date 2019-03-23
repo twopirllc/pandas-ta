@@ -755,10 +755,10 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-    def pvol(self, close=None, volume=None, signed=True, offset=None, **kwargs):
+    def pvol(self, close=None, volume=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
-        result = pvol(close=close, volume=volume, signed=signed, offset=offset, **kwargs)
+        result = pvol(close=close, volume=volume, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
