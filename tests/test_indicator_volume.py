@@ -116,6 +116,11 @@ class TestVolume(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_pvi(self):
+        result = self.volume.pvi(self.close, self.volume_)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'PVI_1')
+
     def test_pvol(self):
         result = self.volume.pvol(self.close, self.volume_)
         self.assertIsInstance(result, Series)

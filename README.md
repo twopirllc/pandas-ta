@@ -188,7 +188,7 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example ATR](/images/SPY_ATR.png) |
 
-## _Volume_ (11)
+## _Volume_ (12)
 
 * _Accumulation/Distribution Index_: **ad**
 * _Accumulation/Distribution Oscillator_: **adosc**
@@ -198,6 +198,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Money Flow Index_: **mfi**
 * _Negative Volume Index_: **nvi**
 * _On-Balance Volume_: **obv**
+* _Positive Volume Index_: **pvi**
 * _Price-Volume_: **pvol**
 * _Price Volume Trend_: **pvt**
 * _Volume Profile_: **vp**

@@ -748,6 +748,13 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def pvi(self, close=None, volume=None, length=None, initial=None, signed=True, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = pvi(close=close, volume=volume, length=length, initial=initial, signed=signed, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def pvol(self, close=None, volume=None, signed=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')

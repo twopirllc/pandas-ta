@@ -63,6 +63,11 @@ class TestVolumeExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'OBV')
 
+    def test_pvi_ext(self):
+        self.data.ta.pvi(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'PVI_1')
+
     def test_pvol_ext(self):
         self.data.ta.pvol(append=True)
         self.assertIsInstance(self.data, DataFrame)
