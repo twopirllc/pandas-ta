@@ -122,3 +122,8 @@ class TestOverlapExtension(TestCase):
         self.data.ta.wma(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'WMA_10')
+
+    def test_zlma_ext(self):
+        self.data.ta.zlma(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'ZLEMA_10')

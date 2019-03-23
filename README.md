@@ -103,7 +103,7 @@ help(pd.DataFrame().ta.log_return)
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-## _Overlap_ (20)
+## _Overlap_ (21)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -127,6 +127,7 @@ help(pd.DataFrame().ta.log_return)
 * _Volume Weighted Average Price_: **vwap**
 * _Volume Weighted Moving Average_: **vwma**
 * _Weighted Moving Average_: **wma**
+* _Zero Lag Moving Average_: **zlma**
 
 | _Simple Moving Averages_ (SMA) and _Bollinger Bands_ (BBANDS) |
 |:--------:|

@@ -298,3 +298,8 @@ class TestOverlap(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+    def test_zlma(self):
+        result = self.overlap.zlma(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'ZLEMA_10')

@@ -489,6 +489,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def zlma(self, close=None, length=None, offset=None, mamode=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = zlma(close=close, length=length, offset=offset, mamode=mamode, **kwargs)
+        self._append(result, **kwargs)
+        return result
 
 
     # Performance Indicators
