@@ -86,8 +86,8 @@ def bop(open_, high, low, close, offset=None, **kwargs):
 
     # Calculate Result
     close_open_range = close - open_
-    high_log_range = high - low
-    bop = close_open_range / high_log_range
+    high_low_range = high - low
+    bop = close_open_range / high_low_range
 
     # Offset
     if offset != 0:
