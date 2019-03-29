@@ -59,8 +59,8 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, offset=Non
 
     # Calculate Result
     ad_ = ad(high=high, low=low, close=close, volume=volume, open_=open_)
-    fast_ad = ema(close=ad_, length=fast)
-    slow_ad = ema(close=ad_, length=slow)
+    fast_ad = ema(close=ad_, length=fast, **kwargs)
+    slow_ad = ema(close=ad_, length=slow, **kwargs)
     adosc = fast_ad - slow_ad
 
     # Offset

@@ -112,7 +112,7 @@ env/**
 pandas_ta/_wrapper.py
 
 # twopirllc stuff
-data/
+data/datas.csv
 setup.cfg
 .README.md
 README

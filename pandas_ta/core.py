@@ -170,7 +170,8 @@ class AnalysisIndicators(BasePandasObject):
                 matches = df.columns.str.match(series, case=False)
                 match = [i for i, x in enumerate(matches) if x]
                 # If found, awesome.  Return it or return the 'series'.
-                NOT_FOUND = f"[X] Ooops!!!: It's {series not in df.columns}, the series '{series}' not in {', '.join(list(df.columns))}"
+                cols = ', '.join(list(df.columns))
+                NOT_FOUND = f"[X] Ooops!!!: It's {series not in df.columns}, the series '{series}' not in {cols}"
                 return df.iloc[:,match[0]] if len(match) else print(NOT_FOUND)
 
 
@@ -232,7 +233,6 @@ class AnalysisIndicators(BasePandasObject):
         s = f"{header}\nTotal Indicators: {total_indicators}\n"
         if total_indicators > 0:            
             abbr_list = ', '.join(ta_indicators)
-            # print(f"{s}Abbreviations:\n    {abbr_list}")
             print(f"{s}Abbreviations:\n    {abbr_list}")
         else:
             print(s)

@@ -156,7 +156,6 @@ def dpo(close, length=None, centered=True, offset=None, **kwargs):
     # Calculate Result
     drift = int(0.5 * length) + 1  # int((0.5 * length) + 1)
     dpo = close.shift(drift) - close.rolling(length, min_periods=min_periods).mean()
-    # dpo = close.shift(drift) - close.rolling(length).mean()
     if centered:
         dpo = dpo.shift(-drift)
 
@@ -219,8 +218,8 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
     diff = close - open_
 
     if ma in [None, 'sma']: qstick = sma(diff, length=length)
-    if ma == 'dema': qstick = dema(diff, length=length)
-    if ma == 'ema': qstick = ema(diff, length=length)
+    if ma == 'dema': qstick = dema(diff, length=length, **kwargs)
+    if ma == 'ema': qstick = ema(diff, length=length, **kwargs)
     if ma == 'hma': qstick = hma(diff, length=length)
     if ma == 'rma': qstick = rma(diff, length=length)
 

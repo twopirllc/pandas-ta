@@ -8,7 +8,8 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 ## New Changes
 
-* At 70+ indicators.
+* Over 70 indicators.
+* Example in Jupyter Notebooks under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
 * Parameter names are more consistent.
@@ -18,6 +19,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html), extends a DataFrame allowing one to add more functionality and features to Pandas to suit your needs.  As such, it is now easier to run Technical Analysis on existing Financial Time Series without leaving the current DataFrame.  This extension by default returns the Indicator result or, inclusively, it can append the result to the existing DataFrame by including the parameter 
 'append=True' in the method call. See examples below.
+
 
 
 # Getting Started and Examples
@@ -206,6 +208,8 @@ Use parameter: cumulative=**True** for cumulative results.
 | _On-Balance Volume_ (OBV) |
 |:--------:|
 | ![Example OBV](/images/SPY_OBV.png) |
+
+
 
 # Inspiration
 * Original TA-LIB: http://ta-lib.org/

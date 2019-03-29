@@ -111,21 +111,21 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     close = verify_series(close)
     length = int(length) if length and length > 0 else 20
     min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
-    std = float(std) if std and std > 0 else 2
-    mamode = mamode.lower() if mamode else 'ema'
+    std = float(std) if std and std > 0 else 2.
+    mamode = mamode.lower() if mamode else 'sma'
     offset = get_offset(offset)
 
     # Calculate Result
     standard_deviation = stdev(close=close, length=length)
-    # std = variance(close=close, length=length).apply(np.sqrt)
+    deviations = std * standard_deviation
 
     if mamode is None or mamode == 'sma':
-        mid = close.rolling(length, min_periods=min_periods).mean()
+        mid = sma(close=close, length=length)
     elif mamode == 'ema':
-        mid = close.ewm(span=length, min_periods=min_periods).mean()
+        mid = ema(close=close, length=length, **kwargs)
 
-    lower = mid - std * standard_deviation
-    upper = mid + std * standard_deviation
+    lower = mid - deviations
+    upper = mid + deviations
 
     # Offset
     if offset != 0:
@@ -274,8 +274,8 @@ def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
 
     # Calculate Result
     hl_range = high - low
-    hl_ema1 = ema(close=hl_range, length=fast)
-    hl_ema2 = ema(close=hl_ema1, length=fast)
+    hl_ema1 = ema(close=hl_range, length=fast, **kwargs)
+    hl_ema2 = ema(close=hl_ema1, length=fast, **kwargs)
 
     hl_ratio = hl_ema1 / hl_ema2
     massi = hl_ratio.rolling(slow, min_periods=slow).sum()

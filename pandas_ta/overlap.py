@@ -16,8 +16,8 @@ def dema(close, length=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    ema1 = ema(close=close, length=length, min_periods=min_periods)
-    ema2 = ema(close=ema1, length=length, min_periods=min_periods)
+    ema1 = ema(close=close, length=length, **kwargs)
+    ema2 = ema(close=ema1, length=length, **kwargs)
     dema = 2 * ema1 - ema2
 
     # Offset
@@ -40,9 +40,10 @@ def ema(close, length=None, offset=None, **kwargs):
     adjust = kwargs.pop('adjust', True)
     offset = get_offset(offset)
     sma = kwargs.pop('sma', True)
+    ewm = kwargs.pop('ewm', False)
 
     # Calculate Result
-    if close.size > 100000:
+    if ewm:
         # Mathematical Implementation of an Exponential Weighted Moving Average
         ema = close.ewm(span=length, min_periods=min_periods, adjust=adjust).mean()
     else:
@@ -438,7 +439,7 @@ def rma(close, length=None, offset=None, **kwargs):
     length = int(length) if length and length > 0 else 10
     min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
     offset = get_offset(offset)
-    alpha = (1.0 / length) if length > 0 else 1
+    alpha = (1.0 / length) if length > 0 else 0.5
 
     # Calculate Result
     rma = close.ewm(alpha=alpha, min_periods=min_periods).mean()
@@ -491,12 +492,12 @@ def t3(close, length=None, a=None, offset=None, **kwargs):
     c3 = -6 * a ** 2 - 3 * a - 3 * a ** 3
     c4 = a ** 3 + 3 * a ** 2 + 3 * a + 1
 
-    e1 = ema(close=close, length=length, min_periods=min_periods, **kwargs)
-    e2 = ema(close=e1, length=length, min_periods=min_periods, **kwargs)
-    e3 = ema(close=e2, length=length, min_periods=min_periods, **kwargs)
-    e4 = ema(close=e3, length=length, min_periods=min_periods, **kwargs)
-    e5 = ema(close=e4, length=length, min_periods=min_periods, **kwargs)
-    e6 = ema(close=e5, length=length, min_periods=min_periods, **kwargs)
+    e1 = ema(close=close, length=length, **kwargs)
+    e2 = ema(close=e1, length=length, **kwargs)
+    e3 = ema(close=e2, length=length, **kwargs)
+    e4 = ema(close=e3, length=length, **kwargs)
+    e5 = ema(close=e4, length=length, **kwargs)
+    e6 = ema(close=e5, length=length, **kwargs)
     t3 = c1 * e6 + c2 * e5 + c3 * e4 + c4 * e3
 
     # Offset
@@ -519,9 +520,9 @@ def tema(close, length=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    ema1 = ema(close=close, length=length, min_periods=min_periods)
-    ema2 = ema(close=ema1, length=length, min_periods=min_periods)
-    ema3 = ema(close=ema2, length=length, min_periods=min_periods)
+    ema1 = ema(close=close, length=length, **kwargs)
+    ema2 = ema(close=ema1, length=length, **kwargs)
+    ema3 = ema(close=ema2, length=length, **kwargs)
     tema = 3 * (ema1 - ema2) + ema3
 
     # Offset
@@ -653,16 +654,16 @@ def zlma(close, length=None, offset=None, mamode=None, **kwargs):
     lag = int(0.5 * (length - 1))
     close = 2 * close - close.shift(lag)
     if mamode is None or mamode == 'ema':
-        zlma = ema(close, length=length, min_periods=min_periods)
+        zlma = ema(close, length=length, **kwargs)
         kind = "E"
     if mamode == 'hma':
-        zlma = hma(close, length=length, min_periods=min_periods)
+        zlma = hma(close, length=length, **kwargs)
         kind = "H"
     if mamode == 'sma':
-        zlma = sma(close, length=length, min_periods=min_periods)
+        zlma = sma(close, length=length, **kwargs)
         kind = "S"
     if mamode == 'wma':
-        zlma = wma(close, length=length, min_periods=min_periods)
+        zlma = wma(close, length=length, **kwargs)
         kind = "W"
 
     # Offset

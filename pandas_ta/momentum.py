@@ -2,7 +2,8 @@
 import numpy as np
 import pandas as pd
 
-from .overlap import hlc3, ema, wma
+from .overlap import hlc3, ema, sma, wma
+from .statistics import mad
 from .utils import get_drift, get_offset, verify_series
 
 
@@ -54,8 +55,8 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    fastma = close.ewm(span=fast, min_periods=min_periods).mean()
-    slowma = close.ewm(span=slow, min_periods=min_periods).mean()
+    fastma = ema(close, length=fast, **kwargs)
+    slowma = ema(close, length=slow, **kwargs)
     apo = fastma - slowma
 
     # Offset
@@ -118,15 +119,12 @@ def cci(high, low, close, length=None, c=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    def mad(series):
-        """Mean Absolute Deviation"""
-        return np.fabs(series - series.mean()).mean()
-
     typical_price = hlc3(high=high, low=low, close=close)
-    mean_typical_price = typical_price.rolling(length, min_periods=min_periods).mean()
-    mad_typical_price = typical_price.rolling(length).apply(mad, raw=True)
+    mean_typical_price = sma(typical_price, length=length)
+    mad_typical_price = mad(typical_price, length=length)
 
-    cci = (typical_price - mean_typical_price) / (c * mad_typical_price)
+    cci = typical_price - mean_typical_price
+    cci /= c * mad_typical_price
 
     # Offset
     if offset != 0:
@@ -161,7 +159,7 @@ def cmo(close, length=None, drift=None, offset=None, **kwargs):
     negative[negative > 0] = 0  # Make postives 0 for the negative series
 
     pos_sum = positive.rolling(length).sum()
-    neg_sum = np.fabs(negative).rolling(length).sum()
+    neg_sum = negative.abs().rolling(length).sum()
     
     cmo = 100 * (pos_sum - neg_sum) / (pos_sum + neg_sum)
 
@@ -281,11 +279,11 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    fastma = close.ewm(span=fast, min_periods=min_periods).mean()
-    slowma = close.ewm(span=slow, min_periods=min_periods).mean()
+    fastma = ema(close, length=fast, **kwargs)
+    slowma = ema(close, length=slow, **kwargs)
 
     macd = fastma - slowma
-    signalma = macd.ewm(span=signal, min_periods=min_periods).mean()
+    signalma = ema(close=macd, length=signal, **kwargs)
     histogram = macd - signalma
 
     # Offset
@@ -363,7 +361,7 @@ def ppo(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     slowma = close.rolling(slow, min_periods=min_periods).mean()
 
     ppo = 100 * (fastma - slowma) / slowma
-    signalma = ppo.ewm(span=signal, min_periods=min_periods).mean()
+    signalma = ema(close=ppo, length=signal, **kwargs)
     histogram = ppo - signalma
 
     # Offset
@@ -474,14 +472,14 @@ def stoch(high, low, close, fast_k=None, slow_k=None, slow_d=None, offset=None, 
     offset = get_offset(offset)
 
     # Calculate Result
-    lowest_low   =  low.rolling(fast_k, min_periods=fast_k - 1).min()
-    highest_high = high.rolling(fast_k, min_periods=fast_k - 1).max()
+    lowest_low   =  low.rolling(slow_k).min()
+    highest_high = high.rolling(slow_k).max()
 
     fastk = 100 * (close - lowest_low) / (highest_high - lowest_low)
-    fastd = fastk.rolling(slow_d, min_periods=slow_d - 1).mean()
+    fastd = sma(fastk, length=slow_d)
 
-    slowk = fastk.rolling(slow_k, min_periods=slow_k).mean()
-    slowd = slowk.rolling(slow_d, min_periods=slow_d).mean()
+    slowk = sma(fastk, length=slow_k)
+    slowd = sma(slowk, length=slow_d)
 
     # Offset
     if offset != 0:
@@ -528,9 +526,9 @@ def trix(close, length=None, drift=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    ema1 = ema(close=close, length=length, min_periods=min_periods)
-    ema2 = ema(close=ema1, length=length, min_periods=min_periods)
-    ema3 = ema(close=ema2, length=length, min_periods=min_periods)
+    ema1 = ema(close=close, length=length, **kwargs)
+    ema2 = ema(close=ema1, length=length, **kwargs)
+    ema3 = ema(close=ema2, length=length, **kwargs)
     trix = 100 * ema3.pct_change(drift)
 
     # Offset
@@ -557,12 +555,11 @@ def tsi(close, fast=None, slow=None, drift=None, offset=None, **kwargs):
 
     # Calculate Result
     diff = close.diff(drift)
+    slow_ema = ema(close=diff, length=slow, **kwargs)
+    fast_slow_ema = ema(close=slow_ema, length=fast, **kwargs)
 
-    slow_ema = diff.ewm(span=slow).mean()
-    fast_slow_ema = slow_ema.ewm(span=fast).mean()
-
-    _ma = abs(diff).ewm(span=slow).mean()
-    ma = _ma.ewm(span=fast).mean()
+    _ma = ema(close=diff, length=slow, **kwargs)
+    ma = ema(close=_ma, length=fast, **kwargs)
 
     tsi = 100 * fast_slow_ema / ma
 
@@ -602,8 +599,10 @@ def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_
     slow_w = float(slow_w) if slow_w and slow_w > 0 else 1.0
 
     # Calculate Result
-    min_l_or_pc = close.shift(drift).combine(low, min)
-    max_h_or_pc = close.shift(drift).combine(high, max)
+    tdf = pd.DataFrame({'high': high, 'low': low, f"close_{drift}": close.shift(drift)})
+    max_h_or_pc = tdf.loc[:, ['high', f"close_{drift}"]].max(axis=1)
+    min_l_or_pc = tdf.loc[:, ['low', f"close_{drift}"]].min(axis=1)
+    del tdf
 
     bp = close - min_l_or_pc
     tr = max_h_or_pc - min_l_or_pc

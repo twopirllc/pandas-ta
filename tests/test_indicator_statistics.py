@@ -13,20 +13,21 @@ class TestStatistics(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
+        cls.data.columns = cls.data.columns.str.lower()
         cls.open = cls.data['open']
         cls.high = cls.data['high']
         cls.low = cls.data['low']
         cls.close = cls.data['close']
-        cls.volume = cls.data['volume']
+        if 'volume' in cls.data.columns: cls.volume = cls.data['volume']
 
     @classmethod
     def tearDownClass(cls):
-        del cls.data
         del cls.open
         del cls.high
         del cls.low
         del cls.close
-        del cls.volume
+        if hasattr(cls, 'volume'): del cls.volume
+        del cls.data
 
 
     def setUp(self):
