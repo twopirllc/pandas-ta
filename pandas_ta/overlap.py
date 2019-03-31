@@ -263,6 +263,7 @@ def linreg(close, length=None, offset=None, **kwargs):
     degrees = kwargs.pop('degrees', False)
     r = kwargs.pop('r', False)
     slope = kwargs.pop('slope', False)
+    tsf = kwargs.pop('tsf', False)
 
     # Calculate Result
     x = range(1, length + 1) # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
@@ -293,8 +294,7 @@ def linreg(close, length=None, offset=None, **kwargs):
             rd = math.sqrt(divisor * (length * y2_sum - y_sum * y_sum))
             return rn / rd
 
-        y = m * (length - 1) + b
-        return y
+        return m * length + b if tsf else m * (length - 1) + b
 
     linreg = close.rolling(length, min_periods=length).apply(linear_regression, raw=False)
 
@@ -571,8 +571,7 @@ def vwap(high, low, close, volume, offset=None, **kwargs):
 
     # Calculate Result
     tp = hlc3(high=high, low=low, close=close)
-    tpv = tp * volume
-    vwap = tpv.cumsum() / volume.cumsum()
+    vwap = (tp * volume).cumsum() / volume.cumsum()
 
     # Offset
     if offset != 0:
@@ -622,13 +621,13 @@ def wma(close, length=None, asc=None, offset=None, **kwargs):
     weights_ = pd.Series(np.arange(1, length + 1))
     weights = weights_ if asc else weights_[::-1]
 
-    def linear_weights(w):
+    def linear(w):
         def _compute(x):
             return (w * x).sum() / total_weight
         return _compute
 
     close_ = close.rolling(length, min_periods=length)
-    wma = close_.apply(linear_weights(weights), raw=True)
+    wma = close_.apply(linear(weights), raw=True)
 
     # Offset
     if offset != 0:
@@ -1081,6 +1080,7 @@ Kwargs:
     intercept (bool, optional): Default: False.  If True, returns the angle of the slope in radians
     r (bool, optional): Default: False.  If True, returns it's correlation 'r'
     slope (bool, optional): Default: False.  If True, returns the slope
+    tsf (bool, optional): Default: False.  If True, returns the Time Series Forecast value.
 
 Returns:
     pd.Series: New feature generated.

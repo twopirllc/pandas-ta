@@ -113,6 +113,8 @@ pandas_ta/_wrapper.py
 
 # twopirllc stuff
 data/datas.csv
+data/SPY_5min.csv
+data/SPY_1min.csv
 setup.cfg
 .README.md
 README
