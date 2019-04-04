@@ -87,7 +87,7 @@ def get_offset(x:int):
     return int(x) if x else 0
 
 
-def pascals_triangle(**kwargs):
+def pascals_triangle(n=None, **kwargs):
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -95,7 +95,7 @@ def pascals_triangle(**kwargs):
          => weighted: [0.0625, 0.25, 0.375, 0.25, 0.0625
          => inverse weighted: [0.9375, 0.75, 0.625, 0.75, 0.9375]
     """
-    n = int(math.fabs(kwargs.pop('n', 0)))
+    n = int(math.fabs(n)) if n is not None else 0
     weighted = kwargs.pop('weighted', False)
     inverse = kwargs.pop('inverse', False)
 
@@ -123,6 +123,31 @@ def signed_series(series:pd.Series, initial:int = None):
     sign[sign < 0] = -1
     sign.iloc[0] = initial
     return sign
+
+
+def symmetric_triangle(n=None, **kwargs):
+    n = int(math.fabs(n)) if n is not None else 2
+    weighted = kwargs.pop('weighted', False)
+
+    if n == 2:
+        triangle = [1, 1]
+    
+    if n > 2:
+        if n % 2 == 0:
+            front = [i + 1 for i in range(0, math.floor(n/2))]
+            triangle = front + front[::-1]
+        else:
+            front = [i + 1 for i in range(0, math.floor(0.5 * (n + 1)))]
+            triangle = front.copy()
+            front.pop()
+            triangle += front[::-1]
+
+    if weighted:
+        triangle_sum = np.sum(triangle)
+        triangle_weights = triangle / triangle_sum
+        return triangle_weights
+    
+    return triangle
 
 
 def verify_series(series:pd.Series):

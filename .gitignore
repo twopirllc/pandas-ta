@@ -83,6 +83,9 @@ celerybeat-schedule
 # SageMath parsed files
 *.sage.py
 
+# pycharm
+.idea/*
+
 # dotenv
 .env
 
@@ -112,9 +115,11 @@ env/**
 pandas_ta/_wrapper.py
 
 # twopirllc stuff
+IBclient/
 data/datas.csv
 data/SPY_5min.csv
 data/SPY_1min.csv
+examples/ib_trader.ipynb
 setup.cfg
 .README.md
 README
