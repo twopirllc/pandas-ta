@@ -123,6 +123,7 @@ help(pd.DataFrame().ta.log_return)
 * _Pascal's Weighted Moving Average_: **pwma**
 * _William's Moving Average_: **rma**
 * _Simple Moving Average_: **sma**
+* _Symmetric Weighted Moving Average_: **swma**
 * _T3 Moving Average_: **t3**
 * _Triple Exponential Moving Average_: **tema**
 * _Triangular Moving Average_: **trima**

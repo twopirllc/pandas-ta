@@ -231,6 +231,11 @@ class TestOverlap(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_swma(self):
+        result = self.overlap.swma(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'SWMA_10')
+
     def test_t3(self):
         result = self.overlap.t3(self.close)
         self.assertIsInstance(result, Series)

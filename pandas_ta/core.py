@@ -449,6 +449,12 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def swma(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = swma(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def t3(self, close=None, length=None, a=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         result = t3(close=close, length=length, a=a, offset=offset, **kwargs)
