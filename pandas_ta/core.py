@@ -28,7 +28,7 @@ class BasePandasObject(PandasObject):
         if len(df.columns) > 0:
             self._df = df
         else:
-            raise AttributeError(f"[X] No columns!")
+            raise AttributeError(f" [X] No columns!")
 
     def __call__(self, kind, *args, **kwargs):
         raise NotImplementedError()
@@ -171,7 +171,7 @@ class AnalysisIndicators(BasePandasObject):
                 match = [i for i, x in enumerate(matches) if x]
                 # If found, awesome.  Return it or return the 'series'.
                 cols = ', '.join(list(df.columns))
-                NOT_FOUND = f"[X] Ooops!!!: It's {series not in df.columns}, the series '{series}' not in {cols}"
+                NOT_FOUND = f" [X] Ooops!!!: It's {series not in df.columns}, the series '{series}' not in {cols}"
                 return df.iloc[:,match[0]] if len(match) else print(NOT_FOUND)
 
 
@@ -616,6 +616,20 @@ class AnalysisIndicators(BasePandasObject):
         result = vortex(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
+
+
+
+    # Utility Indicators
+    def cross(self, a=None, b=None, above=True, asint=True, offset=None, **kwargs):
+        if a is None and b is None:
+            print(f" [X] Series ")
+            return self._df
+        else:
+            a = self._get_column(a, f"{a}")
+            b = self._get_column(b, f"{b}")
+            result = cross(series_a=a, series_b=b, above=above, asint=asint, offset=offset, **kwargs)
+            self._append(result, **kwargs)
+            return result
 
 
 

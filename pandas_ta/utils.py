@@ -27,6 +27,34 @@ def combination(**kwargs):
     return numerator // denominator
 
 
+def cross(series_a, series_b, above=True, asint=True, offset=None, **kwargs):
+    series_a = verify_series(series_a)
+    series_b = verify_series(series_b)
+    offset = get_offset(offset)
+
+    series_a.apply(zero)
+    series_b.apply(zero)
+
+    # Calculate Result
+    current = series_a > series_b   # current is above
+    previous = series_a.shift(1) < series_b.shift(1) # previous is below
+    # above if both are true, below if both are false
+    cross = current & previous if above else ~current & ~previous
+    
+    if asint:
+        cross = cross.astype(int)
+
+    # Offset
+    if offset != 0:
+        cross = cross.shift(offset)
+
+    # Name & Category
+    cross.name = f"{series_a.name}_{'XA' if above else 'XB'}_{series_b.name}"
+    cross.category = 'utility'
+
+    return cross
+
+
 def df_error_analysis(dfA, dfB, **kwargs):
     """ """
     col = kwargs.pop('col', None)

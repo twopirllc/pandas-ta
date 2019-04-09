@@ -176,6 +176,11 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example ADX](/images/SPY_ADX.png) |
 
+## _Utility_ (1)
+
+* _Cross_: **cross**
+
+
 ## _Volatility_ (8)
 
 * _Acceleration Bands_: **accbands**

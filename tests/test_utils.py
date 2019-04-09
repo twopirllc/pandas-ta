@@ -5,15 +5,17 @@ from unittest.mock import patch
 
 import numpy as np
 import numpy.testing as npt
-from pandas import DataFrame
+from pandas import DataFrame, Series
 
 
 class TestUtilities(TestCase):
     def setUp(self):
+        self.crosseddf = DataFrame({'a': [0, 1], 'b': [1, 0], 'crossed': [0, 1]})
         self.utils = pandas_ta.utils
 
     def tearDown(self):
         del self.utils
+        del self.crosseddf
 
 
     def test_combination(self):
@@ -24,6 +26,20 @@ class TestUtilities(TestCase):
 
         self.assertEqual(self.utils.combination(n=10, r=4, repetition=False), 210)
         self.assertEqual(self.utils.combination(n=10, r=4, repetition=True), 715)
+    
+    def test_cross_above(self):
+        result = self.utils.cross(self.crosseddf['a'], self.crosseddf['b'])
+        self.assertIsInstance(result, Series)
+        npt.assert_array_equal(result, self.crosseddf['crossed'])
+
+        result = self.utils.cross(self.crosseddf['a'], self.crosseddf['b'], above=True)
+        self.assertIsInstance(result, Series)
+        npt.assert_array_equal(result, self.crosseddf['crossed'])
+
+    def test_cross_below(self):
+        result = self.utils.cross(self.crosseddf['b'], self.crosseddf['a'], above=False)
+        self.assertIsInstance(result, Series)
+        npt.assert_array_equal(result, self.crosseddf['crossed'])
 
     def test_fibonacci(self):
         self.assertIs(type(self.utils.fibonacci(zero=True, weighted=False)), np.ndarray)
