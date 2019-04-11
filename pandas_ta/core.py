@@ -516,6 +516,12 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def trend_return(self, close=None, trend=None, log=True, cumulative=True, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        trend = self._get_column(trend, f"{trend}")
+        result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
 
 
     # Statistics Indicators

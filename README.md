@@ -136,12 +136,13 @@ help(pd.DataFrame().ta.log_return)
 |:--------:|
 | ![Example Chart](/images/TA_Chart.png) |
 
-## _Performance_ (2)
+## _Performance_ (3)
 
 Use parameter: cumulative=**True** for cumulative results.
 
 * _Log Return_: **log_return**
 * _Percent Return_: **percent_return**
+* _Trend Return_: **trend_return**
 
 | _Percent Return_ (Cumulative) with _Simple Moving Average_ (SMA) |
 |:--------:|
