@@ -9,7 +9,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 ## New Changes
 
 * Over 70 indicators.
-* Example in Jupyter Notebooks under the examples directory.
+* __*Updated*__ Example Jupyter Notebook under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
 * Parameter names are more consistent.
