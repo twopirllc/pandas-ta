@@ -88,7 +88,12 @@ class TestVolatility(TestCase):
     def test_donchian(self):
         result = self.volatility.donchian(self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'DC_20')
+        self.assertEqual(result.name, 'DC_10_20')
+
+        result = self.volatility.donchian(self.close, lower_length=20, upper_length=5)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'DC_20_5')
+
 
     def test_kc(self):
         result = self.volatility.kc(self.high, self.low, self.close)

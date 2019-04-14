@@ -158,17 +158,19 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     return bbandsdf
 
 
-def donchian(close, length=None, offset=None, **kwargs):
+def donchian(close, lower_length=None, upper_length=None, offset=None, **kwargs):
     """Indicator: Donchian Channels (DC)"""
     # Validate arguments
     close = verify_series(close)
-    length = int(length) if length and length > 0 else 20
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    lower_length = int(lower_length) if lower_length and lower_length > 0 else 10
+    upper_length = int(upper_length) if upper_length and upper_length > 0 else 20
+    lower_min_periods = int(kwargs['lower_min_periods']) if 'lower_min_periods' in kwargs and kwargs['lower_min_periods'] is not None else lower_length
+    upper_min_periods = int(kwargs['upper_min_periods']) if 'upper_min_periods' in kwargs and kwargs['upper_min_periods'] is not None else upper_length
     offset = get_offset(offset)
 
     # Calculate Result
-    lower = close.rolling(length, min_periods=min_periods).min()
-    upper = close.rolling(length, min_periods=min_periods).max()
+    lower = close.rolling(lower_length, min_periods=lower_min_periods).min()
+    upper = close.rolling(upper_length, min_periods=upper_min_periods).max()
     mid = 0.5 * (lower + upper)
 
     # Handle fills
@@ -188,15 +190,15 @@ def donchian(close, length=None, offset=None, **kwargs):
         upper = upper.shift(offset)
 
     # Name and Categorize it
-    lower.name = f"DCL_{length}"
-    mid.name = f"DCM_{length}"
-    upper.name = f"DCU_{length}"
+    lower.name = f"DCL_{lower_length}_{upper_length}"
+    mid.name = f"DCM_{lower_length}_{upper_length}"
+    upper.name = f"DCU_{lower_length}_{upper_length}"
     mid.category = upper.category = lower.category = 'volatility'
 
     # Prepare DataFrame to return
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
     dcdf = pd.DataFrame(data)
-    dcdf.name = f"DC_{length}"
+    dcdf.name = f"DC_{lower_length}_{upper_length}"
     dcdf.category = 'volatility'
 
     return dcdf
