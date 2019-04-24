@@ -99,6 +99,11 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'QS_10')
 
+    def test_short_run(self):
+        result = self.trend.short_run(self.close, self.open)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'SR_2')
+
     def test_vortex(self):
         result = self.trend.vortex(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)

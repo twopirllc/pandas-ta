@@ -163,7 +163,7 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
-## _Trend_ (8)
+## _Trend_ (9)
 
 * _Average Directional Movement Index_: **adx**
 * _Aroon Oscillator_: **aroon**
@@ -172,6 +172,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Increasing_: **increasing**
 * _Long Run_: **long_run**
 * _Q Stick_: **qstick**
+* _Short Run_: **short_run**
 * _Vortex_: **vortex**
 
 | _Average Directional Movement Index_ (ADX) |

@@ -63,6 +63,16 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'QS_10')
 
+    def test_short_run_ext(self):
+        # Nothing passed, return self
+        self.assertEqual(self.data.ta.short_run(append=True).shape, self.data.shape)
+
+        fast = self.data.ta.ema('close', 8)
+        slow = self.data.ta.ema('close', 21)
+        self.data.ta.short_run(fast, slow, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'SR_2')
+
     def test_vortext_ext(self):
         self.data.ta.vortex(append=True)
         self.assertIsInstance(self.data, DataFrame)

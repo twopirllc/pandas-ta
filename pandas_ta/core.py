@@ -624,6 +624,15 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def short_run(self, fast=None, slow=None, length=None, offset=None, **kwargs):
+        if fast is None and slow is None: return self._df
+        else:
+            fast = self._get_column(fast, f"{fast}")
+            slow = self._get_column(slow, f"{slow}")
+            result = short_run(fast=fast, slow=slow, length=length, offset=offset, **kwargs)
+            self._append(result, **kwargs)
+            return result
+
     def vortex(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
