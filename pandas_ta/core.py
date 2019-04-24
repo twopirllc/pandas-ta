@@ -608,6 +608,15 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def long_run(self, fast=None, slow=None, length=None, offset=None, **kwargs):
+        if fast is None and slow is None: return self._df
+        else:
+            fast = self._get_column(fast, f"{fast}")
+            slow = self._get_column(slow, f"{slow}")
+            result = long_run(fast=fast, slow=slow, length=length, offset=offset, **kwargs)
+            self._append(result, **kwargs)
+            return result
+
     def qstick(self, open_=None, close=None, length=None, offset=None, **kwargs):
         open_ = self._get_column(open_, 'open')
         close = self._get_column(close, 'close')
@@ -627,9 +636,7 @@ class AnalysisIndicators(BasePandasObject):
 
     # Utility Indicators
     def cross(self, a=None, b=None, above=True, asint=True, offset=None, **kwargs):
-        if a is None and b is None:
-            print(f" [X] Series ")
-            return self._df
+        if a is None and b is None: return self._df
         else:
             a = self._get_column(a, f"{a}")
             b = self._get_column(b, f"{b}")

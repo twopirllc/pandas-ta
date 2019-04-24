@@ -48,6 +48,16 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'INC_1')
 
+    def test_long_run_ext(self):
+        # Nothing passed, return self
+        self.assertEqual(self.data.ta.long_run(append=True).shape, self.data.shape)
+
+        fast = self.data.ta.ema('close', 8)
+        slow = self.data.ta.ema('close', 21)
+        self.data.ta.long_run(fast, slow, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'LR_2')
+
     def test_qstick_ext(self):
         self.data.ta.qstick(append=True)
         self.assertIsInstance(self.data, DataFrame)

@@ -89,6 +89,11 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'INC_1')
 
+    def test_long_run(self):
+        result = self.trend.long_run(self.close, self.open)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'LR_2')
+
     def test_qstick(self):
         result = self.trend.qstick(self.open, self.close)
         self.assertIsInstance(result, Series)

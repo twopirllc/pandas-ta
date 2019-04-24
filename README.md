@@ -163,13 +163,14 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
-## _Trend_ (7)
+## _Trend_ (8)
 
 * _Average Directional Movement Index_: **adx**
 * _Aroon Oscillator_: **aroon**
 * _Decreasing_: **decreasing**
 * _Detrended Price Oscillator_: **dpo**
 * _Increasing_: **increasing**
+* _Long Run_: **long_run**
 * _Q Stick_: **qstick**
 * _Vortex_: **vortex**
 
