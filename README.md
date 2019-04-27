@@ -8,7 +8,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 ## New Changes
 
-* Over 70 indicators.
+* Over 80 indicators.
 * __*Updated*__ Example Jupyter Notebook under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
@@ -199,10 +199,11 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example ATR](/images/SPY_ATR.png) |
 
-## _Volume_ (12)
+## _Volume_ (13)
 
 * _Accumulation/Distribution Index_: **ad**
 * _Accumulation/Distribution Oscillator_: **adosc**
+* _Archer On-Balance Volume_: **aobv**
 * _Chaikin Money Flow_: **cmf**
 * _Elder's Force Index_: **efi**
 * _Ease of Movement_: **eom**

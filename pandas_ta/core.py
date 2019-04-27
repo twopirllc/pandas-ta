@@ -740,6 +740,13 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def aobv(self, close=None, volume=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        volume = self._get_column(volume, 'volume')
+        result = aobv(close=close, volume=volume, fast=fast, slow=slow, mamode=mamode, lookback=lookback, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def cmf(self, high=None, low=None, close=None, volume=None, open_=None, length=None, offset=None, **kwargs):
         if open_ is not None:
             open_ = self._get_column(open_, 'open')

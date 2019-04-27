@@ -67,6 +67,11 @@ class TestVolume(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_aobv(self):
+        result = self.volume.aobv(self.close, self.volume_)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'AOBV_EMA_2_5_2_2')
+
     def test_cmf(self):
         result = self.volume.cmf(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)

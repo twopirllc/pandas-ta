@@ -6,7 +6,7 @@ long_description = "An easy to use Python 3 Pandas Extension of Technical Analys
 setup(
     name = "pandas_ta",
     packages = ["pandas_ta"],
-    version = "0.1.15a",
+    version = "0.1.16b",
     description=long_description,
     long_description=long_description,
     author = "Kevin Johnson",
@@ -20,12 +20,15 @@ setup(
     license="The MIT License (MIT)",
     classifiers = [
         'Programming Language :: Python :: 3.7',
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Intended Audience :: Developers',
         'Intended Audience :: Financial and Insurance Industry',
+        'Intended Audience :: Science/Research',
+        'Topic :: Office/Business :: Financial',
         'Topic :: Office/Business :: Financial :: Investment',
+        'Topic :: Scientific/Engineering :: Information Analysis',
     ],
     package_data={
         'data': ['data/*.csv'],
