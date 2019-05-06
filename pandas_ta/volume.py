@@ -4,7 +4,7 @@ import pandas as pd
 
 from .momentum import roc
 from .overlap import *
-from .trend import long_run, short_run
+from .trend import decreasing, increasing, long_run, short_run
 from .utils import get_drift, get_offset, signed_series, verify_series
 
 
@@ -81,15 +81,16 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, offset=Non
     return adosc
 
 
-def aobv(close, volume, fast=None, slow=None, mamode=None, lookback=2, offset=None, **kwargs):
+def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, min_lookback=None, offset=None, **kwargs):
     """Indicator: Archer On Balance Volume (AOBV)"""
     # Validate arguments
     close = verify_series(close)
     volume = verify_series(volume)
     offset = get_offset(offset)
     fast = int(fast) if fast and fast > 0 else 2
-    slow = int(slow) if slow and slow > 0 else 5
-    lookback = int(lookback) if lookback and lookback > 0 else 2
+    slow = int(slow) if slow and slow > 0 else 4
+    max_lookback = int(max_lookback) if max_lookback and max_lookback > 0 else 2
+    min_lookback = int(min_lookback) if min_lookback and min_lookback > 0 else 2
     if slow < fast:
         fast, slow = slow, fast
     mamode = mamode.upper() if mamode else None
@@ -114,7 +115,7 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, lookback=2, offset=No
         maf = wma(close=obv_, length=fast, **kwargs)
         mas = wma(close=obv_, length=slow, **kwargs)
 
-    # Converging & Diverging MAs
+    # When MAs are long and short
     obv_long = long_run(maf, mas, length=run_length)
     obv_short = short_run(maf, mas, length=run_length)
 
@@ -143,8 +144,8 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, lookback=2, offset=No
     # Prepare DataFrame to return
     data = {
         obv_.name: obv_,
-        f"OBV_min_{lookback}": obv_.rolling(lookback).min(),
-        f"OBV_max_{lookback}": obv_.rolling(lookback).max(),
+        f"OBV_min_{min_lookback}": obv_.rolling(min_lookback).min(),
+        f"OBV_max_{max_lookback}": obv_.rolling(max_lookback).max(),
         f"OBV_{maf.name}": maf,
         f"OBV_{mas.name}": mas,
         f"AOBV_LR_{run_length}": obv_long,
@@ -153,7 +154,7 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, lookback=2, offset=No
     aobvdf = pd.DataFrame(data)
 
     # Name and Categorize it
-    aobvdf.name = f"AOBV_{mamode}_{fast}_{slow}_{lookback}_{run_length}"
+    aobvdf.name = f"AOBV_{mamode}_{fast}_{slow}_{min_lookback}_{max_lookback}_{run_length}"
     aobvdf.category = 'volume'
 
     return aobvdf

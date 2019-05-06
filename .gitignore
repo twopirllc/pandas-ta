@@ -127,6 +127,7 @@ README
 note.md
 driver.py
 doc.py
+bt.ipynb
 ta_extension.ipynb
 Charts.ipynb
 pandas_pips

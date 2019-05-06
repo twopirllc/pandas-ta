@@ -558,10 +558,11 @@ def tsi(close, fast=None, slow=None, drift=None, offset=None, **kwargs):
     slow_ema = ema(close=diff, length=slow, **kwargs)
     fast_slow_ema = ema(close=slow_ema, length=fast, **kwargs)
 
-    _ma = ema(close=diff, length=slow, **kwargs)
-    ma = ema(close=_ma, length=fast, **kwargs)
+    abs_diff = diff.abs()
+    abs_slow_ema = ema(close=abs_diff, length=slow, **kwargs)
+    abs_fast_slow_ema = ema(close=abs_slow_ema, length=fast, **kwargs)
 
-    tsi = 100 * fast_slow_ema / ma
+    tsi = 100 * fast_slow_ema / abs_fast_slow_ema
 
     # Offset
     if offset != 0:

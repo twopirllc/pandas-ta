@@ -740,10 +740,10 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-    def aobv(self, close=None, volume=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
+    def aobv(self, close=None, volume=None, fast=None, slow=None, mamode=None, max_lookback=None, min_lookback=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
-        result = aobv(close=close, volume=volume, fast=fast, slow=slow, mamode=mamode, lookback=lookback, offset=offset, **kwargs)
+        result = aobv(close=close, volume=volume, fast=fast, slow=slow, mamode=mamode, max_lookback=max_lookback, min_lookback=min_lookback, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 

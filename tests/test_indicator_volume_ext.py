@@ -36,7 +36,7 @@ class TestVolumeExtension(TestCase):
     def test_aobv_ext(self):
         self.data.ta.aobv(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-7:]), ['OBV', 'OBV_min_2', 'OBV_max_2', 'OBV_EMA_2', 'OBV_EMA_5', 'AOBV_LR_2', 'AOBV_SR_2'])
+        self.assertEqual(list(self.data.columns[-7:]), ['OBV', 'OBV_min_2', 'OBV_max_2', 'OBV_EMA_2', 'OBV_EMA_4', 'AOBV_LR_2', 'AOBV_SR_2'])
         # Remove 'OBV' so it does not interfere with test_obv_ext()
         self.data.drop('OBV', axis=1, inplace=True)
 

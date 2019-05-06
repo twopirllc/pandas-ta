@@ -54,21 +54,22 @@ def percent_return(close, length=None, cumulative=False, offset=None, **kwargs):
     return pct_return
 
 
-def trend_return(close, trend, trend_reset=0, log=True, cumulative=False, offset=None, **kwargs):
+def trend_return(close, trend, trend_reset=0, log=True, cumulative=True, offset=None, **kwargs):
     """Indicator: Trend Return"""
     # Validate Arguments
     close = verify_series(close)
     trend = verify_series(trend)
     offset = get_offset(offset)
-    variable = kwargs.pop('variable', False)
+    variable = kwargs.pop('variable', True)
 
     # Calculate Result
     returns = log_return(close, cumulative=False) if log else percent_return(close, cumulative=False)
     m = trend.size
     tsum = 0
-    result = []
+    trend = trend.astype(int)
     returns = (trend * returns).apply(zero)
-    # trend = trend.astype(int)
+    
+    result = []
     for i in range(0, m):
         if trend[i] == trend_reset:
             tsum = 0
@@ -82,8 +83,7 @@ def trend_return(close, trend, trend_reset=0, log=True, cumulative=False, offset
 
     trend_return = pd.Series(result)
 
-    # Experimental: Add the individual return flucuations to the cumulative returns
-    if variable and cumulative:
+    if variable:
         trend_return += returns
 
     # Offset
