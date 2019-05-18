@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import time
 import pandas as pd
-from pandas.core.base import PandasObject
+from pandas.core.base import PandasObject 
 
 from .momentum import *
 from .overlap import *
@@ -9,7 +9,6 @@ from .statistics import *
 from .trend import *
 from .utils import *
 from .volatility import *
-from .volume import *
 
 class BasePandasObject(PandasObject):
     """Simple PandasObject Extension
@@ -730,6 +729,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.ad import ad
         result = ad(high=high, low=low, close=close, volume=volume, open_=open_, signed=signed, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -741,6 +741,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.adosc import adosc
         result = adosc(high=high, low=low, close=close, volume=volume, open_=open_, fast=fast, slow=slow, signed=signed, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -748,6 +749,7 @@ class AnalysisIndicators(BasePandasObject):
     def aobv(self, close=None, volume=None, fast=None, slow=None, mamode=None, max_lookback=None, min_lookback=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.aobv import aobv
         result = aobv(close=close, volume=volume, fast=fast, slow=slow, mamode=mamode, max_lookback=max_lookback, min_lookback=min_lookback, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -759,6 +761,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.cmf import cmf
         result = cmf(high=high, low=low, close=close, volume=volume, open_=open_, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -766,6 +769,7 @@ class AnalysisIndicators(BasePandasObject):
     def efi(self, close=None, volume=None, length=None, mamode=None, offset=None, drift=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.efi import efi
         result = efi(close=close, volume=volume, length=length, offset=offset, mamode=mamode, drift=drift, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -775,6 +779,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.eom import eom
         result = eom(high=high, low=low, close=close, volume=volume, length=length, divisor=divisor, offset=offset, drift=drift, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -784,6 +789,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.mfi import mfi
         result = mfi(high=high, low=low, close=close, volume=volume, length=length, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -791,6 +797,7 @@ class AnalysisIndicators(BasePandasObject):
     def nvi(self, close=None, volume=None, length=None, initial=None, signed=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.nvi import nvi
         result = nvi(close=close, volume=volume, length=length, initial=initial, signed=signed, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -798,6 +805,7 @@ class AnalysisIndicators(BasePandasObject):
     def obv(self, close=None, volume=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.obv import obv
         result = obv(close=close, volume=volume, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -805,6 +813,7 @@ class AnalysisIndicators(BasePandasObject):
     def pvi(self, close=None, volume=None, length=None, initial=None, signed=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.pvi import pvi
         result = pvi(close=close, volume=volume, length=length, initial=initial, signed=signed, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -812,6 +821,7 @@ class AnalysisIndicators(BasePandasObject):
     def pvol(self, close=None, volume=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.pvol import pvol
         result = pvol(close=close, volume=volume, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -819,6 +829,7 @@ class AnalysisIndicators(BasePandasObject):
     def pvt(self, close=None, volume=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.pvt import pvt
         result = pvt(close=close, volume=volume, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -826,4 +837,5 @@ class AnalysisIndicators(BasePandasObject):
     def vp(self, close=None, volume=None, width=None, percent=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from pandas_ta.volume.vp import vp
         return vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
