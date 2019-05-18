@@ -27,7 +27,7 @@ def combination(**kwargs):
     return numerator // denominator
 
 
-def cross(series_a, series_b, above=True, asint=True, offset=None, **kwargs):
+def cross(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =True, offset:int =None, **kwargs):
     series_a = verify_series(series_a)
     series_b = verify_series(series_b)
     offset = get_offset(offset)
@@ -55,7 +55,7 @@ def cross(series_a, series_b, above=True, asint=True, offset=None, **kwargs):
     return cross
 
 
-def df_error_analysis(dfA, dfB, **kwargs):
+def df_error_analysis(dfA:pd.DataFrame, dfB:pd.DataFrame, **kwargs):
     """ """
     col = kwargs.pop('col', None)
     corr_method = kwargs.pop('corr_method', 'pearson')
@@ -115,7 +115,7 @@ def get_offset(x:int):
     return int(x) if x else 0
 
 
-def pascals_triangle(n=None, **kwargs):
+def pascals_triangle(n:int =None, **kwargs):
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -143,7 +143,7 @@ def pascals_triangle(n=None, **kwargs):
     return triangle
 
 
-def signed_series(series:pd.Series, initial:int = None):
+def signed_series(series:pd.Series, initial:int =None):
     """Returns a Signed Series with or without an initial value"""
     series = verify_series(series)
     sign = series.diff(1)
@@ -153,7 +153,7 @@ def signed_series(series:pd.Series, initial:int = None):
     return sign
 
 
-def symmetric_triangle(n=None, **kwargs):
+def symmetric_triangle(n:int =None, **kwargs):
     n = int(math.fabs(n)) if n is not None else 2
     weighted = kwargs.pop('weighted', False)
 

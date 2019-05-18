@@ -5,14 +5,11 @@ from pandas.core.base import PandasObject
 
 from .momentum import *
 from .overlap import *
-from .performance import *
 from .statistics import *
 from .trend import *
 from .utils import *
 from .volatility import *
 from .volume import *
-
-
 
 class BasePandasObject(PandasObject):
     """Simple PandasObject Extension
@@ -505,21 +502,23 @@ class AnalysisIndicators(BasePandasObject):
     # Performance Indicators
     def log_return(self, close=None, length=None, cumulative=False, percent=False, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from pandas_ta.performance.log_return import log_return
         result = log_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
         self._append(result, **kwargs)
-        # print(f"result:\n{result}")
         return result
 
     def percent_return(self, close=None, length=None, cumulative=False, percent=False, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from pandas_ta.performance.percent_return import percent_return
         result = percent_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
-    def trend_return(self, close=None, trend=None, log=True, cumulative=True, offset=None, **kwargs):
+    def trend_return(self, close=None, trend=None, log=None, cumulative=None, offset=None, trend_reset=None, **kwargs):
         close = self._get_column(close, 'close')
         trend = self._get_column(trend, f"{trend}")
-        result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, **kwargs)
+        from pandas_ta.performance.trend_return import trend_return
+        result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, trend_reset=trend_reset, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -581,6 +580,12 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         result = adx(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def amat(self, close=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        result = amat(close=close, fast=fast, slow=slow, mamode=mamode, lookback=lookback, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 

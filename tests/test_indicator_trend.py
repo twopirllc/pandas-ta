@@ -52,6 +52,11 @@ class TestTrend(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_amat(self):
+        result = self.trend.amat(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'AMAT_EMA_8_21_2')
+
     def test_aroon(self):
         result = self.trend.aroon(self.close)
         self.assertIsInstance(result, DataFrame)

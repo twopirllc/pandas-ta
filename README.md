@@ -163,9 +163,10 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
-## _Trend_ (9)
+## _Trend_ (10)
 
 * _Average Directional Movement Index_: **adx**
+* _Archer Moving Averages Trends_: **amat**
 * _Aroon Oscillator_: **aroon**
 * _Decreasing_: **decreasing**
 * _Detrended Price Oscillator_: **dpo**
