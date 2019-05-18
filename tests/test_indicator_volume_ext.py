@@ -16,11 +16,8 @@ class TestVolumeExtension(TestCase):
         del cls.data
 
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
 
     def test_ad_ext(self):

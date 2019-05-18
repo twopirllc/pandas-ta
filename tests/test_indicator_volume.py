@@ -30,15 +30,12 @@ class TestVolume(TestCase):
         del cls.data
 
 
-    def setUp(self):
-        self.volume = pandas_ta.volume
-
-    def tearDown(self):
-        del self.volume
+    def setUp(self): pass
+    def tearDown(self): pass
 
 
     def test_ad(self):
-        result = self.volume.ad(self.high, self.low, self.close, self.volume_)
+        result = pandas_ta.ad(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'AD')
 
@@ -53,7 +50,7 @@ class TestVolume(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_adosc(self):
-        result = self.volume.adosc(self.high, self.low, self.close, self.volume_)
+        result = pandas_ta.adosc(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'ADOSC_12_26')
 
@@ -68,27 +65,27 @@ class TestVolume(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_aobv(self):
-        result = self.volume.aobv(self.close, self.volume_)
+        result = pandas_ta.aobv(self.close, self.volume_)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'AOBV_EMA_2_4_2_2_2')
 
     def test_cmf(self):
-        result = self.volume.cmf(self.high, self.low, self.close, self.volume_)
+        result = pandas_ta.cmf(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'CMF_20')
 
     def test_efi(self):
-        result = self.volume.efi(self.close, self.volume_)
+        result = pandas_ta.efi(self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'EFI_13')
 
     def test_eom(self):
-        result = self.volume.eom(self.high, self.low, self.close, self.volume_)
+        result = pandas_ta.eom(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'EOM_14_100000000')
 
     def test_mfi(self):
-        result = self.volume.mfi(self.high, self.low, self.close, self.volume_)
+        result = pandas_ta.mfi(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'MFI_14')
 
@@ -103,12 +100,12 @@ class TestVolume(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_nvi(self):
-        result = self.volume.nvi(self.close, self.volume_)
+        result = pandas_ta.nvi(self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'NVI_1')
 
     def test_obv(self):
-        result = self.volume.obv(self.close, self.volume_)
+        result = pandas_ta.obv(self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'OBV')
 
@@ -123,21 +120,21 @@ class TestVolume(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_pvi(self):
-        result = self.volume.pvi(self.close, self.volume_)
+        result = pandas_ta.pvi(self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'PVI_1')
 
     def test_pvol(self):
-        result = self.volume.pvol(self.close, self.volume_)
+        result = pandas_ta.pvol(self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'PVOL')
 
     def test_pvt(self):
-        result = self.volume.pvt(self.close, self.volume_)
+        result = pandas_ta.pvt(self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'PVT')
 
     def test_vp(self):
-        result = self.volume.vp(self.close, self.volume_)
+        result = pandas_ta.vp(self.close, self.volume_)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'VP_10')

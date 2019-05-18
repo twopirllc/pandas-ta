@@ -20,11 +20,8 @@ class TestPerformaceExtension(TestCase):
         del cls.islong
 
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
 
     def test_log_return_ext(self):
