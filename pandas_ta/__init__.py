@@ -23,6 +23,16 @@ from .performance.log_return import log_return
 from .performance.percent_return import percent_return
 from .performance.trend_return import trend_return
 
+# Volatility
+from .volatility.accbands import accbands
+from .volatility.atr import atr
+from .volatility.bbands import bbands
+from .volatility.donchian import donchian
+from .volatility.kc import kc
+from .volatility.massi import massi
+from .volatility.natr import natr
+from .volatility.true_range import true_range
+
 # Volume
 from .volume.ad import ad
 from .volume.adosc import adosc
@@ -40,3 +50,4 @@ from .volume.vp import vp
 
 # DataFrame Extension
 from .core import *
+

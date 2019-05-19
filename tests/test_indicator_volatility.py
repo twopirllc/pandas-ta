@@ -30,20 +30,17 @@ class TestVolatility(TestCase):
         del cls.data
 
 
-    def setUp(self):
-        self.volatility = pandas_ta.volatility
-
-    def tearDown(self):
-        del self.volatility
+    def setUp(self): pass
+    def tearDown(self): pass
     
 
     def test_accbands(self):
-        result = self.volatility.accbands(self.high, self.low, self.close)
+        result = pandas_ta.accbands(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'ACCBANDS_20')
 
     def test_atr(self):
-        result = self.volatility.atr(self.high, self.low, self.close)
+        result = pandas_ta.atr(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'ATR_14')
 
@@ -58,7 +55,7 @@ class TestVolatility(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_bbands(self):
-        result = self.volatility.bbands(self.close)
+        result = pandas_ta.bbands(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'BBANDS_20')
 
@@ -86,27 +83,27 @@ class TestVolatility(TestCase):
                 error_analysis(result.iloc[:,2], CORRELATION, ex, newline=False)
 
     def test_donchian(self):
-        result = self.volatility.donchian(self.close)
+        result = pandas_ta.donchian(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'DC_10_20')
 
-        result = self.volatility.donchian(self.close, lower_length=20, upper_length=5)
+        result = pandas_ta.donchian(self.close, lower_length=20, upper_length=5)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'DC_20_5')
 
 
     def test_kc(self):
-        result = self.volatility.kc(self.high, self.low, self.close)
+        result = pandas_ta.kc(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'KC_20')
 
     def test_massi(self):
-        result = self.volatility.massi(self.high, self.low)
+        result = pandas_ta.massi(self.high, self.low)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'MASSI_9_25')
 
     def test_natr(self):
-        result = self.volatility.natr(self.high, self.low, self.close)
+        result = pandas_ta.natr(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'NATR_14')
 
@@ -121,7 +118,7 @@ class TestVolatility(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_true_range(self):
-        result = self.volatility.true_range(self.high, self.low, self.close)
+        result = pandas_ta.true_range(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'TRUERANGE_1')
 

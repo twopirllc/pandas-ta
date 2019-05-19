@@ -8,7 +8,6 @@ from .overlap import *
 from .statistics import *
 from .trend import *
 from .utils import *
-from .volatility import *
 
 class BasePandasObject(PandasObject):
     """Simple PandasObject Extension
@@ -664,6 +663,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from pandas_ta.volatility.accbands import accbands
         result = accbands(high=high, low=low, close=close, length=length, c=c, mamode=mamode, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -672,18 +672,21 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from pandas_ta.volatility.atr import atr
         result = atr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def bbands(self, close=None, length=None, stdev=None, mamode=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from pandas_ta.volatility.bbands import bbands
         result = bbands(close=close, length=length, stdev=stdev, mamode=mamode, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def donchian(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from pandas_ta.volatility.donchian import donchian
         result = donchian(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -692,6 +695,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from pandas_ta.volatility.kc import kc
         result = kc(high=high, low=low, close=close, length=length, scalar=scalar, mamode=mamode, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -699,6 +703,7 @@ class AnalysisIndicators(BasePandasObject):
     def massi(self, high=None, low=None, fast=None, slow=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
+        from pandas_ta.volatility.massi import massi
         result = massi(high=high, low=low, fast=fast, slow=slow, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -707,6 +712,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from pandas_ta.volatility.natr import natr
         result = natr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -715,6 +721,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from pandas_ta.volatility.true_range import true_range
         result = true_range(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
