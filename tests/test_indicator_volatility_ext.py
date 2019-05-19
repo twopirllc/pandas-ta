@@ -16,11 +16,8 @@ class TestVolatilityExtension(TestCase):
         del cls.data
 
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
 
     def test_accbands_ext(self):
@@ -31,6 +28,8 @@ class TestVolatilityExtension(TestCase):
     def test_atr_ext(self):
         self.data.ta.atr(append=True)
         self.assertIsInstance(self.data, DataFrame)
+        print()
+        print(self.data[self.data.columns[-1]].tail())
         self.assertEqual(self.data.columns[-1], 'ATR_14')
 
     def test_bbands_ext(self):
@@ -61,4 +60,6 @@ class TestVolatilityExtension(TestCase):
     def test_true_range_ext(self):
         self.data.ta.true_range(append=True)
         self.assertIsInstance(self.data, DataFrame)
+        print()
+        print(self.data[self.data.columns[-1]].tail())
         self.assertEqual(self.data.columns[-1], 'TRUERANGE_1')

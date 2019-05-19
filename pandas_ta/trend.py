@@ -5,7 +5,8 @@ import pandas as pd
 from .momentum import roc
 from .overlap import dema, ema, hma, midprice, rma, sma
 from .utils import get_drift, get_offset, verify_series, zero
-from .volatility import atr, true_range
+from .volatility.true_range import true_range
+from .volatility.atr import atr
 
 
 
