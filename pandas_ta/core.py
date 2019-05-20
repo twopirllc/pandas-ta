@@ -3,7 +3,6 @@ import time
 import pandas as pd
 from pandas.core.base import PandasObject 
 
-from .momentum import *
 from .utils import *
 
 class BasePandasObject(PandasObject):
@@ -235,12 +234,14 @@ class AnalysisIndicators(BasePandasObject):
     def ao(self, high=None, low=None, fast=None, slow=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
+        from .momentum.ao import ao
         result = ao(high=high, low=low, fast=fast, slow=slow, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def apo(self, close=None, fast=None, slow=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.apo import apo
         result = apo(close=close, fast=fast, slow=slow, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -250,6 +251,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .momentum.bop import bop
         result = bop(open_=open_, high=high, low=low, close=close, percentage=percentage, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -258,54 +260,63 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .momentum.cci import cci
         result = cci(high=high, low=low, close=close, length=length, c=c, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def cmo(self, close=None, length=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.cmo import cmo
         result = cmo(close=close, length=length, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def coppock(self, close=None, length=None, fast=None, slow=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.coppock import coppock
         result = coppock(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def kst(self, close=None, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None, sma3=None, sma4=None, signal=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.kst import kst
         result = kst(close=close, roc1=roc1, roc2=roc2, roc3=roc3, roc4=roc4, sma1=sma1, sma2=sma2, sma3=sma3, sma4=sma4, signal=signal, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def macd(self, close=None, fast=None, slow=None, signal=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.macd import macd
         result = macd(close=close, fast=fast, slow=slow, signal=signal, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def mom(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.mom import mom
         result = mom(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def ppo(self, close=None, fast=None, slow=None, percentage=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.ppo import ppo
         result = ppo(close=close, fast=fast, slow=slow, percentage=percentage, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def roc(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.roc import roc
         result = roc(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def rsi(self, close=None, length=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.rsi import rsi
         result = rsi(close=close, length=length, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -314,18 +325,21 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .momentum.stoch import stoch
         result = stoch(high=high, low=low, close=close, fast_k=fast_k, slow_k=slow_k, slow_d=slow_d, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def trix(self, close=None, length=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.trix import trix
         result = trix(close=close, length=length, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def tsi(self, close=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .momentum.tsi import tsi
         result = tsi(close=close, fast=fast, slow=slow, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -334,6 +348,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .momentum.uo import uo
         result = uo(high=high, low=low, close=close, fast=fast, medium=medium, slow=slow, fast_w=fast_w, medium_w=medium_w, slow_w=slow_w, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -342,6 +357,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .momentum.willr import willr
         result = willr(high=high, low=low, close=close, length=length, percentage=percentage, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result

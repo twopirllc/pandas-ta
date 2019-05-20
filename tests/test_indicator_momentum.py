@@ -30,20 +30,17 @@ class TestMomentum(TestCase):
         del cls.data
 
 
-    def setUp(self):
-        self.momentum = pandas_ta.momentum
-
-    def tearDown(self):
-        del self.momentum
+    def setUp(self): pass
+    def tearDown(self): pass
     
 
     def test_ao(self):
-        result = self.momentum.ao(self.high, self.low)
+        result = pandas_ta.ao(self.high, self.low)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'AO_5_34')
 
     def test_apo(self):
-        result = self.momentum.apo(self.close)
+        result = pandas_ta.apo(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'APO_12_26')
 
@@ -58,7 +55,7 @@ class TestMomentum(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_bop(self):
-        result = self.momentum.bop(self.open, self.high, self.low, self.close)
+        result = pandas_ta.bop(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'BOP')
 
@@ -73,7 +70,7 @@ class TestMomentum(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_cci(self):
-        result = self.momentum.cci(self.high, self.low, self.close)
+        result = pandas_ta.cci(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'CCI_20_0.015')
 
@@ -88,7 +85,7 @@ class TestMomentum(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_cmo(self):
-        result = self.momentum.cmo(self.close)
+        result = pandas_ta.cmo(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'CMO_14')
 
@@ -103,17 +100,17 @@ class TestMomentum(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_coppock(self):
-        result = self.momentum.coppock(self.close)
+        result = pandas_ta.coppock(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'COPC_11_14_10')
 
     def test_kst(self):
-        result = self.momentum.kst(self.close)
+        result = pandas_ta.kst(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'KST_10_15_20_30_10_10_10_15_9')
 
     def test_macd(self):
-        result = self.momentum.macd(self.close)
+        result = pandas_ta.macd(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'MACD_12_26_9')
 
@@ -141,7 +138,7 @@ class TestMomentum(TestCase):
                 error_analysis(result.iloc[:,2], CORRELATION, ex, newline=False)
 
     def test_mom(self):
-        result = self.momentum.mom(self.close)
+        result = pandas_ta.mom(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'MOM_10')
 
@@ -156,7 +153,7 @@ class TestMomentum(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_ppo(self):
-        result = self.momentum.ppo(self.close)
+        result = pandas_ta.ppo(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'PPO_12_26_9')
 
@@ -171,7 +168,7 @@ class TestMomentum(TestCase):
                 error_analysis(result['PPO_12_26_9'], CORRELATION, ex)
 
     def test_roc(self):
-        result = self.momentum.roc(self.close)
+        result = pandas_ta.roc(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'ROC_10')
 
@@ -186,7 +183,7 @@ class TestMomentum(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_rsi(self):
-        result = self.momentum.rsi(self.close)
+        result = pandas_ta.rsi(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'RSI_14')
 
@@ -201,7 +198,7 @@ class TestMomentum(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_stoch(self):
-        result = self.momentum.stoch(self.high, self.low, self.close)
+        result = pandas_ta.stoch(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'STOCH_14_5_3')
 
@@ -236,17 +233,17 @@ class TestMomentum(TestCase):
                 error_analysis(result.iloc[:,3], CORRELATION, ex, newline=False)
 
     def test_trix(self):
-        result = self.momentum.trix(self.close)
+        result = pandas_ta.trix(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'TRIX_30')
 
     def test_tsi(self):
-        result = self.momentum.tsi(self.close)
+        result = pandas_ta.tsi(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'TSI_13_25')
 
     def test_uo(self):
-        result = self.momentum.uo(self.high, self.low, self.close)
+        result = pandas_ta.uo(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'UO_7_14_28')
 
@@ -261,7 +258,7 @@ class TestMomentum(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_willr(self):
-        result = self.momentum.willr(self.high, self.low, self.close)
+        result = pandas_ta.willr(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'WILLR_14')
 
