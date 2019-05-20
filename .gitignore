@@ -134,8 +134,4 @@ pandas_pips
 reqs.txt
 requirements.txt
 qd.py
-_overlap.py
-_momentum.py
-_trend.py
-_statistics.py
 simple.ipynb
