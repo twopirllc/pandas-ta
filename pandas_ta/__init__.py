@@ -23,6 +23,16 @@ from .performance.log_return import log_return
 from .performance.percent_return import percent_return
 from .performance.trend_return import trend_return
 
+# Statistics
+from .statistics.kurtosis import kurtosis
+from .statistics.mad import mad
+from .statistics.median import median
+from .statistics.quantile import quantile
+from .statistics.skew import skew
+from .statistics.stdev import stdev
+from .statistics.variance import variance
+from .statistics.zscore import zscore
+
 # Volatility
 from .volatility.accbands import accbands
 from .volatility.atr import atr

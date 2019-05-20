@@ -135,6 +135,7 @@ reqs.txt
 requirements.txt
 qd.py
 _performance.py
+_statistics.py
 _volatility.py
 _volume.py
 simple.ipynb

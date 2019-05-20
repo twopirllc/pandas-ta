@@ -30,40 +30,37 @@ class TestStatistics(TestCase):
         del cls.data
 
 
-    def setUp(self):
-        self.stats = pandas_ta.statistics
-
-    def tearDown(self):
-        del self.stats
+    def setUp(self): pass
+    def tearDown(self): pass
     
 
     def test_kurtosis(self):
-        result = self.stats.kurtosis(self.close)
+        result = pandas_ta.kurtosis(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'KURT_30')
 
     def test_mad(self):
-        result = self.stats.mad(self.close)
+        result = pandas_ta.mad(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'MAD_30')
 
     def test_median(self):
-        result = self.stats.median(self.close)
+        result = pandas_ta.median(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'MEDIAN_30')
 
     def test_quantile(self):
-        result = self.stats.quantile(self.close)
+        result = pandas_ta.quantile(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'QTL_30_0.5')
 
     def test_skew(self):
-        result = self.stats.skew(self.close)
+        result = pandas_ta.skew(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'SKEW_30')
 
     def test_stdev(self):
-        result = self.stats.stdev(self.close)
+        result = pandas_ta.stdev(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'STDEV_30')
 
@@ -78,7 +75,7 @@ class TestStatistics(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_variance(self):
-        result = self.stats.variance(self.close)
+        result = pandas_ta.variance(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'VAR_30')
 
@@ -93,6 +90,6 @@ class TestStatistics(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_zscore(self):
-        result = self.stats.zscore(self.close)
+        result = pandas_ta.zscore(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'Z_30')
