@@ -18,6 +18,30 @@ except DistributionNotFound:
 else:
     __version__ = _dist.version
 
+# Overlap
+from .overlap.dema import dema
+from .overlap.ema import ema
+from .overlap.fwma import fwma
+from .overlap.hl2 import hl2
+from .overlap.hlc3 import hlc3
+from .overlap.hma import hma
+from .overlap.ichimoku import ichimoku
+from .overlap.linreg import linreg
+from .overlap.midpoint import midpoint
+from .overlap.midprice import midprice
+from .overlap.ohlc4 import ohlc4
+from .overlap.pwma import pwma
+from .overlap.rma import rma
+from .overlap.sma import sma
+from .overlap.swma import swma
+from .overlap.t3 import t3
+from .overlap.tema import tema
+from .overlap.trima import trima
+from .overlap.vwap import vwap
+from .overlap.vwma import vwma
+from .overlap.wma import wma
+from .overlap.zlma import zlma
+
 # Performance
 from .performance.log_return import log_return
 from .performance.percent_return import percent_return

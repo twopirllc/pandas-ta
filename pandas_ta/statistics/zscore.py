@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..overlap import sma
+from ..overlap.sma import sma
 from .stdev import stdev
 from ..utils import get_offset, verify_series
 

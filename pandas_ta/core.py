@@ -4,7 +4,6 @@ import pandas as pd
 from pandas.core.base import PandasObject 
 
 from .momentum import *
-from .overlap import *
 from .utils import *
 
 class BasePandasObject(PandasObject):
@@ -351,18 +350,21 @@ class AnalysisIndicators(BasePandasObject):
     # Overlap Indicators
     def dema(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.dema import dema
         result = dema(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def ema(self, close=None, length=None, offset=None, adjust=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.ema import ema
         result = ema(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def fwma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.fwma import fwma
         result = fwma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -370,6 +372,7 @@ class AnalysisIndicators(BasePandasObject):
     def hl2(self, high=None, low=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
+        from .overlap.hl2 import hl2
         result = hl2(high=high, low=low, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -378,12 +381,14 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .overlap.hlc3 import hlc3
         result = hlc3(high=high, low=low, close=close, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def hma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.hma import hma
         result = hma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -392,18 +397,21 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .overlap.ichimoku import ichimoku
         result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result, span
 
     def linreg(self, close=None, length=None, offset=None, adjust=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.linreg import linreg
         result = linreg(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def midpoint(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.midpoint import midpoint
         result = midpoint(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -411,6 +419,7 @@ class AnalysisIndicators(BasePandasObject):
     def midprice(self, high=None, low=None, length=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
+        from .overlap.midprice import midprice
         result = midprice(high=high, low=low, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -420,48 +429,56 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .overlap.ohlc4 import ohlc4
         result = ohlc4(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def pwma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.pwma import pwma
         result = pwma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def rma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.rma import rma
         result = rma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def sma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.sma import sma
         result = sma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def swma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.swma import swma
         result = swma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def t3(self, close=None, length=None, a=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.t3 import t3
         result = t3(close=close, length=length, a=a, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def tema(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.tema import tema
         result = tema(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def trima(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.trima import trima
         result = trima(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -471,6 +488,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from .overlap.vwap import vwap
         result = vwap(high=high, low=low, close=close, volume=volume, offset=offset, **kwargs)
         self._append(result, **kwargs)        
         return result
@@ -478,18 +496,21 @@ class AnalysisIndicators(BasePandasObject):
     def vwma(self, close=None, volume=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+        from .overlap.vwma import vwma
         result = vwma(close=close, volume=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def wma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.wma import wma
         result = wma(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def zlma(self, close=None, length=None, offset=None, mamode=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .overlap.zlma import zlma
         result = zlma(close=close, length=length, offset=offset, mamode=mamode, **kwargs)
         self._append(result, **kwargs)
         return result

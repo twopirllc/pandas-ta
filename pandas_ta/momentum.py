@@ -2,7 +2,10 @@
 import numpy as np
 import pandas as pd
 
-from .overlap import hlc3, ema, sma, wma
+from .overlap.hlc3 import hlc3
+from .overlap.ema import ema
+from .overlap.sma import sma
+from .overlap.wma import wma
 from .statistics.mad import mad
 from .utils import get_drift, get_offset, verify_series
 

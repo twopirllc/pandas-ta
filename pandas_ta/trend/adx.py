@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..overlap import rma
+from ..overlap.rma import rma
 from ..volatility.atr import atr
 from ..utils import get_drift, get_offset, verify_series, zero
 

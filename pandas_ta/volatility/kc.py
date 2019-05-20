@@ -2,7 +2,7 @@
 from numpy import sqrt as npsqrt
 from pandas import DataFrame
 from .atr import atr
-from ..overlap import hlc3
+from ..overlap.hlc3 import hlc3
 from ..statistics.variance import variance
 from ..utils import get_offset, verify_series
 

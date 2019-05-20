@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
 from .long_run import long_run
-from ..overlap import ema, hma, linreg, rma, sma, wma
+from ..overlap.ema import ema
+from ..overlap.hma import hma
+from ..overlap.linreg import linreg
+from ..overlap.rma import rma
+from ..overlap.sma import sma
+from ..overlap.wma import wma
 from .short_run import short_run
 from ..utils import get_offset, verify_series
 
