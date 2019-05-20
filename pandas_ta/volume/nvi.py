@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..momentum import roc
+from ..momentum.roc import roc
 from ..utils import get_offset, signed_series, verify_series
 
 def nvi(close, volume, length=None, initial=None, offset=None, **kwargs):

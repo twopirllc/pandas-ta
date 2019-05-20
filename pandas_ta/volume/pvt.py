@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..momentum import roc
+from ..momentum.roc import roc
 from ..utils import get_drift, get_offset, verify_series
 
 def pvt(close, volume, drift=None, offset=None, **kwargs):
