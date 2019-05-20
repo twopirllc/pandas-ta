@@ -5,7 +5,6 @@ from pandas.core.base import PandasObject
 
 from .momentum import *
 from .overlap import *
-from .trend import *
 from .utils import *
 
 class BasePandasObject(PandasObject):
@@ -584,36 +583,42 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .trend.adx import adx
         result = adx(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def amat(self, close=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .trend.amat import amat
         result = amat(close=close, fast=fast, slow=slow, mamode=mamode, lookback=lookback, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def aroon(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .trend.aroon import aroon
         result = aroon(close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def decreasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .trend.decreasing import decreasing
         result = decreasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def dpo(self, close=None, length=None, centered=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .trend.dpo import dpo
         result = dpo(close=close, length=length, centered=centered, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
     def increasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
+        from .trend.increasing import increasing
         result = increasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -623,6 +628,7 @@ class AnalysisIndicators(BasePandasObject):
         else:
             fast = self._get_column(fast, f"{fast}")
             slow = self._get_column(slow, f"{slow}")
+            from .trend.long_run import long_run
             result = long_run(fast=fast, slow=slow, length=length, offset=offset, **kwargs)
             self._append(result, **kwargs)
             return result
@@ -630,6 +636,7 @@ class AnalysisIndicators(BasePandasObject):
     def qstick(self, open_=None, close=None, length=None, offset=None, **kwargs):
         open_ = self._get_column(open_, 'open')
         close = self._get_column(close, 'close')
+        from .trend.qstick import qstick
         result = qstick(open_=open_, close=close, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -639,6 +646,7 @@ class AnalysisIndicators(BasePandasObject):
         else:
             fast = self._get_column(fast, f"{fast}")
             slow = self._get_column(slow, f"{slow}")
+            from .trend.short_run import short_run
             result = short_run(fast=fast, slow=slow, length=length, offset=offset, **kwargs)
             self._append(result, **kwargs)
             return result
@@ -647,6 +655,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
+        from .trend.vortex import vortex
         result = vortex(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result

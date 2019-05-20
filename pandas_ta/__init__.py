@@ -33,6 +33,18 @@ from .statistics.stdev import stdev
 from .statistics.variance import variance
 from .statistics.zscore import zscore
 
+# Trend
+from .trend.adx import adx
+from .trend.amat import amat
+from .trend.aroon import aroon
+from .trend.decreasing import decreasing
+from .trend.dpo import dpo
+from .trend.increasing import increasing
+from .trend.long_run import long_run
+from .trend.qstick import qstick
+from .trend.short_run import short_run
+from .trend.vortex import vortex
+
 # Volatility
 from .volatility.accbands import accbands
 from .volatility.atr import atr

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from .obv import obv
 from ..overlap import *
-from ..trend import long_run, short_run
+from ..trend.long_run import long_run
+from ..trend.short_run import short_run
 from ..utils import get_offset, verify_series
 
 def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, min_lookback=None, offset=None, **kwargs):
