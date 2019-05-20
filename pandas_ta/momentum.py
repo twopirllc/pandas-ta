@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 
 from .overlap import hlc3, ema, sma, wma
-from .statistics import mad
+from .statistics.mad import mad
 from .utils import get_drift, get_offset, verify_series
 
 

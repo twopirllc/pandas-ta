@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
 from ..overlap import ema, sma
-from ..statistics import stdev
+from ..statistics.stdev import stdev
 from ..utils import get_offset, verify_series
 
 def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
