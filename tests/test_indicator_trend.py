@@ -30,15 +30,12 @@ class TestTrend(TestCase):
         del cls.data
 
 
-    def setUp(self):
-        self.trend = pandas_ta.trend
-
-    def tearDown(self):
-        del self.trend
+    def setUp(self): pass
+    def tearDown(self): pass
     
 
     def test_adx(self):
-        result = self.trend.adx(self.high, self.low, self.close)
+        result = pandas_ta.adx(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'ADX_14')
 
@@ -53,12 +50,12 @@ class TestTrend(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_amat(self):
-        result = self.trend.amat(self.close)
+        result = pandas_ta.amat(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'AMAT_EMA_8_21_2')
 
     def test_aroon(self):
-        result = self.trend.aroon(self.close)
+        result = pandas_ta.aroon(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'AROON_14')
 
@@ -80,36 +77,36 @@ class TestTrend(TestCase):
                 error_analysis(result.iloc[:,1], CORRELATION, ex, newline=False)
 
     def test_decreasing(self):
-        result = self.trend.decreasing(self.close)
+        result = pandas_ta.decreasing(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'DEC_1')
 
     def test_dpo(self):
-        result = self.trend.dpo(self.close)
+        result = pandas_ta.dpo(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'DPO_1')
 
     def test_increasing(self):
-        result = self.trend.increasing(self.close)
+        result = pandas_ta.increasing(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'INC_1')
 
     def test_long_run(self):
-        result = self.trend.long_run(self.close, self.open)
+        result = pandas_ta.long_run(self.close, self.open)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'LR_2')
 
     def test_qstick(self):
-        result = self.trend.qstick(self.open, self.close)
+        result = pandas_ta.qstick(self.open, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'QS_10')
 
     def test_short_run(self):
-        result = self.trend.short_run(self.close, self.open)
+        result = pandas_ta.short_run(self.close, self.open)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'SR_2')
 
     def test_vortex(self):
-        result = self.trend.vortex(self.high, self.low, self.close)
+        result = pandas_ta.vortex(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'VTX_14')
