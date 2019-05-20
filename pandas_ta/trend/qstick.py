@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-from ..overlap import dema, ema, hma, rma, sma
+from ..overlap.dema import dema
+from ..overlap.ema import ema
+from ..overlap.hma import hma
+from ..overlap.rma import rma
+from ..overlap.sma import sma
 from ..utils import get_offset, verify_series
 
 def qstick(open_, close, length=None, offset=None, **kwargs):

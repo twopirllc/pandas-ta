@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..overlap import ema, sma
+from ..overlap.ema import ema
+from ..overlap.sma import sma
 from ..statistics.stdev import stdev
 from ..utils import get_offset, verify_series
 

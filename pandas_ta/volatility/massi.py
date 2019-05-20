@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..overlap import ema
+from ..overlap.ema import ema
 from ..utils import get_offset, verify_series
 
 def massi(high, low, fast=None, slow=None, offset=None, **kwargs):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .ad import ad
-from ..overlap import ema
+from ..overlap.ema import ema
 from ..utils import get_offset, verify_series
 
 def adosc(high, low, close, volume, open_=None, fast=None, slow=None, offset=None, **kwargs):

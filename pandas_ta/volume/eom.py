@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..overlap import hl2
+from ..overlap.hl2 import hl2
 from ..utils import get_drift, get_offset, verify_series
 
 def eom(high, low, close, volume, length=None, divisor=None, drift=None, offset=None, **kwargs):
