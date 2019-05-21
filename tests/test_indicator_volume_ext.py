@@ -28,7 +28,7 @@ class TestVolumeExtension(TestCase):
     def test_adosc_ext(self):
         self.data.ta.adosc(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], 'ADOSC_12_26')
+        self.assertEqual(self.data.columns[-1], 'ADOSC_3_10')
 
     def test_aobv_ext(self):
         self.data.ta.aobv(append=True)
