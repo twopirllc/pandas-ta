@@ -83,6 +83,19 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'RSI_14')
 
+    def test_slope_ext(self):
+        self.data.ta.slope(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'SLOPE_1')
+
+        self.data.ta.slope(append=True, as_angle=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'ANGLEr_1')
+
+        self.data.ta.slope(append=True, as_angle=True, to_degrees=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'ANGLEd_1')
+
     def test_stoch_ext(self):
         self.data.ta.stoch(append=True)
         self.assertIsInstance(self.data, DataFrame)

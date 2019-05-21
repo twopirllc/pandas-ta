@@ -197,6 +197,21 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_slope(self):
+        result = pandas_ta.slope(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'SLOPE_1')
+
+    def test_slope_as_angle(self):
+        result = pandas_ta.slope(self.close, as_angle=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'ANGLEr_1')
+
+    def test_slope_as_angle_to_degrees(self):
+        result = pandas_ta.slope(self.close, as_angle=True, to_degrees=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'ANGLEd_1')
+
     def test_stoch(self):
         result = pandas_ta.stoch(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
