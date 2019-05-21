@@ -660,6 +660,13 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def linear_decay(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        from .trend.linear_decay import linear_decay
+        result = linear_decay(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def long_run(self, fast=None, slow=None, length=None, offset=None, **kwargs):
         if fast is None and slow is None: return self._df
         else:

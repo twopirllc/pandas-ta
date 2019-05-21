@@ -83,6 +83,7 @@ from .trend.aroon import aroon
 from .trend.decreasing import decreasing
 from .trend.dpo import dpo
 from .trend.increasing import increasing
+from .trend.linear_decay import linear_decay
 from .trend.long_run import long_run
 from .trend.qstick import qstick
 from .trend.short_run import short_run

@@ -91,6 +91,11 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'INC_1')
 
+    def test_linear_decay(self):
+        result = pandas_ta.linear_decay(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'LDECAY_5')
+
     def test_long_run(self):
         result = pandas_ta.long_run(self.close, self.open)
         self.assertIsInstance(result, Series)

@@ -53,6 +53,11 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'INC_1')
 
+    def test_linear_decay_ext(self):
+        self.data.ta.linear_decay(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'LDECAY_5')
+
     def test_long_run_ext(self):
         # Nothing passed, return self
         self.assertEqual(self.data.ta.long_run(append=True).shape, self.data.shape)
