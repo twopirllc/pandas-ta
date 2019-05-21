@@ -16,6 +16,7 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     # Calculate Result
     fastma = ema(close, length=fast, **kwargs)
     slowma = ema(close, length=slow, **kwargs)
+    # EMAs are equivalent with talib, only their difference is minutely off
     apo = fastma - slowma
 
     # Offset
