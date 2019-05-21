@@ -10,10 +10,8 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, offset=Non
     low = verify_series(low)
     close = verify_series(close)
     volume = verify_series(volume)
-    fast = int(fast) if fast and fast > 0 else 12
-    slow = int(slow) if slow and slow > 0 else 26
-    if slow < fast:
-        fast, slow = slow, fast
+    fast = int(fast) if fast and fast > 0 else 3
+    slow = int(slow) if slow and slow > 0 else 10
     offset = get_offset(offset)
 
     # Calculate Result

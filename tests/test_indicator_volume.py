@@ -52,10 +52,10 @@ class TestVolume(TestCase):
     def test_adosc(self):
         result = pandas_ta.adosc(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'ADOSC_12_26')
+        self.assertEqual(result.name, 'ADOSC_3_10')
 
         try:
-            expected = tal.AD(self.high, self.low, self.close, self.volume_)
+            expected = tal.ADOSC(self.high, self.low, self.close, self.volume_)
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
