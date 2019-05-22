@@ -25,6 +25,7 @@ from .momentum.bop import bop
 from .momentum.cci import cci
 from .momentum.cmo import cmo
 from .momentum.coppock import coppock
+from .momentum.fisher import fisher
 from .momentum.kst import kst
 from .momentum.macd import macd
 from .momentum.mom import mom

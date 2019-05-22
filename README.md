@@ -80,7 +80,7 @@ help(pd.DataFrame().ta.log_return)
 
 # Technical Analysis Indicators (by Category)
 
-## _Momentum_ (18)
+## _Momentum_ (19)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -88,6 +88,7 @@ help(pd.DataFrame().ta.log_return)
 * _Commodity Channel Index_: **cci**
 * _Chande Momentum Oscillator_: **cmo**
 * _Coppock Curve_: **coppock**
+* _Fisher Transform_: **fisher**
 * _KST Oscillator_: **kst**
 * _Moving Average Convergence Divergence_: **macd**
 * _Momentum_: **mom**

@@ -2,7 +2,6 @@
 import time
 import pandas as pd
 from pandas.core.base import PandasObject 
-
 from .utils import *
 
 class BasePandasObject(PandasObject):
@@ -276,6 +275,14 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from .momentum.coppock import coppock
         result = coppock(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def fisher(self, high=None, low=None, length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        from .momentum.fisher import fisher
+        result = fisher(high=high, low=low, length=length, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
