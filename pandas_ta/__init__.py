@@ -23,6 +23,7 @@ from .momentum.ao import ao
 from .momentum.apo import apo
 from .momentum.bop import bop
 from .momentum.cci import cci
+from .momentum.cg import cg
 from .momentum.cmo import cmo
 from .momentum.coppock import coppock
 from .momentum.fisher import fisher

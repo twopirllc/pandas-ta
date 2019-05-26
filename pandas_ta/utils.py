@@ -7,7 +7,9 @@ from functools import reduce
 from operator import mul
 from sys import float_info as sflt
 
-
+TRADING_DAYS_IN_YEAR = 250
+TRADING_HOURS_IN_DAY = 6.5
+MINUTES_IN_HOUR = 60
 
 def combination(**kwargs):
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""

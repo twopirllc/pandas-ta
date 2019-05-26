@@ -130,6 +130,7 @@ driver.py
 doc.py
 bt.ipynb
 ta_extension.ipynb
+kerasmodeller.ipynb
 Charts.ipynb
 pandas_pips
 reqs.txt

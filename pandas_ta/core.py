@@ -264,6 +264,13 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def cg(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        from .momentum.cg import cg
+        result = cg(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def cmo(self, close=None, length=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from .momentum.cmo import cmo
