@@ -80,12 +80,13 @@ help(pd.DataFrame().ta.log_return)
 
 # Technical Analysis Indicators (by Category)
 
-## _Momentum_ (19)
+## _Momentum_ (20)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Balance of Power_: **bop**
 * _Commodity Channel Index_: **cci**
+* _Center of Gravity_: **cg**
 * _Chande Momentum Oscillator_: **cmo**
 * _Coppock Curve_: **coppock**
 * _Fisher Transform_: **fisher**
