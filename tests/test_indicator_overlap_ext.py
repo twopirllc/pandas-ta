@@ -53,6 +53,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'HMA_10')
 
+    def test_kama_ext(self):
+        self.data.ta.kama(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'KAMA_10_2_30')
+
     def test_ichimoku_ext(self):
         self.data.ta.ichimoku(append=True)
         self.assertIsInstance(self.data, DataFrame)

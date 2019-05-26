@@ -96,6 +96,11 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'HMA_10')
 
+    def test_kama(self):
+        result = pandas_ta.kama(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'KAMA_10_2_30')
+
     def test_ichimoku(self):
         ichimoku, span = pandas_ta.ichimoku(self.high, self.low, self.close)
         self.assertIsInstance(ichimoku, DataFrame)

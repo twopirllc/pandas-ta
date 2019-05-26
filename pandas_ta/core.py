@@ -430,6 +430,13 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def kama(self, close=None, length=None, fast=None, slow=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        from .overlap.kama import kama
+        result = kama(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def ichimoku(self, high=None, low=None, close=None, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):        
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')

@@ -4,11 +4,7 @@ from .wma import wma
 from ..utils import get_offset, verify_series
 
 def hma(close, length=None, offset=None, **kwargs):
-    """Indicator: Hull Moving Average (HMA)
-    
-    Use help(df.ta.hma) for specific documentation where 'df' represents
-    the DataFrame you are using.
-    """
+    """Indicator: Hull Moving Average (HMA)"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10

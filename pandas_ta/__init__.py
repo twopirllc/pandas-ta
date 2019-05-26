@@ -47,6 +47,7 @@ from .overlap.fwma import fwma
 from .overlap.hl2 import hl2
 from .overlap.hlc3 import hlc3
 from .overlap.hma import hma
+from .overlap.kama import kama
 from .overlap.ichimoku import ichimoku
 from .overlap.linreg import linreg
 from .overlap.midpoint import midpoint

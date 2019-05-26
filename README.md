@@ -117,6 +117,7 @@ help(pd.DataFrame().ta.log_return)
 * _High-Low-Close Average_: **hlc3**
     * Commonly known as 'Typical Price' in Technical Analysis literature
 * _Hull Exponential Moving Average_: **hma**
+* _Kaufman's Adaptive Moving Average_: **kama**
 * _Ichimoku Kinkō Hyō_: **ichimoku**
     * Use: help(ta.ichimoku). Returns two DataFrames.
 * _Linear Regression_: **linreg**
