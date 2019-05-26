@@ -108,7 +108,7 @@ help(pd.DataFrame().ta.log_return)
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-## _Overlap_ (21)
+## _Overlap_ (23)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
