@@ -32,7 +32,7 @@ $ pip install pandas_ta
 
 ## Latest Version
 ```sh
-$ pip install -U https://github.com/twopirllc/pandas-ta.git
+$ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
 
 ## **Quick Start** using the DataFrame Extension

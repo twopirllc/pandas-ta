@@ -137,3 +137,6 @@ reqs.txt
 requirements.txt
 qd.py
 simple.ipynb
+
+# Indicator
+pandas_ta/overlap/ft.py
