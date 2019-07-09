@@ -335,6 +335,16 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def rvi(self, open_=None, high=None, low=None, close=None, length=None, swma_length=None, offset=None, **kwargs):
+        open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        from .momentum.rvi import rvi
+        result = rvi(open_=open_, high=high, low=low, close=close, length=length, swma_length=swma_length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def slope(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from .momentum.slope import slope

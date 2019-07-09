@@ -80,7 +80,7 @@ help(pd.DataFrame().ta.log_return)
 
 # Technical Analysis Indicators (by Category)
 
-## _Momentum_ (20)
+## _Momentum_ (21)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -96,6 +96,7 @@ help(pd.DataFrame().ta.log_return)
 * _Percentage Price Oscillator_: **ppo**
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
+* _Relative Vigor Index_: **rvi**
 * _Slope_: **slope**
 * _Stochastic Oscillator_: **stoch**
 * _Trix_: **trix**

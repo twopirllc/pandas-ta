@@ -33,6 +33,7 @@ from .momentum.mom import mom
 from .momentum.ppo import ppo
 from .momentum.roc import roc
 from .momentum.rsi import rsi
+from .momentum.rvi import rvi
 from .momentum.slope import slope
 from .momentum.stoch import stoch
 from .momentum.trix import trix
