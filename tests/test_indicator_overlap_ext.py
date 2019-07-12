@@ -93,6 +93,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'RMA_10')
 
+    def test_sinwma_ext(self):
+        self.data.ta.sinwma(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'SINWMA_14')
+
     def test_sma_ext(self):
         self.data.ta.sma(append=True)
         self.assertIsInstance(self.data, DataFrame)

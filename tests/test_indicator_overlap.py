@@ -218,6 +218,11 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'RMA_10')
 
+    def test_sinwma(self):
+        result = pandas_ta.sinwma(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'SINWMA_14')
+
     def test_sma(self):
         result = pandas_ta.sma(self.close)
         self.assertIsInstance(result, Series)

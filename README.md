@@ -109,7 +109,7 @@ help(pd.DataFrame().ta.log_return)
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-## _Overlap_ (23)
+## _Overlap_ (24)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -128,6 +128,7 @@ help(pd.DataFrame().ta.log_return)
 * _Pascal's Weighted Moving Average_: **pwma**
 * _William's Moving Average_: **rma**
 * _Simple Moving Average_: **sma**
+* _Sine Weighted Moving Average_: **sinwma**
 * _Symmetric Weighted Moving Average_: **swma**
 * _T3 Moving Average_: **t3**
 * _Triple Exponential Moving Average_: **tema**
@@ -229,6 +230,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 
 # Inspiration
+* TradingView: http://www.tradingview.com
 * Original TA-LIB: http://ta-lib.org/
 * Bukosabino: https://github.com/bukosabino/ta
 

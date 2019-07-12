@@ -502,6 +502,13 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def sinwma(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        from .overlap.sinwma import sinwma
+        result = sinwma(close=close, length=length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def sma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from .overlap.sma import sma
