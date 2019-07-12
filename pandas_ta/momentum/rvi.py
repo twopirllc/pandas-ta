@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas import DataFrame
 from ..overlap.swma import swma
 from ..utils import get_offset, verify_series
 
@@ -18,16 +19,32 @@ def rvi(open_, high, low, close, length=None, swma_length=None, offset=None, **k
     denominator = swma(high - low, length=swma_length).rolling(length).sum()
     
     rvi = numerator / denominator
+    signal = swma(rvi, length=swma_length)
 
     # Offset
     if offset != 0:
         rvi = rvi.shift(offset)
+        signal = signal.shift(offset)
+
+    # Handle fills
+    if 'fillna' in kwargs:
+        rvi.fillna(kwargs['fillna'], inplace=True)
+        signal.fillna(kwargs['fillna'], inplace=True)
+    if 'fill_method' in kwargs:
+        rvi.fillna(method=kwargs['fill_method'], inplace=True)
+        signal.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name & Category
     rvi.name = f"RVI_{length}_{swma_length}"
-    rvi.category = 'momentum'
+    signal.name = f"RVIS_{length}_{swma_length}"
+    rvi.category = signal.category = 'momentum'
 
-    return rvi
+    # Prepare DataFrame to return
+    rvidf = DataFrame({rvi.name: rvi, signal.name: signal})
+    rvidf.name = f"RVI_{length}_{swma_length}"
+    rvidf.category = 'momentum'
+
+    return rvidf
 
 
 

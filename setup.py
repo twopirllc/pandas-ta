@@ -6,7 +6,7 @@ long_description = "An easy to use Python 3 Pandas Extension with 80+ Technical 
 setup(
     name ="pandas_ta",
     packages =['pandas_ta', 'pandas_ta.momentum', 'pandas_ta.overlap', 'pandas_ta.performance', 'pandas_ta.statistics', 'pandas_ta.trend', 'pandas_ta.volatility', 'pandas_ta.volume'],
-    version ="0.1.34b",
+    version ="0.1.35b",
     description =long_description,
     long_description =long_description,
     author ="Kevin Johnson",

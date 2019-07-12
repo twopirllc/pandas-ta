@@ -209,7 +209,7 @@ class TestMomentum(TestCase):
 
     def test_rvi(self):
         result = pandas_ta.rvi(self.open, self.high, self.low, self.close)
-        self.assertIsInstance(result, Series)
+        self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'RVI_14_4')
 
     def test_slope(self):
