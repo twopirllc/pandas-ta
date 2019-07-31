@@ -121,7 +121,9 @@ data/datas.csv
 data/SPY_5min.csv
 data/SPY_1min.csv
 data/tulip.csv
+examples/taplot.py
 examples/ib_trader.ipynb
+examples/example2.ipynb
 setup.cfg
 .README.md
 README

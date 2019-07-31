@@ -96,6 +96,8 @@ class AnalysisIndicators(BasePandasObject):
     >>> apo = df.ta(kind='apo', timed=True)
     >>> print(apo.timed)
     """
+    _adjusted = None
+
     def __call__(self, kind=None, alias=None, timed=False, **kwargs):
         try:
             if isinstance(kind, str):
@@ -126,6 +128,18 @@ class AnalysisIndicators(BasePandasObject):
             self.help()
 
 
+    @property
+    def adjusted(self) -> str:
+        """property: df.ta.adjusted"""
+        return self._adjusted
+
+    @adjusted.setter
+    def adjusted(self, value:str) -> None:
+        if value is not None and isinstance(value, str):
+            self._adjusted = value
+        else:
+            self._adjusted = None
+
     def _append(self, result=None, **kwargs):
         """Appends a Pandas Series or DataFrame columns to self._df."""
         if 'append' in kwargs and kwargs['append']:
@@ -149,7 +163,7 @@ class AnalysisIndicators(BasePandasObject):
             return series
         # Apply default if no series nor a default.
         elif series is None or default is None:
-            return df[default]
+            return df[self.adjusted] if self.adjusted is not None else df[default]
         # Ok.  So it's a str.
         elif isinstance(series, str):
             # Return the df column since it's in there.
@@ -204,12 +218,16 @@ class AnalysisIndicators(BasePandasObject):
     def indicators(self, **kwargs):
         """Indicator list"""
         header = f"pandas.ta - Technical Analysis Indicators"
-        helper_methods = ['indicators', 'constants'] # Public non-indicator methods
+        helper_methods = ['indicators', 'constants']  # Public non-indicator methods
+        ta_properties = ['adjusted']
         exclude_methods = kwargs.pop('exclude', None)
         as_list = kwargs.pop('as_list', False)
         ta_indicators = list((x for x in dir(pd.DataFrame().ta) if not x.startswith('_') and not x.endswith('_')))
 
         for x in helper_methods:
+            ta_indicators.remove(x)
+
+        for x in ta_properties:
             ta_indicators.remove(x)
 
         if isinstance(exclude_methods, list) and exclude_methods in ta_indicators and len(exclude_methods) > 0:
@@ -592,7 +610,7 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-    def trend_return(self, close=None, trend=None, log=None, cumulative=None, offset=None, trend_reset=None, **kwargs):
+    def trend_return(self, close=None, trend=None, log=True, cumulative=None, offset=None, trend_reset=None, **kwargs):
         close = self._get_column(close, 'close')
         trend = self._get_column(trend, f"{trend}")
         from pandas_ta.performance.trend_return import trend_return

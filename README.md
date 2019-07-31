@@ -6,14 +6,23 @@ Technical Analysis (TA) is an easy to use library that is built upon Python's Pa
 This version contains both the orignal code branch as well as a newly refactored branch with the option to use [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode. 
 All the indicators return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDH_12_26_9', 'MACDS_12_26_9'].
 
-## New Changes
+
+## Features
 
 * Over 80 indicators.
-* __*Updated*__ Example Jupyter Notebook under the examples directory.
+* Example Jupyter Notebook under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
 * Parameter names are more consistent.
 * Refactoring indicators into categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups).
+
+
+## Recent Changes
+
+* Updated the example notebook.
+* Trend Return, ```ta.trend_return()```, has a proper index.  More consistent with the module.
+* Added an 'adjusted' property to the 'ta' extension so you can override the default 'close' column.  By default, ```df.ta.adjusted = None```.  If the adjusted close column is 'adj_close' for example, then set ```df.ta.adjusted = 'adj_close'```.
+
 
 ### What is a Pandas DataFrame Extension?
 
@@ -76,6 +85,17 @@ help(ta.log_return)
 help(pd.DataFrame().ta.log_return)
 ```
 
+
+## New ta DataFrame Property: *adjusted*
+
+```python
+# Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
+df.ta.adjusted = 'adj_close'
+df.ta.sma(length=10, append=True)
+
+# To reset back to 'close', set adjusted back to None
+df.ta.adjusted = None
+```
 
 
 # Technical Analysis Indicators (by Category)

@@ -4,7 +4,7 @@ from .log_return import log_return
 from .percent_return import percent_return
 from ..utils import get_offset, verify_series, zero
 
-def trend_return(close, trend, log=None, cumulative=None, offset=None, trend_reset=0, **kwargs):
+def trend_return(close, trend, log=True, cumulative=None, offset=None, trend_reset=0, **kwargs):
     """Indicator: Trend Return"""
     # Validate Arguments
     close = verify_series(close)
@@ -31,7 +31,7 @@ def trend_return(close, trend, log=None, cumulative=None, offset=None, trend_res
                 tsum = return_
         result.append(tsum)
 
-    trend_return = Series(result)
+    trend_return = Series(result, index=close.index)
 
     # Offset
     if offset != 0:
