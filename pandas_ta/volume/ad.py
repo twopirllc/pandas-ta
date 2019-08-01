@@ -32,7 +32,7 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
         ad.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name and Categorize it
-    ad.name = f"AD"
+    ad.name = "AD" if open_ is None else "ADo"
     ad.category = 'volume'
 
     return ad

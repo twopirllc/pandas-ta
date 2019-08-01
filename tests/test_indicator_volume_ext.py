@@ -10,10 +10,12 @@ class TestVolumeExtension(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
+        cls.open = cls.data['open']
 
     @classmethod
     def tearDownClass(cls):
         del cls.data
+        del cls.open
 
 
     def setUp(self): pass
@@ -24,6 +26,11 @@ class TestVolumeExtension(TestCase):
         self.data.ta.ad(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'AD')
+
+    def test_ad_open_ext(self):
+        self.data.ta.ad(open_=self.open, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'ADo')
 
     def test_adosc_ext(self):
         self.data.ta.adosc(append=True)
