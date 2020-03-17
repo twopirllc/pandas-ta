@@ -126,7 +126,6 @@ examples/ib_trader.ipynb
 examples/example2.ipynb
 setup.cfg
 .README.md
-README
 note.md
 driver.py
 doc.py
@@ -142,3 +141,4 @@ simple.ipynb
 
 # Indicator
 pandas_ta/overlap/ft.py
+pandas_ta/overlap/psar.py

@@ -13,7 +13,7 @@ def true_range(high, low, close, drift=None, offset=None, **kwargs):
 
     # Calculate Result
     prev_close = close.shift(drift)
-    ranges = [high - low, high - prev_close, low - prev_close]
+    ranges = [high - low, high - prev_close, prev_close - low]
     true_range = DataFrame(ranges).T
     true_range = true_range.abs().max(axis=1)
 
