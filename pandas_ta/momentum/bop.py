@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from ..utils import get_offset, non_zero_range, verify_series
 
 def bop(open_, high, low, close, offset=None, **kwargs):
     """Indicator: Balance of Power (BOP)"""
@@ -8,11 +8,11 @@ def bop(open_, high, low, close, offset=None, **kwargs):
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
+    high_low_range = non_zero_range(high, low)
+    close_open_range = non_zero_range(close, open_)
     offset = get_offset(offset)
 
     # Calculate Result
-    close_open_range = close - open_
-    high_low_range = high - low
     bop = close_open_range / high_low_range
 
     # Offset

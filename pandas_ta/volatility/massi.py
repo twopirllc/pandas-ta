@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from ..overlap.ema import ema
-from ..utils import get_offset, verify_series
+from ..utils import get_offset, non_zero_range, verify_series
 
 def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Mass Index (MASSI)"""
     # Validate arguments
     high = verify_series(high)
     low = verify_series(low)
+    high_low_range = non_zero_range(high, low)
     fast = int(fast) if fast and fast > 0 else 9
     slow = int(slow) if slow and slow > 0 else 25
     if slow < fast:
@@ -15,8 +16,7 @@ def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    hl_range = high - low
-    hl_ema1 = ema(close=hl_range, length=fast, **kwargs)
+    hl_ema1 = ema(close=high_low_range, length=fast, **kwargs)
     hl_ema2 = ema(close=hl_ema1, length=fast, **kwargs)
 
     hl_ratio = hl_ema1 / hl_ema2

@@ -4,7 +4,7 @@ from ..overlap.ema import ema
 from ..overlap.hma import hma
 from ..overlap.rma import rma
 from ..overlap.sma import sma
-from ..utils import get_offset, verify_series
+from ..utils import get_offset, non_zero_range, verify_series
 
 def qstick(open_, close, length=None, offset=None, **kwargs):
     """Indicator: Q Stick"""
@@ -16,7 +16,7 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
     ma = kwargs.pop('ma', 'sma') if 'ma' in kwargs else 'sma'
 
     # Calculate Result
-    diff = close - open_
+    diff = non_zero_range(close, open_)
 
     if ma in [None, 'sma']: qstick = sma(diff, length=length)
     if ma == 'dema': qstick = dema(diff, length=length, **kwargs)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from ..utils import get_offset, non_zero_range, verify_series
 
 def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs):
     """Indicator: Chaikin Money Flow (CMF)"""
@@ -8,6 +8,7 @@ def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs
     low = verify_series(low)
     close = verify_series(close)
     volume = verify_series(volume)
+    high_low_range = non_zero_range(high, low)
     length = int(length) if length and length > 0 else 20
     min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
     offset = get_offset(offset)
@@ -15,11 +16,11 @@ def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs
     # Calculate Result
     if open_ is not None:
         open_ = verify_series(open_)
-        ad = close - open_  # AD with Open
+        ad = non_zero_range(close, open_) # AD with Open
     else:                
-        ad = 2 * close - high - low  # AD with High, Low, Close
+        ad = 2 * close - (high + low)  # AD with High, Low, Close
 
-    hl_range = high - low
+    hl_range = high_low_range
     ad *= volume / hl_range
     cmf = ad.rolling(length, min_periods=min_periods).sum() / volume.rolling(length, min_periods=min_periods).sum()
 

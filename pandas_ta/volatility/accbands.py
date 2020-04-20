@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..utils import get_drift, get_offset, verify_series
+from ..utils import get_drift, get_offset, non_zero_range, verify_series
 
 def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, offset=None, **kwargs):
     """Indicator: Acceleration Bands (ACCBANDS)"""
@@ -8,6 +8,7 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
+    high_low_range = non_zero_range(high, low)
     length = int(length) if length and length > 0 else 20
     c = float(c) if c and c > 0 else 4
     min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
@@ -16,7 +17,7 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
     offset = get_offset(offset)
 
     # Calculate Result
-    hl_ratio  = (high - low) / (high + low)
+    hl_ratio  = high_low_range / (high + low)
     hl_ratio *= c
     _lower = low * (1 - hl_ratio)
     _upper = high * (1 + hl_ratio)

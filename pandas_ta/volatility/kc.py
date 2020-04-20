@@ -4,7 +4,7 @@ from pandas import DataFrame
 from .atr import atr
 from ..overlap.hlc3 import hlc3
 from ..statistics.variance import variance
-from ..utils import get_offset, verify_series
+from ..utils import get_offset, non_zero_range, verify_series
 
 
 def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **kwargs):
@@ -26,7 +26,7 @@ def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **k
         basis = close.ewm(span=length, min_periods=min_periods).mean()
         band = atr(high=high, low=low, close=close)
     else:
-        hl_range = high - low
+        hl_range = non_zero_range(high, low)
         typical_price = hlc3(high=high, low=low, close=close)
         basis = typical_price.rolling(length, min_periods=min_periods).mean()
         band = hl_range.rolling(length, min_periods=min_periods).mean()

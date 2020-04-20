@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
-from pandas import Series
-from ..utils import get_drift, get_offset, verify_series
+from pandas import Series, DataFrame
+from ..utils import get_drift, get_offset, non_zero_range, verify_series
 
 def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
     """Indicator: Kaufman's Adaptive Moving Average (HMA)"""
@@ -17,9 +17,9 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     m = close.size
     fr = 2 / (fast + 1)
     sr = 2 / (slow + 1)
-    
-    abs_diff = close.diff(length).abs()
-    peer_diff = close.diff(drift).abs()
+
+    abs_diff = non_zero_range(close, close.shift(length)).abs()
+    peer_diff = non_zero_range(close, close.shift(drift)).abs()
     peer_diff_sum = peer_diff.rolling(length).sum()
     er = abs_diff / peer_diff_sum
     x = er * (fr - sr) + sr

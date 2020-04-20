@@ -117,6 +117,17 @@ def get_offset(x:int):
     return int(x) if x else 0
 
 
+def non_zero_range(high:pd.Series, low:pd.Series):
+    """Returns the difference of two series and adds epsilon if
+    to any zero values.  This occurs commonly in crypto data when
+    high = low.
+    """
+    diff = high - low
+    if diff.eq(0).any().any():
+        diff += sflt.epsilon
+    return diff
+
+
 def pascals_triangle(n:int =None, **kwargs):
     """Pascal's Triangle
 
