@@ -2,7 +2,7 @@ from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis, sample_d
 from .context import pandas_ta
 
 from unittest import TestCase
-import pandas.util.testing as pdt
+import pandas.testing as pdt
 from pandas import DataFrame, Series
 
 import pandas as pd

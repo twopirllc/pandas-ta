@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# from ..overlap.ema import ema
+from ..overlap.rma import rma
 from .true_range import true_range
 from ..utils import get_drift, get_offset, verify_series
 
@@ -17,7 +19,8 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
     # Calculate Result
     tr = true_range(high=high, low=low, close=close, drift=drift)
     if mamode == 'ema':
-        atr = tr.ewm(span=length, min_periods=min_periods).mean()
+        alpha = (1.0 / length) if length > 0 else 0.5
+        atr = tr.ewm(alpha=alpha, min_periods=min_periods).mean()
     else:
         atr = tr.rolling(length, min_periods=min_periods).mean()
 

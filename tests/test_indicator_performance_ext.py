@@ -2,9 +2,7 @@ from .config import sample_data
 from .context import pandas_ta
 
 from unittest import TestCase
-# import numpy.testing as npt
-# import pandas.util.testing as pdt
-from pandas import DataFrame#, Series
+from pandas import DataFrame
 
 
 

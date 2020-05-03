@@ -2,7 +2,7 @@ from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESH
 from .context import pandas_ta
 
 from unittest import TestCase, skip
-import pandas.util.testing as pdt
+import pandas.testing as pdt
 from pandas import DataFrame, Series
 
 import talib as tal
