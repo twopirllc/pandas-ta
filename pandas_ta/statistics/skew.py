@@ -15,7 +15,13 @@ def skew(close, length=None, offset=None, **kwargs):
     # Offset
     if offset != 0:
         skew = skew.shift(offset)
-
+        
+    # Handle fills
+    if 'fillna' in kwargs:
+        skew.fillna(kwargs['fillna'], inplace=True)
+    if 'fill_method' in kwargs:
+        skew.fillna(method=kwargs['fill_method'], inplace=True)
+        
     # Name & Category
     skew.name = f"SKEW_{length}"
     skew.category = 'statistics'
