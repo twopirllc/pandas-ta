@@ -15,6 +15,12 @@ def sma(close, length=None, offset=None, **kwargs):
     # Offset
     if offset != 0:
         sma = sma.shift(offset)
+        
+    # Handle fills
+    if 'fillna' in kwargs:
+        sma.fillna(kwargs['fillna'], inplace=True)
+    if 'fill_method' in kwargs:
+        sma.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name & Category
     sma.name = f"SMA_{length}"
