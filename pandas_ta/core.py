@@ -140,6 +140,18 @@ class AnalysisIndicators(BasePandasObject):
         else:
             self._adjusted = None
 
+    @property
+    def datetime_ordered(self) -> bool:
+        """Returns true if the index is a datetime and ordered else False."""
+        index_is_datetime = pd.api.types.is_datetime64_any_dtype(self._df.index)
+        ordered = self._df.index[0] < self._df.index[-1]
+        return True if index_is_datetime and ordered else False
+
+    @property
+    def reverse(self) -> pd.DataFrame:
+        """Reverses the DataFrame"""
+        return self._df.iloc[::-1]
+
     def _append(self, result=None, **kwargs):
         """Appends a Pandas Series or DataFrame columns to self._df."""
         if 'append' in kwargs and kwargs['append']:
@@ -219,7 +231,7 @@ class AnalysisIndicators(BasePandasObject):
         """Indicator list"""
         header = f"pandas.ta - Technical Analysis Indicators"
         helper_methods = ['indicators', 'constants']  # Public non-indicator methods
-        ta_properties = ['adjusted']
+        ta_properties = ['adjusted', 'datetime_ordered', 'reverse']
         exclude_methods = kwargs.pop('exclude', None)
         as_list = kwargs.pop('as_list', False)
         ta_indicators = list((x for x in dir(pd.DataFrame().ta) if not x.startswith('_') and not x.endswith('_')))

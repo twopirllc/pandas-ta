@@ -1,7 +1,7 @@
 # Technical Analysis Library in Python 3.7
 ![Example Chart](/images/TA_Chart.png)
 
-Technical Analysis (TA) is an easy to use library that is built upon Python's Pandas library with more than 80 Indicators.  These indicators are comminly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon Oscillator_ (*AROON*) and more.
+Technical Analysis (TA) is an easy to use library that is built upon Python's Pandas library with more than 85 Indicators.  These indicators are comminly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon Oscillator_ (*AROON*) and more.
 
 This version contains both the orignal code branch as well as a newly refactored branch with the option to use [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode. 
 All the indicators return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDH_12_26_9', 'MACDS_12_26_9'].
@@ -9,12 +9,11 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 ## Features
 
-* Over 80 indicators.
+* Has 89+ indicators.
 * Example Jupyter Notebook under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
-* Parameter names are more consistent.
-* Refactoring indicators into categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups).
+* Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups).
 
 
 ## Recent Changes
@@ -86,7 +85,20 @@ help(pd.DataFrame().ta.log_return)
 ```
 
 
-## New ta DataFrame Property: *adjusted*
+## New DataFrame Properties: *reverse* & *datetime_ordered*
+
+```python
+# The 'reverse' is a helper property that returns the DataFrame
+# in reverse order
+df = df.ta.reverse
+
+# The 'datetime_ordered' property returns True if the DataFrame
+# index is of Pandas datetime64 and df.index[0] < df.index[-1]
+# Otherwise it return False
+time_series_in_order = df.ta.datetime_ordered
+```
+
+## DataFrame Property: *adjusted*
 
 ```python
 # Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
@@ -153,7 +165,7 @@ df.ta.adjusted = None
 * _T3 Moving Average_: **t3**
 * _Triple Exponential Moving Average_: **tema**
 * _Triangular Moving Average_: **trima**
-* _Volume Weighted Average Price_: **vwap**
+* _Volume Weighted Average Price_: **vwap** 
 * _Volume Weighted Moving Average_: **vwma**
 * _Weighted Moving Average_: **wma**
 * _Zero Lag Moving Average_: **zlma**
@@ -247,6 +259,9 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example OBV](/images/SPY_OBV.png) |
 
+
+# Contributors
+* [allahyarzadeh](https://github.com/allahyarzadeh)
 
 
 # Inspiration

@@ -116,7 +116,6 @@ env/**
 pandas_ta/_wrapper.py
 
 # twopirllc stuff
-IBclient/
 data/datas.csv
 data/SPY_5min.csv
 data/SPY_1min.csv

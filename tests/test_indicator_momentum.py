@@ -34,6 +34,31 @@ class TestMomentum(TestCase):
     def tearDown(self): pass
     
 
+    def test_datetime_ordered(self):
+        # Test if datetime64 index and ordered
+        result = self.data.ta.datetime_ordered
+        self.assertTrue(result)
+
+        # Test if not ordered
+        original = self.data.copy()
+        reversal = original.ta.reverse
+        result = reversal.ta.datetime_ordered
+        self.assertFalse(result)
+
+        # Test a non-datetime64 index
+        original = self.data.copy()
+        original.reset_index(inplace=True)
+        result = original.ta.datetime_ordered
+        self.assertFalse(result)
+
+    def test_reverse(self):
+        original = self.data.copy()
+        result = original.ta.reverse
+
+        # Check if first and last time are reversed
+        self.assertEqual(result.index[-1], original.index[0])
+        self.assertEqual(result.index[0], original.index[-1])
+
     def test_ao(self):
         result = pandas_ta.ao(self.high, self.low)
         self.assertIsInstance(result, Series)
