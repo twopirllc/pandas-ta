@@ -15,8 +15,11 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
 
     # Calculate Result
     m = close.size
-    fr = 2 / (fast + 1)
-    sr = 2 / (slow + 1)
+    def weight(length: int) -> float:
+        return 2 / (length + 1)
+
+    fr = weight(fast)
+    sr = weight(slow)
 
     abs_diff = non_zero_range(close, close.shift(length)).abs()
     peer_diff = non_zero_range(close, close.shift(drift)).abs()
@@ -62,6 +65,9 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 10
+    fast (int): Fast MA period.  Default: 2
+    slow (int): Slow MA period.  Default: 30
+    drift (int): The difference period.  Default: 1
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:

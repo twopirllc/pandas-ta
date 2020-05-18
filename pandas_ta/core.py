@@ -275,6 +275,13 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def bias(self, close=None, length=None, mamode=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        from .momentum.bias import bias
+        result = bias(close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def bop(self, open_=None, high=None, low=None, close=None, percentage=False, offset=None, **kwargs):
         open_ = self._get_column(open_, 'open')
         high = self._get_column(high, 'high')
@@ -282,6 +289,16 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from .momentum.bop import bop
         result = bop(open_=open_, high=high, low=low, close=close, percentage=percentage, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def brar(self, open_=None, high=None, low=None, close=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
+        open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        from .momentum.brar import brar
+        result = brar(open_=open_, high=high, low=low, close=close, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -323,6 +340,15 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def kdj(self, high=None, low=None, close=None, length=None, signal=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        from .momentum.kdj import kdj
+        result = kdj(high=high, low=low, close=close, length=length, signal=signal, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def kst(self, close=None, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None, sma3=None, sma4=None, signal=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from .momentum.kst import kst
@@ -348,6 +374,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from .momentum.ppo import ppo
         result = ppo(close=close, fast=fast, slow=slow, percentage=percentage, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
+    def psl(self, close=None, open_=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
+        if open_ is not None:
+            open_ = self._get_column(open_, 'open')
+        close = self._get_column(close, 'close')
+        from .momentum.psl import psl
+        result = psl(close=close, open_=open_, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -599,10 +634,10 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-    def zlma(self, close=None, length=None, offset=None, mamode=None, **kwargs):
+    def zlma(self, close=None, length=None, mamode=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from .overlap.zlma import zlma
-        result = zlma(close=close, length=length, offset=offset, mamode=mamode, **kwargs)
+        result = zlma(close=close, length=length, mamode=mamode, offset=offset, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -752,6 +787,16 @@ class AnalysisIndicators(BasePandasObject):
             self._append(result, **kwargs)
             return result
 
+    def psar(self, high=None, low=None, close=None, af=None, max_af=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        if close is not None:
+            close = self._get_column(close, 'close')
+        from .trend.psar import psar
+        result = psar(high=high, low=low, close=close, af=af, max_af=max_af, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def qstick(self, open_=None, close=None, length=None, offset=None, **kwargs):
         open_ = self._get_column(open_, 'open')
         close = self._get_column(close, 'close')
@@ -794,6 +839,15 @@ class AnalysisIndicators(BasePandasObject):
 
 
     # Volatility Indicators
+    def aberration(self, high=None, low=None, close=None, length=None, atr_length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        from pandas_ta.volatility.aberration import aberration
+        result = aberration(high=high, low=low, close=close, length=length, atr_length=atr_length, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def accbands(self, high=None, low=None, close=None, length=None, c=None, mamode=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')

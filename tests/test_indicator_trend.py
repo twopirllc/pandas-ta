@@ -101,6 +101,26 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'LR_2')
 
+    def test_psar(self):
+        result = pandas_ta.psar(self.high, self.low)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'PSAR_0.02_0.2')
+
+        # Combine Long and Short SAR's into one SAR value
+        psar = result[result.columns[:2]].fillna(0)
+        psar = psar[psar.columns[0]] + psar[psar.columns[1]]
+        psar.name = result.name
+
+        try:
+            expected = tal.SAR(self.high, self.low)
+            pdt.assert_series_equal(psar, expected)
+        except AssertionError as ae:
+            try:
+                psar_corr = pandas_ta.utils.df_error_analysis(psar, expected, col=CORRELATION)
+                self.assertGreater(psar_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(psar, CORRELATION, ex)
+
     def test_qstick(self):
         result = pandas_ta.qstick(self.open, self.close)
         self.assertIsInstance(result, Series)

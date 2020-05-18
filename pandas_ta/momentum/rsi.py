@@ -62,7 +62,7 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 1
-    drift (int): The difference period.   Default: 1
+    drift (int): The difference period.  Default: 1
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:

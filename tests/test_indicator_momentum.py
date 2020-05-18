@@ -79,6 +79,11 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_bias(self):
+        result = pandas_ta.bias(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'BIAS_SMA_26')
+
     def test_bop(self):
         result = pandas_ta.bop(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
@@ -93,6 +98,11 @@ class TestMomentum(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+    def test_brar(self):
+        result = pandas_ta.brar(self.open, self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'BRAR_26')
 
     def test_cci(self):
         result = pandas_ta.cci(self.high, self.low, self.close)
@@ -138,6 +148,11 @@ class TestMomentum(TestCase):
         result = pandas_ta.fisher(self.high, self.low)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'FISHERT_5')
+
+    def test_kdj(self):
+        result = pandas_ta.kdj(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'KDJ_9_3')
 
     def test_kst(self):
         result = pandas_ta.kst(self.close)
@@ -201,6 +216,11 @@ class TestMomentum(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result['PPO_12_26_9'], CORRELATION, ex)
+
+    def test_psl(self):
+        result = pandas_ta.psl(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'PSL_12')
 
     def test_roc(self):
         result = pandas_ta.roc(self.close)

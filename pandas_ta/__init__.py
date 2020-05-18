@@ -21,16 +21,20 @@ else:
 # Momentum
 from .momentum.ao import ao
 from .momentum.apo import apo
+from .momentum.bias import bias
 from .momentum.bop import bop
+from .momentum.brar import brar
 from .momentum.cci import cci
 from .momentum.cg import cg
 from .momentum.cmo import cmo
 from .momentum.coppock import coppock
 from .momentum.fisher import fisher
+from .momentum.kdj import kdj
 from .momentum.kst import kst
 from .momentum.macd import macd
 from .momentum.mom import mom
 from .momentum.ppo import ppo
+from .momentum.psl import psl
 from .momentum.roc import roc
 from .momentum.rsi import rsi
 from .momentum.rvi import rvi
@@ -91,11 +95,13 @@ from .trend.dpo import dpo
 from .trend.increasing import increasing
 from .trend.linear_decay import linear_decay
 from .trend.long_run import long_run
+from .trend.psar import psar
 from .trend.qstick import qstick
 from .trend.short_run import short_run
 from .trend.vortex import vortex
 
 # Volatility
+from .volatility.aberration import aberration
 from .volatility.accbands import accbands
 from .volatility.atr import atr
 from .volatility.bbands import bbands

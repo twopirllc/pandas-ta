@@ -34,6 +34,11 @@ class TestVolatility(TestCase):
     def tearDown(self): pass
     
 
+    def test_aberration(self):
+        result = pandas_ta.aberration(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'ABER_5_15')
+
     def test_accbands(self):
         result = pandas_ta.accbands(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)

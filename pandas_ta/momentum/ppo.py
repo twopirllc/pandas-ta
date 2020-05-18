@@ -40,15 +40,16 @@ def ppo(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
         signalma.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name and Categorize it
-    ppo.name = f"PPO_{fast}_{slow}_{signal}"
-    histogram.name = f"PPOH_{fast}_{slow}_{signal}"
-    signalma.name = f"PPOS_{fast}_{slow}_{signal}"
+    _props = f"_{fast}_{slow}_{signal}"
+    ppo.name = f"PPO{_props}"
+    histogram.name = f"PPOH{_props}"
+    signalma.name = f"PPOS{_props}"
     ppo.category = histogram.category = signalma.category = 'momentum'
 
     # Prepare DataFrame to return
     data = {ppo.name: ppo, histogram.name: histogram, signalma.name: signalma}
     ppodf = DataFrame(data)
-    ppodf.name = f"PPO_{fast}_{slow}_{signal}"
+    ppodf.name = f"PPO{_props}"
     ppodf.category = 'momentum'
 
     return ppodf

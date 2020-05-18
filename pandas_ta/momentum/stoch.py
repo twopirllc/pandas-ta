@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
 from ..overlap.sma import sma
-from ..utils import get_offset, verify_series
+from ..utils import get_offset, non_zero_range, verify_series
 
 def stoch(high, low, close, fast_k=None, slow_k=None, slow_d=None, offset=None, **kwargs):
     """Indicator: Stochastic Oscillator (STOCH)"""
@@ -18,7 +18,7 @@ def stoch(high, low, close, fast_k=None, slow_k=None, slow_d=None, offset=None, 
     lowest_low   =  low.rolling(slow_k).min()
     highest_high = high.rolling(slow_k).max()
 
-    fastk = 100 * (close - lowest_low) / (highest_high - lowest_low)
+    fastk = 100 * (close - lowest_low) / non_zero_range(highest_high, lowest_low)
     fastd = sma(fastk, length=slow_d)
 
     slowk = sma(fastk, length=slow_k)
@@ -51,9 +51,10 @@ def stoch(high, low, close, fast_k=None, slow_k=None, slow_d=None, offset=None, 
     fastk.category = fastd.category = slowk.category = slowd.category = 'momentum'
 
     # Prepare DataFrame to return
+    _props = f"_{fast_k}_{slow_k}_{slow_d}"
     data = {fastk.name: fastk, fastd.name: fastd, slowk.name: slowk, slowd.name: slowd}
     stochdf = DataFrame(data)
-    stochdf.name = f"STOCH_{fast_k}_{slow_k}_{slow_d}"
+    stochdf.name = f"STOCH{_props}"
     stochdf.category = 'momentum'
 
     return stochdf
@@ -73,10 +74,10 @@ Calculation:
     Default Inputs:
         fast_k=14, slow_k=5, slow_d=3
     SMA = Simple Moving Average
-    lowest_low   = low for last fast_k periods
-    highest_high = high for last fast_k periods
+    LL  = low for last fast_k periods
+    HH  = high for last fast_k periods
 
-    FASTK = 100 * (close - lowest_low) / (highest_high - lowest_low)
+    FASTK = 100 * (close - LL) / (HH - LL)
     FASTD = SMA(FASTK, slow_d)
 
     SLOWK = SMA(FASTK, slow_k)

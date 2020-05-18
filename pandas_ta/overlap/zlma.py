@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from .ema import ema
 from .hma import hma
+from .rma import rma
 from .sma import sma
 from .wma import wma
 from ..utils import get_offset, verify_series
 
-def zlma(close, length=None, offset=None, mamode=None, **kwargs):
+def zlma(close, length=None, mamode=None, offset=None, **kwargs):
     """Indicator: Zero Lag Moving Average (ZLMA)"""
     # Validate Arguments
     close = verify_series(close)
@@ -17,25 +18,24 @@ def zlma(close, length=None, offset=None, mamode=None, **kwargs):
     # Calculate Result
     lag = int(0.5 * (length - 1))
     close = 2 * close - close.shift(lag)
+
     if mamode is None or mamode == 'ema':
         zlma = ema(close, length=length, **kwargs)
-        kind = "E"
     if mamode == 'hma':
         zlma = hma(close, length=length, **kwargs)
-        kind = "H"
+    if mamode == 'rma':
+        zlma = rma(close, length=length, **kwargs)
     if mamode == 'sma':
         zlma = sma(close, length=length, **kwargs)
-        kind = "S"
     if mamode == 'wma':
         zlma = wma(close, length=length, **kwargs)
-        kind = "W"
 
     # Offset
     if offset != 0:
         zlma = zlma.shift(offset)
 
     # Name & Category
-    zlma.name = f"ZL{kind}MA_{length}"
+    zlma.name = f"ZL_{zlma.name}"
     zlma.category = 'overlap'
 
     return zlma
@@ -56,13 +56,14 @@ Calculation:
         length=10, mamode=EMA
     EMA = Exponential Moving Average
     lag = int(0.5 * (length - 1))
-    source = 2 * close - close.shift(lag)
-    ZLMA = EMA(source, length)
+
+    SOURCE = 2 * close - close.shift(lag)
+    ZLMA = MA(kind=mamode, SOURCE, length)
 
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 10
-    mamode (str): Two options: None or 'ema'.  Default: 'ema'
+    mamode (str): Options: 'ema', 'hma', 'sma', 'wma'.  Default: 'ema'
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:

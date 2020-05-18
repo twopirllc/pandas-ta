@@ -9,7 +9,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 ## Features
 
-* Has 89+ indicators.
+* Has 95+ indicators.
 * Example Jupyter Notebook under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
@@ -18,15 +18,18 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 ## Recent Changes
 
-* Updated the example notebook.
-* Trend Return, ```ta.trend_return()```, has a proper index.  More consistent with the module.
-* Added an 'adjusted' property to the 'ta' extension so you can override the default 'close' column.  By default, ```df.ta.adjusted = None```.  If the adjusted close column is 'adj_close' for example, then set ```df.ta.adjusted = 'adj_close'```.
-
+* Added indicators:
+    - __Bias__ (bias)
+    - __KDJ__ (kdj)
+    - __Parabolic Stop and Reverse__ (psar)
+    - __Psycholigical Line__ (psl)
+* User Added Indicators:
+    - __Aberration__ (aberration)
+    - __BRAR__ (brar)
 
 ### What is a Pandas DataFrame Extension?
 
-A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html), extends a DataFrame allowing one to add more functionality and features to Pandas to suit your needs.  As such, it is now easier to run Technical Analysis on existing Financial Time Series without leaving the current DataFrame.  This extension by default returns the Indicator result or, inclusively, it can append the result to the existing DataFrame by including the parameter 
-'append=True' in the method call. See examples below.
+A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html), extends a DataFrame allowing one to add more functionality and features to Pandas to suit your needs.  As such, it is now easier to run Technical Analysis on existing Financial Time Series without leaving the current DataFrame.  This extension by default returns the Indicator result or it can append the result to the existing DataFrame by including the parameter 'append=True' in the method call. Examples below.
 
 
 
@@ -112,24 +115,28 @@ df.ta.adjusted = None
 
 # Technical Analysis Indicators (by Category)
 
-## _Momentum_ (21)
+## _Momentum_ (25)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
+* _Bias_: **bias**
 * _Balance of Power_: **bop**
+* _BRAR_: **brar**
 * _Commodity Channel Index_: **cci**
 * _Center of Gravity_: **cg**
 * _Chande Momentum Oscillator_: **cmo**
 * _Coppock Curve_: **coppock**
 * _Fisher Transform_: **fisher**
+* _KDJ_: **kdj**
 * _KST Oscillator_: **kst**
 * _Moving Average Convergence Divergence_: **macd**
 * _Momentum_: **mom**
 * _Percentage Price Oscillator_: **ppo**
+* _Psychological Line_: **psl**
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
 * _Relative Vigor Index_: **rvi**
-* _Slope_: **slope**
+* _Slope_: **slope*
 * _Stochastic Oscillator_: **stoch**
 * _Trix_: **trix**
 * _True strength index_: **tsi**
@@ -201,7 +208,7 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
-## _Trend_ (11)
+## _Trend_ (12)
 
 * _Average Directional Movement Index_: **adx**
 * _Archer Moving Averages Trends_: **amat**
@@ -211,6 +218,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Increasing_: **increasing**
 * _Linear Decay_: **linear_decay**
 * _Long Run_: **long_run**
+* _Parabolic Stop and Reverse_: **psar**
 * _Q Stick_: **qstick**
 * _Short Run_: **short_run**
 * _Vortex_: **vortex**
@@ -224,8 +232,9 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Cross_: **cross**
 
 
-## _Volatility_ (8)
+## _Volatility_ (9)
 
+* _Aberration_: **aberration**
 * _Acceleration Bands_: **accbands**
 * _Average True Range_: **atr**
 * _Bollinger Bands_: **bbands**

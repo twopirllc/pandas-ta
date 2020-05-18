@@ -316,4 +316,4 @@ class TestOverlap(TestCase):
     def test_zlma(self):
         result = pandas_ta.zlma(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'ZLEMA_10')
+        self.assertEqual(result.name, 'ZL_EMA_10')
