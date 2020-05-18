@@ -23,6 +23,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     - __KDJ__ (kdj)
     - __Parabolic Stop and Reverse__ (psar)
     - __Psycholigical Line__ (psl)
+    - __Weighted Closing Price__ (wcp)
 * User Added Indicators:
     - __Aberration__ (aberration)
     - __BRAR__ (brar)
@@ -148,7 +149,7 @@ df.ta.adjusted = None
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-## _Overlap_ (24)
+## _Overlap_ (25)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -174,6 +175,7 @@ df.ta.adjusted = None
 * _Triangular Moving Average_: **trima**
 * _Volume Weighted Average Price_: **vwap** 
 * _Volume Weighted Moving Average_: **vwma**
+* _Weighted Closing Price_: **wcp**
 * _Weighted Moving Average_: **wma**
 * _Zero Lag Moving Average_: **zlma**
 

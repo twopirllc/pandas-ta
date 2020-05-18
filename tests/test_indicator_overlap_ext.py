@@ -133,6 +133,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'VWMA_10')
 
+    def test_wcp_ext(self):
+        self.data.ta.wcp(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'WCP')
+
     def test_wma_ext(self):
         self.data.ta.wma(append=True)
         self.assertIsInstance(self.data, DataFrame)

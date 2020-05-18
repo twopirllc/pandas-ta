@@ -627,6 +627,15 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def wcp(self, high=None, low=None, close=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        from .overlap.wcp import wcp
+        result = wcp(high=high, low=low, close=close, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def wma(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from .overlap.wma import wma

@@ -68,6 +68,7 @@ from .overlap.tema import tema
 from .overlap.trima import trima
 from .overlap.vwap import vwap
 from .overlap.vwma import vwma
+from .overlap.wcp import wcp
 from .overlap.wma import wma
 from .overlap.zlma import zlma
 

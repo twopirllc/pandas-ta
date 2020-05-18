@@ -298,6 +298,21 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'VWMA_10')
 
+    def test_wcp(self):
+        result = pandas_ta.wcp(self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'WCP')
+
+        try:
+            expected = tal.WCLPRICE(self.high, self.low, self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)
+
     def test_wma(self):
         result = pandas_ta.wma(self.close)
         self.assertIsInstance(result, Series)
