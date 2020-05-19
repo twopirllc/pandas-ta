@@ -122,6 +122,11 @@ class TestVolatility(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_pdist(self):
+        result = pandas_ta.pdist(self.open, self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'PDIST')
+
     def test_true_range(self):
         result = pandas_ta.true_range(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)

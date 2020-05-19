@@ -22,6 +22,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     - __Bias__ (bias)
     - __KDJ__ (kdj)
     - __Parabolic Stop and Reverse__ (psar)
+    - __Price Distance__ (pdist)
     - __Psycholigical Line__ (psl)
     - __Weighted Closing Price__ (wcp)
 * User Added Indicators:
@@ -234,7 +235,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Cross_: **cross**
 
 
-## _Volatility_ (9)
+## _Volatility_ (10)
 
 * _Aberration_: **aberration**
 * _Acceleration Bands_: **accbands**
@@ -244,6 +245,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Keltner Channel_: **kc**
 * _Mass Index_: **massi**
 * _Normalized Average True Range_: **natr**
+* _Price Distance_: **pdist**
 * _True Range_: **true_range**
 
 | _Average True Range_ (ATR) |

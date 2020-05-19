@@ -60,6 +60,11 @@ class TestVolatilityExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'NATR_14')
 
+    def test_pdist_ext(self):
+        self.data.ta.pdist(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'PDIST')
+
     def test_true_range_ext(self):
         self.data.ta.true_range(append=True)
         self.assertIsInstance(self.data, DataFrame)

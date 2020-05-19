@@ -109,6 +109,7 @@ from .volatility.bbands import bbands
 from .volatility.donchian import donchian
 from .volatility.kc import kc
 from .volatility.massi import massi
+from .volatility.pdist import pdist
 from .volatility.natr import natr
 from .volatility.true_range import true_range
 
