@@ -20,6 +20,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 * Added indicators:
     - __Bias__ (bias)
+    - __Choppiness Index__ (chop)
     - __KDJ__ (kdj)
     - __Parabolic Stop and Reverse__ (psar)
     - __Price Distance__ (pdist)
@@ -211,11 +212,12 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
-## _Trend_ (12)
+## _Trend_ (13)
 
 * _Average Directional Movement Index_: **adx**
 * _Archer Moving Averages Trends_: **amat**
 * _Aroon Oscillator_: **aroon**
+* _Choppiness Index_: **chop**
 * _Decreasing_: **decreasing**
 * _Detrended Price Oscillator_: **dpo**
 * _Increasing_: **increasing**

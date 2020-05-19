@@ -76,6 +76,11 @@ class TestTrend(TestCase):
             except Exception as ex:
                 error_analysis(result.iloc[:,1], CORRELATION, ex, newline=False)
 
+    def test_chop(self):
+        result = pandas_ta.chop(self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'CHOP_14_1_100')
+
     def test_decreasing(self):
         result = pandas_ta.decreasing(self.close)
         self.assertIsInstance(result, Series)

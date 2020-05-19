@@ -38,6 +38,11 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-2:]), ['AROOND_14', 'AROONU_14'])
 
+    def test_chop_ext(self):
+        self.data.ta.chop(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'CHOP_14_1_100')
+
     def test_decreasing_ext(self):
         self.data.ta.decreasing(append=True)
         self.assertIsInstance(self.data, DataFrame)

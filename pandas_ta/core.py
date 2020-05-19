@@ -758,6 +758,15 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def chop(self, high=None, low=None, close=None, length=None, atr_length=None, scalar=None, drift=None, offset=None, **kwargs):
+        high = self._get_column(close, 'high')
+        low = self._get_column(close, 'low')
+        close = self._get_column(close, 'close')
+        from pandas_ta.trend.chop import chop
+        result = chop(high=high, low=low, close=close, length=length, atr_length=atr_length, scalar=scalar, drift=drift, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def decreasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.decreasing import decreasing

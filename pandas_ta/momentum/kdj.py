@@ -14,8 +14,8 @@ def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, 
     offset = get_offset(offset)
 
     # Calculate Result
-    lowest_low = low.rolling(length).min()
     highest_high = high.rolling(length).max()
+    lowest_low = low.rolling(length).min()
 
     fastk = 100 * (close - lowest_low) / non_zero_range(highest_high, lowest_low)
 
