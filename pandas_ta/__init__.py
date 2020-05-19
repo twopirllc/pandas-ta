@@ -92,6 +92,7 @@ from .trend.adx import adx
 from .trend.amat import amat
 from .trend.aroon import aroon
 from .trend.chop import chop
+from .trend.cksp import cksp
 from .trend.decreasing import decreasing
 from .trend.dpo import dpo
 from .trend.increasing import increasing

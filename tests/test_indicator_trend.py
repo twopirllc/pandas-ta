@@ -81,6 +81,11 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'CHOP_14_1_100')
 
+    def test_cksp(self):
+        result = pandas_ta.cksp(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'CKSP_10_1_9')
+
     def test_decreasing(self):
         result = pandas_ta.decreasing(self.close)
         self.assertIsInstance(result, Series)

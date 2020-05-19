@@ -1,3 +1,8 @@
+[![Python Version](https://img.shields.io/pypi/pyversions/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
+[![PyPi Version](https://img.shields.io/pypi/v/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
+[![Package Status](https://img.shields.io/pypi/status/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
+[![Downloads](https://img.shields.io/pypi/dm/pandas_ta.svg?style=flat)](https://pypistats.org/packages/pandas_ta)
+
 # Technical Analysis Library in Python 3.7
 ![Example Chart](/images/TA_Chart.png)
 
@@ -21,6 +26,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * Added indicators:
     - __Bias__ (bias)
     - __Choppiness Index__ (chop)
+    - __Chande Kroll Stop__ (cksp)
     - __KDJ__ (kdj)
     - __Parabolic Stop and Reverse__ (psar)
     - __Price Distance__ (pdist)
@@ -212,12 +218,13 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
-## _Trend_ (13)
+## _Trend_ (14)
 
 * _Average Directional Movement Index_: **adx**
 * _Archer Moving Averages Trends_: **amat**
 * _Aroon Oscillator_: **aroon**
 * _Choppiness Index_: **chop**
+* _Chande Kroll Stop_: **cksp**
 * _Decreasing_: **decreasing**
 * _Detrended Price Oscillator_: **dpo**
 * _Increasing_: **increasing**

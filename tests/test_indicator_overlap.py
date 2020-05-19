@@ -34,7 +34,7 @@ class TestOverlap(TestCase):
 
     def setUp(self): pass
     def tearDown(self): pass
-    
+
 
     def test_dema(self):
         result = pandas_ta.dema(self.close)

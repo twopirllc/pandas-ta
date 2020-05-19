@@ -767,6 +767,15 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def cksp(self, high=None, low=None, close=None, p=None, x=None, q=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+        from pandas_ta.trend.cksp import cksp
+        result = cksp(high=high, low=low, close=close, p=p, x=x, q=q, offset=offset, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def decreasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.decreasing import decreasing
