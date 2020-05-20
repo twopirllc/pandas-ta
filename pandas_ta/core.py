@@ -157,12 +157,29 @@ class AnalysisIndicators(BasePandasObject):
         if 'append' in kwargs and kwargs['append']:
             df = self._df
             if df is None or result is None: return
-            else:                
+            else:
                 if isinstance(result, pd.DataFrame):
                     for i, column in enumerate(result.columns):
                         df[column] = result.iloc[:,i]
                 else:
                     df[result.name] = result
+
+
+    def _add_prefix_suffix(self, result=None, **kwargs):
+        """Add prefix and/or suffix to the result columns"""
+        if result is None: return
+        else:
+            prefix = ''
+            if 'prefix' in kwargs:
+                prefix = kwargs['prefix'] + '_'
+            suffix = ''
+            if 'suffix' in kwargs:
+                suffix = '_' + kwargs['suffix']
+
+            if isinstance(result, pd.Series):
+                result.name = prefix + result.name + suffix
+            else:
+                result.columns = [prefix + column + suffix for column in result.columns]
 
 
     def _get_column(self, series, default):
@@ -265,6 +282,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         from pandas_ta.momentum.ao import ao
         result = ao(high=high, low=low, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -272,6 +290,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.apo import apo
         result = apo(close=close, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -279,6 +298,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.bias import bias
         result = bias(close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -289,6 +309,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.bop import bop
         result = bop(open_=open_, high=high, low=low, close=close, percentage=percentage, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -299,6 +320,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.brar import brar
         result = brar(open_=open_, high=high, low=low, close=close, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -308,6 +330,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.cci import cci
         result = cci(high=high, low=low, close=close, length=length, c=c, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -315,6 +338,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.cg import cg
         result = cg(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -322,6 +346,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.cmo import cmo
         result = cmo(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -329,6 +354,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.coppock import coppock
         result = coppock(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -337,6 +363,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         from pandas_ta.momentum.fisher import fisher
         result = fisher(high=high, low=low, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -346,6 +373,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.kdj import kdj
         result = kdj(high=high, low=low, close=close, length=length, signal=signal, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -353,6 +381,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.kst import kst
         result = kst(close=close, roc1=roc1, roc2=roc2, roc3=roc3, roc4=roc4, sma1=sma1, sma2=sma2, sma3=sma3, sma4=sma4, signal=signal, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -360,6 +389,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.macd import macd
         result = macd(close=close, fast=fast, slow=slow, signal=signal, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -367,6 +397,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.mom import mom
         result = mom(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -374,6 +405,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.ppo import ppo
         result = ppo(close=close, fast=fast, slow=slow, percentage=percentage, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -383,6 +415,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.psl import psl
         result = psl(close=close, open_=open_, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -390,6 +423,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.roc import roc
         result = roc(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -397,6 +431,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.rsi import rsi
         result = rsi(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -407,6 +442,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.rvi import rvi
         result = rvi(open_=open_, high=high, low=low, close=close, length=length, swma_length=swma_length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -414,6 +450,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.slope import slope
         result = slope(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -423,6 +460,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.stoch import stoch
         result = stoch(high=high, low=low, close=close, fast_k=fast_k, slow_k=slow_k, slow_d=slow_d, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -430,6 +468,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.trix import trix
         result = trix(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -437,6 +476,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.tsi import tsi
         result = tsi(close=close, fast=fast, slow=slow, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -446,6 +486,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.uo import uo
         result = uo(high=high, low=low, close=close, fast=fast, medium=medium, slow=slow, fast_w=fast_w, medium_w=medium_w, slow_w=slow_w, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -455,6 +496,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.willr import willr
         result = willr(high=high, low=low, close=close, length=length, percentage=percentage, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -464,6 +506,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.dema import dema
         result = dema(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -471,6 +514,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.ema import ema
         result = ema(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -478,6 +522,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.fwma import fwma
         result = fwma(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -486,6 +531,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         from pandas_ta.overlap.hl2 import hl2
         result = hl2(high=high, low=low, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -495,6 +541,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.hlc3 import hlc3
         result = hlc3(high=high, low=low, close=close, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -502,6 +549,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.hma import hma
         result = hma(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -509,6 +557,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.kama import kama
         result = kama(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -518,6 +567,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.ichimoku import ichimoku
         result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result, span
 
@@ -525,6 +575,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.linreg import linreg
         result = linreg(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -532,6 +583,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.midpoint import midpoint
         result = midpoint(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -540,6 +592,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         from pandas_ta.overlap.midprice import midprice
         result = midprice(high=high, low=low, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -550,6 +603,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.ohlc4 import ohlc4
         result = ohlc4(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -557,6 +611,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.pwma import pwma
         result = pwma(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -564,6 +619,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.rma import rma
         result = rma(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -571,6 +627,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.sinwma import sinwma
         result = sinwma(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -578,6 +635,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.sma import sma
         result = sma(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -585,6 +643,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.swma import swma
         result = swma(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -592,6 +651,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.t3 import t3
         result = t3(close=close, length=length, a=a, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -599,6 +659,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.tema import tema
         result = tema(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -606,6 +667,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.trima import trima
         result = trima(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -616,6 +678,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.overlap.vwap import vwap
         result = vwap(high=high, low=low, close=close, volume=volume, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)        
         return result
 
@@ -624,6 +687,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.overlap.vwma import vwma
         result = vwma(close=close, volume=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -640,6 +704,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.wma import wma
         result = wma(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -647,6 +712,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.overlap.zlma import zlma
         result = zlma(close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -656,6 +722,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.performance.log_return import log_return
         result = log_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -663,6 +730,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.performance.percent_return import percent_return
         result = percent_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -671,6 +739,7 @@ class AnalysisIndicators(BasePandasObject):
         trend = self._get_column(trend, f"{trend}")
         from pandas_ta.performance.trend_return import trend_return
         result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, trend_reset=trend_reset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -680,6 +749,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.statistics.kurtosis import kurtosis
         result = kurtosis(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -687,6 +757,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.statistics.mad import mad
         result = mad(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -694,6 +765,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.statistics.median import median
         result = median(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -701,6 +773,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.statistics.quantile import quantile
         result = quantile(close=close, length=length, q=q, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -708,6 +781,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.statistics.skew import skew
         result = skew(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -715,6 +789,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.statistics.stdev import stdev
         result = stdev(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -722,6 +797,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.statistics.variance import variance
         result = variance(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -729,6 +805,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.statistics.zscore import zscore
         result = zscore(close=close, length=length, std=std, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -741,6 +818,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.adx import adx
         result = adx(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -748,6 +826,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.amat import amat
         result = amat(close=close, fast=fast, slow=slow, mamode=mamode, lookback=lookback, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -755,6 +834,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.aroon import aroon
         result = aroon(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -780,6 +860,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.decreasing import decreasing
         result = decreasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -787,6 +868,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.dpo import dpo
         result = dpo(close=close, length=length, centered=centered, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -794,6 +876,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.increasing import increasing
         result = increasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -801,6 +884,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.linear_decay import linear_decay
         result = linear_decay(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -811,6 +895,7 @@ class AnalysisIndicators(BasePandasObject):
             slow = self._get_column(slow, f"{slow}")
             from pandas_ta.trend.long_run import long_run
             result = long_run(fast=fast, slow=slow, length=length, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
             self._append(result, **kwargs)
             return result
 
@@ -821,6 +906,7 @@ class AnalysisIndicators(BasePandasObject):
             close = self._get_column(close, 'close')
         from pandas_ta.trend.psar import psar
         result = psar(high=high, low=low, close=close, af=af, max_af=max_af, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -829,6 +915,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.qstick import qstick
         result = qstick(open_=open_, close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -839,6 +926,7 @@ class AnalysisIndicators(BasePandasObject):
             slow = self._get_column(slow, f"{slow}")
             from pandas_ta.trend.short_run import short_run
             result = short_run(fast=fast, slow=slow, length=length, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
             self._append(result, **kwargs)
             return result
 
@@ -848,6 +936,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.trend.vortex import vortex
         result = vortex(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -894,6 +983,7 @@ class AnalysisIndicators(BasePandasObject):
             a = self._get_column(a, f"{a}")
             b = self._get_column(b, f"{b}")
             result = cross(series_a=a, series_b=b, above=above, asint=asint, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
             self._append(result, **kwargs)
             return result
 
@@ -906,6 +996,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.aberration import aberration
         result = aberration(high=high, low=low, close=close, length=length, atr_length=atr_length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -915,6 +1006,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.accbands import accbands
         result = accbands(high=high, low=low, close=close, length=length, c=c, mamode=mamode, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -924,6 +1016,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.atr import atr
         result = atr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -931,6 +1024,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.bbands import bbands
         result = bbands(close=close, length=length, stdev=stdev, mamode=mamode, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -938,6 +1032,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.donchian import donchian
         result = donchian(close=close, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -947,6 +1042,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.kc import kc
         result = kc(high=high, low=low, close=close, length=length, scalar=scalar, mamode=mamode, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -955,6 +1051,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         from pandas_ta.volatility.massi import massi
         result = massi(high=high, low=low, fast=fast, slow=slow, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -964,6 +1061,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.natr import natr
         result = natr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -983,6 +1081,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.true_range import true_range
         result = true_range(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -998,6 +1097,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.ad import ad
         result = ad(high=high, low=low, close=close, volume=volume, open_=open_, signed=signed, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1010,6 +1110,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.adosc import adosc
         result = adosc(high=high, low=low, close=close, volume=volume, open_=open_, fast=fast, slow=slow, signed=signed, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1018,6 +1119,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.aobv import aobv
         result = aobv(close=close, volume=volume, fast=fast, slow=slow, mamode=mamode, max_lookback=max_lookback, min_lookback=min_lookback, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1030,6 +1132,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.cmf import cmf
         result = cmf(high=high, low=low, close=close, volume=volume, open_=open_, length=length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1038,6 +1141,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.efi import efi
         result = efi(close=close, volume=volume, length=length, offset=offset, mamode=mamode, drift=drift, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1048,6 +1152,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.eom import eom
         result = eom(high=high, low=low, close=close, volume=volume, length=length, divisor=divisor, offset=offset, drift=drift, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1058,6 +1163,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.mfi import mfi
         result = mfi(high=high, low=low, close=close, volume=volume, length=length, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1066,6 +1172,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.nvi import nvi
         result = nvi(close=close, volume=volume, length=length, initial=initial, signed=signed, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1074,6 +1181,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.obv import obv
         result = obv(close=close, volume=volume, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1082,6 +1190,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.pvi import pvi
         result = pvi(close=close, volume=volume, length=length, initial=initial, signed=signed, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1090,6 +1199,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.pvol import pvol
         result = pvol(close=close, volume=volume, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1098,6 +1208,7 @@ class AnalysisIndicators(BasePandasObject):
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.pvt import pvt
         result = pvt(close=close, volume=volume, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -1105,4 +1216,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.vp import vp
-        return vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
+        result = vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
+        self._append(result, **kwargs)
+        return result
