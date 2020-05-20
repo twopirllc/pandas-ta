@@ -18,6 +18,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * Example Jupyter Notebook under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
+* Easily add prefixes or suffixes or both to columns names.
 * Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups).
 
 
@@ -41,7 +42,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     - __Aberration__ (aberration)
     - __BRAR__ (brar)
 
-### What is a Pandas DataFrame Extension?
+## What is a Pandas DataFrame Extension?
 
 A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html), extends a DataFrame allowing one to add more functionality and features to Pandas to suit your needs.  As such, it is now easier to run Technical Analysis on existing Financial Time Series without leaving the current DataFrame.  This extension by default returns the Indicator result or it can append the result to the existing DataFrame by including the parameter 'append=True' in the method call. Examples below.
 
@@ -101,6 +102,18 @@ help(ta.log_return)
 help(pd.DataFrame().ta.log_return)
 ```
 
+## New DataFrame kwargs: *prefix* and *suffix*
+
+```python
+prehl2 = df.ta.hl2(prefix="pre")
+print(prehl2.columns)  # "pre_HL2"
+
+endhl2 = df.ta.hl2(suffix="end")
+print(endhl2.columns)  # "HL2_end"
+
+bothhl2 = df.ta.hl2(suffix="end")
+print(bothhl2.columns)  # "pre_HL2_end"
+```
 
 ## New DataFrame Properties: *reverse* & *datetime_ordered*
 

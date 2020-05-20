@@ -169,12 +169,12 @@ class AnalysisIndicators(BasePandasObject):
         """Add prefix and/or suffix to the result columns"""
         if result is None: return
         else:
-            prefix = ''
+            prefix = suffix = ''
+
             if 'prefix' in kwargs:
-                prefix = kwargs['prefix'] + '_'
-            suffix = ''
+                prefix = f"{kwargs['prefix']}_"
             if 'suffix' in kwargs:
-                suffix = '_' + kwargs['suffix']
+                suffix = f"_{kwargs['suffix']}"
 
             if isinstance(result, pd.Series):
                 result.name = prefix + result.name + suffix
