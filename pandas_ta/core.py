@@ -836,6 +836,40 @@ class AnalysisIndicators(BasePandasObject):
             self._append(result, **kwargs)
             return result
 
+    def above(self, a=None, b=None, asint=True, offset=None, **kwargs):
+        if a is None and b is None: return self._df
+        else:
+            a = self._get_column(a, f"{a}")
+            b = self._get_column(b, f"{b}")
+            result = above(series_a=a, series_b=b, asint=asint, offset=offset, **kwargs)
+            self._append(result, **kwargs)
+            return result
+    
+    def above_value(self, a=None, value=None, asint=True, offset=None, **kwargs):
+        if a is None and value is None: return self._df
+        else:
+            a = self._get_column(a, f"{a}")
+            result = above_value(series_a=a, value=value, asint=asint, offset=offset, **kwargs)
+            self._append(result, **kwargs)
+            return result
+
+    def below(self, a=None, b=None, asint=True, offset=None, **kwargs):
+        if a is None and b is None: return self._df
+        else:
+            a = self._get_column(a, f"{a}")
+            b = self._get_column(b, f"{b}")
+            result = below(series_a=a, series_b=b, asint=asint, offset=offset, **kwargs)
+            self._append(result, **kwargs)
+            return result
+    
+    def below_value(self, a=None, value=None, asint=True, offset=None, **kwargs):
+        if a is None and value is None: return self._df
+        else:
+            a = self._get_column(a, f"{a}")
+            result = below_value(series_a=a, value=value, asint=asint, offset=offset, **kwargs)
+            self._append(result, **kwargs)
+            return result
+
 
 
     # Volatility Indicators
