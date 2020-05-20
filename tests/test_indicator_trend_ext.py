@@ -68,6 +68,11 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'LR_2')
 
+    def test_psar_ext(self):
+        self.data.ta.psar(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ['PSARl_0.02_0.2', 'PSARs_0.02_0.2', 'PSARaf_0.02_0.2', 'PSARr_0.02_0.2'])
+
     def test_qstick_ext(self):
         self.data.ta.qstick(append=True)
         self.assertIsInstance(self.data, DataFrame)

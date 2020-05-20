@@ -20,6 +20,11 @@ class TestVolatilityExtension(TestCase):
     def tearDown(self): pass
 
 
+    def test_aberration_ext(self):
+        self.data.ta.aberration(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ['ABER_ZG_5_15', 'ABER_SG_5_15', 'ABER_XG_5_15', 'ABER_ATR_5_15'])
+
     def test_accbands_ext(self):
         self.data.ta.accbands(append=True)
         self.assertIsInstance(self.data, DataFrame)
