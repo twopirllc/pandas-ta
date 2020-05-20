@@ -854,15 +854,6 @@ class AnalysisIndicators(BasePandasObject):
 
 
     # Utility Indicators
-    def cross(self, a=None, b=None, above=True, asint=True, offset=None, **kwargs):
-        if a is None and b is None: return self._df
-        else:
-            a = self._get_column(a, f"{a}")
-            b = self._get_column(b, f"{b}")
-            result = cross(series_a=a, series_b=b, above=above, asint=asint, offset=offset, **kwargs)
-            self._append(result, **kwargs)
-            return result
-
     def above(self, a=None, b=None, asint=True, offset=None, **kwargs):
         if a is None and b is None: return self._df
         else:
@@ -894,6 +885,15 @@ class AnalysisIndicators(BasePandasObject):
         else:
             a = self._get_column(a, f"{a}")
             result = below_value(series_a=a, value=value, asint=asint, offset=offset, **kwargs)
+            self._append(result, **kwargs)
+            return result
+
+    def cross(self, a=None, b=None, above=True, asint=True, offset=None, **kwargs):
+        if a is None and b is None: return self._df
+        else:
+            a = self._get_column(a, f"{a}")
+            b = self._get_column(b, f"{b}")
+            result = cross(series_a=a, series_b=b, above=above, asint=asint, offset=offset, **kwargs)
             self._append(result, **kwargs)
             return result
 
