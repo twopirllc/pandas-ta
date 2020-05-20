@@ -157,12 +157,18 @@ class AnalysisIndicators(BasePandasObject):
         if 'append' in kwargs and kwargs['append']:
             df = self._df
             if df is None or result is None: return
-            else:                
+            else:
+                prefix = ''
+                if 'prefix' in kwargs:
+                    prefix = kwargs['prefix'] + '_'
+                suffix = ''
+                if 'suffix' in kwargs:
+                    suffix = '_' + kwargs['suffix']
                 if isinstance(result, pd.DataFrame):
                     for i, column in enumerate(result.columns):
-                        df[column] = result.iloc[:,i]
+                        df[prefix + column + suffix] = result.iloc[:,i]
                 else:
-                    df[result.name] = result
+                    df[prefix + result.name + suffix] = result
 
 
     def _get_column(self, series, default):
