@@ -14,7 +14,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 ## Features
 
-* Has 95+ indicators.
+* Has 100+ indicators and utility functions.
 * Example Jupyter Notebook under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
@@ -32,6 +32,11 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     - __Price Distance__ (pdist)
     - __Psycholigical Line__ (psl)
     - __Weighted Closing Price__ (wcp)
+* Added utilities:
+    - __Above__ (above)
+    - __Above Value__ (above_value)
+    - __Below__ (below)
+    - __Below Value__ (below_value)
 * User Added Indicators:
     - __Aberration__ (aberration)
     - __BRAR__ (brar)
@@ -239,10 +244,13 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example ADX](/images/SPY_ADX.png) |
 
-## _Utility_ (1)
+## _Utility_ (5)
 
+* _Above_: **above**
+* _Above Value_: **above_value**
+* _Below_: **below**
+* _Below Value_: **below_value**
 * _Cross_: **cross**
-
 
 ## _Volatility_ (10)
 
@@ -284,6 +292,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 # Contributors
 * [allahyarzadeh](https://github.com/allahyarzadeh)
+* [lluissalord](https://github.com/lluissalord)
 
 
 # Inspiration

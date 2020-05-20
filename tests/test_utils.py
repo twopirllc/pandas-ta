@@ -7,16 +7,83 @@ import numpy as np
 import numpy.testing as npt
 from pandas import DataFrame, Series
 
+data = {
+    'zero': [0, 0],
+    'a': [0, 1],
+    'b': [1, 0],
+    'c': [1, 1],
+    'crossed': [0, 1],
+}
 
 class TestUtilities(TestCase):
     def setUp(self):
-        self.crosseddf = DataFrame({'a': [0, 1], 'b': [1, 0], 'crossed': [0, 1]})
+        self.crosseddf = DataFrame(data)
         self.utils = pandas_ta.utils
 
     def tearDown(self):
-        del self.utils
         del self.crosseddf
+        del self.utils
 
+    def test__above_below(self):
+        result = self.utils._above_below(self.crosseddf['a'], self.crosseddf['zero'], above=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'a_A_zero')
+        npt.assert_array_equal(result, self.crosseddf['c'])
+
+        result = self.utils._above_below(self.crosseddf['a'], self.crosseddf['zero'], above=False)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'a_B_zero')
+        npt.assert_array_equal(result, self.crosseddf['b'])
+
+        result = self.utils._above_below(self.crosseddf['c'], self.crosseddf['zero'], above=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'c_A_zero')
+        npt.assert_array_equal(result, self.crosseddf['c'])
+
+        result = self.utils._above_below(self.crosseddf['c'], self.crosseddf['zero'], above=False)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'c_B_zero')
+        npt.assert_array_equal(result, self.crosseddf['zero'])
+
+    def test_above(self):
+        result = self.utils.above(self.crosseddf['a'], self.crosseddf['zero'])
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'a_A_zero')
+        npt.assert_array_equal(result, self.crosseddf['c'])
+
+        result = self.utils.above(self.crosseddf['zero'], self.crosseddf['a'])
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'zero_A_a')
+        npt.assert_array_equal(result, self.crosseddf['b'])
+
+    def test_above_value(self):
+        result = self.utils.above_value(self.crosseddf['a'], 0)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'a_A_0')
+        npt.assert_array_equal(result, self.crosseddf['c'])
+
+        result = self.utils.above_value(self.crosseddf['a'], self.crosseddf['zero'])
+        self.assertIsNone(result)
+
+    def test_below(self):
+        result = self.utils.below(self.crosseddf['zero'], self.crosseddf['a'])
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'zero_B_a')
+        npt.assert_array_equal(result, self.crosseddf['c'])
+
+        result = self.utils.below(self.crosseddf['zero'], self.crosseddf['a'])
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'zero_B_a')
+        npt.assert_array_equal(result, self.crosseddf['c'])
+
+    def test_below_value(self):
+        result = self.utils.below_value(self.crosseddf['a'], 0)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'a_B_0')
+        npt.assert_array_equal(result, self.crosseddf['b'])
+
+        result = self.utils.below_value(self.crosseddf['a'], self.crosseddf['zero'])
+        self.assertIsNone(result)
 
     def test_combination(self):
         self.assertIsNotNone(self.utils.combination())
