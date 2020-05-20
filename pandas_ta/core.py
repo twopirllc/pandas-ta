@@ -298,6 +298,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from .momentum.bias import bias
         result = bias(close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -319,6 +320,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from .momentum.brar import brar
         result = brar(open_=open_, high=high, low=low, close=close, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -371,6 +373,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from .momentum.kdj import kdj
         result = kdj(high=high, low=low, close=close, length=length, signal=signal, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -412,6 +415,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from .momentum.psl import psl
         result = psl(close=close, open_=open_, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -875,6 +879,7 @@ class AnalysisIndicators(BasePandasObject):
             close = self._get_column(close, 'close')
         from .trend.psar import psar
         result = psar(high=high, low=low, close=close, af=af, max_af=max_af, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
@@ -930,6 +935,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.volatility.aberration import aberration
         result = aberration(high=high, low=low, close=close, length=length, atr_length=atr_length, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
 
