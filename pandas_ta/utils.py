@@ -57,6 +57,52 @@ def cross(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =
     return cross
 
 
+def above(series_a:pd.Series, series_b:pd.Series, asint:bool =True, offset:int =None, **kwargs):
+    return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)
+
+
+def above_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =None, **kwargs):
+    series_b = pd.Series(value, index=series_a.index, name=f'{value}'.replace('.','_'))
+    return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)
+
+
+def below(series_a:pd.Series, series_b:pd.Series, asint:bool =True, offset:int =None, **kwargs):
+    return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
+
+
+def below_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =None, **kwargs):
+    series_b = pd.Series(value, index=series_a.index, name=f'{value}'.replace('.','_'))
+    return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
+
+
+def _above_below(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =True, offset:int =None, **kwargs):
+    series_a = verify_series(series_a)
+    series_b = verify_series(series_b)
+    offset = get_offset(offset)
+
+    series_a.apply(zero)
+    series_b.apply(zero)
+
+    # Calculate Result
+    if above:
+        current = series_a >= series_b
+    else:
+        current = series_a <= series_b
+    
+    if asint:
+        current = current.astype(int)
+
+    # Offset
+    if offset != 0:
+        current = current.shift(offset)
+
+    # Name & Category
+    current.name = f"{series_a.name}_{'A' if above else 'B'}_{series_b.name}"
+    current.category = 'utility'
+
+    return current 
+
+
 def df_error_analysis(dfA:pd.DataFrame, dfB:pd.DataFrame, **kwargs):
     """ """
     col = kwargs.pop('col', None)
