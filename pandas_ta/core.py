@@ -342,10 +342,10 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-    def cmo(self, close=None, length=None, drift=None, offset=None, **kwargs):
+    def cmo(self, close=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.cmo import cmo
-        result = cmo(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        result = cmo(close=close, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
@@ -427,10 +427,10 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-    def rsi(self, close=None, length=None, drift=None, offset=None, **kwargs):
+    def rsi(self, close=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
         from pandas_ta.momentum.rsi import rsi
-        result = rsi(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        result = rsi(close=close, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
