@@ -1105,13 +1105,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
         from pandas_ta.volume.vp import vp
-<<<<<<< HEAD
         return vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
-=======
-        result = vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
-        self._add_prefix_suffix(result, **kwargs)
-        self._append(result, **kwargs)
-        return result
 
 
 
@@ -1123,4 +1117,3 @@ class AnalysisIndicators(BasePandasObject):
         self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
->>>>>>> cbba026... Add RSI event
