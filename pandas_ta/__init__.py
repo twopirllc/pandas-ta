@@ -130,6 +130,9 @@ from .volume.pvol import pvol
 from .volume.pvt import pvt
 from .volume.vp import vp
 
+# Event
+from .event.rsi_event import rsi_event
+
 # DataFrame Extension
 from .core import *
 
