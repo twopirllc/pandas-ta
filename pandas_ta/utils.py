@@ -90,7 +90,7 @@ def cross(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =
     previous = series_a.shift(1) < series_b.shift(1) # previous is below
     # above if both are true, below if both are false
     cross = current & previous if above else ~current & ~previous
-    
+
     if asint:
         cross = cross.astype(int)
 
@@ -202,6 +202,14 @@ def pascals_triangle(n:int =None, **kwargs):
         return None
 
     return triangle
+
+
+def recent_maximum_index(x):
+    return int(np.argmax(x[::-1]))
+
+
+def recent_minimum_index(x):
+    return int(np.argmin(x[::-1]))
 
 
 def signed_series(series:pd.Series, initial:int =None):

@@ -1,3 +1,4 @@
+from .config import sample_data
 from .context import pandas_ta
 
 from unittest import TestCase
@@ -16,6 +17,14 @@ data = {
 }
 
 class TestUtilities(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.data = sample_data
+
+    @classmethod
+    def tearDownClass(cls):
+        del cls.data
+
     def setUp(self):
         self.crosseddf = DataFrame(data)
         self.utils = pandas_ta.utils
@@ -23,6 +32,23 @@ class TestUtilities(TestCase):
     def tearDown(self):
         del self.crosseddf
         del self.utils
+
+    def test__add_prefix_suffix(self):
+        result = self.data.ta.hl2(append=False, prefix="pre")
+        self.assertEqual(result.name, 'pre_HL2')
+
+        result = self.data.ta.hl2(append=False, suffix="suf")
+        self.assertEqual(result.name, 'HL2_suf')
+
+        result = self.data.ta.hl2(append=False, prefix="pre", suffix="suf")
+        self.assertEqual(result.name, 'pre_HL2_suf')
+
+        result = self.data.ta.hl2(append=False, prefix=1, suffix=2)
+        self.assertEqual(result.name, '1_HL2_2')
+
+        result = self.data.ta.macd(append=False, prefix="pre", suffix="suf")
+        for col in result.columns:
+            self.assertTrue(col.startswith('pre_') and col.endswith('_suf'))
 
     def test__above_below(self):
         result = self.utils._above_below(self.crosseddf['a'], self.crosseddf['zero'], above=True)
