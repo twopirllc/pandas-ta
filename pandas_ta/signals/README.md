@@ -16,4 +16,6 @@
 - [ ] Crossing MACD(26,12, 9) with 0 line (bearish/bullish signal)
 - [ ] Stochastic oscillator (Overbough/oversold 80/20)
 - [ ] Crossing Bollinger bands with close price
-- [ ] Average directional index (ADX) cross with 25 (strong trend/drift)
+- [ ] Average directional index (ADX) cross with 20 or 25 (trend/drift and 40 for strong trend)
+- [ ] Extend ADX with DI+ and DI- (strong trend/drift confirming uptrend or downtrend)
+- [ ] Aroon osicillator around 100 
