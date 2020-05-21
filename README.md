@@ -115,7 +115,7 @@ print(prehl2.columns)  # "pre_HL2"
 endhl2 = df.ta.hl2(suffix="end")
 print(endhl2.columns)  # "HL2_end"
 
-bothhl2 = df.ta.hl2(suffix="end")
+bothhl2 = df.ta.hl2(prefix="pre", suffix="end")
 print(bothhl2.columns)  # "pre_HL2_end"
 ```
 
