@@ -273,6 +273,11 @@ class TestMomentum(TestCase):
         self.assertEqual(result.name, 'ANGLEd_1')
 
     def test_stoch(self):
+        result = pandas_ta.stoch(self.high, self.low, self.close, fast_k=14, slow_k=14, slow_d=14)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'STOCH_14_14_14')
+        self.assertEqual(len(result.columns), 4)
+
         result = pandas_ta.stoch(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'STOCH_14_5_3')
