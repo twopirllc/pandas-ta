@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..overlap.ema import ema
+from ..overlap.sma import sma
 from ..utils import get_offset, verify_series
 
 def apo(close, fast=None, slow=None, offset=None, **kwargs):
@@ -14,9 +14,8 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    fastma = ema(close, length=fast, **kwargs)
-    slowma = ema(close, length=slow, **kwargs)
-    # EMAs are equivalent with talib, only their difference is minutely off
+    fastma = sma(close, length=fast)
+    slowma = sma(close, length=slow)
     apo = fastma - slowma
 
     # Offset
@@ -45,13 +44,13 @@ momentum.  It is simply the difference of two Exponential Moving Averages
 (EMA) of two different periods.  Note: APO and MACD lines are equivalent.
 
 Sources:
-    https://www.investopedia.com/terms/p/ppo.asp
+    https://www.tradingtechnologies.com/xtrader-help/x-study/technical-indicator-definitions/absolute-price-oscillator-apo/
 
 Calculation:
     Default Inputs:
         fast=12, slow=26
-    EMA = Exponential Moving Average
-    APO = EMA(close, fast) - EMA(close, slow)
+    SMA = Simple Moving Average
+    APO = SMA(close, fast) - SMA(close, slow)
 
 Args:
     close (pd.Series): Series of 'close's

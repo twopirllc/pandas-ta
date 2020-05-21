@@ -10,9 +10,8 @@ def cci(high, low, close, length=None, c=None, offset=None, **kwargs):
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
-    length = int(length) if length and length > 0 else 20
+    length = int(length) if length and length > 0 else 14
     c = float(c) if c and c > 0 else 0.015
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
     offset = get_offset(offset)
 
     # Calculate Result
@@ -52,7 +51,7 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=20, c=0.015
+        length=14, c=0.015
     SMA = Simple Moving Average
     MAD = Mean Absolute Deviation
     tp = typical_price = hlc3 = (high + low + close) / 3
@@ -64,7 +63,7 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 20
+    length (int): It's period.  Default: 14
     c (float):  Scaling Constant.  Default: 0.015
     offset (int): How many periods to offset the result.  Default: 0
 

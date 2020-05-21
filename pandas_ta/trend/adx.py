@@ -15,10 +15,10 @@ def adx(high, low, close, length=None, drift=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    _atr = atr(high=high, low=low, close=close, length=length)
+    atr_ = atr(high=high, low=low, close=close, length=length)
 
-    up = high - high.shift(drift)
-    dn = low.shift(drift) - low
+    up = high - high.shift(drift) # high.diff(drift)
+    dn = low.shift(drift) - low # low.diff(-drift).shift(drift)
 
     pos = ((up > dn) & (up > 0)) * up
     neg = ((dn > up) & (dn > 0)) * dn
@@ -26,8 +26,9 @@ def adx(high, low, close, length=None, drift=None, offset=None, **kwargs):
     pos = pos.apply(zero)
     neg = neg.apply(zero)
 
-    dmp = (100 / _atr) * rma(close=pos, length=length)
-    dmn = (100 / _atr) * rma(close=neg, length=length)
+    k = 100 / atr_
+    dmp = k * rma(close=pos, length=length)
+    dmn = k * rma(close=neg, length=length)
 
     dx = 100 * (dmp - dmn).abs() / (dmp + dmn)
     adx = rma(close=dx, length=length)
