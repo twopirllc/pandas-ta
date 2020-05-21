@@ -70,7 +70,7 @@ class TestMomentum(TestCase):
         self.assertEqual(result.name, 'APO_12_26')
 
         try:
-            expected = tal.APO(self.close, 12, 26)
+            expected = tal.APO(self.close)
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
