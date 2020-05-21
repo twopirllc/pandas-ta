@@ -131,7 +131,7 @@ from .volume.pvt import pvt
 from .volume.vp import vp
 
 # Event
-from .event.rsi_event import rsi_event
+from .signals.rsi_signals import rsi_signals
 
 # DataFrame Extension
 from .core import *
