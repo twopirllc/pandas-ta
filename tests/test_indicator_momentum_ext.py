@@ -51,7 +51,7 @@ class TestMomentumExtension(TestCase):
     def test_cci_ext(self):
         self.data.ta.cci(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], 'CCI_20_0.015')
+        self.assertEqual(self.data.columns[-1], 'CCI_14_0.015')
 
     def test_cg_ext(self):
         self.data.ta.cg(append=True)

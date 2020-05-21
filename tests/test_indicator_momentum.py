@@ -107,7 +107,7 @@ class TestMomentum(TestCase):
     def test_cci(self):
         result = pandas_ta.cci(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'CCI_20_0.015')
+        self.assertEqual(result.name, 'CCI_14_0.015')
 
         try:
             expected = tal.CCI(self.high, self.low, self.close)

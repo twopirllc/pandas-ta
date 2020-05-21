@@ -45,6 +45,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     - __Aroon & Aroon Oscillator__ (aroon)
         * Fixed indicator and included oscillator in returned dataframe
     - __Bollinger Bands__ (bbands)
+    - __Commodity Channel Index__ (cci)
     - __Chande Momentum Oscillator__ (cmo)
 
 ## What is a Pandas DataFrame Extension?
