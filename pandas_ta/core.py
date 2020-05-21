@@ -830,10 +830,11 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
-    def aroon(self, close=None, length=None, offset=None, **kwargs):
-        close = self._get_column(close, 'close')
+    def aroon(self, high=None, low=None, length=None, scalar=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
         from pandas_ta.trend.aroon import aroon
-        result = aroon(close=close, length=length, offset=offset, **kwargs)
+        result = aroon(high=high, low=low, length=length, scalar=scalar, offset=offset, **kwargs)
         self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result

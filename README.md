@@ -41,6 +41,10 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * User Added Indicators:
     - __Aberration__ (aberration)
     - __BRAR__ (brar)
+* Corrected Indicators:
+    - __Aroon & Aroon Oscillator__ (aroon)
+        * Fixed indicator and included oscillator in returned dataframe
+    - __Bollinger Bands__ (bbands)
 
 ## What is a Pandas DataFrame Extension?
 
@@ -240,7 +244,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 * _Average Directional Movement Index_: **adx**
 * _Archer Moving Averages Trends_: **amat**
-* _Aroon Oscillator_: **aroon**
+* _Aroon & Aroon Oscillator_: **aroon**
 * _Choppiness Index_: **chop**
 * _Chande Kroll Stop_: **cksp**
 * _Decreasing_: **decreasing**

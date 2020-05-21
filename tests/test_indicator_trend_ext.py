@@ -36,7 +36,7 @@ class TestTrendExtension(TestCase):
     def test_aroon_ext(self):
         self.data.ta.aroon(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ['AROOND_14', 'AROONU_14'])
+        self.assertEqual(list(self.data.columns[-3:]), ['AROOND_14', 'AROONU_14', 'AROONOSC_14'])
 
     def test_chop_ext(self):
         self.data.ta.chop(append=True)
