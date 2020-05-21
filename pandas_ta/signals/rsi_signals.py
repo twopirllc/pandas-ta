@@ -3,7 +3,7 @@ from pandas import DataFrame
 from ..momentum.rsi import rsi
 from ..utils import above_value, below_value
 
-def rsi_event(close, above_val=None, below_val=None, length=None, drift=None, offset=None, **kwargs):
+def rsi_signals(close, above_val=None, below_val=None, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Overbought or Oversold based on Relative Strength Index (RSI)"""
     rsi_series = rsi(close, length=None, drift=None, offset=None, **kwargs)
     above_val = int(above_val) if above_val and above_val > 0 else 80
@@ -16,13 +16,13 @@ def rsi_event(close, above_val=None, below_val=None, length=None, drift=None, of
     # Not needed because above_value/below_value is already naming
     # above.name = f"RSI_{length}_A_{above_val}" 
     # below.name = f"RSI_{length}_B_{below_val}"
-    above.category = below.category = 'event'
+    above.category = below.category = 'signals'
 
     # Prepare DataFrame to return
     data = {above.name: above, below.name: below}
     rsidf = DataFrame(data)
-    rsidf.name = f"RSI_event"
-    rsidf.category = 'event'
+    rsidf.name = f"RSI_signals"
+    rsidf.category = 'signals'
 
     return rsidf
 
