@@ -1114,6 +1114,5 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         from pandas_ta.event.rsi_event import rsi_event
         result = rsi_event(close=close, above_val=above_val, below_val=below_val, length=length, drift=drift, offset=offset, **kwargs)
-        self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
