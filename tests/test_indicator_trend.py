@@ -55,7 +55,7 @@ class TestTrend(TestCase):
         self.assertEqual(result.name, 'AMAT_EMA_8_21_2')
 
     def test_aroon(self):
-        result = pandas_ta.aroon(self.close)
+        result = pandas_ta.aroon(self.high, self.low)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'AROON_14')
 
@@ -75,6 +75,19 @@ class TestTrend(TestCase):
                 self.assertGreater(aroonu_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result.iloc[:,1], CORRELATION, ex, newline=False)
+
+    def test_aroon_osc(self):
+        result = pandas_ta.aroon(self.high, self.low)
+
+        try:
+            expected = tal.AROONOSC(self.high, self.low)
+            pdt.assert_series_equal(result.iloc[:,2], expected)
+        except AssertionError as ae:
+            try:
+                aroond_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,2], expected, col=CORRELATION)
+                self.assertGreater(aroond_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result.iloc[:,0], CORRELATION, ex)
 
     def test_chop(self):
         result = pandas_ta.chop(self.high, self.low, self.close)

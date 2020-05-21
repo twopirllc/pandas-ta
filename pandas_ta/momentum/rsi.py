@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_drift, get_offset, verify_series
 
-def rsi(close, length=None, drift=None, offset=None, **kwargs):
+def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Strength Index (RSI)"""
     # Validate arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
+    scalar = float(scalar) if scalar else 100
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -19,7 +20,7 @@ def rsi(close, length=None, drift=None, offset=None, **kwargs):
     positive_avg = positive.ewm(com=length, adjust=False).mean()
     negative_avg = negative.ewm(com=length, adjust=False).mean().abs()
 
-    rsi = 100 * positive_avg / (positive_avg + negative_avg)
+    rsi = scalar * positive_avg / (positive_avg + negative_avg)
 
     # Offset
     if offset != 0:
@@ -50,7 +51,7 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=14, drift=1
+        length=14, scalar=100, drift=1
     ABS = Absolute Value
     EMA = Exponential Moving Average
     positive = close if close.diff(drift) > 0 else 0
@@ -62,6 +63,7 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 1
+    scalar (float): How much to magnify.  Default: 100
     drift (int): The difference period.  Default: 1
     offset (int): How many periods to offset the result.  Default: 0
 

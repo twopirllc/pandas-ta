@@ -38,7 +38,7 @@ class TestVolatilityExtension(TestCase):
     def test_bbands_ext(self):
         self.data.ta.bbands(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ['BBL_20', 'BBM_20', 'BBU_20'])
+        self.assertEqual(list(self.data.columns[-3:]), ['BBL_5', 'BBM_5', 'BBU_5'])
 
     def test_donchian_ext(self):
         self.data.ta.donchian(append=True)

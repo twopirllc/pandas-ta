@@ -17,7 +17,7 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
         ad = non_zero_range(close, open_) # AD with Open
     else:
         ad = 2 * close - (high + low)  # AD with High, Low, Close
-    
+
     ad *= volume / high_low_range
     ad = ad.cumsum()
 

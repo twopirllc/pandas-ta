@@ -6,7 +6,7 @@
 # Technical Analysis Library in Python 3.7
 ![Example Chart](/images/TA_Chart.png)
 
-Technical Analysis (TA) is an easy to use library that is built upon Python's Pandas library with more than 85 Indicators.  These indicators are comminly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon Oscillator_ (*AROON*) and more.
+Technical Analysis (TA) is an easy to use library that is built upon Python's Pandas library with more than 100 Indicators.  These indicators are comminly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon & Aroon Oscillator_ (*AROON*) and more.
 
 This version contains both the orignal code branch as well as a newly refactored branch with the option to use [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode. 
 All the indicators return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDH_12_26_9', 'MACDS_12_26_9'].
@@ -18,6 +18,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * Example Jupyter Notebook under the examples directory.
 * Abbreviated Indicator names as listed below.
 * *Extended Pandas DataFrame* as 'ta'.  See examples below.
+* Easily add prefixes or suffixes or both to columns names.
 * Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups).
 
 
@@ -40,8 +41,13 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * User Added Indicators:
     - __Aberration__ (aberration)
     - __BRAR__ (brar)
+* Corrected Indicators:
+    - __Aroon & Aroon Oscillator__ (aroon)
+        * Fixed indicator and included oscillator in returned dataframe
+    - __Bollinger Bands__ (bbands)
+    - __Chande Momentum Oscillator__ (cmo)
 
-### What is a Pandas DataFrame Extension?
+## What is a Pandas DataFrame Extension?
 
 A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html), extends a DataFrame allowing one to add more functionality and features to Pandas to suit your needs.  As such, it is now easier to run Technical Analysis on existing Financial Time Series without leaving the current DataFrame.  This extension by default returns the Indicator result or it can append the result to the existing DataFrame by including the parameter 'append=True' in the method call. Examples below.
 
@@ -101,6 +107,18 @@ help(ta.log_return)
 help(pd.DataFrame().ta.log_return)
 ```
 
+## New DataFrame kwargs: *prefix* and *suffix*
+
+```python
+prehl2 = df.ta.hl2(prefix="pre")
+print(prehl2.columns)  # "pre_HL2"
+
+endhl2 = df.ta.hl2(suffix="end")
+print(endhl2.columns)  # "HL2_end"
+
+bothhl2 = df.ta.hl2(prefix="pre", suffix="end")
+print(bothhl2.columns)  # "pre_HL2_end"
+```
 
 ## New DataFrame Properties: *reverse* & *datetime_ordered*
 
@@ -227,7 +245,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 * _Average Directional Movement Index_: **adx**
 * _Archer Moving Averages Trends_: **amat**
-* _Aroon Oscillator_: **aroon**
+* _Aroon & Aroon Oscillator_: **aroon**
 * _Choppiness Index_: **chop**
 * _Chande Kroll Stop_: **cksp**
 * _Decreasing_: **decreasing**

@@ -9,7 +9,7 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     """Indicator: Bollinger Bands (BBANDS)"""
     # Validate arguments
     close = verify_series(close)
-    length = int(length) if length and length > 0 else 20
+    length = int(length) if length and length > 0 else 5
     min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
     std = float(std) if std and std > 0 else 2.
     mamode = mamode.lower() if mamode else 'sma'

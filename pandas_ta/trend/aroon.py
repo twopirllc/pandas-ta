@@ -1,49 +1,54 @@
 # -*- coding: utf-8 -*-
-from numpy import argmax as npargmax
-from numpy import argmin as npargmin
 from pandas import DataFrame
-from ..utils import get_offset, verify_series
+from ..utils import get_offset, recent_maximum_index, recent_minimum_index, verify_series
 
-def aroon(close, length=None, offset=None, **kwargs):
-    """Indicator: Aroon Oscillator"""
+def aroon(high, low, length=None, scalar=None, offset=None, **kwargs):
+    """Indicator: Aroon & Aroon Oscillator"""
     # Validate Arguments
-    close = verify_series(close)
+    high = verify_series(high)
+    low = verify_series(low)
     length = length if length and length > 0 else 14
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    scalar = float(scalar) if scalar else 100
     offset = get_offset(offset)
 
     # Calculate Result
-    def maxidx(x):
-        return 100 * (int(npargmax(x)) + 1) / length
+    periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index, raw=True)
+    periods_from_ll = low.rolling(length + 1).apply(recent_minimum_index, raw=True)
 
-    def minidx(x):
-        return 100 * (int(npargmin(x)) + 1) / length
-
-    _close = close.rolling(length, min_periods=min_periods)
-    aroon_up = _close.apply(maxidx, raw=True)
-    aroon_down = _close.apply(minidx, raw=True)
+    aroon_up = aroon_down = scalar
+    aroon_up   *= (1 - (periods_from_hh / length))
+    aroon_down *= (1 - (periods_from_ll / length))
+    aroon_osc = aroon_up - aroon_down
 
     # Handle fills
     if 'fillna' in kwargs:
         aroon_up.fillna(kwargs['fillna'], inplace=True)
         aroon_down.fillna(kwargs['fillna'], inplace=True)
+        aroon_osc.fillna(kwargs['fillna'], inplace=True)
     if 'fill_method' in kwargs:
         aroon_up.fillna(method=kwargs['fill_method'], inplace=True)
         aroon_down.fillna(method=kwargs['fill_method'], inplace=True)
+        aroon_osc.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Offset
     if offset != 0:
         aroon_up = aroon_up.shift(offset)
         aroon_down = aroon_down.shift(offset)
+        aroon_osc = aroon_osc.shift(offset)
 
     # Name and Categorize it
     aroon_up.name = f"AROONU_{length}"
     aroon_down.name = f"AROOND_{length}"
+    aroon_osc.name = f"AROONOSC_{length}"
 
-    aroon_down.category = aroon_up.category = 'trend'
+    aroon_down.category = aroon_up.category = aroon_osc.category = 'trend'
 
     # Prepare DataFrame to return
-    data = {aroon_down.name: aroon_down, aroon_up.name: aroon_up}
+    data = {
+        aroon_down.name: aroon_down,
+        aroon_up.name: aroon_up,
+        aroon_osc.name: aroon_osc
+    }
     aroondf = DataFrame(data)
     aroondf.name = f"AROON_{length}"
     aroondf.category = 'trend'
@@ -53,7 +58,7 @@ def aroon(close, length=None, offset=None, **kwargs):
 
 
 aroon.__doc__ = \
-"""Aroon (AROON)
+"""Aroon & Aroon Oscillator (AROON)
 
 Aroon attempts to identify if a security is trending and how strong.
 
@@ -63,20 +68,23 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=1
-    def maxidx(x):
-        return 100 * (int(np.argmax(x)) + 1) / length
+        length=1, scalar=100
 
-    def minidx(x):
-        return 100 * (int(np.argmin(x)) + 1) / length
+    recent_maximum_index(x): return int(np.argmax(x[::-1]))
+    recent_minimum_index(x): return int(np.argmin(x[::-1]))
 
-    _close = close.rolling(length, min_periods=min_periods)
-    aroon_up = _close.apply(maxidx, raw=True)
-    aroon_down = _close.apply(minidx, raw=True)
+    periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index, raw=True)
+    AROON_UP = scalar * (1 - (periods_from_hh / length))
+
+    periods_from_ll = low.rolling(length + 1).apply(recent_minimum_index, raw=True)
+    AROON_DN = scalar * (1 - (periods_from_ll / length))
+
+    AROON_OSC = AROON_UP - AROON_DN
 
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 1
+    scalar (float): How much to magnify.  Default: 100
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
@@ -84,5 +92,5 @@ Kwargs:
     fill_method (value, optional): Type of fill method
 
 Returns:
-    pd.DataFrame: aroon_up, aroon_down columns.
+    pd.DataFrame: aroon_up, aroon_down, aroon_osc columns.
 """

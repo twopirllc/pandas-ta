@@ -54,16 +54,6 @@ class TestVolume(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'ADo')
 
-        try:
-            expected = tal.AD(self.high, self.low, self.close, self.volume_)
-            pdt.assert_series_equal(result, expected, check_names=False)
-        except AssertionError as ae:
-            try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
-                self.assertGreater(corr, CORRELATION_THRESHOLD)
-            except Exception as ex:
-                error_analysis(result, CORRELATION, ex)
-
     def test_adosc(self):
         result = pandas_ta.adosc(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)
