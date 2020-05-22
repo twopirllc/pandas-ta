@@ -24,14 +24,14 @@ def rsi_signals(close, above_val=None, below_val=None, length=None, drift=None, 
 
     # Name and Categorize it
     # Not needed because above_value/below_value is already naming
-    above.name = f"RSI_{length}_OB_{above_val}" 
-    below.name = f"RSI_{length}_OS_{below_val}"
+    above.name = f"{rsi_series.name}_OB_{above_val}" 
+    below.name = f"{rsi_series.name}_OS_{below_val}"
     above.category = below.category = 'signals'
     if crossing:
-        cross_start_above.name = f"RSI_{length}_XS_OB_{above_val}" 
-        cross_start_below.name = f"RSI_{length}_XS_OS_{below_val}"
-        cross_end_above.name = f"RSI_{length}_XE_OB_{above_val}" 
-        cross_end_below.name = f"RSI_{length}_XE_OS_{below_val}"
+        cross_start_above.name = f"{rsi_series.name}_XS_OB_{above_val}" 
+        cross_start_below.name = f"{rsi_series.name}_XS_OS_{below_val}"
+        cross_end_above.name = f"{rsi_series.name}_XE_OB_{above_val}" 
+        cross_end_below.name = f"{rsi_series.name}_XE_OS_{below_val}"
         cross_start_above.category = cross_start_below.category = cross_end_above.category = cross_end_below.category = 'signals'
 
     # Prepare DataFrame to return
@@ -50,7 +50,7 @@ def rsi_signals(close, above_val=None, below_val=None, length=None, drift=None, 
         )
 
     rsidf = DataFrame(data)
-    rsidf.name = f"RSI_signals"
+    rsidf.name = f"{rsi_series.name}_signals"
     rsidf.category = 'signals'
 
     return rsidf
