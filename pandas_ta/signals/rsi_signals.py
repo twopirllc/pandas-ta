@@ -5,7 +5,7 @@ from ..utils import above_value, below_value, cross_value
 
 def rsi_signals(close, above_val=None, below_val=None, length=None, drift=None, offset=None, crossing=False, **kwargs):
     """Indicator: Signals based on Relative Strength Index (RSI)"""
-    rsi_series = rsi(close, length=None, drift=None, offset=None, **kwargs)
+    rsi_series = rsi(close, length=length, drift=drift, offset=offset, **kwargs)
     above_val = int(above_val) if above_val and above_val > 0 else 80
     below_val = int(below_val) if below_val and below_val > 0 else 20
 

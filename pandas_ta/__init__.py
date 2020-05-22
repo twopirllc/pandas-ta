@@ -130,8 +130,9 @@ from .volume.pvol import pvol
 from .volume.pvt import pvt
 from .volume.vp import vp
 
-# Event
+# Signals
 from .signals.rsi_signals import rsi_signals
+from .signals.macd_signals import macd_signals
 
 # DataFrame Extension
 from .core import *

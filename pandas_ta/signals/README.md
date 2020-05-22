@@ -13,9 +13,9 @@
 - [ ] Extended RSI (Overbought/oversold 80/20 and positive trend when $RSI_t$ > $RSI_{t-1}$)
 - [ ] Crossing EMA(50) and EMA(200) (long term bearish/bullish signal)
 - [ ] Crossing EMA(12) and EMA(26) (short term bearish/bullish signal)
-- [ ] Crossing MACD(26,12, 9) with 0 line (bearish/bullish signal)
+- [x] Crossing MACD(26,12, 9) with 0 line (bearish/bullish signal)
 - [ ] Stochastic oscillator (Overbough/oversold 80/20)
 - [ ] Crossing Bollinger bands with close price
 - [ ] Average directional index (ADX) cross with 20 or 25 (trend/drift and 40 for strong trend)
 - [ ] Extend ADX with DI+ and DI- (strong trend/drift confirming uptrend or downtrend)
-- [ ] Aroon osicillator around 100 
+- [ ] Aroon osicillator around 100
