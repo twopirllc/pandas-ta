@@ -992,7 +992,7 @@ class AnalysisIndicators(BasePandasObject):
         if a is None and value is None: return self._df
         else:
             a = self._get_column(a, f"{a}")
-            result = cross(series_a=a, value=value, above=above, asint=asint, offset=offset, **kwargs)
+            result = cross_value(series_a=a, value=value, above=above, asint=asint, offset=offset, **kwargs)
             self._add_prefix_suffix(result, **kwargs)
             self._append(result, **kwargs)
             return result
