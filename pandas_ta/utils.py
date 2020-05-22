@@ -77,6 +77,10 @@ def combination(**kwargs):
     return numerator // denominator
 
 
+def cross_value(series_a:pd.Series, value:float, above:bool =True, asint:bool =True, offset:int =None, **kwargs):
+    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace('.','_'))
+    return cross(series_a, series_b, above, asint, offset, **kwargs)
+
 def cross(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =True, offset:int =None, **kwargs):
     series_a = verify_series(series_a)
     series_b = verify_series(series_b)
