@@ -70,7 +70,7 @@ class TestMomentum(TestCase):
         self.assertEqual(result.name, 'APO_12_26')
 
         try:
-            expected = tal.APO(self.close, 12, 26)
+            expected = tal.APO(self.close)
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
@@ -107,7 +107,7 @@ class TestMomentum(TestCase):
     def test_cci(self):
         result = pandas_ta.cci(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'CCI_20_0.015')
+        self.assertEqual(result.name, 'CCI_14_0.015')
 
         try:
             expected = tal.CCI(self.high, self.low, self.close)
@@ -273,6 +273,11 @@ class TestMomentum(TestCase):
         self.assertEqual(result.name, 'ANGLEd_1')
 
     def test_stoch(self):
+        result = pandas_ta.stoch(self.high, self.low, self.close, fast_k=14, slow_k=14, slow_d=14)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'STOCH_14_14_14')
+        self.assertEqual(len(result.columns), 4)
+
         result = pandas_ta.stoch(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, 'STOCH_14_5_3')

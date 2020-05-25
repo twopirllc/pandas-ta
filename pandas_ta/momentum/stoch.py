@@ -44,10 +44,11 @@ def stoch(high, low, close, fast_k=None, slow_k=None, slow_d=None, offset=None, 
         slowd.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name and Categorize it
-    fastk.name = f"STOCHFK_{fast_k}"
-    fastd.name = f"STOCHFD_{slow_d}"
-    slowk.name = f"STOCHSK_{slow_k}"
-    slowd.name = f"STOCHSD_{slow_d}"
+    fastk.name = f"STOCHFk_{fast_k}"
+    fastd.name = f"STOCHFd_{slow_d}"
+    slowk.name = f"STOCHk_{slow_k}"
+    slowd.name = f"STOCHd_{slow_d}"
+
     fastk.category = fastd.category = slowk.category = slowd.category = 'momentum'
 
     # Prepare DataFrame to return
