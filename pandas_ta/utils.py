@@ -25,7 +25,7 @@ def _above_below(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint
         current = series_a >= series_b
     else:
         current = series_a <= series_b
-    
+
     if asint:
         current = current.astype(int)
 
@@ -39,8 +39,10 @@ def _above_below(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint
 
     return current
 
+
 def above(series_a:pd.Series, series_b:pd.Series, asint:bool =True, offset:int =None, **kwargs):
     return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)
+
 
 def above_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =None, **kwargs):
     if not isinstance(value, (int, float, complex)):
@@ -49,8 +51,10 @@ def above_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =N
     series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace('.','_'))
     return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)    
 
+
 def below(series_a:pd.Series, series_b:pd.Series, asint:bool =True, offset:int =None, **kwargs):
     return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
+
 
 def below_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =None, **kwargs):
     if not isinstance(value, (int, float, complex)):
@@ -58,6 +62,7 @@ def below_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =N
         return
     series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace('.','_'))
     return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
+
 
 def combination(**kwargs):
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""
@@ -108,7 +113,7 @@ def cross(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =
 
     return cross
 
-def generate_signal_indicators(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_series, offset):
+def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_series, offset):
     signalsdf = pd.DataFrame()
     if xa is not None and isinstance(xa, (int, float)):
         if cross_values:
@@ -154,6 +159,7 @@ def generate_signal_indicators(indicator, xa, xb, cross_values, xserie, xserie_a
 
     return signalsdf
 
+  
 def df_error_analysis(dfA:pd.DataFrame, dfB:pd.DataFrame, **kwargs):
     """ """
     col = kwargs.pop('col', None)
@@ -168,15 +174,16 @@ def df_error_analysis(dfA:pd.DataFrame, dfB:pd.DataFrame, **kwargs):
     df = df['diff'].append(extra, ignore_index=False)[0]
 
     # For plotting
-    # if kwargs.pop('plot', False):
-    #     diff.hist()
-    #     if diff[diff > 0].any():
-    #         diff.plot(kind='kde')
+    if kwargs.pop('plot', False):
+        diff.hist()
+        if diff[diff > 0].any():
+            diff.plot(kind='kde')
     
     if col is not None:
         return df[col]
     else:
         return df
+
 
 def fibonacci(**kwargs):
     """Fibonacci Sequence as a numpy array"""
@@ -278,7 +285,7 @@ def symmetric_triangle(n:int =None, **kwargs):
 
     if n == 2:
         triangle = [1, 1]
-    
+
     if n > 2:
         if n % 2 == 0:
             front = [i + 1 for i in range(0, math.floor(n/2))]
@@ -293,7 +300,7 @@ def symmetric_triangle(n:int =None, **kwargs):
         triangle_sum = np.sum(triangle)
         triangle_weights = triangle / triangle_sum
         return triangle_weights
-    
+
     return triangle
 
 
