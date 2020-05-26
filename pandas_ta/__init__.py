@@ -18,5 +18,4 @@ except DistributionNotFound:
 else:
     __version__ = _dist.version
 
-
 from pandas_ta.core import *
