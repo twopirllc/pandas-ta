@@ -1238,22 +1238,3 @@ class AnalysisIndicators(BasePandasObject):
         self._add_prefix_suffix(result, **kwargs)
         self._append(result, **kwargs)
         return result
-
-
-
-    # Signals indicators
-    def rsi_signals(self, close=None, above_val=None, below_val=None, length=None, drift=None, offset=None, **kwargs):
-        close = self._get_column(close, 'close')
-        from pandas_ta.signals.rsi_signals import rsi_signals
-        result = rsi_signals(close=close, above_val=above_val, below_val=below_val, length=length, drift=drift, offset=offset, **kwargs)
-        self._add_prefix_suffix(result, **kwargs)
-        self._append(result, **kwargs)
-        return result
-
-    def macd_signals(self, close=None, fast=None, slow=None, signal=None, offset=None, **kwargs):
-        close = self._get_column(close, 'close')
-        from pandas_ta.signals.macd_signals import macd_signals
-        result = macd_signals(close=close, fast=fast, slow=slow, signal=signal, offset=offset, **kwargs)
-        self._add_prefix_suffix(result, **kwargs)
-        self._append(result, **kwargs)
-        return result
