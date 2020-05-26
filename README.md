@@ -28,6 +28,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     - __Bias__ (bias)
     - __Choppiness Index__ (chop)
     - __Chande Kroll Stop__ (cksp)
+    - __Entropy__ (entropy)
     - __KDJ__ (kdj)
     - __Parabolic Stop and Reverse__ (psar)
     - __Price Distance__ (pdist)
@@ -228,8 +229,9 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
 
-## _Statistics_ (8)
+## _Statistics_ (9)
 
+* _Entropy_: **entropy**
 * _Kurtosis_: **kurtosis**
 * _Mean Absolute Deviation_: **mad**
 * _Median_: **median**
@@ -312,6 +314,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 # Contributors
 * [allahyarzadeh](https://github.com/allahyarzadeh)
+* [FGU1](https://github.com/FGU1)
 * [lluissalord](https://github.com/lluissalord)
 
 

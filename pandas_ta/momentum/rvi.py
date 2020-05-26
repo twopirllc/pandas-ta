@@ -4,7 +4,7 @@ from ..overlap.swma import swma
 from ..utils import get_offset, non_zero_range, verify_series
 
 def rvi(open_, high, low, close, length=None, swma_length=None, offset=None, **kwargs):
-    """Indicator: RVI"""
+    """Indicator: Relative Vigor Index (RVI)"""
     # Validate Arguments
     open_ = verify_series(open_)
     high = verify_series(high)

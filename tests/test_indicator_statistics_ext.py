@@ -23,6 +23,11 @@ class TestStatisticsExtension(TestCase):
         pass
 
 
+    def test_entropy_ext(self):
+        self.data.ta.entropy(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'ENTP_10')
+
     def test_kurtosis_ext(self):
         self.data.ta.kurtosis(append=True)
         self.assertIsInstance(self.data, DataFrame)
