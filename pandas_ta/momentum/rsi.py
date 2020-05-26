@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat
-from ..utils import get_drift, get_offset, verify_series, generate_signal_indicators
+from ..utils import get_drift, get_offset, verify_series, signals
 
 def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Strength Index (RSI)"""
@@ -44,7 +44,7 @@ def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
                 DataFrame(
                     {rsi.name: rsi}
                 ),
-                generate_signal_indicators(
+                signals(
                     indicator=rsi,
                     xa=kwargs.pop('xa', 80),
                     xb=kwargs.pop('xb', 20),

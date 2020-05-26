@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat
 from ..overlap.ema import ema
-from ..utils import get_offset, verify_series, generate_signal_indicators
+from ..utils import get_offset, verify_series, signals
 
 def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     """Indicator: Moving Average, Convergence/Divergence (MACD)"""
@@ -56,7 +56,7 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
         signalsdf = concat(
             [
                 macddf,
-                generate_signal_indicators(
+                signals(
                     indicator=histogram,
                     xa=kwargs.pop('xa', 0),
                     xb=kwargs.pop('xb', None),
@@ -67,7 +67,7 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
                     cross_series=kwargs.pop('cross_series', True),
                     offset=offset,
                 ),
-                generate_signal_indicators(
+                signals(
                     indicator=macd,
                     xa=kwargs.pop('xa', 0),
                     xb=kwargs.pop('xb', None),
