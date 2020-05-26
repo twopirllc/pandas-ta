@@ -719,6 +719,13 @@ class AnalysisIndicators(BasePandasObject):
 
     # Statistics Indicators
     @finalize
+    def entropy(self, close=None, length=None, base=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+
+        result = entropy(close=close, length=length, base=base, offset=offset, **kwargs)
+        return result
+
+    @finalize
     def kurtosis(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
 

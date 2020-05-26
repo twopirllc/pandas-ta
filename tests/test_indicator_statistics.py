@@ -33,6 +33,10 @@ class TestStatistics(TestCase):
     def setUp(self): pass
     def tearDown(self): pass
     
+    def test_entropy(self):
+        result = pandas_ta.entropy(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'ENTP_10')
 
     def test_kurtosis(self):
         result = pandas_ta.kurtosis(self.close)
