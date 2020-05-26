@@ -21,6 +21,7 @@ def finalize(method):
     def _wrapper(*class_methods, **method_kwargs):
         cm = class_methods[0]        
         result = method(cm, **method_kwargs)
+
         cm._add_prefix_suffix(result, **method_kwargs)
         cm._append(result, **method_kwargs)
         return result
@@ -269,11 +270,10 @@ class AnalysisIndicators(BasePandasObject):
 
     def indicators(self, **kwargs):
         """Indicator list"""
-        header = f"pandas.ta - Technical Analysis Indicators"
+        as_list = kwargs.pop('as_list', False)
         helper_methods = ['indicators', 'constants']  # Public non-indicator methods
         ta_properties = ['adjusted', 'datetime_ordered', 'reverse']
         exclude_methods = kwargs.pop('exclude', None)
-        as_list = kwargs.pop('as_list', False)
         ta_indicators = list((x for x in dir(pd.DataFrame().ta) if not x.startswith('_') and not x.endswith('_')))
 
         for x in helper_methods:
@@ -282,13 +282,14 @@ class AnalysisIndicators(BasePandasObject):
         for x in ta_properties:
             ta_indicators.remove(x)
 
-        if isinstance(exclude_methods, list) and exclude_methods in ta_indicators and len(exclude_methods) > 0:
+        if isinstance(exclude_methods, list) and len(exclude_methods) > 0:
             for x in exclude_methods:
                 ta_indicators.remove(x)
 
         if as_list:
             return ta_indicators
 
+        header = f"pandas.ta - Technical Analysis Indicators"
         total_indicators = len(ta_indicators)
         s = f"{header}\nTotal Indicators: {total_indicators}\n"
         if total_indicators > 0:            
