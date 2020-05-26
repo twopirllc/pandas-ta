@@ -14,7 +14,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-
+version = ".".join(("0", "1", "62b"))
 
 def finalize(method):
     @wraps(method)
@@ -175,6 +175,11 @@ class AnalysisIndicators(BasePandasObject):
     def reverse(self) -> pd.DataFrame:
         """Reverses the DataFrame"""
         return self._df.iloc[::-1]
+
+    @property
+    def version(self) -> str:
+        """property: df.ta.version"""
+        return version
 
     def _append(self, result=None, **kwargs):
         """Appends a Pandas Series or DataFrame columns to self._df."""
