@@ -4,7 +4,7 @@ from .roc import roc
 from ..utils import get_drift, get_offset, verify_series
 
 def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None, sma3=None, sma4=None, signal=None, drift=None, offset=None, **kwargs):
-    """Indicator: 'Know Sure Thing'"""
+    """Indicator: 'Know Sure Thing' (KST)"""
     # Validate arguments
     close = verify_series(close)
     roc1 = int(roc1) if roc1 and roc1 > 0 else 10
