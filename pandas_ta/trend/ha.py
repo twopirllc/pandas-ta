@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from pandas import DataFrame
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def ha(open, high, low, close, offset=None, **kwargs):
-    # indicator : Heiken Ashi
+    # indicator : Heikin Ashi
     # Validate Arguments
     open = verify_series(open)
     high = verify_series(high)
@@ -13,32 +13,28 @@ def ha(open, high, low, close, offset=None, **kwargs):
     close = verify_series(close)
     offset = get_offset(offset)
 
-    # Initialization of the ha_open serie
+    #calculate ha_close
+    ha_close = 0.25 * (open + high + low + close)
+
+    # Initialization of the ha_open array
     ha_open = np.zeros(shape=(len(close)))
 
     # ha_open of the first element
     ha_open[0] = 0.5 * (open[0] + close[0])
 
-    # shift open and close series by one to calculate ha_open other elements
-    open_shifted = np.empty_like(open)
-    open_shifted[:1] = np.nan
-    open_shifted[1:] = open[:-1]
-    close_shifted = np.empty_like(close)
-    close_shifted[:1] = np.nan
-    close_shifted[1:] = close[:-1]
-    # Calculation of ha_open except first element
-    ha_open[1:] = 0.5 * (open_shifted[1:] + close_shifted[1:])
+    #calculate ha_open. Based on previous ha_open & ha_close
+    for i in range (1, len(close)):
+        ha_open[i] = 0.5 * (ha_open[i-1] + ha_close[i-1])
 
-    # calculation of ha_close, ha_high, ha_low
-    ha_close = 0.25 * (open + high + low + close)
+    # calculation of ha_high & ha_low
     ha_high = np.maximum.reduce([high, ha_open, ha_close])
     ha_low = np.minimum.reduce([low, ha_open, ha_close])
 
     # Prepare DataFrame to return
     data = {'ha_open': ha_open, 'ha_high': ha_high, 'ha_low': ha_low, 'ha_close': ha_close}
     hadf = DataFrame(data)
-    hadf.name = "Heiken-Ashi"
-    hadf.category = 'overlap'
+    hadf.name = "Heikin-Ashi"
+    hadf.category = 'trend'
 
     # Apply offset if needed
     if offset != 0:
@@ -55,7 +51,7 @@ def ha(open, high, low, close, offset=None, **kwargs):
 
 
 ha.__doc__ = \
-    """Heiken Ashi (HA)
+    """Heikin Ashi (HA)
 
 The Heikin-Ashi technique averages price data to create a Japanese candlestick chart that filters out market noise. 
 Heikin-Ashi charts, developed by Munehisa Homma in the 1700s, 
@@ -69,7 +65,7 @@ Sources:
     https://www.investopedia.com/terms/h/heikinashi.asp
 
 Calculation:
-     The Formula for the Heikin-Ashi Technique Is:
+     The Formula for the Heikin-Ashi technique is:
 
 Heikin-Ashi Close=(Open0+High0+Low0+Close0)/4
 Heikin-Ashi Open=(HA Open−1+HA Close−1)/2

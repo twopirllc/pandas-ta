@@ -881,6 +881,17 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    def ha(self, open=None, high=None, low=None, close=None, offset=None, **kwargs):
+        open = self._get_column(open, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = ha(open=open, high=high, low=low, close=close, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
     def increasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
 
@@ -938,6 +949,18 @@ class AnalysisIndicators(BasePandasObject):
             self._add_prefix_suffix(result, **kwargs)
             self._append(result, **kwargs)
             return result
+
+    def supertrend(self, high=None, low=None, close=None, period=None, multiplier=None, mamode=None, drift=None,
+                   offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = supertrend(high=high, low=low, close=close, period=period, multiplier=multiplier, mamode=mamode, drift=drift, offset=offset, **kwargs)
+        self._add_prefix_suffix(result, **kwargs)
+        self._append(result, **kwargs)
+        return result
+
 
     def vortex(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
