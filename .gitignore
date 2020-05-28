@@ -124,7 +124,6 @@ examples/taplot.py
 examples/ib_trader.ipynb
 examples/example2.ipynb
 setup.cfg
-.README.md
 note.md
 driver.py
 doc.py

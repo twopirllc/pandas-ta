@@ -1,5 +1,8 @@
+clean:
+	find . -name '*.pyc' -exec rm -f {} +
+
 init:
 	pip install -r requirements.txt
 
 test:
-	python3 -m unittest discover -v
+	python -m unittest -v

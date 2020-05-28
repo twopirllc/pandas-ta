@@ -3,52 +3,57 @@
 [![Package Status](https://img.shields.io/pypi/status/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta.svg?style=flat)](https://pypistats.org/packages/pandas_ta)
 
-# Technical Analysis Library in Python 3.7
+# __Technical Analysis Library in Python 3.7__
 ![Example Chart](/images/TA_Chart.png)
 
-Technical Analysis (TA) is an easy to use library that is built upon Python's Pandas library with more than 100 Indicators.  These indicators are comminly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon & Aroon Oscillator_ (*AROON*) and more.
+__Pandas Technical Analysis__ (Pandas TA) is an easy to use library that is built upon Python's Pandas library with more than 100 Indicators.  These indicators are comminly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (*SMA*) _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon & Aroon Oscillator_ (*AROON*) and more.
 
 This version contains both the orignal code branch as well as a newly refactored branch with the option to use [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode. 
 All the indicators return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDH_12_26_9', 'MACDS_12_26_9'].
 
 
-## Features
+## __Features__
 
 * Has 100+ indicators and utility functions.
 * Example Jupyter Notebook under the examples directory.
+* A new 'ta' method called 'strategy' that be default, runs __all__ the indicators.
 * Abbreviated Indicator names as listed below.
-* *Extended Pandas DataFrame* as 'ta'.  See examples below.
+* __Extended Pandas DataFrame__ as 'ta'. 
 * Easily add prefixes or suffixes or both to columns names.
 * Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups).
 
 
-## Recent Changes
+## __Recent Changes__
 
-* Added indicators:
-    - __Bias__ (bias)
-    - __Choppiness Index__ (chop)
-    - __Chande Kroll Stop__ (cksp)
-    - __Entropy__ (entropy)
-    - __KDJ__ (kdj)
-    - __Parabolic Stop and Reverse__ (psar)
-    - __Price Distance__ (pdist)
-    - __Psycholigical Line__ (psl)
-    - __Weighted Closing Price__ (wcp)
-* Added utilities:
-    - __Above__ (above)
-    - __Above Value__ (above_value)
-    - __Below__ (below)
-    - __Below Value__ (below_value)
-* User Added Indicators:
-    - __Aberration__ (aberration)
-    - __BRAR__ (brar)
-* Corrected Indicators:
-    - __Absolute Price Oscillator__ (apo)
-    - __Aroon & Aroon Oscillator__ (aroon)
+### __New DataFrame Method:__
+    strategy (strategy)
+
+### __Added indicators:__
+    Bias (bias)
+    Choppiness Index (chop)
+    Chande Kroll Stop (cksp)
+    Entropy (entropy)
+    KDJ (kdj)
+    Parabolic Stop and Reverse (psar)
+    Price Distance (pdist)
+    Psycholigical Line (psl)
+    Weighted Closing Price (wcp)
+### __Added utilities:__
+    Above (above)
+    Above Value (above_value)
+    Below (below)
+    Below Value (below_value)
+    Cross Value (cross_value)
+### __User Added Indicators:__
+    Aberration (aberration)
+    BRAR (brar)
+### __Corrected Indicators:__
+    Absolute Price Oscillator (apo)
+    Aroon & Aroon Oscillator (aroon)
         * Fixed indicator and included oscillator in returned dataframe
-    - __Bollinger Bands__ (bbands)
-    - __Commodity Channel Index__ (cci)
-    - __Chande Momentum Oscillator__ (cmo)
+    Bollinger Bands (bbands)
+    Commodity Channel Index (cci)
+    Chande Momentum Oscillator (cmo)
 
 ## What is a Pandas DataFrame Extension?
 
@@ -56,20 +61,20 @@ A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/exte
 
 
 
-# Getting Started and Examples
+# __Getting Started and Examples__
 
-## Installation (python 3)
+## __Installation__ (python 3)
 
 ```sh
 $ pip install pandas_ta
 ```
 
-## Latest Version
+## __Latest Version__
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
 
-## **Quick Start** using the DataFrame Extension
+## __Quick Start__ using the DataFrame Extension
 
 ```python
 import pandas as pd
@@ -91,7 +96,7 @@ df.tail()
 # vv Continue Post Processing vv
 ```
 
-## Module and Indicator Help
+## __Module and Indicator Help__
 
 ```python
 import pandas as pd
@@ -105,25 +110,53 @@ pd.DataFrame().ta.indicators()
 
 # Help about the log_return indicator
 help(ta.log_return)
-
-# Help about the log_return indicator as a DataFrame Extension
-help(pd.DataFrame().ta.log_return)
 ```
 
-## New DataFrame kwargs: *prefix* and *suffix*
+## __New DataFrame Method__: _strategy_
+
+Strategy is a new __Pandas (TA)__ method to facilitate bulk indicator processing. By default, running ```df.ta.strategy()``` will append __all
+applicable__ indicators to DataFrame ```df```.  Utility methods like ```above```, ```below``` et al are not included.
+
+* The ```ta.strategy()``` method is still __under development__. Future iterations will allow you to load a ```ta.json``` config file with your specific strategy name and parameters to automatically run you bulk indicators.
+
+
+```python
+# Runs and appends all indicators to the current DataFrame by default
+# The resultant DataFrame will be large.
+df.ta.strategy()
+# Or equivalently use name='all'
+df.ta.strategy(name='all')
+
+# Use verbose if you want to make sure it is running.
+df.ta.strategy(verbose=True)
+
+# Maybe you do not want certain indicators.
+# Just exclude (a list of) them.
+df.ta.strategy(exclude=['bop', 'mom', 'percent_return', 'wcp', 'pvi'], verbose=True)
+
+# Perhaps you want to use different values for indicators.
+# This will run ALL indicators that have fast or slow as parameters.
+# Check your results and exclude as necessary.
+df.ta.strategy(fast=10, slow=50, verbose=True)
+
+# Sanity check. Make sure all the columns are there
+df.columns
+```
+
+## __New DataFrame kwargs__: _prefix_ and _suffix_
 
 ```python
 prehl2 = df.ta.hl2(prefix="pre")
-print(prehl2.columns)  # "pre_HL2"
+print(prehl2.name)  # "pre_HL2"
 
 endhl2 = df.ta.hl2(suffix="end")
-print(endhl2.columns)  # "HL2_end"
+print(endhl2.name)  # "HL2_end"
 
 bothhl2 = df.ta.hl2(prefix="pre", suffix="end")
-print(bothhl2.columns)  # "pre_HL2_end"
+print(bothhl2.name)  # "pre_HL2_end"
 ```
 
-## New DataFrame Properties: *reverse* & *datetime_ordered*
+## __New DataFrame Properties__: _reverse_ & _datetime_ordered_
 
 ```python
 # The 'reverse' is a helper property that returns the DataFrame
@@ -136,7 +169,7 @@ df = df.ta.reverse
 time_series_in_order = df.ta.datetime_ordered
 ```
 
-## DataFrame Property: *adjusted*
+## __DataFrame Property__: *adjusted*
 
 ```python
 # Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
@@ -147,8 +180,7 @@ df.ta.sma(length=10, append=True)
 df.ta.adjusted = None
 ```
 
-
-# Technical Analysis Indicators (by Category)
+# __Technical Analysis Indicators__ (_by Category_)
 
 ## _Momentum_ (25)
 

@@ -3,7 +3,7 @@ import time
 from functools import wraps
 
 import pandas as pd
-from pandas.core.base import PandasObject 
+from pandas.core.base import PandasObject
 
 from pandas_ta.momentum import *
 from pandas_ta.overlap import *
@@ -14,12 +14,12 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "62b"))
+version = ".".join(("0", "1", "63b"))
 
 def finalize(method):
     @wraps(method)
     def _wrapper(*class_methods, **method_kwargs):
-        cm = class_methods[0]        
+        cm = class_methods[0]
         result = method(cm, **method_kwargs)
 
         cm._add_prefix_suffix(result, **method_kwargs)
@@ -31,7 +31,8 @@ def finalize(method):
 class BasePandasObject(PandasObject):
     """Simple PandasObject Extension
 
-    Ensures the DataFrame is not empty and has columns.
+    Ensures the DataFrame is not empty and has columns. It would be a
+    sad Panda otherwise.
 
     Args:
         df (pd.DataFrame): Extends Pandas DataFrame
@@ -50,19 +51,18 @@ class BasePandasObject(PandasObject):
 
 @pd.api.extensions.register_dataframe_accessor('ta')
 class AnalysisIndicators(BasePandasObject):
-    """AnalysisIndicators is class that extends the Pandas DataFrame via
+    """AnalysisIndicators is a class that extends the Pandas DataFrame via
     Pandas @pd.api.extensions.register_dataframe_accessor('name') decorator.
 
     This Pandas Extension is named 'ta' for Technical Analysis that allows us
-    to apply technical indicators with an one extension.  Even though 'ta' is
-    now a Pandas DataFrame Extension, you can still call the Indicators
-    individually. However many of the Indicators have been updated and new ones
-    added, so make sure to check help.
-    
-    By default the 'ta' extensions uses lower case column names: open, high,
-    low, close, and volume.  You can override the defaults but providing the
+    to apply technical indicators by extension.  Even though 'ta' is a
+    Pandas DataFrame Extension, you can still call the Indicators
+    individually. Use help() if needed.
+
+    By default the 'ta' extension uses lower case column names: open, high,
+    low, close, and volume.  You can override the defaults by providing the
     it's replacement name when calling the indicator.  For example, to call the
-    indicator hl2().  
+    indicator hl2().
 
     With 'default' columns: open, high, low, close, and volume.
     >>> df.ta.hl2()
@@ -72,14 +72,19 @@ class AnalysisIndicators(BasePandasObject):
     >>> df.ta.hl2(high='High', low='Low')
     >>> df.ta(kind='hl2', high='High', low='Low')
 
+    If you do not want to use a DataFrame Extension, just call it normally.
+    >>> sma10 = ta.sma(df['Close']) # Default length=10
+    >>> sma50 = ta.sma(df['Close'], length=50)
+    >>> ichimoku, span = ta.ichimoku(df['High'], df['Low'], df['Close'])
+
     Args:
-        kind (str, optional): Default: None.  Name of the indicator.  Converts
-            kind to lowercase before calling.
+        kind (str, optional): Default: None.  Kind is the 'name' of the indicator.
+            It converts kind to lowercase before calling.
         timed (bool, optional): Default: False.  Curious about the execution
-            speed?  Well it's not ground breaking, but you can enable with True.
+            speed?
         kwargs: Extension specific modifiers.
-            append (bool, optional):  Default: False.  When True, it appends to
-            result column(s) of the indicator onto the DataFrame.
+            append (bool, optional):  Default: False.  When True, it appends the
+            resultant column(s) to the DataFrame.
 
     Returns:
         Most Indicators will return a Pandas Series.  Others like MACD, BBANDS,
@@ -95,14 +100,14 @@ class AnalysisIndicators(BasePandasObject):
 
     2. Load some data:
     >>> df = pd.read_csv('AAPL.csv', index_col='date', parse_dates=True)
-    
+
     3. Help!
     3a. General Help:
     >>> help(df.ta)
     >>> df.ta()
-    3a. Indicator Help:
+    3b. Indicator Help:
     >>> help(ta.apo)
-    3b. Indicator Extension Help:
+    3c. Indicator Extension Help:
     >>> help(df.ta.apo)
 
     4. Ways of calling an indicator.
@@ -125,7 +130,7 @@ class AnalysisIndicators(BasePandasObject):
     def __call__(self, kind=None, alias=None, timed=False, **kwargs):
         try:
             if isinstance(kind, str):
-                kind = kind.lower() 
+                kind = kind.lower()
                 fn = getattr(self, kind)
 
                 if timed:
@@ -139,11 +144,12 @@ class AnalysisIndicators(BasePandasObject):
                     ms = time_diff * 1000
                     indicator.timed = f"{ms:2.3f} ms ({time_diff:2.3f} s)"
                     # print(f"execution time: {indicator.timed}")
+                    self._df.timed = indicator.timed
 
                 # Add an alias if passed
                 if alias:
                     indicator.alias = f"{alias}"
-                
+
                 return indicator
             else:
                 self.help()
@@ -159,6 +165,7 @@ class AnalysisIndicators(BasePandasObject):
 
     @adjusted.setter
     def adjusted(self, value:str) -> None:
+        """property: df.ta.adjusted = 'adj_close'"""
         if value is not None and isinstance(value, str):
             self._adjusted = value
         else:
@@ -166,19 +173,19 @@ class AnalysisIndicators(BasePandasObject):
 
     @property
     def datetime_ordered(self) -> bool:
-        """Returns true if the index is a datetime and ordered else False."""
+        """Returns True if the index is a datetime and ordered."""
         index_is_datetime = pd.api.types.is_datetime64_any_dtype(self._df.index)
         ordered = self._df.index[0] < self._df.index[-1]
         return True if index_is_datetime and ordered else False
 
     @property
     def reverse(self) -> pd.DataFrame:
-        """Reverses the DataFrame"""
+        """Reverses the DataFrame. Simply: df.iloc[::-1]"""
         return self._df.iloc[::-1]
 
     @property
     def version(self) -> str:
-        """property: df.ta.version"""
+        """Returns the version."""
         return version
 
     def _append(self, result=None, **kwargs):
@@ -198,11 +205,11 @@ class AnalysisIndicators(BasePandasObject):
         """Add prefix and/or suffix to the result columns"""
         if result is None: return
         else:
-            prefix = suffix = ''
+            prefix = suffix = ""
 
-            if 'prefix' in kwargs:
+            if "prefix" in kwargs:
                 prefix = f"{kwargs['prefix']}_"
-            if 'suffix' in kwargs:
+            if "suffix" in kwargs:
                 suffix = f"_{kwargs['suffix']}"
 
             if isinstance(result, pd.Series):
@@ -216,7 +223,7 @@ class AnalysisIndicators(BasePandasObject):
         df = self._df
         if df is None: return
 
-        # Explicit passing a pd.Series to override default.
+        # Explicitly passing a pd.Series to override default.
         if isinstance(series, pd.Series):
             return series
         # Apply default if no series nor a default.
@@ -237,10 +244,11 @@ class AnalysisIndicators(BasePandasObject):
                 return df.iloc[:,match[0]] if len(match) else print(NOT_FOUND)
 
 
-    def constants(self, apply, lower_bound=-100, upper_bound=100, every=1):
+    def constants(self, append, lower_bound=-100, upper_bound=100, every=1):
         """Constants
 
-        Useful for indicator levels or if you need some constant value.
+        Useful for creating indicator levels or if you need some constant value
+        easily added to your DataFrame.
 
         Add constant '1' to the DataFrame
         >>> df.ta.constants(True, 1, 1, 1)
@@ -253,19 +261,19 @@ class AnalysisIndicators(BasePandasObject):
         >>> df.ta.constants(False, -4, 4, 1)
 
         Args:
-            apply (bool): Default: None.  If True, appends the range of constants to the
+            append (bool): Default: None.  If True, appends the range of constants to the
                 working DataFrame.  If False, it removes the constant range from the working
                 DataFrame.
             lower_bound (int): Default: -100.  Lowest integer for the constant range.
             upper_bound (int): Default: 100.  Largest integer for the constant range.
             every (int): Default: 10.  How often to include a new constant.
-        
+
         Returns:
             Returns nothing to the user.  Either adds or removes constant ranges from the
             working DataFrame.
         """
         levels = [x for x in range(lower_bound, upper_bound + 1) if x % every == 0]
-        if apply:
+        if append:
             for x in levels:
                 self._df[f'{x}'] = x
         else:
@@ -274,11 +282,22 @@ class AnalysisIndicators(BasePandasObject):
 
 
     def indicators(self, **kwargs):
-        """Indicator list"""
-        as_list = kwargs.pop('as_list', False)
-        helper_methods = ['indicators', 'constants']  # Public non-indicator methods
-        ta_properties = ['adjusted', 'datetime_ordered', 'reverse']
-        exclude_methods = kwargs.pop('exclude', None)
+        """List of Indicators
+        
+        Args:
+            kwargs:
+                as_list (bool, optional):  Default: False.  When True, it returns a list
+                    of the indicators.  Helpful you want to filter out what you want to run.
+                exclude (list, optional):  Default: None.  The passed in list will be
+                    excluded from the indicators list.
+
+        Returns:
+            Prints the list of indicators. If as_list=True, then a list.
+        """
+        as_list = kwargs.pop("as_list", False)
+        helper_methods = ["constants", "indicators", "strategy"]  # Public non-indicator methods
+        ta_properties = ["adjusted", "datetime_ordered", "reverse", "version"]
+        exclude_methods = kwargs.pop("exclude", None)
         ta_indicators = list((x for x in dir(pd.DataFrame().ta) if not x.startswith('_') and not x.endswith('_')))
 
         for x in helper_methods:
@@ -294,14 +313,60 @@ class AnalysisIndicators(BasePandasObject):
         if as_list:
             return ta_indicators
 
-        header = f"pandas.ta - Technical Analysis Indicators"
+        header = f"pandas.ta - Technical Analysis Indicators - v{self.version}"
         total_indicators = len(ta_indicators)
         s = f"{header}\nTotal Indicators: {total_indicators}\n"
         if total_indicators > 0:            
-            abbr_list = ', '.join(ta_indicators)
+            abbr_list = ", ".join(ta_indicators)
             print(f"{s}Abbreviations:\n    {abbr_list}")
         else:
             print(s)
+
+
+    # ALL Features
+    def _all(self, **kwargs):
+        """Appends by default all non-excluded indicators to the DataFrame. Used by ta.strategy(**kwargs)"""
+        append = kwargs.pop("append", True)
+        verbose = kwargs.pop("verbose", False)
+        user_excluded = kwargs.pop("exclude", [])
+
+        excluded = ["above", "above_value", "below", "below_value",
+        "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
+        excluded += user_excluded
+        print(f"[i] excluded[{len(excluded)}]: {', '.join(excluded)}") if verbose else None
+
+        indicators = self.indicators(as_list=True, exclude=excluded)
+
+        if verbose and bool(kwargs):
+            print(f"[i] All indicators with the following arguments: {kwargs}")
+
+        for kind in indicators:
+            fn = getattr(self, kind)
+            fn(append=append, **kwargs)
+            print(f"[+] {kind}") if verbose else None
+
+
+    def strategy(self, **kwargs):
+        """Strategy Method
+
+        An experimental method that by default runs all applicable indicators.
+        Future implementations will allow more specific indicator generation through
+        a json config file.
+
+        Args:
+            name (str, optional): Default: 'all'
+            exclude (list, optional): Default: []. List of indicator names to exclude.
+            verbose (bool): Default: False
+
+            kwargs:
+                (optional) Default: {}. Any indicator argument you want to modify.
+                    For example, length=20 or offset=-1 or high=df['High'] ...
+
+        """
+        name = kwargs.pop("name", "all")
+        if name is None or name == "" or not isinstance(name, str): # Extra check
+            name = "all"
+        self._all(**kwargs) if name == "all" else None
 
 
     # Momentum Indicators
@@ -557,7 +622,7 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     # @finalize
-    def ichimoku(self, high=None, low=None, close=None, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):        
+    def ichimoku(self, high=None, low=None, close=None, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
@@ -938,7 +1003,7 @@ class AnalysisIndicators(BasePandasObject):
             b = self._get_column(b, f"{b}")
             result = below(series_a=a, series_b=b, asint=asint, offset=offset, **kwargs)
             return result
-    
+
     @finalize
     def below_value(self, a=None, value=None, asint=True, offset=None, **kwargs):
         if a is None and value is None: return self._df
@@ -963,7 +1028,6 @@ class AnalysisIndicators(BasePandasObject):
             a = self._get_column(a, f"{a}")
             result = cross_value(series_a=a, value=value, above=above, asint=asint, offset=offset, **kwargs)
             return result
-
 
 
     # Volatility Indicators
@@ -1071,7 +1135,7 @@ class AnalysisIndicators(BasePandasObject):
     @finalize
     def adosc(self, high=None, low=None, close=None, volume=None, open_=None, fast=None, slow=None, signed=True, offset=None, **kwargs):
         if open_ is not None:
-            open_ = self._get_column(open_, 'open')        
+            open_ = self._get_column(open_, 'open')
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
@@ -1115,7 +1179,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
 
-        result = eom(high=high, low=low, close=close, volume=volume, length=length, divisor=divisor, offset=offset, drift=drift, **kwargs)        
+        result = eom(high=high, low=low, close=close, volume=volume, length=length, divisor=divisor, offset=offset, drift=drift, **kwargs)
         return result
 
     @finalize
