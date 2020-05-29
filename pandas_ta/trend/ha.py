@@ -7,23 +7,23 @@ from pandas_ta.utils import get_offset, verify_series
 def ha(open, high, low, close, offset=None, **kwargs):
     # indicator : Heikin Ashi
     # Validate Arguments
-    open = verify_series(open)
+    open_ = verify_series(open)
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     offset = get_offset(offset)
 
-    #calculate ha_close
-    ha_close = 0.25 * (open + high + low + close)
+    # calculate ha_close
+    ha_close = 0.25 * (open_ + high + low + close)
 
     # Initialization of the ha_open array
     ha_open = np.zeros(shape=(len(close)))
 
     # ha_open of the first element
-    ha_open[0] = 0.5 * (open[0] + close[0])
+    ha_open[0] = 0.5 * (open_[0] + close[0])
 
-    #calculate ha_open. Based on previous ha_open & ha_close
-    for i in range (1, len(close)):
+    # calculate ha_open. Based on previous ha_open & ha_close
+    for i in range(1, len(close)):
         ha_open[i] = 0.5 * (ha_open[i-1] + ha_close[i-1])
 
     # calculation of ha_high & ha_low
@@ -51,7 +51,7 @@ def ha(open, high, low, close, offset=None, **kwargs):
 
 
 ha.__doc__ = \
-    """Heikin Ashi (HA)
+"""Heikin Ashi (HA)
 
 The Heikin-Ashi technique averages price data to create a Japanese candlestick chart that filters out market noise. 
 Heikin-Ashi charts, developed by Munehisa Homma in the 1700s, 
@@ -84,7 +84,7 @@ HA=Heikin-Ashi
     With the first HA calculated, it is now possible to continue computing the HA candles per the formulas.
 ​​
 Args:
-    open (pd.Series): Series of 'open's
+    open_ (pd.Series): Series of 'open's
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
