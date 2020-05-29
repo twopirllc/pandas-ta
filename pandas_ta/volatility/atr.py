@@ -75,6 +75,7 @@ Args:
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
+    min_periods (int, optional) : Minimum number of periods before calculating ATR. Default : length
 
 Returns:
     pd.Series: New feature generated.
