@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .hlc3 import hlc3
-from ..utils import get_offset, verify_series
+from ..utils import get_offset, is_datetime_ordered, verify_series
 
 def vwap(high, low, close, volume, offset=None, **kwargs):
     """Indicator: Volume Weighted Average Price (VWAP)"""
@@ -10,6 +10,9 @@ def vwap(high, low, close, volume, offset=None, **kwargs):
     close = verify_series(close)
     volume = verify_series(volume)
     offset = get_offset(offset)
+
+    if not is_datetime_ordered(volume):
+        print(f"[!] VWAP volume series is not datetime ordered. Results may not be as expected.")
 
     # Calculate Result
     tp = hlc3(high=high, low=low, close=close)

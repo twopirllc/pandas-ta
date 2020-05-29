@@ -14,7 +14,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "63b"))
+version = ".".join(("0", "1", "64b"))
 
 def finalize(method):
     @wraps(method)
@@ -174,9 +174,7 @@ class AnalysisIndicators(BasePandasObject):
     @property
     def datetime_ordered(self) -> bool:
         """Returns True if the index is a datetime and ordered."""
-        index_is_datetime = pd.api.types.is_datetime64_any_dtype(self._df.index)
-        ordered = self._df.index[0] < self._df.index[-1]
-        return True if index_is_datetime and ordered else False
+        return is_datetime_ordered(self._df)
 
     @property
     def reverse(self) -> pd.DataFrame:
@@ -727,6 +725,10 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
         volume = self._get_column(volume, 'volume')
+
+        # Ensure volume has a datetime ordered index
+        if not self.datetime_ordered:
+            volume.index = self._df.index
 
         result = vwap(high=high, low=low, close=close, volume=volume, offset=offset, **kwargs)
         return result

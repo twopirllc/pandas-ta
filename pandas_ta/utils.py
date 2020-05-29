@@ -113,6 +113,17 @@ def cross(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =
 
     return cross
 
+
+def is_datetime_ordered(df: pd.DataFrame or pd.Series) -> bool:
+    """Returns True if the index is a datetime and ordered."""
+    index_is_datetime = pd.api.types.is_datetime64_any_dtype(df.index)
+    try:
+        ordered = df.index[0] < df.index[-1]
+    except RuntimeWarning: pass
+    finally:
+        return True if index_is_datetime and ordered else False
+
+
 def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_series, offset):
     df = pd.DataFrame()
     if xa is not None and isinstance(xa, (int, float)):

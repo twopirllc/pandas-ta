@@ -17,7 +17,7 @@ setup(
     maintainer_email ="appliedmathkj@gmail.com",
     # install_requires=['numpy','pandas'],
     download_url ="https://github.com/twopirllc/pandas-ta.git",
-    keywords =['technical analysis', 'python3', 'pandas'],
+    keywords =['technical analysis', 'trading', 'python3', 'pandas'],
     license ="The MIT License (MIT)",
     classifiers =[
         'Development Status :: 4 - Beta',
