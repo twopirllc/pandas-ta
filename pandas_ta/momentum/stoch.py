@@ -48,6 +48,7 @@ def stoch(high, low, close, fast_k=None, slow_k=None, slow_d=None, offset=None, 
     fastd.name = f"STOCHFd_{slow_d}"
     slowk.name = f"STOCHk_{slow_k}"
     slowd.name = f"STOCHd_{slow_d}"
+
     fastk.category = fastd.category = slowk.category = slowd.category = 'momentum'
 
     # Prepare DataFrame to return
