@@ -921,6 +921,7 @@ class AnalysisIndicators(BasePandasObject):
         self._append(result, **kwargs)
         return result
 
+    @finalize
     def increasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
 
