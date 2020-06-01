@@ -108,6 +108,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'SWMA_10')
 
+    def test_supertrend_ext(self):
+        self.data.ta.supertrend(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ["SUPERT_7_3.0", "SUPERTd_7_3.0", "SUPERTl_7_3.0", "SUPERTs_7_3.0"])
+
     def test_t3_ext(self):
         self.data.ta.t3(append=True)
         self.assertIsInstance(self.data, DataFrame)

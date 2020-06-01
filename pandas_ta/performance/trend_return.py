@@ -14,8 +14,8 @@ def trend_return(close, trend, log=True, cumulative=None, offset=None, trend_res
 
     # Calculate Result
     returns = log_return(close, cumulative=False) if log else percent_return(close, cumulative=False)
-    m = trend.size
     tsum = 0
+    m = trend.size
     trend = trend.astype(int)
     returns = (trend * returns).apply(zero)
     

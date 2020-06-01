@@ -2,7 +2,7 @@
 from .atr import atr
 from ..utils import get_drift, get_offset, verify_series
 
-def natr(high, low, close, length=None, mamode=None, drift=None, offset=None, **kwargs):
+def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Normalized Average True Range (NATR)"""
     # Validate arguments
     high = verify_series(high)
@@ -10,11 +10,13 @@ def natr(high, low, close, length=None, mamode=None, drift=None, offset=None, **
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     mamode = mamode.lower() if mamode else 'ema'
+    scalar = float(scalar) if scalar else 100
     drift = get_drift(drift)
     offset = get_offset(offset)
 
     # Calculate Result
-    natr = (100 / close) * atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)
+    natr = scalar / close
+    natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)
 
     # Offset
     if offset != 0:
@@ -54,6 +56,7 @@ Args:
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
     length (int): The short period.  Default: 20
+    scalar (float): How much to magnify.  Default: 100
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:

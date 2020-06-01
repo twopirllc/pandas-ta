@@ -243,6 +243,11 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'SWMA_10')
 
+    def test_supertrend(self):
+        result = pandas_ta.supertrend(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'SUPERT_7_3.0')
+
     def test_t3(self):
         result = pandas_ta.t3(self.close)
         self.assertIsInstance(result, Series)

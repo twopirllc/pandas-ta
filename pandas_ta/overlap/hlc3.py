@@ -10,7 +10,7 @@ def hlc3(high, low, close, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    hlc3 = (high + low + close) / 3
+    hlc3 = (high + low + close) / 3.
 
     # Offset
     if offset != 0:

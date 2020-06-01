@@ -81,7 +81,7 @@ class TestMomentumExtension(TestCase):
     def test_kst_ext(self):
         self.data.ta.kst(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ['KST_10_15_20_30_10_10_10_15', 'KSTS_9'])
+        self.assertEqual(list(self.data.columns[-2:]), ['KST_10_15_20_30_10_10_10_15', 'KSTs_9'])
 
     def test_macd_ext(self):
         self.data.ta.macd(append=True)
@@ -139,7 +139,7 @@ class TestMomentumExtension(TestCase):
     def test_trix_ext(self):
         self.data.ta.trix(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], 'TRIX_30')
+        self.assertEqual(list(self.data.columns[-2:]), ['TRIX_30_9', 'TRIXs_30_9'])
 
     def test_tsi_ext(self):
         self.data.ta.tsi(append=True)

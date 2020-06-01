@@ -5,6 +5,7 @@ from functools import wraps
 import pandas as pd
 from pandas.core.base import PandasObject
 
+from pandas_ta.candles import *
 from pandas_ta.momentum import *
 from pandas_ta.overlap import *
 from pandas_ta.performance import *
@@ -14,7 +15,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "64b"))
+version = ".".join(("0", "1", "65b"))
 
 def finalize(method):
     @wraps(method)
@@ -204,6 +205,7 @@ class AnalysisIndicators(BasePandasObject):
         if result is None: return
         else:
             prefix = suffix = ""
+            # delimiter = kwargs.pop("delimiter", "_")
 
             if "prefix" in kwargs:
                 prefix = f"{kwargs['prefix']}_"
@@ -366,6 +368,17 @@ class AnalysisIndicators(BasePandasObject):
             name = "all"
         self._all(**kwargs) if name == "all" else None
 
+
+    # Candles
+    @finalize
+    def ha(self, open_=None, high=None, low=None, close=None, offset=None, **kwargs):
+        open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = ha(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
+        return result
 
     # Momentum Indicators
     @finalize
@@ -534,10 +547,10 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def trix(self, close=None, length=None, drift=None, offset=None, **kwargs):
+    def trix(self, close=None, length=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
 
-        result = trix(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        result = trix(close=close, length=length, signal=signal, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return result
 
     @finalize
@@ -689,6 +702,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
 
         result = sma(close=close, length=length, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def supertrend(self, high=None, low=None, close=None, length=None, multiplier=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = supertrend(high=high, low=low, close=close, length=length, multiplier=multiplier, offset=offset, **kwargs)
         return result
 
     @finalize
@@ -912,17 +934,6 @@ class AnalysisIndicators(BasePandasObject):
         result = dpo(close=close, length=length, centered=centered, offset=offset, **kwargs)
         return result
 
-    def ha(self, open=None, high=None, low=None, close=None, offset=None, **kwargs):
-        open = self._get_column(open, 'open')
-        high = self._get_column(high, 'high')
-        low = self._get_column(low, 'low')
-        close = self._get_column(close, 'close')
-
-        result = ha(open=open, high=high, low=low, close=close, offset=offset, **kwargs)
-        self._add_prefix_suffix(result, **kwargs)
-        self._append(result, **kwargs)
-        return result
-
     @finalize
     def increasing(self, close=None, length=None, asint=True, offset=None, **kwargs):
         close = self._get_column(close, 'close')
@@ -979,17 +990,14 @@ class AnalysisIndicators(BasePandasObject):
             self._append(result, **kwargs)
             return result
 
-    def supertrend(self, high=None, low=None, close=None, period=None, multiplier=None, mamode=None, drift=None,
-                   offset=None, **kwargs):
+    @finalize
+    def supertrend(self, high=None, low=None, close=None, period=None, multiplier=None, mamode=None, drift=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
 
         result = supertrend(high=high, low=low, close=close, period=period, multiplier=multiplier, mamode=mamode, drift=drift, offset=offset, **kwargs)
-        self._add_prefix_suffix(result, **kwargs)
-        self._append(result, **kwargs)
         return result
-
 
     @finalize
     def vortex(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
@@ -1115,12 +1123,12 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def natr(self, high=None, low=None, close=None, length=None, mamode=None, offset=None, **kwargs):
+    def natr(self, high=None, low=None, close=None, length=None, mamode=None, scalar=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
         close = self._get_column(close, 'close')
 
-        result = natr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
+        result = natr(high=high, low=low, close=close, length=length, mamode=mamode, scalar=scalar, offset=offset, **kwargs)
         return result
 
     @finalize

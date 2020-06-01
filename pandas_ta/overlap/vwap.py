@@ -40,6 +40,7 @@ direction.
 Sources:
     https://www.tradingview.com/wiki/Volume_Weighted_Average_Price_(VWAP)
     https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/volume-weighted-average-price-vwap/
+    https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:vwap_intraday
 
 Calculation:
     tp = typical_price = hlc3(high, low, close)

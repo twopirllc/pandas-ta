@@ -18,7 +18,8 @@ def eom(high, low, close, volume, length=None, divisor=None, drift=None, offset=
 
     # Calculate Result
     distance = hl2(high=high, low=low) - hl2(high=high.shift(drift), low=low.shift(drift))
-    box_ratio = (volume / divisor) / high_low_range
+    box_ratio = volume / divisor
+    box_ratio /= high_low_range
     eom = distance / box_ratio
     eom = eom.rolling(length, min_periods=min_periods).mean()
 

@@ -15,6 +15,7 @@ from .pwma import pwma
 from .rma import rma
 from .sinwma import sinwma
 from .sma import sma
+from .supertrend import supertrend
 from .swma import swma
 from .t3 import t3
 from .tema import tema

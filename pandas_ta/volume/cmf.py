@@ -20,9 +20,9 @@ def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs
     else:                
         ad = 2 * close - (high + low)  # AD with High, Low, Close
 
-    hl_range = high_low_range
-    ad *= volume / hl_range
-    cmf = ad.rolling(length, min_periods=min_periods).sum() / volume.rolling(length, min_periods=min_periods).sum()
+    ad *= volume / high_low_range
+    cmf = ad.rolling(length, min_periods=min_periods).sum()
+    cmf /= volume.rolling(length, min_periods=min_periods).sum()
 
     # Offset
     if offset != 0:

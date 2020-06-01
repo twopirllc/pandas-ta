@@ -33,10 +33,12 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Choppiness Index (chop)
     Chande Kroll Stop (cksp)
     Entropy (entropy)
+    Heikin-Ashi Candles (ha)
     KDJ (kdj)
     Parabolic Stop and Reverse (psar)
     Price Distance (pdist)
     Psycholigical Line (psl)
+    Supertrend (supertrend)
     Weighted Closing Price (wcp)
 ### __Added utilities:__
     Above (above)
@@ -182,6 +184,10 @@ df.ta.adjusted = None
 
 # __Technical Analysis Indicators__ (_by Category_)
 
+## _Candles_ (1)
+
+* _Heikin-Ashi_: **ha**
+
 ## _Momentum_ (25)
 
 * _Awesome Oscillator_: **ao**
@@ -215,7 +221,7 @@ df.ta.adjusted = None
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-## _Overlap_ (25)
+## _Overlap_ (26)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -224,17 +230,18 @@ df.ta.adjusted = None
 * _High-Low-Close Average_: **hlc3**
     * Commonly known as 'Typical Price' in Technical Analysis literature
 * _Hull Exponential Moving Average_: **hma**
-* _Kaufman's Adaptive Moving Average_: **kama**
 * _Ichimoku Kinkō Hyō_: **ichimoku**
     * Use: help(ta.ichimoku). Returns two DataFrames.
+* _Kaufman's Adaptive Moving Average_: **kama**
 * _Linear Regression_: **linreg**
 * _Midpoint_: **midpoint**
 * _Midprice_: **midprice**
 * _Open-High-Low-Close Average_: **ohlc4**
 * _Pascal's Weighted Moving Average_: **pwma**
 * _William's Moving Average_: **rma**
-* _Simple Moving Average_: **sma**
 * _Sine Weighted Moving Average_: **sinwma**
+* _Simple Moving Average_: **sma**
+* _Supertrend_: **supertrend**
 * _Symmetric Weighted Moving Average_: **swma**
 * _T3 Moving Average_: **t3**
 * _Triple Exponential Moving Average_: **tema**
@@ -355,4 +362,4 @@ Use parameter: cumulative=**True** for cumulative results.
 * Original TA-LIB: http://ta-lib.org/
 * Bukosabino: https://github.com/bukosabino/ta
 
-Please leave any comments, feedback, or suggestions.
+Please leave any comments, feedback, suggestions, or indicator requests.

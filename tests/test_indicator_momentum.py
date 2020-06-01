@@ -314,8 +314,8 @@ class TestMomentum(TestCase):
 
     def test_trix(self):
         result = pandas_ta.trix(self.close)
-        self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'TRIX_30')
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'TRIX_30_9')
 
     def test_tsi(self):
         result = pandas_ta.tsi(self.close)
