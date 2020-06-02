@@ -38,7 +38,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Parabolic Stop and Reverse (psar)
     Price Distance (pdist)
     Psycholigical Line (psl)
-    Price Volume Oscillator (pvo)
+    Percentage Volume Oscillator (pvo)
     Supertrend (supertrend)
     Weighted Closing Price (wcp)
 ### __Added utilities:__
