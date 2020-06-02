@@ -15,6 +15,7 @@ from .macd import macd
 from .mom import mom
 from .ppo import ppo
 from .psl import psl
+from .pvo import pvo
 from .roc import roc
 from .rsi import rsi
 from .rvi import rvi

@@ -1,33 +1,35 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..overlap.ema import ema
-from ..utils import get_offset, verify_series
+from pandas_ta.overlap import ema, sma
+from pandas_ta.utils import get_offset, verify_series
 
-def ppo(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
+def ppo(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
     """Indicator: Percentage Price Oscillator (PPO)"""
     # Validate Arguments
     close = verify_series(close)
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     signal = int(signal) if signal and signal > 0 else 9
+    scalar = float(scalar) if scalar else 100
     if slow < fast:
         fast, slow = slow, fast
     min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else fast
     offset = get_offset(offset)
 
     # Calculate Result
-    fastma = close.rolling(fast, min_periods=min_periods).mean()
-    slowma = close.rolling(slow, min_periods=min_periods).mean()
+    fastma = sma(close, length=fast)
+    slowma = sma(close, length=slow)
+    ppo = scalar * (fastma - slowma)
+    ppo /= slowma
 
-    ppo = 100 * (fastma - slowma) / slowma
-    signalma = ema(close=ppo, length=signal, **kwargs)
+    signalma = ema(ppo, length=signal)
     histogram = ppo - signalma
 
     # Offset
     if offset != 0:
         ppo = ppo.shift(offset)
-        signalma = signalma.shift(offset)
         histogram = histogram.shift(offset)
+        signalma = signalma.shift(offset)
 
     # Handle fills
     if 'fillna' in kwargs:
@@ -42,17 +44,17 @@ def ppo(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     # Name and Categorize it
     _props = f"_{fast}_{slow}_{signal}"
     ppo.name = f"PPO{_props}"
-    histogram.name = f"PPOH{_props}"
-    signalma.name = f"PPOS{_props}"
-    ppo.category = histogram.category = signalma.category = 'momentum'
+    histogram.name = f"PPOh{_props}"
+    signalma.name = f"PPOs{_props}"
+    ppo.category = histogram.category = signalma.category = "momentum"
 
     # Prepare DataFrame to return
     data = {ppo.name: ppo, histogram.name: histogram, signalma.name: signalma}
-    ppodf = DataFrame(data)
-    ppodf.name = f"PPO{_props}"
-    ppodf.category = 'momentum'
+    df = DataFrame(data)
+    df.name = f"PPO{_props}"
+    df.category = ppo.category
 
-    return ppodf
+    return df
 
 
 
@@ -80,6 +82,7 @@ Args:
     fast(int): The short period.  Default: 12
     slow(int): The long period.   Default: 26
     signal(int): The signal period.   Default: 9
+    scalar (float): How much to magnify.  Default: 100
     offset(int): How many periods to offset the result.  Default: 0
 
 Kwargs:

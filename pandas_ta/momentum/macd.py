@@ -40,22 +40,23 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
         signalma.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name and Categorize it
-    macd.name = f"MACD_{fast}_{slow}_{signal}"
-    histogram.name = f"MACDH_{fast}_{slow}_{signal}"
-    signalma.name = f"MACDS_{fast}_{slow}_{signal}"
-    macd.category = histogram.category = signalma.category = 'momentum'
+    _props = f"_{fast}_{slow}_{signal}"
+    macd.name = f"MACD{_props}"
+    histogram.name = f"MACDh{_props}"
+    signalma.name = f"MACDs{_props}"
+    macd.category = histogram.category = signalma.category = "momentum"
 
     # Prepare DataFrame to return
     data = {macd.name: macd, histogram.name: histogram, signalma.name: signalma}
-    macddf = DataFrame(data)
-    macddf.name = f"MACD_{fast}_{slow}_{signal}"
-    macddf.category = 'momentum'
+    df = DataFrame(data)
+    df.name = f"MACD{_props}"
+    df.category = macd.category
 
     signal_indicators = kwargs.pop('signal_indicators', False)
     if signal_indicators:
         signalsdf = concat(
             [
-                macddf,
+                df,
                 signals(
                     indicator=histogram,
                     xa=kwargs.pop('xa', 0),
@@ -84,7 +85,7 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
 
         return signalsdf
     else:
-        return macddf
+        return df
 
 
 
