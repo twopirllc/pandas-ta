@@ -15,7 +15,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "66b"))
+version = ".".join(("0", "1", "67b"))
 
 def finalize(method):
     @wraps(method)
@@ -491,10 +491,10 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def ppo(self, close=None, fast=None, slow=None, percentage=True, offset=None, **kwargs):
+    def ppo(self, close=None, fast=None, slow=None, scalar=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
 
-        result = ppo(close=close, fast=fast, slow=slow, percentage=percentage, offset=offset, **kwargs)
+        result = ppo(close=close, fast=fast, slow=slow, scalar=scalar, offset=offset, **kwargs)
         return result
 
     @finalize
@@ -504,6 +504,13 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
 
         result = psl(close=close, open_=open_, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def pvo(self, volume=None, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
+        volume = self._get_column(volume, 'volume')
+
+        result = pvo(volume=volume, fast=fast, slow=slow, signal=signal, scalar=scalar, offset=offset, **kwargs)
         return result
 
     @finalize

@@ -86,7 +86,7 @@ class TestMomentumExtension(TestCase):
     def test_macd_ext(self):
         self.data.ta.macd(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ['MACD_12_26_9', 'MACDH_12_26_9', 'MACDS_12_26_9'])
+        self.assertEqual(list(self.data.columns[-3:]), ['MACD_12_26_9', 'MACDh_12_26_9', 'MACDs_12_26_9'])
 
     def test_mom_ext(self):
         self.data.ta.mom(append=True)
@@ -96,12 +96,17 @@ class TestMomentumExtension(TestCase):
     def test_ppo_ext(self):
         self.data.ta.ppo(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ['PPO_12_26_9', 'PPOH_12_26_9', 'PPOS_12_26_9'])
+        self.assertEqual(list(self.data.columns[-3:]), ['PPO_12_26_9', 'PPOh_12_26_9', 'PPOs_12_26_9'])
 
     def test_psl_ext(self):
         self.data.ta.psl(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'PSL_12')
+
+    def test_pvo_ext(self):
+        self.data.ta.pvo(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-3:]), ['PVO_12_26_9', 'PVOh_12_26_9', 'PVOs_12_26_9'])
 
     def test_roc_ext(self):
         self.data.ta.roc(append=True)

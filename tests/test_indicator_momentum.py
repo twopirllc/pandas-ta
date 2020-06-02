@@ -166,7 +166,7 @@ class TestMomentum(TestCase):
 
         try:
             expected = tal.MACD(self.close)
-            expecteddf = DataFrame({'MACD_12_26_9': expected[0], 'MACDH_12_26_9': expected[2], 'MACDS_12_26_9': expected[1]})
+            expecteddf = DataFrame({'MACD_12_26_9': expected[0], 'MACDh_12_26_9': expected[2], 'MACDs_12_26_9': expected[1]})
             pdt.assert_frame_equal(result, expecteddf)
         except AssertionError as ae:
             try:
@@ -221,6 +221,11 @@ class TestMomentum(TestCase):
         result = pandas_ta.psl(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'PSL_12')
+
+    def test_pvo(self):
+        result = pandas_ta.pvo(self.volume)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, 'PVO_12_26_9')
 
     def test_roc(self):
         result = pandas_ta.roc(self.close)

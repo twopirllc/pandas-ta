@@ -107,7 +107,7 @@ class TestTrend(TestCase):
     def test_dpo(self):
         result = pandas_ta.dpo(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'DPO_1')
+        self.assertEqual(result.name, 'DPO_20')
 
     def test_increasing(self):
         result = pandas_ta.increasing(self.close)

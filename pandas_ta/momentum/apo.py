@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..overlap.sma import sma
-from ..utils import get_offset, verify_series
+from pandas_ta.overlap import sma
+from pandas_ta.utils import get_offset, verify_series
 
 def apo(close, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Absolute Price Oscillator (APO)"""

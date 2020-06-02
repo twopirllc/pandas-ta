@@ -6,7 +6,7 @@
 # __Technical Analysis Library in Python 3.7__
 ![Example Chart](/images/TA_Chart.png)
 
-__Pandas Technical Analysis__ (Pandas TA) is an easy to use library that is built upon Python's Pandas library with more than 100 Indicators.  These indicators are comminly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (*SMA*) _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon & Aroon Oscillator_ (*AROON*) and more.
+__Pandas Technical Analysis__ (Pandas TA) is an easy to use library that is built upon Python's Pandas library with more than 100 Indicators.  These indicators are commonly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (*SMA*) _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon & Aroon Oscillator_ (*AROON*) and more.
 
 This version contains both the orignal code branch as well as a newly refactored branch with the option to use [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode. 
 All the indicators return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDH_12_26_9', 'MACDS_12_26_9'].
@@ -38,6 +38,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Parabolic Stop and Reverse (psar)
     Price Distance (pdist)
     Psycholigical Line (psl)
+    Price Volume Oscillator (pvo)
     Supertrend (supertrend)
     Weighted Closing Price (wcp)
 ### __Added utilities:__
@@ -188,7 +189,7 @@ df.ta.adjusted = None
 
 * _Heikin-Ashi_: **ha**
 
-## _Momentum_ (25)
+## _Momentum_ (26)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -206,6 +207,7 @@ df.ta.adjusted = None
 * _Momentum_: **mom**
 * _Percentage Price Oscillator_: **ppo**
 * _Psychological Line_: **psl**
+* _Percentage Volume Oscillator_: **pvo**
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
 * _Relative Vigor Index_: **rvi**

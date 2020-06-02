@@ -56,7 +56,7 @@ class TestTrendExtension(TestCase):
     def test_dpo_ext(self):
         self.data.ta.dpo(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], 'DPO_1')
+        self.assertEqual(self.data.columns[-1], 'DPO_20')
 
     def test_increasing_ext(self):
         self.data.ta.increasing(append=True)

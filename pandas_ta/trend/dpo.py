@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from pandas_ta.overlap import sma
+from pandas_ta.utils import get_offset, verify_series
 
 def dpo(close, length=None, centered=True, offset=None, **kwargs):
     """Indicator: Detrend Price Oscillator (DPO)"""
     # Validate Arguments
     close = verify_series(close)
-    length = int(length) if length and length > 0 else 1
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    length = int(length) if length and length > 0 else 20
     offset = get_offset(offset)
 
     # Calculate Result
-    drift = int(0.5 * length) + 1  # int((0.5 * length) + 1)
-    dpo = close.shift(drift) - close.rolling(length, min_periods=min_periods).mean()
+    t = int(0.5 * length) + 1
+    ma = sma(close, length)
+    
+    dpo = close - ma.shift(t)
     if centered:
-        dpo = dpo.shift(-drift)
+        dpo = (close.shift(t) - ma).shift(-t)
 
     # Offset
     if offset != 0:
@@ -40,17 +42,19 @@ Is an indicator designed to remove trend from price and make it easier to
 identify cycles.
 
 Sources:
+    https://www.tradingview.com/scripts/detrendedpriceoscillator/
+    https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/dpo
     http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:detrended_price_osci
 
 Calculation:
     Default Inputs:
-        length=1, centered=True
+        length=20, centered=True
     SMA = Simple Moving Average
-    drift = int(0.5 * length) + 1
+    t = int(0.5 * length) + 1
     
-    DPO = close.shift(drift) - SMA(close, length)
+    DPO = close.shift(t) - SMA(close, length)
     if centered:
-        DPO = DPO.shift(-drift)
+        DPO = DPO.shift(-t)
 
 Args:
     close (pd.Series): Series of 'close's
