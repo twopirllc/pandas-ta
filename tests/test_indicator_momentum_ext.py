@@ -73,6 +73,11 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'FISHERT_5')
 
+    def test_inertia_ext(self):
+        self.data.ta.inertia(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'INERTIA_14_4')
+
     def test_kdj_ext(self):
         self.data.ta.kdj(append=True)
         self.assertIsInstance(self.data, DataFrame)

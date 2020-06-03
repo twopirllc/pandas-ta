@@ -9,6 +9,7 @@ from .cg import cg
 from .cmo import cmo
 from .coppock import coppock
 from .fisher import fisher
+from .inertia import inertia
 from .kdj import kdj
 from .kst import kst
 from .macd import macd

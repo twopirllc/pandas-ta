@@ -34,6 +34,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Chande Kroll Stop (cksp)
     Entropy (entropy)
     Heikin-Ashi Candles (ha)
+    Inertia (inertia)
     KDJ (kdj)
     Parabolic Stop and Reverse (psar)
     Price Distance (pdist)
@@ -189,7 +190,7 @@ df.ta.adjusted = None
 
 * _Heikin-Ashi_: **ha**
 
-## _Momentum_ (26)
+## _Momentum_ (27)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -201,6 +202,7 @@ df.ta.adjusted = None
 * _Chande Momentum Oscillator_: **cmo**
 * _Coppock Curve_: **coppock**
 * _Fisher Transform_: **fisher**
+* _Inertia_: **inertia**
 * _KDJ_: **kdj**
 * _KST Oscillator_: **kst**
 * _Moving Average Convergence Divergence_: **macd**

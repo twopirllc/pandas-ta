@@ -15,7 +15,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "67b"))
+version = ".".join(("0", "1", "68b"))
 
 def finalize(method):
     @wraps(method)
@@ -458,6 +458,16 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(low, 'low')
 
         result = fisher(high=high, low=low, length=length, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def inertia(self, open_=None, high=None, low=None, close=None, length=None, swma_length=None, offset=None, **kwargs):
+        open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = inertia(open_=open_, high=high, low=low, close=close, length=length, swma_length=swma_length, offset=offset, **kwargs)
         return result
 
     @finalize
