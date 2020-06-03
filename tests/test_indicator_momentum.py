@@ -262,10 +262,10 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
-    def test_rvi(self):
-        result = pandas_ta.rvi(self.open, self.high, self.low, self.close)
+    def test_rvgi(self):
+        result = pandas_ta.rvgi(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'RVI_14_4')
+        self.assertEqual(result.name, 'RVGI_14_4')
 
     def test_slope(self):
         result = pandas_ta.slope(self.close)

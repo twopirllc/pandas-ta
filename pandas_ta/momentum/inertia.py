@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .rvi import rvi
+# from .rvi import rvi
 from pandas_ta.overlap import linreg
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
@@ -15,8 +15,9 @@ def inertia(open_, high, low, close, length=None, swma_length=None, offset=None,
     offset = get_offset(offset)
 
     # Calculate Result
-    rvidf = rvi(open_, high, low, close, length=length, swma_length=swma_length)
-    inertia = linreg(rvidf[rvidf.columns[0]], length=length)
+    # rvidf = rvi(open_, high, low, close, length=length, swma_length=swma_length)
+    # inertia = linreg(rvidf[rvidf.columns[0]], length=length)
+    inertia = close # STUB
 
     # Offset
     if offset != 0:

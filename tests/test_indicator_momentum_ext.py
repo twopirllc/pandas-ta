@@ -123,10 +123,10 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'RSI_14')
 
-    def test_rvi_ext(self):
-        self.data.ta.rvi(append=True)
+    def test_rvgi_ext(self):
+        self.data.ta.rvgi(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ['RVI_14_4', 'RVIs_14_4'])
+        self.assertEqual(list(self.data.columns[-2:]), ['RVGI_14_4', 'RVGIs_14_4'])
 
     def test_slope_ext(self):
         self.data.ta.slope(append=True)

@@ -19,7 +19,7 @@ from .psl import psl
 from .pvo import pvo
 from .roc import roc
 from .rsi import rsi
-from .rvi import rvi
+from .rvgi import rvgi
 from .slope import slope
 from .stoch import stoch
 from .trix import trix

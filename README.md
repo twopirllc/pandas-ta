@@ -58,6 +58,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Bollinger Bands (bbands)
     Commodity Channel Index (cci)
     Chande Momentum Oscillator (cmo)
+    Relative Vigor Index (rvgi)
     Symmetric Weighted Moving Average (swma)
 
 ## What is a Pandas DataFrame Extension?
@@ -213,7 +214,7 @@ df.ta.adjusted = None
 * _Percentage Volume Oscillator_: **pvo**
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
-* _Relative Vigor Index_: **rvi**
+* _Relative Vigor Index_: **rvgi**
 * _Slope_: **slope*
 * _Stochastic Oscillator_: **stoch**
 * _Trix_: **trix**
