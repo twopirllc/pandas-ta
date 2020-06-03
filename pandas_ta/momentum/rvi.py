@@ -38,7 +38,7 @@ def rvi(open_, high, low, close, length=None, swma_length=None, offset=None, **k
 
     # Name & Category
     rvi.name = f"RVI_{length}_{swma_length}"
-    signal.name = f"RVIS_{length}_{swma_length}"
+    signal.name = f"RVIs_{length}_{swma_length}"
     rvi.category = signal.category = 'momentum'
 
     # Prepare DataFrame to return

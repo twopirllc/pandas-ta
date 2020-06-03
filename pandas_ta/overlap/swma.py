@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, pascals_triangle, verify_series, weights
+from ..utils import get_offset, symmetric_triangle, verify_series, weights
 
 def swma(close, length=None, asc=None, offset=None, **kwargs):
     """Indicator: Symmetric Weighted Moving Average (SWMA)"""
@@ -11,7 +11,7 @@ def swma(close, length=None, asc=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    triangle = pascals_triangle(n=length - 1, weighted=True)
+    triangle = symmetric_triangle(length, weighted=True)
     swma = close.rolling(length, min_periods=length).apply(weights(triangle), raw=True)
 
     # Offset

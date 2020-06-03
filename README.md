@@ -58,6 +58,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Bollinger Bands (bbands)
     Commodity Channel Index (cci)
     Chande Momentum Oscillator (cmo)
+    Symmetric Weighted Moving Average (swma)
 
 ## What is a Pandas DataFrame Extension?
 

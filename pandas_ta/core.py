@@ -15,7 +15,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "68b"))
+version = ".".join(("0", "1", "69b"))
 
 def finalize(method):
     @wraps(method)
