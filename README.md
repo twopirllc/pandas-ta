@@ -40,6 +40,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Price Distance (pdist)
     Psycholigical Line (psl)
     Percentage Volume Oscillator (pvo)
+    Relative Volatility Index (rvi)
     Supertrend (supertrend)
     Weighted Closing Price (wcp)
 ### __Added utilities:__
@@ -319,7 +320,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Below Value_: **below_value**
 * _Cross_: **cross**
 
-## _Volatility_ (10)
+## _Volatility_ (11)
 
 * _Aberration_: **aberration**
 * _Acceleration Bands_: **accbands**
@@ -330,6 +331,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Mass Index_: **massi**
 * _Normalized Average True Range_: **natr**
 * _Price Distance_: **pdist**
+* _Relative Volatility Index_: **rvi**
 * _True Range_: **true_range**
 
 | _Average True Range_ (ATR) |

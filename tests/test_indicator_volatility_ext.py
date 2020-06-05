@@ -65,6 +65,21 @@ class TestVolatilityExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], 'PDIST')
 
+    def test_rvi_ext(self):
+        self.data.ta.rvi(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'RVI_14')
+
+    def test_rvi_refined_ext(self):
+        self.data.ta.rvi(refined=True, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'RVIr_14')
+
+    def test_rvi_thirds_ext(self):
+        self.data.ta.rvi(thirds=True, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'RVIt_14')
+
     def test_true_range_ext(self):
         self.data.ta.true_range(append=True)
         self.assertIsInstance(self.data, DataFrame)

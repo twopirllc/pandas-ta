@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat
-from ..utils import get_drift, get_offset, verify_series, signals
+from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Strength Index (RSI)"""
@@ -79,11 +79,14 @@ Calculation:
         length=14, scalar=100, drift=1
     ABS = Absolute Value
     EMA = Exponential Moving Average
+
     positive = close if close.diff(drift) > 0 else 0
     negative = close if close.diff(drift) < 0 else 0
+
     pos_avg = EMA(positive, length)
     neg_avg = ABS(EMA(negative, length))
-    RSI = 100 * pos_avg / (pos_avg + neg_avg)
+
+    RSI = scalar * pos_avg / (pos_avg + neg_avg)
 
 Args:
     close (pd.Series): Series of 'close's

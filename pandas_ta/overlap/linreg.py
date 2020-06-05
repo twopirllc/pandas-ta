@@ -61,14 +61,10 @@ def linreg(close, length=None, offset=None, **kwargs):
 
     # Name and Categorize it
     linreg.name = f"LR"
-    if slope:
-        linreg.name += "m"
-    if intercept:
-        linreg.name += "b"
-    if angle:
-        linreg.name += "a"
-    if r:
-        linreg.name += "r"
+    if slope:     linreg.name += "m"
+    if intercept: linreg.name += "b"
+    if angle:     linreg.name += "a"
+    if r:         linreg.name += "r"
     linreg.name += f"_{length}"
     linreg.category = 'overlap'
 
@@ -108,14 +104,14 @@ Args:
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
     angle (bool, optional): Default: False.  If True, returns the angle of the slope in radians
     degrees (bool, optional): Default: False.  If True, returns the angle of the slope in degrees
     intercept (bool, optional): Default: False.  If True, returns the angle of the slope in radians
     r (bool, optional): Default: False.  If True, returns it's correlation 'r'
     slope (bool, optional): Default: False.  If True, returns the slope
     tsf (bool, optional): Default: False.  If True, returns the Time Series Forecast value.
+    fillna (value, optional): pd.DataFrame.fillna(value)
+    fill_method (value, optional): Type of fill method
 
 Returns:
     pd.Series: New feature generated.

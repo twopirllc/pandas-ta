@@ -12,7 +12,14 @@ TRADING_HOURS_IN_DAY = 6.5
 MINUTES_IN_HOUR = 60
 
 
-def _above_below(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =True, offset:int =None, **kwargs):
+def _above_below(
+        series_a: pd.Series,
+        series_b: pd.Series,
+        above: bool =True,
+        asint: bool =True,
+        offset: int =None,
+        **kwargs
+    ):
     series_a = verify_series(series_a)
     series_b = verify_series(series_b)
     offset = get_offset(offset)
@@ -40,11 +47,23 @@ def _above_below(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint
     return current
 
 
-def above(series_a:pd.Series, series_b:pd.Series, asint:bool =True, offset:int =None, **kwargs):
+def above(
+        series_a: pd.Series,
+        series_b: pd.Series,
+        asint: bool =True,
+        offset: int =None,
+        **kwargs
+    ):
     return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)
 
 
-def above_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =None, **kwargs):
+def above_value(
+        series_a: pd.Series,
+        value: float,
+        asint: bool = True,
+        offset: int = None,
+        **kwargs
+    ):
     if not isinstance(value, (int, float, complex)):
         print("[X] value is not a number")
         return
@@ -52,11 +71,23 @@ def above_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =N
     return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)    
 
 
-def below(series_a:pd.Series, series_b:pd.Series, asint:bool =True, offset:int =None, **kwargs):
+def below(
+        series_a: pd.Series,
+        series_b: pd.Series,
+        asint: bool =True,
+        offset: int =None
+        ,**kwargs
+    ):
     return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
 
 
-def below_value(series_a:pd.Series, value:float, asint:bool =True, offset:int =None, **kwargs):
+def below_value(
+        series_a: pd.Series,
+        value: float,
+        asint: bool = True,
+        offset: int = None,
+        **kwargs
+    ):
     if not isinstance(value, (int, float, complex)):
         print("[X] value is not a number")
         return
@@ -82,11 +113,26 @@ def combination(**kwargs):
     return numerator // denominator
 
 
-def cross_value(series_a:pd.Series, value:float, above:bool =True, asint:bool =True, offset:int =None, **kwargs):
+def cross_value(
+        series_a: pd.Series,
+        value: float,
+        above: bool = True,
+        asint: bool = True,
+        offset: int = None,
+        **kwargs
+    ):
     series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace('.','_'))
     return cross(series_a, series_b, above, asint, offset, **kwargs)
 
-def cross(series_a:pd.Series, series_b:pd.Series, above:bool =True, asint:bool =True, offset:int =None, **kwargs):
+
+def cross(
+        series_a: pd.Series,
+        series_b: pd.Series,
+        above: bool = True, 
+        asint: bool = True,
+        offset: int = None,
+        **kwargs
+    ):
     series_a = verify_series(series_a)
     series_b = verify_series(series_b)
     offset = get_offset(offset)
@@ -124,7 +170,7 @@ def is_datetime_ordered(df: pd.DataFrame or pd.Series) -> bool:
         return True if index_is_datetime and ordered else False
 
 
-def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_series, offset):
+def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_series, offset) -> pd.DataFrame:
     df = pd.DataFrame()
     if xa is not None and isinstance(xa, (int, float)):
         if cross_values:
@@ -171,7 +217,7 @@ def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_s
     return df
 
 
-def df_error_analysis(dfA:pd.DataFrame, dfB:pd.DataFrame, **kwargs):
+def df_error_analysis(dfA: pd.DataFrame, dfB: pd.DataFrame, **kwargs) -> pd.DataFrame:
     """ """
     col = kwargs.pop('col', None)
     corr_method = kwargs.pop('corr_method', 'pearson')
@@ -196,7 +242,7 @@ def df_error_analysis(dfA:pd.DataFrame, dfB:pd.DataFrame, **kwargs):
         return df
 
 
-def fibonacci(**kwargs):
+def fibonacci(**kwargs) -> np.ndarray:
     """Fibonacci Sequence as a numpy array"""
     n = int(math.fabs(kwargs.pop('n', 2)))
     zero = kwargs.pop('zero', False)
@@ -223,17 +269,17 @@ def fibonacci(**kwargs):
         return result
 
 
-def get_drift(x:int):
+def get_drift(x: int) -> int:
     """Returns an int if not zero, otherwise defaults to one."""
     return int(x) if x and x != 0 else 1
 
 
-def get_offset(x:int):
+def get_offset(x: int) -> int:
     """Returns an int, otherwise defaults to zero."""
     return int(x) if x else 0
 
 
-def non_zero_range(high:pd.Series, low:pd.Series):
+def non_zero_range(high: pd.Series, low: pd.Series) -> pd.Series:
     """Returns the difference of two series and adds epsilon if
     to any zero values.  This occurs commonly in crypto data when
     high = low.
@@ -244,12 +290,12 @@ def non_zero_range(high:pd.Series, low:pd.Series):
     return diff
 
 
-def pascals_triangle(n:int =None, **kwargs):
+def pascals_triangle(n: int = None, **kwargs) -> np.ndarray:
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
     n=4  => triangle: [1, 4, 6, 4, 1]
-         => weighted: [0.0625, 0.25, 0.375, 0.25, 0.0625
+         => weighted: [0.0625, 0.25, 0.375, 0.25, 0.0625]
          => inverse weighted: [0.9375, 0.75, 0.625, 0.75, 0.9375]
     """
     n = int(math.fabs(n)) if n is not None else 0
@@ -280,8 +326,13 @@ def recent_minimum_index(x):
     return int(np.argmin(x[::-1]))
 
 
-def signed_series(series:pd.Series, initial:int =None):
-    """Returns a Signed Series with or without an initial value"""
+def signed_series(series: pd.Series, initial: int =None) -> pd.Series:
+    """Returns a Signed Series with or without an initial value
+    
+    Default Example:
+    series = pd.Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5, 3]) and returns
+    sign   = pd.Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0, -1.0])
+    """
     series = verify_series(series)
     sign = series.diff(1)
     sign[sign > 0] = 1
@@ -290,7 +341,13 @@ def signed_series(series:pd.Series, initial:int =None):
     return sign
 
 
-def symmetric_triangle(n:int =None, **kwargs):
+def symmetric_triangle(n: int = None, **kwargs) -> list:
+    """Symmetric Triangle with n >= 2
+
+    Returns a numpy array of the nth row of Symmetric Triangle.
+    n=4  => triangle: [1, 2, 2, 1]
+         => weighted: [0.16666667 0.33333333 0.33333333 0.16666667]
+    """
     n = int(math.fabs(n)) if n is not None else 2
     weighted = kwargs.pop('weighted', False)
 
@@ -315,7 +372,36 @@ def symmetric_triangle(n:int =None, **kwargs):
     return triangle
 
 
-def verify_series(series:pd.Series):
+def unsigned_differences(series: pd.Series, amount: int = None, **kwargs) -> pd.Series:
+    """Unsigned Differences
+    Returns two Series, an unsigned positive and unsigned negative series based on
+    the differences of the original series. The positive series are only the increases
+    and the negative series is only the decreases.
+
+    Default Example:
+    series   = pd.Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5, 3]) and returns
+    postive  = pd.Series([0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0])
+    negative = pd.Series([0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1])
+    """
+    amount = int(amount) if amount is not None else 1
+    negative = series.diff(amount)
+    negative.fillna(0, inplace=True)
+    positive = negative.copy()
+
+    positive[positive <= 0] = 0
+    positive[positive > 0] = 1
+
+    negative[negative >= 0] = 0
+    negative[negative < 0] = 1
+
+    if kwargs.pop('asint', False):
+        positive = positive.astype(int)
+        negative = negative.astype(int)
+
+    return positive, negative
+
+
+def verify_series(series: pd.Series) -> pd.Series:
     """If a Pandas Series return it."""
     if series is not None and isinstance(series, pd.core.series.Series):
         return series
@@ -327,6 +413,6 @@ def weights(w):
     return _dot
 
 
-def zero(x):
+def zero(x: [int, float]) -> [int, float]:
     """If the value is close to zero, then return zero.  Otherwise return the value."""
     return 0 if -sflt.epsilon < x and x < sflt.epsilon else x

@@ -127,6 +127,19 @@ class TestVolatility(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, 'PDIST')
 
+    def test_rvi(self):
+        result = pandas_ta.rvi(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'RVI_14')
+
+        result = pandas_ta.rvi(self.close, self.high, self.low, refined=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'RVIr_14')
+
+        result = pandas_ta.rvi(self.close, self.high, self.low, thirds=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'RVIt_14')
+
     def test_true_range(self):
         result = pandas_ta.true_range(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)

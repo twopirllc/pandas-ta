@@ -15,7 +15,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "70b"))
+version = ".".join(("0", "1", "71b"))
 
 def finalize(method):
     @wraps(method)
@@ -461,13 +461,17 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def inertia(self, open_=None, high=None, low=None, close=None, length=None, swma_length=None, offset=None, **kwargs):
-        open_ = self._get_column(open_, 'open')
-        high = self._get_column(high, 'high')
-        low = self._get_column(low, 'low')
+    def inertia(self, close=None, high=None, low=None, length=None, rvi_length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
 
-        result = inertia(open_=open_, high=high, low=low, close=close, length=length, swma_length=swma_length, offset=offset, **kwargs)
+        if refined is not None or thirds is not None:
+            high = self._get_column(high, 'high')
+            low = self._get_column(low, 'low')
+
+            result = inertia(close=close, high=high, low=low, length=length, rvi_length=rvi_length, scalar=scalar, refined=refined, thirds=thirds, mamode=mamode, drift=drift, offset=offset, **kwargs)
+        else:
+            result = inertia(close=close, length=length, rvi_length=rvi_length, scalar=scalar, refined=refined, thirds=thirds, mamode=mamode, drift=drift, offset=offset, **kwargs)
+
         return result
 
     @finalize
@@ -1156,6 +1160,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
 
         result = pdist(open_=open_, high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def rvi(self, close=None, high=None, low=None, length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+
+        result = rvi(high=high, low=low, close=close, length=length, scalar=scalar, refined=refined, thirds=thirds, mamode=mamode, drift=drift, offset=offset, **kwargs)
         return result
 
     @finalize

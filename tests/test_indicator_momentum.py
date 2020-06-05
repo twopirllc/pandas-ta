@@ -150,9 +150,18 @@ class TestMomentum(TestCase):
         self.assertEqual(result.name, 'FISHERT_5')
 
     def test_inertia(self):
-        result = pandas_ta.inertia(self.open, self.high, self.low, self.close)
+        result = pandas_ta.inertia(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'INERTIA_14_4')
+        self.assertEqual(result.name, 'INERTIA_20_14')
+
+        result = pandas_ta.inertia(self.close, self.high, self.low, refined=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'INERTIAr_20_14')
+
+        result = pandas_ta.inertia(self.close, self.high, self.low, thirds=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, 'INERTIAt_20_14')
+
 
     def test_kdj(self):
         result = pandas_ta.kdj(self.high, self.low, self.close)

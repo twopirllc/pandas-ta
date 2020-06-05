@@ -1,23 +1,36 @@
 # -*- coding: utf-8 -*-
-# from .rvi import rvi
 from pandas_ta.overlap import linreg
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.volatility import rvi
+from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
-def inertia(open_, high, low, close, length=None, swma_length=None, offset=None, **kwargs):
+def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Inertia (INERTIA)"""
     # Validate Arguments
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
     close = verify_series(close)
-    length = int(length) if length and length > 0 else 14
-    swma_length = int(swma_length) if swma_length and swma_length > 0 else 4
+    length = int(length) if length and length > 0 else 20
+    rvi_length = int(rvi_length) if rvi_length and rvi_length > 0 else 14
+    scalar = float(scalar) if scalar and scalar > 0 else 100
+    refined = False if refined is None else True
+    thirds = False if thirds is None else True
+    drift = get_drift(drift)
     offset = get_offset(offset)
 
+    if refined or thirds:
+        high = verify_series(high)
+        low = verify_series(low)
+
     # Calculate Result
-    # rvidf = rvi(open_, high, low, close, length=length, swma_length=swma_length)
-    # inertia = linreg(rvidf[rvidf.columns[0]], length=length)
-    inertia = close # STUB
+    _mode = ""
+    if refined:
+        rvi_ = rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, refined=refined, mamode=mamode)
+        _mode = "r"
+    elif thirds:
+        rvi_ = rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, thirds=thirds, mamode=mamode)
+        _mode = "t"
+    else:
+        rvi_ = rvi(close, length=rvi_length, scalar=scalar, mamode=mamode)
+
+    inertia = linreg(rvi_, length=length)
 
     # Offset
     if offset != 0:
@@ -30,7 +43,8 @@ def inertia(open_, high, low, close, length=None, swma_length=None, offset=None,
         inertia.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name & Category
-    inertia.name = f"INERTIA_{length}_{swma_length}"
+    _props = f"_{length}_{rvi_length}"
+    inertia.name = f"INERTIA{_mode}{_props}"
     inertia.category = "momentum"
 
     return inertia
@@ -50,18 +64,19 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=14, swma_length=4
+        length=14, ma_length=20
     LSQRMA = Least Squares Moving Average
 
-    INERTIA = LSQRMA(RVI)
+    INERTIA = LSQRMA(RVI(length), ma_length)
 
 Args:
     open_ (pd.Series): Series of 'open's
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 14
-    swma_length (int): It's period.  Default: 4
+    length (int): It's period.  Default: 20
+    rvi_length (int): RVI period.  Default: 14
+    drift (int): The difference period.  Default: 1
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
