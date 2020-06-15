@@ -5,7 +5,7 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def ha(open_, high, low, close, offset=None, **kwargs):
-    """Indicator: Heikin Ashi"""
+    """Candle Type: Heikin Ashi"""
     # Validate Arguments
     open_ = verify_series(open_)
     high = verify_series(high)
@@ -46,7 +46,7 @@ def ha(open_, high, low, close, offset=None, **kwargs):
 
 
 ha.__doc__ = \
-"""Heikin Ashi (HA)
+"""Heikin Ashi Candles (HA)
 
 The Heikin-Ashi technique averages price data to create a Japanese
 candlestick chart that filters out market noise. Heikin-Ashi charts,

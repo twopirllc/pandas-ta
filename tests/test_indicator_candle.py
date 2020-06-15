@@ -38,3 +38,18 @@ class TestCandle(TestCase):
         result = pandas_ta.ha(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "Heikin-Ashi")
+
+    def test_cdl_doji(self):
+        result = pandas_ta.cdl_doji(self.open, self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "CDL_DOJI_10_0.1")
+
+        try:
+            expected = tal.CDLDOJI(self.open, self.high, self.low, self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
+        except AssertionError as ae:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)

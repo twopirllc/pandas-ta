@@ -15,7 +15,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "71b"))
+version = ".".join(("0", "1", "72b"))
 
 def finalize(method):
     @wraps(method)
@@ -128,35 +128,30 @@ class AnalysisIndicators(BasePandasObject):
     """
     _adjusted = None
 
-    def __call__(self, kind=None, alias=None, timed=False, **kwargs):
+    def __call__(self, kind=None, alias=None, timed=False, verbose=False, **kwargs):
         try:
             if isinstance(kind, str):
                 kind = kind.lower()
                 fn = getattr(self, kind)
 
-                if timed:
-                    stime = time.time()
+                if timed: stime = time.perf_counter()
 
                 # Run the indicator
-                indicator = fn(**kwargs)
-
-                if timed:
-                    time_diff = time.time() - stime
-                    ms = time_diff * 1000
-                    indicator.timed = f"{ms:2.3f} ms ({time_diff:2.3f} s)"
-                    # print(f"execution time: {indicator.timed}")
-                    self._df.timed = indicator.timed
+                result = fn(**kwargs)
 
                 # Add an alias if passed
                 if alias:
-                    indicator.alias = f"{alias}"
+                    result.alias = f"{alias}"
 
-                return indicator
+                if timed:
+                    result.timed = final_time(stime)
+                    print(f"[+] {kind}:{alias + ':' if alias is not None else ''} {result.timed}")
+
+                return result
             else:
                 self.help()
 
-        except:
-            self.help()
+        except: pass
 
 
     @property
@@ -294,56 +289,56 @@ class AnalysisIndicators(BasePandasObject):
         Returns:
             Prints the list of indicators. If as_list=True, then a list.
         """
-        as_list = kwargs.pop("as_list", False)
+        as_list = kwargs.setdefault("as_list", False)
         helper_methods = ["constants", "indicators", "strategy"]  # Public non-indicator methods
         ta_properties = ["adjusted", "datetime_ordered", "reverse", "version"]
-        exclude_methods = kwargs.pop("exclude", None)
+        exclude_methods = kwargs.setdefault("exclude", None)
         ta_indicators = list((x for x in dir(pd.DataFrame().ta) if not x.startswith('_') and not x.endswith('_')))
 
-        for x in helper_methods:
-            ta_indicators.remove(x)
+        # Remove pandas.ta methods and properties
+        [ta_indicators.remove(x) for x in helper_methods]
+        [ta_indicators.remove(x) for x in ta_properties]
 
-        for x in ta_properties:
-            ta_indicators.remove(x)
-
+        # Remove user excluded indicators
         if isinstance(exclude_methods, list) and len(exclude_methods) > 0:
-            for x in exclude_methods:
-                ta_indicators.remove(x)
+            [ta_indicators.remove(x) for x in exclude_methods]
+        total_indicators = len(ta_indicators)
 
-        if as_list:
-            return ta_indicators
+        if as_list: return ta_indicators
 
         header = f"pandas.ta - Technical Analysis Indicators - v{self.version}"
-        total_indicators = len(ta_indicators)
         s = f"{header}\nTotal Indicators: {total_indicators}\n"
-        if total_indicators > 0:            
-            abbr_list = ", ".join(ta_indicators)
-            print(f"{s}Abbreviations:\n    {abbr_list}")
-        else:
-            print(s)
+        print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}") if total_indicators > 0 else print(s)
 
 
     # ALL Features
     def _all(self, **kwargs):
         """Appends by default all non-excluded indicators to the DataFrame. Used by ta.strategy(**kwargs)"""
-        append = kwargs.pop("append", True)
-        verbose = kwargs.pop("verbose", False)
-        user_excluded = kwargs.pop("exclude", [])
+        timed = kwargs.setdefault("timed", False)
+        verbose = kwargs.setdefault("verbose", False)
+        user_excluded = kwargs.setdefault("exclude", [])
+        append = kwargs.setdefault("append", True)
 
         excluded = ["above", "above_value", "below", "below_value",
         "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
         excluded += user_excluded
-        print(f"[i] excluded[{len(excluded)}]: {', '.join(excluded)}") if verbose else None
 
+        current_columns = len(self._df.columns)
         indicators = self.indicators(as_list=True, exclude=excluded)
 
-        if verbose and bool(kwargs):
+        if verbose:
             print(f"[i] All indicators with the following arguments: {kwargs}")
+            print(f"[i] excluded[{len(excluded)}]: {', '.join(excluded)}")
 
+        if timed: stime = time.perf_counter()
+        
         for kind in indicators:
             fn = getattr(self, kind)
-            fn(append=append, **kwargs)
+            fn(**kwargs)
             print(f"[+] {kind}") if verbose else None
+
+        print(f"[i] total indicators: {len(indicators)}, columns added: {len(self._df.columns) - current_columns}")# if verbose else None
+        print(f"[i] runtime: {final_time(stime)}") if timed else None
 
 
     def strategy(self, **kwargs):
@@ -370,6 +365,16 @@ class AnalysisIndicators(BasePandasObject):
 
 
     # Candles
+    @finalize
+    def cdl_doji(self, open_=None, high=None, low=None, close=None, offset=None, **kwargs):
+        open_ = self._get_column(open_, 'open')
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = cdl_doji(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
+        return result
+
     @finalize
     def ha(self, open_=None, high=None, low=None, close=None, offset=None, **kwargs):
         open_ = self._get_column(open_, 'open')
@@ -1032,55 +1037,61 @@ class AnalysisIndicators(BasePandasObject):
 
 
     # Utility Indicators
-    @finalize
     def above(self, a=None, b=None, asint=True, offset=None, **kwargs):
         if a is None and b is None: return self._df
         else:
             a = self._get_column(a, f"{a}")
             b = self._get_column(b, f"{b}")
             result = above(series_a=a, series_b=b, asint=asint, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
+            self._append(result, **kwargs)
             return result
 
-    @finalize
     def above_value(self, a=None, value=None, asint=True, offset=None, **kwargs):
         if a is None and value is None: return self._df
         else:
             a = self._get_column(a, f"{a}")
             result = above_value(series_a=a, value=value, asint=asint, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
+            self._append(result, **kwargs)
             return result
 
-    @finalize
     def below(self, a=None, b=None, asint=True, offset=None, **kwargs):
         if a is None and b is None: return self._df
         else:
             a = self._get_column(a, f"{a}")
             b = self._get_column(b, f"{b}")
             result = below(series_a=a, series_b=b, asint=asint, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
+            self._append(result, **kwargs)
             return result
 
-    @finalize
     def below_value(self, a=None, value=None, asint=True, offset=None, **kwargs):
         if a is None and value is None: return self._df
         else:
             a = self._get_column(a, f"{a}")
             result = below_value(series_a=a, value=value, asint=asint, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
+            self._append(result, **kwargs)
             return result
 
-    @finalize
     def cross(self, a=None, b=None, above=True, asint=True, offset=None, **kwargs):
         if a is None and b is None: return self._df
         else:
             a = self._get_column(a, f"{a}")
             b = self._get_column(b, f"{b}")
             result = cross(series_a=a, series_b=b, above=above, asint=asint, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
+            self._append(result, **kwargs)
             return result
 
-    @finalize
     def cross_value(self, a=None, value=None, above=True, asint=True, offset=None, **kwargs):
         if a is None and value is None: return self._df
         else:
             a = self._get_column(a, f"{a}")
             result = cross_value(series_a=a, value=value, above=above, asint=asint, offset=offset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
+            self._append(result, **kwargs)
             return result
 
 

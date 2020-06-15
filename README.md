@@ -32,6 +32,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Bias (bias)
     Choppiness Index (chop)
     Chande Kroll Stop (cksp)
+    Doji (cdl_doji)
     Entropy (entropy)
     Heikin-Ashi Candles (ha)
     Inertia (inertia)
@@ -189,8 +190,9 @@ df.ta.adjusted = None
 
 # __Technical Analysis Indicators__ (_by Category_)
 
-## _Candles_ (1)
+## _Candles_ (2)
 
+* _Doji_: **cdl_doji**
 * _Heikin-Ashi_: **ha**
 
 ## _Momentum_ (27)

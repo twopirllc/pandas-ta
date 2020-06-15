@@ -27,3 +27,8 @@ class TestCandleExtension(TestCase):
         self.data.ta.ha(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-4:]), ['HA_open', 'HA_high', 'HA_low', 'HA_close'])
+
+    def test_cdl_doji_ext(self):
+        self.data.ta.cdl_doji(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], 'CDL_DOJI_10_0.1')

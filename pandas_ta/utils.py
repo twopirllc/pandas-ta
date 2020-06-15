@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import math
+import time
+
 import numpy as np
 import pandas as pd
 
@@ -269,6 +271,11 @@ def fibonacci(**kwargs) -> np.ndarray:
         return result
 
 
+def final_time(stime: time):
+    time_diff = time.perf_counter() - stime
+    return f"{time_diff * 1000:2.4f} ms ({time_diff:2.4f} s)"
+
+
 def get_drift(x: int) -> int:
     """Returns an int if not zero, otherwise defaults to one."""
     return int(x) if x and x != 0 else 1
@@ -277,6 +284,12 @@ def get_drift(x: int) -> int:
 def get_offset(x: int) -> int:
     """Returns an int, otherwise defaults to zero."""
     return int(x) if x else 0
+
+
+def is_percent(x: int or float) -> bool:
+    if isinstance(x, (int, float)):
+        return x is not None and x >= 0 and x <= 100
+    return False
 
 
 def non_zero_range(high: pd.Series, low: pd.Series) -> pd.Series:
