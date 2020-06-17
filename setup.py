@@ -15,7 +15,7 @@ setup(
     url ="https://github.com/twopirllc/pandas-ta",
     maintainer ="Kevin Johnson",
     maintainer_email ="appliedmathkj@gmail.com",
-    # install_requires=['numpy','pandas'],
+    # install_requires=['pandas'],
     download_url ="https://github.com/twopirllc/pandas-ta.git",
     keywords =['technical analysis', 'trading', 'python3', 'pandas'],
     license ="The MIT License (MIT)",

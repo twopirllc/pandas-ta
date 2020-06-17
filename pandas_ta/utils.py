@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
-import time
+from time import perf_counter
 
 import numpy as np
 import pandas as pd
@@ -271,8 +271,8 @@ def fibonacci(**kwargs) -> np.ndarray:
         return result
 
 
-def final_time(stime: time):
-    time_diff = time.perf_counter() - stime
+def final_time(stime):
+    time_diff = perf_counter() - stime
     return f"{time_diff * 1000:2.4f} ms ({time_diff:2.4f} s)"
 
 
