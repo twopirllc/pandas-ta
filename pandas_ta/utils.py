@@ -9,9 +9,9 @@ from functools import reduce
 from operator import mul
 from sys import float_info as sflt
 
-TRADING_DAYS_IN_YEAR = 250
-TRADING_HOURS_IN_DAY = 6.5
-MINUTES_IN_HOUR = 60
+TRADING_DAYS_PER_YEAR = 250
+TRADING_HOURS_PER_DAY = 6.5
+MINUTES_PER_HOUR = 60
 
 
 def _above_below(
@@ -227,7 +227,10 @@ def df_error_analysis(dfA: pd.DataFrame, dfB: pd.DataFrame, **kwargs) -> pd.Data
     # Find their differences
     diff = dfA - dfB
     df = pd.DataFrame({'diff': diff.describe()})
-    extra = pd.DataFrame([diff.var(), diff.mad(), diff.sem(), dfA.corr(dfB, method=corr_method)], index=['var', 'mad', 'sem', 'corr'])
+    extra = pd.DataFrame(
+        [diff.var(), diff.mad(), diff.sem(), dfA.corr(dfB, method=corr_method)],
+        index=['var', 'mad', 'sem', 'corr']
+    )
 
     # Append the differences to the DataFrame
     df = df['diff'].append(extra, ignore_index=False)[0]
@@ -343,8 +346,9 @@ def signed_series(series: pd.Series, initial: int =None) -> pd.Series:
     """Returns a Signed Series with or without an initial value
     
     Default Example:
-    series = pd.Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5, 3]) and returns
-    sign   = pd.Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0, -1.0])
+    series = pd.Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5])
+    and returns:
+    sign = pd.Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0])
     """
     series = verify_series(series)
     sign = series.diff(1)
@@ -387,9 +391,9 @@ def symmetric_triangle(n: int = None, **kwargs) -> list:
 
 def unsigned_differences(series: pd.Series, amount: int = None, **kwargs) -> pd.Series:
     """Unsigned Differences
-    Returns two Series, an unsigned positive and unsigned negative series based on
-    the differences of the original series. The positive series are only the increases
-    and the negative series is only the decreases.
+    Returns two Series, an unsigned positive and unsigned negative series based
+    on the differences of the original series. The positive series are only the
+    increases and the negative series is only the decreases.
 
     Default Example:
     series   = pd.Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5, 3]) and returns
@@ -427,5 +431,6 @@ def weights(w):
 
 
 def zero(x: [int, float]) -> [int, float]:
-    """If the value is close to zero, then return zero.  Otherwise return the value."""
+    """If the value is close to zero, then return zero.
+    Otherwise return the value."""
     return 0 if -sflt.epsilon < x and x < sflt.epsilon else x

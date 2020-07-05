@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import arange as nparange
+from numpy import dot as npdot
 from pandas import Series
 from ..utils import get_offset, verify_series
 
@@ -19,7 +20,7 @@ def wma(close, length=None, asc=None, offset=None, **kwargs):
 
     def linear(w):
         def _compute(x):
-            return (w * x).sum() / total_weight
+            return npdot(x, w) / total_weight
         return _compute
 
     close_ = close.rolling(length, min_periods=length)
