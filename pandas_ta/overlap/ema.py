@@ -7,32 +7,19 @@ def ema(close, length=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = kwargs.pop('min_periods', length)
-    adjust = kwargs.pop('adjust', True)
-    offset = get_offset(offset)
+    # min_periods = kwargs.pop('min_periods', length)
+    adjust = kwargs.pop('adjust', False)
     sma = kwargs.pop('sma', True)
-    ewm = kwargs.pop('ewm', False)
+    win_type = kwargs.pop('win_type', None)
+    offset = get_offset(offset)
 
     # Calculate Result
-    if ewm:
-        # Mathematical Implementation of an Exponential Weighted Moving Average
-        ema = close.ewm(span=length, min_periods=min_periods, adjust=adjust).mean()
-    else:
-        alpha = 2 / (length + 1)
+    if sma:
         close = close.copy()
-
-        def ema_(series):
-            # Technical Anaylsis Definition of an Exponential Moving Average
-            # Slow for large series
-            series.iloc[1] = alpha * (series.iloc[1] - series.iloc[0]) + series.iloc[0]
-            return series.iloc[1]
-
-        seed = close[0:length].mean() if sma else close.iloc[0]
-
+        sma_nth = close[0:length].sum() / length
         close[:length - 1] = npNaN
-        close.iloc[length - 1] = seed
-        ma = close[length - 1:].rolling(2, min_periods=2).apply(ema_, raw=False)
-        ema = close[:length].append(ma[1:])
+        close.iloc[length - 1] = sma_nth
+    ema = close.ewm(span=length, adjust=adjust).mean()
 
     # Offset
     if offset != 0:
@@ -61,13 +48,11 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=10
-    SMA = Simple Moving Average
-    if kwargs['presma']:
-        initial = SMA(close, length)
-        rest = close[length:]
-        close = initial + rest
-
+        length=10, adjust=False, sma=True
+    if sma:
+        sma_nth = close[0:length].sum() / length
+        close[:length - 1] = np.NaN
+        close.iloc[length - 1] = sma_nth
     EMA = close.ewm(span=length, adjust=adjust).mean()
 
 Args:
@@ -76,8 +61,8 @@ Args:
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
-    adjust (bool, optional): Default: True
-    sma (bool, optional): If True, uses SMA for initial value.
+    adjust (bool, optional): Default: False
+    sma (bool, optional): If True, uses SMA for initial value. Default: True
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

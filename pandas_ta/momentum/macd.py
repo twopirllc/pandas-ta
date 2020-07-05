@@ -12,15 +12,14 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     signal = int(signal) if signal and signal > 0 else 9
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else fast
     offset = get_offset(offset)
 
     # Calculate Result
-    fastma = ema(close, length=fast, **kwargs)
-    slowma = ema(close, length=slow, **kwargs)
+    fastma = ema(close, length=fast)
+    slowma = ema(close, length=slow)
 
     macd = fastma - slowma
-    signalma = ema(close=macd, length=signal, **kwargs)
+    signalma = ema(close=macd, length=signal)
     histogram = macd - signalma
 
     # Offset

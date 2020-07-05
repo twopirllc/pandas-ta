@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from functools import wraps
-from multiprocessing import  cpu_count, Pool
+from multiprocessing import cpu_count, Pool
 from random import random
 from time import perf_counter
 
@@ -17,9 +17,9 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "73b"))
+version = ".".join(("0", "1", "75b"))
 
-def worker(args):
+def mp_worker(args):
     df, method, kwargs = args
 
     if method != 'ichimoku':
@@ -350,13 +350,9 @@ class AnalysisIndicators(BasePandasObject):
         current_columns = len(self._df.columns)
         indicators = self.indicators(as_list=True, exclude=excluded)
 
-        # Core tuning
-        if cores <= 2: cores = 1
-        if cores == 3: cores = 2
-        if 4 <= cores <= 5: cores -= 2
-
+        print('[+] Strategy "All"')
         if verbose:
-            print(f"[i] All indicators with the following arguments: {kwargs}")
+            print(f'[i] Indicators with the following arguments: {kwargs}')
             print(f"[i] excluded[{len(excluded)}]: {', '.join(excluded)}")
 
         if timed: stime = perf_counter()
@@ -373,7 +369,7 @@ class AnalysisIndicators(BasePandasObject):
             print(f"[i] multiprocessing: {cores} of {cpu_count()} cores")
             pool = Pool(cores)
             result = pool.imap_unordered(
-                worker, ((self._df, ind, kwargs) for ind in indicators), cores
+                mp_worker, ((self._df, ind, kwargs) for ind in indicators), cores
             )
             pool.close()
             pool.join()
@@ -384,7 +380,7 @@ class AnalysisIndicators(BasePandasObject):
                 self._append(r, **kwargs)
 
         print(f"[i] total indicators: {len(indicators)}, columns added: {len(self._df.columns) - current_columns}")
-        print(f"[i] runtime: {final_time(stime)}") if timed else None
+        print(f"[i] runtime: {final_time(stime)}\n") if timed else None
 
 
     def strategy(self, **kwargs):
@@ -660,10 +656,10 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def ema(self, close=None, length=None, offset=None, adjust=None, **kwargs):
+    def ema(self, close=None, length=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
 
-        result = ema(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
+        result = ema(close=close, length=length, offset=offset, **kwargs)
         return result
 
     @finalize

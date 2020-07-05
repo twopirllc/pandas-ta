@@ -6,7 +6,7 @@
 # __Technical Analysis Library in Python 3.7__
 ![Example Chart](/images/TA_Chart.png)
 
-__Pandas Technical Analysis__ (Pandas TA) is an easy to use library that is built upon Python's Pandas library with more than 100 Indicators.  These indicators are commonly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (*SMA*) _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon & Aroon Oscillator_ (*AROON*) and more.
+__Pandas Technical Analysis__ (Pandas TA) is an easy to use library that is built upon Python's Pandas library with more than 100 Indicators and Utility functions.  These indicators are commonly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (*SMA*) _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon & Aroon Oscillator_ (*AROON*) and more.
 
 This version contains both the orignal code branch as well as a newly refactored branch with the option to use [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode. 
 All the indicators return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDh_12_26_9', 'MACDs_12_26_9'].
@@ -21,10 +21,13 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * Abbreviated Indicator names as listed below.
 * __Extended Pandas DataFrame__ as 'ta'. 
 * Easily add prefixes or suffixes or both to columns names.
-* Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups).
+* Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups) and tightly correlated with TA Lib in testing.
 
 
 ## __Recent Changes__
+* Improved the calculation performance of indicators: _Exponential Moving Averagage_
+and _Weighted Moving Average_.
+* Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
 
 ### __New DataFrame Method:__
     strategy (strategy)
@@ -61,8 +64,11 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
     Bollinger Bands (bbands)
     Commodity Channel Index (cci)
     Chande Momentum Oscillator (cmo)
+    Exponential Moving Average (ema)
+    Moving Average Convergence Divergence (macd)
     Relative Vigor Index (rvgi)
     Symmetric Weighted Moving Average (swma)
+    Weighted Moving Average (wma)
 
 ## What is a Pandas DataFrame Extension?
 
@@ -147,9 +153,10 @@ df.ta.strategy(verbose=True)
 # Use timed if you want to see how long it takes to run.
 df.ta.strategy(timed=True)
 
-# You can change the number of cores to use. Though the
-# default will usually be best
-df.ta.strategy(cores=4)
+# You can change the number of cores to use. The default is the the number of
+# cpus you have. Not utilizing all your cores will result in quicker results.
+# For instance if you have 4 CPUs, then cores=2 will be quicker.
+df.ta.strategy(cores=2)
 
 # Maybe you do not want certain indicators.
 # Just exclude (a list of) them.
