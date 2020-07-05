@@ -16,10 +16,10 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 * Has 100+ indicators and utility functions.
 * Option to use __multiprocessing__ when using df.ta.strategy(). See below.
-* Example Jupyter Notebook under the examples directory.
-* A new 'ta' method called 'strategy' that be default, runs __all__ the indicators.
+* Example Jupyter Notebook under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory.
+* A new 'ta' method called 'strategy'. By default, it runs __all__ the indicators.
 * Abbreviated Indicator names as listed below.
-* __Extended Pandas DataFrame__ as 'ta'. 
+* __Extended Pandas DataFrame__ as 'ta'.
 * Easily add prefixes or suffixes or both to columns names.
 * Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups) and tightly correlated with TA Lib in testing.
 
