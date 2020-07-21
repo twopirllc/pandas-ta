@@ -1280,10 +1280,11 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def donchian(self, close=None, length=None, offset=None, **kwargs):
-        close = self._get_column(close, 'close')
+    def donchian(self, high=None, low=None, lower_length=None, upper_length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
 
-        result = donchian(close=close, length=length, offset=offset, **kwargs)
+        result = donchian(high=high, low=low, lower_length=lower_length, upper_length=upper_length, offset=offset, **kwargs)
         return result
 
     @finalize

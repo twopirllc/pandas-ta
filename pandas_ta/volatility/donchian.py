@@ -2,19 +2,20 @@
 from pandas import DataFrame
 from ..utils import get_offset, verify_series
 
-def donchian(close, lower_length=None, upper_length=None, offset=None, **kwargs):
+def donchian(high, low, lower_length=None, upper_length=None, offset=None, **kwargs):
     """Indicator: Donchian Channels (DC)"""
     # Validate arguments
-    close = verify_series(close)
-    lower_length = int(lower_length) if lower_length and lower_length > 0 else 10
+    high = verify_series(high)
+    low = verify_series(low)
+    lower_length = int(lower_length) if lower_length and lower_length > 0 else 20
     upper_length = int(upper_length) if upper_length and upper_length > 0 else 20
     lower_min_periods = int(kwargs['lower_min_periods']) if 'lower_min_periods' in kwargs and kwargs['lower_min_periods'] is not None else lower_length
     upper_min_periods = int(kwargs['upper_min_periods']) if 'upper_min_periods' in kwargs and kwargs['upper_min_periods'] is not None else upper_length
     offset = get_offset(offset)
 
     # Calculate Result
-    lower = close.rolling(lower_length, min_periods=lower_min_periods).min()
-    upper = close.rolling(upper_length, min_periods=upper_min_periods).max()
+    lower = low.rolling(lower_length, min_periods=lower_min_periods).min()
+    upper = high.rolling(upper_length, min_periods=upper_min_periods).max()
     mid = 0.5 * (lower + upper)
 
     # Handle fills
@@ -60,15 +61,17 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=20
-    LOWER = close.rolling(length).min()
-    UPPER = close.rolling(length).max()
+        lower_length=upper_length=20
+    LOWER = low.rolling(lower_length).min()
+    UPPER = high.rolling(upper_length).max()
     MID = 0.5 * (LOWER + UPPER)
 
 Args:
-    close (pd.Series): Series of 'close's
-    length (int): The short period.  Default: 20
-    offset (int): How many periods to offset the result.  Default: 0
+    high (pd.Series): Series of 'high's
+    low (pd.Series): Series of 'low's
+    lower_length (int): The short period. Default: 20
+    upper_length (int): The short period. Default: 20
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

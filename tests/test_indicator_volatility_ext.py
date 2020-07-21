@@ -43,7 +43,7 @@ class TestVolatilityExtension(TestCase):
     def test_donchian_ext(self):
         self.data.ta.donchian(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["DCL_10_20", "DCM_10_20", "DCU_10_20"])
+        self.assertEqual(list(self.data.columns[-3:]), ["DCL_20_20", "DCM_20_20", "DCU_20_20"])
 
     def test_kc_ext(self):
         self.data.ta.kc(append=True)

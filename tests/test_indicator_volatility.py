@@ -88,11 +88,11 @@ class TestVolatility(TestCase):
                 error_analysis(result.iloc[:,2], CORRELATION, ex, newline=False)
 
     def test_donchian(self):
-        result = pandas_ta.donchian(self.close)
+        result = pandas_ta.donchian(self.high, self.low)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "DC_10_20")
+        self.assertEqual(result.name, "DC_20_20")
 
-        result = pandas_ta.donchian(self.close, lower_length=20, upper_length=5)
+        result = pandas_ta.donchian(self.high, self.low, lower_length=20, upper_length=5)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "DC_20_5")
 
