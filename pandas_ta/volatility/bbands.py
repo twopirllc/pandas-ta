@@ -44,15 +44,15 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
         upper.fillna(method=kwargs['fill_method'], inplace=True)
 
     # Name and Categorize it
-    lower.name = f"BBL_{length}"
-    mid.name = f"BBM_{length}"
-    upper.name = f"BBU_{length}"
+    lower.name = f"BBL_{length}_{std}"
+    mid.name = f"BBM_{length}_{std}"
+    upper.name = f"BBU_{length}_{std}"
     mid.category = upper.category = lower.category = 'volatility'
 
     # Prepare DataFrame to return
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
     bbandsdf = DataFrame(data)
-    bbandsdf.name = f"BBANDS_{length}"
+    bbandsdf.name = f"BBANDS_{length}_{std}"
     bbandsdf.category = 'volatility'
 
     return bbandsdf

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+from pathlib import Path
 from time import perf_counter
 
 import numpy as np
@@ -9,7 +10,7 @@ from functools import reduce
 from operator import mul
 from sys import float_info as sflt
 
-TRADING_DAYS_PER_YEAR = 250
+TRADING_DAYS_PER_YEAR = 251
 TRADING_HOURS_PER_DAY = 6.5
 MINUTES_PER_HOUR = 60
 

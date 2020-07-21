@@ -16,7 +16,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 * Has 100+ indicators and utility functions.
 * Option to use __multiprocessing__ when using df.ta.strategy(). See below.
-* Example Jupyter Notebook under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory.
+* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
 * A new 'ta' method called 'strategy'. By default, it runs __all__ the indicators.
 * Abbreviated Indicator names as listed below.
 * __Extended Pandas DataFrame__ as 'ta'.
@@ -25,50 +25,12 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 
 ## __Recent Changes__
+* A __Strategy__ Class to help name and group your favorite indicators.
+* An experimental and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
 * Improved the calculation performance of indicators: _Exponential Moving Averagage_
 and _Weighted Moving Average_.
 * Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
 
-### __New DataFrame Method:__
-    strategy (strategy)
-
-### __Added indicators:__
-    Bias (bias)
-    Choppiness Index (chop)
-    Chande Kroll Stop (cksp)
-    Doji (cdl_doji)
-    Entropy (entropy)
-    Heikin-Ashi Candles (ha)
-    Inertia (inertia)
-    KDJ (kdj)
-    Parabolic Stop and Reverse (psar)
-    Price Distance (pdist)
-    Psycholigical Line (psl)
-    Percentage Volume Oscillator (pvo)
-    Relative Volatility Index (rvi)
-    Supertrend (supertrend)
-    Weighted Closing Price (wcp)
-### __Added utilities:__
-    Above (above)
-    Above Value (above_value)
-    Below (below)
-    Below Value (below_value)
-    Cross Value (cross_value)
-### __User Added Indicators:__
-    Aberration (aberration)
-    BRAR (brar)
-### __Corrected Indicators:__
-    Absolute Price Oscillator (apo)
-    Aroon & Aroon Oscillator (aroon)
-        * Fixed indicator and included oscillator in returned dataframe
-    Bollinger Bands (bbands)
-    Commodity Channel Index (cci)
-    Chande Momentum Oscillator (cmo)
-    Exponential Moving Average (ema)
-    Moving Average Convergence Divergence (macd)
-    Relative Vigor Index (rvgi)
-    Symmetric Weighted Moving Average (swma)
-    Weighted Moving Average (wma)
 
 ## What is a Pandas DataFrame Extension?
 
@@ -127,9 +89,63 @@ pd.DataFrame().ta.indicators()
 help(ta.log_return)
 ```
 
-## __New DataFrame Method__: _strategy_ with Multiprocessing
+## New Class: __Strategy__
+### What is a Pandas TA Strategy?
+A _Strategy_ is a simple way to name and group your favorite TA indicators. Technically, a _Strategy_ is a simple Data Class to contain list of indicators and their parameters. __Note__: _Strategy_ is experimental and subject to change. Pandas TA comes with two basic Strategies: __AllStrategy__ and __CommonStrategy__.
 
-Strategy is a new __Pandas (TA)__ method to facilitate bulk indicator processing. By default, running ```df.ta.strategy()``` will append __all
+* See the [Pandas TA Strategy Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandasTA_Strategy_Examples.ipynb) Notebook for more Examples including _Indicator Composition/Chaining_.
+
+### Strategy Requirements:
+- _name_: Some short memorable string.  _Note_: Case-insensitive "All" is reserved.
+- _ta_: A list of dicts containing keyword arguments to identify the indicator and the indicator's arguments
+
+### Optional Requirements:
+- _description_: A more detailed description of what the Strategy tries to capture. Default: None
+- _created_: At datetime string of when it was created. Default: Automatically generated.
+
+#### Things to note:
+- A Strategy will __fail__ when consumed by Pandas TA if there is no {"kind": "indicator name"} attribute. __Remember__ to check your spelling.
+
+#### Brief Examples
+```python
+# Builtin All Default Strategy
+AllStrategy = Strategy(
+    name="All",
+    description="All the indicators with their default settings. Pandas TA default.",
+    ta=None
+)
+
+# Builtin Default (Example) Strategy.
+CommonStrategy = Strategy(
+    name="Common Price and Volume SMAs",
+    description="Common Price SMAs: 10, 20, 50, 200 and Volume SMA: 20.",
+    ta=[
+        {"kind": "sma", "length": 10},
+        {"kind": "sma", "length": 20},
+        {"kind": "sma", "length": 50},
+        {"kind": "sma", "length": 200},
+        {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOL"}
+    ]
+)
+
+# Your Custom Strategy or whatever your TA composition
+CustomStrategy = Strategy(
+    name="Momo and Volatility",
+    description="SMA 50,200, BBANDS, RSI, MACD and Volume SMA 20",
+    ta=[
+        {"kind": "sma", "length": 50},
+        {"kind": "sma", "length": 200},
+        {"kind": "bbands", "length": 20},
+        {"kind": "rsi"},
+        {"kind": "macd", "fast": 8, "slow": 21},
+        {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
+    ]
+)
+```
+
+## __DataFrame Method__: _strategy_ with Multiprocessing
+
+The new __Pandas (TA)__ method __strategy__ is used to facilitate bulk indicator processing. By default, running ```df.ta.strategy()``` will append __all
 applicable__ indicators to DataFrame ```df```.  Utility methods like ```above```, ```below``` et al are not included.
 
 * The ```ta.strategy()``` method is still __under development__. Future iterations will allow you to load a ```ta.json``` config file with your specific strategy name and parameters to automatically run you bulk indicators.
@@ -171,7 +187,32 @@ df.ta.strategy(fast=10, slow=50, verbose=True)
 df.columns
 ```
 
-## __New DataFrame kwargs__: _prefix_ and _suffix_
+### Running a Custom Strategy
+While the _Strategy_ Class it has not been fully integrated with the __strategy__ method yet. For now, the following can be done to implement your Custom Strategy.
+
+```python
+# Create a Strategy
+CustomStrategy = Strategy(
+    name="Momo and Volatility",
+    description="SMA 50,200, BBANDS, RSI, MACD and Volume SMA 20",
+    ta=[
+        {"kind": "sma", "length": 50},
+        {"kind": "sma", "length": 200},
+        {"kind": "bbands", "length": 20},
+        {"kind": "rsi"},
+        {"kind": "macd", "fast": 8, "slow": 21},
+        {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
+    ]
+)
+
+#Running it requires the name and ta properties
+df.ta.strategy(name=CustomStrategy.name, ta=CustomStrategy.ta)
+
+# Sanity check. Make sure all the columns are there
+df.columns
+```
+
+## __DataFrame kwargs__: _prefix_ and _suffix_
 
 ```python
 prehl2 = df.ta.hl2(prefix="pre")
@@ -184,7 +225,7 @@ bothhl2 = df.ta.hl2(prefix="pre", suffix="post")
 print(bothhl2.name)  # "pre_HL2_post"
 ```
 
-## __New DataFrame Properties__: _reverse_ & _datetime_ordered_
+## __DataFrame Properties__: _reverse_ & _datetime_ordered_
 
 ```python
 # The 'reverse' is a helper property that returns the DataFrame
@@ -193,7 +234,7 @@ df = df.ta.reverse
 
 # The 'datetime_ordered' property returns True if the DataFrame
 # index is of Pandas datetime64 and df.index[0] < df.index[-1]
-# Otherwise it return False
+# Otherwise it returns False
 time_series_in_order = df.ta.datetime_ordered
 ```
 
