@@ -18,7 +18,7 @@ def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kw
 
     # Calculate Results
     m = close.size
-    dir_, trend = [0] * m, [0] * m
+    dir_, trend = [1] * m, [0] * m
     long, short = [npNaN] * m, [npNaN] * m
 
     hl2_ = hl2(high, low)
@@ -82,7 +82,9 @@ Sources:
 Calculation:
     Default Inputs:
         length=7, multiplier=3.0
-    
+    Default Direction:
+	Set to +1 or bullish trend at start
+
     MID = multiplier * ATR
     LOWERBAND = HL2 - MID
     UPPERBAND = HL2 + MID

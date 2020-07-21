@@ -68,8 +68,8 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    open (pd.Series): Series of 'open's
     volume (pd.Series): Series of 'volume's
+    open (pd.Series): Series of 'open's. Default: None
     length (int): The short period.  Default: 20
     offset (int): How many periods to offset the result.  Default: 0
 
