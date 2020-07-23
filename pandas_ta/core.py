@@ -8,6 +8,7 @@ from time import perf_counter
 from typing import List
 
 import pandas as pd
+from pandas_ta import categories
 from pandas.core.base import PandasObject
 
 from pandas_ta.candles import *
@@ -20,7 +21,10 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "76b"))
+version = ".".join(("0", "1", "77b"))
+
+# Dictionary of files for each category, used in df.ta.strategy()
+Category = {name: category_files(name) for name in categories}
 
 def mp_worker(args):
     df, method, kwargs = args
@@ -241,13 +245,13 @@ class AnalysisIndicators(BasePandasObject):
                     # Run the indicator
                     result = fn(**kwargs) # = getattr(self, kind)(**kwargs)
 
-                    # Add an alias if passed
-                    if alias: result.alias = f"{alias}"
-
                     if timed:
                         result.timed = final_time(stime)
                         alias_str = alias + ':' if alias is not None else ''
                         print(f"[+] {kind}:{alias_str} {result.timed}")
+
+                    # Add an alias if passed
+                    if alias: result.alias = f"{alias}"
 
                     return result
                 else:
@@ -438,10 +442,9 @@ class AnalysisIndicators(BasePandasObject):
                     For example, length=20 or offset=-1 or high=df['High'] ...
         """
         cpus = cpu_count()
+        kwargs["append"] = True # Ensure indicators are appended to the DataFrame
+
         name = kwargs.pop("name", None)
-        if name is None or name.lower() == "all":
-            name = "All"
-        print(f"strat.kwargs: {kwargs}")
         # removing before sending the rest of kwargs to the indicators
         ta = kwargs.pop("ta", None)
         mp = kwargs.pop("mp", False)
@@ -449,34 +452,44 @@ class AnalysisIndicators(BasePandasObject):
         timed = kwargs.pop("timed", False)
         verbose = kwargs.pop("verbose", False)
         user_excluded = kwargs.pop("exclude", [])
-        kwargs["append"] = True
+
+        # Filter if Strategy, Category or by Strategy name and TA
+        if len(args) and isinstance(args[0], Strategy):
+            name, ta = args[0].name, args[0].ta
+        elif name is None or name.lower() == "all":
+            name = "All"
+        elif ta is None and name.lower() in categories:
+            ta = Category[name.lower()]
 
         is_all = True if name is None or name.lower() == "all" else False
         has_ta = True if ta is not None else False
         initial_column_count = len(self._df.columns)
 
         excluded = []
+        excluded_functions = ["above", "above_value", "below", "below_value", "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
         excluded += user_excluded # Exclude user excluded ta if listed
 
-        print(f'[+] Strategy "{name}"') if verbose else None
-        if is_all:
-            # Exclude utilities special functions
-            excluded += ["above", "above_value", "below", "below_value", "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
-            ta = self.indicators(as_list=True, exclude=excluded)
+        print(f"[+] Strategy: {name}") if verbose else None
+        if name.lower() in categories or is_all:
+            # Exclude special functions
+            excluded += excluded_functions
+            if is_all:
+                ta = self.indicators(as_list=True, exclude=excluded)
+            else:
+                ta = Category[name.lower()]
         else:
             for kwds in ta:
                 kwds["append"] = True
 
         if verbose:
             print(f'[i] Indicators with the following arguments: {kwargs}')
-            if len(excluded) > 0:
+            if is_all and len(excluded) > 0:
                 print(f"[i] Excluded[{len(excluded)}]: {', '.join(excluded)}")
 
         # Enable multiprocessing if user sets: mp=True
         if mp: self.mp = not self.mp
 
         if self.mp:
-            # TODO: Fix for Custom Strategies
             print(f"[i] Multiprocessing: {cores} of {cpu_count()} cores")
             pool = Pool(cores)
 
@@ -499,7 +512,7 @@ class AnalysisIndicators(BasePandasObject):
                 print(f"[i] Set 'df.ta.mp = True' to enable multiprocessing. This computer has {cpus} cores. Default: False")
 
             if timed: stime = perf_counter()
-            if is_all:
+            if name.lower() in categories or is_all:
                 indicators = [getattr(self, kind) for kind in ta]
                 [f(**kwargs) for f in indicators]
             else:
@@ -979,11 +992,13 @@ class AnalysisIndicators(BasePandasObject):
 
     @finalize
     def trend_return(self, close=None, trend=None, log=True, cumulative=None, offset=None, trend_reset=None, **kwargs):
-        close = self._get_column(close, 'close')
-        trend = self._get_column(trend, f"{trend}")
+        if trend is None: return self._df
+        else:
+            close = self._get_column(close, 'close')
+            trend = self._get_column(trend, f"{trend}")
 
-        result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, trend_reset=trend_reset, **kwargs)
-        return result
+            result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, trend_reset=trend_reset, **kwargs)
+            return result
 
 
     # Statistics Indicators
@@ -1463,6 +1478,3 @@ class AnalysisIndicators(BasePandasObject):
 
         result = vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
         return result
-
-# if __name__ == "__main__":
-#     freeze_support()

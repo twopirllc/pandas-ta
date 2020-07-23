@@ -108,7 +108,7 @@ class Watchlist(object):
 
     @property
     def data(self) -> dict:
-        """When not None, it contains a dictionary of DataFrames keyed by ticker."""
+        """When not None, it contains a dictionary of DataFrames keyed by ticker. data = {"SPY": pd.DataFrame, ...}"""
         return self._data
 
     @data.setter

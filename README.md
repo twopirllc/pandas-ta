@@ -129,7 +129,7 @@ CommonStrategy = Strategy(
 )
 
 # Your Custom Strategy or whatever your TA composition
-CustomStrategy = Strategy(
+CustomStrategy = ta.Strategy(
     name="Momo and Volatility",
     description="SMA 50,200, BBANDS, RSI, MACD and Volume SMA 20",
     ta=[
@@ -187,12 +187,22 @@ df.ta.strategy(fast=10, slow=50, verbose=True)
 df.columns
 ```
 
-### Running a Custom Strategy
+### Running a Builtin, Categorical or Custom Strategy
 While the _Strategy_ Class it has not been fully integrated with the __strategy__ method yet. For now, the following can be done to implement your Custom Strategy.
 
 ```python
-# Create a Strategy
-CustomStrategy = Strategy(
+# Running the builtin CommonStrategy as mentioned above
+df.ta.strategy(ta.CommonStrategy)
+
+# Available categories
+ta.categories
+
+# Running a Categorical Strategy only requires the Category name
+df.ta.strategy(name="Momentum") # Default values for all Momentum indicators
+df.ta.strategy(name="overlap", length=27) # Override all 'length' attributes
+
+# Or create your own Custom Strategy
+CustomStrategy = ta.Strategy(
     name="Momo and Volatility",
     description="SMA 50,200, BBANDS, RSI, MACD and Volume SMA 20",
     ta=[
@@ -204,8 +214,10 @@ CustomStrategy = Strategy(
         {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
     ]
 )
+# To run "Custom Strategy"
+df.ta.strategy(CustomStrategy)
 
-#Running it requires the name and ta properties
+# Or pass in the name and ta atributes of the "Custom Strategy"
 df.ta.strategy(name=CustomStrategy.name, ta=CustomStrategy.ta)
 
 # Sanity check. Make sure all the columns are there

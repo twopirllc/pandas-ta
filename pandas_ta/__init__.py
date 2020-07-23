@@ -18,4 +18,6 @@ except DistributionNotFound:
 else:
     __version__ = _dist.version
 
+categories = ["candles", "momentum", "overlap", "performance", "statistics", "trend", "volatility", "volume"]
+
 from pandas_ta.core import *
