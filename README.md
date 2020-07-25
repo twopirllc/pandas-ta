@@ -446,6 +446,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * [allahyarzadeh](https://github.com/allahyarzadeh)
 * [FGU1](https://github.com/FGU1)
 * [lluissalord](https://github.com/lluissalord)
+* [YuvalWein](https://github.com/YuvalWein)
 
 
 # Inspiration
