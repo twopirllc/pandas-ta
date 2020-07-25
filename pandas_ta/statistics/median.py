@@ -18,7 +18,7 @@ def median(close, length=None, offset=None, **kwargs):
 
     # Name & Category
     median.name = f"MEDIAN_{length}"
-    median.category = 'statistics'
+    median.category = "statistics"
 
     return median
 

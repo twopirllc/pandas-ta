@@ -20,7 +20,7 @@ def entropy(close, length=None, base=None, offset=None, **kwargs):
 
     # Name & Category
     entropy.name = f"ENTP_{length}"
-    entropy.category = 'statistics'
+    entropy.category = "statistics"
 
     return entropy
 

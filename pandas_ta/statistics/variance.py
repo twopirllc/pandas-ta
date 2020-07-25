@@ -20,7 +20,7 @@ def variance(close, length=None, ddof=1, offset=None, **kwargs):
 
     # Name & Category
     variance.name = f"VAR_{length}"
-    variance.category = 'statistics'
+    variance.category = "statistics"
 
     return variance
 

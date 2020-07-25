@@ -23,7 +23,7 @@ def mad(close, length=None, offset=None, **kwargs):
 
     # Name & Category
     mad.name = f"MAD_{length}"
-    mad.category = 'statistics'
+    mad.category = "statistics"
 
     return mad
 

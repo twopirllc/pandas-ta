@@ -19,7 +19,7 @@ def quantile(close, length=None, q=None, offset=None, **kwargs):
 
     # Name & Category
     quantile.name = f"QTL_{length}_{q}"
-    quantile.category = 'statistics'
+    quantile.category = "statistics"
 
     return quantile
 

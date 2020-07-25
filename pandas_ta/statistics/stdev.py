@@ -20,7 +20,7 @@ def stdev(close, length=None, ddof=1, offset=None, **kwargs):
 
     # Name & Category
     stdev.name = f"STDEV_{length}"
-    stdev.category = 'statistics'
+    stdev.category = "statistics"
 
     return stdev
 

@@ -22,7 +22,7 @@ def zscore(close, length=None, std=None, offset=None, **kwargs):
 
     # Name & Category
     zscore.name = f"Z_{length}"
-    zscore.category = 'statistics'
+    zscore.category = "statistics"
 
     return zscore
 

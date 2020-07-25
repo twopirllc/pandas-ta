@@ -21,7 +21,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "77b"))
+version = ".".join(("0", "1", "78b"))
 
 # Dictionary of files for each category, used in df.ta.strategy()
 Category = {name: category_files(name) for name in categories}

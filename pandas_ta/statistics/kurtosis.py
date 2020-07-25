@@ -18,7 +18,7 @@ def kurtosis(close, length=None, offset=None, **kwargs):
 
     # Name & Category
     kurtosis.name = f"KURT_{length}"
-    kurtosis.category = 'statistics'
+    kurtosis.category = "statistics"
 
     return kurtosis
 

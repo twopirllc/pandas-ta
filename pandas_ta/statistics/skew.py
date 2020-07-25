@@ -24,7 +24,7 @@ def skew(close, length=None, offset=None, **kwargs):
         
     # Name & Category
     skew.name = f"SKEW_{length}"
-    skew.category = 'statistics'
+    skew.category = "statistics"
 
     return skew
 
