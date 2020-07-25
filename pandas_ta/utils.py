@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+from pathlib import Path
 from time import perf_counter
 
 import numpy as np
@@ -9,7 +10,7 @@ from functools import reduce
 from operator import mul
 from sys import float_info as sflt
 
-TRADING_DAYS_PER_YEAR = 250
+TRADING_DAYS_PER_YEAR = 251
 TRADING_HOURS_PER_DAY = 6.5
 MINUTES_PER_HOUR = 60
 
@@ -17,9 +18,9 @@ MINUTES_PER_HOUR = 60
 def _above_below(
         series_a: pd.Series,
         series_b: pd.Series,
-        above: bool =True,
-        asint: bool =True,
-        offset: int =None,
+        above: bool = True,
+        asint: bool = True,
+        offset: int = None,
         **kwargs
     ):
     series_a = verify_series(series_a)
@@ -52,8 +53,8 @@ def _above_below(
 def above(
         series_a: pd.Series,
         series_b: pd.Series,
-        asint: bool =True,
-        offset: int =None,
+        asint: bool = True,
+        offset: int = None,
         **kwargs
     ):
     return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)
@@ -95,6 +96,12 @@ def below_value(
         return
     series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace('.','_'))
     return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
+
+
+def category_files(category: str) -> list:
+    """Helper function to return all filenames in the category directory."""
+    files = [x.stem for x in list(Path(f"pandas_ta/{category}/").glob("*.py")) if x.stem != "__init__"]
+    return files
 
 
 def combination(**kwargs):
@@ -434,3 +441,17 @@ def zero(x: [int, float]) -> [int, float]:
     """If the value is close to zero, then return zero.
     Otherwise return the value."""
     return 0 if -sflt.epsilon < x and x < sflt.epsilon else x
+
+# Candle Functions
+
+def candle_color(open_, close):
+    color = close.copy().astype(int)
+    color[close >= open_] = 1
+    color[close < open_] = -1
+    return color
+
+def real_body(open_, close):
+    return non_zero_range(open_, close)
+
+def high_low_range(high, low):
+    return non_zero_range(high, low)

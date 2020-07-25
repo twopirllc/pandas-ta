@@ -14,11 +14,11 @@ class TestStatistics(TestCase):
     def setUpClass(cls):
         cls.data = sample_data
         cls.data.columns = cls.data.columns.str.lower()
-        cls.open = cls.data['open']
-        cls.high = cls.data['high']
-        cls.low = cls.data['low']
-        cls.close = cls.data['close']
-        if 'volume' in cls.data.columns: cls.volume = cls.data['volume']
+        cls.open = cls.data["open"]
+        cls.high = cls.data["high"]
+        cls.low = cls.data["low"]
+        cls.close = cls.data["close"]
+        if "volume" in cls.data.columns: cls.volume = cls.data["volume"]
 
     @classmethod
     def tearDownClass(cls):
@@ -26,7 +26,7 @@ class TestStatistics(TestCase):
         del cls.high
         del cls.low
         del cls.close
-        if hasattr(cls, 'volume'): del cls.volume
+        if hasattr(cls, "volume"): del cls.volume
         del cls.data
 
 
@@ -36,37 +36,37 @@ class TestStatistics(TestCase):
     def test_entropy(self):
         result = pandas_ta.entropy(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'ENTP_10')
+        self.assertEqual(result.name, "ENTP_10")
 
     def test_kurtosis(self):
         result = pandas_ta.kurtosis(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'KURT_30')
+        self.assertEqual(result.name, "KURT_30")
 
     def test_mad(self):
         result = pandas_ta.mad(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'MAD_30')
+        self.assertEqual(result.name, "MAD_30")
 
     def test_median(self):
         result = pandas_ta.median(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'MEDIAN_30')
+        self.assertEqual(result.name, "MEDIAN_30")
 
     def test_quantile(self):
         result = pandas_ta.quantile(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'QTL_30_0.5')
+        self.assertEqual(result.name, "QTL_30_0.5")
 
     def test_skew(self):
         result = pandas_ta.skew(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'SKEW_30')
+        self.assertEqual(result.name, "SKEW_30")
 
     def test_stdev(self):
         result = pandas_ta.stdev(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'STDEV_30')
+        self.assertEqual(result.name, "STDEV_30")
 
         try:
             expected = tal.STDDEV(self.close, 30)
@@ -81,7 +81,7 @@ class TestStatistics(TestCase):
     def test_variance(self):
         result = pandas_ta.variance(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'VAR_30')
+        self.assertEqual(result.name, "VAR_30")
 
         try:
             expected = tal.VAR(self.close, 30)
@@ -96,4 +96,4 @@ class TestStatistics(TestCase):
     def test_zscore(self):
         result = pandas_ta.zscore(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'Z_30')
+        self.assertEqual(result.name, "Z_30")

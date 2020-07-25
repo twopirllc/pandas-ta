@@ -83,12 +83,12 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
-    width (int): How many ranges to distrubute price into.  Default: 10
+    width (int): How many ranges to distrubute price into. Default: 10
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
-    sort_close (value, optional): Whether to sort by close before splitting into ranges.  Default: False
+    sort_close (value, optional): Whether to sort by close before splitting into ranges. Default: False
 
 Returns:
     pd.DataFrame: New feature generated.

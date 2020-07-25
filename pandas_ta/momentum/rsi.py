@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat
+from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
@@ -18,10 +19,10 @@ def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     positive[positive < 0] = 0  # Make negatives 0 for the postive series
     negative[negative > 0] = 0  # Make postives 0 for the negative series
 
-    positive_avg = positive.ewm(com=length, adjust=False).mean()
-    negative_avg = negative.ewm(com=length, adjust=False).mean().abs()
+    positive_avg = rma(positive, length=length)
+    negative_avg = rma(negative, length=length)
 
-    rsi = scalar * positive_avg / (positive_avg + negative_avg)
+    rsi = scalar * positive_avg / (positive_avg + negative_avg.abs())
 
     # Offset
     if offset != 0:

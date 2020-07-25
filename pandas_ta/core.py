@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+from dataclasses import dataclass, field
+from datetime import datetime
 from functools import wraps
 from multiprocessing import cpu_count, Pool
 from random import random
 from time import perf_counter
+from typing import List
 
 import pandas as pd
+from pandas_ta import categories
 from pandas.core.base import PandasObject
 
 from pandas_ta.candles import *
@@ -17,7 +21,10 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "75b"))
+version = ".".join(("0", "1", "78b"))
+
+# Dictionary of files for each category, used in df.ta.strategy()
+Category = {name: category_files(name) for name in categories}
 
 def mp_worker(args):
     df, method, kwargs = args
@@ -40,11 +47,91 @@ def finalize(method):
     return _wrapper
 
 
+@dataclass
+class Strategy:
+    """Strategy (Data)Class
+    A way to name and group your favorite indicators
+
+    Args:
+        name (str): Some short memorable string.  Note: Case-insensitive "All" is reserved.
+        ta (list of dicts): A list of dicts containing keyword arguments where "kind" is the indicator.
+        description (str): A more detailed description of what the Strategy tries to capture. Default: None
+        created (str): At datetime string of when it was created. Default: Automatically generated. *Subject to change*
+    
+    Example TA:
+    ta = [
+        {"kind": "sma", "length": 200},
+        {"kind": "sma", "close": "volume", "length": 50},
+        {"kind": "bbands", "length": 20},
+        {"kind": "rsi"},
+        {"kind": "macd", "fast": 8, "slow": 21},
+        {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
+    ]
+    """
+    name: str# = None # Required.
+    ta: List = field(default_factory=list) # Required.
+    description: str = None # Helpful. More descriptive version or notes or w/e.
+    created: str = datetime.now().strftime("%m/%d/%Y, %H:%M:%S") # Optional. May change type later to datetime
+    last_run: str = None # Auto filled
+    run_time: str = None # Auto filled
+
+    def __post_init__(self):
+        has_name = True
+        is_ta = False
+        required_args = ["[X] Strategy requires the following argument(s):"]
+
+        name_is_str = isinstance(self.name, str)
+        ta_is_list = isinstance(self.ta, list)
+
+        if self.name is None or not name_is_str:
+            required_args.append(" - name. Must be a string. Example: \"My TA\". Note: \"all\" is reserved.")
+            has_name != has_name
+
+        if self.ta is None:
+            self.ta = None
+        elif self.ta is not None and ta_is_list and self.total_ta() > 0:
+            # Check that all elements of the list are dicts.
+            # Does not check if the dicts values are valid indicator kwargs
+            # User must check indicator documentation for all indicators args.
+            is_ta = all([isinstance(_, dict) and len(_.keys()) > 0 for _ in self.ta])
+        else:
+            s = " - ta. Format is a list of dicts. Example: [{'kind': 'sma', 'length': 10}]"
+            s += "\n       Check the indicator for the correct arguments if you receive this error."
+            required_args.append(s)
+
+        if len(required_args) > 1:
+            [print(_) for _ in required_args]
+            return None
+
+    def total_ta(self):
+        return len(self.ta) if self.ta is not None else 0
+
+# All Default Strategy
+AllStrategy = Strategy(
+    name="All",
+    description="All the indicators with their default settings. Pandas TA default.",
+    ta=None
+)
+
+# Default (Example) Strategy.
+CommonStrategy = Strategy(
+    name="Common Price and Volume SMAs",
+    description="Common Price SMAs: 10, 20, 50, 200 and Volume SMA: 20.",
+    ta=[
+        {"kind": "sma", "length": 10},
+        {"kind": "sma", "length": 20},
+        {"kind": "sma", "length": 50},
+        {"kind": "sma", "length": 200},
+        {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOL"}
+    ]
+)
+
+
 class BasePandasObject(PandasObject):
     """Simple PandasObject Extension
 
-    Ensures the DataFrame is not empty and has columns. It would be a
-    sad Panda otherwise.
+    Ensures the DataFrame is not empty and has columns.
+    It would be a sad Panda otherwise.
 
     Args:
         df (pd.DataFrame): Extends Pandas DataFrame
@@ -140,30 +227,37 @@ class AnalysisIndicators(BasePandasObject):
     _adjusted = None
     _mp = False
 
-    def __call__(self, kind=None, alias=None, timed=False, verbose=False, **kwargs):
-        try:
-            if isinstance(kind, str):
-                kind = kind.lower()
-                fn = getattr(self, kind)
+    def __call__(
+            self,
+            kind: str= None,
+            alias: str = None,
+            timed = False,
+            verbose = False,
+            **kwargs
+        ):
+            try:
+                if isinstance(kind, str):
+                    kind = kind.lower()
+                    fn = getattr(self, kind)
 
-                if timed: stime = perf_counter()
+                    if timed: stime = perf_counter()
 
-                # Run the indicator
-                result = fn(**kwargs) # = getattr(self, kind)(**kwargs)
+                    # Run the indicator
+                    result = fn(**kwargs) # = getattr(self, kind)(**kwargs)
 
-                # Add an alias if passed
-                if alias: result.alias = f"{alias}"
+                    if timed:
+                        result.timed = final_time(stime)
+                        alias_str = alias + ':' if alias is not None else ''
+                        print(f"[+] {kind}:{alias_str} {result.timed}")
 
-                if timed:
-                    result.timed = final_time(stime)
-                    print(f"[+] {kind}:{alias + ':' if alias is not None else ''} {result.timed}")
+                    # Add an alias if passed
+                    if alias: result.alias = f"{alias}"
 
-                return result
-            else:
-                self.help()
+                    return result
+                else:
+                    self.help()
 
-        except: pass
-
+            except: pass
 
     @property
     def adjusted(self) -> str:
@@ -257,11 +351,11 @@ class AnalysisIndicators(BasePandasObject):
                 match = [i for i, x in enumerate(matches) if x]
                 # If found, awesome.  Return it or return the 'series'.
                 cols = ', '.join(list(df.columns))
-                NOT_FOUND = f" [X] Ooops!!!: It's {series not in df.columns}, the series '{series}' not in {cols}"
+                NOT_FOUND = f"[X] Ooops!!!: It's {series not in df.columns}, the series '{series}' was not found in {cols}"
                 return df.iloc[:,match[0]] if len(match) else print(NOT_FOUND)
 
 
-    def constants(self, append, lower_bound=-100, upper_bound=100, every=1):
+    def constants(self, append, lower_bound=-100, upper_bound=100, every=10):
         """Constants
 
         Useful for creating indicator levels or if you need some constant value
@@ -332,58 +426,7 @@ class AnalysisIndicators(BasePandasObject):
         s = f"{header}\nTotal Indicators: {total_indicators}\n"
         print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}") if total_indicators > 0 else print(s)
 
-
-    # ALL Features
-    def _all(self, **kwargs):
-        """Appends by default all non-excluded indicators to the DataFrame. Used by ta.strategy(**kwargs)"""
-        cpus = cpu_count()
-        cores = int(kwargs.pop("cores", cpus))
-        timed = kwargs.pop("timed", False)
-        verbose = kwargs.pop("verbose", False)
-        user_excluded = kwargs.pop("exclude", [])
-        append = kwargs.setdefault("append", True)
-
-        excluded = ["above", "above_value", "below", "below_value",
-        "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
-        excluded += user_excluded
-
-        current_columns = len(self._df.columns)
-        indicators = self.indicators(as_list=True, exclude=excluded)
-
-        print('[+] Strategy "All"')
-        if verbose:
-            print(f'[i] Indicators with the following arguments: {kwargs}')
-            print(f"[i] excluded[{len(excluded)}]: {', '.join(excluded)}")
-
-        if timed: stime = perf_counter()
-        
-        if not self.mp:
-            # Display multiprocessing tip 10% of the time.
-            if random() < 0.1:
-                print(f"[i] Set 'df.ta.mp = True' to enable multiprocessing. This computer has {cpus} cores. Default: False")
-
-            methods = [getattr(self, kind) for kind in indicators]
-            [f(**kwargs) for f in methods]
-
-        else:
-            print(f"[i] multiprocessing: {cores} of {cpu_count()} cores")
-            pool = Pool(cores)
-            result = pool.imap_unordered(
-                mp_worker, ((self._df, ind, kwargs) for ind in indicators), cores
-            )
-            pool.close()
-            pool.join()
-
-            # Apply prefixes/suffixes and append to the DataFrame
-            for r in result:
-                self._add_prefix_suffix(r, **kwargs)
-                self._append(r, **kwargs)
-
-        print(f"[i] total indicators: {len(indicators)}, columns added: {len(self._df.columns) - current_columns}")
-        print(f"[i] runtime: {final_time(stime)}\n") if timed else None
-
-
-    def strategy(self, **kwargs):
+    def strategy(self, *args, **kwargs):
         """Strategy Method
 
         An experimental method that by default runs all applicable indicators.
@@ -393,17 +436,94 @@ class AnalysisIndicators(BasePandasObject):
         Args:
             name (str, optional): Default: 'all'
             exclude (list, optional): Default: []. List of indicator names to exclude.
-            verbose (bool): Default: False
 
             kwargs:
                 (optional) Default: {}. Any indicator argument you want to modify.
                     For example, length=20 or offset=-1 or high=df['High'] ...
-
         """
-        name = kwargs.pop("name", "all")
-        if name is None or name == "" or not isinstance(name, str): # Extra check
-            name = "all"
-        self._all(**kwargs) if name == "all" else None
+        cpus = cpu_count()
+        kwargs["append"] = True # Ensure indicators are appended to the DataFrame
+
+        name = kwargs.pop("name", None)
+        # removing before sending the rest of kwargs to the indicators
+        ta = kwargs.pop("ta", None)
+        mp = kwargs.pop("mp", False)
+        cores = int(kwargs.pop("cores", cpus))
+        timed = kwargs.pop("timed", False)
+        verbose = kwargs.pop("verbose", False)
+        user_excluded = kwargs.pop("exclude", [])
+
+        # Filter if Strategy, Category or by Strategy name and TA
+        if len(args) and isinstance(args[0], Strategy):
+            name, ta = args[0].name, args[0].ta
+        elif name is None or name.lower() == "all":
+            name = "All"
+        elif ta is None and name.lower() in categories:
+            ta = Category[name.lower()]
+
+        is_all = True if name is None or name.lower() == "all" else False
+        has_ta = True if ta is not None else False
+        initial_column_count = len(self._df.columns)
+
+        excluded = []
+        excluded_functions = ["above", "above_value", "below", "below_value", "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
+        excluded += user_excluded # Exclude user excluded ta if listed
+
+        print(f"[+] Strategy: {name}") if verbose else None
+        if name.lower() in categories or is_all:
+            # Exclude special functions
+            excluded += excluded_functions
+            if is_all:
+                ta = self.indicators(as_list=True, exclude=excluded)
+            else:
+                ta = Category[name.lower()]
+        else:
+            for kwds in ta:
+                kwds["append"] = True
+
+        if verbose:
+            print(f'[i] Indicators with the following arguments: {kwargs}')
+            if is_all and len(excluded) > 0:
+                print(f"[i] Excluded[{len(excluded)}]: {', '.join(excluded)}")
+
+        # Enable multiprocessing if user sets: mp=True
+        if mp: self.mp = not self.mp
+
+        if self.mp:
+            print(f"[i] Multiprocessing: {cores} of {cpu_count()} cores")
+            pool = Pool(cores)
+
+            if timed: stime = perf_counter()
+            result = pool.imap_unordered(
+                mp_worker, ((self._df, ind, kwargs) for ind in ta), cores
+            )
+            pool.close()
+            pool.join()
+
+            # Apply prefixes/suffixes and appends indicator result to the DataFrame
+            for r in result:
+                self._add_prefix_suffix(r, **kwargs)
+                self._append(r, **kwargs)
+            if timed: ftime = final_time(stime)
+
+        else:
+            # Display multiprocessing tip 10% of the time.
+            if random() < 0.1:
+                print(f"[i] Set 'df.ta.mp = True' to enable multiprocessing. This computer has {cpus} cores. Default: False")
+
+            if timed: stime = perf_counter()
+            if name.lower() in categories or is_all:
+                indicators = [getattr(self, kind) for kind in ta]
+                [f(**kwargs) for f in indicators]
+            else:
+                [getattr(self, kwds["kind"])(**kwds) for kwds in ta]
+
+            if timed: ftime = final_time(stime)
+
+        if verbose:
+            print(f"[i] Total indicators: {len(ta)}")
+            print(f"[i] Columns added: {len(self._df.columns) - initial_column_count}")
+        print(f"[i] Runtime: {ftime}") if timed else None
 
 
     # Candles
@@ -872,11 +992,13 @@ class AnalysisIndicators(BasePandasObject):
 
     @finalize
     def trend_return(self, close=None, trend=None, log=True, cumulative=None, offset=None, trend_reset=None, **kwargs):
-        close = self._get_column(close, 'close')
-        trend = self._get_column(trend, f"{trend}")
+        if trend is None: return self._df
+        else:
+            close = self._get_column(close, 'close')
+            trend = self._get_column(trend, f"{trend}")
 
-        result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, trend_reset=trend_reset, **kwargs)
-        return result
+            result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, trend_reset=trend_reset, **kwargs)
+            return result
 
 
     # Statistics Indicators
@@ -1173,10 +1295,11 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def donchian(self, close=None, length=None, offset=None, **kwargs):
-        close = self._get_column(close, 'close')
+    def donchian(self, high=None, low=None, lower_length=None, upper_length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
 
-        result = donchian(close=close, length=length, offset=offset, **kwargs)
+        result = donchian(high=high, low=low, lower_length=lower_length, upper_length=upper_length, offset=offset, **kwargs)
         return result
 
     @finalize
@@ -1355,6 +1478,3 @@ class AnalysisIndicators(BasePandasObject):
 
         result = vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
         return result
-
-# if __name__ == "__main__":
-#     freeze_support()

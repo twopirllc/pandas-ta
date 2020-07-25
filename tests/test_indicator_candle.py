@@ -14,11 +14,11 @@ class TestCandle(TestCase):
     def setUpClass(cls):
         cls.data = sample_data
         cls.data.columns = cls.data.columns.str.lower()
-        cls.open = cls.data['open']
-        cls.high = cls.data['high']
-        cls.low = cls.data['low']
-        cls.close = cls.data['close']
-        if 'volume' in cls.data.columns: cls.volume = cls.data['volume']
+        cls.open = cls.data["open"]
+        cls.high = cls.data["high"]
+        cls.low = cls.data["low"]
+        cls.close = cls.data["close"]
+        if "volume" in cls.data.columns: cls.volume = cls.data["volume"]
 
     @classmethod
     def tearDownClass(cls):
@@ -26,7 +26,7 @@ class TestCandle(TestCase):
         del cls.high
         del cls.low
         del cls.close
-        if hasattr(cls, 'volume'): del cls.volume
+        if hasattr(cls, "volume"): del cls.volume
         del cls.data
 
 

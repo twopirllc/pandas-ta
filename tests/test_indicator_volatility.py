@@ -14,11 +14,11 @@ class TestVolatility(TestCase):
     def setUpClass(cls):
         cls.data = sample_data
         cls.data.columns = cls.data.columns.str.lower()
-        cls.open = cls.data['open']
-        cls.high = cls.data['high']
-        cls.low = cls.data['low']
-        cls.close = cls.data['close']
-        if 'volume' in cls.data.columns: cls.volume = cls.data['volume']
+        cls.open = cls.data["open"]
+        cls.high = cls.data["high"]
+        cls.low = cls.data["low"]
+        cls.close = cls.data["close"]
+        if "volume" in cls.data.columns: cls.volume = cls.data["volume"]
 
     @classmethod
     def tearDownClass(cls):
@@ -26,7 +26,7 @@ class TestVolatility(TestCase):
         del cls.high
         del cls.low
         del cls.close
-        if hasattr(cls, 'volume'): del cls.volume
+        if hasattr(cls, "volume"): del cls.volume
         del cls.data
 
 
@@ -37,17 +37,17 @@ class TestVolatility(TestCase):
     def test_aberration(self):
         result = pandas_ta.aberration(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'ABER_5_15')
+        self.assertEqual(result.name, "ABER_5_15")
 
     def test_accbands(self):
         result = pandas_ta.accbands(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'ACCBANDS_20')
+        self.assertEqual(result.name, "ACCBANDS_20")
 
     def test_atr(self):
         result = pandas_ta.atr(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'ATR_14')
+        self.assertEqual(result.name, "ATR_14")
 
         try:
             expected = tal.ATR(self.high, self.low, self.close)
@@ -62,11 +62,11 @@ class TestVolatility(TestCase):
     def test_bbands(self):
         result = pandas_ta.bbands(self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'BBANDS_5')
+        self.assertEqual(result.name, "BBANDS_5_2.0")
 
         try:
             expected = tal.BBANDS(self.close)
-            expecteddf = DataFrame({'BBL_5': expected[0], 'BBM_5': expected[1], 'BBU_5': expected[2]})
+            expecteddf = DataFrame({"BBL_5_2.0": expected[0], "BBM_5_2.0": expected[1], "BBU_5_2.0": expected[2]})
             pdt.assert_frame_equal(result, expecteddf)
         except AssertionError as ae:
             try:
@@ -88,29 +88,29 @@ class TestVolatility(TestCase):
                 error_analysis(result.iloc[:,2], CORRELATION, ex, newline=False)
 
     def test_donchian(self):
-        result = pandas_ta.donchian(self.close)
+        result = pandas_ta.donchian(self.high, self.low)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'DC_10_20')
+        self.assertEqual(result.name, "DC_20_20")
 
-        result = pandas_ta.donchian(self.close, lower_length=20, upper_length=5)
+        result = pandas_ta.donchian(self.high, self.low, lower_length=20, upper_length=5)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'DC_20_5')
+        self.assertEqual(result.name, "DC_20_5")
 
 
     def test_kc(self):
         result = pandas_ta.kc(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, 'KC_20')
+        self.assertEqual(result.name, "KC_20")
 
     def test_massi(self):
         result = pandas_ta.massi(self.high, self.low)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'MASSI_9_25')
+        self.assertEqual(result.name, "MASSI_9_25")
 
     def test_natr(self):
         result = pandas_ta.natr(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'NATR_14')
+        self.assertEqual(result.name, "NATR_14")
 
         try:
             expected = tal.NATR(self.high, self.low, self.close)
@@ -125,25 +125,25 @@ class TestVolatility(TestCase):
     def test_pdist(self):
         result = pandas_ta.pdist(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'PDIST')
+        self.assertEqual(result.name, "PDIST")
 
     def test_rvi(self):
         result = pandas_ta.rvi(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'RVI_14')
+        self.assertEqual(result.name, "RVI_14")
 
         result = pandas_ta.rvi(self.close, self.high, self.low, refined=True)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'RVIr_14')
+        self.assertEqual(result.name, "RVIr_14")
 
         result = pandas_ta.rvi(self.close, self.high, self.low, thirds=True)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'RVIt_14')
+        self.assertEqual(result.name, "RVIt_14")
 
     def test_true_range(self):
         result = pandas_ta.true_range(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, 'TRUERANGE_1')
+        self.assertEqual(result.name, "TRUERANGE_1")
 
         try:
             expected = tal.TRANGE(self.high, self.low, self.close)

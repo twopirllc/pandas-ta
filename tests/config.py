@@ -6,7 +6,7 @@ VERBOSE = True
 ALERT = f"[!]"
 INFO = f"[i]"
 
-CORRELATION = 'corr'  #'sem'
+CORRELATION = "corr"  #"sem"
 CORRELATION_THRESHOLD = 0.99  # Less than 0.99 is undesirable
 
 sample_data = read_csv(
