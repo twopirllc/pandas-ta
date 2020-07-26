@@ -144,6 +144,11 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "COPC_11_14_10")
 
+    def test_er(self):
+        result = pandas_ta.er(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "ER_10")
+
     def test_fisher(self):
         result = pandas_ta.fisher(self.high, self.low)
         self.assertIsInstance(result, Series)

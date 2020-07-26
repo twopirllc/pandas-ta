@@ -8,6 +8,7 @@ from .cci import cci
 from .cg import cg
 from .cmo import cmo
 from .coppock import coppock
+from .er import er
 from .fisher import fisher
 from .inertia import inertia
 from .kdj import kdj

@@ -21,7 +21,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "78b"))
+version = ".".join(("0", "1", "79b"))
 
 # Dictionary of files for each category, used in df.ta.strategy()
 Category = {name: category_files(name) for name in categories}
@@ -617,6 +617,13 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
 
         result = coppock(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def er(self, close=None, length=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+
+        result = er(close=close, length=length, offset=offset, **kwargs)
         return result
 
     @finalize
