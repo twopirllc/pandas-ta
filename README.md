@@ -14,7 +14,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 
 ## __Features__
 
-* Has 100+ indicators and utility functions.
+* Has 110+ indicators and utility functions.
 * Option to use __multiprocessing__ when using df.ta.strategy(). See below.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
 * A new 'ta' method called 'strategy'. By default, it runs __all__ the indicators.
@@ -30,7 +30,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * Improved the calculation performance of indicators: _Exponential Moving Averagage_
 and _Weighted Moving Average_.
 * Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
-* __New Indicators:__ Kaufman's _Efficiency Ratio_ **er**, Johnson's _Pretty Good Oscillator_ **pgo**, _Elder Ray Index_ **eri**
+* __New Indicators:__ Kaufman's _Efficiency Ratio_ **er**, Johnson's _Pretty Good Oscillator_ **pgo**, _Elder Ray Index_ **eri**, Martin's _Ulcer Index_ **ui**
 
 
 ## What is a Pandas DataFrame Extension?
@@ -399,7 +399,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Below Value_: **below_value**
 * _Cross_: **cross**
 
-## _Volatility_ (11)
+## _Volatility_ (12)
 
 * _Aberration_: **aberration**
 * _Acceleration Bands_: **accbands**
@@ -412,6 +412,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Price Distance_: **pdist**
 * _Relative Volatility Index_: **rvi**
 * _True Range_: **true_range**
+* _Ulcer Index_: **ui**
 
 | _Average True Range_ (ATR) |
 |:--------:|

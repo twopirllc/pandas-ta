@@ -154,3 +154,12 @@ class TestVolatility(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+    def test_ui(self):
+        result = pandas_ta.ui(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "UI_14")
+
+        result = pandas_ta.ui(self.close, everget=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "UIe_14")

@@ -1381,6 +1381,12 @@ class AnalysisIndicators(BasePandasObject):
         result = true_range(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         return result
 
+    @finalize
+    def ui(self, close=None, length=None, scalar=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+
+        result = ui(close=close, length=length, scalar=scalar, offset=offset, **kwargs)
+        return result
 
 
     # Volume Indicators
