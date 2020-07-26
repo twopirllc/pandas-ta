@@ -73,6 +73,11 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "ER_10")
 
+    def test_eri_ext(self):
+        self.data.ta.eri(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-2:]), ["BULLP_13", "BEARP_13"])
+
     def test_fisher_ext(self):
         self.data.ta.fisher(append=True)
         self.assertIsInstance(self.data, DataFrame)

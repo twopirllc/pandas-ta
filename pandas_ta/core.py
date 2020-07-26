@@ -21,7 +21,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "80b"))
+version = ".".join(("0", "1", "81b"))
 
 # Dictionary of files for each category, used in df.ta.strategy()
 Category = {name: category_files(name) for name in categories}
@@ -624,6 +624,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
 
         result = er(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def eri(self, high=None, low=None, close=None, length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = eri(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
         return result
 
     @finalize
