@@ -30,7 +30,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * Improved the calculation performance of indicators: _Exponential Moving Averagage_
 and _Weighted Moving Average_.
 * Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
-* __New Indicator:__ Kaufman's _Efficiency Ratio_: **er**
+* __New Indicators:__ Kaufman's _Efficiency Ratio_: **er**, Johnson's _Pretty Good Oscillator_: **pgo**
 
 
 ## What is a Pandas DataFrame Extension?
@@ -269,7 +269,7 @@ df.ta.adjusted = None
 * _Doji_: **cdl_doji**
 * _Heikin-Ashi_: **ha**
 
-## _Momentum_ (28)
+## _Momentum_ (29)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -287,6 +287,7 @@ df.ta.adjusted = None
 * _KST Oscillator_: **kst**
 * _Moving Average Convergence Divergence_: **macd**
 * _Momentum_: **mom**
+* _Pretty Good Oscillator_: **pgo**
 * _Percentage Price Oscillator_: **ppo**
 * _Psychological Line_: **psl**
 * _Percentage Volume Oscillator_: **pvo**

@@ -15,6 +15,7 @@ from .kdj import kdj
 from .kst import kst
 from .macd import macd
 from .mom import mom
+from .pgo import pgo
 from .ppo import ppo
 from .psl import psl
 from .pvo import pvo

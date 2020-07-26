@@ -221,6 +221,11 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_pgo(self):
+        result = pandas_ta.pgo(self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "PGO_14")
+
     def test_ppo(self):
         result = pandas_ta.ppo(self.close)
         self.assertIsInstance(result, DataFrame)

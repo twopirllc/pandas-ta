@@ -113,6 +113,11 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "MOM_10")
 
+    def test_pgo_ext(self):
+        self.data.ta.pgo(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "PGO_14")
+
     def test_ppo_ext(self):
         self.data.ta.ppo(append=True)
         self.assertIsInstance(self.data, DataFrame)

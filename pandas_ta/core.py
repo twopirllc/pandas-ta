@@ -21,7 +21,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "79b"))
+version = ".".join(("0", "1", "80b"))
 
 # Dictionary of files for each category, used in df.ta.strategy()
 Category = {name: category_files(name) for name in categories}
@@ -469,7 +469,7 @@ class AnalysisIndicators(BasePandasObject):
         excluded_functions = ["above", "above_value", "below", "below_value", "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
         excluded += user_excluded # Exclude user excluded ta if listed
 
-        print(f"[+] Strategy: {name}") if verbose else None
+        print(f"\n[+] Strategy: {name}") if verbose else None
         if name.lower() in categories or is_all:
             # Exclude special functions
             excluded += excluded_functions
@@ -620,10 +620,10 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def er(self, close=None, length=None, offset=None, **kwargs):
+    def er(self, close=None, length=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, 'close')
 
-        result = er(close=close, length=length, offset=offset, **kwargs)
+        result = er(close=close, length=length, drift=drift, offset=offset, **kwargs)
         return result
 
     @finalize
@@ -676,6 +676,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
 
         result = mom(close=close, length=length, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def pgo(self, high=None, low=None, close=None, length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = pgo(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
         return result
 
     @finalize
