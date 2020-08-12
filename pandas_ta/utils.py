@@ -450,8 +450,8 @@ def candle_color(open_, close):
     color[close < open_] = -1
     return color
 
-def real_body(open_, close):
-    return non_zero_range(open_, close)
+def real_body(close, open_):
+    return non_zero_range(close, open_)
 
 def high_low_range(high, low):
     return non_zero_range(high, low)
