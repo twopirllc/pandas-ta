@@ -22,7 +22,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "90b"))
+version = ".".join(("0", "1", "91b"))
 
 # Dictionary of files for each category, used in df.ta.strategy()
 Category = {name: category_files(name) for name in categories}
@@ -512,10 +512,6 @@ class AnalysisIndicators(BasePandasObject):
             if timed: ftime = final_time(stime)
 
         else:
-            # Display multiprocessing tip 10% of the time.
-            if random() < 0.1:
-                print(f"[i] Set 'df.ta.mp = True' to enable multiprocessing. This computer has {cpus} cores. Default: False")
-
             if timed: stime = perf_counter()
             if name.lower() in categories or is_all:
                 indicators = [getattr(self, kind) for kind in ta]

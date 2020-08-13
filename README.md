@@ -52,6 +52,7 @@ Please take a moment to read **this** and the rest of this **README** before pos
 * Improved the calculation performance of indicators: _Exponential Moving Averagage_
 and _Weighted Moving Average_.
 * Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
+* Removed multiprocessing hint.
 * __New Indicators:__ Kaufman's _Efficiency Ratio_ **er**, Johnson's _Pretty Good Oscillator_ **pgo**, _Elder Ray Index_ **eri**, Martin's _Ulcer Index_ **ui**, _Squeeze_ **squeeze** (John Carter's TTM **and** Lazybear's TradingView versions)
 
 
