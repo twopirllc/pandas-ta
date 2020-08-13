@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 def percent_return(close, length=None, cumulative=False, offset=None, **kwargs):
     """Indicator: Percent Return"""
@@ -20,7 +20,7 @@ def percent_return(close, length=None, cumulative=False, offset=None, **kwargs):
 
     # Name & Category
     pct_return.name = f"{'CUM' if cumulative else ''}PCTRET_{length}"
-    pct_return.category = 'performance'
+    pct_return.category = "performance"
 
     return pct_return
 

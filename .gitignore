@@ -119,6 +119,8 @@ pandas_ta/_wrapper.py
 data/datas.csv
 data/SPY_5min.csv
 data/SPY_1min.csv
+data/SPY_D_lbsz.csv
+data/TV_5min.csv
 data/similang-ch.csv
 data/tulip.csv
 examples/taplot.py
@@ -131,6 +133,7 @@ note.md
 driver.py
 doc.py
 bt.ipynb
+scratch.ipynb
 ta_extension.ipynb
 kerasmodeller.ipynb
 Charts.ipynb
@@ -142,5 +145,3 @@ simple.ipynb
 ta.json
 
 # Indicator
-pandas_ta/overlap/ft.py
-pandas_ta/overlap/psar.py

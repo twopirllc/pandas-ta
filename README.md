@@ -6,22 +6,44 @@
 # __Technical Analysis Library in Python 3.7__
 ![Example Chart](/images/TA_Chart.png)
 
-__Pandas Technical Analysis__ (Pandas TA) is an easy to use library that is built upon Python's Pandas library with more than 100 Indicators and Utility functions.  These indicators are commonly used for financial time series datasets with columns or labels similar to: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (*SMA*) _Moving Average Convergence Divergence_ (*MACD*), _Hull Exponential Moving Average_ (*HMA*), _Bollinger Bands_ (*BBANDS*), _On-Balance Volume_ (*OBV*), _Aroon & Aroon Oscillator_ (*AROON*) and more.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that is built upon Python's Pandas library with more than 115 Indicators and Utility functions.  These indicators are commonly used for financial time series datasets with columns or labels: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **many more**.
 
-This version contains both the orignal code branch as well as a newly refactored branch with the option to use [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode. 
-All the indicators return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDh_12_26_9', 'MACDs_12_26_9'].
+**Pandas TA** has three different ways of processing Technical Indicators as described below. The **primary** requirement to run indicators in [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode, is that _open, high, low, close, volume_ are **lowercase**. Depending on the indicator, they either return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDh_12_26_9', 'MACDs_12_26_9'].
+
+## Pandas TA Issues, Ideas and Contributions
+
+#### Thanks for trying **Pandas TA**!
+
+Please take a moment to read **this** and the rest of this **README** before posting any issue.
+
+* ### [Comments and Feedback](https://github.com/twopirllc/pandas-ta/issues)
+    * Have you read the rest of **this** document?
+    * Are you running the latest version?
+    * Have you tried the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/)?
+        * Did they help?
+        * What is missing?
+        * Could you help improve them?
+    * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/master/examples/PandasTA_Strategy_Examples.ipynb) Class**?
+    * Documentation needs improvement. Can you contribute?
+
+* ### [Indicator or Feature Requests & Contributions](https://github.com/twopirllc/pandas-ta/issues)
+    * Please be as detailed and concise as possible. Links and screenshots and sometimes data samples are welcome.
+        * You want a new indicator not currently listed.
+        * You want an alternate version of an existing indicator.
+        * The indicator does not match another website, library, broker platform, language, et al.
+            * Can you contribute?
 
 
 ## __Features__
 
-* Has 110+ indicators and utility functions.
-* Option to use __multiprocessing__ when using df.ta.strategy(). See below.
-* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
-* A new 'ta' method called 'strategy'. By default, it runs __all__ the indicators.
-* Abbreviated Indicator names as listed below.
+* Has 115+ indicators and utility functions.
 * __Extended Pandas DataFrame__ as 'ta'.
+* Indicators are correlation tested against the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
+* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
+* Option to use __multiprocessing__ when using df.ta.strategy(). See below.
 * Easily add prefixes or suffixes or both to columns names.
 * Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups) and tightly correlated with TA Lib in testing.
+* A new 'ta' method called 'strategy'. By default, it runs __all__ the indicators or equivalent ta.AllStrategy.
 
 
 ## __Recent Changes__
@@ -30,7 +52,7 @@ All the indicators return a named Series or a DataFrame in uppercase underscore 
 * Improved the calculation performance of indicators: _Exponential Moving Averagage_
 and _Weighted Moving Average_.
 * Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
-* __New Indicators:__ Kaufman's _Efficiency Ratio_ **er**, Johnson's _Pretty Good Oscillator_ **pgo**, _Elder Ray Index_ **eri**, Martin's _Ulcer Index_ **ui**
+* __New Indicators:__ Kaufman's _Efficiency Ratio_ **er**, Johnson's _Pretty Good Oscillator_ **pgo**, _Elder Ray Index_ **eri**, Martin's _Ulcer Index_ **ui**, _Squeeze_ **squeeze** (John Carter's TTM **and** Lazybear's TradingView versions)
 
 
 ## What is a Pandas DataFrame Extension?
@@ -59,7 +81,7 @@ import pandas as pd
 import pandas_ta as ta
 
 # Load data
-df = pd.read_csv('symbol.csv', sep=',')
+df = pd.read_csv("path/symbol.csv", sep=",")
 
 # Calculate Returns and append to the df DataFrame
 df.ta.log_return(cumulative=True, append=True)
@@ -161,8 +183,8 @@ df.ta.mp = True
 # Runs and appends all indicators to the current DataFrame by default
 # The resultant DataFrame will be large.
 df.ta.strategy()
-# Or equivalently use name='all'
-df.ta.strategy(name='all')
+# Or equivalently use name="all"
+df.ta.strategy(name="all")
 
 # Use verbose if you want to make sure it is running.
 df.ta.strategy(verbose=True)
@@ -177,7 +199,7 @@ df.ta.strategy(cores=2)
 
 # Maybe you do not want certain indicators.
 # Just exclude (a list of) them.
-df.ta.strategy(exclude=['bop', 'mom', 'percent_return', 'wcp', 'pvi'], verbose=True)
+df.ta.strategy(exclude=["bop", "mom", "percent_return", "wcp", "pvi"], verbose=True)
 
 # Perhaps you want to use different values for indicators.
 # This will run ALL indicators that have fast or slow as parameters.
@@ -255,7 +277,7 @@ time_series_in_order = df.ta.datetime_ordered
 
 ```python
 # Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
-df.ta.adjusted = 'adj_close'
+df.ta.adjusted = "adj_close"
 df.ta.sma(length=10, append=True)
 
 # To reset back to 'close', set adjusted back to None
@@ -269,7 +291,7 @@ df.ta.adjusted = None
 * _Doji_: **cdl_doji**
 * _Heikin-Ashi_: **ha**
 
-## _Momentum_ (30)
+## _Momentum_ (31)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -295,7 +317,9 @@ df.ta.adjusted = None
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
 * _Relative Vigor Index_: **rvgi**
-* _Slope_: **slope*
+* _Slope_: **slope**
+* _Squeeze_: **squeeze**
+    * Default is John Carter's. Enable Lazybear's by ```lazybear=True```
 * _Stochastic Oscillator_: **stoch**
 * _Trix_: **trix**
 * _True strength index_: **tsi**
@@ -446,7 +470,5 @@ Use parameter: cumulative=**True** for cumulative results.
 
 
 # Inspiration
-* TradingView: http://www.tradingview.com
 * Original TA-LIB: http://ta-lib.org/
-
-Please leave any comments, feedback, suggestions, or indicator requests.
+* TradingView: http://www.tradingview.com

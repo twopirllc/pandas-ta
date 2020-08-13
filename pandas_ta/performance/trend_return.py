@@ -2,23 +2,27 @@
 from pandas import Series
 from .log_return import log_return
 from .percent_return import percent_return
-from ..utils import get_offset, verify_series, zero
+from pandas_ta.utils import get_offset, verify_series, zero
 
-def trend_return(close, trend, log=True, cumulative=None, offset=None, trend_reset=0, **kwargs):
+def trend_return(close, trend, log=True, cumulative=None, trend_reset=0, offset=None, **kwargs):
     """Indicator: Trend Return"""
     # Validate Arguments
     close = verify_series(close)
     trend = verify_series(trend)
-    offset = get_offset(offset)
+    cumulative = cumulative if cumulative is not None and isinstance(cumulative, bool) else False
     trend_reset = int(trend_reset) if trend_reset and isinstance(trend_reset, int) else 0
+    offset = get_offset(offset)
 
     # Calculate Result
-    returns = log_return(close, cumulative=False) if log else percent_return(close, cumulative=False)
-    tsum = 0
-    m = trend.size
+    if log:
+        returns = log_return(close, cumulative=False)
+    else:
+        returns = percent_return(close, cumulative=False)
     trend = trend.astype(int)
     returns = (trend * returns).apply(zero)
     
+    tsum = 0
+    m = trend.size
     result = []
     for i in range(0, m):
         if trend[i] == trend_reset:

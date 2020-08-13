@@ -29,31 +29,29 @@ def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
         rsi = rsi.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        rsi.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        rsi.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        rsi.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        rsi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     rsi.name = f"RSI_{length}"
-    rsi.category = 'momentum'
+    rsi.category = "momentum"
 
-    signal_indicators = kwargs.pop('signal_indicators', False)
+    signal_indicators = kwargs.pop("signal_indicators", False)
     if signal_indicators:
         signalsdf = concat(
             [
-                DataFrame(
-                    {rsi.name: rsi}
-                ),
+                DataFrame({rsi.name: rsi}),
                 signals(
                     indicator=rsi,
-                    xa=kwargs.pop('xa', 80),
-                    xb=kwargs.pop('xb', 20),
-                    xserie=kwargs.pop('xserie', None),
-                    xserie_a=kwargs.pop('xserie_a', None),
-                    xserie_b=kwargs.pop('xserie_b', None),
-                    cross_values=kwargs.pop('cross_values', False),
-                    cross_series=kwargs.pop('cross_series', True),
+                    xa=kwargs.pop("xa", 80),
+                    xb=kwargs.pop("xb", 20),
+                    xserie=kwargs.pop("xserie", None),
+                    xserie_a=kwargs.pop("xserie_a", None),
+                    xserie_b=kwargs.pop("xserie_b", None),
+                    cross_values=kwargs.pop("cross_values", False),
+                    cross_series=kwargs.pop("cross_series", True),
                     offset=offset,
                 ),
             ],

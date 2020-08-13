@@ -45,7 +45,7 @@ def _above_below(
 
     # Name & Category
     current.name = f"{series_a.name}_{'A' if above else 'B'}_{series_b.name}"
-    current.category = 'utility'
+    current.category = "utility"
 
     return current
 
@@ -70,7 +70,7 @@ def above_value(
     if not isinstance(value, (int, float, complex)):
         print("[X] value is not a number")
         return
-    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace('.','_'))
+    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
     return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)    
 
 
@@ -94,7 +94,7 @@ def below_value(
     if not isinstance(value, (int, float, complex)):
         print("[X] value is not a number")
         return
-    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace('.','_'))
+    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
     return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
 
 
@@ -106,10 +106,10 @@ def category_files(category: str) -> list:
 
 def combination(**kwargs):
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""
-    n = int(math.fabs(kwargs.pop('n', 1)))
-    r = int(math.fabs(kwargs.pop('r', 0)))
+    n = int(math.fabs(kwargs.pop("n", 1)))
+    r = int(math.fabs(kwargs.pop("r", 0)))
 
-    if kwargs.pop('repetition', False) or kwargs.pop('multichoose', False):
+    if kwargs.pop("repetition", False) or kwargs.pop("multichoose", False):
         n = n + r - 1
 
     # if r < 0: return None
@@ -130,7 +130,7 @@ def cross_value(
         offset: int = None,
         **kwargs
     ):
-    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace('.','_'))
+    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
     return cross(series_a, series_b, above, asint, offset, **kwargs)
 
 
@@ -164,7 +164,7 @@ def cross(
 
     # Name & Category
     cross.name = f"{series_a.name}_{'XA' if above else 'XB'}_{series_b.name}"
-    cross.category = 'utility'
+    cross.category = "utility"
 
     return cross
 
@@ -228,37 +228,26 @@ def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_s
 
 def df_error_analysis(dfA: pd.DataFrame, dfB: pd.DataFrame, **kwargs) -> pd.DataFrame:
     """ """
-    col = kwargs.pop('col', None)
-    corr_method = kwargs.pop('corr_method', 'pearson')
+    col = kwargs.pop("col", None)
+    corr_method = kwargs.pop("corr_method", "pearson")
 
-    # Find their differences
+    # Find their differences and correlation
     diff = dfA - dfB
-    df = pd.DataFrame({'diff': diff.describe()})
-    extra = pd.DataFrame(
-        [diff.var(), diff.mad(), diff.sem(), dfA.corr(dfB, method=corr_method)],
-        index=['var', 'mad', 'sem', 'corr']
-    )
-
-    # Append the differences to the DataFrame
-    df = df['diff'].append(extra, ignore_index=False)[0]
+    corr = dfA.corr(dfB, method=corr_method)
 
     # For plotting
-    if kwargs.pop('plot', False):
+    if kwargs.pop("plot", False):
         diff.hist()
         if diff[diff > 0].any():
-            diff.plot(kind='kde')
-    
-    if col is not None:
-        return df[col]
-    else:
-        return df
+            diff.plot(kind="kde")
 
+    return corr
 
 def fibonacci(**kwargs) -> np.ndarray:
     """Fibonacci Sequence as a numpy array"""
-    n = int(math.fabs(kwargs.pop('n', 2)))
-    zero = kwargs.pop('zero', False)
-    weighted = kwargs.pop('weighted', False)
+    n = int(math.fabs(kwargs.pop("n", 2)))
+    zero = kwargs.pop("zero", False)
+    weighted = kwargs.pop("weighted", False)
 
     if zero:
         a, b = 0, 1
@@ -322,8 +311,8 @@ def pascals_triangle(n: int = None, **kwargs) -> np.ndarray:
          => inverse weighted: [0.9375, 0.75, 0.625, 0.75, 0.9375]
     """
     n = int(math.fabs(n)) if n is not None else 0
-    weighted = kwargs.pop('weighted', False)
-    inverse = kwargs.pop('inverse', False)
+    weighted = kwargs.pop("weighted", False)
+    inverse = kwargs.pop("inverse", False)
 
     # Calculation
     triangle = np.array([combination(n=n, r=i) for i in range(0, n + 1)])
@@ -373,7 +362,7 @@ def symmetric_triangle(n: int = None, **kwargs) -> list:
          => weighted: [0.16666667 0.33333333 0.33333333 0.16666667]
     """
     n = int(math.fabs(n)) if n is not None else 2
-    weighted = kwargs.pop('weighted', False)
+    weighted = kwargs.pop("weighted", False)
 
     if n == 2:
         triangle = [1, 1]
@@ -418,7 +407,7 @@ def unsigned_differences(series: pd.Series, amount: int = None, **kwargs) -> pd.
     negative[negative >= 0] = 0
     negative[negative < 0] = 1
 
-    if kwargs.pop('asint', False):
+    if kwargs.pop("asint", False):
         positive = positive.astype(int)
         negative = negative.astype(int)
 
@@ -440,7 +429,7 @@ def weights(w):
 def zero(x: [int, float]) -> [int, float]:
     """If the value is close to zero, then return zero.
     Otherwise return the value."""
-    return 0 if -sflt.epsilon < x and x < sflt.epsilon else x
+    return 0 if abs(x) < sflt.epsilon else x
 
 # Candle Functions
 

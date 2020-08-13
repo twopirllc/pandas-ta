@@ -100,7 +100,11 @@ class TestVolatility(TestCase):
     def test_kc(self):
         result = pandas_ta.kc(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "KC_20")
+        self.assertEqual(result.name, "KC_20_2")
+
+        result = pandas_ta.kc(self.high, self.low, self.close, mamode="sma")
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "KCs_20_2")
 
     def test_massi(self):
         result = pandas_ta.massi(self.high, self.low)

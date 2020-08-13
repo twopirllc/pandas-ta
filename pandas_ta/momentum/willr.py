@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
 def willr(high, low, close, length=None, offset=None, **kwargs):
     """Indicator: William's Percent R (WILLR)"""
@@ -8,7 +8,7 @@ def willr(high, low, close, length=None, offset=None, **kwargs):
     low = verify_series(low)
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     offset = get_offset(offset)
 
     # Calculate Result
@@ -22,14 +22,14 @@ def willr(high, low, close, length=None, offset=None, **kwargs):
         willr = willr.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        willr.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        willr.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        willr.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        willr.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     willr.name = f"WILLR_{length}"
-    willr.category = 'momentum'
+    willr.category = "momentum"
 
     return willr
 
@@ -47,10 +47,10 @@ Sources:
 Calculation:
     Default Inputs:
         length=20
-    lowest_low   = low.rolling(length).min()
-    highest_high = high.rolling(length).max()
+    LL = low.rolling(length).min()
+    HH = high.rolling(length).max()
 
-    WILLR = 100 * ((close - lowest_low) / (highest_high - lowest_low) - 1)
+    WILLR = 100 * ((close - LL) / (HH - LL) - 1)
 
 Args:
     high (pd.Series): Series of 'high's

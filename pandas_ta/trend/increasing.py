@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 def increasing(close, length=None, asint=True, offset=None, **kwargs):
     """Indicator: Increasing"""
@@ -18,14 +18,14 @@ def increasing(close, length=None, asint=True, offset=None, **kwargs):
         increasing = increasing.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        increasing.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        increasing.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        increasing.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        increasing.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     increasing.name = f"INC_{length}"
-    increasing.category = 'trend'
+    increasing.category = "trend"
 
     return increasing
 

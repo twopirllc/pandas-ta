@@ -48,7 +48,7 @@ class TestVolatilityExtension(TestCase):
     def test_kc_ext(self):
         self.data.ta.kc(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["KCL_20", "KCB_20", "KCU_20"])
+        self.assertEqual(list(self.data.columns[-3:]), ["KCL_20_2", "KCB_20_2", "KCU_20_2"])
 
     def test_massi_ext(self):
         self.data.ta.massi(append=True)
