@@ -119,7 +119,9 @@ pandas_ta/_wrapper.py
 data/datas.csv
 data/SPY_5min.csv
 data/SPY_1min.csv
+data/SPY_D_lbsz.csv
 data/similang-ch.csv
+data/TV_5min.csv
 data/tulip.csv
 examples/taplot.py
 examples/charting.ipynb
@@ -132,6 +134,7 @@ driver.py
 doc.py
 bt.ipynb
 ta_extension.ipynb
+scratch.ipynb
 kerasmodeller.ipynb
 Charts.ipynb
 pandas_pips
