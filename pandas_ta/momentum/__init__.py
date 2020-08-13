@@ -8,12 +8,15 @@ from .cci import cci
 from .cg import cg
 from .cmo import cmo
 from .coppock import coppock
+from .er import er
+from .eri import eri
 from .fisher import fisher
 from .inertia import inertia
 from .kdj import kdj
 from .kst import kst
 from .macd import macd
 from .mom import mom
+from .pgo import pgo
 from .ppo import ppo
 from .psl import psl
 from .pvo import pvo
@@ -21,6 +24,7 @@ from .roc import roc
 from .rsi import rsi
 from .rvgi import rvgi
 from .slope import slope
+from .squeeze import squeeze
 from .stoch import stoch
 from .trix import trix
 from .tsi import tsi

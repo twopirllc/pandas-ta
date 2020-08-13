@@ -144,6 +144,16 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "COPC_11_14_10")
 
+    def test_er(self):
+        result = pandas_ta.er(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "ER_10")
+
+    def test_eri(self):
+        result = pandas_ta.eri(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "ERI_13")
+
     def test_fisher(self):
         result = pandas_ta.fisher(self.high, self.low)
         self.assertIsInstance(result, Series)
@@ -215,6 +225,11 @@ class TestMomentum(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+    def test_pgo(self):
+        result = pandas_ta.pgo(self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "PGO_14")
 
     def test_ppo(self):
         result = pandas_ta.ppo(self.close)
@@ -290,6 +305,23 @@ class TestMomentum(TestCase):
         result = pandas_ta.slope(self.close, as_angle=True, to_degrees=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "ANGLEd_1")
+
+    def test_squeeze(self):
+        result = pandas_ta.squeeze(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SQZ_20_2.0_20_1.5")
+
+        result = pandas_ta.squeeze(self.high, self.low, self.close, tr=False)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SQZhlr_20_2.0_20_1.5")
+
+        result = pandas_ta.squeeze(self.high, self.low, self.close, lazybear=True)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SQZ_20_2.0_20_1.5_LB")
+
+        result = pandas_ta.squeeze(self.high, self.low, self.close, tr=False, lazybear=True)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SQZhlr_20_2.0_20_1.5_LB")
 
     def test_stoch(self):
         result = pandas_ta.stoch(self.high, self.low, self.close, fast_k=14, slow_k=14, slow_d=14)

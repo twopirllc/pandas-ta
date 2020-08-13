@@ -8,6 +8,7 @@ from time import perf_counter
 from typing import List
 
 import pandas as pd
+from numpy import ndarray as npndarray
 from pandas_ta import categories
 from pandas.core.base import PandasObject
 
@@ -21,21 +22,23 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "78b"))
+version = ".".join(("0", "1", "90b"))
 
 # Dictionary of files for each category, used in df.ta.strategy()
 Category = {name: category_files(name) for name in categories}
 
 def mp_worker(args):
+    """Multiprocessing Worker to handle different Methods."""
     df, method, kwargs = args
 
-    if method != 'ichimoku':
+    if method != "ichimoku":
         return df.ta(kind=method, **kwargs)
     else:
         return df.ta(kind=method, **kwargs)[0]
 
 
 def finalize(method):
+    """Adds Prefixes/Suffixes if given and Appends Results if True"""
     @wraps(method)
     def _wrapper(*class_methods, **method_kwargs):
         cm = class_methods[0]
@@ -142,7 +145,7 @@ class BasePandasObject(PandasObject):
         if len(df.columns) > 0:
             self._df = df
         else:
-            raise AttributeError(f" [X] No columns!")
+            raise AttributeError(f"[X] No columns!")
 
     def __call__(self, kind, *args, **kwargs):
         raise NotImplementedError()
@@ -355,41 +358,43 @@ class AnalysisIndicators(BasePandasObject):
                 return df.iloc[:,match[0]] if len(match) else print(NOT_FOUND)
 
 
-    def constants(self, append, lower_bound=-100, upper_bound=100, every=10):
+    def constants(self, append: bool, values: list):
         """Constants
 
-        Useful for creating indicator levels or if you need some constant value
-        easily added to your DataFrame.
+        Add or remove constants to the DataFrame easily with Numpy's arrays or
+        lists. Useful when you need easily accessible horizontal lines for
+        charting.
 
         Add constant '1' to the DataFrame
-        >>> df.ta.constants(True, 1, 1, 1)
+        >>> df.ta.constants(True, [1])
         Remove constant '1' to the DataFrame
-        >>> df.ta.constants(False, 1, 1, 1)
+        >>> df.ta.constants(False, [1])
 
-        Adding constants that range of constants from -4 to 4 inclusive
-        >>> df.ta.constants(True, -4, 4, 1)
-        Removing constants that range of constants from -4 to 4 inclusive
-        >>> df.ta.constants(False, -4, 4, 1)
+        Adding the constants for the charts
+        >>> import numpy as np
+        >>> chart_lines = np.append(np.arange(-4, 5, 1), np.arange(-100, 110, 10))
+        >>> df.ta.constants(True, chart_lines)
+        Removing some constants from the DataFrame
+        >>> df.ta.constants(False, np.array([-60, -40, 40, 60]))
 
         Args:
-            append (bool): Default: None.  If True, appends the range of constants to the
-                working DataFrame.  If False, it removes the constant range from the working
-                DataFrame.
-            lower_bound (int): Default: -100.  Lowest integer for the constant range.
-            upper_bound (int): Default: 100.  Largest integer for the constant range.
-            every (int): Default: 10.  How often to include a new constant.
+            append (bool): If True, appends a Numpy range of constants to the
+                working DataFrame.  If False, it removes the constant range from
+                the working DataFrame. Default: None.
 
         Returns:
-            Returns nothing to the user.  Either adds or removes constant ranges from the
-            working DataFrame.
+            Returns the appended constants 
+            Returns nothing to the user.  Either adds or removes constant ranges
+            from the working DataFrame.
         """
-        levels = [x for x in range(lower_bound, upper_bound + 1) if x % every == 0]
-        if append:
-            for x in levels:
-                self._df[f'{x}'] = x
-        else:
-            for x in levels:
-                del self._df[f'{x}']
+        if isinstance(values, npndarray) or isinstance(values, list):
+            if append:
+                for x in values:
+                    self._df[f"{x}"] = x
+                return self._df[self._df.columns[-len(values):]]
+            else:
+                for x in values:
+                    del self._df[f"{x}"]
 
 
     def indicators(self, **kwargs):
@@ -397,10 +402,10 @@ class AnalysisIndicators(BasePandasObject):
         
         Args:
             kwargs:
-                as_list (bool, optional):  Default: False.  When True, it returns a list
-                    of the indicators.  Helpful you want to filter out what you want to run.
-                exclude (list, optional):  Default: None.  The passed in list will be
-                    excluded from the indicators list.
+                as_list (bool, optional):  Default: False.  When True, it
+                    returns a list of the indicators.
+                exclude (list, optional):  Default: None.  The passed in list
+                    will be excluded from the indicators list.
 
         Returns:
             Prints the list of indicators. If as_list=True, then a list.
@@ -620,6 +625,22 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
+    def er(self, close=None, length=None, drift=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+
+        result = er(close=close, length=length, drift=drift, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def eri(self, high=None, low=None, close=None, length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = eri(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
+        return result
+
+    @finalize
     def fisher(self, high=None, low=None, length=None, offset=None, **kwargs):
         high = self._get_column(high, 'high')
         low = self._get_column(low, 'low')
@@ -669,6 +690,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
 
         result = mom(close=close, length=length, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def pgo(self, high=None, low=None, close=None, length=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = pgo(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
         return result
 
     @finalize
@@ -723,6 +753,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, 'close')
 
         result = slope(close=close, length=length, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def squeeze(self, high=None, low=None, close=None, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, offset=None, **kwargs):
+        high = self._get_column(high, 'high')
+        low = self._get_column(low, 'low')
+        close = self._get_column(close, 'close')
+
+        result = squeeze(high=high, low=low, close=close, bb_length=bb_length, bb_std=bb_std, kc_length=kc_length, kc_scalar=kc_scalar, mom_length=mom_length, mom_smooth=mom_smooth, use_tr=use_tr, offset=offset, **kwargs)
         return result
 
     @finalize
@@ -1356,6 +1395,12 @@ class AnalysisIndicators(BasePandasObject):
         result = true_range(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         return result
 
+    @finalize
+    def ui(self, close=None, length=None, scalar=None, offset=None, **kwargs):
+        close = self._get_column(close, 'close')
+
+        result = ui(close=close, length=length, scalar=scalar, offset=offset, **kwargs)
+        return result
 
 
     # Volume Indicators

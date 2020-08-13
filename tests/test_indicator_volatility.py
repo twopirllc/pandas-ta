@@ -100,7 +100,11 @@ class TestVolatility(TestCase):
     def test_kc(self):
         result = pandas_ta.kc(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "KC_20")
+        self.assertEqual(result.name, "KC_20_2")
+
+        result = pandas_ta.kc(self.high, self.low, self.close, mamode="sma")
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "KCs_20_2")
 
     def test_massi(self):
         result = pandas_ta.massi(self.high, self.low)
@@ -154,3 +158,12 @@ class TestVolatility(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+    def test_ui(self):
+        result = pandas_ta.ui(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "UI_14")
+
+        result = pandas_ta.ui(self.close, everget=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "UIe_14")

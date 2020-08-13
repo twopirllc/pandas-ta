@@ -48,7 +48,7 @@ class TestVolatilityExtension(TestCase):
     def test_kc_ext(self):
         self.data.ta.kc(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["KCL_20", "KCB_20", "KCU_20"])
+        self.assertEqual(list(self.data.columns[-3:]), ["KCL_20_2", "KCB_20_2", "KCU_20_2"])
 
     def test_massi_ext(self):
         self.data.ta.massi(append=True)
@@ -84,3 +84,12 @@ class TestVolatilityExtension(TestCase):
         self.data.ta.true_range(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "TRUERANGE_1")
+
+    def test_ui_ext(self):
+        self.data.ta.ui(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "UI_14")
+
+        self.data.ta.ui(append=True, everget=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "UIe_14")

@@ -2,9 +2,9 @@
 from numpy import sqrt as npsqrt
 from pandas import DataFrame
 from .atr import atr
-from ..overlap.hlc3 import hlc3
-from ..statistics.variance import variance
-from ..utils import get_offset, non_zero_range, verify_series
+from .true_range import true_range
+from pandas_ta.overlap import ema, hlc3, sma
+from pandas_ta.utils import get_offset, high_low_range, non_zero_range, verify_series
 
 
 def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **kwargs):
@@ -14,22 +14,26 @@ def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **k
     low = verify_series(low)
     close = verify_series(close)
     length = int(length) if length and length > 0 else 20
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     scalar = float(scalar) if scalar and scalar > 0 else 2
+    use_tr = kwargs.pop("tr", True)
     mamode = mamode.lower() if mamode else None
     offset = get_offset(offset)
 
     # Calculate Result
-    std = variance(close=close, length=length).apply(npsqrt)
-
-    if mamode == 'ema':
-        basis = close.ewm(span=length, min_periods=min_periods).mean()
-        band = atr(high=high, low=low, close=close)
+    if use_tr:
+        range_ = true_range(high, low, close)
     else:
-        hl_range = non_zero_range(high, low)
-        typical_price = hlc3(high=high, low=low, close=close)
-        basis = typical_price.rolling(length, min_periods=min_periods).mean()
-        band = hl_range.rolling(length, min_periods=min_periods).mean()
+        range_ = high_low_range(high, low)
+
+    _mode = ""
+    if mamode == "sma":
+        basis = sma(close, length)
+        band = sma(range_, length=length)
+        _mode += "s"
+    elif mamode is None or mamode == "ema":
+        basis = ema(close, length=length)
+        band = ema(range_, length=length)
 
     lower = basis - scalar * band
     upper = basis + scalar * band
@@ -41,26 +45,27 @@ def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **k
         upper = upper.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        lower.fillna(kwargs['fillna'], inplace=True)
-        basis.fillna(kwargs['fillna'], inplace=True)
-        upper.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        lower.fillna(method=kwargs['fill_method'], inplace=True)
-        basis.fillna(method=kwargs['fill_method'], inplace=True)
-        upper.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        lower.fillna(kwargs["fillna"], inplace=True)
+        basis.fillna(kwargs["fillna"], inplace=True)
+        upper.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        lower.fillna(method=kwargs["fill_method"], inplace=True)
+        basis.fillna(method=kwargs["fill_method"], inplace=True)
+        upper.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    lower.name = f"KCL_{length}"
-    basis.name = f"KCB_{length}"
-    upper.name = f"KCU_{length}"
-    basis.category = upper.category = lower.category = 'volatility'
+    _props = f"{_mode if len(_mode) else ''}_{length}_{scalar}"
+    lower.name = f"KCL{_props}"
+    basis.name = f"KCB{_props}"
+    upper.name = f"KCU{_props}"
+    basis.category = upper.category = lower.category = "volatility"
 
     # Prepare DataFrame to return
     data = {lower.name: lower, basis.name: basis, upper.name: upper}
     kcdf = DataFrame(data)
-    kcdf.name = f"KC_{length}"
-    kcdf.category = 'volatility'
+    kcdf.name = f"KC{_props}"
+    kcdf.category = basis.category
 
     return kcdf
 
@@ -77,14 +82,17 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=20, scalar=2
+        length=20, scalar=2, mamode=None
     ATR = Average True Range
     EMA = Exponential Moving Average
     SMA = Simple Moving Average
-    if 'ema':
+
+    BAND = ATR(high, low, close)
+    if mamode == "ema":
         BASIS = EMA(close, length)
-        BAND = ATR(high, low, close)
-    else:
+    elif mamode == "sma":
+        BASIS = SMA(close, length)
+    else: # Typical Price
         hl_range = high - low
         tp = typical_price = hlc3(high, low, close)
         BASIS = SMA(tp, length)
@@ -99,7 +107,7 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): The short period.  Default: 20
     scalar (float): A positive float to scale the bands.   Default: 2
-    mamode (str): Two options: None or 'ema'.  Default: 'ema'
+    mamode (str): Two options: None or "ema".  Default: "ema"
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:

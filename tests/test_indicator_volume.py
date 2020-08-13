@@ -72,7 +72,7 @@ class TestVolume(TestCase):
     def test_aobv(self):
         result = pandas_ta.aobv(self.close, self.volume_)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "AOBV_EMA_2_4_2_2_2")
+        self.assertEqual(result.name, "AOBV_EMA_4_12_2_2_2")
 
     def test_cmf(self):
         result = pandas_ta.cmf(self.high, self.low, self.close, self.volume_)

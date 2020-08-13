@@ -133,6 +133,7 @@ note.md
 driver.py
 doc.py
 bt.ipynb
+scratch.ipynb
 ta_extension.ipynb
 scratch.ipynb
 kerasmodeller.ipynb
@@ -145,5 +146,3 @@ simple.ipynb
 ta.json
 
 # Indicator
-pandas_ta/overlap/ft.py
-pandas_ta/overlap/psar.py

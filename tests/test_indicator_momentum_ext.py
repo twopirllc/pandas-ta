@@ -68,6 +68,16 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "COPC_11_14_10")
 
+    def test_er_ext(self):
+        self.data.ta.er(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "ER_10")
+
+    def test_eri_ext(self):
+        self.data.ta.eri(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-2:]), ["BULLP_13", "BEARP_13"])
+
     def test_fisher_ext(self):
         self.data.ta.fisher(append=True)
         self.assertIsInstance(self.data, DataFrame)
@@ -107,6 +117,11 @@ class TestMomentumExtension(TestCase):
         self.data.ta.mom(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "MOM_10")
+
+    def test_pgo_ext(self):
+        self.data.ta.pgo(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "PGO_14")
 
     def test_ppo_ext(self):
         self.data.ta.ppo(append=True)
@@ -150,6 +165,15 @@ class TestMomentumExtension(TestCase):
         self.data.ta.slope(append=True, as_angle=True, to_degrees=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "ANGLEd_1")
+
+    def test_squeeze_ext(self):
+        self.data.ta.squeeze(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ["SQZ_20_2.0_20_1.5", "SQZ_ON", "SQZ_OFF", "SQZ_NO"])
+
+        self.data.ta.squeeze(tr=False, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ["SQZ_ON", "SQZ_OFF", "SQZ_NO", "SQZhlr_20_2.0_20_1.5"])
 
     def test_stoch_ext(self):
         self.data.ta.stoch(append=True)
