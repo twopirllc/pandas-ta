@@ -210,21 +210,32 @@ df.ta.strategy(fast=10, slow=50, verbose=True)
 df.columns
 ```
 
-### Running a Builtin, Categorical or Custom Strategy
-While the _Strategy_ Class it has not been fully integrated with the __strategy__ method yet. For now, the following can be done to implement your Custom Strategy.
+## Running a Builtin, Categorical or Custom Strategy
 
+### __Builtin__
 ```python
-# Running the builtin CommonStrategy as mentioned above
+# Running the Builtin CommonStrategy as mentioned above
 df.ta.strategy(ta.CommonStrategy)
 
-# Available categories
+# The Default Strategy is the ta.AllStrategy. The following are equivalent
+# df.ta.strategy(ta.AllStrategy)
+# df.ta.strategy(name="All")
+df.ta.strategy()
+```
+
+### __Categorical__
+```python
+# List of available categories
 ta.categories
 
 # Running a Categorical Strategy only requires the Category name
 df.ta.strategy(name="Momentum") # Default values for all Momentum indicators
 df.ta.strategy(name="overlap", length=27) # Override all 'length' attributes
+```
 
-# Or create your own Custom Strategy
+### __Custom__
+```python
+# Create your own Custom Strategy
 CustomStrategy = ta.Strategy(
     name="Momo and Volatility",
     description="SMA 50,200, BBANDS, RSI, MACD and Volume SMA 20",
@@ -237,14 +248,11 @@ CustomStrategy = ta.Strategy(
         {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
     ]
 )
-# To run "Custom Strategy"
+# To run your "Custom Strategy"
 df.ta.strategy(CustomStrategy)
 
 # Or pass in the name and ta atributes of the "Custom Strategy"
 df.ta.strategy(name=CustomStrategy.name, ta=CustomStrategy.ta)
-
-# Sanity check. Make sure all the columns are there
-df.columns
 ```
 
 ## __DataFrame kwargs__: _prefix_ and _suffix_
@@ -467,6 +475,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * [allahyarzadeh](https://github.com/allahyarzadeh)
 * [FGU1](https://github.com/FGU1)
 * [lluissalord](https://github.com/lluissalord)
+* [YuvalWein](https://github.com/YuvalWein)
 
 
 # Inspiration
