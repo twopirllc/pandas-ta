@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Which version are you running? The lastest version is Github. Pip is for major updates.**
+**Which version are you running? The lastest version is Github. Pip is for major releases.**
 ```python
 import pandas_ta as ta
 print(ta.version)
@@ -29,3 +29,5 @@ A clear and concise description of any alternative solutions or features you've 
 
 **Additional context**
 Add any other context or screenshots about the feature request here.
+
+Thanks for using Pandas TA!

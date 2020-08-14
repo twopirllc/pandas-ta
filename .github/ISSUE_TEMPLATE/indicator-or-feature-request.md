@@ -7,7 +7,7 @@ assignees: twopirllc
 
 ---
 
-**Which version are you running? The lastest version is Github. Pip is for major updates.**
+**Which version are you running? The lastest version is Github. Pip is for major releases.**
 ```python
 import pandas_ta as ta
 print(ta.version)
