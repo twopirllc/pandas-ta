@@ -1,13 +1,13 @@
 ---
-name: Feature request
-about: Suggest an idea for this project.
+name: Indicator Request
+about: Be as detailed as possible with links please.
 title: ''
 labels: enhancement
-assignees: ''
+assignees: twopirllc
 
 ---
 
-**Which version are you running? The lastest version is Github. Pip is for major releases.**
+**Which version are you running? The lastest version is on Github. Pip is for major releases.**
 ```python
 import pandas_ta as ta
 print(ta.version)
@@ -28,6 +28,6 @@ A clear and concise description of what you want to happen.
 A clear and concise description of any alternative solutions or features you've considered.
 
 **Additional context**
-Add any other context or screenshots about the feature request here.
+Add any other context, web links, or screenshots about the feature request here.
 
 Thanks for using Pandas TA!

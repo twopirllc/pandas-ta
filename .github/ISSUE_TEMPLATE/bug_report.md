@@ -1,9 +1,9 @@
 ---
 name: Bug report
-about: Thanks for using Pandas TA!. Create a report to help us improve.
+about: Create a report to help us improve.
 title: ''
-labels: ''
-assignees: ''
+labels: bug
+assignees: twopirllc
 
 ---
 
@@ -32,3 +32,5 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+
+Thanks for using Pandas TA!
