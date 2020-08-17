@@ -3,10 +3,11 @@
 [![Package Status](https://img.shields.io/pypi/status/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta.svg?style=flat)](https://pypistats.org/packages/pandas_ta)
 
-# __Technical Analysis Library in Python 3.7__
+# **Pandas TA**
+# Pandas Technical Analysis Library in _Python 3_
 ![Example Chart](/images/TA_Chart.png)
 
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that is built upon Python's Pandas library with more than 115 Indicators and Utility functions.  These indicators are commonly used for financial time series datasets with columns or labels: datetime, open, high, low, close, volume, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **many more**.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that is built upon Python's Pandas library with more than 115 Indicators and Utility functions.  These indicators are commonly used for financial time series datasets with columns or labels: datetime, _open_, _high_, _low_, _close_, _volume_, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **many more**.
 
 **Pandas TA** has three different ways of processing Technical Indicators as described below. The **primary** requirement to run indicators in [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode, is that _open, high, low, close, volume_ are **lowercase**. Depending on the indicator, they either return a named Series or a DataFrame in uppercase underscore parameter format.  For example, MACD(fast=12, slow=26, signal=9) will return a DataFrame with columns: ['MACD_12_26_9', 'MACDh_12_26_9', 'MACDs_12_26_9'].
 
@@ -52,8 +53,12 @@ Please take a moment to read **this** and the rest of this **README** before pos
 * Improved the calculation performance of indicators: _Exponential Moving Averagage_
 and _Weighted Moving Average_.
 * Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
-* Removed multiprocessing hint.
-* __New Indicators:__ Kaufman's _Efficiency Ratio_ **er**, Johnson's _Pretty Good Oscillator_ **pgo**, _Elder Ray Index_ **eri**, Martin's _Ulcer Index_ **ui**, _Squeeze_ **squeeze** (John Carter's TTM **and** Lazybear's TradingView versions)
+
+## __New Indicators__
+_Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
+## __Updated Indicators__
+_Fisher Transform_ **fisher**: Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
+_Fisher Transform_ **fisher** and _Kaufman's Adaptive Moving Average_ **kama**: Fixed a bug where their columns were not added to final DataFrame when using the _strategy_ method.
 
 
 ## What is a Pandas DataFrame Extension?
@@ -132,15 +137,15 @@ A _Strategy_ is a simple way to name and group your favorite TA indicators. Tech
 
 #### Brief Examples
 ```python
-# Builtin All Default Strategy
-AllStrategy = Strategy(
+# The Builtin All Default Strategy
+ta.AllStrategy = ta.Strategy(
     name="All",
     description="All the indicators with their default settings. Pandas TA default.",
     ta=None
 )
 
-# Builtin Default (Example) Strategy.
-CommonStrategy = Strategy(
+# The Builtin Default (Example) Strategy.
+ta.CommonStrategy = ta.Strategy(
     name="Common Price and Volume SMAs",
     description="Common Price SMAs: 10, 20, 50, 200 and Volume SMA: 20.",
     ta=[
@@ -473,6 +478,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 
 # Contributors
+* [alexonab](https://github.com/alexonab)
 * [allahyarzadeh](https://github.com/allahyarzadeh)
 * [FGU1](https://github.com/FGU1)
 * [lluissalord](https://github.com/lluissalord)

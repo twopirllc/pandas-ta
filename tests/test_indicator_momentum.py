@@ -156,8 +156,8 @@ class TestMomentum(TestCase):
 
     def test_fisher(self):
         result = pandas_ta.fisher(self.high, self.low)
-        self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "FISHERT_5")
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "FISHERT_9_5")
 
     def test_inertia(self):
         result = pandas_ta.inertia(self.close)

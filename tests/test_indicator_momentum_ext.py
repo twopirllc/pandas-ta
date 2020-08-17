@@ -81,7 +81,7 @@ class TestMomentumExtension(TestCase):
     def test_fisher_ext(self):
         self.data.ta.fisher(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "FISHERT_5")
+        self.assertEqual(list(self.data.columns[-2:]), ["FISHERT_9_5", "FISHERTs_9_5"])
 
     def test_inertia_ext(self):
         self.data.ta.inertia(append=True)

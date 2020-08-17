@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+import datetime as dt
+
 from pathlib import Path
 from random import random
 
-import pandas as pd
+import pandas as pd # pip install pandas
 
 from alphaVantageAPI.alphavantage import AlphaVantage  # pip install alphaVantage-api
-import pandas_ta as ta
+import pandas_ta as ta # pip install pandas_ta
+
 
 
 class Watchlist(object):
@@ -36,6 +39,7 @@ class Watchlist(object):
         self.tickers = tickers
         self.tf = tf
         self.verbose = kwargs.pop("verbose", False)
+        self.debug = kwargs.pop("debug", False)
         self.name = name
         self.data = None
         self.kwargs = kwargs
@@ -44,13 +48,13 @@ class Watchlist(object):
         self.strategy = strategy
 
 
-    def _drop_columns(self, df: pd.DataFrame, cols: list = ['Unnamed: 0', 'date', 'split_coefficient', 'dividend']):
+    def _drop_columns(self, df: pd.DataFrame, cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"]):
         """Helper methods to drop columns silently."""
         df_columns = list(df.columns)
         if any(_ in df_columns for _ in cols):
-            if self.verbose:
+            if self.debug:
                 print(f"[i] Possible columns dropped: {', '.join(cols)}")
-            df = df.drop(cols, axis=1, errors='ignore')
+            df = df.drop(cols, axis=1, errors="ignore")
         return df
 
     def _load_all(self, **kwargs) -> dict:
@@ -64,8 +68,8 @@ class Watchlist(object):
         self,
         ticker: str = None,
         tf: str = None,
-        index: str = 'date',
-        drop: list = ['dividend', 'split_coefficient'],
+        index: str = "date",
+        drop: list = ["dividend", "split_coefficient"],
         file_path: str = ".",
         **kwargs
     ) -> pd.DataFrame:
@@ -89,17 +93,18 @@ class Watchlist(object):
             df = pd.read_csv(filename_, index_col=index)
             if not df.ta.datetime_ordered:
                 df = df.set_index(pd.DatetimeIndex(df.index))
-            print(f"\n[i] Loaded['{tf}']: {filename_}")
+            print(f"[i] Loaded['{tf}']: {filename_}")
         else:
             if self.ds is not None and isinstance(self.ds, AlphaVantage):
                 df = self.ds.data(tf, ticker)
                 if not df.ta.datetime_ordered:
                     df = df.set_index(pd.DatetimeIndex(df[index]))
-                print(f"\n[+] Downloading['{tf}']: {ticker}")
+                print(f"[+] Downloading['{tf}']: {ticker}")
 
         df = self._drop_columns(df) # Remove select columns
 
         if kwargs.pop("analyze", True):
+            if self.debug: print(f"[+] TA[{len(self.strategy.ta)}]: {self.strategy.name}")
             df.ta.strategy(name=self.strategy.name, ta=self.strategy.ta, **kwargs)
 
         df.ticker = ticker # Attach ticker to the DataFrame
@@ -160,7 +165,7 @@ class Watchlist(object):
     def tickers(self) -> list:
         """tickers
 
-        If a string, it it converted to a list. Example: 'AAPL' -> ['AAPL']
+        If a string, it it converted to a list. Example: "AAPL" -> ["AAPL"]
             * Does not accept, comma seperated strings.
         If a list, checks if it is a list of strings.
         """
@@ -169,7 +174,7 @@ class Watchlist(object):
     @tickers.setter
     def tickers(self, value: (list, str)) -> None:
         if value is None:
-            print(f"[X] {value} is not a valie Watchlist ticker.")
+            print(f"[X] {value} is not a value in Watchlist ticker.")
             return
         elif isinstance(value, list) and [isinstance(_, str) for _ in value]:
             self._tickers = list(map(str.upper, value))
