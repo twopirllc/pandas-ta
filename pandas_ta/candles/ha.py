@@ -33,10 +33,10 @@ def ha(open_, high, low, close, offset=None, **kwargs):
         df = df.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        df.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        df.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        df.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        df.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     df.name = "Heikin-Ashi"

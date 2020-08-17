@@ -32,7 +32,7 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     for i in range(length, m):
         result.append(sc[i] * close[i] + (1 - sc[i]) * result[i - 1])
     
-    kama = Series(result)
+    kama = Series(result, index=close.index)
 
     # Offset
     if offset != 0:
@@ -40,7 +40,7 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
 
     # Name & Category
     kama.name = f"KAMA_{length}_{fast}_{slow}"
-    kama.category = 'overlap'
+    kama.category = "overlap"
 
     return kama
 

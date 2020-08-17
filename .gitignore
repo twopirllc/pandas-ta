@@ -123,7 +123,9 @@ data/SPY_D_lbsz.csv
 data/TV_5min.csv
 data/similang-ch.csv
 data/tulip.csv
+examples/cache.sqlite
 examples/taplot.py
+examples/ChartTA.ipynb
 examples/charting.ipynb
 examples/ib_trader.ipynb
 examples/example2.ipynb
