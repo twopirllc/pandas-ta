@@ -55,10 +55,11 @@ and _Weighted Moving Average_.
 * Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
 
 ## __New Indicators__
-_Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
+* _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
+
 ## __Updated Indicators__
-_Fisher Transform_ **fisher**: Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
-_Fisher Transform_ **fisher** and _Kaufman's Adaptive Moving Average_ **kama**: Fixed a bug where their columns were not added to final DataFrame when using the _strategy_ method.
+* _Fisher Transform_ **fisher**: Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
+* _Fisher Transform_ **fisher** and _Kaufman's Adaptive Moving Average_ **kama**: Fixed a bug where their columns were not added to final DataFrame when using the _strategy_ method.
 
 
 ## What is a Pandas DataFrame Extension?
