@@ -105,7 +105,8 @@ class Watchlist(object):
 
         if kwargs.pop("analyze", True):
             if self.debug: print(f"[+] TA[{len(self.strategy.ta)}]: {self.strategy.name}")
-            df.ta.strategy(name=self.strategy.name, ta=self.strategy.ta, **kwargs)
+            # df.ta.strategy(name=self.strategy.name, ta=self.strategy.ta, **kwargs)
+            df.ta.strategy(self.strategy, **kwargs)
 
         df.ticker = ticker # Attach ticker to the DataFrame
         return df
@@ -138,7 +139,7 @@ class Watchlist(object):
 
     @property
     def strategy(self) -> ta.Strategy:
-        """Pandas TA Strategy Class. Default: pandas_ta.AllStrategy"""
+        """Sets a valid Strategy. Default: pandas_ta.CommonStrategy"""
         return self._strategy
 
     @strategy.setter
@@ -146,7 +147,7 @@ class Watchlist(object):
         if value is not None and isinstance(value, ta.Strategy):
             self._strategy = value
         else:
-            self._strategy = ta.AllStrategy        
+            self._strategy = ta.CommonStrategy        
 
     @property
     def tf(self) -> str:

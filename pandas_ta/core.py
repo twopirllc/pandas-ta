@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collections import namedtuple
 from dataclasses import dataclass, field
 from datetime import datetime
 from functools import wraps
@@ -9,9 +10,9 @@ from typing import List
 
 import pandas as pd
 from numpy import ndarray as npndarray
-from pandas_ta import categories
 from pandas.core.base import PandasObject
 
+from pandas_ta import Category
 from pandas_ta.candles import *
 from pandas_ta.momentum import *
 from pandas_ta.overlap import *
@@ -22,10 +23,8 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "91b"))
+version = ".".join(("0", "1", "92b"))
 
-# Dictionary of files for each category, used in df.ta.strategy()
-Category = {name: category_files(name) for name in categories}
 
 def mp_worker(args):
     """Multiprocessing Worker to handle different Methods."""
@@ -240,6 +239,7 @@ class AnalysisIndicators(BasePandasObject):
     >>> print(apo.timed)
     """
     _adjusted = None
+    _cores = cpu_count()
     _mp = False
 
     def __call__(
@@ -288,9 +288,18 @@ class AnalysisIndicators(BasePandasObject):
             self._adjusted = None
 
     @property
-    def datetime_ordered(self) -> bool:
-        """Returns True if the index is a datetime and ordered."""
-        return is_datetime_ordered(self._df)
+    def cores(self) -> str:
+        """Returns the categories."""
+        return self._cores
+
+    @cores.setter
+    def cores(self, value:int) -> None:
+        """property: df.ta.cores = integer"""
+        cpus = cpu_count()
+        if value is not None and isinstance(value, int):
+            self._cores = int(value) if 0 < value <= cpus else cpus
+        else:
+            self._cores = cpus
 
     @property
     def mp(self) -> bool:
@@ -306,6 +315,11 @@ class AnalysisIndicators(BasePandasObject):
             self._mp = False
 
     @property
+    def datetime_ordered(self) -> bool:
+        """Returns True if the index is a datetime and ordered."""
+        return is_datetime_ordered(self._df)
+
+    @property
     def reverse(self) -> pd.DataFrame:
         """Reverses the DataFrame. Simply: df.iloc[::-1]"""
         return self._df.iloc[::-1]
@@ -314,6 +328,16 @@ class AnalysisIndicators(BasePandasObject):
     def version(self) -> str:
         """Returns the version."""
         return version
+
+    def _indicators_by_category(self, name: str) -> list:
+        """Returns indicators by Categorical name."""
+        return Category[name] if name in self.categories else None
+
+    @property
+    def categories(self) -> str:
+        """Returns the categories."""
+        return list(Category.keys())
+
 
     def _append(self, result=None, **kwargs):
         """Appends a Pandas Series or DataFrame columns to self._df."""
@@ -436,25 +460,60 @@ class AnalysisIndicators(BasePandasObject):
             Prints the list of indicators. If as_list=True, then a list.
         """
         as_list = kwargs.setdefault("as_list", False)
-        helper_methods = ["constants", "indicators", "strategy"]  # Public non-indicator methods
-        ta_properties = ["adjusted", "datetime_ordered", "mp", "reverse", "version"]
-        exclude_methods = kwargs.setdefault("exclude", None)
+        # Public non-indicator methods
+        helper_methods = ["constants", "indicators", "strategy"]
+        # Public df.ta.properties
+        ta_properties = ["adjusted", "categories", "cores", "datetime_ordered", "mp", "reverse", "version"]
+
+        # Public non-indicator methods
         ta_indicators = list((x for x in dir(pd.DataFrame().ta) if not x.startswith("_") and not x.endswith("_")))
 
-        # Remove pandas.ta methods and properties
-        [ta_indicators.remove(x) for x in helper_methods]
-        [ta_indicators.remove(x) for x in ta_properties]
+        # Add Pandas TA methods and properties to be removed
+        removed = helper_methods + ta_properties
 
-        # Remove user excluded indicators
-        if isinstance(exclude_methods, list) and len(exclude_methods) > 0:
-            [ta_indicators.remove(x) for x in exclude_methods]
-        total_indicators = len(ta_indicators)
+        # Add user excluded methods to be removed
+        user_excluded = kwargs.setdefault("exclude", [])
+        if isinstance(user_excluded, list) and len(user_excluded) > 0:
+            removed += user_excluded
 
+        # Remove the unwanted indicators
+        [ta_indicators.remove(x) for x in removed]
+
+        # If as a list, immediately return
         if as_list: return ta_indicators
 
-        header = f"pandas.ta - Technical Analysis Indicators - v{self.version}"
+        total_indicators = len(ta_indicators)
+        header = f"Pandas TA - Technical Analysis Indicators - v{self.version}"
         s = f"{header}\nTotal Indicators: {total_indicators}\n"
-        print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}") if total_indicators > 0 else print(s)
+        if total_indicators > 0:
+            print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}")
+        else:
+            print(s)
+
+    def _strategy_mode(self, *args) -> tuple:
+        """Helper method to determine the mode and name of the strategy. Returns tuple: (name:str, mode:dict)"""
+        name = "All"
+        mode = {"all": False, "category": False, "custom": False}
+
+        if len(args) == 0:
+            mode["all"] = True
+        else:
+            if isinstance(args[0], str):
+                if args[0].lower() == "all":
+                    name, mode["all"] = name, True
+                if args[0].lower() in self.categories:
+                    name, mode["category"] = args[0], True
+
+            if isinstance(args[0], Strategy):
+                strategy_ = args[0]
+                if strategy_.ta is None or strategy_.name.lower() == "all":
+                    name, mode["all"] = name, True
+                elif strategy_.name.lower() in self.categories:
+                    name, mode["category"] = strategy_.name, True
+                else:
+                    name, mode["custom"] = strategy_.name, True
+        
+        return name, mode
 
     def strategy(self, *args, **kwargs):
         """Strategy Method
@@ -474,78 +533,62 @@ class AnalysisIndicators(BasePandasObject):
         cpus = cpu_count()
         kwargs["append"] = True # Ensure indicators are appended to the DataFrame
 
-        name = kwargs.pop("name", None)
-        # removing before sending the rest of kwargs to the indicators
-        ta = kwargs.pop("ta", None)
-        mp = kwargs.pop("mp", False)
-        cores = int(kwargs.pop("cores", cpus))
-        timed = kwargs.pop("timed", False)
-        verbose = kwargs.pop("verbose", False)
-        user_excluded = kwargs.pop("exclude", [])
-
-        # Filter if Strategy, Category or by Strategy name and TA
-        if len(args) and isinstance(args[0], Strategy):
-            name, ta = args[0].name, args[0].ta
-        elif name is None or name.lower() == "all":
-            name = "All"
-        elif ta is None and name.lower() in categories:
-            print(f"[i] ta.strategy(name={name})")
-            ta = Category[name.lower()]
-
-        is_all = True if name is None or name.lower() == "all" else False
-        has_ta = True if ta is not None else False
+        # Initialize
         initial_column_count = len(self._df.columns)
+        excluded = ["above", "above_value", "below", "below_value", "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
 
-        excluded = []
-        excluded_functions = ["above", "above_value", "below", "below_value", "cross", "cross_value", "long_run", "short_run", "trend_return", "vp"]
-        excluded += user_excluded # Exclude user excluded ta if listed
+        # Get the Strategy Name and mode
+        name, mode = self._strategy_mode(*args)
 
-        print(f"[+] Strategy: {name}") if verbose else None
-        if name.lower() in categories or is_all:
-            # Exclude special functions
-            excluded += excluded_functions
-            if is_all:
-                ta = self.indicators(as_list=True, exclude=excluded)
-            else:
-                ta = Category[name.lower()]
-        else:
+        # If All or a Category, exclude user list if any
+        user_excluded = kwargs.pop("exclude", [])
+        if mode["all"] or mode["category"]:
+            excluded += user_excluded
+
+        # Collect the indicators, remove excluded or include kwarg["append"]
+        if mode["category"]:
+            ta = self._indicators_by_category(name.lower())
+            [ta.remove(x) for x in excluded if x in ta]
+        elif mode["custom"]:
+            ta = args[0].ta
             for kwds in ta:
                 kwds["append"] = True
+        elif mode["all"]:
+            ta = self.indicators(as_list=True, exclude=excluded)
 
+        verbose = kwargs.pop("verbose", False)
         if verbose:
-            print(f'[i] Indicators with the following arguments: {kwargs}')
-            if is_all and len(excluded) > 0:
-                print(f"[i] Excluded[{len(excluded)}]: {', '.join(excluded)}")
+            print(f"[+] Strategy: {name}\n[i] Indicator arguments: {kwargs}")
+            if mode["all"] or mode["category"]:
+                excluded_str = ", ".join(excluded)
+                print(f"[i] Excluded[{len(excluded)}]: {excluded_str}")
 
-        # Enable multiprocessing if user sets: mp=True
-        if mp: self.mp = not self.mp
-
-        if self.mp:
-            print(f"[i] Multiprocessing: {cores} of {cpu_count()} cores")
-            pool = Pool(cores)
-
+        # Run Custom Indicators while preserving order (important for chaining)
+        timed = kwargs.pop("timed", False)
+        if mode["custom"]:
             if timed: stime = perf_counter()
+            [getattr(self, kwds["kind"])(**kwds) for kwds in ta]
+        else:
+            # Run ALL or Categorical with multiprocessing
+            if verbose:
+                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
+            pool = Pool(self.cores)
+
+            # Run an Unordered Mapped Pool.
+            if timed: stime = perf_counter()
+
             result = pool.imap_unordered(
-                mp_worker, ((self._df, ind, kwargs) for ind in ta), cores
+                mp_worker, ((self._df, ind, kwargs) for ind in ta), self.cores
             )
             pool.close()
             pool.join()
 
-            # Apply prefixes/suffixes and appends indicator result to the DataFrame
+            # Apply prefixes/suffixes and appends indicator results to the DataFrame
             for r in result:
                 self._add_prefix_suffix(r, **kwargs)
                 self._append(r, **kwargs)
-            if timed: ftime = final_time(stime)
 
-        else:
-            if timed: stime = perf_counter()
-            if name.lower() in categories or is_all:
-                indicators = [getattr(self, kind) for kind in ta]
-                [f(**kwargs) for f in indicators]
-            else:
-                [getattr(self, kwds["kind"])(**kwds) for kwds in ta]
-
-            if timed: ftime = final_time(stime)
+        if timed: ftime = final_time(stime)
 
         if verbose:
             print(f"[i] Total indicators: {len(ta)}")

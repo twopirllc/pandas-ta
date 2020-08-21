@@ -20,12 +20,13 @@ Please take a moment to read **this** and the rest of this **README** before pos
 * ### [Comments and Feedback](https://github.com/twopirllc/pandas-ta/issues)
     * Have you read the rest of **this** document?
     * Are you running the latest version?
+        * ```pip install -U git+https://github.com/twopirllc/pandas-ta```
     * Have you tried the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/)?
         * Did they help?
         * What is missing?
         * Could you help improve them?
     * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/master/examples/PandasTA_Strategy_Examples.ipynb) Class**?
-    * Documentation needs improvement. Can you contribute?
+    * Documentation could always use improvement. Can you contribute?
 
 * ### [Indicator or Feature Requests & Contributions](https://github.com/twopirllc/pandas-ta/issues)
     * Please be as detailed and concise as possible. Links and screenshots and sometimes data samples are welcome.
@@ -38,21 +39,20 @@ Please take a moment to read **this** and the rest of this **README** before pos
 ## __Features__
 
 * Has 115+ indicators and utility functions.
+* Easily add prefixes or suffixes or both to columns names. Useful for building Custom Strategies.
 * __Extended Pandas DataFrame__ as 'ta'.
-* Indicators are correlation tested against the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
+* Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
-* Option to use __multiprocessing__ when using df.ta.strategy(). See below.
-* Easily add prefixes or suffixes or both to columns names.
-* Categories similar to [TA-lib](https://github.com/mrjbq7/ta-lib/tree/master/docs/func_groups) and tightly correlated with TA Lib in testing.
 * A new 'ta' method called 'strategy'. By default, it runs __all__ the indicators or equivalent ta.AllStrategy.
 
 
 ## __Recent Changes__
 * A __Strategy__ Class to help name and group your favorite indicators.
 * An experimental and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
-* Improved the calculation performance of indicators: _Exponential Moving Averagage_
 and _Weighted Moving Average_.
-* Removed internal core optimizations when running ```df.ta.strategy('all')``` with multiprocessing. See the ```ta.strategy()``` method for more details.
+* __Multiprocessing__ is automatically applied to df.ta.strategy() for __All__ indicators or a chosen __Category__ of indicators.
+* Improved the calculation performance of indicators: _Exponential Moving Averagage_
+
 
 ## __New Indicators__
 _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
@@ -175,33 +175,25 @@ CustomStrategy = ta.Strategy(
 ## __DataFrame Method__: _strategy_ with Multiprocessing
 
 The new __Pandas (TA)__ method __strategy__ is used to facilitate bulk indicator processing. By default, running ```df.ta.strategy()``` will append __all
-applicable__ indicators to DataFrame ```df```.  Utility methods like ```above```, ```below``` et al are not included.
+applicable__ indicators to DataFrame ```df```.  Utility methods like ```above```, ```below``` et al are not included, however they can be included with Custom Strategies.
 
-* The ```ta.strategy()``` method is still __under development__. Future iterations will allow you to load a ```ta.json``` config file with your specific strategy name and parameters to automatically run you bulk indicators.
+* The ```ta.strategy()``` method is still __under development__ and subject to change until stable.
 
 
 ```python
-# This property only effects df.ta.strategy(). When set to True,
-# it enables multiprocessing when processing "ALL" the indicators.
-# Default is False
-df.ta.mp = True
-
 # Runs and appends all indicators to the current DataFrame by default
 # The resultant DataFrame will be large.
 df.ta.strategy()
-# Or equivalently use name="all"
-df.ta.strategy(name="all")
+# Or the string "all"
+df.ta.strategy("all")
+# Or the ta.AllStrategy
+df.ta.strategy(ta.AllStrategy)
 
 # Use verbose if you want to make sure it is running.
 df.ta.strategy(verbose=True)
 
 # Use timed if you want to see how long it takes to run.
 df.ta.strategy(timed=True)
-
-# You can change the number of cores to use. The default is the the number of
-# cpus you have. Not utilizing all your cores will result in quicker results.
-# For instance if you have 4 CPUs, then cores=2 will be quicker.
-df.ta.strategy(cores=2)
 
 # Maybe you do not want certain indicators.
 # Just exclude (a list of) them.
@@ -225,18 +217,18 @@ df.ta.strategy(ta.CommonStrategy)
 
 # The Default Strategy is the ta.AllStrategy. The following are equivalent
 # df.ta.strategy(ta.AllStrategy)
-# df.ta.strategy(name="All")
+# df.ta.strategy("All")
 df.ta.strategy()
 ```
 
 ### __Categorical__
 ```python
-# List of available categories
-ta.categories
+# List of indicator categories
+df.ta.categories
 
 # Running a Categorical Strategy only requires the Category name
-df.ta.strategy(name="Momentum") # Default values for all Momentum indicators
-df.ta.strategy(name="overlap", length=27) # Override all 'length' attributes
+df.ta.strategy("Momentum") # Default values for all Momentum indicators
+df.ta.strategy("overlap", length=27) # Override all 'length' attributes
 ```
 
 ### __Custom__
@@ -256,9 +248,48 @@ CustomStrategy = ta.Strategy(
 )
 # To run your "Custom Strategy"
 df.ta.strategy(CustomStrategy)
+```
 
-# Or pass in the name and ta atributes of the "Custom Strategy"
-df.ta.strategy(name=CustomStrategy.name, ta=CustomStrategy.ta)
+## __DataFrame Property__: _categories_
+
+```python
+# List of Pandas TA categories
+df = df.ta.categories
+```
+
+## __DataFrame Property__: _cores_
+
+```python
+# Set the number of cores to use for strategy multiprocessing
+# Defaults to the number of cpus you have
+df.ta.cores = 4
+
+# Returns the number of cores you set or your default number of cpus.
+df.ta.cores
+```
+
+## __DataFrame Properties__: _reverse_ & _datetime_ordered_
+
+```python
+# The 'datetime_ordered' property returns True if the DataFrame
+# index is of Pandas datetime64 and df.index[0] < df.index[-1]
+# Otherwise it returns False
+time_series_in_order = df.ta.datetime_ordered
+
+# The 'reverse' is a helper property that returns the DataFrame
+# in reverse order
+df = df.ta.reverse
+```
+
+## __DataFrame Property__: *adjusted*
+
+```python
+# Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
+df.ta.adjusted = "adj_close"
+df.ta.sma(length=10, append=True)
+
+# To reset back to 'close', set adjusted back to None
+df.ta.adjusted = None
 ```
 
 ## __DataFrame kwargs__: _prefix_ and _suffix_
@@ -272,30 +303,6 @@ print(endhl2.name)  # "HL2_post"
 
 bothhl2 = df.ta.hl2(prefix="pre", suffix="post")
 print(bothhl2.name)  # "pre_HL2_post"
-```
-
-## __DataFrame Properties__: _reverse_ & _datetime_ordered_
-
-```python
-# The 'reverse' is a helper property that returns the DataFrame
-# in reverse order
-df = df.ta.reverse
-
-# The 'datetime_ordered' property returns True if the DataFrame
-# index is of Pandas datetime64 and df.index[0] < df.index[-1]
-# Otherwise it returns False
-time_series_in_order = df.ta.datetime_ordered
-```
-
-## __DataFrame Property__: *adjusted*
-
-```python
-# Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
-df.ta.adjusted = "adj_close"
-df.ta.sma(length=10, append=True)
-
-# To reset back to 'close', set adjusted back to None
-df.ta.adjusted = None
 ```
 
 # __Technical Analysis Indicators__ (_by Category_)
