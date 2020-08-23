@@ -45,19 +45,15 @@ class TestPerformaceExtension(TestCase):
     def test_log_trend_return_ext(self):
         self.data.ta.trend_return(trend=self.islong, log=True, cumulative=False, append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "LTR")
 
     def test_cum_log_trend_return_ext(self):
         self.data.ta.trend_return(trend=self.islong, log=True, cumulative=True, append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "CLTR")
 
     def test_pct_trend_return_ext(self):
         self.data.ta.trend_return(trend=self.islong, log=False, cumulative=False, append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "PTR")
 
     def test_cum_pct_trend_return_ext(self):
         self.data.ta.trend_return(trend=self.islong, log=False, cumulative=True, append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "CPTR")
