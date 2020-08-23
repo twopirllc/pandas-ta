@@ -11,7 +11,7 @@ class TestPerformace(TestCase):
     def setUpClass(cls):
         cls.data = sample_data
         cls.close = cls.data["close"]
-        cls.islong = cls.close > pandas_ta.sma(cls.close, length=50)
+        cls.islong = (cls.close > pandas_ta.sma(cls.close, length=8)).astype(int)
 
     @classmethod
     def tearDownClass(cls):

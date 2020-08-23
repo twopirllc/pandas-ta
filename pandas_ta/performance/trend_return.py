@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pandas import Series
+from pandas import DataFrame, Series
 from .log_return import log_return
 from .percent_return import percent_return
 from pandas_ta.utils import get_offset, verify_series, zero
@@ -18,14 +18,14 @@ def trend_return(close, trend, log=True, cumulative=None, trend_reset=0, offset=
         returns = log_return(close, cumulative=False)
     else:
         returns = percent_return(close, cumulative=False)
-    trend = trend.astype(int)
-    returns = (trend * returns).apply(zero)
+    trends = trend.astype(int)
+    returns = (trends * returns).apply(zero)
     
     tsum = 0
-    m = trend.size
+    m = trends.size
     result = []
     for i in range(0, m):
-        if trend[i] == trend_reset:
+        if trends[i] == trend_reset:
             tsum = 0
         else:
             return_ = returns[i]
@@ -35,25 +35,37 @@ def trend_return(close, trend, log=True, cumulative=None, trend_reset=0, offset=
                 tsum = return_
         result.append(tsum)
 
-    trend_return = Series(result, index=close.index)
+    _cumulative = "C" if cumulative else ""
+    _log = "L" if log else "P"
+    _returns = "LOGRET" if log else "PCTRET"
+    _props = f"{_cumulative}{_log}TR"
+    df = DataFrame({
+        _props: result,
+        f"TR_{_returns}": returns,
+        f"{_props}_Trends": trends,
+        f"{_props}_Trades": trends.diff().fillna(0),
+    }, index=close.index)
 
     # Offset
     if offset != 0:
-        trend_return = trend_return.shift(offset)
+        df = df.shift(offset)
 
     # Name & Category
-    trend_return.name = f"{'C' if cumulative else ''}{'L' if log else 'P'}TR"
-    trend_return.category = 'performance'
+    df.name = _props
+    df.category = "performance"
 
-    return trend_return
-
+    return df
 
 
 trend_return.__doc__ = \
 """Trend Return
 
-Calculates the (Cumulative) Returns of a Trend as defined by some conditional.
-By default it calculates log returns but can also use percent change.
+Calculates the (Cumulative) Returns of a Trend as defined by a sequence of booleans called a 'trend'. One popular example in TA literature is to be long
+when the 'close' > 'moving average'. In which case, the trend= close > sma(close, 50). By default it calculates log returns but can also use percent change.
+
+Examples:
+ta.trend_return(close, trend= close > ta.sma(close, 50))
+ta.trend_return(close, trend= ta.ema(close, 8) > ta.ema(close, 21))
 
 Sources: Kevin Johnson
 
@@ -80,17 +92,19 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    trend (pd.Series): Series of 'trend's.  Preferably 0's and 1's.
-    trend_reset (value): Value used to identify if a trend has ended.  Default: 0
-    log (bool): Calculate logarithmic returns.  Default: True
-    cumulative (bool): If True, returns the cumulative returns.  Default: False
-    offset (int): How many periods to offset the result.  Default: 0
+    trend (pd.Series): Series of 'trend's. Preferably 0's and 1's.
+    trend_reset (value): Value used to identify if a trend has ended. Default: 0
+    log (bool): Calculate logarithmic returns. Default: True
+    cumulative (bool): If True, returns the cumulative returns. Default: False
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
-    variable (bool, optional): Whether to include if return fluxuations in the cumulative returns.
+    variable (bool, optional): Whether to include if return fluxuations in the
+        cumulative returns.
 
 Returns:
-    pd.Series: New feature generated.
+    pd.DataFrame: Returns columns: Trend Return, Close Return, Trends, and
+        Trades (Enter: 1, Exit: -1, Otherwise: 0).
 """

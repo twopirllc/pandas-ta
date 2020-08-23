@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "94b"))
+version = ".".join(("0", "1", "95b"))
 
 
 def mp_worker(args):
@@ -1094,7 +1094,6 @@ class AnalysisIndicators(BasePandasObject):
         result = percent_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
         return result
 
-    @finalize
     def trend_return(self, close=None, trend=None, log=True, cumulative=None, offset=None, trend_reset=None, **kwargs):
         if trend is None: return self._df
         else:
@@ -1102,6 +1101,8 @@ class AnalysisIndicators(BasePandasObject):
             trend = self._get_column(trend, f"{trend}")
 
             result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, trend_reset=trend_reset, **kwargs)
+            self._add_prefix_suffix(result, **kwargs)
+            self._append(result, **kwargs)
             return result
 
 

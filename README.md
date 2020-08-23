@@ -52,6 +52,7 @@ Please take a moment to read **this** and the rest of this **README** before pos
 and _Weighted Moving Average_.
 * __Multiprocessing__ is automatically applied to df.ta.strategy() for __All__ indicators or a chosen __Category__ of indicators.
 * Improved the calculation performance of indicators: _Exponential Moving Averagage_
+* Updated *trend_return* utility to return a more pertinenet trade info for a _trend_. Example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.
 
 
 ## __New Indicators__
