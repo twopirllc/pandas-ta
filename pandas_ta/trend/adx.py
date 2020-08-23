@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..overlap.rma import rma
-from ..volatility.atr import atr
-from ..utils import get_drift, get_offset, verify_series, zero
+from pandas_ta.overlap import rma
+from pandas_ta.volatility import atr
+from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 
-def adx(high, low, close, length=None, drift=None, offset=None, **kwargs):
+def adx(high, low, close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: ADX"""
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     length = length if length and length > 0 else 14
+    scalar = float(scalar) if scalar else 100
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -26,11 +27,11 @@ def adx(high, low, close, length=None, drift=None, offset=None, **kwargs):
     pos = pos.apply(zero)
     neg = neg.apply(zero)
 
-    k = 100 / atr_
+    k = scalar / atr_
     dmp = k * rma(close=pos, length=length)
     dmn = k * rma(close=neg, length=length)
 
-    dx = 100 * (dmp - dmn).abs() / (dmp + dmn)
+    dx = scalar * (dmp - dmn).abs() / (dmp + dmn)
     adx = rma(close=dx, length=length)
 
     # Offset
@@ -40,14 +41,14 @@ def adx(high, low, close, length=None, drift=None, offset=None, **kwargs):
         adx = adx.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        adx.fillna(kwargs['fillna'], inplace=True)
-        dmp.fillna(kwargs['fillna'], inplace=True)
-        dmn.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        adx.fillna(method=kwargs['fill_method'], inplace=True)
-        dmp.fillna(method=kwargs['fill_method'], inplace=True)
-        dmn.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        adx.fillna(kwargs["fillna"], inplace=True)
+        dmp.fillna(kwargs["fillna"], inplace=True)
+        dmn.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        adx.fillna(method=kwargs["fill_method"], inplace=True)
+        dmp.fillna(method=kwargs["fill_method"], inplace=True)
+        dmn.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     adx.name = f"ADX_{length}"
@@ -74,6 +75,7 @@ the amount of movement in a single direction.
 
 Sources:
     https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/average-directional-movement-adx/
+    TA Lib Correlation: >99%
 
 Calculation:
     DMI ADX TREND 2.0 by @TraderR0BERT, NETWORTHIE.COM
@@ -130,8 +132,9 @@ Args:
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 14
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    scalar (float): How much to magnify. Default: 100
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

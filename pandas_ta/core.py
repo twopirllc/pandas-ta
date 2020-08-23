@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "93b"))
+version = ".".join(("0", "1", "94b"))
 
 
 def mp_worker(args):
@@ -1173,12 +1173,12 @@ class AnalysisIndicators(BasePandasObject):
 
     # Trend Indicators
     @finalize
-    def adx(self, high=None, low=None, close=None, drift=None, offset=None, **kwargs):
+    def adx(self, high=None, low=None, close=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
         high = self._get_column(high, "high")
         low = self._get_column(low, "low")
         close = self._get_column(close, "close")
 
-        result = adx(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
+        result = adx(high=high, low=low, close=close, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return result
 
     @finalize
