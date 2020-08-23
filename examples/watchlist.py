@@ -9,7 +9,7 @@ import pandas as pd # pip install pandas
 from alphaVantageAPI.alphavantage import AlphaVantage  # pip install alphaVantage-api
 import pandas_ta as ta # pip install pandas_ta
 
-
+AV = AlphaVantage(api_key="YOUR API KEY", premium=False, clean=True, output_size="full")
 
 class Watchlist(object):
     """Watchlist Class (** This is subject to change! **)
@@ -44,7 +44,7 @@ class Watchlist(object):
         self.data = None
         self.kwargs = kwargs
 
-        self.ds = ds if ds is not None else None
+        self.ds = ds if ds is not None else AV
         self.strategy = strategy
 
 
@@ -105,7 +105,6 @@ class Watchlist(object):
 
         if kwargs.pop("analyze", True):
             if self.debug: print(f"[+] TA[{len(self.strategy.ta)}]: {self.strategy.name}")
-            # df.ta.strategy(name=self.strategy.name, ta=self.strategy.ta, **kwargs)
             df.ta.strategy(self.strategy, **kwargs)
 
         df.ticker = ticker # Attach ticker to the DataFrame

@@ -119,6 +119,7 @@ pandas_ta/_wrapper.py
 data/datas.csv
 data/SPY_5min.csv
 data/SPY_1min.csv
+data/SPY_D_adxfish.csv
 data/SPY_D_lbsz.csv
 data/TV_5min.csv
 data/similang-ch.csv

@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "92b"))
+version = ".".join(("0", "1", "93b"))
 
 
 def mp_worker(args):
