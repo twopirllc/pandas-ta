@@ -98,7 +98,7 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "SR_2")
 
-	def test_ttm_trend_ext(self):
+    def test_ttm_trend_ext(self):
         self.data.ta.ttm_trend(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-1:]), ["TTM_TRND_6"])

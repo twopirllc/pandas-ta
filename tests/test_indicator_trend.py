@@ -154,7 +154,7 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SR_2")
 
-	def test_ttm_trend(self):
+    def test_ttm_trend(self):
         result = pandas_ta.ttm_trend(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "TTMTREND_6")

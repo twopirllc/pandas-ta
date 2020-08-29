@@ -838,7 +838,7 @@ class AnalysisIndicators(BasePandasObject):
         result = stoch(high=high, low=low, close=close, fast_k=fast_k, slow_k=slow_k, slow_d=slow_d, offset=offset, **kwargs)
         return result
 
-	@finalize
+    @finalize
     def ttm_trend(self, high=None, low=None, close=None, offset=None, length=None, **kwargs):
         high = self._get_column(high, "high")
         low = self._get_column(low, "low")
