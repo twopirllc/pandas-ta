@@ -12,4 +12,5 @@ from .long_run import long_run
 from .psar import psar
 from .qstick import qstick
 from .short_run import short_run
+from .ttm_trend import ttm_trend
 from .vortex import vortex
