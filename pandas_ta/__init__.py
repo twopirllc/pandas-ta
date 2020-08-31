@@ -35,7 +35,9 @@ Category = {
 
     # Statistics
     "statistics": ["entropy", "kurtosis", "mad", "median", "quantile", "skew", "stdev", "variance", "zscore"],
-    "trend": ["adx", "amat", "aroon", "chop", "cksp", "decreasing", "dpo", "increasing", "linear_decay", "long_run", "psar", "qstick", "short_run", "vortex"],
+
+    # Trend
+    "trend": ["adx", "amat", "aroon", "chop", "cksp", "decreasing", "dpo", "increasing", "linear_decay", "long_run", "psar", "qstick", "short_run", "ttm_trend", "vortex"],
 
     # Volatility
     "volatility": ["aberration", "accbands", "atr", "bbands", "donchian", "kc", "massi", "natr", "pdist", "rvi", "true_range", "ui"],

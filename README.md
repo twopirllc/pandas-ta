@@ -57,10 +57,12 @@ and _Weighted Moving Average_.
 
 ## __New Indicators__
 * _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
+* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade".
 
 ## __Updated Indicators__
-* _Fisher Transform_ **fisher**: Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
-* _Fisher Transform_ **fisher** and _Kaufman's Adaptive Moving Average_ **kama**: Fixed a bug where their columns were not added to final DataFrame when using the _strategy_ method.
+* _Fisher Transform_ (**fisher**): Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
+* _Fisher Transform_ (**fisher**) and _Kaufman's Adaptive Moving Average_ (**kama**): Fixed a bug where their columns were not added to final DataFrame when using the _strategy_ method.
+* _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series. 
 
 
 ## What is a Pandas DataFrame Extension?
@@ -417,7 +419,7 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
-## _Trend_ (14)
+## _Trend_ (15)
 
 * _Average Directional Movement Index_: **adx**
 * _Archer Moving Averages Trends_: **amat**
@@ -432,6 +434,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Parabolic Stop and Reverse_: **psar**
 * _Q Stick_: **qstick**
 * _Short Run_: **short_run**
+* _TTM Trend_: **ttm_trend**
 * _Vortex_: **vortex**
 
 | _Average Directional Movement Index_ (ADX) |
