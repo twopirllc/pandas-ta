@@ -22,14 +22,14 @@ def dpo(close, length=None, centered=True, offset=None, **kwargs):
         dpo = dpo.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        dpo.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        dpo.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        dpo.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        dpo.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     dpo.name = f"DPO_{length}"
-    dpo.category = 'trend'
+    dpo.category = "trend"
 
     return dpo
 

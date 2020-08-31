@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 def decreasing(close, length=None, asint=True, offset=None, **kwargs):
     """Indicator: Decreasing"""
@@ -18,14 +18,14 @@ def decreasing(close, length=None, asint=True, offset=None, **kwargs):
         decreasing = decreasing.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        decreasing.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        decreasing.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        decreasing.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        decreasing.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     decreasing.name = f"DEC_{length}"
-    decreasing.category = 'trend'
+    decreasing.category = "trend"
 
     return decreasing
 

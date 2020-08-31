@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
+from pandas_ta.overlap import hl2
 from pandas_ta.utils import get_offset, verify_series
 
 def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
-    """Indicator: TTM Trend"""
+    """Indicator: TTM Trend (TTM_TRND)"""
     # Validate arguments
     high = verify_series(high)
     low = verify_series(low)
@@ -12,9 +13,9 @@ def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    trend_avg = ((high + low)/2)
+    trend_avg = hl2(high, low)
     for i in range(1, length):
-        trend_avg = trend_avg + ((high.shift(i) + low.shift(i))/2)
+        trend_avg = trend_avg + hl2(high.shift(i), low.shift(i))
 
     trend_avg = trend_avg / length
 
@@ -26,10 +27,10 @@ def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
         tm_trend = tm_trend.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        tm_trend.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        tm_trend.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        tm_trend.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        tm_trend.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     tm_trend.name = f"TTM_TRND_{length}"
@@ -46,23 +47,27 @@ def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
 
 
 ttm_trend.__doc__ = \
-"""This indicator is from John Carters book “Mastering the trade” an plots the bars green or red.
-It checks if the price is above or under the average price of the previous 5 bars.
-The indicator should hep you stay in a trade until the colors chance.
-Two bars of the opposite color is the signal to get in or out.
+"""TTM Trend (TTM_TRND)
+
+This indicator is from John Carters book “Mastering the Trade” and plots the
+bars green or red. It checks if the price is above or under the average price of
+the previous 5 bars. The indicator should hep you stay in a trade until the
+colors chance. Two bars of the opposite color is the signal to get in or out.
+
 Sources:
     https://www.prorealcode.com/prorealtime-indicators/ttm-trend-price/
+
 Calculation:
     Default Inputs:
         length=6
-    averageprice = (((high[5]+low[5])/2)+((high[4]+low[4])/2)+((high[3]+low[3])/2)+((high[2]+low[2])/2)+((high[1]+low[1])/2)+((high[6]+low[6])/2))/6
-    if close > averageprice then
-     drawcandle(open,high,low,close) coloured(0,255,0)
-    endif
+    averageprice = (((high[5]+low[5])/2)+((high[4]+low[4])/2)+((high[3]+low[3])/2)+((high[2]+low[2])/2)+((high[1]+low[1])/2)+((high[6]+low[6])/2)) / 6
 
-    if close < averageprice then
-     drawcandle(open,high,low,close) coloured(255,0,0)
-    endif
+    if close > averageprice:
+        drawcandle(open,high,low,close) coloured(0,255,0)
+
+    if close < averageprice:
+        drawcandle(open,high,low,close) coloured(255,0,0)
+
 Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's

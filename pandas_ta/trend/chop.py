@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from numpy import log10 as npLog10
 from pandas import DataFrame
-from ..volatility.atr import atr
-from ..utils import get_offset, get_drift, verify_series
+from pandas_ta.volatility import atr
+from pandas_ta.utils import get_offset, get_drift, verify_series
 
 def chop(high, low, close, length=None, atr_length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Choppiness Index (CHOP)"""
@@ -30,14 +30,14 @@ def chop(high, low, close, length=None, atr_length=None, scalar=None, drift=None
         chop = chop.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        chop.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        chop.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        chop.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        chop.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     chop.name = f"CHOP_{length}_{atr_length}_{scalar}"
-    chop.category = 'trend'
+    chop.category = "trend"
 
     return chop
 

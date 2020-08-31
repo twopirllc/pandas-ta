@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..volatility.atr import atr
-from ..utils import get_offset, verify_series
+from pandas_ta.volatility import atr
+from pandas_ta.utils import get_offset, verify_series
 
 def cksp(high, low, close, p=None, x=None, q=None, offset=None, **kwargs):
     """Indicator: Chande Kroll Stop (CKSP)"""
@@ -29,23 +29,23 @@ def cksp(high, low, close, p=None, x=None, q=None, offset=None, **kwargs):
         short_stop = short_stop.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        long_stop.fillna(kwargs['fillna'], inplace=True)
-        short_stop.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        long_stop.fillna(method=kwargs['fill_method'], inplace=True)
-        short_stop.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        long_stop.fillna(kwargs["fillna"], inplace=True)
+        short_stop.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        long_stop.fillna(method=kwargs["fill_method"], inplace=True)
+        short_stop.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     _props = f"_{p}_{x}_{q}"
     long_stop.name = f"CKSPl{_props}"
     short_stop.name = f"CKSPs{_props}"
-    long_stop.category = short_stop.category = 'trend'
+    long_stop.category = short_stop.category = "trend"
 
     # Prepare DataFrame to return
     ckspdf = DataFrame({long_stop.name: long_stop, short_stop.name: short_stop})
     ckspdf.name = f"CKSP{_props}"
-    ckspdf.category = 'trend'
+    ckspdf.category = long_stop.category
 
     return ckspdf
 

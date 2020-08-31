@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 def linear_decay(close, length=None, offset=None, **kwargs):
     """Indicator: Linear Decay"""
@@ -12,7 +12,7 @@ def linear_decay(close, length=None, offset=None, **kwargs):
     # Calculate Result
     diff = close.shift(1) - (1 / length)
     diff[0] = close[0]
-    tdf = DataFrame({'close': close, 'diff': diff, '0': 0})
+    tdf = DataFrame({"close": close, "diff": diff, "0": 0})
     ld = tdf.max(axis=1)
 
     # Offset
@@ -20,14 +20,14 @@ def linear_decay(close, length=None, offset=None, **kwargs):
         ld = ld.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        ld.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        ld.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        ld.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        ld.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     ld.name = f"LDECAY_{length}"
-    ld.category = 'trend'
+    ld.category = "trend"
 
     return ld
 

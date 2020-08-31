@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
 from pandas import DataFrame, Series
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
     """Indicator: Parabolic Stop and Reverse (PSAR)"""
@@ -84,16 +84,16 @@ def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
         reversal = reversal.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        _af.fillna(kwargs['fillna'], inplace=True)
-        long.fillna(kwargs['fillna'], inplace=True)
-        short.fillna(kwargs['fillna'], inplace=True)
-        reversal.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        _af.fillna(method=kwargs['fill_method'], inplace=True)
-        long.fillna(method=kwargs['fill_method'], inplace=True)
-        short.fillna(method=kwargs['fill_method'], inplace=True)
-        reversal.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        _af.fillna(kwargs["fillna"], inplace=True)
+        long.fillna(kwargs["fillna"], inplace=True)
+        short.fillna(kwargs["fillna"], inplace=True)
+        reversal.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        _af.fillna(method=kwargs["fill_method"], inplace=True)
+        long.fillna(method=kwargs["fill_method"], inplace=True)
+        short.fillna(method=kwargs["fill_method"], inplace=True)
+        reversal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Prepare DataFrame to return
     _params = f"_{af0}_{max_af}"
@@ -105,7 +105,7 @@ def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
     }
     psardf = DataFrame(data)
     psardf.name = f"PSAR{_params}"
-    psardf.category = long.category = short.category = 'trend'
+    psardf.category = long.category = short.category = "trend"
 
     return psardf
 

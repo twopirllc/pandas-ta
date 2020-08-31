@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..volatility.true_range import true_range
-from ..utils import get_drift, get_offset, verify_series, zero
+from pandas_ta.volatility import true_range
+from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 
 def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Vortex"""
@@ -10,7 +10,7 @@ def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
     low = verify_series(low)
     close = verify_series(close)
     length = length if length and length > 0 else 14
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -30,23 +30,23 @@ def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
         vim = vim.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        vip.fillna(kwargs['fillna'], inplace=True)
-        vim.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        vip.fillna(method=kwargs['fill_method'], inplace=True)
-        vim.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        vip.fillna(kwargs["fillna"], inplace=True)
+        vim.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        vip.fillna(method=kwargs["fill_method"], inplace=True)
+        vim.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     vip.name = f"VTXP_{length}"
     vim.name = f"VTXM_{length}"
-    vip.category = vim.category = 'trend'
+    vip.category = vim.category = "trend"
 
     # Prepare DataFrame to return
     data = {vip.name: vip, vim.name: vim}
     vtxdf = DataFrame(data)
     vtxdf.name = f"VTX_{length}"
-    vtxdf.category = 'trend'
+    vtxdf.category = "trend"
 
     return vtxdf
 

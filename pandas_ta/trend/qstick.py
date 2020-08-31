@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..overlap.dema import dema
-from ..overlap.ema import ema
-from ..overlap.hma import hma
-from ..overlap.rma import rma
-from ..overlap.sma import sma
-from ..utils import get_offset, non_zero_range, verify_series
+from pandas_ta.overlap import dema, ema, hma, rma, sma
+from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 def qstick(open_, close, length=None, offset=None, **kwargs):
     """Indicator: Q Stick"""
@@ -13,30 +9,30 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     offset = get_offset(offset)
-    ma = kwargs.pop('ma', 'sma') if 'ma' in kwargs else 'sma'
+    ma = kwargs.pop("ma", "sma")
 
     # Calculate Result
     diff = non_zero_range(close, open_)
 
-    if ma in [None, 'sma']: qstick = sma(diff, length=length)
-    if ma == 'dema': qstick = dema(diff, length=length, **kwargs)
-    if ma == 'ema': qstick = ema(diff, length=length, **kwargs)
-    if ma == 'hma': qstick = hma(diff, length=length)
-    if ma == 'rma': qstick = rma(diff, length=length)
+    if ma in [None, "sma"]: qstick = sma(diff, length=length)
+    if ma == "dema": qstick = dema(diff, length=length, **kwargs)
+    if ma == "ema": qstick = ema(diff, length=length, **kwargs)
+    if ma == "hma": qstick = hma(diff, length=length)
+    if ma == "rma": qstick = rma(diff, length=length)
 
     # Offset
     if offset != 0:
         qstick = qstick.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        qstick.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        qstick.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        qstick.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        qstick.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     qstick.name = f"QS_{length}"
-    qstick.category = 'trend'
+    qstick.category = "trend"
 
     return qstick
 

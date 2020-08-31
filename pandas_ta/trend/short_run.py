@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .decreasing import decreasing
 from .increasing import increasing
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 def short_run(fast, slow, length=None, offset=None, **kwargs):
     """Indicator: Short Run"""
@@ -21,13 +21,13 @@ def short_run(fast, slow, length=None, offset=None, **kwargs):
         short_run = short_run.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        short_run.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        short_run.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        short_run.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        short_run.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     short_run.name = f"SR_{length}"
-    short_run.category = 'trend'
+    short_run.category = "trend"
 
     return short_run
