@@ -122,8 +122,8 @@ data/SPY_5min.csv
 data/SPY_1min.csv
 data/SPY_D_adxfish.csv
 data/SPY_D_lbsz.csv
-data/TV_5min.csv
 data/similang-ch.csv
+data/TV_5min.csv
 data/tulip.csv
 
 examples/cache.sqlite
@@ -141,6 +141,7 @@ doc.py
 bt.ipynb
 scratch.ipynb
 ta_extension.ipynb
+scratch.ipynb
 kerasmodeller.ipynb
 Charts.ipynb
 pandas_pips

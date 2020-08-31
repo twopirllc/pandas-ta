@@ -839,6 +839,15 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
+    def ttm_trend(self, high=None, low=None, close=None, offset=None, length=None, **kwargs):
+        high = self._get_column(high, "high")
+        low = self._get_column(low, "low")
+        close = self._get_column(close, "close")
+
+        result = ttm_trend(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
+        return result
+
+    @finalize
     def trix(self, close=None, length=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, "close")
 
