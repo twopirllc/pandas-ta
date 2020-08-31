@@ -5,11 +5,49 @@ from pathlib import Path
 from random import random
 
 import pandas as pd # pip install pandas
+import yfinance as yf
+# yf.pdr_override() # <== that's all it takes :-)
 
 from alphaVantageAPI.alphavantage import AlphaVantage  # pip install alphaVantage-api
 import pandas_ta as ta # pip install pandas_ta
 
-AV = AlphaVantage(api_key="YOUR API KEY", premium=False, clean=True, output_size="full")
+
+def colors(colors: str = None, default: str = "GrRd"):
+    aliases = {
+        # Pairs
+        "GrRd": ["green", "red"],
+        "RdGr": ["red", "green"],
+        
+        "BkGy": ["black", "gray"],
+        "BkSv": ["black", "silver"],
+        "BkPr": ["black", "purple"],
+        "BkBl": ["black", "blue"],
+        
+        "GyBk": ["gray", "black"],
+        "GySv": ["gray", "silver"],
+        "GyPr": ["gray", "purple"],
+        "GyBl": ["gray", "blue"],
+        
+        "SvGy": ["silver", "gray"],
+        "FcLi": ["fuchsia", "lime"],
+        # Triples
+        "BkGrRd": ["black", "green", "red"],
+        "BkBlPr": ["black", "blue", "purple"],
+        "GrOrRd": ["green", "orange", "red"],
+        "RdOrGr": ["red", "orange", "green"],
+        # Quads
+        "BkGrOrRd": ["black", "green", "orange", "red"],
+        # Quints
+        "BkGrOrRdMr": ["black", "green", "orange", "red", "maroon"],
+        # Indicators
+        "bbands": ["blue", "navy", "blue"],
+        "kc": ["purple", "fuchsia", "purple"],
+    }
+    aliases["default"] = aliases[default]
+    if colors in aliases.keys():
+        return aliases[colors]
+    return aliases["default"]
+
 
 class Watchlist(object):
     """Watchlist Class (** This is subject to change! **)
@@ -43,9 +81,16 @@ class Watchlist(object):
         self.name = name
         self.data = None
         self.kwargs = kwargs
-
-        self.ds = ds if ds is not None else AV
         self.strategy = strategy
+
+        if ds is not None:
+            self.ds = ds
+        elif isinstance(ds, str) and ds.lower() == "yahoo":
+            self.ds = yf
+        else:
+            AVkwargs = {"api_key": "YOUR API KEY","clean": True, "export": True, "export_path": ".", "output_size": "full", "premium": False}
+            av_kwargs = kwargs.pop("av_kwargs", AVkwargs)
+            self.ds = AlphaVantage(**av_kwargs)
 
 
     def _drop_columns(self, df: pd.DataFrame, cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"]):
@@ -95,13 +140,20 @@ class Watchlist(object):
                 df = df.set_index(pd.DatetimeIndex(df.index))
             print(f"[i] Loaded['{tf}']: {filename_}")
         else:
-            if self.ds is not None and isinstance(self.ds, AlphaVantage):
+            print(f"[+] Downloading['{tf}']: {ticker}")
+            if isinstance(self.ds, AlphaVantage):
                 df = self.ds.data(tf, ticker)
                 if not df.ta.datetime_ordered:
                     df = df.set_index(pd.DatetimeIndex(df[index]))
-                print(f"[+] Downloading['{tf}']: {ticker}")
+            elif isinstance(self.ds, yfinance):
+                print("[!] In Development")
+                yf_data = self.ds.Ticker(ticker)
+                df = yf_data.history(period="max")
+                print(yf_data.info)
+                print(df)
 
-        df = self._drop_columns(df) # Remove select columns
+        # Remove select columns
+        df = self._drop_columns(df)
 
         if kwargs.pop("analyze", True):
             if self.debug: print(f"[+] TA[{len(self.strategy.ta)}]: {self.strategy.name}")

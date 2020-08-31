@@ -117,6 +117,7 @@ pandas_ta/_wrapper.py
 
 # twopirllc stuff
 data/datas.csv
+data/GLD_D_tv.csv
 data/SPY_5min.csv
 data/SPY_1min.csv
 data/SPY_D_adxfish.csv
@@ -124,6 +125,7 @@ data/SPY_D_lbsz.csv
 data/TV_5min.csv
 data/similang-ch.csv
 data/tulip.csv
+
 examples/cache.sqlite
 examples/taplot.py
 examples/ChartTA.ipynb
@@ -131,6 +133,7 @@ examples/charting.ipynb
 examples/ib_trader.ipynb
 examples/example2.ipynb
 examples/*.csv
+
 setup.cfg
 note.md
 driver.py

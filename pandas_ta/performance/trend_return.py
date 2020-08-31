@@ -43,7 +43,7 @@ def trend_return(close, trend, log=True, cumulative=None, trend_reset=0, offset=
         _props: result,
         f"TR_{_returns}": returns,
         f"{_props}_Trends": trends,
-        f"{_props}_Trades": trends.diff().fillna(0),
+        f"{_props}_Trades": trends.diff().shift(1).fillna(0).astype(int),
     }, index=close.index)
 
     # Offset
