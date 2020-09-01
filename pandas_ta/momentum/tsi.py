@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-from ..overlap.ema import ema
-from ..utils import get_drift, get_offset, verify_series
+from pandas_ta.overlap import ema
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
-def tsi(close, fast=None, slow=None, drift=None, offset=None, **kwargs):
+def tsi(close, fast=None, slow=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: True Strength Index (TSI)"""
     # Validate Arguments
     close = verify_series(close)
     fast = int(fast) if fast and fast > 0 else 13
     slow = int(slow) if slow and slow > 0 else 25
-    if slow < fast:
-        fast, slow = slow, fast
+    # if slow < fast:
+    #     fast, slow = slow, fast
+    scalar = float(scalar) if scalar else 100
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -22,21 +23,21 @@ def tsi(close, fast=None, slow=None, drift=None, offset=None, **kwargs):
     abs_slow_ema = ema(close=abs_diff, length=slow, **kwargs)
     abs_fast_slow_ema = ema(close=abs_slow_ema, length=fast, **kwargs)
 
-    tsi = 100 * fast_slow_ema / abs_fast_slow_ema
+    tsi = scalar * fast_slow_ema / abs_fast_slow_ema
 
     # Offset
     if offset != 0:
         tsi = tsi.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        tsi.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        tsi.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        tsi.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        tsi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     tsi.name = f"TSI_{fast}_{slow}"
-    tsi.category = 'momentum'
+    tsi.category = "momentum"
 
     return tsi
 
@@ -54,7 +55,7 @@ Sources:
 
 Calculation:
     Default Inputs:
-        fast=13, slow=25, drift=1
+        fast=13, slow=25, scalar=100, drift=1
     EMA = Exponential Moving Average
     diff = close.diff(drift)
 
@@ -64,13 +65,14 @@ Calculation:
     abs_diff_slow_ema = absolute_diff_ema = EMA(ABS(diff), slow)
     abema = abs_diff_fast_slow_ema = EMA(abs_diff_slow_ema, fast)
 
-    TSI = 100 * fast_slow_ema / abema
+    TSI = scalar * fast_slow_ema / abema
 
 Args:
     close (pd.Series): Series of 'close's
-    fast (int): The short period.  Default: 13
-    slow (int): The long period.   Default: 25
-    drift (int): The difference period.   Default: 1
+    fast (int): The short period. Default: 13
+    slow (int): The long period. Default: 25
+    scalar (float): How much to magnify. Default: 100
+    drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:

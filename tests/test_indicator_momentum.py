@@ -306,6 +306,18 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "ANGLEd_1")
 
+    def test_smi(self):
+        result = pandas_ta.smi(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SMI_5_20_5")
+        self.assertEqual(len(result.columns), 3)
+
+    def test_smi_scalar(self):
+        result = pandas_ta.smi(self.close, scalar=10)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SMI_5_20_5_10.0")
+        self.assertEqual(len(result.columns), 3)
+
     def test_squeeze(self):
         result = pandas_ta.squeeze(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)

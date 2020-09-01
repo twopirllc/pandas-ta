@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "97b"))
+version = ".".join(("0", "1", "98b"))
 
 
 def mp_worker(args):
@@ -821,6 +821,13 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
+    def smi(self, close=None, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
+        close = self._get_column(close, "close")
+
+        result = smi(close=close, fast=fast, slow=slow, signal=signal, scalar=scalar, offset=offset, **kwargs)
+        return result
+
+    @finalize
     def squeeze(self, high=None, low=None, close=None, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, offset=None, **kwargs):
         high = self._get_column(high, "high")
         low = self._get_column(low, "low")
@@ -846,10 +853,10 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def tsi(self, close=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
+    def tsi(self, close=None, fast=None, slow=None, scalar=None, drift=None, offset=None, **kwargs):
         close = self._get_column(close, "close")
 
-        result = tsi(close=close, fast=fast, slow=slow, drift=drift, offset=offset, **kwargs)
+        result = tsi(close=close, fast=fast, slow=slow, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return result
 
     @finalize

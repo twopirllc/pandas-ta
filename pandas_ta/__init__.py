@@ -25,7 +25,7 @@ Category = {
     "candles": ["cdl_doji", "ha"],
 
     # Momentum
-    "momentum": ["ao", "apo", "bias", "bop", "brar", "cci", "cg", "cmo", "coppock", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd", "mom", "pgo", "ppo", "psl", "pvo", "roc", "rsi", "rvgi", "slope", "squeeze", "stoch", "trix", "tsi", "uo", "willr"],
+    "momentum": ["ao", "apo", "bias", "bop", "brar", "cci", "cg", "cmo", "coppock", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd", "mom", "pgo", "ppo", "psl", "pvo", "roc", "rsi", "rvgi", "slope", "smi", "squeeze", "stoch", "trix", "tsi", "uo", "willr"],
 
     # Overlap
     "overlap": ["dema", "ema", "fwma", "hl2", "hlc3", "hma", "ichimoku", "kama", "linreg", "midpoint", "midprice", "ohlc4", "pwma", "rma", "sinwma", "sma", "supertrend", "swma", "t3", "tema", "trima", "vwap", "vwma", "wcp", "wma", "zlma"],

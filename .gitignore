@@ -120,9 +120,9 @@ data/datas.csv
 data/GLD_D_tv.csv
 data/SPY_5min.csv
 data/SPY_1min.csv
-data/SPY_D_adxfish.csv
-data/SPY_D_lbsz.csv
-data/similang-ch.csv
+data/SPY_D_TV1.csv
+data/SPY_D_TV2.csv
+data/SPY_D_TV3.csv
 data/TV_5min.csv
 data/tulip.csv
 

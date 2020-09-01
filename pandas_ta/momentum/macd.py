@@ -29,14 +29,14 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
         signalma = signalma.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        macd.fillna(kwargs['fillna'], inplace=True)
-        histogram.fillna(kwargs['fillna'], inplace=True)
-        signalma.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        macd.fillna(method=kwargs['fill_method'], inplace=True)
-        histogram.fillna(method=kwargs['fill_method'], inplace=True)
-        signalma.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        macd.fillna(kwargs["fillna"], inplace=True)
+        histogram.fillna(kwargs["fillna"], inplace=True)
+        signalma.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        macd.fillna(method=kwargs["fill_method"], inplace=True)
+        histogram.fillna(method=kwargs["fill_method"], inplace=True)
+        signalma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     _props = f"_{fast}_{slow}_{signal}"
@@ -51,31 +51,31 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     df.name = f"MACD{_props}"
     df.category = macd.category
 
-    signal_indicators = kwargs.pop('signal_indicators', False)
+    signal_indicators = kwargs.pop("signal_indicators", False)
     if signal_indicators:
         signalsdf = concat(
             [
                 df,
                 signals(
                     indicator=histogram,
-                    xa=kwargs.pop('xa', 0),
-                    xb=kwargs.pop('xb', None),
-                    xserie=kwargs.pop('xserie', None),
-                    xserie_a=kwargs.pop('xserie_a', None),
-                    xserie_b=kwargs.pop('xserie_b', None),
-                    cross_values=kwargs.pop('cross_values', True),
-                    cross_series=kwargs.pop('cross_series', True),
+                    xa=kwargs.pop("xa", 0),
+                    xb=kwargs.pop("xb", None),
+                    xserie=kwargs.pop("xserie", None),
+                    xserie_a=kwargs.pop("xserie_a", None),
+                    xserie_b=kwargs.pop("xserie_b", None),
+                    cross_values=kwargs.pop("cross_values", True),
+                    cross_series=kwargs.pop("cross_series", True),
                     offset=offset,
                 ),
                 signals(
                     indicator=macd,
-                    xa=kwargs.pop('xa', 0),
-                    xb=kwargs.pop('xb', None),
-                    xserie=kwargs.pop('xserie', None),
-                    xserie_a=kwargs.pop('xserie_a', None),
-                    xserie_b=kwargs.pop('xserie_b', None),
-                    cross_values=kwargs.pop('cross_values', False),
-                    cross_series=kwargs.pop('cross_series', True),
+                    xa=kwargs.pop("xa", 0),
+                    xb=kwargs.pop("xb", None),
+                    xserie=kwargs.pop("xserie", None),
+                    xserie_a=kwargs.pop("xserie_a", None),
+                    xserie_b=kwargs.pop("xserie_b", None),
+                    cross_values=kwargs.pop("cross_values", False),
+                    cross_series=kwargs.pop("cross_series", True),
                     offset=offset,
                 ),
             ],

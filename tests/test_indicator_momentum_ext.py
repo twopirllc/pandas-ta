@@ -166,6 +166,15 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "ANGLEd_1")
 
+    def test_smi_ext(self):
+        self.data.ta.smi(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-3:]), ["SMI_5_20_5", "SMIs_5_20_5", "SMIo_5_20_5"])
+
+        self.data.ta.smi(scalar=10, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-3:]), ["SMI_5_20_5_10.0", "SMIs_5_20_5_10.0", "SMIo_5_20_5_10.0"])
+
     def test_squeeze_ext(self):
         self.data.ta.squeeze(append=True)
         self.assertIsInstance(self.data, DataFrame)

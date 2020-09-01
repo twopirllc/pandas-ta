@@ -2,7 +2,7 @@
 from distutils.core import setup
 from pandas_ta.core import version
 
-long_description = "An easy to use Python 3 Pandas Extension with 100+ Technical Analysis Indicators. Can be called from a Pandas DataFrame or standalone like TA-Lib."
+long_description = "An easy to use Python 3 Pandas Extension with 115+ Technical Analysis Indicators. Can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
 
 setup(
     name ="pandas_ta",

@@ -58,6 +58,7 @@ and _Weighted Moving Average_.
 ## __New Indicators__
 * _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
 * _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade".
+* _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.
 
 ## __Updated Indicators__
 * _Fisher Transform_ (**fisher**): Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
@@ -316,7 +317,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Doji_: **cdl_doji**
 * _Heikin-Ashi_: **ha**
 
-## _Momentum_ (31)
+## _Momentum_ (32)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -343,6 +344,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Relative Strength Index_: **rsi**
 * _Relative Vigor Index_: **rvgi**
 * _Slope_: **slope**
+* _SMI Ergodic_ **smi**
 * _Squeeze_: **squeeze**
     * Default is John Carter's. Enable Lazybear's by ```lazybear=True```
 * _Stochastic Oscillator_: **stoch**

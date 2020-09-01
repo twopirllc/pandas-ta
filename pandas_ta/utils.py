@@ -10,7 +10,7 @@ from functools import reduce
 from operator import mul
 from sys import float_info as sflt
 
-TRADING_DAYS_PER_YEAR = 251
+TRADING_DAYS_PER_YEAR = 252 # Keep even
 TRADING_HOURS_PER_DAY = 6.5
 MINUTES_PER_HOUR = 60
 

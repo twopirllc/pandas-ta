@@ -14,7 +14,7 @@ def cdl_doji(open_, high, low, close, length=None, factor=None, scalar=None, asi
     factor = float(factor) if is_percent(factor) else 10
     scalar = float(scalar) if scalar else 100
     offset = get_offset(offset)
-    naive = kwargs.pop('naive', False)
+    naive = kwargs.pop("naive", False)
 
     # Calculate Result
     body = real_body(open_, close).abs()
@@ -32,10 +32,10 @@ def cdl_doji(open_, high, low, close, length=None, factor=None, scalar=None, asi
         doji = doji.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        doji.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        doji.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        doji.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        doji.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     doji.name = f"CDL_DOJI_{length}_{0.01 * factor}"
@@ -69,9 +69,9 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): The period.  Default: 10
-    factor (float): Doji value.  Default: 100
-    scalar (float): How much to magnify.  Default: 100
+    length (int): The period. Default: 10
+    factor (float): Doji value. Default: 100
+    scalar (float): How much to magnify. Default: 100
     asint (bool): Keep results numerical instead of boolean. Default: True
 
 Kwargs:
