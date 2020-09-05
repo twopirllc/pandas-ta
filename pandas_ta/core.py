@@ -567,7 +567,10 @@ class AnalysisIndicators(BasePandasObject):
         timed = kwargs.pop("timed", False)
         if mode["custom"]:
             if timed: stime = perf_counter()
-            [getattr(self, kwds["kind"])(**kwds) for kwds in ta]
+            if "params" in kwds and kwds["params"] and isinstance(kwds["params"], tuple):
+                [getattr(self, kwds["kind"])(*kwds["params"], **kwds) for kwds in ta]
+            else:
+                [getattr(self, kwds["kind"])(**kwds) for kwds in ta]
         else:
             # Run ALL or Categorical with multiprocessing
             if verbose:
