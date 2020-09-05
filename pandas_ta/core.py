@@ -146,7 +146,7 @@ class BasePandasObject(PandasObject):
             # Preemptively drop the rows that are all nas
             # Might need to be moved to AnalysisIndicators.__call__() to be
             #   toggleable via kwargs.
-            df.dropna(axis=0, inplace=True)
+            df.dropna(axis='index', inplace=True)
             # Preemptively rename columns to lowercase
             df.rename(columns=common_names, errors="ignore", inplace=True)
 
@@ -299,7 +299,7 @@ class AnalysisIndicators(BasePandasObject):
         if value is not None and isinstance(value, int):
             self._cores = int(value) if 0 < value <= cpus else cpus
         else:
-            self._cores = cpus
+            self._cores = cpus      # Isn't it better to use less cores than available ?
 
     @property
     def mp(self) -> bool:
@@ -565,31 +565,37 @@ class AnalysisIndicators(BasePandasObject):
 
         # Run Custom Indicators while preserving order (important for chaining)
         timed = kwargs.pop("timed", False)
+        if verbose:
+            print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
+        pool = Pool(self.cores)
+
+        # Run an Unordered Mapped Pool.
+        if timed: stime = perf_counter()
         if mode["custom"]:
-            if timed: stime = perf_counter()
-            if "params" in kwds and kwds["params"] and isinstance(kwds["params"], tuple):
-                [getattr(self, kwds["kind"])(*kwds["params"], **kwds) for kwds in ta]
+            if "params" in kwds and isinstance(kwds["params"], tuple):
+                result = pool.imap_unordered(mp_worker, ((self._df, getattr(self, kwds["kind"])(*kwds["params"], **kwds), kwargs) for kwds in ta), self.cores)
             else:
-                [getattr(self, kwds["kind"])(**kwds) for kwds in ta]
+                result = pool.imap_unordered(mp_worker, ((self._df, getattr(self, kwds["kind"])(**kwds), kwargs) for kwds in ta), self.cores)
         else:
-            # Run ALL or Categorical with multiprocessing
-            if verbose:
-                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
-            pool = Pool(self.cores)
+                result = pool.imap_unordered(mp_worker, ((self._df, ind, kwargs) for ind in ta), self.cores)
 
-            # Run an Unordered Mapped Pool.
-            if timed: stime = perf_counter()
+        pool.close()
+        pool.join()
 
-            result = pool.imap_unordered(
-                mp_worker, ((self._df, ind, kwargs) for ind in ta), self.cores
-            )
-            pool.close()
-            pool.join()
-
-            # Apply prefixes/suffixes and appends indicator results to the DataFrame
-            for r in result:
-                self._add_prefix_suffix(r, **kwargs)
-                self._append(r, **kwargs)
+        # This part results in an error
+        # # Apply prefixes/suffixes and appends indicator results to the DataFrame
+        # for r in result:
+        #    self._add_prefix_suffix(r, **kwargs)
+        #    self._append(r, **kwargs)
+                
+        # Case without mp. Used to time both cases.
+        # if "params" in kwds and isinstance(kwds["params"], tuple):
+        #     print('bonjour')
+        #     [getattr(self, kwds["kind"])(*kwds["params"], **kwds) for kwds in ta]
+        # else:
+        #     print("bonsoir")
+        #     [getattr(self, kwds["kind"])(**kwds) for kwds in ta]
+            
 
         if timed: ftime = final_time(stime)
 
@@ -597,8 +603,12 @@ class AnalysisIndicators(BasePandasObject):
             print(f"[i] Total indicators: {len(ta)}")
             print(f"[i] Columns added: {len(self._df.columns) - initial_column_count}")
         print(f"[i] Runtime: {ftime}") if timed else None
+                  
 
-
+    
+                  
+    # INDICATORS ________________________________________________________________________________________________________________________
+                  
     # Candles
     @finalize
     def cdl_doji(self, open_=None, high=None, low=None, close=None, offset=None, **kwargs):
