@@ -59,11 +59,15 @@ and _Weighted Moving Average_.
 * _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
 * _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade".
 * _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.
+* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998
+issue of Stocks & Commodities Magazine. It is a moving average based trend
+indicator consisting of two different simple moving averages.
 
 ## __Updated Indicators__
 * _Fisher Transform_ (**fisher**): Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
 * _Fisher Transform_ (**fisher**) and _Kaufman's Adaptive Moving Average_ (**kama**): Fixed a bug where their columns were not added to final DataFrame when using the _strategy_ method.
-* _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series. 
+* _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series.
+* _Average True Range_ (**atr**): Added option to return **atr** as a percentage. See: ```help(ta.atr)```
 
 
 ## What is a Pandas DataFrame Extension?
@@ -358,11 +362,12 @@ print(bothhl2.name)  # "pre_HL2_post"
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-## _Overlap_ (26)
+## _Overlap_ (27)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
 * _Fibonacci's Weighted Moving Average_: **fwma**
+* _Gann High-Low Activator_: **hilo**
 * _High-Low Average_: **hl2**
 * _High-Low-Close Average_: **hlc3**
     * Commonly known as 'Typical Price' in Technical Analysis literature

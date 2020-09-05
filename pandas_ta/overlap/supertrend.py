@@ -60,11 +60,11 @@ def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kw
         df = df.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        df.fillna(kwargs['fillna'], inplace=True)
+    if "fillna" in kwargs:
+        df.fillna(kwargs["fillna"], inplace=True)
 
-    if 'fill_method' in kwargs:
-        df.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fill_method" in kwargs:
+        df.fillna(method=kwargs["fill_method"], inplace=True)
 
     return df
 

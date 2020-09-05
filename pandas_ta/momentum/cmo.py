@@ -33,14 +33,14 @@ def cmo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
         cmo = cmo.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        cmo.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        cmo.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        cmo.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        cmo.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     cmo.name = f"CMO_{length}"
-    cmo.category = 'momentum'
+    cmo.category = "momentum"
 
     return cmo
 
@@ -65,11 +65,11 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     scalar (float): How much to magnify.  Default: 100
-    talib (bool): If True, uses TA-Libs implementation. Otherwise uses EMA version.  Default: True
     drift (int): The short period.  Default: 1
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
+    talib (bool): If True, uses TA-Libs implementation. Otherwise uses EMA version.  Default: True
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

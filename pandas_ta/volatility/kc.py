@@ -14,13 +14,12 @@ def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **k
     low = verify_series(low)
     close = verify_series(close)
     length = int(length) if length and length > 0 else 20
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     scalar = float(scalar) if scalar and scalar > 0 else 2
-    use_tr = kwargs.pop("tr", True)
     mamode = mamode.lower() if mamode else None
     offset = get_offset(offset)
 
     # Calculate Result
+    use_tr = kwargs.pop("tr", True)
     if use_tr:
         range_ = true_range(high, low, close)
     else:
@@ -82,21 +81,22 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=20, scalar=2, mamode=None
-    ATR = Average True Range
-    EMA = Exponential Moving Average
+        length=20, scalar=2, mamode=None, tr=True
+    TR = True Range
     SMA = Simple Moving Average
+    EMA = Exponential Moving Average
 
-    BAND = ATR(high, low, close)
+    if tr:
+        RANGE = TR(high, low, close)
+    else:
+        RANGE = high - low
+
     if mamode == "ema":
-        BASIS = EMA(close, length)
+        BASIS = sma(close, length)
+        BAND = sma(RANGE, length)
     elif mamode == "sma":
-        BASIS = SMA(close, length)
-    else: # Typical Price
-        hl_range = high - low
-        tp = typical_price = hlc3(high, low, close)
-        BASIS = SMA(tp, length)
-        BAND = SMA(hl_range, length)
+        BASIS = sma(close, length)
+        BAND = sma(RANGE, length)
     
     LOWER = BASIS - scalar * BAND
     UPPER = BASIS + scalar * BAND
@@ -106,11 +106,13 @@ Args:
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
     length (int): The short period.  Default: 20
-    scalar (float): A positive float to scale the bands.   Default: 2
-    mamode (str): Two options: None or "ema".  Default: "ema"
-    offset (int): How many periods to offset the result.  Default: 0
+    scalar (float): A positive float to scale the bands. Default: 2
+    mamode (str): Two options: "sma" or "ema". Default: "ema"
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
+    tr (bool): When True, it uses True Range for calculation. When False, use a
+        high - low as it's range calculation. Default: True
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

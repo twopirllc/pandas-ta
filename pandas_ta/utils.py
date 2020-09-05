@@ -227,8 +227,7 @@ def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_s
 
 
 def df_error_analysis(dfA: pd.DataFrame, dfB: pd.DataFrame, **kwargs) -> pd.DataFrame:
-    """ """
-    col = kwargs.pop("col", None)
+    """DataFrame Correlation Analysis helper"""
     corr_method = kwargs.pop("corr_method", "pearson")
 
     # Find their differences and correlation
@@ -240,6 +239,9 @@ def df_error_analysis(dfA: pd.DataFrame, dfB: pd.DataFrame, **kwargs) -> pd.Data
         diff.hist()
         if diff[diff > 0].any():
             diff.plot(kind="kde")
+
+    if kwargs.pop("triangular", False):
+        return corr.where(np.triu(np.ones(corr.shape)).astype(np.bool))
 
     return corr
 

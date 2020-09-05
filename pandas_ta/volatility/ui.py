@@ -30,10 +30,10 @@ def ui(close, length=None, scalar=None, offset=None, **kwargs):
         ui = ui.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        ui.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        ui.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        ui.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        ui.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     ui.name = f"UI{'' if not everget else 'e'}_{length}"

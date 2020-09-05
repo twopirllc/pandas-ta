@@ -18,7 +18,7 @@ def rma(close, length=None, offset=None, **kwargs):
 
     # Name & Category
     rma.name = f"RMA_{length}"
-    rma.category = 'overlap'
+    rma.category = "overlap"
 
     return rma
 

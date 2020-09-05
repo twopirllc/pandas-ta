@@ -38,6 +38,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "FWMA_10")
 
+    def test_hilo_ext(self):
+        self.data.ta.hilo(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-3:]), ["HILO_13_21", "HILOl_13_21", "HILOs_13_21"])
+
     def test_hl2_ext(self):
         self.data.ta.hl2(append=True)
         self.assertIsInstance(self.data, DataFrame)

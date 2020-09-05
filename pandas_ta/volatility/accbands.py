@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.overlap import ema, sma
+from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, offset=None, **kwargs):
     """Indicator: Acceleration Bands (ACCBANDS)"""
@@ -12,7 +13,7 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
     length = int(length) if length and length > 0 else 20
     c = float(c) if c and c > 0 else 4
     min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
-    mamode = mamode.lower() if mamode else 'sma'
+    mamode = mamode.lower() if mamode else "sma"
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -22,14 +23,17 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
     _lower = low * (1 - hl_ratio)
     _upper = high * (1 + hl_ratio)
 
-    if mamode is None or mamode == 'sma':
-        lower = _lower.rolling(length, min_periods=min_periods).mean()
-        mid   = close.rolling(length, min_periods=min_periods).mean()
-        upper = _upper.rolling(length, min_periods=min_periods).mean()
-    elif mamode == 'ema':
-        lower = _lower.ewm(span=length, min_periods=min_periods).mean()
-        mid   = close.ewm(span=length, min_periods=min_periods).mean()
-        upper = _upper.ewm(span=length, min_periods=min_periods).mean()
+    if mamode == "ema":
+        # lower = _lower.ewm(span=length, min_periods=min_periods).mean()
+        # mid   = close.ewm(span=length, min_periods=min_periods).mean()
+        # upper = _upper.ewm(span=length, min_periods=min_periods).mean()
+        lower = ema(_lower, length=length)
+        mid   = ema(close, length=length)
+        upper = ema(_upper, length=length)
+    else: # "sma"
+        lower = sma(_lower, length=length)
+        mid   = sma(close, length=length)
+        upper = sma(_upper, length=length)
 
     # Offset
     if offset != 0:
@@ -38,26 +42,26 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
         upper = upper.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        lower.fillna(kwargs['fillna'], inplace=True)
-        mid.fillna(kwargs['fillna'], inplace=True)
-        upper.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        lower.fillna(method=kwargs['fill_method'], inplace=True)
-        mid.fillna(method=kwargs['fill_method'], inplace=True)
-        upper.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        lower.fillna(kwargs["fillna"], inplace=True)
+        mid.fillna(kwargs["fillna"], inplace=True)
+        upper.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        lower.fillna(method=kwargs["fill_method"], inplace=True)
+        mid.fillna(method=kwargs["fill_method"], inplace=True)
+        upper.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     lower.name = f"ACCBL_{length}"
     mid.name = f"ACCBM_{length}"
     upper.name = f"ACCBU_{length}"
-    mid.category = upper.category = lower.category = 'volatility'
+    mid.category = upper.category = lower.category = "volatility"
 
     # Prepare DataFrame to return
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
     accbandsdf = DataFrame(data)
     accbandsdf.name = f"ACCBANDS_{length}"
-    accbandsdf.category = 'volatility'
+    accbandsdf.category = mid.category
 
     return accbandsdf
 

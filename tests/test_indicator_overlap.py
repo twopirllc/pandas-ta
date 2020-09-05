@@ -71,6 +71,11 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "FWMA_10")
 
+    def test_hilo(self):
+        result = pandas_ta.hilo(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "HILO_13_21")
+
     def test_hl2(self):
         result = pandas_ta.hl2(self.high, self.low)
         self.assertIsInstance(result, Series)

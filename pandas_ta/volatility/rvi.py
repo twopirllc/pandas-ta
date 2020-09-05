@@ -30,10 +30,10 @@ def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thir
         pos_std = pos * std
         neg_std = neg * std
 
-        if mamode == 'sma':
+        if mamode == "sma":
             pos_avg = sma(pos_std, length)
             neg_avg = sma(neg_std, length)
-        else: # 'ema'
+        else: # "ema"
             pos_avg = ema(pos_std, length)
             neg_avg = ema(neg_std, length)
 
@@ -61,10 +61,10 @@ def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thir
         rvi = rvi.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        rvi.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        rvi.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        rvi.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        rvi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     rvi.name = f"RVI{_mode}_{length}"
@@ -103,9 +103,9 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): The short period.  Default: 14
+    length (int): The short period. Default: 14
     scalar (float): A positive float to scale the bands.   Default: 100
-    mamode (str): Two options: None or 'ema'.  Default: 'ema'
+    mamode (str): Options: 'sma' or 'ema'. Default: 'sma'
     refined (bool): Use 'refined' calculation which is the average of
         RVI(high) and RVI(low) instead of RVI(close). Default: False
     thirds (bool): Average of high, low and close. Default: False

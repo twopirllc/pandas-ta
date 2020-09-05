@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "98b"))
+version = ".".join(("0", "1", "99b"))
 
 
 def mp_worker(args):
@@ -898,6 +898,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, "close")
 
         result = fwma(close=close, length=length, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def hilo(self, high=None, low=None, close=None, high_length=None, low_length=None, offset=None, **kwargs):
+        high = self._get_column(high, "high")
+        low = self._get_column(low, "low")
+        close = self._get_column(close, "close")
+
+        result = hilo(high=high, low=low, close=close, high_length=high_length, low_length=low_length, offset=offset, **kwargs)
         return result
 
     @finalize

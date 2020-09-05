@@ -32,16 +32,16 @@ def aberration(high, low, close, length=None, atr_length=None, offset=None, **kw
         atr_ = atr_.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        zg.fillna(kwargs['fillna'], inplace=True)
-        sg.fillna(kwargs['fillna'], inplace=True)
-        xg.fillna(kwargs['fillna'], inplace=True)
-        atr_.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        zg.fillna(method=kwargs['fill_method'], inplace=True)
-        sg.fillna(method=kwargs['fill_method'], inplace=True)
-        xg.fillna(method=kwargs['fill_method'], inplace=True)
-        atr_.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        zg.fillna(kwargs["fillna"], inplace=True)
+        sg.fillna(kwargs["fillna"], inplace=True)
+        xg.fillna(kwargs["fillna"], inplace=True)
+        atr_.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        zg.fillna(method=kwargs["fill_method"], inplace=True)
+        sg.fillna(method=kwargs["fill_method"], inplace=True)
+        xg.fillna(method=kwargs["fill_method"], inplace=True)
+        atr_.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     _props = f"_{length}_{atr_length}"
@@ -49,7 +49,7 @@ def aberration(high, low, close, length=None, atr_length=None, offset=None, **kw
     sg.name = f"ABER_SG{_props}"
     xg.name = f"ABER_XG{_props}"
     atr_.name = f"ABER_ATR{_props}"
-    zg.category = sg.category = 'volatility'
+    zg.category = sg.category = "volatility"
     xg.category = atr_.category = zg.category
 
     # Prepare DataFrame to return
@@ -61,7 +61,7 @@ def aberration(high, low, close, length=None, atr_length=None, offset=None, **kw
     }
     aberdf = DataFrame(data)
     aberdf.name = f"ABER{_props}"
-    aberdf.category = 'volatility'
+    aberdf.category = zg.category
 
     return aberdf
 
