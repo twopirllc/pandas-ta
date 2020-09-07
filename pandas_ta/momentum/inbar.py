@@ -59,4 +59,3 @@ Kwargs:
 Returns:
     pd.Series: New feature
 """
- 
