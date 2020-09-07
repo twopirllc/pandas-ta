@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "1", "99b"))
+version = ".".join(("0", "2", "00b"))
 
 
 def mp_worker(args):
@@ -142,7 +142,7 @@ class BasePandasObject(PandasObject):
         if df.empty: return
 
         if len(df.columns) > 0:
-            common_names = {"Date": "date", "Time": "time", "Datetime": "datetime", "Open": "open", "High": "high", "Low": "low", "Close": "close", "Adj Close": "adj_close", "Volume": "volume"}
+            common_names = {"Date": "date", "Time": "time", "Timestamp": "timestamp", "Datetime": "datetime", "Open": "open", "High": "high", "Low": "low", "Close": "close", "Adj Close": "adj_close", "Volume": "volume"}
             # Preemptively drop the rows that are all nas
             # Might need to be moved to AnalysisIndicators.__call__() to be
             #   toggleable via kwargs.
