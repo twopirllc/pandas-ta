@@ -10,8 +10,7 @@ from pandas import DataFrame
 class TestStrategyMethods(TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.data = sample_data.tail(210).copy()
-        print(cls.data.shape)
+        cls.data = sample_data
 
     @classmethod
     def tearDownClass(cls):
@@ -89,9 +88,8 @@ class TestStrategyMethods(TestCase):
             "MACD and RSI Momo with BBANDS and SMAs 50 & 200 and Cumulative Log Returns" # description
         )
 
-        print(self.data.shape)
         init_cols = len(self.data.columns)
-        self.data.ta.strategy(custom, verbose=False, timed=True)
+        self.data.ta.strategy(custom, verbose=False)
         added_cols = len(self.data.columns) - init_cols
         self.assertEqual(added_cols, 11)
 

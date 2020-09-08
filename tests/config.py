@@ -19,6 +19,6 @@ sample_data = read_csv(
 
 def error_analysis(df, kind, msg, icon=INFO, newline=True):
     if VERBOSE:
-        s = f" {icon} {df.name}['{kind}']: {msg}"
+        s = f"{icon} {df.name}['{kind}']: {msg}"
         if newline: s = f"\n{s}"
         print(s)

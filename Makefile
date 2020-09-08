@@ -7,5 +7,8 @@ caches:
 init:
 	pip install -r requirements.txt
 
-test:
-	python -m unittest -v
+ti:
+	python -m unittest -v tests/test_indicator*.py
+
+ts:
+	python -m unittest -v tests/test_strategy.py

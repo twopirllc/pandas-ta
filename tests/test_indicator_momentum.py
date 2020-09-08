@@ -335,45 +335,19 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "SQZhlr_20_2.0_20_1.5_LB")
 
+    # @skip
     def test_stoch(self):
-        result = pandas_ta.stoch(self.high, self.low, self.close, fast_k=14, slow_k=14, slow_d=14)
-        self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "STOCH_14_14_14")
-        self.assertEqual(len(result.columns), 4)
-
+        # TV Correlation
         result = pandas_ta.stoch(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "STOCH_14_5_3")
+        self.assertEqual(result.name, "STOCH_14_3_3")
 
-        try:
-            tal_stochf = tal.STOCHF(self.high, self.low, self.close)
-            tal_stoch = tal.STOCH(self.high, self.low, self.close)
-            tal_stochdf = DataFrame({"STOCHF_14": tal_stochf[0], "STOCHF_3": tal_stochf[1], "STOCH_5": tal_stoch[0], "STOCH_3": tal_stoch[1]})
-            pdt.assert_frame_equal(result, tal_stochdf)
-        except AssertionError as ae:
-            try:
-                stochfk_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,0], tal_stochdf.iloc[:,0], col=CORRELATION)
-                self.assertGreater(stochfk_corr, CORRELATION_THRESHOLD)
-            except Exception as ex:
-                error_analysis(result.iloc[:,0], CORRELATION, ex)
 
-            try:
-                stochfd_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,1], tal_stochdf.iloc[:,1], col=CORRELATION)
-                self.assertGreater(stochfd_corr, CORRELATION_THRESHOLD)
-            except Exception as ex:
-                error_analysis(result.iloc[:,1], CORRELATION, ex, newline=False)
-
-            try:
-                stochsk_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,2], tal_stochdf.iloc[:,2], col=CORRELATION)
-                self.assertGreater(stochsk_corr, CORRELATION_THRESHOLD)
-            except Exception as ex:
-                error_analysis(result.iloc[:,2], CORRELATION, ex, newline=False)
-
-            try:
-                stochsd_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,3], tal_stochdf.iloc[:,3], col=CORRELATION)
-                self.assertGreater(stochsd_corr, CORRELATION_THRESHOLD)
-            except Exception as ex:
-                error_analysis(result.iloc[:,3], CORRELATION, ex, newline=False)
+    def test_stochrsi(self):
+        # TV Correlation
+        result = pandas_ta.stochrsi(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "STOCHRSI_14_14_3_3")
 
     def test_trix(self):
         result = pandas_ta.trix(self.close)

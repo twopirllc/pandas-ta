@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "00b"))
+version = ".".join(("0", "2", "01b"))
 
 
 def mp_worker(args):
@@ -146,7 +146,7 @@ class BasePandasObject(PandasObject):
             # Preemptively drop the rows that are all nas
             # Might need to be moved to AnalysisIndicators.__call__() to be
             #   toggleable via kwargs.
-            df.dropna(axis=0, inplace=True)
+            # df.dropna(axis=0, inplace=True)
             # Preemptively rename columns to lowercase
             df.rename(columns=common_names, errors="ignore", inplace=True)
 
@@ -643,13 +643,13 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     @finalize
-    def bop(self, open_=None, high=None, low=None, close=None, percentage=False, offset=None, **kwargs):
+    def bop(self, open_=None, high=None, low=None, close=None, scalar=None, offset=None, **kwargs):
         open_ = self._get_column(open_, "open")
         high = self._get_column(high, "high")
         low = self._get_column(low, "low")
         close = self._get_column(close, "close")
 
-        result = bop(open_=open_, high=high, low=low, close=close, percentage=percentage, offset=offset, **kwargs)
+        result = bop(open_=open_, high=high, low=low, close=close, scalar=scalar, offset=offset, **kwargs)
         return result
 
     @finalize
@@ -846,6 +846,13 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, "close")
 
         result = stoch(high=high, low=low, close=close, fast_k=fast_k, slow_k=slow_k, slow_d=slow_d, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def stochrsi(self, close=None, length=None, rsi_length=None, k=None, d=None, offset=None, **kwargs):
+        close = self._get_column(close, "close")
+
+        result = stochrsi(close=close, length=length, rsi_length=rsi_length, k=k, d=d, offset=offset, **kwargs)
         return result
 
     @finalize
