@@ -66,6 +66,7 @@ and _Weighted Moving Average_.
 issue of Stocks & Commodities Magazine. It is a moving average based trend
 indicator consisting of two different simple moving averages.
 * _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```
+* _Inside Bar_ (**cdl_inside**) An Inside Bar is a bar contained within it's previous bar's high and low See: ```help(ta.cdl_inside)```
 
 ## __Updated Indicators__
 * _Fisher Transform_ (**fisher**): Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
@@ -320,9 +321,10 @@ print(bothhl2.name)  # "pre_HL2_post"
 
 # __Technical Analysis Indicators__ (_by Category_)
 
-## _Candles_ (2)
+## _Candles_ (3)
 
 * _Doji_: **cdl_doji**
+* _Inside Bar_: **cdl_inside**
 * _Heikin-Ashi_: **ha**
 
 ## _Momentum_ (33)
@@ -504,6 +506,7 @@ Use parameter: cumulative=**True** for cumulative results.
 # Contributors
 * [alexonab](https://github.com/alexonab)
 * [allahyarzadeh](https://github.com/allahyarzadeh)
+* [DrPaprikaa](https://github.com/DrPaprikaa)
 * [FGU1](https://github.com/FGU1)
 * [lluissalord](https://github.com/lluissalord)
 * [SoftDevDanial](https://github.com/SoftDevDanial)

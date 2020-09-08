@@ -22,7 +22,7 @@ else:
 # Will find a dynamic solution later.
 Category = {
     # Candles
-    "candles": ["cdl_doji", "ha"],
+    "candles": ["cdl_doji", "cdl_inside", "ha"],
 
     # Momentum
     "momentum": ["ao", "apo", "bias", "bop", "brar", "cci", "cg", "cmo", "coppock", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd", "mom", "pgo", "ppo", "psl", "pvo", "roc", "rsi", "rvgi", "slope", "smi", "squeeze", "stoch", "stochrsi", "trix", "tsi", "uo", "willr"],

@@ -3,8 +3,14 @@ import math
 from pathlib import Path
 from time import perf_counter
 
-import numpy as np
-import pandas as pd
+from numpy import argmax, argmin, dot, ones, triu
+from numpy import append as npAppend
+from numpy import array as npArray
+from numpy import ndarray as npNdArray
+from numpy import sum as npSum
+
+from pandas import DataFrame, Series
+from pandas.api.types import is_datetime64_any_dtype
 
 from functools import reduce
 from operator import mul
@@ -16,8 +22,8 @@ MINUTES_PER_HOUR = 60
 
 
 def _above_below(
-        series_a: pd.Series,
-        series_b: pd.Series,
+        series_a: Series,
+        series_b: Series,
         above: bool = True,
         asint: bool = True,
         offset: int = None,
@@ -51,8 +57,8 @@ def _above_below(
 
 
 def above(
-        series_a: pd.Series,
-        series_b: pd.Series,
+        series_a: Series,
+        series_b: Series,
         asint: bool = True,
         offset: int = None,
         **kwargs
@@ -61,7 +67,7 @@ def above(
 
 
 def above_value(
-        series_a: pd.Series,
+        series_a: Series,
         value: float,
         asint: bool = True,
         offset: int = None,
@@ -70,13 +76,13 @@ def above_value(
     if not isinstance(value, (int, float, complex)):
         print("[X] value is not a number")
         return
-    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
+    series_b = Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
     return _above_below(series_a, series_b, above=True, asint=asint, offset=offset, **kwargs)    
 
 
 def below(
-        series_a: pd.Series,
-        series_b: pd.Series,
+        series_a: Series,
+        series_b: Series,
         asint: bool =True,
         offset: int =None
         ,**kwargs
@@ -85,7 +91,7 @@ def below(
 
 
 def below_value(
-        series_a: pd.Series,
+        series_a: Series,
         value: float,
         asint: bool = True,
         offset: int = None,
@@ -94,7 +100,7 @@ def below_value(
     if not isinstance(value, (int, float, complex)):
         print("[X] value is not a number")
         return
-    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
+    series_b = Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
     return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
 
 
@@ -123,20 +129,20 @@ def combination(**kwargs):
 
 
 def cross_value(
-        series_a: pd.Series,
+        series_a: Series,
         value: float,
         above: bool = True,
         asint: bool = True,
         offset: int = None,
         **kwargs
     ):
-    series_b = pd.Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
+    series_b = Series(value, index=series_a.index, name=f"{value}".replace(".","_"))
     return cross(series_a, series_b, above, asint, offset, **kwargs)
 
 
 def cross(
-        series_a: pd.Series,
-        series_b: pd.Series,
+        series_a: Series,
+        series_b: Series,
         above: bool = True, 
         asint: bool = True,
         offset: int = None,
@@ -169,9 +175,9 @@ def cross(
     return cross
 
 
-def is_datetime_ordered(df: pd.DataFrame or pd.Series) -> bool:
+def is_datetime_ordered(df: DataFrame or Series) -> bool:
     """Returns True if the index is a datetime and ordered."""
-    index_is_datetime = pd.api.types.is_datetime64_any_dtype(df.index)
+    index_is_datetime = is_datetime64_any_dtype(df.index)
     try:
         ordered = df.index[0] < df.index[-1]
     except RuntimeWarning: pass
@@ -179,8 +185,8 @@ def is_datetime_ordered(df: pd.DataFrame or pd.Series) -> bool:
         return True if index_is_datetime and ordered else False
 
 
-def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_series, offset) -> pd.DataFrame:
-    df = pd.DataFrame()
+def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_series, offset) -> DataFrame:
+    df = DataFrame()
     if xa is not None and isinstance(xa, (int, float)):
         if cross_values:
             crossed_above_start = cross_value(indicator, xa, above=True, offset=offset)
@@ -226,7 +232,7 @@ def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_s
     return df
 
 
-def df_error_analysis(dfA: pd.DataFrame, dfB: pd.DataFrame, **kwargs) -> pd.DataFrame:
+def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
     """DataFrame Correlation Analysis helper"""
     corr_method = kwargs.pop("corr_method", "pearson")
 
@@ -241,29 +247,29 @@ def df_error_analysis(dfA: pd.DataFrame, dfB: pd.DataFrame, **kwargs) -> pd.Data
             diff.plot(kind="kde")
 
     if kwargs.pop("triangular", False):
-        return corr.where(np.triu(np.ones(corr.shape)).astype(np.bool))
+        return corr.where(triu(ones(corr.shape)).astype(bool))
 
     return corr
 
-def fibonacci(**kwargs) -> np.ndarray:
+def fibonacci(n: int = 2, **kwargs) -> npNdArray:
     """Fibonacci Sequence as a numpy array"""
-    n = int(math.fabs(kwargs.pop("n", 2)))
-    zero = kwargs.pop("zero", False)
-    weighted = kwargs.pop("weighted", False)
+    n = int(math.fabs(n)) if n >= 0 else 2
 
+    zero = kwargs.pop("zero", False)
     if zero:
         a, b = 0, 1
     else:
         n -= 1
         a, b = 1, 1
 
-    result = np.array([a])
+    result = npArray([a])
     for i in range(0, n):
         a, b = b, a + b
-        result = np.append(result, a)
+        result = npAppend(result, a)
 
+    weighted = kwargs.pop("weighted", False)
     if weighted:
-        fib_sum = np.sum(result)
+        fib_sum = npSum(result)
         if fib_sum > 0:
             return result / fib_sum
         else:
@@ -279,12 +285,12 @@ def final_time(stime):
 
 def get_drift(x: int) -> int:
     """Returns an int if not zero, otherwise defaults to one."""
-    return int(x) if x and x != 0 else 1
+    return int(x) if isinstance(x, int) and x != 0 else 1
 
 
 def get_offset(x: int) -> int:
     """Returns an int, otherwise defaults to zero."""
-    return int(x) if x else 0
+    return int(x) if isinstance(x, int) else 0
 
 
 def is_percent(x: int or float) -> bool:
@@ -293,9 +299,8 @@ def is_percent(x: int or float) -> bool:
     return False
 
 
-def non_zero_range(high: pd.Series, low: pd.Series) -> pd.Series:
-    """Returns the difference of two series and adds epsilon if
-    to any zero values.  This occurs commonly in crypto data when
+def non_zero_range(high: Series, low: Series) -> Series:
+    """Returns the difference of two series and adds epsilon to any zero values.  This occurs commonly in crypto data when
     high = low.
     """
     diff = high - low
@@ -304,7 +309,7 @@ def non_zero_range(high: pd.Series, low: pd.Series) -> pd.Series:
     return diff
 
 
-def pascals_triangle(n: int = None, **kwargs) -> np.ndarray:
+def pascals_triangle(n: int = None, **kwargs) -> npNdArray:
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -313,15 +318,15 @@ def pascals_triangle(n: int = None, **kwargs) -> np.ndarray:
          => inverse weighted: [0.9375, 0.75, 0.625, 0.75, 0.9375]
     """
     n = int(math.fabs(n)) if n is not None else 0
-    weighted = kwargs.pop("weighted", False)
-    inverse = kwargs.pop("inverse", False)
 
     # Calculation
-    triangle = np.array([combination(n=n, r=i) for i in range(0, n + 1)])
-    triangle_sum = np.sum(triangle)
+    triangle = npArray([combination(n=n, r=i) for i in range(0, n + 1)])
+    triangle_sum = npSum(triangle)
     triangle_weights = triangle / triangle_sum
     inverse_weights = 1 - triangle_weights
 
+    weighted = kwargs.pop("weighted", False)
+    inverse = kwargs.pop("inverse", False)
     if weighted and inverse:
         return inverse_weights
     if weighted:
@@ -333,20 +338,20 @@ def pascals_triangle(n: int = None, **kwargs) -> np.ndarray:
 
 
 def recent_maximum_index(x):
-    return int(np.argmax(x[::-1]))
+    return int(argmax(x[::-1]))
 
 
 def recent_minimum_index(x):
-    return int(np.argmin(x[::-1]))
+    return int(argmin(x[::-1]))
 
 
-def signed_series(series: pd.Series, initial: int =None) -> pd.Series:
+def signed_series(series: Series, initial: int = None) -> Series:
     """Returns a Signed Series with or without an initial value
     
     Default Example:
-    series = pd.Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5])
+    series = Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5])
     and returns:
-    sign = pd.Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0])
+    sign = Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0])
     """
     series = verify_series(series)
     sign = series.diff(1)
@@ -364,7 +369,6 @@ def symmetric_triangle(n: int = None, **kwargs) -> list:
          => weighted: [0.16666667 0.33333333 0.33333333 0.16666667]
     """
     n = int(math.fabs(n)) if n is not None else 2
-    weighted = kwargs.pop("weighted", False)
 
     if n == 2:
         triangle = [1, 1]
@@ -379,24 +383,24 @@ def symmetric_triangle(n: int = None, **kwargs) -> list:
             front.pop()
             triangle += front[::-1]
 
-    if weighted:
-        triangle_sum = np.sum(triangle)
+    if kwargs.pop("weighted", False):
+        triangle_sum = npSum(triangle)
         triangle_weights = triangle / triangle_sum
         return triangle_weights
 
     return triangle
 
 
-def unsigned_differences(series: pd.Series, amount: int = None, **kwargs) -> pd.Series:
+def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Series:
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
     on the differences of the original series. The positive series are only the
     increases and the negative series is only the decreases.
 
     Default Example:
-    series   = pd.Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5, 3]) and returns
-    postive  = pd.Series([0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0])
-    negative = pd.Series([0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1])
+    series   = Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5, 3]) and returns
+    postive  = Series([0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0])
+    negative = Series([0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1])
     """
     amount = int(amount) if amount is not None else 1
     negative = series.diff(amount)
@@ -416,15 +420,15 @@ def unsigned_differences(series: pd.Series, amount: int = None, **kwargs) -> pd.
     return positive, negative
 
 
-def verify_series(series: pd.Series) -> pd.Series:
+def verify_series(series: Series) -> Series:
     """If a Pandas Series return it."""
-    if series is not None and isinstance(series, pd.core.series.Series):
+    if series is not None and isinstance(series, Series):
         return series
 
 
 def weights(w):
     def _dot(x):
-        return np.dot(w, x)
+        return dot(w, x)
     return _dot
 
 

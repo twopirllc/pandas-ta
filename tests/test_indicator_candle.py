@@ -53,3 +53,12 @@ class TestCandle(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+    def test_cdl_inside(self):
+        result = pandas_ta.cdl_inside(self.open, self.high, self.low, self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "CDL_INSIDE")
+
+        result = pandas_ta.cdl_inside(self.open, self.high, self.low, self.close, asbool=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "CDL_INSIDE")

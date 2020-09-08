@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "01b"))
+version = ".".join(("0", "2", "02b"))
 
 
 def mp_worker(args):
@@ -608,6 +608,16 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(close, "close")
 
         result = cdl_doji(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
+        return result
+
+    @finalize
+    def cdl_inside(self, open_=None, high=None, low=None, close=None, offset=None, **kwargs):
+        open_ = self._get_column(open_, "open")
+        high = self._get_column(high, "high")
+        low = self._get_column(low, "low")
+        close = self._get_column(close, "close")
+
+        result = cdl_inside(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
         return result
 
     @finalize

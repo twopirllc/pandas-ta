@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 from .ema import ema
-from ..utils import get_offset, verify_series, weights
+from pandas_ta.utils import get_offset, verify_series
 
 def dema(close, length=None, offset=None, **kwargs):
     """Indicator: Double Exponential Moving Average (DEMA)"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
     offset = get_offset(offset)
 
     # Calculate Result
-    ema1 = ema(close=close, length=length, **kwargs)
-    ema2 = ema(close=ema1, length=length, **kwargs)
+    ema1 = ema(close=close, length=length)
+    ema2 = ema(close=ema1, length=length)
     dema = 2 * ema1 - ema2
 
     # Offset
@@ -21,7 +20,7 @@ def dema(close, length=None, offset=None, **kwargs):
 
     # Name & Category
     dema.name = f"DEMA_{length}"
-    dema.category = 'overlap'
+    dema.category = "overlap"
 
     return dema
 
