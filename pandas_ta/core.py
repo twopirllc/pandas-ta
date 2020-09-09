@@ -1123,15 +1123,12 @@ class AnalysisIndicators(BasePandasObject):
         result = linear_decay(close=close, length=length, offset=offset, **kwargs)
         return result
 
-    def long_run(self, fast=None, slow=None, length=None, offset=None, **kwargs):
-        if fast is None and slow is None: return self._df
+    def long_run(self, length=None, offset=None, **kwargs):
         else:
             fast  = self._get_column(kwargs.pop('fast', 'fast'))
             slow  = self._get_column(kwargs.pop('slow', 'slow'))
 
             result = long_run(fast=fast, slow=slow, length=length, offset=offset, **kwargs)
-            self._add_prefix_suffix(result, **kwargs)
-            self._append(result, **kwargs)
             return result
 
     def psar(self, af=None, max_af=None, offset=None, **kwargs):
