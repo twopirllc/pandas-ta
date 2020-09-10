@@ -126,7 +126,7 @@ class BasePandasObject(PandasObject):
             # Preemptively drop the rows that are all NaNs
             # Might need to be moved to AnalysisIndicators.__call__() to be
             #   toggleable via kwargs.
-            # df.dropna(axis=0, inplace=True)
+            df.dropna(axis=0, inplace=True)
             # Preemptively rename columns to lowercase
             df.rename(columns=common_names, errors="ignore", inplace=True)
 
@@ -297,7 +297,7 @@ class AnalysisIndicators(BasePandasObject):
         else:
             self._mp = False
 
-    # Public Get DataFrame Methods
+    # Public Get DataFrame Properties
     @property
     def categories(self) -> str:
         """Returns the categories."""
@@ -363,11 +363,6 @@ class AnalysisIndicators(BasePandasObject):
         """Attempts to get the correct series or 'column' and return it."""
         df = self._df
         if df is None: return
-
-        # def _get_case(column: str):
-        #     cases = [column.lower(), column.upper(), column.title()]
-        #     return [c for i, c in enumerate(cases) if column == cases[i]].pop()
-        # default = _get_case(default)
 
         # Explicitly passing a pd.Series to override default.
         if isinstance(series, pd.Series):
@@ -597,22 +592,14 @@ class AnalysisIndicators(BasePandasObject):
         if timed: stime = perf_counter()
         if mode["custom"]:
             # Custom multiprocessing pool. Must be ordered for Chained Strategies
-            results = pool.map(
+            results = pool.imap(
                 self._mp_worker,
                 [(ind["kind"], ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (), {**ind, **kwargs}) for ind in ta],
                 self.cores
             )
-
-            # # Without multiprocessing :
-            # for ind in ta:
-            #     params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
-            #     result = getattr(self, ind["kind"])(*params, **{**ind, **kwargs})
-            #     results.append(result)
-            #     self._add_prefix_suffix(result=result, **ind)
-            #     self._append(result=result, **kwargs)
         else:
-            # All and Categorical multiprocessing pool. Speed over Order
-            results = pool.map(
+            # All and Categorical multiprocessing pool. Speed over Order.
+            results = pool.imap_unordered(
                 self._mp_worker,
                 [(ind, tuple(), kwargs) for ind in ta],
                 self.cores
