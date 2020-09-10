@@ -1,5 +1,6 @@
 # Must run seperately from the rest of the tests
 # in order to successfully run
+from multiprocessing import cpu_count
 from time import perf_counter
 
 from .config import sample_data
@@ -14,11 +15,14 @@ _verbose = False
 _timed = True
 speed_table = False
 cumulative = False
+cores = 2
 
 class TestStrategyMethods(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
+        cls.data.ta.cores = cores
+        print(f"[i] Testing Cores: {cls.data.ta.cores}")
         cls.speed_test = DataFrame()
 
     @classmethod

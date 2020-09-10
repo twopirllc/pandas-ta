@@ -594,19 +594,14 @@ class AnalysisIndicators(BasePandasObject):
         pool = Pool(self.cores)
         if timed: stime = perf_counter()
         if mode["custom"]:
+            custom_ta = [(ind["kind"], ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (), {**ind, **kwargs}) for ind in ta]
+
             # Custom multiprocessing pool. Must be ordered for Chained Strategies
-            results = pool.imap(
-                self._mp_worker,
-                [(ind["kind"], ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (), {**ind, **kwargs}) for ind in ta],
-                self.cores
-            )
+            results = pool.imap(self._mp_worker, custom_ta)
         else:
+            default_ta = [(ind, tuple(), kwargs) for ind in ta]
             # All and Categorical multiprocessing pool. Speed over Order.
-            results = pool.imap_unordered(
-                self._mp_worker,
-                [(ind, tuple(), kwargs) for ind in ta],
-                self.cores
-            )
+            results = pool.imap_unordered(self._mp_worker, default_ta)
         pool.close()
         pool.join()
 
