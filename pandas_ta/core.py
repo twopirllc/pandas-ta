@@ -407,15 +407,18 @@ class AnalysisIndicators(BasePandasObject):
             return getattr(self,method)(*args, **kwargs)[0]
 
 
-    def _post_process(self, result, **kwargs) -> (Series, DataFrame):
+    def _post_process(self, result, **kwargs) -> (pd.Series, pd.DataFrame):
         """Applies any additional modifications to the DataFrame
         * Applies prefixes and/or suffixes
         * Appends the result to main DataFrame
         """
-        if not isinstance(result, (Series, DataFrame)):
+        if not isinstance(result, (pd.Series, pd.DataFrame)):
             print(f"[X] Oops! The result was not a Series or DataFrame.")
             return self._df
         else:
+            # Append only specific columns to the dataframe (via 'col_numbers':(0,1,3) for example)
+            result = result.iloc[:,[int(n) for n in kwargs['col_numbers']]] if isinstance(result, pd.DataFrame) and 'col_numbers' in kwargs and kwargs['col_numbers'] is not None else result
+            # Add prefix/suffix and append to the dataframe
             self._add_prefix_suffix(result=result, **kwargs)
             self._append(result=result, **kwargs)
         return result
