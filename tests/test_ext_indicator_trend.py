@@ -15,12 +15,8 @@ class TestTrendExtension(TestCase):
     def tearDownClass(cls):
         del cls.data
 
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
 
     def test_adx_ext(self):
@@ -72,8 +68,8 @@ class TestTrendExtension(TestCase):
         # Nothing passed, return self
         self.assertEqual(self.data.ta.long_run(append=True).shape, self.data.shape)
 
-        fast = self.data.ta.ema("close", 8)
-        slow = self.data.ta.ema("close", 21)
+        fast = self.data.ta.ema(8)
+        slow = self.data.ta.ema(21)
         self.data.ta.long_run(fast, slow, append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "LR_2")
@@ -92,8 +88,8 @@ class TestTrendExtension(TestCase):
         # Nothing passed, return self
         self.assertEqual(self.data.ta.short_run(append=True).shape, self.data.shape)
 
-        fast = self.data.ta.ema("close", 8)
-        slow = self.data.ta.ema("close", 21)
+        fast = self.data.ta.ema(8)
+        slow = self.data.ta.ema(21)
         self.data.ta.short_run(fast, slow, append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "SR_2")

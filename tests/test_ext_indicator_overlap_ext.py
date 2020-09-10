@@ -1,7 +1,7 @@
 from .config import sample_data
 from .context import pandas_ta
 
-from unittest import TestCase
+from unittest import skip, TestCase
 from pandas import DataFrame
 
 
@@ -15,12 +15,8 @@ class TestOverlapExtension(TestCase):
     def tearDownClass(cls):
         del cls.data
 
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
 
     def test_dema_ext(self):
