@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from math import atan, pi
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
-def slope(close, length=None, as_angle=None, to_degrees=None, offset=None, **kwargs):
+def slope(close, length=None, as_angle=None, to_degrees=None, vertical=None, offset=None, **kwargs):
     """Indicator: Slope"""
     # Validate arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 1
-    as_angle = True if as_angle and isinstance(as_angle, bool) else False
-    to_degrees = True if to_degrees and isinstance(to_degrees, bool) else False
+    as_angle = True if isinstance(as_angle, bool) else False
+    to_degrees = True if isinstance(to_degrees, bool) else False
     offset = get_offset(offset)
 
     # Calculate Result
@@ -23,14 +23,14 @@ def slope(close, length=None, as_angle=None, to_degrees=None, offset=None, **kwa
         slope = slope.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        slope.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        slope.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        slope.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        slope.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     slope.name = f"SLOPE_{length}" if not as_angle else f"ANGLE{'d' if to_degrees else 'r'}_{length}"
-    slope.category = 'momentum'
+    slope.category = "momentum"
 
     return slope
 
