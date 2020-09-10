@@ -57,6 +57,7 @@ and _Weighted Moving Average_.
 
 ## __Breaking Indicators__
 * _Stochastic Oscillator_ (**stoch**): Now in line with Trading View's calculation. See: ```help(ta.stoch)```
+* _Linear Decay_ (**linear_decay**): Renamed to _Decay_ (**decay**) and with the option for Exponential decay using ```mode="exp"```. See: ```help(ta.decay)```
 
 ## __New Indicators__
 * _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
@@ -440,10 +441,11 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Aroon & Aroon Oscillator_: **aroon**
 * _Choppiness Index_: **chop**
 * _Chande Kroll Stop_: **cksp**
+* _Decay_: **decay**
+    * Formally: **linear_decay**
 * _Decreasing_: **decreasing**
 * _Detrended Price Oscillator_: **dpo**
 * _Increasing_: **increasing**
-* _Linear Decay_: **linear_decay**
 * _Long Run_: **long_run**
 * _Parabolic Stop and Reverse_: **psar**
 * _Q Stick_: **qstick**

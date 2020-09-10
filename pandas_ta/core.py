@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "05b"))
+version = ".".join(("0", "2", "06b"))
 
 
 # Strategy (Data)Class
@@ -1150,6 +1150,11 @@ class AnalysisIndicators(BasePandasObject):
         result = cksp(high=high, low=low, close=close, p=p, x=x, q=q, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def decay(self, length=None, mode=None, offset=None, **kwargs):
+        close  = self._get_column(kwargs.pop("close", "close"))
+        result = decay(close=close, length=length, mode=mode, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def decreasing(self, length=None, asint=True, offset=None, **kwargs):
         close  = self._get_column(kwargs.pop("close", "close"))
         result = decreasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
@@ -1163,11 +1168,6 @@ class AnalysisIndicators(BasePandasObject):
     def increasing(self, length=None, asint=True, offset=None, **kwargs):
         close  = self._get_column(kwargs.pop("close", "close"))
         result = increasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def linear_decay(self, length=None, offset=None, **kwargs):
-        close  = self._get_column(kwargs.pop("close", "close"))
-        result = linear_decay(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def long_run(self, fast=None, slow=None, length=None, offset=None, **kwargs):

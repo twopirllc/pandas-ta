@@ -13,6 +13,7 @@ from pandas_ta.utils import final_time
 _verbose = False
 _timed = True
 speed_table = False
+cumulative = False
 
 class TestStrategyMethods(TestCase):
     @classmethod
@@ -25,8 +26,8 @@ class TestStrategyMethods(TestCase):
         del cls.data
         cls.speed_test = cls.speed_test.T
         cls.speed_test.index.name = "Test"
-        cls.speed_test.columns = ["secs"]
-        cls.speed_test["Cumsecs"] = cls.speed_test["secs"].cumsum()
+        cls.speed_test.columns = ["Columns", "Seconds"]
+        if cumulative: cls.speed_test["Cum. Seconds"] = cls.speed_test["Seconds"].cumsum()
         if speed_table: cls.speed_test.to_csv("tests/speed_test.csv")
         print(cls.speed_test)
 
@@ -49,29 +50,29 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
-    def test_all_strategy(self):
-        if _verbose: print()
-        init_cols = len(self.data.columns)
-        self.data.ta.strategy(pandas_ta.AllStrategy, verbose=_verbose)
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+    # def test_all_strategy(self):
+    #     if _verbose: print()
+    #     init_cols = len(self.data.columns)
+    #     self.data.ta.strategy(pandas_ta.AllStrategy, verbose=_verbose)
+    #     added_cols = len(self.data.columns) - init_cols
+    #     self.assertGreaterEqual(added_cols, 1)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
+    #     result = self.data[self.data.columns[-added_cols:]]
+    #     self.assertIsInstance(result, DataFrame)
+    #     self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-    def test_all_name_strategy(self):
-        if _verbose: print()
-        init_cols = len(self.data.columns)
-        self.data.ta.strategy("All", verbose=_verbose)
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+    # def test_all_name_strategy(self):
+    #     if _verbose: print()
+    #     init_cols = len(self.data.columns)
+    #     self.data.ta.strategy("All", verbose=_verbose)
+    #     added_cols = len(self.data.columns) - init_cols
+    #     self.assertGreaterEqual(added_cols, 1)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
+    #     result = self.data[self.data.columns[-added_cols:]]
+    #     self.assertIsInstance(result, DataFrame)
+    #     self.data.drop(columns=result.columns, axis=1, inplace=True)
 
     def test_candles_category(self):
         if _verbose: print()
@@ -87,7 +88,8 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_common(self):
         if _verbose: print()
@@ -134,7 +136,7 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_custom_args_tuple(self):
         if _verbose: print()
@@ -162,7 +164,7 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_momentum_category(self):
         if _verbose: print()
@@ -178,7 +180,7 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_overlap_category(self):
         if _verbose: print()
@@ -194,7 +196,7 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_performance_category(self):
         if _verbose: print()
@@ -210,7 +212,7 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_statistics_category(self):
         if _verbose: print()
@@ -226,7 +228,7 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_trend_category(self):
         if _verbose: print()
@@ -242,7 +244,7 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_volatility_category(self):
         if _verbose: print()
@@ -258,7 +260,7 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]
 
     def test_volume_category(self):
         if _verbose: print()
@@ -274,4 +276,4 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-        self.speed_test[category] = [time_diff]
+        self.speed_test[category] = [added_cols, time_diff]

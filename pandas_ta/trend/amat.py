@@ -12,28 +12,29 @@ def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=No
     fast = int(fast) if fast and fast > 0 else 8
     slow = int(slow) if slow and slow > 0 else 21
     lookback = int(lookback) if lookback and lookback > 0 else 2
-    mamode = mamode.upper() if mamode else "EMA"
+    mamode = mamode.lower() if mamode else "ema"
     offset = get_offset(offset)
 
     # Calculate Result
-    if mamode == "EMA":
-        fast_ma = ema(close=close, length=fast, **kwargs)
-        slow_ma = ema(close=close, length=slow, **kwargs)
-    elif mamode == "HMA":
+    if mamode == "hma":
         fast_ma = hma(close=close, length=fast, **kwargs)
         slow_ma = hma(close=close, length=slow, **kwargs)
-    elif mamode == "LINREG":
+    elif mamode == "linreg":
         fast_ma = linreg(close=close, length=fast, **kwargs)
         slow_ma = linreg(close=close, length=slow, **kwargs)
-    elif mamode == "RMA":
+    elif mamode == "rma":
         fast_ma = rma(close=close, length=fast, **kwargs)
         slow_ma = rma(close=close, length=slow, **kwargs)
-    elif mamode == "SMA":
+    elif mamode == "sma":
         fast_ma = sma(close=close, length=fast, **kwargs)
         slow_ma = sma(close=close, length=slow, **kwargs)
-    elif mamode == "WMA":
+    elif mamode == "wma":
         fast_ma = wma(close=close, length=fast, **kwargs)
         slow_ma = wma(close=close, length=slow, **kwargs)
+    else: # "ema"
+        fast_ma = ema(close=close, length=fast, **kwargs)
+        slow_ma = ema(close=close, length=slow, **kwargs)
+
 
     mas_long = long_run(fast_ma, slow_ma, length=lookback)
     mas_short = short_run(fast_ma, slow_ma, length=lookback)
@@ -59,7 +60,7 @@ def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=No
     })
 
     # Name and Categorize it
-    amatdf.name = f"AMAT_{mamode}_{fast}_{slow}_{lookback}"
+    amatdf.name = f"AMAT_{mamode.upper()}_{fast}_{slow}_{lookback}"
     amatdf.category = "trend"
 
     return amatdf
