@@ -1,5 +1,6 @@
 .PHONY: all
 all:
+	make test_utils
 	make test_ta
 	make test_ext
 	make test_strats
@@ -13,11 +14,14 @@ clean:
 init:
 	pip install -r requirements.txt
 
-test_ta:
-	python -m unittest -v tests/test_indicator_*.py
-
 test_ext:
 	python -m unittest -v tests/test_ext_indicator_*.py
 
 test_strats:
 	python -m unittest -v tests/test_strategy.py
+
+test_ta:
+	python -m unittest -v tests/test_indicator_*.py
+
+test_utils:
+	python -m unittest -v tests/test_utils.py

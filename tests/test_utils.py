@@ -203,17 +203,12 @@ class TestUtilities(TestCase):
 
         self.assertEqual(self.utils.get_drift(0), 1)
         self.assertEqual(self.utils.get_drift(1.1), 1)
-        self.assertEqual(self.utils.get_drift(-1.1), -1)
-        self.assertEqual(self.utils.get_drift(1.999999999999999), 1)
-        self.assertEqual(self.utils.get_drift(1.9999999999999999), 2)
-        self.assertEqual(self.utils.get_drift(-10), -10)
+        self.assertEqual(self.utils.get_drift(-1.1), 1)
 
     def test_get_offset(self):
         for s in [0, None, '', [], {}]:
             self.assertIsInstance(self.utils.get_offset(s), int)
 
         self.assertEqual(self.utils.get_offset(0), 0)
-        self.assertEqual(self.utils.get_offset(1.1), 1)
-        self.assertEqual(self.utils.get_offset(-1.1), -1)
-        self.assertEqual(self.utils.get_offset(1.999999999999999), 1)
-        self.assertEqual(self.utils.get_offset(1.9999999999999999), 2)
+        self.assertEqual(self.utils.get_offset(-1.1), 0)
+        self.assertEqual(self.utils.get_offset(1), 1)

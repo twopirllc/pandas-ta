@@ -97,7 +97,6 @@ class TestStrategyMethods(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.data.drop(columns=result.columns, axis=1, inplace=True)
 
-    @skip
     def test_custom_args_tuple(self):
         custom_args_ta = [
             {"kind":"fisher", "params": (13, 7)},
