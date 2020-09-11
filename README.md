@@ -60,7 +60,6 @@ Thank you for your contribution!
 ## __Recent Changes__
 * A __Strategy__ Class to help name and group your favorite indicators.
 * An experimental and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
-and _Weighted Moving Average_.
 
 
 ## __Breaking Indicators__
@@ -212,9 +211,9 @@ ChainedTA = ta.Strategy({
 
 The new __Pandas (TA)__ method __strategy__ utilizes **multiprocessing**, for all Strategy types, to facilitate bulk indicator processing.
 
-* By default, this method will append __all applicable__ indicators to current DataFrame. I
+* This method **will** append __all applicable__ indicators to current DataFrame.
 * Utility methods like ```above```, ```below``` et al are not included, however they can be included with Custom Strategies.
-* **Known Issue:** Changing the default core count with a Custom Strategy that has Composition/Chaining may not append all columns.  See below: **DataFrame Property:** _cores_ for changing the number of cores to use for multiprocessing.
+* **Known Issue:** Changing the default core count with a Custom Strategy that has Composition/Chaining may not append all columns.
     * **Solution:** leave the default core count alone.
 * __Note__: The _strategy_ method is experimental and subject to change.
 
@@ -267,7 +266,7 @@ df.ta.categories
 
 # Running a Categorical Strategy only requires the Category name
 df.ta.strategy("Momentum") # Default values for all Momentum indicators
-df.ta.strategy("overlap", length=42) # Override all 'length' attributes
+df.ta.strategy("overlap", length=42) # Override all Overlap 'length' attributes
 ```
 
 ### __Custom__
@@ -289,14 +288,27 @@ CustomStrategy = ta.Strategy(
 df.ta.strategy(CustomStrategy)
 ```
 
-## __DataFrame Property__: _categories_
+# __DataFrame Properties__:
+
+## _adjusted_
+
+```python
+# Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
+df.ta.adjusted = "adj_close"
+df.ta.sma(length=10, append=True)
+
+# To reset back to 'close', set adjusted back to None
+df.ta.adjusted = None
+```
+
+## _categories_
 
 ```python
 # List of Pandas TA categories
 df.ta.categories
 ```
 
-## __DataFrame Property__: _cores_
+## _cores_
 
 ```python
 # Set the number of cores to use for strategy multiprocessing
@@ -307,7 +319,16 @@ df.ta.cores = 4
 df.ta.cores
 ```
 
-## __DataFrame Properties__: _reverse_ & _datetime_ordered_
+## _datetime_ordered_
+
+```python
+# The 'datetime_ordered' property returns True if the DataFrame
+# index is of Pandas datetime64 and df.index[0] < df.index[-1]
+# Otherwise it returns False
+df.ta.datetime_ordered
+```
+
+## _reverse_
 
 ```python
 # The 'datetime_ordered' property returns True if the DataFrame
@@ -320,26 +341,18 @@ df.ta.datetime_ordered
 df.ta.reverse
 ```
 
-## __DataFrame Property__: *adjusted*
+## _prefix_ & _suffix_
 
 ```python
-# Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
-df.ta.adjusted = "adj_close"
-df.ta.sma(length=10, append=True)
-
-# To reset back to 'close', set adjusted back to None
-df.ta.adjusted = None
-```
-
-## __DataFrame kwargs__: _prefix_ and _suffix_
-
-```python
+# Applying a prefix to the name of an indicator
 prehl2 = df.ta.hl2(prefix="pre")
 print(prehl2.name)  # "pre_HL2"
 
+# Applying a suffix to the name of an indicator
 endhl2 = df.ta.hl2(suffix="post")
 print(endhl2.name)  # "HL2_post"
 
+# Applying a prefix and suffix to the name of an indicator
 bothhl2 = df.ta.hl2(prefix="pre", suffix="post")
 print(bothhl2.name)  # "pre_HL2_post"
 ```
