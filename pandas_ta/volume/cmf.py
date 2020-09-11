@@ -10,7 +10,7 @@ def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs
     volume = verify_series(volume)
     high_low_range = non_zero_range(high, low)
     length = int(length) if length and length > 0 else 20
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     offset = get_offset(offset)
 
     # Calculate Result
@@ -29,14 +29,14 @@ def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs
         cmf = cmf.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        cmf.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        cmf.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        cmf.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        cmf.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     cmf.name = f"CMF_{length}"
-    cmf.category = 'volume'
+    cmf.category = "volume"
 
     return cmf
 

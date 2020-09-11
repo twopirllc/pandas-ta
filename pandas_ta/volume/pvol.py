@@ -7,7 +7,7 @@ def pvol(close, volume, offset=None, **kwargs):
     close = verify_series(close)
     volume = verify_series(volume)
     offset = get_offset(offset)
-    signed = kwargs.pop('signed', False)
+    signed = kwargs.pop("signed", False)
 
     # Calculate Result
     if signed:
@@ -20,14 +20,14 @@ def pvol(close, volume, offset=None, **kwargs):
         pvol = pvol.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        pvol.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        pvol.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        pvol.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        pvol.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     pvol.name = f"PVOL"
-    pvol.category = 'volume'
+    pvol.category = "volume"
 
     return pvol
 

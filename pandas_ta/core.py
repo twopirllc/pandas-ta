@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "06b"))
+version = ".".join(("0", "2", "07b"))
 
 
 # Strategy (Data)Class
@@ -306,7 +306,10 @@ class AnalysisIndicators(BasePandasObject):
     @property
     def datetime_ordered(self) -> bool:
         """Returns True if the index is a datetime and ordered."""
-        return is_datetime_ordered(self._df)
+        hasdf = hasattr(self, "_df")
+        if hasdf:
+            return is_datetime_ordered(self._df)
+        return hasdf
 
     @property
     def reverse(self) -> pd.DataFrame:

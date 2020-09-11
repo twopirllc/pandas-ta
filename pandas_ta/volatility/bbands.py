@@ -51,7 +51,7 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
     bbandsdf = DataFrame(data)
     bbandsdf.name = f"BBANDS_{length}_{std}"
-    bbandsdf.category = "volatility"
+    bbandsdf.category = mid.category
 
     return bbandsdf
 

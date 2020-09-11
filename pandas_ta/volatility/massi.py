@@ -12,7 +12,7 @@ def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
     slow = int(slow) if slow and slow > 0 else 25
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else fast
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else fast
     offset = get_offset(offset)
 
     # Calculate Result
@@ -27,14 +27,14 @@ def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
         massi = massi.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        massi.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        massi.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        massi.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        massi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     massi.name = f"MASSI_{fast}_{slow}"
-    massi.category = 'volatility'
+    massi.category = "volatility"
 
     return massi
 

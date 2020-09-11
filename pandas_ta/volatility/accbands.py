@@ -12,7 +12,7 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
     high_low_range = non_zero_range(high, low)
     length = int(length) if length and length > 0 else 20
     c = float(c) if c and c > 0 else 4
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     mamode = mamode.lower() if mamode else "sma"
     drift = get_drift(drift)
     offset = get_offset(offset)

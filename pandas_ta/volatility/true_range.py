@@ -23,14 +23,14 @@ def true_range(high, low, close, drift=None, offset=None, **kwargs):
         true_range = true_range.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        true_range.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        true_range.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        true_range.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        true_range.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     true_range.name = f"TRUERANGE_{drift}"
-    true_range.category = 'volatility'
+    true_range.category = "volatility"
 
     return true_range
 

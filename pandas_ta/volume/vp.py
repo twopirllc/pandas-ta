@@ -9,7 +9,7 @@ def vp(close, volume, width=None, **kwargs):
     close = verify_series(close)
     volume = verify_series(volume)
     width = int(width) if width and width > 0 else 10
-    sort_close = kwargs.pop('sort_close', False)
+    sort_close = kwargs.pop("sort_close", False)
 
     # Setup
     signed_volume = signed_series(volume, initial=1)
@@ -47,14 +47,14 @@ def vp(close, volume, width=None, **kwargs):
     vpdf[total_volume_col] = vpdf[pos_volume_col] + vpdf[neg_volume_col]
 
     # Handle fills
-    if 'fillna' in kwargs:
-        vpdf.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        vpdf.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        vpdf.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        vpdf.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     vpdf.name = f"VP_{width}"
-    vpdf.category = 'volume'
+    vpdf.category = "volume"
 
     return vpdf
 
