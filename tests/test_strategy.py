@@ -11,114 +11,92 @@ from pandas import DataFrame
 
 from pandas_ta.utils import final_time
 
-_verbose = False
-_timed = True
-speed_table = False
+cores = 4
 cumulative = False
-cores = 2
+speed_table = False
+strategy_timed = False
+timed = True
+verbose = False
 
 class TestStrategyMethods(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
-        cls.data.ta.cores = cores
-        print(f"[i] Testing Cores: {cls.data.ta.cores}")
+        # cls.data.ta.cores = cores
         cls.speed_test = DataFrame()
 
     @classmethod
     def tearDownClass(cls):
-        del cls.data
         cls.speed_test = cls.speed_test.T
         cls.speed_test.index.name = "Test"
         cls.speed_test.columns = ["Columns", "Seconds"]
         if cumulative: cls.speed_test["Cum. Seconds"] = cls.speed_test["Seconds"].cumsum()
         if speed_table: cls.speed_test.to_csv("tests/speed_test.csv")
-        print(cls.speed_test)
+        if timed:
+            print(f"[i] Cores: {cls.data.ta.cores}")
+            print(f"[i] Total Datapoints: {cls.data.shape[0]}")
+            print(cls.speed_test)
+        del cls.data
+            
 
 
-    def setUp(self): pass
-    def tearDown(self): pass
+    def setUp(self):
+        self.added_cols = 0
+        self.category = ""
+        self.init_cols = len(self.data.columns)
+        self.time_diff = 0
+        self.result = None
+        if verbose: print()
+        if timed: self.stime = perf_counter()
+
+    def tearDown(self):
+        if timed: self.time_diff = perf_counter() - self.stime
+        self.added_cols = len(self.data.columns) - self.init_cols
+        self.assertGreaterEqual(self.added_cols, 1)
+
+        self.result = self.data[self.data.columns[-self.added_cols:]]
+        self.assertIsInstance(self.result, DataFrame)
+        self.data.drop(columns=self.result.columns, axis=1, inplace=True)
+
+        self.speed_test[self.category] = [self.added_cols, self.time_diff]
 
 
+    # @skip
     def test_all(self):
-        if _verbose: print()
-        category = "All"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "All"
+        self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
+    @skip
+    def test_all_strategy(self):
+        self.data.ta.strategy(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
 
-        self.speed_test[category] = [added_cols, time_diff]
+    @skip
+    def test_all_name_strategy(self):
+        self.category = "All"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-    # def test_all_strategy(self):
-    #     if _verbose: print()
-    #     init_cols = len(self.data.columns)
-    #     self.data.ta.strategy(pandas_ta.AllStrategy, verbose=_verbose)
-    #     added_cols = len(self.data.columns) - init_cols
-    #     self.assertGreaterEqual(added_cols, 1)
-
-    #     result = self.data[self.data.columns[-added_cols:]]
-    #     self.assertIsInstance(result, DataFrame)
-    #     self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-    # def test_all_name_strategy(self):
-    #     if _verbose: print()
-    #     init_cols = len(self.data.columns)
-    #     self.data.ta.strategy("All", verbose=_verbose)
-    #     added_cols = len(self.data.columns) - init_cols
-    #     self.assertGreaterEqual(added_cols, 1)
-
-    #     result = self.data[self.data.columns[-added_cols:]]
-    #     self.assertIsInstance(result, DataFrame)
-    #     self.data.drop(columns=result.columns, axis=1, inplace=True)
-
+    # @skip
     def test_candles_category(self):
-        if _verbose: print()
-        category = "Candles"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(category, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "Candles"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_common(self):
-        if _verbose: print()
-        category = "Common"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(pandas_ta.CommonStrategy, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "Common"
+        self.data.ta.strategy(pandas_ta.CommonStrategy, verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
+    # @skip
     def test_custom_a(self):
-        if _verbose: print()
+        self.category = "Custom A"
+
         momo_bands_sma_ta = [
-            {"kind":"sma", "length": 50}, # 1
-            {"kind":"sma", "length": 200}, # 1
-            {"kind":"bbands", "length": 20}, # 3
-            {"kind":"macd"}, # 3
-            {"kind":"rsi"}, # 1
-            {"kind":"log_return", "cumulative": True}, # 1
-            {"kind":"sma", "close": "CUMLOGRET_1", "length": 5, "suffix": "CUMLOGRET"}, # 1
+            {"kind": "rsi"}, # 1
+            {"kind": "macd"}, # 3
+            {"kind": "sma", "length": 50}, # 1
+            {"kind": "sma", "length": 200}, # 1
+            {"kind": "bbands", "length": 20}, # 3
+            {"kind": "log_return", "cumulative": True}, # 1
+            {"kind": "sma", "close": "CUMLOGRET_1", "length": 5, "suffix": "CUMLOGRET"}, # 1
         ]
 
         custom = pandas_ta.Strategy(
@@ -126,158 +104,56 @@ class TestStrategyMethods(TestCase):
             momo_bands_sma_ta, # ta
             "MACD and RSI Momo with BBANDS and SMAs 50 & 200 and Cumulative Log Returns" # description
         )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 
-        category = "Custom A"
-
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(custom, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertEqual(added_cols, 11)
-
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_custom_args_tuple(self):
-        if _verbose: print()
+        self.category = "Custom B"
+
         custom_args_ta = [
             {"kind":"fisher", "params": (13, 7)},
-            {"kind":"macd", "params": (9, 19, 7)},
+            {"kind":"macd", "params": (9, 19, 7), "col_numbers": (1,)},
             {"kind":"ema", "params": (5,)},
-            {"kind":"linreg", "close": "EMA_5", "length": 8, "prefix": "EMA_5"}
+            {"kind":"linreg", "close": "EMA_5", "length": 8, "suffix": "EMA_5"}
         ]
 
         custom = pandas_ta.Strategy(
             "Custom Args Tuple", custom_args_ta,
             "Allow for easy filling in indicator arguments without naming them"
         )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 
-        category = "Custom B"
-
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(custom, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_momentum_category(self):
-        if _verbose: print()
-        category = "Momentum"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(category, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "Momentum"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_overlap_category(self):
-        if _verbose: print()
-        category = "Overlap"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(category, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "Overlap"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_performance_category(self):
-        if _verbose: print()
-        category = "Performance"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(category, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "Performance"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_statistics_category(self):
-        if _verbose: print()
-        category = "Statistics"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(category, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "Statistics"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_trend_category(self):
-        if _verbose: print()
-        category = "Trend"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(category, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "Trend"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_volatility_category(self):
-        if _verbose: print()
-        category = "Volatility"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(category, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
+        self.category = "Volatility"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
-
+    # @skip
     def test_volume_category(self):
-        if _verbose: print()
-        category = "Volume"
-        init_cols = len(self.data.columns)
-        if _timed: stime = perf_counter()
-        self.data.ta.strategy(category, verbose=_verbose)
-        if _timed: time_diff = perf_counter() - stime
-        added_cols = len(self.data.columns) - init_cols
-        self.assertGreaterEqual(added_cols, 1)
-
-        result = self.data[self.data.columns[-added_cols:]]
-        self.assertIsInstance(result, DataFrame)
-        self.data.drop(columns=result.columns, axis=1, inplace=True)
-
-        self.speed_test[category] = [added_cols, time_diff]
+        self.category = "Volume"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)

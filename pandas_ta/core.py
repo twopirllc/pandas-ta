@@ -23,13 +23,13 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "07b"))
+version = ".".join(("0", "2", "08b"))
 
 
-# Strategy (Data)Class
+# Strategy DataClass
 @dataclass
 class Strategy:
-    """Strategy (Data)Class
+    """Strategy DataClass
     A way to name and group your favorite indicators
 
     Args:
@@ -126,7 +126,7 @@ class BasePandasObject(PandasObject):
             # Preemptively drop the rows that are all NaNs
             # Might need to be moved to AnalysisIndicators.__call__() to be
             #   toggleable via kwargs.
-            df.dropna(axis=0, inplace=True)
+            # df.dropna(axis=0, inplace=True)
             # Preemptively rename columns to lowercase
             df.rename(columns=common_names, errors="ignore", inplace=True)
 
@@ -398,16 +398,9 @@ class AnalysisIndicators(BasePandasObject):
         method, args, kwargs = arguments
 
         if method != "ichimoku":
-            try:
-                result = getattr(self,method)(*args, **kwargs)
-                self._add_prefix_suffix(result=result, **kwargs)
-                self._append(result=result, **kwargs)
-                return result
-            except:
-                print(f"[X] Multiprocessing Error: {method} has not been added to the dataframe.")
-                return
+            return getattr(self, method)(*args, **kwargs)
         else:
-            return getattr(self,method)(*args, **kwargs)[0]
+            return getattr(self, method)(*args, **kwargs)[0]
 
 
     def _post_process(self, result, **kwargs) -> (pd.Series, pd.DataFrame):
@@ -600,18 +593,16 @@ class AnalysisIndicators(BasePandasObject):
             custom_ta = [(ind["kind"], ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (), {**ind, **kwargs}) for ind in ta]
 
             # Custom multiprocessing pool. Must be ordered for Chained Strategies
-            results = pool.imap(self._mp_worker, custom_ta)
+            results = pool.imap(self._mp_worker, custom_ta, self.cores)#, cpus) # May fix this to cpus if Chaining/Composition if it remains inconsistent
         else:
             default_ta = [(ind, tuple(), kwargs) for ind in ta]
             # All and Categorical multiprocessing pool. Speed over Order.
-            results = pool.imap_unordered(self._mp_worker, default_ta)
+            results = pool.imap_unordered(self._mp_worker, default_ta, self.cores)
         pool.close()
         pool.join()
 
         # Apply prefixes/suffixes and appends indicator results to the DataFrame
-        for r in results:
-            self._add_prefix_suffix(result=r, **kwargs)
-            self._append(result=r, **kwargs)
+        [self._post_process(r, **kwargs) for r in results]
 
         if timed: ftime = final_time(stime)
 
