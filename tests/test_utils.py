@@ -154,6 +154,13 @@ class TestUtilities(TestCase):
         npt.assert_allclose(self.utils.fibonacci(n=5, zero=True, weighted=True), np.array([0, 1/12, 1/12, 1/6, 1/4, 5/12]))
         npt.assert_allclose(self.utils.fibonacci(n=5, zero=False, weighted=True), np.array([1/12, 1/12, 1/6, 1/4, 5/12]))
 
+    def test_get_time(self):
+        result = self.utils.get_time()
+        result = self.utils.get_time("NZSX")
+        result = self.utils.get_time("SSE", to_string=True)
+        self.assertEqual(self.utils.EXCHANGE_TZ["NYSE"], -4)
+        self.assertIsInstance(result, str)
+
     def test_pascals_triangle(self):
         self.assertIsNone(self.utils.pascals_triangle(inverse=True), None)
 

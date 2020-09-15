@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+from datetime import datetime
 from pathlib import Path
 from time import perf_counter
 
@@ -19,6 +20,16 @@ from sys import float_info as sflt
 TRADING_DAYS_PER_YEAR = 252 # Keep even
 TRADING_HOURS_PER_DAY = 6.5
 MINUTES_PER_HOUR = 60
+
+
+# https://www.worldtimezone.com/markets24.php
+EXCHANGE_TZ = {
+    "NZSX": 12, "ASX": 11,
+    "TSE": 9, "HKE": 8, "SSE": 8, "SGX": 8,
+    "NSE": 5.5, "DIFX": 4, "RTS": 3,
+    "JSE": 2, "FWB": 1, "LSE": 1,
+    "BMF": -2, "NYSE": -4, "TSX": -4
+}
 
 
 def _above_below(
@@ -291,6 +302,20 @@ def get_drift(x: int) -> int:
 def get_offset(x: int) -> int:
     """Returns an int, otherwise defaults to zero."""
     return int(x) if isinstance(x, int) else 0
+
+
+def get_time(exchange: str = "NYSE", to_string:bool = False) -> (None, str):
+    tz = EXCHANGE_TZ["NYSE"] # Default is NYSE (Eastern Time Zone)
+    if isinstance(exchange, str):
+        exchange = exchange.upper()
+        tz = EXCHANGE_TZ[exchange]
+
+    day_of_year = datetime.utcnow().timetuple().tm_yday
+    today = datetime.utcnow()
+    s  = f"Today: {today}, "
+    s += f"Day {day_of_year}/365 ({100 * round(day_of_year/365, 2)}%), "
+    s += f"{exchange} Time: {(today.timetuple().tm_hour + tz) % 12}:{today.timetuple().tm_min}:{today.timetuple().tm_sec}"
+    return s if to_string else print(s)
 
 
 def is_percent(x: int or float) -> bool:

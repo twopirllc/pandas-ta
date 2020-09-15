@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "08b"))
+version = ".".join(("0", "2", "09b"))
 
 
 # Strategy DataClass
@@ -52,8 +52,6 @@ class Strategy:
     ta: List = field(default_factory=list) # Required.
     description: str = None # Helpful. More descriptive version or notes or w/e.
     created: str = datetime.now().strftime("%m/%d/%Y, %H:%M:%S") # Optional. May change type later to datetime
-    last_run: str = None # Auto filled
-    run_time: str = None # Auto filled
 
     def __post_init__(self):
         has_name = True
@@ -582,9 +580,6 @@ class AnalysisIndicators(BasePandasObject):
         if verbose:
             print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
 
-        # Run an ordered Mapped Pool
-        # It assumes that the chained indicators are specified AFTER the
-        # indicator(s) they are based on.
         timed = kwargs.pop("timed", False)
         results = []
         pool = Pool(self.cores)
@@ -593,7 +588,8 @@ class AnalysisIndicators(BasePandasObject):
             custom_ta = [(ind["kind"], ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (), {**ind, **kwargs}) for ind in ta]
 
             # Custom multiprocessing pool. Must be ordered for Chained Strategies
-            results = pool.imap(self._mp_worker, custom_ta, self.cores)#, cpus) # May fix this to cpus if Chaining/Composition if it remains inconsistent
+            # May fix this to cpus if Chaining/Composition if it remains inconsistent
+            results = pool.imap(self._mp_worker, custom_ta, self.cores)#, cpus)
         else:
             default_ta = [(ind, tuple(), kwargs) for ind in ta]
             # All and Categorical multiprocessing pool. Speed over Order.
