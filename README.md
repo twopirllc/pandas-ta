@@ -1,52 +1,47 @@
+
+
+Pandas TA - A Technical Analysis Library in Python 3
+=================
+
 [![Python Version](https://img.shields.io/pypi/pyversions/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![PyPi Version](https://img.shields.io/pypi/v/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![Package Status](https://img.shields.io/pypi/status/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta.svg?style=flat)](https://pypistats.org/packages/pandas_ta)
-
-# **Pandas TA**
-
 ![Example Chart](/images/TA_Chart.png)
-
-## A Pandas Technical Analysis Library in _Python 3_
 
 _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that is built upon Python's Pandas library with more than 120 Indicators and Utility functions.  These indicators are commonly used for financial time series datasets with columns or labels: datetime, _open_, _high_, _low_, _close_, _volume_, et al.  Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **many more**.
 
-* **Pandas TA** has multiple ways of processing Technical Indicators to fit your programming style.
-* The **primary** requirement to run indicators in [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode, is that _open, high, low, close, volume_ are **lowercase**.
-* Each indicator either returns a Series or a DataFrame in Uppercase Underscore format.
-    * For example, ```df.ta.macd(fast=12, slow=26, signal=9)``` will return a DataFrame with columns: ```['MACD_12_26_9', 'MACDh_12_26_9', 'MACDs_12_26_9']```.
-        * When in doubt, use help(): ```help(ta.macd)```
 
-## Pandas TA Issues, Ideas and Contributions
+Table of contents
+=================
 
-#### Thanks for trying **Pandas TA**!
+<!--ts-->
+   * [Features](#features)
+   * [Getting Started and Examples](#getting-started-and-examples)
+      * [Installation](#installation)
+      * [Latest Version](#latest-version)
+      * [Quick Start](#quick-start)
+      * [Help](#help)
+      * [Specifying Strategies in ```pandas-ta```](#specifying-strategies-in-pandas-ta)
+      * [Multiprocessing](#multiprocessing)
+      * [DataFrame Properties](#dataframe-properties)
+   * [Available Technical Analysis Indicators](#available-technical-analysis-indicators-by-category)
+       * [Candles](#candles-3)
+       * [Momentum](#momentum-34)
+       * [Overlap](#overlap-27)
+       * [Performance](#performance-3)
+       * [Statistics](#statistics-9)
+       * [Trend](#trend-15)
+       * [Utility](#utility-5)
+       * [Volatility](#volatility-12)
+       * [Volume](#volume-13)
+   * [Changes](#changes)
+   * [Issues and Contributions](#issues-and-contributions)
+<!--te-->
 
-Please take a moment to read **this** and the rest of this **README** before posting any issue.
 
-* ### [Comments and Feedback](https://github.com/twopirllc/pandas-ta/issues)
-    * Have you read the rest of **this** document?
-    * Are you running the latest version?
-        * ```pip install -U git+https://github.com/twopirllc/pandas-ta```
-    * Have you tried the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/)?
-        * Did they help?
-        * What is missing?
-        * Could you help improve them?
-    * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/master/examples/PandasTA_Strategy_Examples.ipynb) Class**?
-    * Documentation could always use improvement. Can you contribute?
-
-* ### [Indicator or Feature Requests & Contributions](https://github.com/twopirllc/pandas-ta/issues)
-    * Please be as detailed as possible. Links, screenshots, and sometimes data samples are welcome.
-        * You want a new indicator not currently listed.
-        * You want an alternate version of an existing indicator.
-        * The indicator does not match another website, library, broker platform, language, et al.
-            * Can you contribute?
-
-## __Contributors__
-Thank you for your contribution!
-
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [SoftDevDanial](https://github.com/SoftDevDanial) | [YuvalWein](https://github.com/YuvalWein)
-
-# __Pandas TA__ Features
+Features
+=================
 
 * Has 120+ indicators and utility functions.
 * Need _multiprocessing_ speed? Use the _strategy_ method.
@@ -56,48 +51,33 @@ Thank you for your contribution!
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
 
 
-# Changes
-## __Recent Changes__
-* A __Strategy__ Class to help name and group your favorite indicators.
-* An experimental and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
+```pandas-ta``` has multiple ways of processing Technical Indicators to fit your programming style.
+
+The primary requirement to run indicators in [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html) mode, is that _open, high, low, close, volume_ are lowercase.
+
+Each indicator either returns a Series or a DataFrame in Uppercase Underscore format.
+  * For example, ```df.ta.macd(fast=12, slow=26, signal=9)``` will return a DataFrame with columns: ```['MACD_12_26_9', 'MACDh_12_26_9', 'MACDs_12_26_9']```.
+      * When in doubt, use help(): ```help(ta.macd)```
 
 
-## __Breaking Indicators__
-* _Stochastic Oscillator_ (**stoch**): Now in line with Trading View's calculation. See: ```help(ta.stoch)```
-* _Linear Decay_ (**linear_decay**): Renamed to _Decay_ (**decay**) and with the option for Exponential decay using ```mode="exp"```. See: ```help(ta.decay)```
+Getting Started and Examples
+=================
 
-## __New Indicators__
-* _Chande Forecast Oscillator_ (**cfo**) It calculates the percentage difference between the actual price and the Time Series Forecast (the endpoint of a linear regression line).
-* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998.
-* _Inside Bar_ (**cdl_inside**) An Inside Bar is a bar contained within it's previous bar's high and low See: ```help(ta.cdl_inside)```
-* _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.
-* _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
-* _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```
-* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade".
-issue of Stocks & Commodities Magazine. It is a moving average based trend
-indicator consisting of two different simple moving averages.
 
-## __Updated Indicators__
-* _Average True Range_ (**atr**): Added option to return **atr** as a percentage. See: ```help(ta.atr)```
-* _Fisher Transform_ (**fisher**): Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
-* _Fisher Transform_ (**fisher**) and _Kaufman's Adaptive Moving Average_ (**kama**): Fixed a bug where their columns were not added to final DataFrame when using the _strategy_ method.
-* _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series with pertinenet trade info for a _trend_. An example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.
-
-# __Getting Started and Examples__
-
-## __Installation__ (python 3)
-
+Installation
+-----
 ```sh
 $ pip install pandas_ta
 ```
 
-## __Latest Version__
+Latest Version
+-----
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
 
-## __Quick Start__ using the DataFrame Extension
-
+Quick Start
+-----
 ```python
 import pandas as pd
 import pandas_ta as ta
@@ -118,8 +98,8 @@ df.tail()
 # vv Continue Post Processing vv
 ```
 
-## __Module and Indicator Help__
-
+Help
+-----
 ```python
 import pandas as pd
 import pandas_ta as ta
@@ -134,19 +114,21 @@ pd.DataFrame().ta.indicators()
 help(ta.log_return)
 ```
 
-## New Class: __Strategy__
-### What is a Pandas TA Strategy?
+Specifying Strategies in ```pandas-ta```
+-----
+
+### What is a ```pandas-ta``` Strategy?
 A _Strategy_ is a simple way to name and group your favorite TA indicators. The _Strategy_ Class is a simple _Data Class_ to contain a list of indicators and their parameters.
 
-* **Pandas** TA comes with two basic Strategies: __AllStrategy__ and __CommonStrategy__ to help you get started.
+```pandas-ta``` comes with two basic Strategies: __AllStrategy__ and __CommonStrategy__ to help you get started.
 
-* A _Strategy_ Class can be as simple as the __CommonStrategy__ or more complex with a Composition of indicators such as the **ChainedTA** Example below.
-    * You are using a Chained Strategy when you have the output of one indicator as input into one or more indicators in the same _Strategy_.
-    * Use the 'prefix' and/or 'suffix' keywords to distuished the composed indicator from it's default Series.
+A _Strategy_ Class can be as simple as the __CommonStrategy__ or more complex with a Composition of indicators such as the ChainedTA* Example below.
+  * You are using a Chained Strategy when you have the output of one indicator as input into one or more indicators in the same _Strategy_.
+  * Use the 'prefix' and/or 'suffix' keywords to distuished the composed indicator from it's default Series.
 
-* See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
+See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
 
-* __Note__: _Strategy_ is experimental and subject to change.
+__Note__: _Strategy_ is experimental and subject to change.
 
 ### Strategy Requirements:
 - _name_: Some short memorable string.  _Note_: Case-insensitive "All" is reserved.
@@ -156,98 +138,10 @@ A _Strategy_ is a simple way to name and group your favorite TA indicators. The 
 - _description_: A more detailed description of what the Strategy tries to capture. Default: None
 - _created_: At datetime string of when it was created. Default: Automatically generated.
 
-#### Things to note:
-- A Strategy will __fail__ when consumed by Pandas TA if there is no {"kind": "indicator name"} attribute. __Remember__ to check your spelling.
-
-#### Examples
-```python
-# The Builtin "All" Strategy
-ta.AllStrategy = ta.Strategy(
-    name="All",
-    description="All the indicators with their default settings. Pandas TA default.",
-    ta=None
-)
-
-# The Builtin "Common" Strategy with Volume Chaining
-ta.CommonStrategy = ta.Strategy(
-    name="Common Price and Volume SMAs",
-    description="Common Price SMAs: 10, 20, 50, 200 and Volume SMA: 20.",
-    ta=[
-        {"kind": "sma", "length": 10},
-        {"kind": "sma", "length": 20},
-        {"kind": "sma", "length": 50},
-        {"kind": "sma", "length": 200},
-        {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOL"}
-    ]
-)
-
-# Custom Strategy Example
-CustomStrategy = ta.Strategy(
-    name="Momo and Volatility",
-    description="SMA 50,200, BBANDS, RSI, and MACD and TTM Squeeze",
-    ta=[
-        {"kind": "sma", "length": 50},
-        {"kind": "sma", "length": 200},
-        {"kind": "bbands", "length": 20},
-        {"kind": "rsi"},
-        {"kind": "macd", "fast": 8, "slow": 21},
-        {"kind": "squeeze", "bb_std": 2.25, "mom_length": 10}
-    ]
-)
-
-# Custom Chained Strategy
-ChainedTA = ta.Strategy({
-    "name": "HMA BBANDS",
-    "description": "Bollinger Bands of an HMA(10) Chain",
-    "name": [
-        {"kind": "hma", "length": 10},
-        # BBands close is now linked to HMA(10)'s result column
-        # A prefix is used to distinguish it from BBands default close column
-        {"kind": "bbands", "close": "HMA_10", "length": 20, "prefix": "HMA10"}, 
-    ]
-})
-```
-
-## __DataFrame Method__: _strategy_ with Multiprocessing
-
-The new __Pandas (TA)__ method __strategy__ utilizes **multiprocessing**, for all Strategy types, to facilitate bulk indicator processing.
-
-* This method **will** append __all applicable__ indicators to current DataFrame.
-* Utility methods like ```above```, ```below``` et al are not included, however they can be included with Custom Strategies.
-* **Known Issue:** Changing the default core count with a Custom Strategy that has Composition/Chaining may not append all columns.
-    * **Solution:** leave the default core count alone.
-* __Note__: The _strategy_ method is experimental and subject to change.
+Note that a Strategy will fail when consumed by Pandas TA if there is no {"kind": "indicator name"} attribute. Remember to check your spelling.
 
 
-```python
-# Runs and appends all indicators to the current DataFrame by default
-# The resultant DataFrame will be large.
-df.ta.strategy()
-# Or the string "all"
-df.ta.strategy("all")
-# Or the ta.AllStrategy
-df.ta.strategy(ta.AllStrategy)
-
-# Use verbose if you want to make sure it is running.
-df.ta.strategy(verbose=True)
-
-# Use timed if you want to see how long it takes to run.
-df.ta.strategy(timed=True)
-
-# Maybe you do not want certain indicators.
-# Just exclude (a list of) them.
-df.ta.strategy(exclude=["bop", "mom", "percent_return", "wcp", "pvi"], verbose=True)
-
-# Perhaps you want to use different values for indicators.
-# This will run ALL indicators that have fast or slow as parameters.
-# Check your results and exclude as necessary.
-df.ta.strategy(fast=10, slow=50, verbose=True)
-
-# Sanity check. Make sure all the columns are there
-df.columns
-```
-
-## Running a Builtin, Categorical or Custom Strategy
+Types of Strategies :
 
 ### __Builtin__
 ```python
@@ -289,7 +183,49 @@ CustomStrategy = ta.Strategy(
 df.ta.strategy(CustomStrategy)
 ```
 
-# __DataFrame Properties__:
+Multiprocessing
+-----
+
+The new ```pandas-ta``` method __strategy__ utilizes **multiprocessing**, for all Strategy types, to facilitate bulk indicator processing.
+
+**Known Issue:** Changing the default core count with a Custom Strategy that has Composition/Chaining may not append all columns.
+**Solution:** leave the default core count alone.
+
+
+```python
+# Runs and appends all indicators to the current DataFrame by default
+# The resultant DataFrame will be large.
+df.ta.strategy()
+# Or the string "all"
+df.ta.strategy("all")
+# Or the ta.AllStrategy
+df.ta.strategy(ta.AllStrategy)
+
+# Use verbose if you want to make sure it is running.
+df.ta.strategy(verbose=True)
+
+# Use timed if you want to see how long it takes to run.
+df.ta.strategy(timed=True)
+
+# Choose the number of cores to use. Default is all available cores.
+# df.ta.cores = 4
+
+# Maybe you do not want certain indicators.
+# Just exclude (a list of) them.
+df.ta.strategy(exclude=["bop", "mom", "percent_return", "wcp", "pvi"], verbose=True)
+
+# Perhaps you want to use different values for indicators.
+# This will run ALL indicators that have fast or slow as parameters.
+# Check your results and exclude as necessary.
+df.ta.strategy(fast=10, slow=50, verbose=True)
+
+# Sanity check. Make sure all the columns are there
+df.columns
+```
+
+
+DataFrame Properties
+-----
 
 ## _adjusted_
 
@@ -358,15 +294,20 @@ bothhl2 = df.ta.hl2(prefix="pre", suffix="post")
 print(bothhl2.name)  # "pre_HL2_post"
 ```
 
-# __Technical Analysis Indicators__ (_by Category_)
 
-## _Candles_ (3)
+
+Available Technical Analysis Indicators (by Category)
+=================
+
+Candles (3)
+-----
 
 * _Doji_: **cdl_doji**
 * _Inside Bar_: **cdl_inside**
 * _Heikin-Ashi_: **ha**
 
-## _Momentum_ (34)
+Momentum (34)
+-----
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -409,7 +350,8 @@ print(bothhl2.name)  # "pre_HL2_post"
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-## _Overlap_ (27)
+Overlap (27)
+-----
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -445,7 +387,9 @@ print(bothhl2.name)  # "pre_HL2_post"
 |:--------:|
 | ![Example Chart](/images/TA_Chart.png) |
 
-## _Performance_ (3)
+
+Performance (3)
+-----
 
 Use parameter: cumulative=**True** for cumulative results.
 
@@ -457,7 +401,9 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
 
-## _Statistics_ (9)
+
+Statistics (9)
+-----
 
 * _Entropy_: **entropy**
 * _Kurtosis_: **kurtosis**
@@ -473,7 +419,8 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
 
-## _Trend_ (15)
+Trend (15)
+-----
 
 * _Average Directional Movement Index_: **adx**
 * _Archer Moving Averages Trends_: **amat**
@@ -504,7 +451,8 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Below Value_: **below_value**
 * _Cross_: **cross**
 
-## _Volatility_ (12)
+Volatility (12)
+-----
 
 * _Aberration_: **aberration**
 * _Acceleration Bands_: **accbands**
@@ -523,7 +471,8 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example ATR](/images/SPY_ATR.png) |
 
-## _Volume_ (13)
+Volume (13)
+-----
 
 * _Accumulation/Distribution Index_: **ad**
 * _Accumulation/Distribution Oscillator_: **adosc**
@@ -544,6 +493,70 @@ Use parameter: cumulative=**True** for cumulative results.
 | ![Example OBV](/images/SPY_OBV.png) |
 
 
+
+Changes
+=================
+
+## __Recent Changes__
+* A __Strategy__ Class to help name and group your favorite indicators.
+* An experimental and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
+
+
+## __Breaking Indicators__
+* _Stochastic Oscillator_ (**stoch**): Now in line with Trading View's calculation. See: ```help(ta.stoch)```
+* _Linear Decay_ (**linear_decay**): Renamed to _Decay_ (**decay**) and with the option for Exponential decay using ```mode="exp"```. See: ```help(ta.decay)```
+
+## __New Indicators__
+* _Chande Forecast Oscillator_ (**cfo**) It calculates the percentage difference between the actual price and the Time Series Forecast (the endpoint of a linear regression line).
+* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998.
+* _Inside Bar_ (**cdl_inside**) An Inside Bar is a bar contained within it's previous bar's high and low See: ```help(ta.cdl_inside)```
+* _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.
+* _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
+* _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```
+* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade".
+issue of Stocks & Commodities Magazine. It is a moving average based trend
+indicator consisting of two different simple moving averages.
+
+## __Updated Indicators__
+* _Average True Range_ (**atr**): Added option to return **atr** as a percentage. See: ```help(ta.atr)```
+* _Fisher Transform_ (**fisher**): Added Fisher's default **ema** signal line. To change the length of the signal line, use the argument: ```signal=5```. Default: 5
+* _Fisher Transform_ (**fisher**) and _Kaufman's Adaptive Moving Average_ (**kama**): Fixed a bug where their columns were not added to final DataFrame when using the _strategy_ method.
+* _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series with pertinenet trade info for a _trend_. An example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.
+
+
+
+
+Issues and Contributions
+=================
+
+#### Thanks for trying **Pandas TA**!
+
+Please take a moment to read this and the rest of this README before posting any issue.
+
+* ### [Comments and Feedback](https://github.com/twopirllc/pandas-ta/issues)
+    * Have you read the rest of this document?
+    * Are you running the latest version?
+        * ```pip install -U git+https://github.com/twopirllc/pandas-ta```
+    * Have you tried the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/)?
+        * Did they help?
+        * What is missing?
+        * Could you help improve them?
+    * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/master/examples/PandasTA_Strategy_Examples.ipynb) Class**?
+    * Documentation could always use improvement. Can you contribute?
+
+* ### [Indicator or Feature Requests & Contributions](https://github.com/twopirllc/pandas-ta/issues)
+    * Please be as detailed as possible. Links, screenshots, and sometimes data samples are welcome.
+        * You want a new indicator not currently listed.
+        * You want an alternate version of an existing indicator.
+        * The indicator does not match another website, library, broker platform, language, et al.
+            * Can you contribute?
+
+## __Contributors__
+Thank you for your contribution!
+
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [SoftDevDanial](https://github.com/SoftDevDanial) | [YuvalWein](https://github.com/YuvalWein)
+
+
 # Sources
 * [Original TA-LIB](http://ta-lib.org/)
 * [TradingView](http://www.tradingview.com)
@@ -551,7 +564,10 @@ Use parameter: cumulative=**True** for cumulative results.
 * [FM Labs](https://www.fmlabs.com/reference/default.htm)
 * [User 42](https://user42.tuxfamily.org/chart/manual/index.html)
 
-# Miscellaneous
+
+Miscellaneous
+=================
+
 ## What is a Pandas DataFrame Extension?
 
 A [Pandas DataFrame Extension](https://pandas.pydata.org/pandas-docs/stable/extending.html), extends a DataFrame allowing one to add more functionality and features to Pandas to suit your needs.  As such, it is now easier to run Technical Analysis on existing Financial Time Series without leaving the current DataFrame.  This extension by default returns the Indicator result or it can append the result to the existing DataFrame by including the parameter 'append=True' in the method call. Examples below.
