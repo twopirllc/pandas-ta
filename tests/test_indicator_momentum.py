@@ -119,6 +119,11 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_cfo(self):
+        result = pandas_ta.cfo(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "CFO_9")
+
     def test_cg(self):
         result = pandas_ta.cg(self.close)
         self.assertIsInstance(result, Series)

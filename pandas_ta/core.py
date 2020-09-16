@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "09b"))
+version = ".".join(("0", "2", "10b"))
 
 
 # Strategy DataClass
@@ -682,6 +682,11 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
 
         result = cci(high=high, low=low, close=close, length=length, c=c, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def cfo(self, length=None, offset=None, **kwargs):
+        close  = self._get_column(kwargs.pop("close", "close"))
+        result = cfo(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def cg(self, length=None, offset=None, **kwargs):

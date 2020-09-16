@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 import math
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 def linreg(close, length=None, offset=None, **kwargs):
     """Indicator: Linear Regression"""
     # Validate arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     offset = get_offset(offset)
-    angle = kwargs.pop('angle', False)
-    intercept = kwargs.pop('intercept', False)
-    degrees = kwargs.pop('degrees', False)
-    r = kwargs.pop('r', False)
-    slope = kwargs.pop('slope', False)
-    tsf = kwargs.pop('tsf', False)
+    angle = kwargs.pop("angle", False)
+    intercept = kwargs.pop("intercept", False)
+    degrees = kwargs.pop("degrees", False)
+    r = kwargs.pop("r", False)
+    slope = kwargs.pop("slope", False)
+    tsf = kwargs.pop("tsf", False)
 
     # Calculate Result
     x = range(1, length + 1) # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
@@ -54,10 +54,10 @@ def linreg(close, length=None, offset=None, **kwargs):
         linreg = linreg.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        linreg.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        linreg.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        linreg.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        linreg.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     linreg.name = f"LR"
@@ -66,7 +66,7 @@ def linreg(close, length=None, offset=None, **kwargs):
     if angle:     linreg.name += "a"
     if r:         linreg.name += "r"
     linreg.name += f"_{length}"
-    linreg.category = 'overlap'
+    linreg.category = "overlap"
 
     return linreg
 
@@ -104,12 +104,12 @@ Args:
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
-    angle (bool, optional): Default: False.  If True, returns the angle of the slope in radians
-    degrees (bool, optional): Default: False.  If True, returns the angle of the slope in degrees
-    intercept (bool, optional): Default: False.  If True, returns the angle of the slope in radians
-    r (bool, optional): Default: False.  If True, returns it's correlation 'r'
-    slope (bool, optional): Default: False.  If True, returns the slope
-    tsf (bool, optional): Default: False.  If True, returns the Time Series Forecast value.
+    angle (bool, optional): Default: False. If True, returns the angle of the slope in radians
+    degrees (bool, optional): Default: False. If True, returns the angle of the slope in degrees
+    intercept (bool, optional): Default: False. If True, returns the angle of the slope in radians
+    r (bool, optional): Default: False. If True, returns it's correlation 'r'
+    slope (bool, optional): Default: False. If True, returns the slope
+    tsf (bool, optional): Default: False. If True, returns the Time Series Forecast value.
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

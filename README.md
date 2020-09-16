@@ -67,14 +67,15 @@ Thank you for your contribution!
 * _Linear Decay_ (**linear_decay**): Renamed to _Decay_ (**decay**) and with the option for Exponential decay using ```mode="exp"```. See: ```help(ta.decay)```
 
 ## __New Indicators__
-* _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
-* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade".
+* _Chande Forecast Oscillator_ (**cfo**) It calculates the percentage difference between the actual price and the Time Series Forecast (the endpoint of a linear regression line).
+* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998.
+* _Inside Bar_ (**cdl_inside**) An Inside Bar is a bar contained within it's previous bar's high and low See: ```help(ta.cdl_inside)```
 * _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.
-* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998
+* _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
+* _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```
+* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade".
 issue of Stocks & Commodities Magazine. It is a moving average based trend
 indicator consisting of two different simple moving averages.
-* _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```
-* _Inside Bar_ (**cdl_inside**) An Inside Bar is a bar contained within it's previous bar's high and low See: ```help(ta.cdl_inside)```
 
 ## __Updated Indicators__
 * _Average True Range_ (**atr**): Added option to return **atr** as a percentage. See: ```help(ta.atr)```
@@ -365,7 +366,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Inside Bar_: **cdl_inside**
 * _Heikin-Ashi_: **ha**
 
-## _Momentum_ (33)
+## _Momentum_ (34)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -373,6 +374,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Balance of Power_: **bop**
 * _BRAR_: **brar**
 * _Commodity Channel Index_: **cci**
+* _Chande Forecast Oscillator_: **cfo**
 * _Center of Gravity_: **cg**
 * _Chande Momentum Oscillator_: **cmo**
 * _Coppock Curve_: **coppock**
