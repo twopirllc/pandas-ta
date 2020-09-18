@@ -349,10 +349,20 @@ class AnalysisIndicators(BasePandasObject):
                 return
             else:
                 if isinstance(result, pd.DataFrame):
-                    for i, column in enumerate(result.columns):
-                        df[column] = result.iloc[:,i]
+                    # If specified in kwargs, rename the columns. If not, use the default names.
+                    if 'col_names' in kwargs and isinstance(kwargs['col_names'], tuple):
+                        if len(kwargs['col_names'])>=len(result.columns):
+                            for col, ind_name in zip(result.columns, kwargs['col_names']):
+                                df[ind_name] = result.loc[:,col]
+                        else:
+                            print(f'Not enough col_names were specified : got {len(kwargs["col_names"])}, expected {len(result.columns)}.')
+                            return
+                    else:
+                        for i, column in enumerate(result.columns):
+                            df[column] = result.iloc[:,i]
                 else:
-                    df[result.name] = result
+                    ind_name = kwargs['col_names'][0] if 'col_names' in kwargs and isinstance(kwargs['col_names'], tuple) else result.name
+                    df[ind_name] = result
 
 
     def _check_na_columns(self, stdout: bool = True):
@@ -590,6 +600,11 @@ class AnalysisIndicators(BasePandasObject):
             # Custom multiprocessing pool. Must be ordered for Chained Strategies
             # May fix this to cpus if Chaining/Composition if it remains inconsistent
             results = pool.imap(self._mp_worker, custom_ta, self.cores)#, cpus)
+                  
+            # Without multiprocessing :
+            for ind in ta:
+                params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
+                getattr(self, ind["kind"])(*params, **{**ind, **kwargs})      
         else:
             default_ta = [(ind, tuple(), kwargs) for ind in ta]
             # All and Categorical multiprocessing pool. Speed over Order.
