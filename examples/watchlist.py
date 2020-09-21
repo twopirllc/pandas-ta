@@ -50,20 +50,24 @@ def colors(colors: str = None, default: str = "GrRd"):
 
 
 class Watchlist(object):
-    """Watchlist Class (** This is subject to change! **)
-    ============================================================================
+    """
+    # Watchlist Class (** This is subject to change! **)
     A simple Class to load/download financial market data and automatically
-    apply Technical Analysis indicators with a Pandas TA Strategy. Default
-    Strategy: pandas_ta.AllStrategy.
+    apply Technical Analysis indicators with a Pandas TA Strategy.
 
-    Requirements:
+    Default Strategy: pandas_ta.AllStrategy.
+
+    ## Package Support:
+    ### Data Source (Default: AlphaVantage)
+    - AlphaVantage (pip install alphaVantage-api).
+    - Python Binance (pip install python-binance). # Future Support
+    - Yahoo Finance (pip install yfinance). # Almost Supported
+
+    # Technical Analysis:
     - Pandas TA (pip install pandas_ta)
-    - AlphaVantage (pip install alphaVantage-api) for the Default Data Source.
-        To use another Data Source, update the load() method after AV.
 
-    Required Arguments:
+    ## Required Arguments:
     - tickers: A list of strings containing tickers. Example: ['SPY', 'AAPL']
-    ============================================================================
     """
     def __init__(
         self,

@@ -22,7 +22,7 @@ class TestStrategyMethods(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
-        # cls.data.ta.cores = cores
+        cls.data.ta.cores = cores
         cls.speed_test = DataFrame()
 
     @classmethod
@@ -37,7 +37,6 @@ class TestStrategyMethods(TestCase):
             print(f"[i] Total Datapoints: {cls.data.shape[0]}")
             print(cls.speed_test)
         del cls.data
-            
 
 
     def setUp(self):
@@ -96,7 +95,7 @@ class TestStrategyMethods(TestCase):
             {"kind": "sma", "length": 200}, # 1
             {"kind": "bbands", "length": 20}, # 3
             {"kind": "log_return", "cumulative": True}, # 1
-            {"kind": "sma", "close": "CUMLOGRET_1", "length": 5, "suffix": "CUMLOGRET"}, # 1
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
         ]
 
         custom = pandas_ta.Strategy(
