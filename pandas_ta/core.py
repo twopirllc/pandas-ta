@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pkg_resources
 from collections import namedtuple
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -23,7 +24,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "11b"))
+version = pkg_resources.get_distribution('pandas-ta').version
 
 
 # Strategy DataClass
@@ -37,7 +38,7 @@ class Strategy:
         ta (list of dicts): A list of dicts containing keyword arguments where "kind" is the indicator.
         description (str): A more detailed description of what the Strategy tries to capture. Default: None
         created (str): At datetime string of when it was created. Default: Automatically generated. *Subject to change*
-    
+
     Example TA:
     ta = [
         {"kind": "sma", "length": 200},
@@ -440,7 +441,7 @@ class AnalysisIndicators(BasePandasObject):
                     name, mode["category"] = strategy_.name, True
                 else:
                     name, mode["custom"] = strategy_.name, True
-        
+
         return name, mode
 
 
@@ -470,7 +471,7 @@ class AnalysisIndicators(BasePandasObject):
                 the working DataFrame. Default: None.
 
         Returns:
-            Returns the appended constants 
+            Returns the appended constants
             Returns nothing to the user.  Either adds or removes constant ranges
             from the working DataFrame.
         """
@@ -486,7 +487,7 @@ class AnalysisIndicators(BasePandasObject):
 
     def indicators(self, **kwargs):
         """List of Indicators
-        
+
         Args:
             kwargs:
                 as_list (bool, optional):  Default: False.  When True, it
