@@ -23,7 +23,7 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = ".".join(("0", "2", "11b"))
+version = ".".join(("0", "2", "12b"))
 
 
 # Strategy DataClass
@@ -350,18 +350,18 @@ class AnalysisIndicators(BasePandasObject):
             else:
                 if isinstance(result, pd.DataFrame):
                     # If specified in kwargs, rename the columns. If not, use the default names.
-                    if 'col_names' in kwargs and isinstance(kwargs['col_names'], tuple):
-                        if len(kwargs['col_names'])>=len(result.columns):
-                            for col, ind_name in zip(result.columns, kwargs['col_names']):
+                    if "col_names" in kwargs and isinstance(kwargs["col_names"], tuple):
+                        if len(kwargs["col_names"])>=len(result.columns):
+                            for col, ind_name in zip(result.columns, kwargs["col_names"]):
                                 df[ind_name] = result.loc[:,col]
                         else:
-                            print(f'Not enough col_names were specified : got {len(kwargs["col_names"])}, expected {len(result.columns)}.')
+                            print(f"Not enough col_names were specified : got {len(kwargs['col_names'])}, expected {len(result.columns)}.")
                             return
                     else:
                         for i, column in enumerate(result.columns):
                             df[column] = result.iloc[:,i]
                 else:
-                    ind_name = kwargs['col_names'][0] if 'col_names' in kwargs and isinstance(kwargs['col_names'], tuple) else result.name
+                    ind_name = kwargs["col_names"][0] if "col_names" in kwargs and isinstance(kwargs["col_names"], tuple) else result.name
                     df[ind_name] = result
 
 
@@ -587,25 +587,31 @@ class AnalysisIndicators(BasePandasObject):
                 excluded_str = ", ".join(excluded)
                 print(f"[i] Excluded[{len(excluded)}]: {excluded_str}")
 
-        if verbose:
-            print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
-
         timed = kwargs.pop("timed", False)
         results = []
         pool = Pool(self.cores)
         if timed: stime = perf_counter()
         if mode["custom"]:
+            has_col_names = True if len([True for x in ta if 'col_names' in x and isinstance(x['col_names'], tuple)]) else False
             custom_ta = [(ind["kind"], ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (), {**ind, **kwargs}) for ind in ta]
 
-            # Custom multiprocessing pool. Must be ordered for Chained Strategies
-            # May fix this to cpus if Chaining/Composition if it remains inconsistent
-            results = pool.imap(self._mp_worker, custom_ta, self.cores)#, cpus)
-                  
-            # Without multiprocessing :
-            for ind in ta:
-                params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
-                getattr(self, ind["kind"])(*params, **{**ind, **kwargs})      
+            if has_col_names:
+                if verbose: print(f"[i] No mulitproccessing support for 'col_names' option.")
+                # Without multiprocessing:
+                for ind in ta:
+                    params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
+                    getattr(self, ind["kind"])(*params, **{**ind, **kwargs})
+            else:
+                if verbose:
+                    print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
+
+                # Custom multiprocessing pool. Must be ordered for Chained Strategies
+                # May fix this to cpus if Chaining/Composition if it remains inconsistent
+                results = pool.imap(self._mp_worker, custom_ta, self.cores)
+
         else:
+            if verbose:
+                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
             default_ta = [(ind, tuple(), kwargs) for ind in ta]
             # All and Categorical multiprocessing pool. Speed over Order.
             results = pool.imap_unordered(self._mp_worker, default_ta, self.cores)

@@ -8,7 +8,7 @@ import pandas as pd # pip install pandas
 import yfinance as yf
 # yf.pdr_override() # <== that's all it takes :-)
 
-from alphaVantageAPI.alphavantage import AlphaVantage  # pip install alphaVantage-api
+import alphaVantageAPI as AV # pip install alphaVantage-api
 import pandas_ta as ta # pip install pandas_ta
 
 
@@ -55,7 +55,7 @@ class Watchlist(object):
     A simple Class to load/download financial market data and automatically
     apply Technical Analysis indicators with a Pandas TA Strategy.
 
-    Default Strategy: pandas_ta.AllStrategy.
+    Default Strategy: pandas_ta.CommonStrategy
 
     ## Package Support:
     ### Data Source (Default: AlphaVantage)
@@ -67,7 +67,7 @@ class Watchlist(object):
     - Pandas TA (pip install pandas_ta)
 
     ## Required Arguments:
-    - tickers: A list of strings containing tickers. Example: ['SPY', 'AAPL']
+    - tickers: A list of strings containing tickers. Example: ["SPY", "AAPL"]
     """
     def __init__(
         self,
@@ -78,11 +78,12 @@ class Watchlist(object):
         ds: object = None,
         **kwargs
     ):
-        self.tickers = tickers
-        self.tf = tf
         self.verbose = kwargs.pop("verbose", False)
         self.debug = kwargs.pop("debug", False)
-        self.name = name
+
+        self.tickers = tickers
+        self.tf = tf
+        self.name = name if isinstance(name, str) else f"Watch: {', '.join(tickers)}"
         self.data = None
         self.kwargs = kwargs
         self.strategy = strategy
@@ -92,9 +93,9 @@ class Watchlist(object):
         elif isinstance(ds, str) and ds.lower() == "yahoo":
             self.ds = yf
         else:
-            AVkwargs = {"api_key": "YOUR API KEY","clean": True, "export": True, "export_path": ".", "output_size": "full", "premium": False}
+            AVkwargs = {"api_key": "YOUR API KEY", "clean": True, "export": True, "export_path": ".", "output_size": "full", "premium": False}
             av_kwargs = kwargs.pop("av_kwargs", AVkwargs)
-            self.ds = AlphaVantage(**av_kwargs)
+            self.ds = AV.AlphaVantage(**av_kwargs)
 
 
     def _drop_columns(self, df: pd.DataFrame, cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"]):
@@ -145,8 +146,8 @@ class Watchlist(object):
             print(f"[i] Loaded['{tf}']: {filename_}")
         else:
             print(f"[+] Downloading['{tf}']: {ticker}")
-            if isinstance(self.ds, AlphaVantage):
-                df = self.ds.data(tf, ticker)
+            if isinstance(self.ds, AV.AlphaVantage):
+                df = self.ds.data(ticker, tf)
                 if not df.ta.datetime_ordered:
                     df = df.set_index(pd.DatetimeIndex(df[index]))
             elif isinstance(self.ds, yfinance):

@@ -99,9 +99,9 @@ class TestStrategyMethods(TestCase):
         ]
 
         custom = pandas_ta.Strategy(
-            "Momo, Bands and SMAs and Cumulative Log Returns", # name
+            "Commons with Cumulative Log Return EMA Chain", # name
             momo_bands_sma_ta, # ta
-            "MACD and RSI Momo with BBANDS and SMAs 50 & 200 and Cumulative Log Returns" # description
+            "Common indicators with specific lengths and a chained indicator" # description
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 
@@ -110,15 +110,40 @@ class TestStrategyMethods(TestCase):
         self.category = "Custom B"
 
         custom_args_ta = [
-            {"kind":"fisher", "params": (13, 7)},
-            {"kind":"macd", "params": (9, 19, 7), "col_numbers": (1,)},
             {"kind":"ema", "params": (5,)},
-            {"kind":"linreg", "close": "EMA_5", "length": 8, "suffix": "EMA_5"}
+            {"kind":"fisher", "params": (13, 7)},
         ]
 
         custom = pandas_ta.Strategy(
             "Custom Args Tuple", custom_args_ta,
-            "Allow for easy filling in indicator arguments without naming them"
+            "Allow for easy filling in indicator arguments by argument placement."
+        )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+
+    def test_custom_col_names_tuple(self):
+        self.category = "Custom C"
+
+        custom_args_ta = [
+            {"kind":"bbands", "col_names": ("LB", "MB", "UB")}
+        ]
+
+        custom = pandas_ta.Strategy(
+            "Custom Col Numbers Tuple", custom_args_ta,
+            "Allow for easy renaming of resultant columns"
+        )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+
+    # @skip
+    def test_custom_col_numbers_tuple(self):
+        self.category = "Custom D"
+
+        custom_args_ta = [
+            {"kind":"macd", "col_numbers": (1,)}
+        ]
+
+        custom = pandas_ta.Strategy(
+            "Custom Col Numbers Tuple", custom_args_ta,
+            "Allow for easy selection of resultant columns"
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 

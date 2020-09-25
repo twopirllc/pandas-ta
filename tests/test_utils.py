@@ -161,6 +161,19 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.EXCHANGE_TZ["NYSE"], -4)
         self.assertIsInstance(result, str)
 
+    def test_linear_regression(self):
+        x = Series([1, 2, 3, 4, 5])
+        y = Series([1.8, 2.1, 2.7, 3.2, 4])
+        # r = {"a": 1.1099999999999985, "b": 0.5500000000000006}
+
+        result = self.utils.linear_regression(x, y)
+        self.assertIsInstance(result, dict)
+        self.assertIsInstance(result["a"], float)
+        self.assertIsInstance(result["b"], float)
+        self.assertIsInstance(result["r"], float)
+        self.assertIsInstance(result["t"], float)
+        self.assertIsInstance(result["line"], Series)
+
     def test_pascals_triangle(self):
         self.assertIsNone(self.utils.pascals_triangle(inverse=True), None)
 

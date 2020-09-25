@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 import math
+import sys
+
 from datetime import datetime
+from functools import reduce
+# from importlib.util import find_spec
+from operator import mul
 from pathlib import Path
+from sys import float_info as sflt
 from time import perf_counter
 
 from numpy import argmax, argmin, dot, ones, triu
@@ -9,27 +15,17 @@ from numpy import append as npAppend
 from numpy import array as npArray
 from numpy import ndarray as npNdArray
 from numpy import sum as npSum
-
+# from numpy import std as npStd
+from numpy import sqrt as npSqrt
+from numpy import corrcoef as npCorrcoef
+from numpy import seterr
 from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
 
-from functools import reduce
-from operator import mul
-from sys import float_info as sflt
-
-TRADING_DAYS_PER_YEAR = 252 # Keep even
-TRADING_HOURS_PER_DAY = 6.5
-MINUTES_PER_HOUR = 60
+from pandas_ta import Imports, EXCHANGE_TZ, RATE
 
 
-# https://www.worldtimezone.com/markets24.php
-EXCHANGE_TZ = {
-    "NZSX": 12, "ASX": 11,
-    "TSE": 9, "HKE": 8, "SSE": 8, "SGX": 8,
-    "NSE": 5.5, "DIFX": 4, "RTS": 3,
-    "JSE": 2, "FWB": 1, "LSE": 1,
-    "BMF": -2, "NYSE": -4, "TSX": -4
-}
+seterr(divide="ignore", invalid="ignore")
 
 
 def _above_below(
@@ -318,6 +314,59 @@ def get_time(exchange: str = "NYSE", to_string:bool = False) -> (None, str):
     return s if to_string else print(s)
 
 
+def _linear_regression_np(x: Series, y: Series) -> dict:
+    """Simple Linear Regression in Numpy for two 1d arrays for environments
+    without the sklearn package."""
+    m = x.size
+    x_sum = x.sum()
+    y_sum = y.sum()
+
+    # 1st row, 2nd col value corr(x, y)
+    r = npCorrcoef(x, y)[0,1]
+
+    r_mixture = m * (x * y).sum() - x_sum * y_sum
+    b = r_mixture / (m * (x * x).sum() - x_sum * x_sum)
+    a = y.mean() - b * x.mean()
+    line = a + b * x
+
+    return {
+        "a": a, "b": b, "r": r,
+        "t": r / npSqrt((1 - r * r) / (m - 2)),
+        "line": line
+    }
+
+def _linear_regression_sklearn(x, y):
+    """Simple Linear Regression in Scikit Learn for two 1d arrays for
+    environments with the sklearn package."""
+    from sklearn.linear_model import LinearRegression
+
+    regression = LinearRegression().fit(DataFrame(x), y=y)
+    r = regression.score(DataFrame(x), y=y)
+
+    a, b = regression.intercept_, regression.coef_[0]
+
+    return {
+        "a": a, "b": b, "r": r,
+        "t": r / npSqrt((1 - r * r) / (x.size - 2)),
+        "line": a + b * x
+    }
+
+def linear_regression(x: Series, y: Series) -> dict:
+    """Classic Linear Regression in Numpy or Scikit-Learn"""
+    x = verify_series(x)
+    y = verify_series(y)
+
+    m, n = x.size, y.size
+    if m != n:
+        print(f"[X] Linear Regression X and y observations do not match: {m} != {n}")
+        return
+
+    if Imports["sklearn"]:
+        return _linear_regression_sklearn(x, y)
+    else:
+        return _linear_regression_np(x, y)
+
+
 def is_percent(x: int or float) -> bool:
     if isinstance(x, (int, float)):
         return x is not None and x >= 0 and x <= 100
@@ -325,8 +374,7 @@ def is_percent(x: int or float) -> bool:
 
 
 def non_zero_range(high: Series, low: Series) -> Series:
-    """Returns the difference of two series and adds epsilon to any zero values.  This occurs commonly in crypto data when
-    high = low.
+    """Returns the difference of two series and adds epsilon to any zero values.  This occurs commonly in crypto data when 'high' = 'low'.
     """
     diff = high - low
     if diff.eq(0).any().any():

@@ -128,6 +128,7 @@ data/tulip.csv
 
 examples/cache.sqlite
 examples/taplot.py
+examples/alpaca_trader.py
 examples/ChartTA.ipynb
 examples/charting.ipynb
 examples/ib_trader.ipynb

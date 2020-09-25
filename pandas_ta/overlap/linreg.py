@@ -75,7 +75,9 @@ def linreg(close, length=None, offset=None, **kwargs):
 linreg.__doc__ = \
 """Linear Regression Moving Average (linreg)
 
-Linear Regression Moving Average
+Linear Regression Moving Average (LINREG). This is a simplified version of a
+Standard Linear Regression. LINREG is a rolling regression of one variable. A
+Standard Linear Regression is between two or more variables.
 
 Source: TA Lib
 
