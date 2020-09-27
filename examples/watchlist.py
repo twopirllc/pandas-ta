@@ -88,15 +88,18 @@ class Watchlist(object):
         self.kwargs = kwargs
         self.strategy = strategy
 
+        self._init_data_source(ds)
+
+    def _init_data_source(self, ds: object):
         if ds is not None:
             self.ds = ds
         elif isinstance(ds, str) and ds.lower() == "yahoo":
             self.ds = yf
         else:
             AVkwargs = {"api_key": "YOUR API KEY", "clean": True, "export": True, "export_path": ".", "output_size": "full", "premium": False}
-            av_kwargs = kwargs.pop("av_kwargs", AVkwargs)
-            self.ds = AV.AlphaVantage(**av_kwargs)
-
+            self.av_kwargs = self.kwargs.pop("av_kwargs", AVkwargs)
+            self.file_path = self.av_kwargs["export_path"]
+            self.ds = AV.AlphaVantage(**self.av_kwargs)
 
     def _drop_columns(self, df: pd.DataFrame, cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"]):
         """Helper methods to drop columns silently."""
@@ -120,7 +123,6 @@ class Watchlist(object):
         tf: str = None,
         index: str = "date",
         drop: list = ["dividend", "split_coefficient"],
-        file_path: str = ".",
         **kwargs
     ) -> pd.DataFrame:
         """Loads or Downloads (if a local csv does not exist) the data from the
@@ -136,11 +138,11 @@ class Watchlist(object):
             return
 
         filename_ = f"{ticker}_{tf}.csv"
-        current_file = Path(file_path) / filename_
+        current_file = Path(self.file_path) / filename_
 
         # Load local or from Data Source
         if current_file.exists():
-            df = pd.read_csv(filename_, index_col=index)
+            df = pd.read_csv(current_file, index_col=index)
             if not df.ta.datetime_ordered:
                 df = df.set_index(pd.DatetimeIndex(df.index))
             print(f"[i] Loaded['{tf}']: {filename_}")
