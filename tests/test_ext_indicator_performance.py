@@ -17,7 +17,6 @@ class TestPerformaceExtension(TestCase):
         del cls.data
         del cls.islong
 
-
     def setUp(self): pass
     def tearDown(self): pass
 

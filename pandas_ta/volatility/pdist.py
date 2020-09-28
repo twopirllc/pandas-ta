@@ -22,7 +22,7 @@ def pdist(open_, high, low, close, drift=None, offset=None, **kwargs):
 
     # Name & Category
     pdist.name = "PDIST"
-    pdist.category = 'volatility'
+    pdist.category = "volatility"
 
     return pdist
 

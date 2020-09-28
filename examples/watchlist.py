@@ -8,7 +8,7 @@ import pandas as pd # pip install pandas
 import yfinance as yf
 # yf.pdr_override() # <== that's all it takes :-)
 
-from alphaVantageAPI.alphavantage import AlphaVantage  # pip install alphaVantage-api
+import alphaVantageAPI as AV # pip install alphaVantage-api
 import pandas_ta as ta # pip install pandas_ta
 
 
@@ -50,20 +50,24 @@ def colors(colors: str = None, default: str = "GrRd"):
 
 
 class Watchlist(object):
-    """Watchlist Class (** This is subject to change! **)
-    ============================================================================
+    """
+    # Watchlist Class (** This is subject to change! **)
     A simple Class to load/download financial market data and automatically
-    apply Technical Analysis indicators with a Pandas TA Strategy. Default
-    Strategy: pandas_ta.AllStrategy.
+    apply Technical Analysis indicators with a Pandas TA Strategy.
 
-    Requirements:
+    Default Strategy: pandas_ta.CommonStrategy
+
+    ## Package Support:
+    ### Data Source (Default: AlphaVantage)
+    - AlphaVantage (pip install alphaVantage-api).
+    - Python Binance (pip install python-binance). # Future Support
+    - Yahoo Finance (pip install yfinance). # Almost Supported
+
+    # Technical Analysis:
     - Pandas TA (pip install pandas_ta)
-    - AlphaVantage (pip install alphaVantage-api) for the Default Data Source.
-        To use another Data Source, update the load() method after AV.
 
-    Required Arguments:
-    - tickers: A list of strings containing tickers. Example: ['SPY', 'AAPL']
-    ============================================================================
+    ## Required Arguments:
+    - tickers: A list of strings containing tickers. Example: ["SPY", "AAPL"]
     """
     def __init__(
         self,
@@ -74,24 +78,28 @@ class Watchlist(object):
         ds: object = None,
         **kwargs
     ):
-        self.tickers = tickers
-        self.tf = tf
         self.verbose = kwargs.pop("verbose", False)
         self.debug = kwargs.pop("debug", False)
-        self.name = name
+
+        self.tickers = tickers
+        self.tf = tf
+        self.name = name if isinstance(name, str) else f"Watch: {', '.join(tickers)}"
         self.data = None
         self.kwargs = kwargs
         self.strategy = strategy
 
+        self._init_data_source(ds)
+
+    def _init_data_source(self, ds: object):
         if ds is not None:
             self.ds = ds
         elif isinstance(ds, str) and ds.lower() == "yahoo":
             self.ds = yf
         else:
-            AVkwargs = {"api_key": "YOUR API KEY","clean": True, "export": True, "export_path": ".", "output_size": "full", "premium": False}
-            av_kwargs = kwargs.pop("av_kwargs", AVkwargs)
-            self.ds = AlphaVantage(**av_kwargs)
-
+            AVkwargs = {"api_key": "YOUR API KEY", "clean": True, "export": True, "export_path": ".", "output_size": "full", "premium": False}
+            self.av_kwargs = self.kwargs.pop("av_kwargs", AVkwargs)
+            self.file_path = self.av_kwargs["export_path"]
+            self.ds = AV.AlphaVantage(**self.av_kwargs)
 
     def _drop_columns(self, df: pd.DataFrame, cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"]):
         """Helper methods to drop columns silently."""
@@ -115,7 +123,6 @@ class Watchlist(object):
         tf: str = None,
         index: str = "date",
         drop: list = ["dividend", "split_coefficient"],
-        file_path: str = ".",
         **kwargs
     ) -> pd.DataFrame:
         """Loads or Downloads (if a local csv does not exist) the data from the
@@ -131,18 +138,18 @@ class Watchlist(object):
             return
 
         filename_ = f"{ticker}_{tf}.csv"
-        current_file = Path(file_path) / filename_
+        current_file = Path(self.file_path) / filename_
 
         # Load local or from Data Source
         if current_file.exists():
-            df = pd.read_csv(filename_, index_col=index)
+            df = pd.read_csv(current_file, index_col=index)
             if not df.ta.datetime_ordered:
                 df = df.set_index(pd.DatetimeIndex(df.index))
             print(f"[i] Loaded['{tf}']: {filename_}")
         else:
             print(f"[+] Downloading['{tf}']: {ticker}")
-            if isinstance(self.ds, AlphaVantage):
-                df = self.ds.data(tf, ticker)
+            if isinstance(self.ds, AV.AlphaVantage):
+                df = self.ds.data(ticker, tf)
                 if not df.ta.datetime_ordered:
                     df = df.set_index(pd.DatetimeIndex(df[index]))
             elif isinstance(self.ds, yfinance):

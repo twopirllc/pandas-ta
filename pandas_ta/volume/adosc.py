@@ -25,14 +25,14 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, offset=Non
         adosc = adosc.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        adosc.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        adosc.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        adosc.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        adosc.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     adosc.name = f"ADOSC_{fast}_{slow}"
-    adosc.category = 'volume'
+    adosc.category = "volume"
 
     return adosc
 

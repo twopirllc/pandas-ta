@@ -17,7 +17,6 @@ class TestVolumeExtension(TestCase):
         del cls.data
         del cls.open
 
-
     def setUp(self): pass
     def tearDown(self): pass
 

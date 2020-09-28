@@ -8,7 +8,7 @@ def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
     close = verify_series(close)
     volume = verify_series(volume)
     length = int(length) if length and length > 0 else 1
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     initial = int(initial) if initial and initial > 0 else 1000
     offset = get_offset(offset)
 
@@ -25,14 +25,14 @@ def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
         pvi = pvi.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        pvi.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        pvi.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        pvi.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        pvi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     pvi.name = f"PVI_{length}"
-    pvi.category = 'volume'
+    pvi.category = "volume"
 
     return pvi
 

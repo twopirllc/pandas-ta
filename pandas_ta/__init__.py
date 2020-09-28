@@ -18,6 +18,17 @@ except DistributionNotFound:
 else:
     __version__ = _dist.version
 
+from importlib.util import find_spec
+Imports = {
+    "scipy": find_spec("scipy") is not None,
+    "sklearn": find_spec("sklearn") is not None,
+    "statsmodels": find_spec("statsmodels") is not None,
+    "mplfinance": find_spec("mplfinance") is not None,
+    "alphaVantage-api ": find_spec("alphaVantageAPI") is not None,
+    "yfinance": find_spec("yfinance") is not None,
+    "talib": find_spec("talib") is not None
+}
+
 # Not ideal and not dynamic but it works.
 # Will find a dynamic solution later.
 Category = {
@@ -25,7 +36,7 @@ Category = {
     "candles": ["cdl_doji", "cdl_inside", "ha"],
 
     # Momentum
-    "momentum": ["ao", "apo", "bias", "bop", "brar", "cci", "cg", "cmo", "coppock", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd", "mom", "pgo", "ppo", "psl", "pvo", "roc", "rsi", "rvgi", "slope", "smi", "squeeze", "stoch", "stochrsi", "trix", "tsi", "uo", "willr"],
+    "momentum": ["ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo", "coppock", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd", "mom", "pgo", "ppo", "psl", "pvo", "roc", "rsi", "rvgi", "slope", "smi", "squeeze", "stoch", "stochrsi", "trix", "tsi", "uo", "willr"],
 
     # Overlap
     "overlap": ["dema", "ema", "fwma", "hilo", "hl2", "hlc3", "hma", "ichimoku", "kama", "linreg", "midpoint", "midprice", "ohlc4", "pwma", "rma", "sinwma", "sma", "supertrend", "swma", "t3", "tema", "trima", "vwap", "vwma", "wcp", "wma", "zlma"],
@@ -37,7 +48,7 @@ Category = {
     "statistics": ["entropy", "kurtosis", "mad", "median", "quantile", "skew", "stdev", "variance", "zscore"],
 
     # Trend
-    "trend": ["adx", "amat", "aroon", "chop", "cksp", "decreasing", "dpo", "increasing", "linear_decay", "long_run", "psar", "qstick", "short_run", "ttm_trend", "vortex"],
+    "trend": ["adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo", "increasing", "long_run", "psar", "qstick", "short_run", "ttm_trend", "vortex"],
 
     # Volatility
     "volatility": ["aberration", "accbands", "atr", "bbands", "donchian", "kc", "massi", "natr", "pdist", "rvi", "true_range", "ui"],
@@ -45,5 +56,21 @@ Category = {
     # Volume, "vp" or "Volume Profile" is unique
     "volume": ["ad", "adosc", "aobv", "cmf", "efi", "eom", "mfi", "nvi", "obv", "pvi", "pvol", "pvt"],
 }
+
+# https://www.worldtimezone.com/markets24.php
+EXCHANGE_TZ = {
+    "NZSX": 12, "ASX": 11,
+    "TSE": 9, "HKE": 8, "SSE": 8, "SGX": 8,
+    "NSE": 5.5, "DIFX": 4, "RTS": 3,
+    "JSE": 2, "FWB": 1, "LSE": 1,
+    "BMF": -2, "NYSE": -4, "TSX": -4
+}
+
+RATE = {
+    "TRADING_DAYS_PER_YEAR": 252, # Keep even
+    "TRADING_HOURS_PER_DAY": 6.5,
+    "MINUTES_PER_HOUR": 60
+}
+
 
 from pandas_ta.core import *

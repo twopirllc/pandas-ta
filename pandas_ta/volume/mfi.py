@@ -18,33 +18,33 @@ def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs
     typical_price = hlc3(high=high, low=low, close=close)
     raw_money_flow = typical_price * volume
 
-    tdf = DataFrame({'diff': 0, 'rmf': raw_money_flow, '+mf': 0, '-mf': 0})
+    tdf = DataFrame({"diff": 0, "rmf": raw_money_flow, "+mf": 0, "-mf": 0})
 
-    tdf.loc[(typical_price.diff(drift) > 0), 'diff'] =  1
-    tdf.loc[tdf['diff'] ==  1, '+mf'] = raw_money_flow
+    tdf.loc[(typical_price.diff(drift) > 0), "diff"] =  1
+    tdf.loc[tdf["diff"] ==  1, "+mf"] = raw_money_flow
 
-    tdf.loc[(typical_price.diff(drift) < 0), 'diff'] = -1
-    tdf.loc[tdf['diff'] == -1, '-mf'] = raw_money_flow
+    tdf.loc[(typical_price.diff(drift) < 0), "diff"] = -1
+    tdf.loc[tdf["diff"] == -1, "-mf"] = raw_money_flow
 
-    psum = tdf['+mf'].rolling(length).sum()
-    nsum = tdf['-mf'].rolling(length).sum()
-    tdf['mr'] = psum / nsum
+    psum = tdf["+mf"].rolling(length).sum()
+    nsum = tdf["-mf"].rolling(length).sum()
+    tdf["mr"] = psum / nsum
     mfi = 100 * psum / (psum + nsum)
-    tdf['mfi'] = mfi
+    tdf["mfi"] = mfi
 
     # Offset
     if offset != 0:
         mfi = mfi.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        mfi.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        mfi.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        mfi.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        mfi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     mfi.name = f"MFI_{length}"
-    mfi.category = 'volume'
+    mfi.category = "volume"
 
     return mfi
 

@@ -24,7 +24,7 @@ def vwap(high, low, close, volume, offset=None, **kwargs):
 
     # Name & Category
     vwap.name = "VWAP"
-    vwap.category = 'overlap'
+    vwap.category = "overlap"
 
     return vwap
 

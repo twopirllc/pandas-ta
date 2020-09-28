@@ -1,7 +1,7 @@
 from .config import sample_data
 from .context import pandas_ta
 
-from unittest import TestCase
+from unittest import skip, TestCase
 from pandas import DataFrame
 
 
@@ -15,12 +15,8 @@ class TestMomentumExtension(TestCase):
     def tearDownClass(cls):
         del cls.data
 
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
 
     def test_ao_ext(self):
@@ -52,6 +48,11 @@ class TestMomentumExtension(TestCase):
         self.data.ta.cci(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "CCI_14_0.015")
+
+    def test_cfo_ext(self):
+        self.data.ta.cfo(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "CFO_9")
 
     def test_cg_ext(self):
         self.data.ta.cg(append=True)

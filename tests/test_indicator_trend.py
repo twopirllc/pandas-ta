@@ -99,6 +99,15 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "CKSP_10_1_9")
 
+    def test_decay(self):
+        result = pandas_ta.decay(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "LDECAY_5")
+
+        result = pandas_ta.decay(self.close, mode="exp")
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "EXPDECAY_5")
+
     def test_decreasing(self):
         result = pandas_ta.decreasing(self.close)
         self.assertIsInstance(result, Series)
@@ -113,11 +122,6 @@ class TestTrend(TestCase):
         result = pandas_ta.increasing(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "INC_1")
-
-    def test_linear_decay(self):
-        result = pandas_ta.linear_decay(self.close)
-        self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LDECAY_5")
 
     def test_long_run(self):
         result = pandas_ta.long_run(self.close, self.open)

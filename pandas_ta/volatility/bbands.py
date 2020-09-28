@@ -9,7 +9,6 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     # Validate arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 5
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     std = float(std) if std and std > 0 else 2.
     mamode = mamode.lower() if mamode else "sma"
     offset = get_offset(offset)
@@ -52,7 +51,7 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
     bbandsdf = DataFrame(data)
     bbandsdf.name = f"BBANDS_{length}_{std}"
-    bbandsdf.category = "volatility"
+    bbandsdf.category = mid.category
 
     return bbandsdf
 

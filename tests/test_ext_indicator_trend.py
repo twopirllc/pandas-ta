@@ -15,12 +15,8 @@ class TestTrendExtension(TestCase):
     def tearDownClass(cls):
         del cls.data
 
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
 
     def test_adx_ext(self):
@@ -48,6 +44,15 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "CKSPs_10_1_9")
 
+    def test_decay_ext(self):
+        self.data.ta.decay(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "LDECAY_5")
+
+        self.data.ta.decay(mode="exp", append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "EXPDECAY_5")
+
     def test_decreasing_ext(self):
         self.data.ta.decreasing(append=True)
         self.assertIsInstance(self.data, DataFrame)
@@ -63,17 +68,12 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "INC_1")
 
-    def test_linear_decay_ext(self):
-        self.data.ta.linear_decay(append=True)
-        self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "LDECAY_5")
-
     def test_long_run_ext(self):
         # Nothing passed, return self
         self.assertEqual(self.data.ta.long_run(append=True).shape, self.data.shape)
 
-        fast = self.data.ta.ema("close", 8)
-        slow = self.data.ta.ema("close", 21)
+        fast = self.data.ta.ema(8)
+        slow = self.data.ta.ema(21)
         self.data.ta.long_run(fast, slow, append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "LR_2")
@@ -92,8 +92,8 @@ class TestTrendExtension(TestCase):
         # Nothing passed, return self
         self.assertEqual(self.data.ta.short_run(append=True).shape, self.data.shape)
 
-        fast = self.data.ta.ema("close", 8)
-        slow = self.data.ta.ema("close", 21)
+        fast = self.data.ta.ema(8)
+        slow = self.data.ta.ema(21)
         self.data.ta.short_run(fast, slow, append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "SR_2")
