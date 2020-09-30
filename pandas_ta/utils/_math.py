@@ -68,10 +68,9 @@ def fibonacci(n: int = 2, **kwargs) -> npNdArray:
 
 def linear_regression(x: Series, y: Series) -> dict:
     """Classic Linear Regression in Numpy or Scikit-Learn"""
-    x = verify_series(x)
-    y = verify_series(y)
-
+    x, y = verify_series(x), verify_series(y)
     m, n = x.size, y.size
+
     if m != n:
         print(f"[X] Linear Regression X and y observations do not match: {m} != {n}")
         return

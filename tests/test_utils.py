@@ -135,6 +135,25 @@ class TestUtilities(TestCase):
         self.assertIsInstance(result, Series)
         npt.assert_array_equal(result, self.crosseddf["crossed"])
 
+    def test_df_dates(self):
+        result = self.utils.df_dates(self.data)
+        self.assertEqual(None, result)
+
+        result = self.utils.df_dates(self.data, "1999-11-01")
+        self.assertEqual(1, result.shape[0])
+
+        result = self.utils.df_dates(self.data, ["1999-11-01", "2020-08-15", "2020-08-24", "2020-08-25", "2020-08-26", "2020-08-27"])
+        self.assertEqual(5, result.shape[0])
+
+    def test_df_month_to_date(self):
+        result = self.utils.df_month_to_date(self.data)
+
+    def test_df_quarter_to_date(self):
+        result = self.utils.df_quarter_to_date(self.data)
+
+    def test_df_year_to_date(self):
+        result = self.utils.df_year_to_date(self.data)
+
     def test_fibonacci(self):
         self.assertIs(type(self.utils.fibonacci(zero=True, weighted=False)), np.ndarray)
 
@@ -156,11 +175,16 @@ class TestUtilities(TestCase):
         npt.assert_allclose(self.utils.fibonacci(n=5, zero=False, weighted=True), np.array([1/12, 1/12, 1/6, 1/4, 5/12]))
 
     def test_get_time(self):
-        result = self.utils.get_time()
-        result = self.utils.get_time("NZSX")
-        result = self.utils.get_time("SSE", to_string=True)
-        self.assertEqual(self.utils.EXCHANGE_TZ["NYSE"], -4)
+        result = self.utils.get_time(to_string=True)
         self.assertIsInstance(result, str)
+
+        result = self.utils.get_time("NZSX", to_string=True)
+        self.assertTrue("NZSX" in result)
+        self.assertIsInstance(result, str)
+
+        result = self.utils.get_time("SSE", to_string=True)
+        self.assertIsInstance(result, str)
+        self.assertTrue("SSE" in result)
 
     def test_linear_regression(self):
         x = Series([1, 2, 3, 4, 5])
@@ -232,3 +256,19 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.get_offset(0), 0)
         self.assertEqual(self.utils.get_offset(-1.1), 0)
         self.assertEqual(self.utils.get_offset(1), 1)
+
+    def test_total_time(self):
+        result = self.utils.total_time(self.data)
+        self.assertEqual(20.824093086926762, result)
+        result = self.utils.total_time(self.data, "months")
+        self.assertEqual(250.05753361606995, result)
+        result = self.utils.total_time(self.data, "weeks")
+        self.assertEqual(1086.5714285714287, result)
+        result = self.utils.total_time(self.data, "days")
+        self.assertEqual(7606, result)
+        result = self.utils.total_time(self.data, "hours")
+        self.assertEqual(182544, result)
+        result = self.utils.total_time(self.data, "minutes")
+        self.assertEqual(10952640.0, result)
+        result = self.utils.total_time(self.data, "seconds")
+        self.assertEqual(657158400.0, result)
