@@ -1366,6 +1366,13 @@ class AnalysisIndicators(BasePandasObject):
         result = rvi(high=high, low=low, close=close, length=length, scalar=scalar, refined=refined, thirds=thirds, mamode=mamode, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def thermo(self, long=None, short= None, length=None, mamode=None, drift=None, offset=None, **kwargs):
+        high  = self._get_column(kwargs.pop("high", "high"))
+        low   = self._get_column(kwargs.pop("low", "low"))
+
+        result = thermo(high=high, low=low, long=long, short=short, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def true_range(self, drift=None, offset=None, **kwargs):
         high  = self._get_column(kwargs.pop("high", "high"))
         low   = self._get_column(kwargs.pop("low", "low"))

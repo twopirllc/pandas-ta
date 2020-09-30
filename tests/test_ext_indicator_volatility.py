@@ -79,6 +79,11 @@ class TestVolatilityExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "RVIt_14")
 
+    def test_thermo_ext(self):
+        self.data.ta.thermo(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ["THERMO_20_2_0.5", "THERMOma_20_2_0.5", "THERMOl_20_2_0.5", "THERMOs_20_2_0.5"])
+
     def test_true_range_ext(self):
         self.data.ta.true_range(append=True)
         self.assertIsInstance(self.data, DataFrame)
