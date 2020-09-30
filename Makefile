@@ -1,6 +1,7 @@
 .PHONY: all
 all:
 	make test_utils
+	make test_metrics
 	make test_ta
 	make test_ext
 	make test_strats
@@ -16,6 +17,9 @@ init:
 
 test_ext:
 	python -m unittest -v tests/test_ext_indicator_*.py
+
+test_metrics:
+	python -m unittest -v tests/test_utils_metrics.py
 
 test_strats:
 	python -m unittest -v tests/test_strategy.py
