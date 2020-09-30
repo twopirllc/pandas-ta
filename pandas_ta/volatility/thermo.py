@@ -18,27 +18,16 @@ def thermo(high, low, long=None, short=None, length=None, mamode=None, drift=Non
     mamode = mamode.lower() if mamode else "ema"
    
     asint = kwargs.pop("asint", True)
-    lazybear = kwargs.pop("lazybear", False)
-
 
     # Calculate Result
     thermoL = (low.shift(drift) - low).abs()
     thermoH = (high - high.shift(drift)).abs()
-    if lazybear:
-        thermo = (high < high.shift(drift)) & (low > low.shift(drift))
-        if thermo.any():
-            thermo = thermoL
-            thermo = thermo.where(thermoH < thermoL, thermoH)
-            thermo.index = high.index
 
-        thermoma = ema(thermo,length)
+    thermo = thermoL
+    thermo = thermo.where(thermoH < thermoL, thermoH)
+    thermo.index = high.index
 
-    else:
-        thermo = thermoL
-        thermo = thermo.where(thermoH < thermoL, thermoH)
-        thermo.index = high.index
-
-        thermoma = ema(thermo, length)
+    thermoma = ema(thermo, length)
 
     # Create signals
     thermo_long = thermo < (thermoma * long) # Returns T/F
