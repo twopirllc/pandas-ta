@@ -4,7 +4,14 @@ from .rsi import rsi
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
-def stochrsi(close, length=None, rsi_length=None, k=None, d=None, offset=None, **kwargs):
+
+def stochrsi(close,
+             length=None,
+             rsi_length=None,
+             k=None,
+             d=None,
+             offset=None,
+             **kwargs):
     """Indicator: Stochastic RSI Oscillator (STOCHRSI)"""
     # Validate arguments
     close = verify_series(close)
@@ -16,10 +23,10 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, offset=None, *
 
     # Calculate Result
     rsi_ = rsi(close, length=rsi_length)
-    lowest_rsi  = rsi_.rolling(length).min()
+    lowest_rsi = rsi_.rolling(length).min()
     highest_rsi = rsi_.rolling(length).max()
 
-    stoch  = 100 * (rsi_ - lowest_rsi)
+    stoch = 100 * (rsi_ - lowest_rsi)
     stoch /= non_zero_range(highest_rsi, lowest_rsi)
 
     stochrsi_k = sma(stoch, length=k)
@@ -54,9 +61,7 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, offset=None, *
     return df
 
 
-
-stochrsi.__doc__ = \
-"""Stochastic (STOCHRSI)
+stochrsi.__doc__ = """Stochastic (STOCHRSI)
 
 
 "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll and published in Stock & Commodities V.11:5 (189-199)

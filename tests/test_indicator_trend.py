@@ -1,4 +1,10 @@
-from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
+from .config import (
+    error_analysis,
+    sample_data,
+    CORRELATION,
+    CORRELATION_THRESHOLD,
+    VERBOSE,
+)
 from .context import pandas_ta
 
 from unittest import TestCase, skip
@@ -8,8 +14,8 @@ from pandas import DataFrame, Series
 import talib as tal
 
 
-
 class TestTrend(TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -18,7 +24,8 @@ class TestTrend(TestCase):
         cls.high = cls.data["high"]
         cls.low = cls.data["low"]
         cls.close = cls.data["close"]
-        if "volume" in cls.data.columns: cls.volume = cls.data["volume"]
+        if "volume" in cls.data.columns:
+            cls.volume = cls.data["volume"]
 
     @classmethod
     def tearDownClass(cls):
@@ -26,13 +33,15 @@ class TestTrend(TestCase):
         del cls.high
         del cls.low
         del cls.close
-        if hasattr(cls, "volume"): del cls.volume
+        if hasattr(cls, "volume"):
+            del cls.volume
         del cls.data
 
+    def setUp(self):
+        pass
 
-    def setUp(self): pass
-    def tearDown(self): pass
-    
+    def tearDown(self):
+        pass
 
     def test_adx(self):
         result = pandas_ta.adx(self.high, self.low, self.close)
@@ -41,10 +50,12 @@ class TestTrend(TestCase):
 
         try:
             expected = tal.ADX(self.high, self.low, self.close)
-            pdt.assert_series_equal(result.iloc[:,0], expected)
+            pdt.assert_series_equal(result.iloc[:, 0], expected)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result.iloc[:,0], expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0],
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -61,33 +72,44 @@ class TestTrend(TestCase):
 
         try:
             expected = tal.AROON(self.high, self.low)
-            expecteddf = DataFrame({"AROOND_14": expected[0], "AROONU_14": expected[1]})
+            expecteddf = DataFrame({
+                "AROOND_14": expected[0],
+                "AROONU_14": expected[1]
+            })
             pdt.assert_frame_equal(result, expecteddf)
         except AssertionError as ae:
             try:
-                aroond_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,0], expecteddf.iloc[:,0], col=CORRELATION)
+                aroond_corr = pandas_ta.utils.df_error_analysis(
+                    result.iloc[:, 0], expecteddf.iloc[:, 0], col=CORRELATION)
                 self.assertGreater(aroond_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                error_analysis(result.iloc[:,0], CORRELATION, ex)
+                error_analysis(result.iloc[:, 0], CORRELATION, ex)
 
             try:
-                aroonu_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,1], expecteddf.iloc[:,1], col=CORRELATION)
+                aroonu_corr = pandas_ta.utils.df_error_analysis(
+                    result.iloc[:, 1], expecteddf.iloc[:, 1], col=CORRELATION)
                 self.assertGreater(aroonu_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                error_analysis(result.iloc[:,1], CORRELATION, ex, newline=False)
+                error_analysis(result.iloc[:, 1],
+                               CORRELATION,
+                               ex,
+                               newline=False)
 
     def test_aroon_osc(self):
         result = pandas_ta.aroon(self.high, self.low)
 
         try:
             expected = tal.AROONOSC(self.high, self.low)
-            pdt.assert_series_equal(result.iloc[:,2], expected)
+            pdt.assert_series_equal(result.iloc[:, 2], expected)
         except AssertionError as ae:
             try:
-                aroond_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,2], expected, col=CORRELATION)
+                aroond_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,
+                                                                            2],
+                                                                expected,
+                                                                col=CORRELATION)
                 self.assertGreater(aroond_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                error_analysis(result.iloc[:,0], CORRELATION, ex)
+                error_analysis(result.iloc[:, 0], CORRELATION, ex)
 
     def test_chop(self):
         result = pandas_ta.chop(self.high, self.low, self.close)
@@ -143,7 +165,9 @@ class TestTrend(TestCase):
             pdt.assert_series_equal(psar, expected)
         except AssertionError as ae:
             try:
-                psar_corr = pandas_ta.utils.df_error_analysis(psar, expected, col=CORRELATION)
+                psar_corr = pandas_ta.utils.df_error_analysis(psar,
+                                                              expected,
+                                                              col=CORRELATION)
                 self.assertGreater(psar_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(psar, CORRELATION, ex)

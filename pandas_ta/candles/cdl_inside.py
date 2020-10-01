@@ -3,42 +3,41 @@ from pandas import DataFrame, set_option
 from pandas_ta.utils import candle_color, get_drift, get_offset
 from pandas_ta.utils import non_zero_range, real_body, verify_series
 
+
 def cdl_inside(open_, high, low, close, asbool=False, offset=None, **kwargs):
-        """Candle Type: Inside Bar"""
-        # Validate arguments
-        open_ = verify_series(open_)
-        high = verify_series(high)
-        low = verify_series(low)
-        close = verify_series(close)
-        offset = get_offset(offset)
+    """Candle Type: Inside Bar"""
+    # Validate arguments
+    open_ = verify_series(open_)
+    high = verify_series(high)
+    low = verify_series(low)
+    close = verify_series(close)
+    offset = get_offset(offset)
 
-        # Calculate Result
-        inside = (high.diff() < 0) & (low.diff() > 0)
+    # Calculate Result
+    inside = (high.diff() < 0) & (low.diff() > 0)
 
-        if not asbool:
-            inside *= candle_color(open_, close)
+    if not asbool:
+        inside *= candle_color(open_, close)
 
-        # Offset
-        if offset != 0:
-            inside = inside.shift(offset)
+    # Offset
+    if offset != 0:
+        inside = inside.shift(offset)
 
-        # Handle fills
-        if "fillna" in kwargs:
-            inside.fillna(kwargs["fillna"], inplace=True)
+    # Handle fills
+    if "fillna" in kwargs:
+        inside.fillna(kwargs["fillna"], inplace=True)
 
-        if "fill_method" in kwargs:
-            inside.fillna(method=kwargs["fill_method"], inplace=True)
+    if "fill_method" in kwargs:
+        inside.fillna(method=kwargs["fill_method"], inplace=True)
 
-        # Name and Categorize it
-        inside.name = f"CDL_INSIDE"
-        inside.category = "candles"
-        
-        return inside
+    # Name and Categorize it
+    inside.name = f"CDL_INSIDE"
+    inside.category = "candles"
+
+    return inside
 
 
-
-cdl_inside.__doc__ = \
-"""Candle Type: Inside Bar
+cdl_inside.__doc__ = """Candle Type: Inside Bar
 
 An Inside Bar is a bar that is engulfed by the prior highs and lows of it's
 previous bar. In other words, the current bar is smaller than it's previous bar.

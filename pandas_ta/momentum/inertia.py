@@ -3,7 +3,21 @@ from pandas_ta.overlap import linreg
 from pandas_ta.volatility import rvi
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
-def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
+
+def inertia(
+    close=None,
+    high=None,
+    low=None,
+    length=None,
+    rvi_length=None,
+    scalar=None,
+    refined=None,
+    thirds=None,
+    mamode=None,
+    drift=None,
+    offset=None,
+    **kwargs,
+):
     """Indicator: Inertia (INERTIA)"""
     # Validate Arguments
     close = verify_series(close)
@@ -22,10 +36,26 @@ def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scala
     # Calculate Result
     _mode = ""
     if refined:
-        rvi_ = rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, refined=refined, mamode=mamode)
+        rvi_ = rvi(
+            close,
+            high=high,
+            low=low,
+            length=rvi_length,
+            scalar=scalar,
+            refined=refined,
+            mamode=mamode,
+        )
         _mode = "r"
     elif thirds:
-        rvi_ = rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, thirds=thirds, mamode=mamode)
+        rvi_ = rvi(
+            close,
+            high=high,
+            low=low,
+            length=rvi_length,
+            scalar=scalar,
+            thirds=thirds,
+            mamode=mamode,
+        )
         _mode = "t"
     else:
         rvi_ = rvi(close, length=rvi_length, scalar=scalar, mamode=mamode)
@@ -37,10 +67,10 @@ def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scala
         inertia = inertia.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        inertia.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        inertia.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        inertia.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        inertia.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name & Category
     _props = f"_{length}_{rvi_length}"
@@ -50,9 +80,7 @@ def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scala
     return inertia
 
 
-
-inertia.__doc__ = \
-"""Inertia (INERTIA)
+inertia.__doc__ = """Inertia (INERTIA)
 
 Inertia was developed by Donald Dorsey and was introduced his article
 in September, 1995. It is the Relative Vigor Index smoothed by the Least

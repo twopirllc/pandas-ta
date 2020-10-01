@@ -3,6 +3,7 @@ from numpy import array_split
 from pandas import concat, DataFrame
 from ..utils import signed_series, verify_series
 
+
 def vp(close, volume, width=None, **kwargs):
     """Indicator: Volume Profile (VP)"""
     # Validate arguments
@@ -59,8 +60,7 @@ def vp(close, volume, width=None, **kwargs):
     return vpdf
 
 
-vp.__doc__ = \
-"""Volume Profile (VP)
+vp.__doc__ = """Volume Profile (VP)
 
 Calculates the Volume Profile by slicing price into ranges.  Note: Value Area is not calculated.
 
@@ -73,7 +73,7 @@ Sources:
 Calculation:
     Default Inputs:
         width=10
-    
+
     vp = pd.concat([close, pos_volume, neg_volume], axis=1)
     vp_ranges = np.array_split(vp, width)
     result = ({high_close, low_close, mean_close, neg_volume, pos_volume} foreach range in vp_ranges)

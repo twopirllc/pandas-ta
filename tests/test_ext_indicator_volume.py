@@ -5,8 +5,8 @@ from unittest import TestCase
 from pandas import DataFrame
 
 
-
 class TestVolumeExtension(TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -17,9 +17,11 @@ class TestVolumeExtension(TestCase):
         del cls.data
         del cls.open
 
-    def setUp(self): pass
-    def tearDown(self): pass
+    def setUp(self):
+        pass
 
+    def tearDown(self):
+        pass
 
     def test_ad_ext(self):
         self.data.ta.ad(append=True)
@@ -39,7 +41,18 @@ class TestVolumeExtension(TestCase):
     def test_aobv_ext(self):
         self.data.ta.aobv(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-7:]), ["OBV", "OBV_min_2", "OBV_max_2", "OBV_EMA_4", "OBV_EMA_12", "AOBV_LR_2", "AOBV_SR_2"])
+        self.assertEqual(
+            list(self.data.columns[-7:]),
+            [
+                "OBV",
+                "OBV_min_2",
+                "OBV_max_2",
+                "OBV_EMA_4",
+                "OBV_EMA_12",
+                "AOBV_LR_2",
+                "AOBV_SR_2",
+            ],
+        )
         # Remove "OBV" so it does not interfere with test_obv_ext()
         self.data.drop("OBV", axis=1, inplace=True)
 

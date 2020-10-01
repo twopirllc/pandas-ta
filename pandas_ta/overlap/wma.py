@@ -4,12 +4,14 @@ from numpy import dot as npdot
 from pandas import Series
 from ..utils import get_offset, verify_series
 
+
 def wma(close, length=None, asc=None, offset=None, **kwargs):
     """Indicator: Weighted Moving Average (WMA)"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else length)
     asc = asc if asc else True
     offset = get_offset(offset)
 
@@ -19,8 +21,10 @@ def wma(close, length=None, asc=None, offset=None, **kwargs):
     weights = weights_ if asc else weights_[::-1]
 
     def linear(w):
+
         def _compute(x):
             return npdot(x, w) / total_weight
+
         return _compute
 
     close_ = close.rolling(length, min_periods=length)
@@ -32,14 +36,12 @@ def wma(close, length=None, asc=None, offset=None, **kwargs):
 
     # Name & Category
     wma.name = f"WMA_{length}"
-    wma.category = 'overlap'
+    wma.category = "overlap"
 
     return wma
 
 
-
-wma.__doc__ = \
-"""Weighted Moving Average (WMA)
+wma.__doc__ = """Weighted Moving Average (WMA)
 
 The Weighted Moving Average where the weights are linearly increasing and
 the most recent data has the heaviest weight.

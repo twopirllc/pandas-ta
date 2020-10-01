@@ -2,7 +2,14 @@
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
-def tsi(close, fast=None, slow=None, scalar=None, drift=None, offset=None, **kwargs):
+
+def tsi(close,
+        fast=None,
+        slow=None,
+        scalar=None,
+        drift=None,
+        offset=None,
+        **kwargs):
     """Indicator: True Strength Index (TSI)"""
     # Validate Arguments
     close = verify_series(close)
@@ -42,9 +49,7 @@ def tsi(close, fast=None, slow=None, scalar=None, drift=None, offset=None, **kwa
     return tsi
 
 
-
-tsi.__doc__ = \
-"""True Strength Index (TSI)
+tsi.__doc__ = """True Strength Index (TSI)
 
 The True Strength Index is a momentum indicator used to identify short-term
 swings while in the direction of the trend as well as determining overbought

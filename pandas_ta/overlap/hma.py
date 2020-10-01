@@ -3,12 +3,14 @@ from math import sqrt
 from .wma import wma
 from ..utils import get_offset, verify_series
 
+
 def hma(close, length=None, offset=None, **kwargs):
     """Indicator: Hull Moving Average (HMA)"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -25,14 +27,12 @@ def hma(close, length=None, offset=None, **kwargs):
 
     # Name & Category
     hma.name = f"HMA_{length}"
-    hma.category = 'overlap'
+    hma.category = "overlap"
 
     return hma
 
 
-
-hma.__doc__ = \
-"""Hull Moving Average (HMA)
+hma.__doc__ = """Hull Moving Average (HMA)
 
 The Hull Exponential Moving Average attempts to reduce or remove lag in moving
 averages.

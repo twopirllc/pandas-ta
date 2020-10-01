@@ -3,7 +3,15 @@ from pandas import DataFrame
 from ..overlap.hlc3 import hlc3
 from ..utils import get_drift, get_offset, verify_series
 
-def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs):
+
+def mfi(high,
+        low,
+        close,
+        volume,
+        length=None,
+        drift=None,
+        offset=None,
+        **kwargs):
     """Indicator: Money Flow Index (MFI)"""
     # Validate arguments
     high = verify_series(high)
@@ -20,8 +28,8 @@ def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs
 
     tdf = DataFrame({"diff": 0, "rmf": raw_money_flow, "+mf": 0, "-mf": 0})
 
-    tdf.loc[(typical_price.diff(drift) > 0), "diff"] =  1
-    tdf.loc[tdf["diff"] ==  1, "+mf"] = raw_money_flow
+    tdf.loc[(typical_price.diff(drift) > 0), "diff"] = 1
+    tdf.loc[tdf["diff"] == 1, "+mf"] = raw_money_flow
 
     tdf.loc[(typical_price.diff(drift) < 0), "diff"] = -1
     tdf.loc[tdf["diff"] == -1, "-mf"] = raw_money_flow
@@ -49,9 +57,7 @@ def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs
     return mfi
 
 
-
-mfi.__doc__ = \
-"""Money Flow Index (MFI)
+mfi.__doc__ = """Money Flow Index (MFI)
 
 Money Flow Index is an oscillator indicator that is used to measure buying and
 selling pressure by utilizing both price and volume.

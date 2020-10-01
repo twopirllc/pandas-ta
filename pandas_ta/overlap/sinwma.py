@@ -4,19 +4,22 @@ from math import sin
 from pandas import Series
 from ..utils import get_offset, pascals_triangle, verify_series, weights
 
+
 def sinwma(close, length=None, asc=None, offset=None, **kwargs):
     """Indicator: Sine Weighted Moving Average (SINWMA) by Everget of TradingView"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
     sines = Series([sin((i + 1) * pi / (length + 1)) for i in range(0, length)])
     w = sines / sines.sum()
 
-    sinwma = close.rolling(length, min_periods=length).apply(weights(w), raw=True)
+    sinwma = close.rolling(length, min_periods=length).apply(weights(w),
+                                                             raw=True)
 
     # Offset
     if offset != 0:
@@ -24,14 +27,12 @@ def sinwma(close, length=None, asc=None, offset=None, **kwargs):
 
     # Name & Category
     sinwma.name = f"SINWMA_{length}"
-    sinwma.category = 'overlap'
+    sinwma.category = "overlap"
 
     return sinwma
 
 
-
-sinwma.__doc__ = \
-"""Sine Weighted Moving Average (SWMA)
+sinwma.__doc__ = """Sine Weighted Moving Average (SWMA)
 
 A weighted average using sine cycles.  The middle term(s) of the average have the highest
 weight(s).

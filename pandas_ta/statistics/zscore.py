@@ -3,6 +3,7 @@ from ..overlap.sma import sma
 from .stdev import stdev
 from ..utils import get_offset, verify_series
 
+
 def zscore(close, length=None, std=None, offset=None, **kwargs):
     """Indicator: Z Score"""
     # Validate Arguments
@@ -27,9 +28,7 @@ def zscore(close, length=None, std=None, offset=None, **kwargs):
     return zscore
 
 
-
-zscore.__doc__ = \
-"""Rolling Z Score
+zscore.__doc__ = """Rolling Z Score
 
 Sources:
 

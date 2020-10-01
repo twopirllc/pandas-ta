@@ -2,6 +2,7 @@
 from .sma import sma
 from ..utils import get_offset, verify_series
 
+
 def vwma(close, volume, length=None, offset=None, **kwargs):
     """Indicator: Volume Weighted Moving Average (VWMA)"""
     # Validate Arguments
@@ -20,14 +21,12 @@ def vwma(close, volume, length=None, offset=None, **kwargs):
 
     # Name & Category
     vwma.name = f"VWMA_{length}"
-    vwma.category = 'overlap'
+    vwma.category = "overlap"
 
     return vwma
 
 
-
-vwma.__doc__ = \
-"""Volume Weighted Moving Average (VWMA)
+vwma.__doc__ = """Volume Weighted Moving Average (VWMA)
 
 Volume Weighted Moving Average.
 

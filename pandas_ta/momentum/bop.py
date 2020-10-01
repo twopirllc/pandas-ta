@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, non_zero_range, verify_series
 
+
 def bop(open_, high, low, close, scalar=None, offset=None, **kwargs):
     """Indicator: Balance of Power (BOP)"""
     # Validate Arguments
@@ -33,9 +34,7 @@ def bop(open_, high, low, close, scalar=None, offset=None, **kwargs):
     return bop
 
 
-
-bop.__doc__ = \
-"""Balance of Power (BOP)
+bop.__doc__ = """Balance of Power (BOP)
 
 Balance of Power measure the market strength of buyers against sellers.
 

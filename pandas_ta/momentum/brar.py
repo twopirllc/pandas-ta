@@ -2,7 +2,16 @@
 from pandas import DataFrame
 from ..utils import get_drift, get_offset, non_zero_range, verify_series
 
-def brar(open_, high, low, close, length=None, scalar=None, drift=None, offset=None, **kwargs):
+
+def brar(open_,
+         high,
+         low,
+         close,
+         length=None,
+         scalar=None,
+         drift=None,
+         offset=None,
+         **kwargs):
     """Indicator: BRAR (BRAR)"""
     # Validate Arguments
     open_ = verify_series(open_)
@@ -20,8 +29,8 @@ def brar(open_, high, low, close, length=None, scalar=None, drift=None, offset=N
     hcy = non_zero_range(high, close.shift(drift))
     cyl = non_zero_range(close.shift(drift), low)
 
-    hcy[hcy < 0] = 0 # Zero negative values
-    cyl[cyl < 0] = 0 # ""
+    hcy[hcy < 0] = 0  # Zero negative values
+    cyl[cyl < 0] = 0  # ""
 
     ar = scalar * high_open_range.rolling(length).sum()
     ar /= open_low_range.rolling(length).sum()
@@ -35,30 +44,28 @@ def brar(open_, high, low, close, length=None, scalar=None, drift=None, offset=N
         br = ar.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        ar.fillna(kwargs['fillna'], inplace=True)
-        br.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        ar.fillna(method=kwargs['fill_method'], inplace=True)
-        br.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        ar.fillna(kwargs["fillna"], inplace=True)
+        br.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        ar.fillna(method=kwargs["fill_method"], inplace=True)
+        br.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     _props = f"_{length}"
     ar.name = f"AR{_props}"
     br.name = f"BR{_props}"
-    ar.category = br.category = 'momentum'
+    ar.category = br.category = "momentum"
 
     # Prepare DataFrame to return
     brardf = DataFrame({ar.name: ar, br.name: br})
     brardf.name = f"BRAR{_props}"
-    brardf.category = 'momentum'
+    brardf.category = "momentum"
 
     return brardf
 
 
-
-brar.__doc__ = \
-"""BRAR (BRAR)
+brar.__doc__ = """BRAR (BRAR)
 
 BR and AR
 

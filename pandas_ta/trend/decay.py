@@ -3,6 +3,7 @@ from math import exp
 from pandas import DataFrame
 from pandas_ta.utils import get_offset, verify_series
 
+
 def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
     """Indicator: Decay"""
     # Validate Arguments
@@ -16,7 +17,7 @@ def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
     if mode == "exp" or kind == "exponential":
         _mode = "EXP"
         diff = close.shift(1) - exp(-length)
-    else: # "linear"
+    else:  # "linear"
         diff = close.shift(1) - (1 / length)
     diff[0] = close[0]
     tdf = DataFrame({"close": close, "diff": diff, "0": 0})
@@ -32,16 +33,14 @@ def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
     if "fill_method" in kwargs:
         ld.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it 
+    # Name and Categorize it
     ld.name = f"{_mode}DECAY_{length}"
     ld.category = "trend"
 
     return ld
 
 
-
-decay.__doc__ = \
-"""Decay
+decay.__doc__ = """Decay
 
 Creates a decay moving forward from prior signals like crosses. The default is
 "linear". Exponential is optional as "exponential" or "exp".

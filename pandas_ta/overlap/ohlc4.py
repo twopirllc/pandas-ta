@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series
 
+
 def ohlc4(open_, high, low, close, offset=None, **kwargs):
     """Indicator: OHLC4"""
     # Validate Arguments
@@ -19,6 +20,6 @@ def ohlc4(open_, high, low, close, offset=None, **kwargs):
 
     # Name & Category
     ohlc4.name = "OHLC4"
-    ohlc4.category = 'overlap'
+    ohlc4.category = "overlap"
 
     return ohlc4

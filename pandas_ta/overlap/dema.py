@@ -2,6 +2,7 @@
 from .ema import ema
 from pandas_ta.utils import get_offset, verify_series
 
+
 def dema(close, length=None, offset=None, **kwargs):
     """Indicator: Double Exponential Moving Average (DEMA)"""
     # Validate Arguments
@@ -25,9 +26,7 @@ def dema(close, length=None, offset=None, **kwargs):
     return dema
 
 
-
-dema.__doc__ = \
-"""Double Exponential Moving Average (DEMA)
+dema.__doc__ = """Double Exponential Moving Average (DEMA)
 
 The Double Exponential Moving Average attempts to a smoother average with less
 lag than the normal Exponential Moving Average (EMA).

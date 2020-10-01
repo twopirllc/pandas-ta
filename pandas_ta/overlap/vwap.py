@@ -2,6 +2,7 @@
 from .hlc3 import hlc3
 from ..utils import get_offset, is_datetime_ordered, verify_series
 
+
 def vwap(high, low, close, volume, offset=None, **kwargs):
     """Indicator: Volume Weighted Average Price (VWAP)"""
     # Validate Arguments
@@ -12,7 +13,9 @@ def vwap(high, low, close, volume, offset=None, **kwargs):
     offset = get_offset(offset)
 
     if not is_datetime_ordered(volume):
-        print(f"[!] VWAP volume series is not datetime ordered. Results may not be as expected.")
+        print(
+            f"[!] VWAP volume series is not datetime ordered. Results may not be as expected."
+        )
 
     # Calculate Result
     tp = hlc3(high=high, low=low, close=close)
@@ -29,9 +32,7 @@ def vwap(high, low, close, volume, offset=None, **kwargs):
     return vwap
 
 
-
-vwap.__doc__ = \
-"""Volume Weighted Average Price (VWAP)
+vwap.__doc__ = """Volume Weighted Average Price (VWAP)
 
 The Volume Weighted Average Price that measures the average typical price
 by volume.  It is typically used with intraday charts to identify general

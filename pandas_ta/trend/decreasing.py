@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series
 
+
 def decreasing(close, length=None, asint=True, offset=None, **kwargs):
     """Indicator: Decreasing"""
     # Validate Arguments
@@ -30,9 +31,7 @@ def decreasing(close, length=None, asint=True, offset=None, **kwargs):
     return decreasing
 
 
-
-decreasing.__doc__ = \
-"""Decreasing
+decreasing.__doc__ = """Decreasing
 
 Returns True or False if the series is decreasing over a periods.  By default,
 it returns True and False as 1 and 0 respectively with kwarg 'asint'.

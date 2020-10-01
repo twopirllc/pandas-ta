@@ -4,12 +4,13 @@ import datetime as dt
 from pathlib import Path
 from random import random
 
-import pandas as pd # pip install pandas
+import pandas as pd  # pip install pandas
 import yfinance as yf
+
 # yf.pdr_override() # <== that's all it takes :-)
 
-import alphaVantageAPI as AV # pip install alphaVantage-api
-import pandas_ta as ta # pip install pandas_ta
+import alphaVantageAPI as AV  # pip install alphaVantage-api
+import pandas_ta as ta  # pip install pandas_ta
 
 
 def colors(colors: str = None, default: str = "GrRd"):
@@ -17,17 +18,14 @@ def colors(colors: str = None, default: str = "GrRd"):
         # Pairs
         "GrRd": ["green", "red"],
         "RdGr": ["red", "green"],
-        
         "BkGy": ["black", "gray"],
         "BkSv": ["black", "silver"],
         "BkPr": ["black", "purple"],
         "BkBl": ["black", "blue"],
-        
         "GyBk": ["gray", "black"],
         "GySv": ["gray", "silver"],
         "GyPr": ["gray", "purple"],
         "GyBl": ["gray", "blue"],
-        
         "SvGy": ["silver", "gray"],
         "FcLi": ["fuchsia", "lime"],
         # Triples
@@ -69,6 +67,7 @@ class Watchlist(object):
     ## Required Arguments:
     - tickers: A list of strings containing tickers. Example: ["SPY", "AAPL"]
     """
+
     def __init__(
         self,
         tickers: list,
@@ -76,14 +75,15 @@ class Watchlist(object):
         name: str = None,
         strategy: ta.Strategy = None,
         ds: object = None,
-        **kwargs
+        **kwargs,
     ):
         self.verbose = kwargs.pop("verbose", False)
         self.debug = kwargs.pop("debug", False)
 
         self.tickers = tickers
         self.tf = tf
-        self.name = name if isinstance(name, str) else f"Watch: {', '.join(tickers)}"
+        self.name = name if isinstance(name,
+                                       str) else f"Watch: {', '.join(tickers)}"
         self.data = None
         self.kwargs = kwargs
         self.strategy = strategy
@@ -96,12 +96,23 @@ class Watchlist(object):
         elif isinstance(ds, str) and ds.lower() == "yahoo":
             self.ds = yf
         else:
-            AVkwargs = {"api_key": "YOUR API KEY", "clean": True, "export": True, "export_path": ".", "output_size": "full", "premium": False}
+            AVkwargs = {
+                "api_key": "YOUR API KEY",
+                "clean": True,
+                "export": True,
+                "export_path": ".",
+                "output_size": "full",
+                "premium": False,
+            }
             self.av_kwargs = self.kwargs.pop("av_kwargs", AVkwargs)
             self.file_path = self.av_kwargs["export_path"]
             self.ds = AV.AlphaVantage(**self.av_kwargs)
 
-    def _drop_columns(self, df: pd.DataFrame, cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"]):
+    def _drop_columns(
+        self,
+        df: pd.DataFrame,
+        cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"],
+    ):
         """Helper methods to drop columns silently."""
         df_columns = list(df.columns)
         if any(_ in df_columns for _ in cols):
@@ -113,8 +124,11 @@ class Watchlist(object):
     def _load_all(self, **kwargs) -> dict:
         """Updates the Watchlist's data property with a dictionary of DataFrames
         keyed by ticker."""
-        if self.tickers is not None and isinstance(self.tickers, list) and len(self.tickers):
-            self.data = {ticker: self.load(ticker, **kwargs) for ticker in self.tickers}
+        if (self.tickers is not None and isinstance(self.tickers, list) and
+                len(self.tickers)):
+            self.data = {
+                ticker: self.load(ticker, **kwargs) for ticker in self.tickers
+            }
             return self.data
 
     def load(
@@ -123,7 +137,7 @@ class Watchlist(object):
         tf: str = None,
         index: str = "date",
         drop: list = ["dividend", "split_coefficient"],
-        **kwargs
+        **kwargs,
     ) -> pd.DataFrame:
         """Loads or Downloads (if a local csv does not exist) the data from the
         Data Source. When successful, it returns a Data Frame for the requested
@@ -163,10 +177,11 @@ class Watchlist(object):
         df = self._drop_columns(df)
 
         if kwargs.pop("analyze", True):
-            if self.debug: print(f"[+] TA[{len(self.strategy.ta)}]: {self.strategy.name}")
+            if self.debug:
+                print(f"[+] TA[{len(self.strategy.ta)}]: {self.strategy.name}")
             df.ta.strategy(self.strategy, **kwargs)
 
-        df.ticker = ticker # Attach ticker to the DataFrame
+        df.ticker = ticker  # Attach ticker to the DataFrame
         return df
 
     @property
@@ -178,7 +193,8 @@ class Watchlist(object):
     def data(self, value: dict) -> None:
         # Later check dict has string keys and DataFrame values
         if value is not None and isinstance(value, dict):
-            if self.verbose: print(f"[+] New data")
+            if self.verbose:
+                print(f"[+] New data")
             self._data = value
         else:
             self._data = None
@@ -205,7 +221,7 @@ class Watchlist(object):
         if value is not None and isinstance(value, ta.Strategy):
             self._strategy = value
         else:
-            self._strategy = ta.CommonStrategy        
+            self._strategy = ta.CommonStrategy
 
     @property
     def tf(self) -> str:

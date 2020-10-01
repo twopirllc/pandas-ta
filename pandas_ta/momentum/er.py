@@ -3,6 +3,7 @@ from pandas import DataFrame, concat
 from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
+
 def er(close, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Efficiency Ratio (ER)"""
     # Validate arguments
@@ -23,35 +24,33 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
         er = er.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        er.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        er.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        er.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        er.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     er.name = f"ER_{length}"
     er.category = "momentum"
 
-    signal_indicators = kwargs.pop('signal_indicators', False)
+    signal_indicators = kwargs.pop("signal_indicators", False)
     if signal_indicators:
         signalsdf = concat(
             [
-                DataFrame(
-                    {er.name: er}
-                ),
+                DataFrame({er.name: er}),
                 signals(
                     indicator=er,
-                    xa=kwargs.pop('xa', 80),
-                    xb=kwargs.pop('xb', 20),
-                    xserie=kwargs.pop('xserie', None),
-                    xserie_a=kwargs.pop('xserie_a', None),
-                    xserie_b=kwargs.pop('xserie_b', None),
-                    cross_values=kwargs.pop('cross_values', False),
-                    cross_series=kwargs.pop('cross_series', True),
+                    xa=kwargs.pop("xa", 80),
+                    xb=kwargs.pop("xb", 20),
+                    xserie=kwargs.pop("xserie", None),
+                    xserie_a=kwargs.pop("xserie_a", None),
+                    xserie_b=kwargs.pop("xserie_b", None),
+                    cross_values=kwargs.pop("cross_values", False),
+                    cross_series=kwargs.pop("cross_series", True),
                     offset=offset,
                 ),
             ],
-            axis=1
+            axis=1,
         )
 
         return signalsdf
@@ -59,9 +58,7 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
         return er
 
 
-
-er.__doc__ = \
-"""Efficiency Ratio (ER)
+er.__doc__ = """Efficiency Ratio (ER)
 
 The Efficiency Ratio was invented by Perry J. Kaufman and presented in his book "New Trading Systems and Methods". It is designed to account for market noise or volatility.
 

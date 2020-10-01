@@ -2,10 +2,28 @@
 from pandas import DataFrame
 from pandas_ta.overlap import ema, sma
 from pandas_ta.statistics import stdev
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, unsigned_differences, verify_series
+from pandas_ta.utils import (
+    get_drift,
+    get_offset,
+    non_zero_range,
+    unsigned_differences,
+    verify_series,
+)
 
 
-def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
+def rvi(
+    close,
+    high=None,
+    low=None,
+    length=None,
+    scalar=None,
+    refined=None,
+    thirds=None,
+    mamode=None,
+    drift=None,
+    offset=None,
+    **kwargs,
+):
     """Indicator: Relative Volatility Index (RVI)"""
     # Validate arguments
     close = verify_series(close)
@@ -33,7 +51,7 @@ def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thir
         if mamode == "sma":
             pos_avg = sma(pos_std, length)
             neg_avg = sma(neg_std, length)
-        else: # "ema"
+        else:  # "ema"
             pos_avg = ema(pos_std, length)
             neg_avg = ema(neg_std, length)
 
@@ -51,7 +69,7 @@ def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thir
         high_rvi = rvi_(high, length, scalar, mamode, drift)
         low_rvi = rvi_(low, length, scalar, mamode, drift)
         close_rvi = rvi_(close, length, scalar, mamode, drift)
-        rvi = (high_rvi + low_rvi + close_rvi) / 3.
+        rvi = (high_rvi + low_rvi + close_rvi) / 3.0
         _mode = "t"
     else:
         rvi = rvi_(close, length, scalar, mamode, drift)
@@ -73,9 +91,7 @@ def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thir
     return rvi
 
 
-
-rvi.__doc__ = \
-"""Relative Volatility Index (RVI)
+rvi.__doc__ = """Relative Volatility Index (RVI)
 
 The Relative Volatility Index (RVI) was created in 1993 and
 revised in 1995. Instead of adding up price changes like RSI

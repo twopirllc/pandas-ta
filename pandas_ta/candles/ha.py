@@ -19,7 +19,7 @@ def ha(open_, high, low, close, offset=None, **kwargs):
         "HA_open": 0.5 * (open_.iloc[0] + close.iloc[0]),
         "HA_high": high,
         "HA_low": low,
-        "HA_close": 0.25 * (open_ + high + low + close)
+        "HA_close": 0.25 * (open_ + high + low + close),
     })
 
     for i in range(1, m):
@@ -45,8 +45,7 @@ def ha(open_, high, low, close, offset=None, **kwargs):
     return df
 
 
-ha.__doc__ = \
-"""Heikin Ashi Candles (HA)
+ha.__doc__ = """Heikin Ashi Candles (HA)
 
 The Heikin-Ashi technique averages price data to create a Japanese
 candlestick chart that filters out market noise. Heikin-Ashi charts,
@@ -55,7 +54,7 @@ with standard candlestick charts but differ based on the values used
 to create each candle. Instead of using the open, high, low, and close
 like standard candlestick charts, the Heikin-Ashi technique uses a
 modified formula based on two-period averages. This gives the chart a
-smoother appearance, making it easier to spots trends and reversals, 
+smoother appearance, making it easier to spots trends and reversals,
 but also obscures gaps and some price data.
 
 Sources:

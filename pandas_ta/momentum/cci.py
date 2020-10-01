@@ -4,6 +4,7 @@ from ..overlap.sma import sma
 from ..statistics.mad import mad
 from ..utils import get_offset, verify_series
 
+
 def cci(high, low, close, length=None, c=None, offset=None, **kwargs):
     """Indicator: Commodity Channel Index (CCI)"""
     # Validate Arguments
@@ -27,21 +28,19 @@ def cci(high, low, close, length=None, c=None, offset=None, **kwargs):
         cci = cci.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        cci.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        cci.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        cci.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        cci.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     cci.name = f"CCI_{length}_{c}"
-    cci.category = 'momentum'
+    cci.category = "momentum"
 
     return cci
 
 
-
-cci.__doc__ = \
-"""Commodity Channel Index (CCI)
+cci.__doc__ = """Commodity Channel Index (CCI)
 
 Commodity Channel Index is a momentum oscillator used to primarily identify
 overbought and oversold levels relative to a mean.

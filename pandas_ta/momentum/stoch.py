@@ -3,7 +3,15 @@ from pandas import DataFrame
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
-def stoch(high, low, close, k=None, d=None, smooth_k=None, offset=None, **kwargs):
+
+def stoch(high,
+          low,
+          close,
+          k=None,
+          d=None,
+          smooth_k=None,
+          offset=None,
+          **kwargs):
     """Indicator: Stochastic Oscillator (STOCH)"""
     # Validate arguments
     high = verify_series(high)
@@ -15,10 +23,10 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, offset=None, **kwargs
     offset = get_offset(offset)
 
     # Calculate Result
-    lowest_low   =  low.rolling(k).min()
+    lowest_low = low.rolling(k).min()
     highest_high = high.rolling(k).max()
 
-    stoch  = 100 * (close - lowest_low)
+    stoch = 100 * (close - lowest_low)
     stoch /= non_zero_range(highest_high, lowest_low)
 
     stoch_k = sma(stoch, length=smooth_k)
@@ -53,9 +61,7 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, offset=None, **kwargs
     return df
 
 
-
-stoch.__doc__ = \
-"""Stochastic (STOCH)
+stoch.__doc__ = """Stochastic (STOCH)
 
 The Stochastic Oscillator (STOCH) was developed by George Lane in the 1950's.
 He believed this indicator was a good way to measure momentum because changes in

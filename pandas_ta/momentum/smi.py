@@ -4,7 +4,14 @@ from .tsi import tsi
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series, signals
 
-def smi(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
+
+def smi(close,
+        fast=None,
+        slow=None,
+        signal=None,
+        scalar=None,
+        offset=None,
+        **kwargs):
     """Indicator: SMI Ergodic Indicator (SMIIO)"""
     # Validate arguments
     close = verify_series(close)
@@ -54,9 +61,7 @@ def smi(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kw
     return df
 
 
-
-smi.__doc__ = \
-"""SMI Ergodic Indicator (SMI)
+smi.__doc__ = """SMI Ergodic Indicator (SMI)
 
 The SMI Ergodic Indicator is the same as the True Strength Index (TSI) developed
 by William Blau, except the SMI includes a signal line. The SMI uses double

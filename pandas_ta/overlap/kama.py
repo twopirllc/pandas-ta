@@ -3,7 +3,14 @@ from numpy import NaN as npNaN
 from pandas import Series, DataFrame
 from ..utils import get_drift, get_offset, non_zero_range, verify_series
 
-def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
+
+def kama(close,
+         length=None,
+         fast=None,
+         slow=None,
+         drift=None,
+         offset=None,
+         **kwargs):
     """Indicator: Kaufman's Adaptive Moving Average (HMA)"""
     # Validate Arguments
     close = verify_series(close)
@@ -15,6 +22,7 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
 
     # Calculate Result
     m = close.size
+
     def weight(length: int) -> float:
         return 2 / (length + 1)
 
@@ -31,7 +39,7 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     result = [npNaN for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
         result.append(sc[i] * close[i] + (1 - sc[i]) * result[i - 1])
-    
+
     kama = Series(result, index=close.index)
 
     # Offset
@@ -45,9 +53,7 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     return kama
 
 
-
-kama.__doc__ = \
-"""Kaufman's Adaptive Moving Average (KAMA)
+kama.__doc__ = """Kaufman's Adaptive Moving Average (KAMA)
 
 Developed by Perry Kaufman, Kaufman's Adaptive Moving Average (KAMA) is a moving average
 designed to account for market noise or volatility. KAMA will closely follow prices when

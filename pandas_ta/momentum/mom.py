@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series
 
+
 def mom(close, length=None, offset=None, **kwargs):
     """Indicator: Momentum (MOM)"""
     # Validate Arguments
@@ -16,21 +17,19 @@ def mom(close, length=None, offset=None, **kwargs):
         mom = mom.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        mom.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        mom.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        mom.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        mom.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     mom.name = f"MOM_{length}"
-    mom.category = 'momentum'
+    mom.category = "momentum"
 
     return mom
 
 
-
-mom.__doc__ = \
-"""Momentum (MOM)
+mom.__doc__ = """Momentum (MOM)
 
 Momentum is an indicator used to measure a security's speed (or strength) of
 movement.  Or simply the change in price.

@@ -4,12 +4,13 @@ from pandas_ta.overlap import ema, sma
 from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_offset, verify_series
 
+
 def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     """Indicator: Bollinger Bands (BBANDS)"""
     # Validate arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 5
-    std = float(std) if std and std > 0 else 2.
+    std = float(std) if std and std > 0 else 2.0
     mamode = mamode.lower() if mamode else "sma"
     offset = get_offset(offset)
 
@@ -56,9 +57,7 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     return bbandsdf
 
 
-
-bbands.__doc__ = \
-"""Bollinger Bands (BBANDS)
+bbands.__doc__ = """Bollinger Bands (BBANDS)
 
 A popular volatility indicator.
 
@@ -76,7 +75,7 @@ Calculation:
         MID = EMA(close, length)
     else:
         MID = SMA(close, length)
-    
+
     LOWER = MID - std * stdev
     UPPER = MID + std * stdev
 

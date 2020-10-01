@@ -2,6 +2,7 @@
 from ..overlap.ema import ema
 from ..utils import get_offset, non_zero_range, verify_series
 
+
 def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Mass Index (MASSI)"""
     # Validate arguments
@@ -12,7 +13,8 @@ def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
     slow = int(slow) if slow and slow > 0 else 25
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else fast
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else fast)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -39,9 +41,7 @@ def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
     return massi
 
 
-
-massi.__doc__ = \
-"""Mass Index (MASSI)
+massi.__doc__ = """Mass Index (MASSI)
 
 The Mass Index is a non-directional volatility indicator that utilitizes the
 High-Low Range to identify trend reversals based on range expansions.

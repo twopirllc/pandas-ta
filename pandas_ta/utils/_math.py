@@ -20,7 +20,6 @@ from pandas_ta import Imports
 from ._core import verify_series
 
 
-
 def combination(**kwargs):
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""
     n = int(fabs(kwargs.pop("n", 1)))
@@ -34,7 +33,7 @@ def combination(**kwargs):
     if r == 0:
         return 1
 
-    numerator   = reduce(mul, range(n, n - r, -1), 1)
+    numerator = reduce(mul, range(n, n - r, -1), 1)
     denominator = reduce(mul, range(1, r + 1), 1)
     return numerator // denominator
 
@@ -73,7 +72,9 @@ def linear_regression(x: Series, y: Series) -> dict:
 
     m, n = x.size, y.size
     if m != n:
-        print(f"[X] Linear Regression X and y observations do not match: {m} != {n}")
+        print(
+            f"[X] Linear Regression X and y observations do not match: {m} != {n}"
+        )
         return
 
     if Imports["sklearn"]:
@@ -124,7 +125,7 @@ def symmetric_triangle(n: int = None, **kwargs) -> list:
 
     if n > 2:
         if n % 2 == 0:
-            front = [i + 1 for i in range(0, floor(n/2))]
+            front = [i + 1 for i in range(0, floor(n / 2))]
             triangle = front + front[::-1]
         else:
             front = [i + 1 for i in range(0, floor(0.5 * (n + 1)))]
@@ -141,8 +142,10 @@ def symmetric_triangle(n: int = None, **kwargs) -> list:
 
 
 def weights(w):
+
     def _dot(x):
         return dot(w, x)
+
     return _dot
 
 
@@ -153,6 +156,7 @@ def zero(x: [int, float]) -> [int, float]:
 
 
 # TESTING
+
 
 def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
     """DataFrame Correlation Analysis helper"""
@@ -176,6 +180,7 @@ def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
 
 # PRIVATE
 
+
 def _linear_regression_np(x: Series, y: Series) -> dict:
     """Simple Linear Regression in Numpy for two 1d arrays for environments
     without the sklearn package."""
@@ -184,7 +189,7 @@ def _linear_regression_np(x: Series, y: Series) -> dict:
     y_sum = y.sum()
 
     # 1st row, 2nd col value corr(x, y)
-    r = npCorrcoef(x, y)[0,1]
+    r = npCorrcoef(x, y)[0, 1]
 
     r_mixture = m * (x * y).sum() - x_sum * y_sum
     b = r_mixture / (m * (x * x).sum() - x_sum * x_sum)
@@ -193,10 +198,13 @@ def _linear_regression_np(x: Series, y: Series) -> dict:
 
     # seterr(divide="ignore", invalid="ignore")
     return {
-        "a": a, "b": b, "r": r,
+        "a": a,
+        "b": b,
+        "r": r,
         "t": r / npSqrt((1 - r * r) / (m - 2)),
-        "line": line
+        "line": line,
     }
+
 
 def _linear_regression_sklearn(x, y):
     """Simple Linear Regression in Scikit Learn for two 1d arrays for
@@ -209,7 +217,9 @@ def _linear_regression_sklearn(x, y):
     a, b = regression.intercept_, regression.coef_[0]
 
     return {
-        "a": a, "b": b, "r": r,
+        "a": a,
+        "b": b,
+        "r": r,
         "t": r / npSqrt((1 - r * r) / (x.size - 2)),
-        "line": a + b * x
+        "line": a + b * x,
     }

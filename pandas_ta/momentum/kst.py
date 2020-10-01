@@ -3,7 +3,22 @@ from pandas import DataFrame
 from .roc import roc
 from ..utils import get_drift, get_offset, verify_series
 
-def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None, sma3=None, sma4=None, signal=None, drift=None, offset=None, **kwargs):
+
+def kst(
+    close,
+    roc1=None,
+    roc2=None,
+    roc3=None,
+    roc4=None,
+    sma1=None,
+    sma2=None,
+    sma3=None,
+    sma4=None,
+    signal=None,
+    drift=None,
+    offset=None,
+    **kwargs,
+):
     """Indicator: 'Know Sure Thing' (KST)"""
     # Validate arguments
     close = verify_series(close)
@@ -36,12 +51,12 @@ def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None,
         kst_signal = kst_signal.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        kst.fillna(kwargs['fillna'], inplace=True)
-        kst_signal.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        kst.fillna(method=kwargs['fill_method'], inplace=True)
-        kst_signal.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        kst.fillna(kwargs["fillna"], inplace=True)
+        kst_signal.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        kst.fillna(method=kwargs["fill_method"], inplace=True)
+        kst_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     kst.name = f"KST_{roc1}_{roc2}_{roc3}_{roc4}_{sma1}_{sma2}_{sma3}_{sma4}"
@@ -57,9 +72,7 @@ def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None,
     return kstdf
 
 
-
-kst.__doc__ = \
-"""'Know Sure Thing' (KST)
+kst.__doc__ = """'Know Sure Thing' (KST)
 
 The 'Know Sure Thing' is a momentum based oscillator and based on ROC.
 

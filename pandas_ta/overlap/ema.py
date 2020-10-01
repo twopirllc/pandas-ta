@@ -2,15 +2,16 @@
 from numpy import NaN as npNaN
 from ..utils import get_offset, verify_series
 
+
 def ema(close, length=None, offset=None, **kwargs):
     """Indicator: Exponential Moving Average (EMA)"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     # min_periods = kwargs.pop('min_periods', length)
-    adjust = kwargs.pop('adjust', False)
-    sma = kwargs.pop('sma', True)
-    win_type = kwargs.pop('win_type', None)
+    adjust = kwargs.pop("adjust", False)
+    sma = kwargs.pop("sma", True)
+    win_type = kwargs.pop("win_type", None)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -27,14 +28,12 @@ def ema(close, length=None, offset=None, **kwargs):
 
     # Name & Category
     ema.name = f"EMA_{length}"
-    ema.category = 'overlap'
+    ema.category = "overlap"
 
     return ema
 
 
-
-ema.__doc__ = \
-"""Exponential Moving Average (EMA)
+ema.__doc__ = """Exponential Moving Average (EMA)
 
 The Exponential Moving Average is more responsive moving average compared to the
 Simple Moving Average (SMA).  The weights are determined by alpha which is

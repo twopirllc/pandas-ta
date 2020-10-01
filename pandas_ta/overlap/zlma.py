@@ -6,12 +6,14 @@ from .sma import sma
 from .wma import wma
 from ..utils import get_offset, verify_series
 
+
 def zlma(close, length=None, mamode=None, offset=None, **kwargs):
     """Indicator: Zero Lag Moving Average (ZLMA)"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
     mamode = mamode.lower() if mamode else None
 
@@ -19,15 +21,15 @@ def zlma(close, length=None, mamode=None, offset=None, **kwargs):
     lag = int(0.5 * (length - 1))
     close = 2 * close - close.shift(lag)
 
-    if mamode is None or mamode == 'ema':
+    if mamode is None or mamode == "ema":
         zlma = ema(close, length=length, **kwargs)
-    if mamode == 'hma':
+    if mamode == "hma":
         zlma = hma(close, length=length, **kwargs)
-    if mamode == 'rma':
+    if mamode == "rma":
         zlma = rma(close, length=length, **kwargs)
-    if mamode == 'sma':
+    if mamode == "sma":
         zlma = sma(close, length=length, **kwargs)
-    if mamode == 'wma':
+    if mamode == "wma":
         zlma = wma(close, length=length, **kwargs)
 
     # Offset
@@ -36,14 +38,12 @@ def zlma(close, length=None, mamode=None, offset=None, **kwargs):
 
     # Name & Category
     zlma.name = f"ZL_{zlma.name}"
-    zlma.category = 'overlap'
+    zlma.category = "overlap"
 
     return zlma
 
 
-
-zlma.__doc__ = \
-"""Zero Lag Moving Average (ZLMA)
+zlma.__doc__ = """Zero Lag Moving Average (ZLMA)
 
 The Zero Lag Moving Average attempts to eliminate the lag associated
 with moving averages.  This is an adaption created by John Ehler and Ric Way.

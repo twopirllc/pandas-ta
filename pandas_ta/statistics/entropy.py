@@ -2,12 +2,13 @@
 from numpy import log as npLog
 from ..utils import get_offset, verify_series
 
+
 def entropy(close, length=None, base=None, offset=None, **kwargs):
     """Indicator: Entropy (ENTP)"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    base = float(base) if base and base > 0 else 2.
+    base = float(base) if base and base > 0 else 2.0
     offset = get_offset(offset)
 
     # Calculate Result
@@ -25,9 +26,7 @@ def entropy(close, length=None, base=None, offset=None, **kwargs):
     return entropy
 
 
-
-entropy.__doc__ = \
-"""Entropy (ENTP)
+entropy.__doc__ = """Entropy (ENTP)
 
 Introduced by Claude Shannon in 1948, entropy measures the unpredictability
 of the data, or equivalently, of its average information. A die has higher
@@ -39,7 +38,7 @@ Sources:
 Calculation:
     Default Inputs:
         length=10, base=2
-    
+
     P = close / SUM(close, length)
     E = SUM(-P * npLog(P) / npLog(base), length)
 

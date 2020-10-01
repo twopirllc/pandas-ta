@@ -3,7 +3,15 @@ from pandas import date_range, DataFrame, RangeIndex, Timedelta
 from .midprice import midprice
 from ..utils import get_offset, verify_series
 
-def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):
+
+def ichimoku(high,
+             low,
+             close,
+             tenkan=None,
+             kijun=None,
+             senkou=None,
+             offset=None,
+             **kwargs):
     """Indicator: Ichimoku Kinkō Hyō (Ichimoku)"""
     high = verify_series(high)
     low = verify_series(low)
@@ -36,14 +44,14 @@ def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, offset=None
         chikou_span = chikou_span.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        span_a.fillna(kwargs['fillna'], inplace=True)
-        span_b.fillna(kwargs['fillna'], inplace=True)
-        chikou_span.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        span_a.fillna(method=kwargs['fill_method'], inplace=True)
-        span_b.fillna(method=kwargs['fill_method'], inplace=True)
-        chikou_span.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        span_a.fillna(kwargs["fillna"], inplace=True)
+        span_b.fillna(kwargs["fillna"], inplace=True)
+        chikou_span.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        span_a.fillna(method=kwargs["fill_method"], inplace=True)
+        span_b.fillna(method=kwargs["fill_method"], inplace=True)
+        chikou_span.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     span_a.name = f"ISA_{tenkan}"
@@ -52,39 +60,43 @@ def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, offset=None
     kijun_sen.name = f"IKS_{kijun}"
     chikou_span.name = f"ICS_{kijun}"
 
-    chikou_span.category = kijun_sen.category = tenkan_sen.category = 'trend'
+    chikou_span.category = kijun_sen.category = tenkan_sen.category = "trend"
     span_b.category = span_a.category = chikou_span
 
     # Prepare Ichimoku DataFrame
-    data = {span_a.name: span_a, span_b.name: span_b, tenkan_sen.name: tenkan_sen, kijun_sen.name: kijun_sen, chikou_span.name: chikou_span}
+    data = {
+        span_a.name: span_a,
+        span_b.name: span_b,
+        tenkan_sen.name: tenkan_sen,
+        kijun_sen.name: kijun_sen,
+        chikou_span.name: chikou_span,
+    }
     ichimokudf = DataFrame(data)
     ichimokudf.name = f"ICHIMOKU_{tenkan}_{kijun}_{senkou}"
-    ichimokudf.category = 'overlap'
+    ichimokudf.category = "overlap"
 
     # Prepare Span DataFrame
     last = close.index[-1]
-    if close.index.dtype == 'int64':
+    if close.index.dtype == "int64":
         ext_index = RangeIndex(start=last + 1, stop=last + kijun + 1)
         spandf = DataFrame(index=ext_index, columns=[span_a.name, span_b.name])
         _span_a.index = _span_b.index = ext_index
     else:
         df_freq = close.index.value_counts().mode()[0]
-        tdelta = Timedelta(df_freq, unit='d')
-        new_dt = date_range(start=last + tdelta, periods=kijun, freq='B')
+        tdelta = Timedelta(df_freq, unit="d")
+        new_dt = date_range(start=last + tdelta, periods=kijun, freq="B")
         spandf = DataFrame(index=new_dt, columns=[span_a.name, span_b.name])
         _span_a.index = _span_b.index = new_dt
 
     spandf[span_a.name] = _span_a
     spandf[span_b.name] = _span_b
     spandf.name = f"ICHISPAN_{tenkan}_{kijun}"
-    spandf.category = 'overlap'
+    spandf.category = "overlap"
 
     return ichimokudf, spandf
 
 
-
-ichimoku.__doc__ = \
-"""Ichimoku Kinkō Hyō (ichimoku)
+ichimoku.__doc__ = """Ichimoku Kinkō Hyō (ichimoku)
 
 Developed Pre WWII as a forecasting model for financial markets.
 

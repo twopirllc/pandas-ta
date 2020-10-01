@@ -3,6 +3,7 @@ from pandas import DataFrame
 from pandas_ta.overlap import hl2
 from pandas_ta.utils import get_offset, verify_series
 
+
 def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
     """Indicator: TTM Trend (TTM_TRND)"""
     # Validate arguments
@@ -45,9 +46,7 @@ def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
     return df
 
 
-
-ttm_trend.__doc__ = \
-"""TTM Trend (TTM_TRND)
+ttm_trend.__doc__ = """TTM Trend (TTM_TRND)
 
 This indicator is from John Carters book “Mastering the Trade” and plots the
 bars green or red. It checks if the price is above or under the average price of

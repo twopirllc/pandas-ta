@@ -6,7 +6,17 @@ from .hma import hma
 from .sma import sma
 from pandas_ta.utils import get_offset, verify_series
 
-def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offset=None, **kwargs):
+
+def hilo(
+    high,
+    low,
+    close,
+    high_length=None,
+    low_length=None,
+    mamode=None,
+    offset=None,
+    **kwargs,
+):
     """Indicator: Gann HiLo (HiLo)"""
     # Validate Arguments
     high = verify_series(high)
@@ -29,7 +39,7 @@ def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offse
     if mamode == "hma":
         high_ma = hma(high, high_length)
         low_ma = hma(low, low_length)
-    else: # "sma"
+    else:  # "sma"
         high_ma = sma(high, high_length)
         low_ma = sma(low, low_length)
 
@@ -55,11 +65,14 @@ def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offse
 
     # Name & Category
     _props = f"_{high_length}_{low_length}"
-    df = DataFrame({
-        f"HILO{_props}": hilo,
-        f"HILOl{_props}": long,
-        f"HILOs{_props}": short
-    }, index=close.index)
+    df = DataFrame(
+        {
+            f"HILO{_props}": hilo,
+            f"HILOl{_props}": long,
+            f"HILOs{_props}": short
+        },
+        index=close.index,
+    )
 
     df.name = f"HILO{_props}"
     df.category = "overlap"
@@ -67,9 +80,7 @@ def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offse
     return df
 
 
-
-hilo.__doc__ = \
-"""Gann HiLo Activator(HiLo)
+hilo.__doc__ = """Gann HiLo Activator(HiLo)
 
 The Gann High Low Activator Indicator was created by Robert Krausz in a 1998
 issue of Stocks & Commodities Magazine. It is a moving average based trend

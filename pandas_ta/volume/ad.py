@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, non_zero_range, verify_series
 
+
 def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     """Indicator: Accumulation/Distribution (AD)"""
     # Validate Arguments
@@ -14,7 +15,7 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     # Calculate Result
     if open_ is not None:
         open_ = verify_series(open_)
-        ad = non_zero_range(close, open_) # AD with Open
+        ad = non_zero_range(close, open_)  # AD with Open
     else:
         ad = 2 * close - (high + low)  # AD with High, Low, Close
 
@@ -38,9 +39,7 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     return ad
 
 
-
-ad.__doc__ = \
-"""Accumulation/Distribution (AD)
+ad.__doc__ = """Accumulation/Distribution (AD)
 
 Accumulation/Distribution indicator utilizes the relative position
 of the close to it's High-Low range with volume.  Then it is cumulated.

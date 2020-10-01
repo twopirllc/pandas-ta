@@ -3,7 +3,15 @@ from pandas import DataFrame
 from pandas_ta.overlap import swma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
-def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **kwargs):
+
+def rvgi(open_,
+         high,
+         low,
+         close,
+         length=None,
+         swma_length=None,
+         offset=None,
+         **kwargs):
     """Indicator: Relative Vigor Index (RVGI)"""
     # Validate Arguments
     open_ = verify_series(open_)
@@ -19,7 +27,7 @@ def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **
     # Calculate Result
     numerator = swma(close_open_range, length=swma_length).rolling(length).sum()
     denominator = swma(high_low_range, length=swma_length).rolling(length).sum()
-    
+
     rvgi = numerator / denominator
     signal = swma(rvgi, length=swma_length)
 
@@ -29,12 +37,12 @@ def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **
         signal = signal.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        rvgi.fillna(kwargs['fillna'], inplace=True)
-        signal.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        rvgi.fillna(method=kwargs['fill_method'], inplace=True)
-        signal.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        rvgi.fillna(kwargs["fillna"], inplace=True)
+        signal.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        rvgi.fillna(method=kwargs["fill_method"], inplace=True)
+        signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name & Category
     rvgi.name = f"RVGI_{length}_{swma_length}"
@@ -49,12 +57,10 @@ def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **
     return df
 
 
-
-rvgi.__doc__ = \
-"""Relative Vigor Index (RVGI)
+rvgi.__doc__ = """Relative Vigor Index (RVGI)
 
 The Relative Vigor Index attempts to measure the strength of a trend relative to
-its closing price to its trading range.  It is based on the belief that it tends 
+its closing price to its trading range.  It is based on the belief that it tends
 to close higher than they open in uptrends or close lower than they open in
 downtrends.
 

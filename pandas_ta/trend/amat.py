@@ -5,7 +5,14 @@ from .short_run import short_run
 from pandas_ta.overlap import ema, hma, linreg, rma, sma, wma
 from pandas_ta.utils import get_offset, verify_series
 
-def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
+
+def amat(close=None,
+         fast=None,
+         slow=None,
+         mamode=None,
+         lookback=None,
+         offset=None,
+         **kwargs):
     """Indicator: Archer Moving Averages Trends (AMAT)"""
     # Validate Arguments
     close = verify_series(close)
@@ -31,10 +38,9 @@ def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=No
     elif mamode == "wma":
         fast_ma = wma(close=close, length=fast, **kwargs)
         slow_ma = wma(close=close, length=slow, **kwargs)
-    else: # "ema"
+    else:  # "ema"
         fast_ma = ema(close=close, length=fast, **kwargs)
         slow_ma = ema(close=close, length=slow, **kwargs)
-
 
     mas_long = long_run(fast_ma, slow_ma, length=lookback)
     mas_short = short_run(fast_ma, slow_ma, length=lookback)

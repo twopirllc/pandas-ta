@@ -3,6 +3,7 @@ from pandas import DataFrame, concat
 from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
+
 def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Strength Index (RSI)"""
     # Validate arguments
@@ -55,7 +56,7 @@ def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
                     offset=offset,
                 ),
             ],
-            axis=1
+            axis=1,
         )
 
         return signalsdf
@@ -63,9 +64,7 @@ def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
         return rsi
 
 
-
-rsi.__doc__ = \
-"""Relative Strength Index (RSI)
+rsi.__doc__ = """Relative Strength Index (RSI)
 
 The Relative Strength Index is popular momentum oscillator used to measure the
 velocity as well as the magnitude of directional price movements.

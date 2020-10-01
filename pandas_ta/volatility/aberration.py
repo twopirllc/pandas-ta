@@ -6,7 +6,14 @@ from ..overlap.hlc3 import hlc3
 from ..overlap.sma import sma
 from ..utils import get_offset, non_zero_range, verify_series
 
-def aberration(high, low, close, length=None, atr_length=None, offset=None, **kwargs):
+
+def aberration(high,
+               low,
+               close,
+               length=None,
+               atr_length=None,
+               offset=None,
+               **kwargs):
     """Indicator: Aberration (ABER)"""
     # Validate arguments
     high = verify_series(high)
@@ -53,12 +60,7 @@ def aberration(high, low, close, length=None, atr_length=None, offset=None, **kw
     xg.category = atr_.category = zg.category
 
     # Prepare DataFrame to return
-    data = {
-        zg.name: zg,
-        sg.name: sg,
-        xg.name: xg,
-        atr_.name: atr_
-    }
+    data = {zg.name: zg, sg.name: sg, xg.name: xg, atr_.name: atr_}
     aberdf = DataFrame(data)
     aberdf.name = f"ABER{_props}"
     aberdf.category = zg.category
@@ -66,9 +68,7 @@ def aberration(high, low, close, length=None, atr_length=None, offset=None, **kw
     return aberdf
 
 
-
-aberration.__doc__ = \
-"""Aberration
+aberration.__doc__ = """Aberration
 
 A volatility indicator similar to Keltner Channels.
 
