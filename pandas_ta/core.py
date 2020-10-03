@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import pkg_resources
 from collections import namedtuple
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -13,7 +12,7 @@ import pandas as pd
 from numpy import ndarray as npndarray
 from pandas.core.base import PandasObject
 
-from pandas_ta import Category
+from pandas_ta import version, Category
 from pandas_ta.candles import *
 from pandas_ta.momentum import *
 from pandas_ta.overlap import *
@@ -24,7 +23,6 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
-version = pkg_resources.get_distribution("pandas-ta").version
 
 
 # Strategy DataClass

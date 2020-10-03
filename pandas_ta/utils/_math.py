@@ -39,7 +39,7 @@ def combination(**kwargs):
     return numerator // denominator
 
 
-def fibonacci(n: int = 2, **kwargs) -> npNdArray:
+def fibonacci(n:int = 2, **kwargs) -> npNdArray:
     """Fibonacci Sequence as a numpy array"""
     n = int(fabs(n)) if n >= 0 else 2
 
@@ -66,7 +66,7 @@ def fibonacci(n: int = 2, **kwargs) -> npNdArray:
         return result
 
 
-def linear_regression(x: Series, y: Series) -> dict:
+def linear_regression(x:Series, y:Series) -> dict:
     """Classic Linear Regression in Numpy or Scikit-Learn"""
     x, y = verify_series(x), verify_series(y)
     m, n = x.size, y.size
@@ -81,7 +81,7 @@ def linear_regression(x: Series, y: Series) -> dict:
         return _linear_regression_np(x, y)
 
 
-def pascals_triangle(n: int = None, **kwargs) -> npNdArray:
+def pascals_triangle(n:int = None, **kwargs) -> npNdArray:
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -109,7 +109,7 @@ def pascals_triangle(n: int = None, **kwargs) -> npNdArray:
     return triangle
 
 
-def symmetric_triangle(n: int = None, **kwargs) -> list:
+def symmetric_triangle(n:int = None, **kwargs) -> list:
     """Symmetric Triangle with n >= 2
 
     Returns a numpy array of the nth row of Symmetric Triangle.
@@ -145,7 +145,7 @@ def weights(w):
     return _dot
 
 
-def zero(x: [int, float]) -> [int, float]:
+def zero(x:[int, float]) -> [int, float]:
     """If the value is close to zero, then return zero.
     Otherwise return itself."""
     return 0 if abs(x) < sflt.epsilon else x
@@ -153,7 +153,7 @@ def zero(x: [int, float]) -> [int, float]:
 
 # TESTING
 
-def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
+def df_error_analysis(dfA:DataFrame, dfB:DataFrame, **kwargs) -> DataFrame:
     """DataFrame Correlation Analysis helper"""
     corr_method = kwargs.pop("corr_method", "pearson")
 
@@ -175,7 +175,7 @@ def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
 
 # PRIVATE
 
-def _linear_regression_np(x: Series, y: Series) -> dict:
+def _linear_regression_np(x:Series, y:Series) -> dict:
     """Simple Linear Regression in Numpy for two 1d arrays for environments
     without the sklearn package."""
     m = x.size
@@ -190,25 +190,29 @@ def _linear_regression_np(x: Series, y: Series) -> dict:
     a = y.mean() - b * x.mean()
     line = a + b * x
 
-    # seterr(divide="ignore", invalid="ignore")
-    return {
+    _np_err = seterr()
+    seterr(divide="ignore", invalid="ignore")
+    result = {
         "a": a, "b": b, "r": r,
         "t": r / npSqrt((1 - r * r) / (m - 2)),
         "line": line
     }
+    seterr(divide=_np_err["divide"], invalid=_np_err["invalid"])
+    return result
 
-def _linear_regression_sklearn(x, y):
+def _linear_regression_sklearn(x:Series, y:Series):
     """Simple Linear Regression in Scikit Learn for two 1d arrays for
     environments with the sklearn package."""
     from sklearn.linear_model import LinearRegression
 
-    regression = LinearRegression().fit(DataFrame(x), y=y)
-    r = regression.score(DataFrame(x), y=y)
+    X = DataFrame(x)
+    lr = LinearRegression().fit(X, y=y)
+    r = lr.score(X, y=y)
+    a, b = lr.intercept_, lr.coef_[0]
 
-    a, b = regression.intercept_, regression.coef_[0]
-
-    return {
+    result = {
         "a": a, "b": b, "r": r,
         "t": r / npSqrt((1 - r * r) / (x.size - 2)),
         "line": a + b * x
     }
+    return result

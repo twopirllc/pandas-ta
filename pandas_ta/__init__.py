@@ -16,7 +16,7 @@ try:
 except DistributionNotFound:
     __version__ = "Please install this project with setup.py"
 else:
-    __version__ = _dist.version
+    version = __version__ = _dist.version
 
 from importlib.util import find_spec
 Imports = {

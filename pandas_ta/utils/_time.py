@@ -69,7 +69,7 @@ def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -
     return s if to_string else print(s)
 
 
-def total_time(series: Series, kind: str = "years") -> float:
+def total_time(series: Series, tf: str = "years") -> float:
     """Calculates the total time of a Series. Options: 'months', 'weeks',
     'days', 'hours', 'minutes' and 'seconds'. Default: 'years'.
     Useful for annualization."""
@@ -84,7 +84,9 @@ def total_time(series: Series, kind: str = "years") -> float:
         "seconds": time_diff.total_seconds()
     }
 
-    return TimeFrame[kind] if kind in TimeFrame.keys() else TimeFrame["years"]
+    if isinstance(tf, str) and tf in TimeFrame.keys():
+        return TimeFrame[tf]
+    return TimeFrame["years"]
 
 # Aliases
 mtd_df = df_month_to_date

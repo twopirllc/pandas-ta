@@ -23,16 +23,16 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
         er = er.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        er.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        er.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        er.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        er.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     er.name = f"ER_{length}"
     er.category = "momentum"
 
-    signal_indicators = kwargs.pop('signal_indicators', False)
+    signal_indicators = kwargs.pop("signal_indicators", False)
     if signal_indicators:
         signalsdf = concat(
             [
@@ -41,13 +41,13 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
                 ),
                 signals(
                     indicator=er,
-                    xa=kwargs.pop('xa', 80),
-                    xb=kwargs.pop('xb', 20),
-                    xserie=kwargs.pop('xserie', None),
-                    xserie_a=kwargs.pop('xserie_a', None),
-                    xserie_b=kwargs.pop('xserie_b', None),
-                    cross_values=kwargs.pop('cross_values', False),
-                    cross_series=kwargs.pop('cross_series', True),
+                    xa=kwargs.pop("xa", 80),
+                    xb=kwargs.pop("xb", 20),
+                    xserie=kwargs.pop("xserie", None),
+                    xserie_a=kwargs.pop("xserie_a", None),
+                    xserie_b=kwargs.pop("xserie_b", None),
+                    cross_values=kwargs.pop("cross_values", False),
+                    cross_series=kwargs.pop("cross_series", True),
                     offset=offset,
                 ),
             ],
