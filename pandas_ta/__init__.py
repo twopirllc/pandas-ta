@@ -51,7 +51,7 @@ Category = {
     "trend": ["adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo", "increasing", "long_run", "psar", "qstick", "short_run", "ttm_trend", "vortex"],
 
     # Volatility
-    "volatility": ["aberration", "accbands", "atr", "bbands", "donchian", "kc", "massi", "natr", "pdist", "rvi", "true_range", "ui"],
+    "volatility": ["aberration", "accbands", "atr", "bbands", "donchian", "kc", "massi", "natr", "pdist", "rvi", "thermo", "true_range", "ui"],
 
     # Volume, "vp" or "Volume Profile" is unique
     "volume": ["ad", "adosc", "aobv", "cmf", "efi", "eom", "mfi", "nvi", "obv", "pvi", "pvol", "pvt"],

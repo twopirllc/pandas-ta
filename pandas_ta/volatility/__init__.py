@@ -9,5 +9,6 @@ from .massi import massi
 from .pdist import pdist
 from .natr import natr
 from .rvi import rvi
+from .thermo import thermo
 from .true_range import true_range
 from .ui import ui
