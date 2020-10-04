@@ -148,7 +148,7 @@ Thanks for trying **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [pbrumblay](https://github.com/pbrumblay) | [SoftDevDanial](https://github.com/SoftDevDanial) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [pbrumblay](https://github.com/pbrumblay) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
@@ -557,7 +557,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Below Value_: **below_value**
 * _Cross_: **cross**
 
-### **Volatility** (12)
+### **Volatility** (13)
 
 * _Aberration_: **aberration**
 * _Acceleration Bands_: **accbands**
@@ -569,6 +569,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Normalized Average True Range_: **natr**
 * _Price Distance_: **pdist**
 * _Relative Volatility Index_: **rvi**
+* _Elder's Thermometer_: **thermo**
 * _True Range_: **true_range**
 * _Ulcer Index_: **ui**
 
@@ -616,9 +617,10 @@ Use parameter: cumulative=**True** for cumulative results.
 * _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.
 * _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
 * _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```
-* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade".
+* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade"
 issue of Stocks & Commodities Magazine. It is a moving average based trend
-indicator consisting of two different simple moving averages.
+indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
+* _Elder's Thermometer_ (**thermo**) Elder's Thermometer measures price volatility. See: ```help(ta.thermo)```
 
 ## **Updated**
 * _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series with pertinenet trade info for a _trend_. An example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.
