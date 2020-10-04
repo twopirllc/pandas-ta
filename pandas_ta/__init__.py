@@ -23,6 +23,7 @@ Imports = {
     "scipy": find_spec("scipy") is not None,
     "sklearn": find_spec("sklearn") is not None,
     "statsmodels": find_spec("statsmodels") is not None,
+    "matplotlib": find_spec("matplotlib") is not None,
     "mplfinance": find_spec("mplfinance") is not None,
     "alphaVantage-api ": find_spec("alphaVantageAPI") is not None,
     "yfinance": find_spec("yfinance") is not None,

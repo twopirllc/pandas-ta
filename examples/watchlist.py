@@ -8,6 +8,10 @@ import pandas as pd # pip install pandas
 import yfinance as yf
 # yf.pdr_override() # <== that's all it takes :-)
 
+from numpy import arange as npArange
+from numpy import append as npAppend
+from numpy import array as npArray
+
 import alphaVantageAPI as AV # pip install alphaVantage-api
 import pandas_ta as ta # pip install pandas_ta
 
@@ -80,6 +84,7 @@ class Watchlist(object):
     ):
         self.verbose = kwargs.pop("verbose", False)
         self.debug = kwargs.pop("debug", False)
+        self.timed = kwargs.pop("timed", False)
 
         self.tickers = tickers
         self.tf = tf
@@ -96,10 +101,10 @@ class Watchlist(object):
         elif isinstance(ds, str) and ds.lower() == "yahoo":
             self.ds = yf
         else:
-            AVkwargs = {"api_key": "YOUR API KEY", "clean": True, "export": True, "export_path": ".", "output_size": "full", "premium": False}
+            AVkwargs = {"api_key": "YOUR API KEY", "clean": True, "export": True, "output_size": "full", "premium": False}
             self.av_kwargs = self.kwargs.pop("av_kwargs", AVkwargs)
-            self.file_path = self.av_kwargs["export_path"]
             self.ds = AV.AlphaVantage(**self.av_kwargs)
+            self.file_path = self.ds.export_path
 
     def _drop_columns(self, df: pd.DataFrame, cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"]):
         """Helper methods to drop columns silently."""
@@ -117,12 +122,38 @@ class Watchlist(object):
             self.data = {ticker: self.load(ticker, **kwargs) for ticker in self.tickers}
             return self.data
 
+    def _plot(self, df, mas:bool = True, constants:bool = True, **kwargs) -> None:
+
+        if constants:
+            chart_lines = npAppend(npArange(-5, 6, 1), npArange(-100, 110, 10))
+            df.ta.constants(True, chart_lines) # Adding the constants for the charts
+            df.ta.constants(False, npArray([-60, -40, 40, 60])) # Removing some constants from the DataFrame
+            if self.verbose: print(f"[i] {df.ticker} constants added.")
+
+        if ta.Imports["matplotlib"]:
+            _exchange = kwargs.pop("exchange", "NYSE")
+            _time = ta.get_time(_exchange, to_string=True)
+            _kind = kwargs.pop("plot_kind", None)
+            _figsize = kwargs.pop("figsize", (16, 10))
+            _colors = kwargs.pop("figsize", ["black", "green", "orange", "red", "maroon"])
+            _grid = kwargs.pop("grid", True)
+            _alpha = kwargs.pop("alpha", 1)
+            _last = kwargs.pop("last", 252)
+            _title = kwargs.pop("title", f"{df.ticker} {_time}")
+
+            col = kwargs.pop("close", "close")
+            price = df[[col, "SMA_10", "SMA_20", "SMA_50", "SMA_200"]] if mas else df[col]
+
+            price.tail(_last).plot(figsize=_figsize, color=_colors, linewidth=2, title=_title, grid=_grid, alpha=_alpha)
+
+
     def load(
         self,
         ticker: str = None,
         tf: str = None,
         index: str = "date",
-        drop: list = ["dividend", "split_coefficient"],
+        drop: list = [],
+        plot: bool = False,
         **kwargs
     ) -> pd.DataFrame:
         """Loads or Downloads (if a local csv does not exist) the data from the
@@ -160,13 +191,17 @@ class Watchlist(object):
                 print(df)
 
         # Remove select columns
-        df = self._drop_columns(df)
+        df = self._drop_columns(df, drop)
 
         if kwargs.pop("analyze", True):
             if self.debug: print(f"[+] TA[{len(self.strategy.ta)}]: {self.strategy.name}")
-            df.ta.strategy(self.strategy, **kwargs)
+            df.ta.strategy(self.strategy, timed=self.timed, **kwargs)
 
         df.ticker = ticker # Attach ticker to the DataFrame
+        df.tf = tf
+
+        if plot: self._plot(df, **kwargs)
+
         return df
 
     @property
