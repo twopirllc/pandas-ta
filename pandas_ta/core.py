@@ -1312,9 +1312,9 @@ class AnalysisIndicators(BasePandasObject):
         result = atr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def bbands(self, length=None, stdev=None, mamode=None, offset=None, **kwargs):
+    def bbands(self, length=None, std=None, mamode=None, offset=None, **kwargs):
         close  = self._get_column(kwargs.pop("close", "close"))
-        result = bbands(close=close, length=length, stdev=stdev, mamode=mamode, offset=offset, **kwargs)
+        result = bbands(close=close, length=length, std=std, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def donchian(self, lower_length=None, upper_length=None, offset=None, **kwargs):
