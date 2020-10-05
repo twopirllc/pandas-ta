@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series
 
+
 def median(close, length=None, offset=None, **kwargs):
     """Indicator: Median"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 30
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -23,9 +25,7 @@ def median(close, length=None, offset=None, **kwargs):
     return median
 
 
-
-median.__doc__ = \
-"""Rolling Median
+median.__doc__ = """Rolling Median
 
 Rolling Median of over 'n' periods.  Sibling of a Simple Moving Average.
 

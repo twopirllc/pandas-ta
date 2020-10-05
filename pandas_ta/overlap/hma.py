@@ -3,6 +3,7 @@ from math import sqrt
 from .wma import wma
 from pandas_ta.utils import get_offset, verify_series
 
+
 def hma(close, length=None, offset=None, **kwargs):
     """Indicator: Hull Moving Average (HMA)"""
     # Validate Arguments
@@ -29,9 +30,7 @@ def hma(close, length=None, offset=None, **kwargs):
     return hma
 
 
-
-hma.__doc__ = \
-"""Hull Moving Average (HMA)
+hma.__doc__ = """Hull Moving Average (HMA)
 
 The Hull Exponential Moving Average attempts to reduce or remove lag in moving
 averages.

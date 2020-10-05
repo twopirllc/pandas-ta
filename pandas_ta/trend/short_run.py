@@ -3,6 +3,7 @@ from .decreasing import decreasing
 from .increasing import increasing
 from pandas_ta.utils import get_offset, verify_series
 
+
 def short_run(fast, slow, length=None, offset=None, **kwargs):
     """Indicator: Short Run"""
     # Validate Arguments
@@ -12,8 +13,10 @@ def short_run(fast, slow, length=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    pt = decreasing(fast, length) & increasing(slow, length)  # potential top or top
-    bd = decreasing(fast, length) & decreasing(slow, length)  # fast and slow are decreasing
+    pt = decreasing(fast, length) & increasing(slow,
+                                               length)  # potential top or top
+    bd = decreasing(fast, length) & decreasing(
+        slow, length)  # fast and slow are decreasing
     short_run = pt | bd
 
     # Offset

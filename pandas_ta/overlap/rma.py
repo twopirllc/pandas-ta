@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series
 
+
 def rma(close, length=None, offset=None, **kwargs):
     """Indicator: wildeR's Moving Average (RMA)"""
     # Validate Arguments
@@ -23,9 +24,7 @@ def rma(close, length=None, offset=None, **kwargs):
     return rma
 
 
-
-rma.__doc__ = \
-"""wildeR's Moving Average (RMA)
+rma.__doc__ = """wildeR's Moving Average (RMA)
 
 The WildeR's Moving Average is simply an Exponential Moving Average (EMA)
 with a modified alpha = 1 / length.

@@ -3,6 +3,7 @@ from pandas import DataFrame, concat
 from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
+
 def er(close, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Efficiency Ratio (ER)"""
     # Validate arguments
@@ -36,9 +37,7 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
     if signal_indicators:
         signalsdf = concat(
             [
-                DataFrame(
-                    {er.name: er}
-                ),
+                DataFrame({er.name: er}),
                 signals(
                     indicator=er,
                     xa=kwargs.pop("xa", 80),
@@ -51,7 +50,7 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
                     offset=offset,
                 ),
             ],
-            axis=1
+            axis=1,
         )
 
         return signalsdf
@@ -59,9 +58,7 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
         return er
 
 
-
-er.__doc__ = \
-"""Efficiency Ratio (ER)
+er.__doc__ = """Efficiency Ratio (ER)
 
 The Efficiency Ratio was invented by Perry J. Kaufman and presented in his book "New Trading Systems and Methods". It is designed to account for market noise or volatility.
 

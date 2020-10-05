@@ -5,7 +5,18 @@ from pandas_ta.overlap import ema, hma, linreg, sma, wma
 from pandas_ta.trend import long_run, short_run
 from pandas_ta.utils import get_offset, verify_series
 
-def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, min_lookback=None, offset=None, **kwargs):
+
+def aobv(
+    close,
+    volume,
+    fast=None,
+    slow=None,
+    mamode=None,
+    max_lookback=None,
+    min_lookback=None,
+    offset=None,
+    **kwargs,
+):
     """Indicator: Archer On Balance Volume (AOBV)"""
     # Validate arguments
     close = verify_series(close)
@@ -73,12 +84,14 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, mi
         f"OBV_{maf.name}": maf,
         f"OBV_{mas.name}": mas,
         f"AOBV_LR_{run_length}": obv_long,
-        f"AOBV_SR_{run_length}": obv_short
+        f"AOBV_SR_{run_length}": obv_short,
     }
     aobvdf = DataFrame(data)
 
     # Name and Categorize it
-    aobvdf.name = f"AOBV_{mamode}_{fast}_{slow}_{min_lookback}_{max_lookback}_{run_length}"
+    aobvdf.name = (
+        f"AOBV_{mamode}_{fast}_{slow}_{min_lookback}_{max_lookback}_{run_length}"
+    )
     aobvdf.category = "volume"
 
     return aobvdf

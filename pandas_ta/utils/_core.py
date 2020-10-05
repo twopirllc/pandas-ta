@@ -8,10 +8,13 @@ from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
 
 
-
 def category_files(category: str) -> list:
     """Helper function to return all filenames in the category directory."""
-    files = [x.stem for x in list(Path(f"pandas_ta/{category}/").glob("*.py")) if x.stem != "__init__"]
+    files = [
+        x.stem
+        for x in list(Path(f"pandas_ta/{category}/").glob("*.py"))
+        if x.stem != "__init__"
+    ]
     return files
 
 
@@ -30,7 +33,8 @@ def is_datetime_ordered(df: DataFrame or Series) -> bool:
     index_is_datetime = is_datetime64_any_dtype(df.index)
     try:
         ordered = df.index[0] < df.index[-1]
-    except RuntimeWarning: pass
+    except RuntimeWarning:
+        pass
     finally:
         return True if index_is_datetime and ordered else False
 
@@ -42,8 +46,7 @@ def is_percent(x: int or float) -> bool:
 
 
 def non_zero_range(high: Series, low: Series) -> Series:
-    """Returns the difference of two series and adds epsilon to any zero values.  This occurs commonly in crypto data when 'high' = 'low'.
-    """
+    """Returns the difference of two series and adds epsilon to any zero values.  This occurs commonly in crypto data when 'high' = 'low'."""
     diff = high - low
     if diff.eq(0).any().any():
         diff += sflt.epsilon
@@ -60,7 +63,7 @@ def recent_minimum_index(x):
 
 def signed_series(series: Series, initial: int = None) -> Series:
     """Returns a Signed Series with or without an initial value
-    
+
     Default Example:
     series = Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5])
     and returns:
@@ -74,7 +77,9 @@ def signed_series(series: Series, initial: int = None) -> Series:
     return sign
 
 
-def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Series:
+def unsigned_differences(series: Series,
+                         amount: int = None,
+                         **kwargs) -> Series:
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
     on the differences of the original series. The positive series are only the

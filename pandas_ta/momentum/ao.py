@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series
 
+
 def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Awesome Oscillator (AO)"""
     # Validate Arguments
@@ -10,7 +11,8 @@ def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
     slow = int(slow) if slow and slow > 0 else 34
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else fast
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else fast)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -24,21 +26,19 @@ def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
         ao = ao.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        ao.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        ao.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        ao.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        ao.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     ao.name = f"AO_{fast}_{slow}"
-    ao.category = 'momentum'
+    ao.category = "momentum"
 
     return ao
 
 
-
-ao.__doc__ = \
-"""Awesome Oscillator (AO)
+ao.__doc__ = """Awesome Oscillator (AO)
 
 The Awesome Oscillator is an indicator used to measure a security's momentum.
 AO is generally used to affirm trends or to anticipate possible reversals.

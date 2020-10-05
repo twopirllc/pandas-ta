@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series
 
+
 def skew(close, length=None, offset=None, **kwargs):
     """Indicator: Skew"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 30
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -15,13 +17,13 @@ def skew(close, length=None, offset=None, **kwargs):
     # Offset
     if offset != 0:
         skew = skew.shift(offset)
-        
+
     # Handle fills
-    if 'fillna' in kwargs:
-        skew.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        skew.fillna(method=kwargs['fill_method'], inplace=True)
-        
+    if "fillna" in kwargs:
+        skew.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        skew.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     skew.name = f"SKEW_{length}"
     skew.category = "statistics"
@@ -29,9 +31,7 @@ def skew(close, length=None, offset=None, **kwargs):
     return skew
 
 
-
-skew.__doc__ = \
-"""Rolling Skew
+skew.__doc__ = """Rolling Skew
 
 Sources:
 

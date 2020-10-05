@@ -2,7 +2,14 @@
 from numpy import sign as npSign
 from ..utils import get_drift, get_offset, verify_series
 
-def psl(close, open_=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
+
+def psl(close,
+        open_=None,
+        length=None,
+        scalar=None,
+        drift=None,
+        offset=None,
+        **kwargs):
     """Indicator: Psychological Line (PSL)"""
     # Validate Arguments
     close = verify_series(close)
@@ -19,7 +26,7 @@ def psl(close, open_=None, length=None, scalar=None, drift=None, offset=None, **
         diff = npSign(close.diff(drift))
 
     diff.fillna(0, inplace=True)
-    diff[diff <= 0] = 0 # Zero negative values
+    diff[diff <= 0] = 0  # Zero negative values
 
     psl = scalar * diff.rolling(length).sum()
     psl /= length
@@ -29,22 +36,20 @@ def psl(close, open_=None, length=None, scalar=None, drift=None, offset=None, **
         psl = psl.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        psl.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        psl.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        psl.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        psl.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     _props = f"_{length}"
     psl.name = f"PSL{_props}"
-    psl.category = 'momentum'
+    psl.category = "momentum"
 
     return psl
 
 
-
-psl.__doc__ = \
-"""Psychological Line (PSL)
+psl.__doc__ = """Psychological Line (PSL)
 
 The Psychological Line is an oscillator-type indicator that compares the
 number of the rising periods to the total number of periods. In other

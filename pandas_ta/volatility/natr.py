@@ -2,7 +2,18 @@
 from .atr import atr
 from ..utils import get_drift, get_offset, verify_series
 
-def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, offset=None, **kwargs):
+
+def natr(
+    high,
+    low,
+    close,
+    length=None,
+    mamode=None,
+    scalar=None,
+    drift=None,
+    offset=None,
+    **kwargs,
+):
     """Indicator: Normalized Average True Range (NATR)"""
     # Validate arguments
     high = verify_series(high)
@@ -16,7 +27,16 @@ def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, of
 
     # Calculate Result
     natr = scalar / close
-    natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)
+    natr *= atr(
+        high=high,
+        low=low,
+        close=close,
+        length=length,
+        mamode=mamode,
+        drift=drift,
+        offset=offset,
+        **kwargs,
+    )
 
     # Offset
     if offset != 0:
@@ -35,9 +55,7 @@ def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, of
     return natr
 
 
-
-natr.__doc__ = \
-"""Normalized Average True Range (NATR)
+natr.__doc__ = """Normalized Average True Range (NATR)
 
 Normalized Average True Range attempt to normalize the average
 true range.

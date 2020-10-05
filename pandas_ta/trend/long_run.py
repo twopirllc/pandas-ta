@@ -3,6 +3,7 @@ from .decreasing import decreasing
 from .increasing import increasing
 from pandas_ta.utils import get_offset, verify_series
 
+
 def long_run(fast, slow, length=None, offset=None, **kwargs):
     """Indicator: Long Run"""
     # Validate Arguments
@@ -12,8 +13,10 @@ def long_run(fast, slow, length=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    pb = increasing(fast, length) & decreasing(slow, length)  # potential bottom or bottom
-    bi = increasing(fast, length) & increasing(slow, length)  # fast and slow are increasing
+    pb = increasing(fast, length) & decreasing(
+        slow, length)  # potential bottom or bottom
+    bi = increasing(fast, length) & increasing(
+        slow, length)  # fast and slow are increasing
     long_run = pb | bi
 
     # Offset

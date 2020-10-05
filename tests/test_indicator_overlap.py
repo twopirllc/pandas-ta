@@ -1,4 +1,10 @@
-from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis, sample_data, VERBOSE
+from .config import (
+    CORRELATION,
+    CORRELATION_THRESHOLD,
+    error_analysis,
+    sample_data,
+    VERBOSE,
+)
 from .context import pandas_ta
 
 from unittest import TestCase
@@ -9,8 +15,8 @@ import pandas as pd
 import talib as tal
 
 
-
 class TestOverlap(TestCase):
+
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -19,7 +25,8 @@ class TestOverlap(TestCase):
         cls.high = cls.data["high"]
         cls.low = cls.data["low"]
         cls.close = cls.data["close"]
-        if "volume" in cls.data.columns: cls.volume = cls.data["volume"]
+        if "volume" in cls.data.columns:
+            cls.volume = cls.data["volume"]
 
     @classmethod
     def tearDownClass(cls):
@@ -27,14 +34,15 @@ class TestOverlap(TestCase):
         del cls.high
         del cls.low
         del cls.close
-        if hasattr(cls, "volume"): del cls.volume
+        if hasattr(cls, "volume"):
+            del cls.volume
         del cls.data
 
+    def setUp(self):
+        pass
 
-
-    def setUp(self): pass
-    def tearDown(self): pass
-
+    def tearDown(self):
+        pass
 
     def test_dema(self):
         result = pandas_ta.dema(self.close)
@@ -46,7 +54,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -61,7 +71,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -91,7 +103,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -123,7 +137,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -138,7 +154,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -153,7 +171,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -173,7 +193,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -188,7 +210,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -203,7 +227,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -238,7 +264,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -263,7 +291,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -278,7 +308,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -293,7 +325,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -318,7 +352,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -333,7 +369,9 @@ class TestOverlap(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result,
+                                                         expected,
+                                                         col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series, weights
 
+
 def cg(close, length=None, offset=None, **kwargs):
     """Indicator: Center of Gravity (CG)"""
     # Validate Arguments
@@ -18,21 +19,19 @@ def cg(close, length=None, offset=None, **kwargs):
         cg = cg.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        cg.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        cg.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        cg.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        cg.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     cg.name = f"CG_{length}"
-    cg.category = 'momentum'
+    cg.category = "momentum"
 
     return cg
 
 
-
-cg.__doc__ = \
-"""Center of Gravity (CG)
+cg.__doc__ = """Center of Gravity (CG)
 
 The Center of Gravity Indicator by John Ehlers attempts to identify turning
 points while exhibiting zero lag and smoothing.

@@ -50,7 +50,8 @@ def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -
         exchange = exchange.upper()
         tz = EXCHANGE_TZ[exchange]
 
-    today = Timestamp.utcnow()
+    # today = Timestamp.utcnow()
+    today = Timestamp.now()
     date = f"{today.day_name()} {today.month_name()} {today.day}, {today.year}"
     
     _today = today.timetuple()
@@ -58,7 +59,7 @@ def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -
 
     if full:
         lt = localtime()
-        local_ = f"Local: {lt.tm_hour}:{lt.tm_min:02d}:{lt.tm_sec:02d}"
+        local_ = f"Local: {lt.tm_hour}:{lt.tm_min:02d}:{lt.tm_sec:02d} {lt.tm_zone}"
         doy = f"Day {today.dayofyear}/365 ({100 * round(today.dayofyear/365, 2)}%)"
         exchange_ = f"{exchange}: {exchange_time}"
 

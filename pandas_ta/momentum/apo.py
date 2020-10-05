@@ -2,6 +2,7 @@
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
 
+
 def apo(close, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Absolute Price Oscillator (APO)"""
     # Validate Arguments
@@ -10,7 +11,8 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     slow = int(slow) if slow and slow > 0 else 26
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else fast
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else fast)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -23,21 +25,19 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
         apo = apo.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        apo.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        apo.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        apo.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        apo.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     apo.name = f"APO_{fast}_{slow}"
-    apo.category = 'momentum'
+    apo.category = "momentum"
 
     return apo
 
 
-
-apo.__doc__ = \
-"""Absolute Price Oscillator (APO)
+apo.__doc__ = """Absolute Price Oscillator (APO)
 
 The Absolute Price Oscillator is an indicator used to measure a security's
 momentum.  It is simply the difference of two Exponential Moving Averages

@@ -5,6 +5,7 @@ from pandas import DataFrame, Series
 from pandas_ta.overlap import ema, hl2
 from pandas_ta.utils import get_offset, high_low_range, verify_series, zero
 
+
 def fisher(high, low, length=None, signal=None, offset=None, **kwargs):
     """Indicator: Fisher Transform (FISHT)"""
     # Validate Arguments
@@ -29,8 +30,10 @@ def fisher(high, low, length=None, signal=None, offset=None, **kwargs):
     result = [npNaN for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
         v = 0.66 * position[i] + 0.67 * v
-        if v < -0.99: v = -0.999
-        if v >  0.99: v =  0.999
+        if v < -0.99:
+            v = -0.999
+        if v > 0.99:
+            v = 0.999
         result.append(0.5 * (nplog((1 + v) / (1 - v)) + result[i - 1]))
     fisher = Series(result, index=high.index)
     signalma = fisher.shift(signal)
@@ -63,9 +66,7 @@ def fisher(high, low, length=None, signal=None, offset=None, **kwargs):
     return df
 
 
-
-fisher.__doc__ = \
-"""Fisher Transform (FISHT)
+fisher.__doc__ = """Fisher Transform (FISHT)
 
 Attempts to identify significant price reversals by normalizing prices over a
 user-specified number of periods. A reversal signal is suggested when the the

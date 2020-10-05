@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series
 
+
 def hlc3(high, low, close, offset=None, **kwargs):
     """Indicator: HLC3"""
     # Validate Arguments
@@ -10,7 +11,7 @@ def hlc3(high, low, close, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    hlc3 = (high + low + close) / 3.
+    hlc3 = (high + low + close) / 3.0
 
     # Offset
     if offset != 0:
@@ -18,6 +19,6 @@ def hlc3(high, low, close, offset=None, **kwargs):
 
     # Name & Category
     hlc3.name = "HLC3"
-    hlc3.category = 'overlap'
+    hlc3.category = "overlap"
 
     return hlc3

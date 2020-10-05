@@ -2,6 +2,7 @@
 from pandas import DataFrame
 from ..utils import get_drift, get_offset, non_zero_range, verify_series
 
+
 def true_range(high, low, close, drift=None, offset=None, **kwargs):
     """Indicator: True Range"""
     # Validate arguments
@@ -35,9 +36,7 @@ def true_range(high, low, close, drift=None, offset=None, **kwargs):
     return true_range
 
 
-
-true_range.__doc__ = \
-"""True Range
+true_range.__doc__ = """True Range
 
 An method to expand a classical range (high minus low) to include
 possible gap scenarios.
@@ -50,7 +49,7 @@ Calculation:
         drift=1
     ABS = Absolute Value
     prev_close = close.shift(drift)
-    TRUE_RANGE = ABS([high - low, high - prev_close, low - prev_close]) 
+    TRUE_RANGE = ABS([high - low, high - prev_close, low - prev_close])
 
 Args:
     high (pd.Series): Series of 'high's

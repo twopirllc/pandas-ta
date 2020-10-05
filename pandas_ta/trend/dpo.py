@@ -2,6 +2,7 @@
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
 
+
 def dpo(close, length=None, centered=True, offset=None, **kwargs):
     """Indicator: Detrend Price Oscillator (DPO)"""
     # Validate Arguments
@@ -12,7 +13,7 @@ def dpo(close, length=None, centered=True, offset=None, **kwargs):
     # Calculate Result
     t = int(0.5 * length) + 1
     ma = sma(close, length)
-    
+
     dpo = close - ma.shift(t)
     if centered:
         dpo = (close.shift(t) - ma).shift(-t)
@@ -34,9 +35,7 @@ def dpo(close, length=None, centered=True, offset=None, **kwargs):
     return dpo
 
 
-
-dpo.__doc__ = \
-"""Detrend Price Oscillator (DPO)
+dpo.__doc__ = """Detrend Price Oscillator (DPO)
 
 Is an indicator designed to remove trend from price and make it easier to
 identify cycles.
@@ -51,7 +50,7 @@ Calculation:
         length=20, centered=True
     SMA = Simple Moving Average
     t = int(0.5 * length) + 1
-    
+
     DPO = close.shift(t) - SMA(close, length)
     if centered:
         DPO = DPO.shift(-t)

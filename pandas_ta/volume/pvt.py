@@ -2,6 +2,7 @@
 from ..momentum.roc import roc
 from ..utils import get_drift, get_offset, verify_series
 
+
 def pvt(close, volume, drift=None, offset=None, **kwargs):
     """Indicator: Price-Volume Trend (PVT)"""
     # Validate arguments
@@ -31,9 +32,7 @@ def pvt(close, volume, drift=None, offset=None, **kwargs):
     return pvt
 
 
-
-pvt.__doc__ = \
-"""Price-Volume Trend (PVT)
+pvt.__doc__ = """Price-Volume Trend (PVT)
 
 The Price-Volume Trend utilizes the Rate of Change with volume to
 and it's cumulative values to determine money flow.

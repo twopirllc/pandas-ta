@@ -2,7 +2,18 @@
 from pandas_ta.overlap import hl2, sma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
-def eom(high, low, close, volume, length=None, divisor=None, drift=None, offset=None, **kwargs):
+
+def eom(
+    high,
+    low,
+    close,
+    volume,
+    length=None,
+    divisor=None,
+    drift=None,
+    offset=None,
+    **kwargs,
+):
     """Indicator: Ease of Movement (EOM)"""
     # Validate arguments
     high = verify_series(high)
@@ -16,7 +27,8 @@ def eom(high, low, close, volume, length=None, divisor=None, drift=None, offset=
 
     # Calculate Result
     high_low_range = non_zero_range(high, low)
-    distance = hl2(high=high, low=low) - hl2(high=high.shift(drift), low=low.shift(drift))
+    distance = hl2(high=high, low=low) - hl2(high=high.shift(drift),
+                                             low=low.shift(drift))
     box_ratio = volume / divisor
     box_ratio /= high_low_range
     eom = distance / box_ratio
@@ -39,9 +51,7 @@ def eom(high, low, close, volume, length=None, divisor=None, drift=None, offset=
     return eom
 
 
-
-eom.__doc__ = \
-"""Ease of Movement (EOM)
+eom.__doc__ = """Ease of Movement (EOM)
 
 Ease of Movement is a volume based oscillator that is designed to measure the
 relationship between price and volume flucuating across a zero line.
@@ -54,7 +64,7 @@ Sources:
 Calculation:
     Default Inputs:
         length=14, divisor=100000000, drift=1
-    SMA = Simple Moving Average    
+    SMA = Simple Moving Average
     hl_range = high - low
     distance = 0.5 * (high - high.shift(drift) + low - low.shift(drift))
     box_ratio = (volume / divisor) / hl_range

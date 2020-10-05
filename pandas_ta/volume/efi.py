@@ -2,7 +2,14 @@
 from pandas_ta.overlap import ema, sma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
-def efi(close, volume, length=None, drift=None, mamode=None, offset=None, **kwargs):
+
+def efi(close,
+        volume,
+        length=None,
+        drift=None,
+        mamode=None,
+        offset=None,
+        **kwargs):
     """Indicator: Elder's Force Index (EFI)"""
     # Validate arguments
     close = verify_series(close)
@@ -37,9 +44,7 @@ def efi(close, volume, length=None, drift=None, mamode=None, offset=None, **kwar
     return efi
 
 
-
-efi.__doc__ = \
-"""Elder's Force Index (EFI)
+efi.__doc__ = """Elder's Force Index (EFI)
 
 Elder's Force Index measures the power behind a price movement using price
 and volume as well as potential reversals and price corrections.

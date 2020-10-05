@@ -6,6 +6,7 @@ from ..overlap.rma import rma
 from ..overlap.wma import wma
 from ..utils import get_offset, verify_series, zero
 
+
 def bias(close, length=None, mamode=None, offset=None, **kwargs):
     """Indicator: Bias (BIAS)"""
     # Validate Arguments
@@ -15,15 +16,15 @@ def bias(close, length=None, mamode=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    if mamode is None or mamode == 'sma':
+    if mamode is None or mamode == "sma":
         ma = sma(close, length=length, **kwargs)
-    if mamode == 'ema':
+    if mamode == "ema":
         ma = ema(close, length=length, **kwargs)
-    if mamode == 'hma':
+    if mamode == "hma":
         ma = hma(close, length=length, **kwargs)
-    if mamode == 'rma':
+    if mamode == "rma":
         ma = rma(close, length=length, **kwargs)
-    if mamode == 'wma':
+    if mamode == "wma":
         ma = wma(close, length=length, **kwargs)
 
     bias = (close / ma) - 1
@@ -33,21 +34,19 @@ def bias(close, length=None, mamode=None, offset=None, **kwargs):
         bias = bias.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        bias.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        bias.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        bias.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        bias.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     bias.name = f"BIAS_{ma.name}"
-    bias.category = 'momentum'
+    bias.category = "momentum"
 
     return bias
 
 
-
-bias.__doc__ = \
-"""Bias (BIAS)
+bias.__doc__ = """Bias (BIAS)
 
 Rate of change between the source and a moving average.
 
@@ -58,7 +57,7 @@ Sources:
 Calculation:
     Default Inputs:
         length=26, MA='sma'
-    
+
     BIAS = (close - MA(close, length)) / MA(close, length)
          = (close / MA(close, length)) - 1
 

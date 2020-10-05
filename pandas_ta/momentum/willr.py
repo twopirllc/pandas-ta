@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
+
 def willr(high, low, close, length=None, offset=None, **kwargs):
     """Indicator: William's Percent R (WILLR)"""
     # Validate arguments
@@ -8,7 +9,8 @@ def willr(high, low, close, length=None, offset=None, **kwargs):
     low = verify_series(low)
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -34,9 +36,7 @@ def willr(high, low, close, length=None, offset=None, **kwargs):
     return willr
 
 
-
-willr.__doc__ = \
-"""William's Percent R (WILLR)
+willr.__doc__ = """William's Percent R (WILLR)
 
 William's Percent R is a momentum oscillator similar to the RSI that
 attempts to identify overbought and oversold conditions.

@@ -3,6 +3,7 @@ from numpy import NaN as npNaN
 from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
+
 def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
     """Indicator: Parabolic Stop and Reverse (PSAR)"""
     # Validate Arguments
@@ -101,7 +102,7 @@ def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
         f"PSARl{_params}": long,
         f"PSARs{_params}": short,
         f"PSARaf{_params}": _af,
-        f"PSARr{_params}": reversal
+        f"PSARr{_params}": reversal,
     }
     psardf = DataFrame(data)
     psardf.name = f"PSAR{_params}"
@@ -110,9 +111,7 @@ def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
     return psardf
 
 
-
-psar.__doc__ = \
-"""Parabolic Stop and Reverse (psar)
+psar.__doc__ = """Parabolic Stop and Reverse (psar)
 
 Parabolic Stop and Reverse
 

@@ -3,6 +3,7 @@ from pandas import DataFrame
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
+
 def eri(high, low, close, length=None, offset=None, **kwargs):
     """Indicator: Elder Ray Index (ERI)"""
     # Validate arguments
@@ -23,12 +24,12 @@ def eri(high, low, close, length=None, offset=None, **kwargs):
         bear = bear.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        bull.fillna(kwargs['fillna'], inplace=True)
-        bear.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        bull.fillna(method=kwargs['fill_method'], inplace=True)
-        bear.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        bull.fillna(kwargs["fillna"], inplace=True)
+        bear.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        bull.fillna(method=kwargs["fill_method"], inplace=True)
+        bear.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     bull.name = f"BULLP_{length}"
@@ -44,9 +45,7 @@ def eri(high, low, close, length=None, offset=None, **kwargs):
     return df
 
 
-
-eri.__doc__ = \
-"""Elder Ray Index (ERI)
+eri.__doc__ = """Elder Ray Index (ERI)
 
 Elder's Bulls Ray Index contains his Bull and Bear Powers. Which are useful ways
 to look at the price and see the strength behind the market. Bull Power
@@ -56,7 +55,7 @@ consensus of value.
 Bears Power measures the capability of sellers, to drag prices below an average
 consensus of value. Using them in tandem with a measure of trend allows you to
 identify favourable entry points. We hope you've found this to be a useful
-discussion of the Bulls and Bears Power indicators. 
+discussion of the Bulls and Bears Power indicators.
 
 Sources:
     https://admiralmarkets.com/education/articles/forex-indicators/bears-and-bulls-power-indicator

@@ -2,6 +2,7 @@
 from pandas_ta.overlap import linreg
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
+
 def cfo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Chande Forcast Oscillator (CFO)"""
     # Validate Arguments
@@ -11,8 +12,8 @@ def cfo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    #Finding linear regression of Series
-    cfo  = scalar * (close - linreg(close, length=length, tsf=True))
+    # Finding linear regression of Series
+    cfo = scalar * (close - linreg(close, length=length, tsf=True))
     cfo /= close
 
     # Offset
@@ -31,8 +32,8 @@ def cfo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
 
     return cfo
 
-cfo.__doc__ = \
-"""Chande Forcast Oscillator (CFO)
+
+cfo.__doc__ = """Chande Forcast Oscillator (CFO)
 
 The Forecast Oscillator calculates the percentage difference between the actual
 price and the Time Series Forecast (the endpoint of a linear regression line).

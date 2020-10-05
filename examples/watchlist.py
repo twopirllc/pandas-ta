@@ -4,8 +4,9 @@ import datetime as dt
 from pathlib import Path
 from random import random
 
-import pandas as pd # pip install pandas
+import pandas as pd  # pip install pandas
 import yfinance as yf
+
 # yf.pdr_override() # <== that's all it takes :-)
 
 from numpy import arange as npArange
@@ -21,17 +22,14 @@ def colors(colors: str = None, default: str = "GrRd"):
         # Pairs
         "GrRd": ["green", "red"],
         "RdGr": ["red", "green"],
-        
         "BkGy": ["black", "gray"],
         "BkSv": ["black", "silver"],
         "BkPr": ["black", "purple"],
         "BkBl": ["black", "blue"],
-        
         "GyBk": ["gray", "black"],
         "GySv": ["gray", "silver"],
         "GyPr": ["gray", "purple"],
         "GyBl": ["gray", "blue"],
-        
         "SvGy": ["silver", "gray"],
         "FcLi": ["fuchsia", "lime"],
         # Triples
@@ -73,6 +71,7 @@ class Watchlist(object):
     ## Required Arguments:
     - tickers: A list of strings containing tickers. Example: ["SPY", "AAPL"]
     """
+
     def __init__(
         self,
         tickers: list,
@@ -80,7 +79,7 @@ class Watchlist(object):
         name: str = None,
         strategy: ta.Strategy = None,
         ds: object = None,
-        **kwargs
+        **kwargs,
     ):
         self.verbose = kwargs.pop("verbose", False)
         self.debug = kwargs.pop("debug", False)
@@ -88,7 +87,8 @@ class Watchlist(object):
 
         self.tickers = tickers
         self.tf = tf
-        self.name = name if isinstance(name, str) else f"Watch: {', '.join(tickers)}"
+        self.name = name if isinstance(name,
+                                       str) else f"Watch: {', '.join(tickers)}"
         self.data = None
         self.kwargs = kwargs
         self.strategy = strategy
@@ -106,7 +106,11 @@ class Watchlist(object):
             self.ds = AV.AlphaVantage(**self.av_kwargs)
             self.file_path = self.ds.export_path
 
-    def _drop_columns(self, df: pd.DataFrame, cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"]):
+    def _drop_columns(
+        self,
+        df: pd.DataFrame,
+        cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"],
+    ):
         """Helper methods to drop columns silently."""
         df_columns = list(df.columns)
         if any(_ in df_columns for _ in cols):
@@ -118,8 +122,11 @@ class Watchlist(object):
     def _load_all(self, **kwargs) -> dict:
         """Updates the Watchlist's data property with a dictionary of DataFrames
         keyed by ticker."""
-        if self.tickers is not None and isinstance(self.tickers, list) and len(self.tickers):
-            self.data = {ticker: self.load(ticker, **kwargs) for ticker in self.tickers}
+        if (self.tickers is not None and isinstance(self.tickers, list) and
+                len(self.tickers)):
+            self.data = {
+                ticker: self.load(ticker, **kwargs) for ticker in self.tickers
+            }
             return self.data
 
     def _plot(self, df, mas:bool = True, constants:bool = True, **kwargs) -> None:
@@ -213,7 +220,8 @@ class Watchlist(object):
     def data(self, value: dict) -> None:
         # Later check dict has string keys and DataFrame values
         if value is not None and isinstance(value, dict):
-            if self.verbose: print(f"[+] New data")
+            if self.verbose:
+                print(f"[+] New data")
             self._data = value
         else:
             self._data = None
@@ -240,7 +248,7 @@ class Watchlist(object):
         if value is not None and isinstance(value, ta.Strategy):
             self._strategy = value
         else:
-            self._strategy = ta.CommonStrategy        
+            self._strategy = ta.CommonStrategy
 
     @property
     def tf(self) -> str:

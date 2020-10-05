@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from ..utils import get_offset, verify_series
 
+
 def wcp(high, low, close, offset=None, **kwargs):
     """Indicator: Weighted Closing Price (WCP)"""
     # Validate Arguments
@@ -18,14 +19,12 @@ def wcp(high, low, close, offset=None, **kwargs):
 
     # Name & Category
     wcp.name = "WCP"
-    wcp.category = 'overlap'
+    wcp.category = "overlap"
 
     return wcp
 
 
-
-wcp.__doc__ = \
-"""Weighted Closing Price (WCP)
+wcp.__doc__ = """Weighted Closing Price (WCP)
 
 Weighted Closing Price is the weighted price given: high, low
 and double the close.

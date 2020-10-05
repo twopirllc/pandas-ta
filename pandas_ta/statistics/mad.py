@@ -2,12 +2,14 @@
 from numpy import fabs as npfabs
 from ..utils import get_offset, verify_series
 
+
 def mad(close, length=None, offset=None, **kwargs):
     """Indicator: Mean Absolute Deviation"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 30
-    min_periods = int(kwargs['min_periods']) if 'min_periods' in kwargs and kwargs['min_periods'] is not None else length
+    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
+                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -28,9 +30,7 @@ def mad(close, length=None, offset=None, **kwargs):
     return mad
 
 
-
-mad.__doc__ = \
-"""Rolling Mean Absolute Deviation
+mad.__doc__ = """Rolling Mean Absolute Deviation
 
 Sources:
 

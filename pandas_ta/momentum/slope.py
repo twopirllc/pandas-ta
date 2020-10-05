@@ -2,7 +2,16 @@
 from math import atan, pi
 from pandas_ta.utils import get_offset, verify_series
 
-def slope(close, length=None, as_angle=None, to_degrees=None, vertical=None, offset=None, **kwargs):
+
+def slope(
+    close,
+    length=None,
+    as_angle=None,
+    to_degrees=None,
+    vertical=None,
+    offset=None,
+    **kwargs,
+):
     """Indicator: Slope"""
     # Validate arguments
     close = verify_series(close)
@@ -29,15 +38,14 @@ def slope(close, length=None, as_angle=None, to_degrees=None, vertical=None, off
         slope.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    slope.name = f"SLOPE_{length}" if not as_angle else f"ANGLE{'d' if to_degrees else 'r'}_{length}"
+    slope.name = (f"SLOPE_{length}" if not as_angle else
+                  f"ANGLE{'d' if to_degrees else 'r'}_{length}")
     slope.category = "momentum"
 
     return slope
 
 
-
-slope.__doc__ = \
-"""Slope
+slope.__doc__ = """Slope
 
 Returns the slope of a series of length n.  Can convert the slope to angle. Default: slope.
 

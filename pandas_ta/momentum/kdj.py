@@ -3,7 +3,14 @@ from pandas import DataFrame
 from ..overlap.rma import rma
 from ..utils import get_offset, non_zero_range, verify_series
 
-def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, **kwargs):
+
+def kdj(high=None,
+        low=None,
+        close=None,
+        length=None,
+        signal=None,
+        offset=None,
+        **kwargs):
     """Indicator: KDJ (KDJ)"""
     # Validate Arguments
     high = verify_series(high)
@@ -17,7 +24,8 @@ def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, 
     highest_high = high.rolling(length).max()
     lowest_low = low.rolling(length).min()
 
-    fastk = 100 * (close - lowest_low) / non_zero_range(highest_high, lowest_low)
+    fastk = 100 * (close - lowest_low) / non_zero_range(highest_high,
+                                                        lowest_low)
 
     k = rma(fastk, length=signal)
     d = rma(k, length=signal)
@@ -30,33 +38,31 @@ def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, 
         j = j.shift(offset)
 
     # Handle fills
-    if 'fillna' in kwargs:
-        k.fillna(kwargs['fillna'], inplace=True)
-        d.fillna(kwargs['fillna'], inplace=True)
-        j.fillna(kwargs['fillna'], inplace=True)
-    if 'fill_method' in kwargs:
-        k.fillna(method=kwargs['fill_method'], inplace=True)
-        d.fillna(method=kwargs['fill_method'], inplace=True)
-        j.fillna(method=kwargs['fill_method'], inplace=True)
+    if "fillna" in kwargs:
+        k.fillna(kwargs["fillna"], inplace=True)
+        d.fillna(kwargs["fillna"], inplace=True)
+        j.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        k.fillna(method=kwargs["fill_method"], inplace=True)
+        d.fillna(method=kwargs["fill_method"], inplace=True)
+        j.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     _params = f"_{length}_{signal}"
     k.name = f"K{_params}"
     d.name = f"D{_params}"
     j.name = f"J{_params}"
-    k.category = d.category = j.category = 'momentum'
+    k.category = d.category = j.category = "momentum"
 
     # Prepare DataFrame to return
     kdjdf = DataFrame({k.name: k, d.name: d, j.name: j})
     kdjdf.name = f"KDJ{_params}"
-    kdjdf.category = 'momentum'
+    kdjdf.category = "momentum"
 
     return kdjdf
 
 
-
-kdj.__doc__ = \
-"""KDJ (KDJ)
+kdj.__doc__ = """KDJ (KDJ)
 
 The KDJ indicator is actually a derived form of the Slow
 Stochastic with the only difference being an extra line
