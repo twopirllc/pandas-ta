@@ -1,15 +1,9 @@
 # -*- coding: utf-8 -*-
 from numpy import sign as npSign
-from ..utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def psl(close,
-        open_=None,
-        length=None,
-        scalar=None,
-        drift=None,
-        offset=None,
-        **kwargs):
+def psl(close, open_=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Psychological Line (PSL)"""
     # Validate Arguments
     close = verify_series(close)
@@ -49,7 +43,8 @@ def psl(close,
     return psl
 
 
-psl.__doc__ = """Psychological Line (PSL)
+psl.__doc__ = \
+"""Psychological Line (PSL)
 
 The Psychological Line is an oscillator-type indicator that compares the
 number of the rising periods to the total number of periods. In other

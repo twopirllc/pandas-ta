@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def mom(close, length=None, offset=None, **kwargs):
@@ -29,7 +29,8 @@ def mom(close, length=None, offset=None, **kwargs):
     return mom
 
 
-mom.__doc__ = """Momentum (MOM)
+mom.__doc__ = \
+"""Momentum (MOM)
 
 Momentum is an indicator used to measure a security's speed (or strength) of
 movement.  Or simply the change in price.

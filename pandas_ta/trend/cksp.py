@@ -51,7 +51,8 @@ def cksp(high, low, close, p=None, x=None, q=None, offset=None, **kwargs):
     return ckspdf
 
 
-cksp.__doc__ = """Chande Kroll Stop (CKSP)
+cksp.__doc__ = \
+"""Chande Kroll Stop (CKSP)
 
 The Tushar Chande and Stanley Kroll in their book
 “The New Technical Trader”. It is a trend-following indicator,

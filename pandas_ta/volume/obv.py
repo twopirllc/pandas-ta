@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, signed_series, verify_series
+from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def obv(close, volume, offset=None, **kwargs):
@@ -30,7 +30,8 @@ def obv(close, volume, offset=None, **kwargs):
     return obv
 
 
-obv.__doc__ = """On Balance Volume (OBV)
+obv.__doc__ = \
+"""On Balance Volume (OBV)
 
 On Balance Volume is a cumulative indicator to measure buying and selling
 pressure.

@@ -35,7 +35,8 @@ def dpo(close, length=None, centered=True, offset=None, **kwargs):
     return dpo
 
 
-dpo.__doc__ = """Detrend Price Oscillator (DPO)
+dpo.__doc__ = \
+"""Detrend Price Oscillator (DPO)
 
 Is an indicator designed to remove trend from price and make it easier to
 identify cycles.

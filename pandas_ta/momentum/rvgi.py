@@ -4,14 +4,7 @@ from pandas_ta.overlap import swma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def rvgi(open_,
-         high,
-         low,
-         close,
-         length=None,
-         swma_length=None,
-         offset=None,
-         **kwargs):
+def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **kwargs):
     """Indicator: Relative Vigor Index (RVGI)"""
     # Validate Arguments
     open_ = verify_series(open_)
@@ -57,7 +50,8 @@ def rvgi(open_,
     return df
 
 
-rvgi.__doc__ = """Relative Vigor Index (RVGI)
+rvgi.__doc__ = \
+"""Relative Vigor Index (RVGI)
 
 The Relative Vigor Index attempts to measure the strength of a trend relative to
 its closing price to its trading range.  It is based on the belief that it tends

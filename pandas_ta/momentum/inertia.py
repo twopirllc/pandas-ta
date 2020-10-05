@@ -4,20 +4,7 @@ from pandas_ta.volatility import rvi
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def inertia(
-    close=None,
-    high=None,
-    low=None,
-    length=None,
-    rvi_length=None,
-    scalar=None,
-    refined=None,
-    thirds=None,
-    mamode=None,
-    drift=None,
-    offset=None,
-    **kwargs,
-):
+def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Inertia (INERTIA)"""
     # Validate Arguments
     close = verify_series(close)
@@ -80,7 +67,8 @@ def inertia(
     return inertia
 
 
-inertia.__doc__ = """Inertia (INERTIA)
+inertia.__doc__ = \
+"""Inertia (INERTIA)
 
 Inertia was developed by Donald Dorsey and was introduced his article
 in September, 1995. It is the Relative Vigor Index smoothed by the Least

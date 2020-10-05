@@ -7,14 +7,7 @@ from pandas_ta.overlap import ema, hlc3, sma
 from pandas_ta.utils import get_offset, high_low_range, non_zero_range, verify_series
 
 
-def kc(high,
-       low,
-       close,
-       length=None,
-       scalar=None,
-       mamode=None,
-       offset=None,
-       **kwargs):
+def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **kwargs):
     """Indicator: Keltner Channels (KC)"""
     # Validate arguments
     high = verify_series(high)
@@ -76,7 +69,8 @@ def kc(high,
     return kcdf
 
 
-kc.__doc__ = """Keltner Channels (KC)
+kc.__doc__ = \
+"""Keltner Channels (KC)
 
 A popular volatility indicator similar to Bollinger Bands and
 Donchian Channels.

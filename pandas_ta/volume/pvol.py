@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, signed_series, verify_series
+from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def pvol(close, volume, offset=None, **kwargs):
@@ -33,7 +33,8 @@ def pvol(close, volume, offset=None, **kwargs):
     return pvol
 
 
-pvol.__doc__ = """Price-Volume (PVOL)
+pvol.__doc__ = \
+"""Price-Volume (PVOL)
 
 Returns a series of the product of price and volume.
 

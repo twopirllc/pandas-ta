@@ -26,7 +26,8 @@ def percent_return(close, length=None, cumulative=False, offset=None, **kwargs):
     return pct_return
 
 
-percent_return.__doc__ = """Percent Return
+percent_return.__doc__ = \
+"""Percent Return
 
 Calculates the percent return of a Series.
 See also: help(df.ta.percent_return) for additional **kwargs a valid 'df'.

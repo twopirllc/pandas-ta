@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from ..overlap.sma import sma
+from pandas_ta.overlap import sma
 from .stdev import stdev
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def zscore(close, length=None, std=None, offset=None, **kwargs):
@@ -28,7 +28,8 @@ def zscore(close, length=None, std=None, offset=None, **kwargs):
     return zscore
 
 
-zscore.__doc__ = """Rolling Z Score
+zscore.__doc__ = \
+"""Rolling Z Score
 
 Sources:
 

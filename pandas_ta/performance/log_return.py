@@ -33,7 +33,8 @@ def log_return(close, length=None, cumulative=False, offset=None, **kwargs):
     return log_return
 
 
-log_return.__doc__ = """Log Return
+log_return.__doc__ = \
+"""Log Return
 
 Calculates the logarithmic return of a Series.
 See also: help(df.ta.log_return) for additional **kwargs a valid 'df'.

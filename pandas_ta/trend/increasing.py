@@ -31,7 +31,8 @@ def increasing(close, length=None, asint=True, offset=None, **kwargs):
     return increasing
 
 
-increasing.__doc__ = """Increasing
+increasing.__doc__ = \
+"""Increasing
 
 Returns True or False if the series is increasing over a periods.  By default,
 it returns True and False as 1 and 0 respectively with kwarg 'asint'.

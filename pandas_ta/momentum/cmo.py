@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def cmo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
@@ -46,7 +46,8 @@ def cmo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     return cmo
 
 
-cmo.__doc__ = """Chande Momentum Oscillator (CMO)
+cmo.__doc__ = \
+"""Chande Momentum Oscillator (CMO)
 
 Attempts to capture the momentum of an asset with overbought at 50 and
 oversold at -50.

@@ -5,21 +5,13 @@ from .percent_return import percent_return
 from pandas_ta.utils import get_offset, verify_series, zero
 
 
-def trend_return(close,
-                 trend,
-                 log=True,
-                 cumulative=None,
-                 trend_reset=0,
-                 offset=None,
-                 **kwargs):
+def trend_return(close, trend, log=True, cumulative=None, trend_reset=0, offset=None, **kwargs):
     """Indicator: Trend Return"""
     # Validate Arguments
     close = verify_series(close)
     trend = verify_series(trend)
-    cumulative = (cumulative if cumulative is not None and
-                  isinstance(cumulative, bool) else False)
-    trend_reset = (int(trend_reset)
-                   if trend_reset and isinstance(trend_reset, int) else 0)
+    cumulative = cumulative if cumulative is not None and isinstance(cumulative, bool) else False
+    trend_reset = int(trend_reset) if trend_reset and isinstance(trend_reset, int) else 0
     offset = get_offset(offset)
 
     # Calculate Result
@@ -48,15 +40,13 @@ def trend_return(close,
     _log = "L" if log else "P"
     _returns = "LOGRET" if log else "PCTRET"
     _props = f"{_cumulative}{_log}TR"
-    df = DataFrame(
-        {
-            _props: result,
-            f"TR_{_returns}": returns,
-            f"{_props}_Trends": trends,
-            f"{_props}_Trades": trends.diff().shift(1).fillna(0).astype(int),
-        },
-        index=close.index,
-    )
+    data = {
+        _props: result,
+        f"TR_{_returns}": returns,
+        f"{_props}_Trends": trends,
+        f"{_props}_Trades": trends.diff().shift(1).fillna(0).astype(int)
+    }
+    df = DataFrame(data, index=close.index)
 
     # Offset
     if offset != 0:
@@ -69,7 +59,8 @@ def trend_return(close,
     return df
 
 
-trend_return.__doc__ = """Trend Return
+trend_return.__doc__ = \
+"""Trend Return
 
 Calculates the (Cumulative) Returns of a Trend as defined by a sequence of booleans called a 'trend'. One popular example in TA literature is to be long
 when the 'close' > 'moving average'. In which case, the trend= close > sma(close, 50). By default it calculates log returns but can also use percent change.

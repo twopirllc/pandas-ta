@@ -56,7 +56,8 @@ def drawdown(close, offset=None, **kwargs) -> DataFrame:
 
 
 
-drawdown.__doc__ = """Drawdown (DD)
+drawdown.__doc__ = \
+"""Drawdown (DD)
 
 Drawdown is a peak-to-trough decline during a specific period for an investment,
 trading account, or fund. It is usually quoted as the percentage between the

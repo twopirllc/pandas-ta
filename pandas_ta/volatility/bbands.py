@@ -57,7 +57,8 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     return bbandsdf
 
 
-bbands.__doc__ = """Bollinger Bands (BBANDS)
+bbands.__doc__ = \
+"""Bollinger Bands (BBANDS)
 
 A popular volatility indicator.
 

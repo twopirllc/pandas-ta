@@ -37,7 +37,8 @@ def cdl_inside(open_, high, low, close, asbool=False, offset=None, **kwargs):
     return inside
 
 
-cdl_inside.__doc__ = """Candle Type: Inside Bar
+cdl_inside.__doc__ = \
+"""Candle Type: Inside Bar
 
 An Inside Bar is a bar that is engulfed by the prior highs and lows of it's
 previous bar. In other words, the current bar is smaller than it's previous bar.

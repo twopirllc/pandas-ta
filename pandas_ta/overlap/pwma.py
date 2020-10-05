@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, pascals_triangle, verify_series, weights
+from pandas_ta.utils import get_offset, pascals_triangle, verify_series, weights
 
 
 def pwma(close, length=None, asc=None, offset=None, **kwargs):
@@ -7,15 +7,13 @@ def pwma(close, length=None, asc=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     asc = asc if asc else True
     offset = get_offset(offset)
 
     # Calculate Result
     triangle = pascals_triangle(n=length - 1, weighted=True)
-    pwma = close.rolling(length, min_periods=length).apply(weights(triangle),
-                                                           raw=True)
+    pwma = close.rolling(length, min_periods=length).apply(weights(triangle), raw=True)
 
     # Offset
     if offset != 0:
@@ -28,7 +26,8 @@ def pwma(close, length=None, asc=None, offset=None, **kwargs):
     return pwma
 
 
-pwma.__doc__ = """Pascal's Weighted Moving Average (PWMA)
+pwma.__doc__ = \
+"""Pascal's Weighted Moving Average (PWMA)
 
 Pascal's Weighted Moving Average is similar to a symmetric triangular
 window except PWMA's weights are based on Pascal's Triangle.

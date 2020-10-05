@@ -66,7 +66,8 @@ def fisher(high, low, length=None, signal=None, offset=None, **kwargs):
     return df
 
 
-fisher.__doc__ = """Fisher Transform (FISHT)
+fisher.__doc__ = \
+"""Fisher Transform (FISHT)
 
 Attempts to identify significant price reversals by normalizing prices over a
 user-specified number of periods. A reversal signal is suggested when the the

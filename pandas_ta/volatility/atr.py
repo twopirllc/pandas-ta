@@ -4,14 +4,7 @@ from .true_range import true_range
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def atr(high,
-        low,
-        close,
-        length=None,
-        mamode=None,
-        drift=None,
-        offset=None,
-        **kwargs):
+def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Average True Range (ATR)"""
     # Validate arguments
     high = verify_series(high)
@@ -53,7 +46,8 @@ def atr(high,
     return atr
 
 
-atr.__doc__ = """Average True Range (ATR)
+atr.__doc__ = \
+"""Average True Range (ATR)
 
 Averge True Range is used to measure volatility, especially
 volatility caused by gaps or limit moves.

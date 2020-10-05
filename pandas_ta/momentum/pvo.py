@@ -4,13 +4,7 @@ from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
 
-def pvo(volume,
-        fast=None,
-        slow=None,
-        signal=None,
-        scalar=None,
-        offset=None,
-        **kwargs):
+def pvo(volume, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
     """Indicator: Percentage Volume Oscillator (PVO)"""
     # Validate Arguments
     volume = verify_series(volume)
@@ -63,7 +57,8 @@ def pvo(volume,
     return df
 
 
-pvo.__doc__ = """Percentage Volume Oscillator (PVO)
+pvo.__doc__ = \
+"""Percentage Volume Oscillator (PVO)
 
 Percentage Volume Oscillator is a Momentum Oscillator for Volume.
 

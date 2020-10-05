@@ -5,17 +5,7 @@ from pandas_ta.volatility import atr
 from pandas_ta.utils import get_offset, get_drift, verify_series
 
 
-def chop(
-    high,
-    low,
-    close,
-    length=None,
-    atr_length=None,
-    scalar=None,
-    drift=None,
-    offset=None,
-    **kwargs,
-):
+def chop(high, low, close, length=None, atr_length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Choppiness Index (CHOP)"""
     # Validate Arguments
     high = verify_series(high)
@@ -54,7 +44,8 @@ def chop(
     return chop
 
 
-chop.__doc__ = """Choppiness Index (CHOP)
+chop.__doc__ = \
+"""Choppiness Index (CHOP)
 
 The Choppiness Index was created by Australian commodity trader
 E.W. Dreiss and is designed to determine if the market is choppy

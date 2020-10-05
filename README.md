@@ -148,7 +148,7 @@ Thanks for trying **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [pbrumblay](https://github.com/pbrumblay) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [pbrumblay](https://github.com/pbrumblay) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
@@ -497,10 +497,11 @@ print(bothhl2.name)  # "pre_HL2_post"
 | ![Example Chart](/images/TA_Chart.png) |
 
 
-### **Performance** (3)
+### **Performance** (4)
 
 Use parameter: cumulative=**True** for cumulative results.
 
+* _Draw Down_: **drawdown**
 * _Log Return_: **log_return**
 * _Percent Return_: **percent_return**
 * _Trend Return_: **trend_return**
@@ -612,6 +613,8 @@ Use parameter: cumulative=**True** for cumulative results.
 
 ## **New**
 * _Chande Forecast Oscillator_ (**cfo**) It calculates the percentage difference between the actual price and the Time Series Forecast (the endpoint of a linear regression line).
+* _Drawdown_ (**drawdown**) It is a peak-to-trough decline during a specific period for an investment,
+trading account, or fund..
 * _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998.
 * _Inside Bar_ (**cdl_inside**) An Inside Bar is a bar contained within it's previous bar's high and low See: ```help(ta.cdl_inside)```
 * _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .mom import mom
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def roc(close, length=None, offset=None, **kwargs):
@@ -8,8 +8,6 @@ def roc(close, length=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -32,7 +30,8 @@ def roc(close, length=None, offset=None, **kwargs):
     return roc
 
 
-roc.__doc__ = """Rate of Change (ROC)
+roc.__doc__ = \
+"""Rate of Change (ROC)
 
 Rate of Change is an indicator is also referred to as Momentum (yeah, confusingly).
 It is a pure momentum oscillator that measures the percent change in price with the

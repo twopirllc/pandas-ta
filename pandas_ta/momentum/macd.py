@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat
-from ..overlap.ema import ema
-from ..utils import get_offset, verify_series, signals
+from pandas_ta.overlap import ema
+from pandas_ta.utils import get_offset, verify_series, signals
 
 
 def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
@@ -88,7 +88,8 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
         return df
 
 
-macd.__doc__ = """Moving Average Convergence Divergence (MACD)
+macd.__doc__ = \
+"""Moving Average Convergence Divergence (MACD)
 
 The MACD is a popular indicator to that is used to identify a security's trend.
 While APO and MACD are the same calculation, MACD also returns two more series

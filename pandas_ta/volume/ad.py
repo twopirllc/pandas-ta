@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
@@ -39,7 +39,8 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     return ad
 
 
-ad.__doc__ = """Accumulation/Distribution (AD)
+ad.__doc__ = \
+"""Accumulation/Distribution (AD)
 
 Accumulation/Distribution indicator utilizes the relative position
 of the close to it's High-Low range with volume.  Then it is cumulated.

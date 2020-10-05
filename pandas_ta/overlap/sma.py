@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def sma(close, length=None, offset=None, **kwargs):
@@ -7,8 +7,7 @@ def sma(close, length=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     offset = get_offset(offset)
 
     # Calculate Result
@@ -31,7 +30,8 @@ def sma(close, length=None, offset=None, **kwargs):
     return sma
 
 
-sma.__doc__ = """Simple Moving Average (SMA)
+sma.__doc__ = \
+"""Simple Moving Average (SMA)
 
 The Simple Moving Average is the classic moving average that is the equally
 weighted average over n periods.

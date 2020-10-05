@@ -87,8 +87,7 @@ class Watchlist(object):
 
         self.tickers = tickers
         self.tf = tf
-        self.name = name if isinstance(name,
-                                       str) else f"Watch: {', '.join(tickers)}"
+        self.name = name if isinstance(name, str) else f"Watch: {', '.join(tickers)}"
         self.data = None
         self.kwargs = kwargs
         self.strategy = strategy

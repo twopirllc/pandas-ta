@@ -111,7 +111,8 @@ def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
     return psardf
 
 
-psar.__doc__ = """Parabolic Stop and Reverse (psar)
+psar.__doc__ = \
+"""Parabolic Stop and Reverse (psar)
 
 Parabolic Stop and Reverse
 

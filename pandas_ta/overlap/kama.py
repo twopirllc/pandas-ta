@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
 from pandas import Series, DataFrame
-from ..utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def kama(close,
-         length=None,
-         fast=None,
-         slow=None,
-         drift=None,
-         offset=None,
-         **kwargs):
+def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
     """Indicator: Kaufman's Adaptive Moving Average (HMA)"""
     # Validate Arguments
     close = verify_series(close)
@@ -53,7 +47,8 @@ def kama(close,
     return kama
 
 
-kama.__doc__ = """Kaufman's Adaptive Moving Average (KAMA)
+kama.__doc__ = \
+"""Kaufman's Adaptive Moving Average (KAMA)
 
 Developed by Perry Kaufman, Kaufman's Adaptive Moving Average (KAMA) is a moving average
 designed to account for market noise or volatility. KAMA will closely follow prices when

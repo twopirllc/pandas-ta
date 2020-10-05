@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import array_split
 from pandas import concat, DataFrame
-from ..utils import signed_series, verify_series
+from pandas_ta.utils import signed_series, verify_series
 
 
 def vp(close, volume, width=None, **kwargs):
@@ -60,7 +60,8 @@ def vp(close, volume, width=None, **kwargs):
     return vpdf
 
 
-vp.__doc__ = """Volume Profile (VP)
+vp.__doc__ = \
+"""Volume Profile (VP)
 
 Calculates the Volume Profile by slicing price into ranges.  Note: Value Area is not calculated.
 

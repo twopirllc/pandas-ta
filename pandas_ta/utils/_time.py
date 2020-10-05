@@ -7,7 +7,6 @@ from pandas import DataFrame, date_range, Series, Timestamp
 from pandas_ta import EXCHANGE_TZ
 
 
-
 def df_dates(df: DataFrame, dates: (str, list) = None) -> DataFrame:
     """Yields the DataFrame with the given dates"""
     if dates is None: return None

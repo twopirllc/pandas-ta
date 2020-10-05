@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, symmetric_triangle, verify_series, weights
+from pandas_ta.utils import get_offset, symmetric_triangle, verify_series, weights
 
 
 def swma(close, length=None, asc=None, offset=None, **kwargs):
@@ -7,15 +7,13 @@ def swma(close, length=None, asc=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     asc = asc if asc else True
     offset = get_offset(offset)
 
     # Calculate Result
     triangle = symmetric_triangle(length, weighted=True)
-    swma = close.rolling(length, min_periods=length).apply(weights(triangle),
-                                                           raw=True)
+    swma = close.rolling(length, min_periods=length).apply(weights(triangle), raw=True)
 
     # Offset
     if offset != 0:
@@ -28,7 +26,8 @@ def swma(close, length=None, asc=None, offset=None, **kwargs):
     return swma
 
 
-swma.__doc__ = """Symmetric Weighted Moving Average (SWMA)
+swma.__doc__ = \
+"""Symmetric Weighted Moving Average (SWMA)
 
 Symmetric Weighted Moving Average where weights are based on a symmetric
 triangle.  For example: n=3 -> [1, 2, 1], n=4 -> [1, 2, 2, 1], etc...  This moving

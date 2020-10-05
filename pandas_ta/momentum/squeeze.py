@@ -11,20 +11,7 @@ from pandas_ta.utils import get_drift, get_offset, high_low_range
 from pandas_ta.utils import unsigned_differences, verify_series
 
 
-def squeeze(
-    high,
-    low,
-    close,
-    bb_length=None,
-    bb_std=None,
-    kc_length=None,
-    kc_scalar=None,
-    mom_length=None,
-    mom_smooth=None,
-    use_tr=None,
-    offset=None,
-    **kwargs,
-):
+def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, offset=None, **kwargs):
     """Indicator: Squeeze Momentum (SQZ)"""
     # Validate arguments
     high = verify_series(high)
@@ -51,13 +38,7 @@ def squeeze(
 
     # Calculate Result
     bbd = bbands(close, length=bb_length, std=bb_std, mamode=mamode)
-    kch = kc(high,
-             low,
-             close,
-             length=kc_length,
-             scalar=kc_scalar,
-             mamode=mamode,
-             tr=use_tr)
+    kch = kc(high, low, close, length=kc_length, scalar=kc_scalar, mamode=mamode, tr=use_tr)
 
     # Simplify KC and BBAND column names for dynamic access
     bbd.columns = simplify_columns(bbd)
@@ -166,7 +147,8 @@ def squeeze(
     return df
 
 
-squeeze.__doc__ = """Squeeze (SQZ)
+squeeze.__doc__ = \
+"""Squeeze (SQZ)
 
 The default is based on John Carter's "TTM Squeeze" indicator, as discussed
 in his book "Mastering the Trade" (chapter 11). The Squeeze indicator attempts

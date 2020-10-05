@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .sma import sma
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def vwma(close, volume, length=None, offset=None, **kwargs):
@@ -26,7 +26,8 @@ def vwma(close, volume, length=None, offset=None, **kwargs):
     return vwma
 
 
-vwma.__doc__ = """Volume Weighted Moving Average (VWMA)
+vwma.__doc__ = \
+"""Volume Weighted Moving Average (VWMA)
 
 Volume Weighted Moving Average.
 

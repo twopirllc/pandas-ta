@@ -6,13 +6,7 @@ from pandas_ta.overlap import ema, hma, linreg, rma, sma, wma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def amat(close=None,
-         fast=None,
-         slow=None,
-         mamode=None,
-         lookback=None,
-         offset=None,
-         **kwargs):
+def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
     """Indicator: Archer Moving Averages Trends (AMAT)"""
     # Validate Arguments
     close = verify_series(close)

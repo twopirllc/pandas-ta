@@ -11,8 +11,7 @@ def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
     low = verify_series(low)
     close = verify_series(close)
     length = length if length and length > 0 else 14
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -53,7 +52,8 @@ def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
     return vtxdf
 
 
-vortex.__doc__ = """Vortex
+vortex.__doc__ = \
+"""Vortex
 
 Two oscillators that capture positive and negative trend movement.
 

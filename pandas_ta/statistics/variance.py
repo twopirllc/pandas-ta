@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def variance(close, length=None, ddof=1, offset=None, **kwargs):
@@ -9,8 +9,7 @@ def variance(close, length=None, ddof=1, offset=None, **kwargs):
     length = int(length) if length and length > 1 else 30
     ddof = int(ddof) if ddof >= 0 and ddof < length else 1
 
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     offset = get_offset(offset)
 
     # Calculate Result
@@ -27,7 +26,8 @@ def variance(close, length=None, ddof=1, offset=None, **kwargs):
     return variance
 
 
-variance.__doc__ = """Rolling Variance
+variance.__doc__ = \
+"""Rolling Variance
 
 Sources:
 

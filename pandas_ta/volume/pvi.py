@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..momentum.roc import roc
-from ..utils import get_offset, signed_series, verify_series
+from pandas_ta.momentum import roc
+from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
@@ -9,8 +9,7 @@ def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
     close = verify_series(close)
     volume = verify_series(volume)
     length = int(length) if length and length > 0 else 1
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     initial = int(initial) if initial and initial > 0 else 1000
     offset = get_offset(offset)
 
@@ -39,7 +38,8 @@ def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
     return pvi
 
 
-pvi.__doc__ = """Positive Volume Index (PVI)
+pvi.__doc__ = \
+"""Positive Volume Index (PVI)
 
 The Positive Volume Index is a cumulative indicator that uses volume change in
 an attempt to identify where smart money is active.  Used in conjunction with NVI.

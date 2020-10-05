@@ -5,14 +5,7 @@ from pandas_ta.volatility import atr
 from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 
 
-def adx(high,
-        low,
-        close,
-        length=None,
-        scalar=None,
-        drift=None,
-        offset=None,
-        **kwargs):
+def adx(high, low, close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: ADX"""
     # Validate Arguments
     high = verify_series(high)
@@ -74,7 +67,8 @@ def adx(high,
     return adxdf
 
 
-adx.__doc__ = """Average Directional Movement (ADX)
+adx.__doc__ = \
+"""Average Directional Movement (ADX)
 
 Average Directional Movement is meant to quantify trend strength by measuring
 the amount of movement in a single direction.

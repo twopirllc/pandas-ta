@@ -1,11 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from pandas_ta.utils import (
-    get_offset,
-    recent_maximum_index,
-    recent_minimum_index,
-    verify_series,
-)
+from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 
 
 def aroon(high, low, length=None, scalar=None, offset=None, **kwargs):
@@ -18,10 +14,8 @@ def aroon(high, low, length=None, scalar=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index,
-                                                     raw=True)
-    periods_from_ll = low.rolling(length + 1).apply(recent_minimum_index,
-                                                    raw=True)
+    periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index, raw=True)
+    periods_from_ll = low.rolling(length + 1).apply(recent_minimum_index, raw=True)
 
     aroon_up = aroon_down = scalar
     aroon_up *= 1 - (periods_from_hh / length)
@@ -64,7 +58,8 @@ def aroon(high, low, length=None, scalar=None, offset=None, **kwargs):
     return aroondf
 
 
-aroon.__doc__ = """Aroon & Aroon Oscillator (AROON)
+aroon.__doc__ = \
+"""Aroon & Aroon Oscillator (AROON)
 
 Aroon attempts to identify if a security is trending and how strong.
 

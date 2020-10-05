@@ -4,13 +4,7 @@ from pandas_ta.overlap import ema, sma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ppo(close,
-        fast=None,
-        slow=None,
-        signal=None,
-        scalar=None,
-        offset=None,
-        **kwargs):
+def ppo(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
     """Indicator: Percentage Price Oscillator (PPO)"""
     # Validate Arguments
     close = verify_series(close)
@@ -20,8 +14,7 @@ def ppo(close,
     scalar = float(scalar) if scalar else 100
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else fast)
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else fast
     offset = get_offset(offset)
 
     # Calculate Result
@@ -65,7 +58,8 @@ def ppo(close,
     return df
 
 
-ppo.__doc__ = """Percentage Price Oscillator (PPO)
+ppo.__doc__ = \
+"""Percentage Price Oscillator (PPO)
 
 The Percentage Price Oscillator is similar to MACD in measuring momentum.
 

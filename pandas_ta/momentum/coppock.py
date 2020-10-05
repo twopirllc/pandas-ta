@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from .roc import roc
-from ..overlap.rma import rma
-from ..overlap.wma import wma
-from ..utils import get_offset, verify_series
+from pandas_ta.overlap import rma, wma
+from pandas_ta.utils import get_offset, verify_series
 
 
 def coppock(close, length=None, fast=None, slow=None, offset=None, **kwargs):
@@ -12,8 +11,6 @@ def coppock(close, length=None, fast=None, slow=None, offset=None, **kwargs):
     length = int(length) if length and length > 0 else 10
     fast = int(fast) if fast and fast > 0 else 11
     slow = int(slow) if slow and slow > 0 else 14
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -37,7 +34,8 @@ def coppock(close, length=None, fast=None, slow=None, offset=None, **kwargs):
     return coppock
 
 
-coppock.__doc__ = """Coppock Curve (COPC)
+coppock.__doc__ = \
+"""Coppock Curve (COPC)
 
 Coppock Curve (originally called the "Trendex Model") is a momentum indicator
 is designed for use on a monthly time scale.  Although designed for monthly

@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..overlap.rma import rma
-from ..utils import get_offset, non_zero_range, verify_series
+from pandas_ta.overlap import rma
+from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def kdj(high=None,
-        low=None,
-        close=None,
-        length=None,
-        signal=None,
-        offset=None,
-        **kwargs):
+def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, **kwargs):
     """Indicator: KDJ (KDJ)"""
     # Validate Arguments
     high = verify_series(high)
@@ -62,7 +56,8 @@ def kdj(high=None,
     return kdjdf
 
 
-kdj.__doc__ = """KDJ (KDJ)
+kdj.__doc__ = \
+"""KDJ (KDJ)
 
 The KDJ indicator is actually a derived form of the Slow
 Stochastic with the only difference being an extra line

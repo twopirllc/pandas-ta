@@ -1,22 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from ..utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def uo(
-    high,
-    low,
-    close,
-    fast=None,
-    medium=None,
-    slow=None,
-    fast_w=None,
-    medium_w=None,
-    slow_w=None,
-    drift=None,
-    offset=None,
-    **kwargs,
-):
+def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_w=None, slow_w=None, drift=None, offset=None, **kwargs):
     """Indicator: Ultimate Oscillator (UO)"""
     # Validate arguments
     high = verify_series(high)
@@ -52,8 +39,7 @@ def uo(
     slow_avg = bp.rolling(slow).sum() / tr.rolling(slow).sum()
 
     total_weight = fast_w + medium_w + slow_w
-    weights = (fast_w * fast_avg) + (medium_w * medium_avg) + (slow_w *
-                                                               slow_avg)
+    weights = (fast_w * fast_avg) + (medium_w * medium_avg) + (slow_w * slow_avg)
     uo = 100 * weights / total_weight
 
     # Offset
@@ -73,7 +59,8 @@ def uo(
     return uo
 
 
-uo.__doc__ = """Ultimate Oscillator (UO)
+uo.__doc__ = \
+"""Ultimate Oscillator (UO)
 
 The Ultimate Oscillator is a momentum indicator over three different
 periods.  It attempts to correct false divergence trading signals.

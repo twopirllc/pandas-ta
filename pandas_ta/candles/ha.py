@@ -45,7 +45,8 @@ def ha(open_, high, low, close, offset=None, **kwargs):
     return df
 
 
-ha.__doc__ = """Heikin Ashi Candles (HA)
+ha.__doc__ = \
+"""Heikin Ashi Candles (HA)
 
 The Heikin-Ashi technique averages price data to create a Japanese
 candlestick chart that filters out market noise. Heikin-Ashi charts,

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import sqrt as npsqrt
 from .variance import variance
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def stdev(close, length=None, ddof=1, offset=None, **kwargs):
@@ -26,7 +26,8 @@ def stdev(close, length=None, ddof=1, offset=None, **kwargs):
     return stdev
 
 
-stdev.__doc__ = """Rolling Standard Deviation
+stdev.__doc__ = \
+"""Rolling Standard Deviation
 
 Sources:
 

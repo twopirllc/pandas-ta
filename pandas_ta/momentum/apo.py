@@ -11,8 +11,6 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     slow = int(slow) if slow and slow > 0 else 26
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else fast)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -37,7 +35,8 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     return apo
 
 
-apo.__doc__ = """Absolute Price Oscillator (APO)
+apo.__doc__ = \
+"""Absolute Price Oscillator (APO)
 
 The Absolute Price Oscillator is an indicator used to measure a security's
 momentum.  It is simply the difference of two Exponential Moving Averages

@@ -6,13 +6,7 @@ from pandas_ta.volatility import atr
 from pandas_ta.utils import get_offset, verify_series
 
 
-def supertrend(high,
-               low,
-               close,
-               length=None,
-               multiplier=None,
-               offset=None,
-               **kwargs):
+def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kwargs):
     """Indicator: Supertrend"""
     # Validate Arguments
     high = verify_series(high)
@@ -78,7 +72,8 @@ def supertrend(high,
     return df
 
 
-supertrend.__doc__ = """Supertrend (supertrend)
+supertrend.__doc__ = \
+"""Supertrend (supertrend)
 
 Supertrend is an overlap indicator. It is used to help identify trend
 direction, setting stop loss, identify support and resistance, and/or

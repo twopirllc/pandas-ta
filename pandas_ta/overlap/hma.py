@@ -30,7 +30,8 @@ def hma(close, length=None, offset=None, **kwargs):
     return hma
 
 
-hma.__doc__ = """Hull Moving Average (HMA)
+hma.__doc__ = \
+"""Hull Moving Average (HMA)
 
 The Hull Exponential Moving Average attempts to reduce or remove lag in moving
 averages.

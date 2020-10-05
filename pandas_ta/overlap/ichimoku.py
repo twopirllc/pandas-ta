@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas import date_range, DataFrame, RangeIndex, Timedelta
 from .midprice import midprice
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
-def ichimoku(high,
-             low,
-             close,
-             tenkan=None,
-             kijun=None,
-             senkou=None,
-             offset=None,
-             **kwargs):
+def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):
     """Indicator: Ichimoku Kinkō Hyō (Ichimoku)"""
     high = verify_series(high)
     low = verify_series(low)
@@ -96,7 +89,8 @@ def ichimoku(high,
     return ichimokudf, spandf
 
 
-ichimoku.__doc__ = """Ichimoku Kinkō Hyō (ichimoku)
+ichimoku.__doc__ = \
+"""Ichimoku Kinkō Hyō (ichimoku)
 
 Developed Pre WWII as a forecasting model for financial markets.
 

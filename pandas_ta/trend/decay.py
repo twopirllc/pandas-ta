@@ -40,7 +40,8 @@ def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
     return ld
 
 
-decay.__doc__ = """Decay
+decay.__doc__ = \
+"""Decay
 
 Creates a decay moving forward from prior signals like crosses. The default is
 "linear". Exponential is optional as "exponential" or "exp".

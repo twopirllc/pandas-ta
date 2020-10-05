@@ -10,7 +10,6 @@ from ._math import linear_regression
 from pandas_ta.performance import drawdown, log_return, percent_return
 
 
-
 def cagr(close: Series) -> float:
     """Compounded Annual Growth Rate"""
     close = verify_series(close)

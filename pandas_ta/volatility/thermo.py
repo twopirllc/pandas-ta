@@ -4,6 +4,7 @@ from pandas import DataFrame, Series
 from pandas_ta.overlap import ema, sma
 from pandas_ta.utils import get_offset, verify_series, get_drift
 
+
 def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Elders Thermometer (THERMO)"""
     # Validate arguments

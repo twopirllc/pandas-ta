@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from .sma import sma
+from pandas_ta.utils import get_offset, verify_series
 
 
 def trima(close, length=None, offset=None, **kwargs):
@@ -7,14 +8,14 @@ def trima(close, length=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
     offset = get_offset(offset)
 
     # Calculate Result
     half_length = round(0.5 * (length + 1))
-    sma1 = close.rolling(half_length, min_periods=half_length).mean()
-    trima = sma1.rolling(half_length, min_periods=half_length).mean()
+    sma1 = sma(close, length=half_length)
+    trima = sma(sma1, length=half_length)
+    # sma1 = close.rolling(half_length, min_periods=half_length).mean()
+    # trima = sma1.rolling(half_length, min_periods=half_length).mean()
 
     # Offset
     if offset != 0:
@@ -27,7 +28,8 @@ def trima(close, length=None, offset=None, **kwargs):
     return trima
 
 
-trima.__doc__ = """Triangular Moving Average (TRIMA)
+trima.__doc__ = \
+"""Triangular Moving Average (TRIMA)
 
 A weighted moving average where the shape of the weights are triangular and the
 greatest weight is in the middle of the period.

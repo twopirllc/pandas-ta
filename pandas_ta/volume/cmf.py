@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def cmf(high,
-        low,
-        close,
-        volume,
-        open_=None,
-        length=None,
-        offset=None,
-        **kwargs):
+def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs):
     """Indicator: Chaikin Money Flow (CMF)"""
     # Validate Arguments
     high = verify_series(high)
@@ -18,8 +11,7 @@ def cmf(high,
     volume = verify_series(volume)
     high_low_range = non_zero_range(high, low)
     length = int(length) if length and length > 0 else 20
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else length)
+    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     offset = get_offset(offset)
 
     # Calculate Result
@@ -50,7 +42,8 @@ def cmf(high,
     return cmf
 
 
-cmf.__doc__ = """Chaikin Money Flow (CMF)
+cmf.__doc__ = \
+"""Chaikin Money Flow (CMF)
 
 Chailin Money Flow measures the amount of money flow volume over a specific
 period in conjunction with Accumulation/Distribution.

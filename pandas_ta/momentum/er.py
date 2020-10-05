@@ -58,7 +58,8 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
         return er
 
 
-er.__doc__ = """Efficiency Ratio (ER)
+er.__doc__ = \
+"""Efficiency Ratio (ER)
 
 The Efficiency Ratio was invented by Perry J. Kaufman and presented in his book "New Trading Systems and Methods". It is designed to account for market noise or volatility.
 

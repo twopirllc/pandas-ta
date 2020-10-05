@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..overlap.ema import ema
-from ..overlap.hma import hma
-from ..overlap.sma import sma
-from ..overlap.rma import rma
-from ..overlap.wma import wma
-from ..utils import get_offset, verify_series, zero
+from pandas_ta.overlap import ema, hma, rma, sma, wma
+from pandas_ta.utils import get_offset, verify_series, zero
 
 
 def bias(close, length=None, mamode=None, offset=None, **kwargs):
@@ -46,7 +42,8 @@ def bias(close, length=None, mamode=None, offset=None, **kwargs):
     return bias
 
 
-bias.__doc__ = """Bias (BIAS)
+bias.__doc__ = \
+"""Bias (BIAS)
 
 Rate of change between the source and a moving average.
 

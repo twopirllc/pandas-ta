@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..utils import get_offset, verify_series
+from pandas_ta.overlap import sma
+from pandas_ta.utils import get_offset, verify_series
 
 
 def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
@@ -11,14 +12,12 @@ def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
     slow = int(slow) if slow and slow > 0 else 34
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = (int(kwargs["min_periods"]) if "min_periods" in kwargs and
-                   kwargs["min_periods"] is not None else fast)
     offset = get_offset(offset)
 
     # Calculate Result
     median_price = 0.5 * (high + low)
-    fast_sma = median_price.rolling(fast, min_periods=min_periods).mean()
-    slow_sma = median_price.rolling(slow, min_periods=min_periods).mean()
+    fast_sma = sma(median_price, fast)
+    slow_sma = sma(median_price, slow)
     ao = fast_sma - slow_sma
 
     # Offset
@@ -38,7 +37,8 @@ def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
     return ao
 
 
-ao.__doc__ = """Awesome Oscillator (AO)
+ao.__doc__ = \
+"""Awesome Oscillator (AO)
 
 The Awesome Oscillator is an indicator used to measure a security's momentum.
 AO is generally used to affirm trends or to anticipate possible reversals.

@@ -80,21 +80,11 @@ Category = {
 
 # https://www.worldtimezone.com/markets24.php
 EXCHANGE_TZ = {
-    "NZSX": 12,
-    "ASX": 11,
-    "TSE": 9,
-    "HKE": 8,
-    "SSE": 8,
-    "SGX": 8,
-    "NSE": 5.5,
-    "DIFX": 4,
-    "RTS": 3,
-    "JSE": 2,
-    "FWB": 1,
-    "LSE": 1,
-    "BMF": -2,
-    "NYSE": -4,
-    "TSX": -4,
+    "NZSX": 12, "ASX": 11,
+    "TSE": 9, "HKE": 8, "SSE": 8, "SGX": 8,
+    "NSE": 5.5, "DIFX": 4, "RTS": 3,
+    "JSE": 2, "FWB": 1, "LSE": 1,
+    "BMF": -2, "NYSE": -4, "TSX": -4
 }
 
 RATE = {

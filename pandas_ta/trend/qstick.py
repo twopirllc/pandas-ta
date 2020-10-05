@@ -43,7 +43,8 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
     return qstick
 
 
-qstick.__doc__ = """Q Stick
+qstick.__doc__ = \
+"""Q Stick
 
 The Q Stick indicator, developed by Tushar Chande, attempts to quantify and identify
 trends in candlestick charts.

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import log as npLog
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def entropy(close, length=None, base=None, offset=None, **kwargs):
@@ -26,7 +26,8 @@ def entropy(close, length=None, base=None, offset=None, **kwargs):
     return entropy
 
 
-entropy.__doc__ = """Entropy (ENTP)
+entropy.__doc__ = \
+"""Entropy (ENTP)
 
 Introduced by Claude Shannon in 1948, entropy measures the unpredictability
 of the data, or equivalently, of its average information. A die has higher

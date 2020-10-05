@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
-from ..utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def ema(close, length=None, offset=None, **kwargs):
@@ -33,7 +33,8 @@ def ema(close, length=None, offset=None, **kwargs):
     return ema
 
 
-ema.__doc__ = """Exponential Moving Average (EMA)
+ema.__doc__ = \
+"""Exponential Moving Average (EMA)
 
 The Exponential Moving Average is more responsive moving average compared to the
 Simple Moving Average (SMA).  The weights are determined by alpha which is

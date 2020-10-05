@@ -45,7 +45,8 @@ def eri(high, low, close, length=None, offset=None, **kwargs):
     return df
 
 
-eri.__doc__ = """Elder Ray Index (ERI)
+eri.__doc__ = \
+"""Elder Ray Index (ERI)
 
 Elder's Bulls Ray Index contains his Bull and Bear Powers. Which are useful ways
 to look at the price and see the strength behind the market. Bull Power
