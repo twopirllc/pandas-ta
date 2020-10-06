@@ -63,8 +63,11 @@ def trend_return(close, trend, log=True, cumulative=None, trend_reset=0, trade_o
 trend_return.__doc__ = \
 """Trend Return
 
-Calculates the (Cumulative) Returns of a Trend as defined by a sequence of booleans called a 'trend'. One popular example in TA literature is to be long
-when the 'close' > 'moving average'. In which case, the trend= close > sma(close, 50). By default it calculates log returns but can also use percent change.
+Calculates the (Cumulative) Returns of a Trend as defined by a sequence of
+booleans called a 'trend'. One popular example in TA literature is to be long
+when the 'close' > 'moving average'. In which case, the
+trend= close > sma(close, 50). By default it calculates log returns but can also
+use percent change.
 
 Examples:
 ta.trend_return(close, trend= close > ta.sma(close, 50))
