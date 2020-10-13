@@ -1,10 +1,4 @@
-from .config import (
-    error_analysis,
-    sample_data,
-    CORRELATION,
-    CORRELATION_THRESHOLD,
-    VERBOSE,
-)
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
 
 from unittest import TestCase, skip
@@ -53,16 +47,13 @@ class TestVolume(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
     def test_ad_open(self):
-        result = pandas_ta.ad(self.high, self.low, self.close, self.volume_,
-                              self.open)
+        result = pandas_ta.ad(self.high, self.low, self.close, self.volume_, self.open)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "ADo")
 
@@ -76,9 +67,7 @@ class TestVolume(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -113,9 +102,7 @@ class TestVolume(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -135,9 +122,7 @@ class TestVolume(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)

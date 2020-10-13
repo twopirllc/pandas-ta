@@ -6,7 +6,6 @@ from pandas import DataFrame
 
 
 class TestTrendExtension(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -15,29 +14,24 @@ class TestTrendExtension(TestCase):
     def tearDownClass(cls):
         del cls.data
 
-    def setUp(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
-    def tearDown(self):
-        pass
 
     def test_adx_ext(self):
         self.data.ta.adx(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]),
-                         ["ADX_14", "DMP_14", "DMN_14"])
+        self.assertEqual(list(self.data.columns[-3:]), ["ADX_14", "DMP_14", "DMN_14"])
 
     def test_amat_ext(self):
         self.data.ta.amat(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]),
-                         ["AMAT_LR_2", "AMAT_SR_2"])
+        self.assertEqual(list(self.data.columns[-2:]), ["AMAT_LR_2", "AMAT_SR_2"])
 
     def test_aroon_ext(self):
         self.data.ta.aroon(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]),
-                         ["AROOND_14", "AROONU_14", "AROONOSC_14"])
+        self.assertEqual(list(self.data.columns[-3:]), ["AROOND_14", "AROONU_14", "AROONOSC_14"])
 
     def test_chop_ext(self):
         self.data.ta.chop(append=True)
@@ -75,8 +69,7 @@ class TestTrendExtension(TestCase):
 
     def test_long_run_ext(self):
         # Nothing passed, return self
-        self.assertEqual(
-            self.data.ta.long_run(append=True).shape, self.data.shape)
+        self.assertEqual(self.data.ta.long_run(append=True).shape, self.data.shape)
 
         fast = self.data.ta.ema(8)
         slow = self.data.ta.ema(21)
@@ -88,12 +81,7 @@ class TestTrendExtension(TestCase):
         self.data.ta.psar(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(
-            list(self.data.columns[-4:]),
-            [
-                "PSARl_0.02_0.2", "PSARs_0.02_0.2", "PSARaf_0.02_0.2",
-                "PSARr_0.02_0.2"
-            ],
-        )
+            list(self.data.columns[-4:]), ["PSARl_0.02_0.2", "PSARs_0.02_0.2", "PSARaf_0.02_0.2", "PSARr_0.02_0.2"])
 
     def test_qstick_ext(self):
         self.data.ta.qstick(append=True)

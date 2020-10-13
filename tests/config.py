@@ -16,9 +16,7 @@ sample_data = read_csv(
     infer_datetime_format=True,
     keep_date_col=True,
 )
-sample_data.set_index(DatetimeIndex(sample_data["date"]),
-                      inplace=True,
-                      drop=True)
+sample_data.set_index(DatetimeIndex(sample_data["date"]), inplace=True, drop=True)
 sample_data.drop("date", axis=1, inplace=True)
 
 

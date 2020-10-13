@@ -1,10 +1,4 @@
-from .config import (
-    error_analysis,
-    sample_data,
-    CORRELATION,
-    CORRELATION_THRESHOLD,
-    VERBOSE,
-)
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
 
 from unittest import TestCase, skip
@@ -58,23 +52,16 @@ class TestCandle(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
     def test_cdl_inside(self):
-        result = pandas_ta.cdl_inside(self.open, self.high, self.low,
-                                      self.close)
+        result = pandas_ta.cdl_inside(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "CDL_INSIDE")
 
-        result = pandas_ta.cdl_inside(self.open,
-                                      self.high,
-                                      self.low,
-                                      self.close,
-                                      asbool=True)
+        result = pandas_ta.cdl_inside(self.open, self.high, self.low, self.close, asbool=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "CDL_INSIDE")

@@ -1,10 +1,4 @@
-from .config import (
-    error_analysis,
-    sample_data,
-    CORRELATION,
-    CORRELATION_THRESHOLD,
-    VERBOSE,
-)
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
 
 from unittest import TestCase, skip
@@ -83,9 +77,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -105,9 +97,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -127,9 +117,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -154,9 +142,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -186,10 +172,7 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "INERTIA_20_14")
 
-        result = pandas_ta.inertia(self.close,
-                                   self.high,
-                                   self.low,
-                                   refined=True)
+        result = pandas_ta.inertia(self.close, self.high, self.low, refined=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "INERTIAr_20_14")
 
@@ -214,39 +197,26 @@ class TestMomentum(TestCase):
 
         try:
             expected = tal.MACD(self.close)
-            expecteddf = DataFrame({
-                "MACD_12_26_9": expected[0],
-                "MACDh_12_26_9": expected[2],
-                "MACDs_12_26_9": expected[1],
-            })
+            expecteddf = DataFrame({"MACD_12_26_9": expected[0], "MACDh_12_26_9": expected[2], "MACDs_12_26_9": expected[1]})
             pdt.assert_frame_equal(result, expecteddf)
         except AssertionError as ae:
             try:
-                macd_corr = pandas_ta.utils.df_error_analysis(
-                    result.iloc[:, 0], expecteddf.iloc[:, 0], col=CORRELATION)
+                macd_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0], expecteddf.iloc[:, 0], col=CORRELATION)
                 self.assertGreater(macd_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result.iloc[:, 0], CORRELATION, ex)
 
             try:
-                history_corr = pandas_ta.utils.df_error_analysis(
-                    result.iloc[:, 1], expecteddf.iloc[:, 1], col=CORRELATION)
+                history_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 1], expecteddf.iloc[:, 1], col=CORRELATION)
                 self.assertGreater(history_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                error_analysis(result.iloc[:, 1],
-                               CORRELATION,
-                               ex,
-                               newline=False)
+                error_analysis(result.iloc[:, 1], CORRELATION, ex, newline=False)
 
             try:
-                signal_corr = pandas_ta.utils.df_error_analysis(
-                    result.iloc[:, 2], expecteddf.iloc[:, 2], col=CORRELATION)
+                signal_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 2], expecteddf.iloc[:, 2], col=CORRELATION)
                 self.assertGreater(signal_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                error_analysis(result.iloc[:, 2],
-                               CORRELATION,
-                               ex,
-                               newline=False)
+                error_analysis(result.iloc[:, 2], CORRELATION, ex, newline=False)
 
     def test_mom(self):
         result = pandas_ta.mom(self.close)
@@ -258,9 +228,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -277,14 +245,10 @@ class TestMomentum(TestCase):
 
         try:
             expected = tal.PPO(self.close)
-            pdt.assert_series_equal(result["PPO_12_26_9"],
-                                    expected,
-                                    check_names=False)
+            pdt.assert_series_equal(result["PPO_12_26_9"], expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result["PPO_12_26_9"],
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result["PPO_12_26_9"], expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result["PPO_12_26_9"], CORRELATION, ex)
@@ -309,9 +273,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -326,9 +288,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -374,18 +334,11 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "SQZhlr_20_2.0_20_1.5")
 
-        result = pandas_ta.squeeze(self.high,
-                                   self.low,
-                                   self.close,
-                                   lazybear=True)
+        result = pandas_ta.squeeze(self.high, self.low, self.close, lazybear=True)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "SQZ_20_2.0_20_1.5_LB")
 
-        result = pandas_ta.squeeze(self.high,
-                                   self.low,
-                                   self.close,
-                                   tr=False,
-                                   lazybear=True)
+        result = pandas_ta.squeeze(self.high, self.low, self.close, tr=False, lazybear=True)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "SQZhlr_20_2.0_20_1.5_LB")
 
@@ -422,9 +375,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -439,9 +390,7 @@ class TestMomentum(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)

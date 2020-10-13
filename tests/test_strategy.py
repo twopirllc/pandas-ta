@@ -48,10 +48,8 @@ class TestStrategyMethods(TestCase):
         self.init_cols = len(self.data.columns)
         self.time_diff = 0
         self.result = None
-        if verbose:
-            print()
-        if timed:
-            self.stime = perf_counter()
+        if verbose: print()
+        if timed: self.stime = perf_counter()
 
     def tearDown(self):
         if timed:
@@ -72,64 +70,35 @@ class TestStrategyMethods(TestCase):
 
     @skip
     def test_all_strategy(self):
-        self.data.ta.strategy(pandas_ta.AllStrategy,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
 
     @skip
     def test_all_name_strategy(self):
         self.category = "All"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_candles_category(self):
         self.category = "Candles"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_common(self):
         self.category = "Common"
-        self.data.ta.strategy(pandas_ta.CommonStrategy,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(pandas_ta.CommonStrategy, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_custom_a(self):
         self.category = "Custom A"
 
         momo_bands_sma_ta = [
-            {
-                "kind": "rsi"
-            },  # 1
-            {
-                "kind": "macd"
-            },  # 3
-            {
-                "kind": "sma",
-                "length": 50
-            },  # 1
-            {
-                "kind": "sma",
-                "length": 200
-            },  # 1
-            {
-                "kind": "bbands",
-                "length": 20
-            },  # 3
-            {
-                "kind": "log_return",
-                "cumulative": True
-            },  # 1
-            {
-                "kind": "ema",
-                "close": "CUMLOGRET_1",
-                "length": 5,
-                "suffix": "CLR"
-            },
+            {"kind": "rsi"},  # 1
+            {"kind": "macd"},  # 3
+            {"kind": "sma", "length": 50},  # 1
+            {"kind": "sma", "length": 200 },  # 1
+            {"kind": "bbands", "length": 20},  # 3
+            {"kind": "log_return", "cumulative": True},  # 1
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
         ]
 
         custom = pandas_ta.Strategy(
@@ -144,20 +113,14 @@ class TestStrategyMethods(TestCase):
         self.category = "Custom B"
 
         custom_args_ta = [
-            {
-                "kind": "ema",
-                "params": (5,)
-            },
-            {
-                "kind": "fisher",
-                "params": (13, 7)
-            },
+            {"kind": "ema", "params": (5,)},
+            {"kind": "fisher", "params": (13, 7)}
         ]
 
         custom = pandas_ta.Strategy(
             "Custom Args Tuple",
             custom_args_ta,
-            "Allow for easy filling in indicator arguments by argument placement.",
+            "Allow for easy filling in indicator arguments by argument placement."
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 
@@ -189,48 +152,34 @@ class TestStrategyMethods(TestCase):
     # @skip
     def test_momentum_category(self):
         self.category = "Momentum"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_overlap_category(self):
         self.category = "Overlap"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_performance_category(self):
         self.category = "Performance"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_statistics_category(self):
         self.category = "Statistics"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_trend_category(self):
         self.category = "Trend"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_volatility_category(self):
         self.category = "Volatility"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_volume_category(self):
         self.category = "Volume"
-        self.data.ta.strategy(self.category,
-                              verbose=verbose,
-                              timed=strategy_timed)
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)

@@ -48,45 +48,25 @@ class TestPerformace(TestCase):
         self.assertEqual(result.name, "CUMPCTRET_1")
 
     def test_log_trend_return(self):
-        result = pandas_ta.trend_return(self.close,
-                                        self.islong,
-                                        log=True,
-                                        cumulative=False)
+        result = pandas_ta.trend_return(self.close, self.islong, log=True, cumulative=False)
         self.assertEqual(result.name, "LTR")
 
     def test_cum_log_trend_return(self):
-        result = pandas_ta.trend_return(self.close,
-                                        self.islong,
-                                        log=True,
-                                        cumulative=True)
+        result = pandas_ta.trend_return(self.close, self.islong, log=True, cumulative=True)
         self.assertEqual(result.name, "CLTR")
 
     def test_variable_cum_log_trend_return(self):
-        result = pandas_ta.trend_return(self.close,
-                                        self.islong,
-                                        log=True,
-                                        cumulative=True,
-                                        variable=True)
+        result = pandas_ta.trend_return(self.close, self.islong, log=True, cumulative=True, variable=True)
         self.assertEqual(result.name, "CLTR")
 
     def test_pct_trend_return(self):
-        result = pandas_ta.trend_return(self.close,
-                                        self.islong,
-                                        log=False,
-                                        cumulative=False)
+        result = pandas_ta.trend_return(self.close, self.islong, log=False, cumulative=False)
         self.assertEqual(result.name, "PTR")
 
     def test_cum_pct_trend_return(self):
-        result = pandas_ta.trend_return(self.close,
-                                        self.islong,
-                                        log=False,
-                                        cumulative=True)
+        result = pandas_ta.trend_return(self.close, self.islong, log=False, cumulative=True)
         self.assertEqual(result.name, "CPTR")
 
     def test_variable_pct_log_trend_return(self):
-        result = pandas_ta.trend_return(self.close,
-                                        self.islong,
-                                        log=False,
-                                        cumulative=True,
-                                        variable=True)
+        result = pandas_ta.trend_return(self.close, self.islong, log=False, cumulative=True, variable=True)
         self.assertEqual(result.name, "CPTR")

@@ -1,10 +1,4 @@
-from .config import (
-    error_analysis,
-    sample_data,
-    CORRELATION,
-    CORRELATION_THRESHOLD,
-    VERBOSE,
-)
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
 
 from unittest import TestCase, skip
@@ -63,9 +57,7 @@ class TestVolatility(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -77,55 +69,33 @@ class TestVolatility(TestCase):
 
         try:
             expected = tal.BBANDS(self.close)
-            expecteddf = DataFrame({
-                "BBL_5_2.0": expected[0],
-                "BBM_5_2.0": expected[1],
-                "BBU_5_2.0": expected[2],
-            })
+            expecteddf = DataFrame({"BBL_5_2.0": expected[0], "BBM_5_2.0": expected[1], "BBU_5_2.0": expected[2]})
             pdt.assert_frame_equal(result, expecteddf)
         except AssertionError as ae:
             try:
-                bbl_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0],
-                                                             expecteddf.iloc[:,
-                                                                             0],
-                                                             col=CORRELATION)
+                bbl_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0], expecteddf.iloc[:,0], col=CORRELATION)
                 self.assertGreater(bbl_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result.iloc[:, 0], CORRELATION, ex)
 
             try:
-                bbm_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 1],
-                                                             expecteddf.iloc[:,
-                                                                             1],
-                                                             col=CORRELATION)
+                bbm_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 1], expecteddf.iloc[:,1], col=CORRELATION)
                 self.assertGreater(bbm_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                error_analysis(result.iloc[:, 1],
-                               CORRELATION,
-                               ex,
-                               newline=False)
+                error_analysis(result.iloc[:, 1], CORRELATION, ex, newline=False)
 
             try:
-                bbu_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 2],
-                                                             expecteddf.iloc[:,
-                                                                             2],
-                                                             col=CORRELATION)
+                bbu_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 2], expecteddf.iloc[:,2], col=CORRELATION)
                 self.assertGreater(bbu_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
-                error_analysis(result.iloc[:, 2],
-                               CORRELATION,
-                               ex,
-                               newline=False)
+                error_analysis(result.iloc[:, 2], CORRELATION, ex, newline=False)
 
     def test_donchian(self):
         result = pandas_ta.donchian(self.high, self.low)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "DC_20_20")
 
-        result = pandas_ta.donchian(self.high,
-                                    self.low,
-                                    lower_length=20,
-                                    upper_length=5)
+        result = pandas_ta.donchian(self.high, self.low, lower_length=20, upper_length=5)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "DC_20_5")
 
@@ -153,9 +123,7 @@ class TestVolatility(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
@@ -193,9 +161,7 @@ class TestVolatility(TestCase):
             pdt.assert_series_equal(result, expected, check_names=False)
         except AssertionError as ae:
             try:
-                corr = pandas_ta.utils.df_error_analysis(result,
-                                                         expected,
-                                                         col=CORRELATION)
+                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)

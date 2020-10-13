@@ -91,8 +91,7 @@ class TestUtilities(TestCase):
         self.assertEqual(result.name, "a_A_0")
         npt.assert_array_equal(result, self.crosseddf["c"])
 
-        result = self.utils.above_value(self.crosseddf["a"],
-                                        self.crosseddf["zero"])
+        result = self.utils.above_value(self.crosseddf["a"], self.crosseddf["zero"])
         self.assertIsNone(result)
 
     def test_below(self):
@@ -112,8 +111,7 @@ class TestUtilities(TestCase):
         self.assertEqual(result.name, "a_B_0")
         npt.assert_array_equal(result, self.crosseddf["b"])
 
-        result = self.utils.below_value(self.crosseddf["a"],
-                                        self.crosseddf["zero"])
+        result = self.utils.below_value(self.crosseddf["a"], self.crosseddf["zero"])
         self.assertIsNone(result)
 
     def test_combination(self):
@@ -164,36 +162,19 @@ class TestUtilities(TestCase):
         npt.assert_array_equal(self.utils.fibonacci(zero=True), np.array([0, 1, 1]))
         npt.assert_array_equal(self.utils.fibonacci(zero=False), np.array([1, 1]))
 
-        npt.assert_array_equal(
-            self.utils.fibonacci(n=0, zero=True, weighted=False), np.array([0]))
-        npt.assert_array_equal(
-            self.utils.fibonacci(n=0, zero=False, weighted=False),
-            np.array([1]))
+        npt.assert_array_equal(self.utils.fibonacci(n=0, zero=True, weighted=False), np.array([0]))
+        npt.assert_array_equal(self.utils.fibonacci(n=0, zero=False, weighted=False), np.array([1]))
 
-        npt.assert_array_equal(
-            self.utils.fibonacci(n=5, zero=True, weighted=False),
-            np.array([0, 1, 1, 2, 3, 5]),
-        )
-        npt.assert_array_equal(
-            self.utils.fibonacci(n=5, zero=False, weighted=False),
-            np.array([1, 1, 2, 3, 5]),
-        )
+        npt.assert_array_equal(self.utils.fibonacci(n=5, zero=True, weighted=False), np.array([0, 1, 1, 2, 3, 5]))
+        npt.assert_array_equal(self.utils.fibonacci(n=5, zero=False, weighted=False), np.array([1, 1, 2, 3, 5]))
 
     def test_fibonacci_weighted(self):
         self.assertIs(type(self.utils.fibonacci(zero=True, weighted=True)), np.ndarray)
-        npt.assert_array_equal(
-            self.utils.fibonacci(n=0, zero=True, weighted=True), np.array([0]))
-        npt.assert_array_equal(
-            self.utils.fibonacci(n=0, zero=False, weighted=True), np.array([1]))
+        npt.assert_array_equal(self.utils.fibonacci(n=0, zero=True, weighted=True), np.array([0]))
+        npt.assert_array_equal(self.utils.fibonacci(n=0, zero=False, weighted=True), np.array([1]))
 
-        npt.assert_allclose(
-            self.utils.fibonacci(n=5, zero=True, weighted=True),
-            np.array([0, 1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]),
-        )
-        npt.assert_allclose(
-            self.utils.fibonacci(n=5, zero=False, weighted=True),
-            np.array([1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]),
-        )
+        npt.assert_allclose(self.utils.fibonacci(n=5, zero=True, weighted=True), np.array([0, 1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
+        npt.assert_allclose(self.utils.fibonacci(n=5, zero=False, weighted=True), np.array([1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
 
     def test_get_time(self):
         result = self.utils.get_time(to_string=True)
@@ -225,43 +206,32 @@ class TestUtilities(TestCase):
         array_1 = np.array([1])
         npt.assert_array_equal(self.utils.pascals_triangle(), array_1)
         npt.assert_array_equal(self.utils.pascals_triangle(weighted=True), array_1)
-        npt.assert_array_equal(
-            self.utils.pascals_triangle(weighted=True, inverse=True),
-            np.array([0]))
+        npt.assert_array_equal(self.utils.pascals_triangle(weighted=True, inverse=True), np.array([0]))
 
-        array_5 = self.utils.pascals_triangle(
-            n=5)  # or np.array([1, 5, 10, 10, 5, 1])
+        array_5 = self.utils.pascals_triangle(n=5)  # or np.array([1, 5, 10, 10, 5, 1])
         array_5w = array_5 / np.sum(array_5)
         array_5iw = 1 - array_5w
         npt.assert_array_equal(self.utils.pascals_triangle(n=-5), array_5)
         npt.assert_array_equal(self.utils.pascals_triangle(n=-5, weighted=True), array_5w)
-        npt.assert_array_equal(
-            self.utils.pascals_triangle(n=-5, weighted=True, inverse=True),
-            array_5iw)
+        npt.assert_array_equal(self.utils.pascals_triangle(n=-5, weighted=True, inverse=True), array_5iw)
 
         npt.assert_array_equal(self.utils.pascals_triangle(n=5), array_5)
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True), array_5w)
-        npt.assert_array_equal(
-            self.utils.pascals_triangle(n=5, weighted=True, inverse=True),
-            array_5iw)
+        npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True, inverse=True), array_5iw)
 
     def test_symmetric_triangle(self):
         npt.assert_array_equal(self.utils.symmetric_triangle(), np.array([1,1]))
         npt.assert_array_equal(self.utils.symmetric_triangle(weighted=True), np.array([0.5, 0.5]))
 
-        array_4 = self.utils.symmetric_triangle(
-            n=4)  # or np.array([1, 2, 2, 1])
+        array_4 = self.utils.symmetric_triangle(n=4)  # or np.array([1, 2, 2, 1])
         array_4w = array_4 / np.sum(array_4)
         npt.assert_array_equal(self.utils.symmetric_triangle(n=4), array_4)
-        npt.assert_array_equal(
-            self.utils.symmetric_triangle(n=4, weighted=True), array_4w)
+        npt.assert_array_equal(self.utils.symmetric_triangle(n=4, weighted=True), array_4w)
 
-        array_5 = self.utils.symmetric_triangle(
-            n=5)  # or np.array([1, 2, 3, 2, 1])
+        array_5 = self.utils.symmetric_triangle(n=5)  # or np.array([1, 2, 3, 2, 1])
         array_5w = array_5 / np.sum(array_5)
         npt.assert_array_equal(self.utils.symmetric_triangle(n=5), array_5)
-        npt.assert_array_equal(
-            self.utils.symmetric_triangle(n=5, weighted=True), array_5w)
+        npt.assert_array_equal(self.utils.symmetric_triangle(n=5, weighted=True), array_5w)
 
     def test_zero(self):
         self.assertEqual(self.utils.zero(-0.0000000000000001), 0)

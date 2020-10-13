@@ -6,7 +6,6 @@ from pandas import DataFrame
 
 
 class TestVolumeExtension(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -17,11 +16,9 @@ class TestVolumeExtension(TestCase):
         del cls.data
         del cls.open
 
-    def setUp(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
-    def tearDown(self):
-        pass
 
     def test_ad_ext(self):
         self.data.ta.ad(append=True)
