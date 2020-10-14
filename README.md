@@ -478,7 +478,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Midprice_: **midprice**
 * _Open-High-Low-Close Average_: **ohlc4**
 * _Pascal's Weighted Moving Average_: **pwma**
-* _William's Moving Average_: **rma**
+* _WildeR's Moving Average_: **rma**
 * _Sine Weighted Moving Average_: **sinwma**
 * _Simple Moving Average_: **sma**
 * _Supertrend_: **supertrend**

@@ -10,7 +10,6 @@ import talib as tal
 
 
 class TestOverlap(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -32,11 +31,9 @@ class TestOverlap(TestCase):
             del cls.volume
         del cls.data
 
-    def setUp(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
-    def tearDown(self):
-        pass
 
     def test_dema(self):
         result = pandas_ta.dema(self.close)

@@ -9,7 +9,6 @@ import talib as tal
 
 
 class TestCandle(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -31,11 +30,9 @@ class TestCandle(TestCase):
             del cls.volume
         del cls.data
 
-    def setUp(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
-    def tearDown(self):
-        pass
 
     def test_ha(self):
         result = pandas_ta.ha(self.open, self.high, self.low, self.close)

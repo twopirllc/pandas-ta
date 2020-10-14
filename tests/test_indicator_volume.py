@@ -9,7 +9,6 @@ import talib as tal
 
 
 class TestVolume(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -31,11 +30,9 @@ class TestVolume(TestCase):
             del cls.volume_
         del cls.data
 
-    def setUp(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
-    def tearDown(self):
-        pass
 
     def test_ad(self):
         result = pandas_ta.ad(self.high, self.low, self.close, self.volume_)

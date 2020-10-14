@@ -6,7 +6,6 @@ from pandas import DataFrame, Series
 
 
 class TestPerformace(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data

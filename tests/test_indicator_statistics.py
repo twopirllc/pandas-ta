@@ -9,7 +9,6 @@ import talib as tal
 
 
 class TestStatistics(TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data
@@ -31,11 +30,9 @@ class TestStatistics(TestCase):
             del cls.volume
         del cls.data
 
-    def setUp(self):
-        pass
+    def setUp(self): pass
+    def tearDown(self): pass
 
-    def tearDown(self):
-        pass
 
     def test_entropy(self):
         result = pandas_ta.entropy(self.close)
