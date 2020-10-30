@@ -626,6 +626,7 @@ indicator consisting of two different simple moving averages. See: ```help(ta.tt
 * _Elder's Thermometer_ (**thermo**) Elder's Thermometer measures price volatility. See: ```help(ta.thermo)```
 
 ## **Updated**
+* _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
 * _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series with pertinenet trade info for a _trend_. An example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.
 
 
