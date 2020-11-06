@@ -76,9 +76,7 @@ def signed_series(series: Series, initial: int = None) -> Series:
     return sign
 
 
-def unsigned_differences(series: Series,
-                         amount: int = None,
-                         **kwargs) -> Series:
+def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Series:
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
     on the differences of the original series. The positive series are only the

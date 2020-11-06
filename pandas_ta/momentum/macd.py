@@ -20,7 +20,7 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     slowma = ema(close, length=slow)
 
     macd = fastma - slowma
-    signalma = ema(close=macd, length=signal)
+    signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal)
     histogram = macd - signalma
 
     # Offset

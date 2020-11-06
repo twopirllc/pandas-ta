@@ -21,6 +21,7 @@ from .pgo import pgo
 from .ppo import ppo
 from .psl import psl
 from .pvo import pvo
+from .qqe import qqe
 from .roc import roc
 from .rsi import rsi
 from .rvgi import rvgi

@@ -260,6 +260,11 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "PVO_12_26_9")
 
+    def test_qqe(self):
+        result = pandas_ta.qqe(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "QQE_14_5_4.236")
+
     def test_roc(self):
         result = pandas_ta.roc(self.close)
         self.assertIsInstance(result, Series)

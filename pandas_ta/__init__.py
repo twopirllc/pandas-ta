@@ -42,8 +42,8 @@ Category = {
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
         "coppock", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd",
-        "mom", "pgo", "ppo", "psl", "pvo", "roc", "rsi", "rvgi", "slope", "smi",
-        "squeeze", "stoch", "stochrsi", "trix", "tsi", "uo", "willr"
+        "mom", "pgo", "ppo", "psl", "pvo", "qqe", "roc", "rsi", "rvgi", "slope",
+        "smi", "squeeze", "stoch", "stochrsi", "trix", "tsi", "uo", "willr"
     ],
     # Overlap
     "overlap": [

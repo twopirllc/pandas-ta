@@ -38,7 +38,6 @@ def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offse
         if close.iloc[i] > high_ma.iloc[i - 1]:
             hilo.iloc[i] = long.iloc[i] = low_ma.iloc[i]
         elif close.iloc[i] < low_ma.iloc[i - 1]:
-
             hilo.iloc[i] = short.iloc[i] = high_ma.iloc[i]
         else:
             hilo.iloc[i] = hilo.iloc[i - 1]
@@ -47,12 +46,18 @@ def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offse
     # Offset
     if offset != 0:
         hilo = hilo.shift(offset)
+        long = long.shift(offset)
+        short = short.shift(offset)
 
     # Handle fills
     if "fillna" in kwargs:
         hilo.fillna(kwargs["fillna"], inplace=True)
+        long.fillna(kwargs["fillna"], inplace=True)
+        short.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         hilo.fillna(method=kwargs["fill_method"], inplace=True)
+        long.fillna(method=kwargs["fill_method"], inplace=True)
+        short.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name & Category
     _props = f"_{high_length}_{low_length}"

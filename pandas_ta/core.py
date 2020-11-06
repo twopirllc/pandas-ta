@@ -867,6 +867,11 @@ class AnalysisIndicators(BasePandasObject):
         result = pvo(volume=volume, fast=fast, slow=slow, signal=signal, scalar=scalar, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def qqe(self, length=None, smooth=None, factor=None, mamode=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = qqe(close=close, length=length, smooth=smooth, factor=factor, mamode=mamode, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def roc(self, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = roc(close=close, length=length, offset=offset, **kwargs)

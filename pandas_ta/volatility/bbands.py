@@ -18,10 +18,10 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     standard_deviation = stdev(close=close, length=length)
     deviations = std * standard_deviation
 
-    if mamode is None or mamode == "sma":
-        mid = sma(close=close, length=length)
-    elif mamode == "ema":
-        mid = ema(close=close, length=length, **kwargs)
+    if mamode == "sma":
+        mid = sma(close=close, length=length, **kwargs)
+    else: # "ema"
+        mid = ema(close=close, length=length)
 
     lower = mid - deviations
     upper = mid + deviations
@@ -84,7 +84,7 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): The short period.  Default: 20
     std (int): The long period.   Default: 2
-    mamode (str): Two options: None or "ema".  Default: "ema"
+    mamode (str): Two options: "sma" or "ema".  Default: "ema"
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:

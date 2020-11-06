@@ -417,7 +417,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Inside Bar_: **cdl_inside**
 * _Heikin-Ashi_: **ha**
 
-### **Momentum** (34)
+### **Momentum** (35)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -441,6 +441,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Percentage Price Oscillator_: **ppo**
 * _Psychological Line_: **psl**
 * _Percentage Volume Oscillator_: **pvo**
+* _Quantitative Qualitative Estimation_: **qqe**
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
 * _Relative Vigor Index_: **rvgi**
@@ -617,6 +618,7 @@ Use parameter: cumulative=**True** for cumulative results.
 trading account, or fund..
 * _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998.
 * _Inside Bar_ (**cdl_inside**) An Inside Bar is a bar contained within it's previous bar's high and low See: ```help(ta.cdl_inside)```
+* _Quantitative Qualitative Estimation_ (**qqe**) The Quantitative Qualitative Estimation (QQE) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
 * _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.
 * _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
 * _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```

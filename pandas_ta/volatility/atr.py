@@ -42,7 +42,6 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
         atr.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    # mamode_ = 
     atr.name = f"ATR{_mode}_{length}{'p' if percentage else ''}"
     atr.category = "volatility"
 
@@ -50,43 +49,51 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
 
 
 atr.__doc__ = \
-    """Average True Range (ATR)
-    Averge True Range is used to measure volatility, especially
-    volatility caused by gaps or limit moves.
-    Sources:
-        https://www.tradingview.com/wiki/Average_True_Range_(ATR)
-    Calculation:
-        Default Inputs:
-            length=14, drift=1, percent=False
-        SMA = Simple Moving Average
-        EMA = Exponential Moving Average
-        WMA = Weighted Moving Average 
-        RMA = Running Moving Average
-        TR = True Range
-        tr = TR(high, low, close, drift)
-        if 'ema':
-            ATR = EMA(tr, length)
-        elif 'sma':
-            ATR = SMA(tr, length)
-        elif 'wma':
-            ATR = WMA(tr, length)
-        else:
-            ATR = RMA(tr, length)
-            
-        if percent:
-            ATR *= 100 / close
-    Args:
-        high (pd.Series): Series of 'high's
-        low (pd.Series): Series of 'low's
-        close (pd.Series): Series of 'close's
-        length (int): It's period. Default: 14
-        mamode (str): 'sma', 'ema', 'wma' or 'rma'. Default: 'rma'
-        drift (int): The difference period. Default: 1
-        offset (int): How many periods to offset the result. Default: 0
-    Kwargs:
-        percent (bool, optional): Return as percentage. Default: False
-        fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
-    Returns:
-        pd.Series: New feature generated.
-    """
+"""Average True Range (ATR)
+
+Averge True Range is used to measure volatility, especially
+volatility caused by gaps or limit moves.
+
+Sources:
+    https://www.tradingview.com/wiki/Average_True_Range_(ATR)
+
+Calculation:
+    Default Inputs:
+        length=14, drift=1, percent=False
+    SMA = Simple Moving Average
+    EMA = Exponential Moving Average
+    WMA = Weighted Moving Average 
+    WMA = Weighted Moving Average 
+    RMA = WildeR's Moving Average
+    TR = True Range
+
+    tr = TR(high, low, close, drift)
+    if 'ema':
+        ATR = EMA(tr, length)
+    elif 'sma':
+        ATR = SMA(tr, length)
+    elif 'wma':
+        ATR = WMA(tr, length)
+    else:
+        ATR = RMA(tr, length)
+        
+    if percent:
+        ATR *= 100 / close
+
+Args:
+    high (pd.Series): Series of 'high's
+    low (pd.Series): Series of 'low's
+    close (pd.Series): Series of 'close's
+    length (int): It's period. Default: 14
+    mamode (str): "sma", "ema", "wma" or "rma". Default: "rma"
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
+
+Kwargs:
+    percent (bool, optional): Return as percentage. Default: False
+    fillna (value, optional): pd.DataFrame.fillna(value)
+    fill_method (value, optional): Type of fill method
+
+Returns:
+    pd.Series: New feature generated.
+"""

@@ -138,6 +138,11 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-3:]), ["PVO_12_26_9", "PVOh_12_26_9", "PVOs_12_26_9"])
 
+    def test_qqe_ext(self):
+        self.data.ta.qqe(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ["QQE_14_5_4.236", "QQE_14_5_4.236_RSIMA", "QQEl_14_5_4.236", "QQEs_14_5_4.236"])
+
     def test_roc_ext(self):
         self.data.ta.roc(append=True)
         self.assertIsInstance(self.data, DataFrame)
