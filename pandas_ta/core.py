@@ -1057,6 +1057,11 @@ class AnalysisIndicators(BasePandasObject):
         result = sma(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def ssf(self, length=None, poles=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = ssf(close=close, length=length, poles=poles, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def supertrend(self, length=None, multiplier=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))

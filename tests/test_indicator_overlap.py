@@ -242,6 +242,15 @@ class TestOverlap(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_ssf(self):
+        result = pandas_ta.ssf(self.close, poles=2)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "SSF_10_2")
+
+        result = pandas_ta.ssf(self.close, poles=3)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "SSF_10_3")
+
     def test_swma(self):
         result = pandas_ta.swma(self.close)
         self.assertIsInstance(result, Series)

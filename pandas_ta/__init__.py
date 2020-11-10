@@ -49,21 +49,21 @@ Category = {
     "overlap": [
         "dema", "ema", "fwma", "hilo", "hl2", "hlc3", "hma", "ichimoku",
         "kama", "linreg", "midpoint", "midprice", "ohlc4", "pwma", "rma",
-        "sinwma", "sma", "supertrend", "swma", "t3", "tema", "trima", "vwap",
-        "vwma", "wcp", "wma", "zlma"
+        "sinwma", "sma", "ssf", "supertrend", "swma", "t3", "tema", "trima",
+        "vwap", "vwma", "wcp", "wma", "zlma"
     ],
     # Performance
     "performance": ["log_return", "percent_return", "trend_return"],
     # Statistics
     "statistics": [
-        "entropy", "kurtosis", "mad", "median", "quantile", "skew",
-        "stdev", "variance", "zscore"
+        "entropy", "kurtosis", "mad", "median", "quantile", "skew", "stdev",
+        "variance", "zscore"
     ],
     # Trend
     "trend": [
-        "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing",
-        "dpo", "increasing", "long_run", "psar", "qstick", "short_run",
-        "ttm_trend", "vortex"
+        "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
+        "increasing", "long_run", "psar", "qstick", "short_run", "ttm_trend",
+        "vortex"
     ],
     # Volatility
     "volatility": [
