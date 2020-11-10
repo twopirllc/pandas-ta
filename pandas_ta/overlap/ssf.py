@@ -71,6 +71,8 @@ Calculation:
     Default Inputs:
         length=10, poles=[2, 3]
 
+    See the source code or Sources listed above.
+
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 10
