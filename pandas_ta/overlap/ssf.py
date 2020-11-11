@@ -18,7 +18,6 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
     # Calculate Result
     m = close.size
     ssf = close.copy()
-    ssf[poles:] = 0
 
     if poles == 3:
         x = npPi / length # x = PI / n
@@ -56,10 +55,15 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
 
 
 ssf.__doc__ = \
-"""Ehler's Super Smoother Filter (SSF)
+"""Ehler's Super Smoother Filter (SSF) © 2013
 
-Ehler's solution to reduce lag and remove aliasing noise with his research in
-aerospace analog filter design. © 2013 John F. Ehlers
+John F. Ehlers's solution to reduce lag and remove aliasing noise with his
+research in aerospace analog filter design. This indicator comes with two
+versions determined by the keyword poles. By default, it uses two poles but
+there is an option for three poles. Since SSF is a (Resursive) Digital Filter,
+the number of poles determine how many prior recursive SSF bars to include in
+the design of the filter. So two poles uses two prior SSF bars and three poles
+uses three prior SSF bars for their filter calculations.
 
 Sources:
     http://www.stockspotter.com/files/PredictiveIndicators.pdf
