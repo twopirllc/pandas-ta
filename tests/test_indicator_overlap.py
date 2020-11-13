@@ -5,7 +5,6 @@ from unittest import TestCase
 import pandas.testing as pdt
 from pandas import DataFrame, Series
 
-import pandas as pd
 import talib as tal
 
 
@@ -305,6 +304,11 @@ class TestOverlap(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+    def test_vidya(self):
+        result = pandas_ta.vidya(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "VIDYA_14")
 
     def test_vwap(self):
         result = pandas_ta.vwap(self.high, self.low, self.close, self.volume)

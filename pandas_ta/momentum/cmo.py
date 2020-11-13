@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
@@ -13,21 +14,18 @@ def cmo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    negative = close.diff(drift)
-    positive = negative.copy()
-
-    positive[positive < 0] = 0  # Make negatives 0 for the postive series
-    negative[negative > 0] = 0  # Make postives 0 for the negative series
+    mom = close.diff(drift)
+    positive = mom.copy().clip(lower=0)
+    negative = mom.copy().clip(upper=0).abs()
 
     if talib:
-        pos_ = positive.ewm(com=length, adjust=False).mean()
-        neg_ = negative.ewm(com=length, adjust=False).mean().abs()
+        pos_ = rma(positive, length)
+        neg_ = rma(negative, length)
     else:
         pos_ = positive.rolling(length).sum()
-        neg_ = negative.abs().rolling(length).sum()
+        neg_ = negative.rolling(length).sum()
 
-    cmo = scalar * (pos_ - neg_)
-    cmo /= pos_ + neg_
+    cmo = scalar * (pos_ - neg_) / (pos_ + neg_)
 
     # Offset
     if offset != 0:
@@ -54,6 +52,7 @@ oversold at -50.
 
 Sources:
     https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/chande-momentum-oscillator-cmo/
+    https://www.tradingview.com/script/hdrf0fXV-Variable-Index-Dynamic-Average-VIDYA/
 
 Calculation:
     Default Inputs:
@@ -64,12 +63,12 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    scalar (float): How much to magnify.  Default: 100
-    drift (int): The short period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    scalar (float): How much to magnify. Default: 100
+    drift (int): The short period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
-    talib (bool): If True, uses TA-Libs implementation. Otherwise uses EMA version.  Default: True
+    talib (bool): If True, uses TA-Libs implementation. Otherwise uses EMA version. Default: True
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

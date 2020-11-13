@@ -22,6 +22,7 @@ from .swma import swma
 from .t3 import t3
 from .tema import tema
 from .trima import trima
+from .vidya import vidya
 from .vwap import vwap
 from .vwma import vwma
 from .wcp import wcp

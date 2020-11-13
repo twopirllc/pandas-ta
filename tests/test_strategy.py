@@ -9,7 +9,6 @@ from .context import pandas_ta
 from unittest import skip, TestCase
 from pandas import DataFrame
 
-from pandas_ta.utils import final_time
 
 cores = 4
 cumulative = False

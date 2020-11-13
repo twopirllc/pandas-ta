@@ -12,16 +12,16 @@ def bias(close, length=None, mamode=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    if mamode is None or mamode == "sma":
-        ma = sma(close, length=length, **kwargs)
     if mamode == "ema":
         ma = ema(close, length=length, **kwargs)
-    if mamode == "hma":
+    elif mamode == "hma":
         ma = hma(close, length=length, **kwargs)
-    if mamode == "rma":
+    elif mamode == "rma":
         ma = rma(close, length=length, **kwargs)
-    if mamode == "wma":
+    elif mamode == "wma":
         ma = wma(close, length=length, **kwargs)
+    else: # "sma"
+        ma = sma(close, length=length, **kwargs)
 
     bias = (close / ma) - 1
 

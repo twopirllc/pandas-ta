@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .roc import roc
-from pandas_ta.overlap import rma, wma
+from pandas_ta.overlap import wma
 from pandas_ta.utils import get_offset, verify_series
 
 

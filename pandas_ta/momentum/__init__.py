@@ -5,9 +5,9 @@ from .bias import bias
 from .bop import bop
 from .brar import brar
 from .cci import cci
+from .cfo import cfo
 from .cg import cg
 from .cmo import cmo
-from .cfo import cfo
 from .coppock import coppock
 from .er import er
 from .eri import eri

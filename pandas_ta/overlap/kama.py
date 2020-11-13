@@ -58,6 +58,7 @@ can be used to identify the overall trend, time turning points and filter price 
 
 Sources:
     https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:kaufman_s_adaptive_moving_average
+    https://www.tradingview.com/script/wZGOIz9r-REPOST-Indicators-3-Different-Adaptive-Moving-Averages/
 
 Calculation:
     Default Inputs:

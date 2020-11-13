@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat
-from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 

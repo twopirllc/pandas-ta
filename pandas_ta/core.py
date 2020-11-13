@@ -583,7 +583,7 @@ class AnalysisIndicators(BasePandasObject):
                 (optional) Default: {}. Any indicator argument you want to modify.
                     For example, length=20 or offset=-1 or high=df["high"] ...
         """
-        cpus = cpu_count()
+        # cpus = cpu_count()
         # Ensure indicators are appended to the DataFrame
         kwargs["append"] = True
 
@@ -1088,6 +1088,11 @@ class AnalysisIndicators(BasePandasObject):
     def trima(self, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = trima(close=close, length=length, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def vidya(self, length=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = vidya(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def vwap(self, offset=None, **kwargs):

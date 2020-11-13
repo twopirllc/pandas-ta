@@ -2,7 +2,7 @@ from .config import sample_data
 from .context import pandas_ta
 
 from unittest import TestCase
-from pandas import DataFrame, Series
+from pandas import Series
 
 
 class TestPerformace(TestCase):

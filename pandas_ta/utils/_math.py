@@ -141,10 +141,8 @@ def symmetric_triangle(n:int = None, **kwargs) -> list:
 
 
 def weights(w):
-
     def _dot(x):
         return dot(w, x)
-
     return _dot
 
 

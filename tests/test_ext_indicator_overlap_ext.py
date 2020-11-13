@@ -137,6 +137,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "TRIMA_10")
 
+    def test_vidya_ext(self):
+        self.data.ta.vidya(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "VIDYA_14")
+
     def test_vwap_ext(self):
         self.data.ta.vwap(append=True)
         self.assertIsInstance(self.data, DataFrame)

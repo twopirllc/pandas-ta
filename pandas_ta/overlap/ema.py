@@ -8,10 +8,8 @@ def ema(close, length=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    # min_periods = kwargs.pop('min_periods', length)
     adjust = kwargs.pop("adjust", False)
     sma = kwargs.pop("sma", True)
-    win_type = kwargs.pop("win_type", None)
     offset = get_offset(offset)
 
     # Calculate Result

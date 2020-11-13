@@ -3,7 +3,7 @@ from .context import pandas_ta
 
 from unittest import TestCase, skip
 import pandas.testing as pdt
-from pandas import DataFrame, Series
+from pandas import Series
 
 import talib as tal
 

@@ -461,7 +461,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-### **Overlap** (28)
+### **Overlap** (29)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -488,6 +488,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _T3 Moving Average_: **t3**
 * _Triple Exponential Moving Average_: **tema**
 * _Triangular Moving Average_: **trima**
+* _Variable Index Dynamic Average_: **vidya**
 * _Volume Weighted Average Price_: **vwap** 
 * _Volume Weighted Moving Average_: **vwma**
 * _Weighted Closing Price_: **wcp**
@@ -624,10 +625,11 @@ trading account, or fund..
 * _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
 * _Ehler's Super Smoother Filter_ (**ssf**). Ehler's solution to reduce lag and remove aliasing noise compared to other common moving average indicators. See: ```help(ta.ssf)```
 * _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```
+* _Elder's Thermometer_ (**thermo**) Elder's Thermometer measures price volatility. See: ```help(ta.thermo)```
 * _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade"
 issue of Stocks & Commodities Magazine. It is a moving average based trend
 indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
-* _Elder's Thermometer_ (**thermo**) Elder's Thermometer measures price volatility. See: ```help(ta.thermo)```
+* _Variable Index Dynamic Average_ (**vidya**) A popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
 
 ## **Updated**
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.

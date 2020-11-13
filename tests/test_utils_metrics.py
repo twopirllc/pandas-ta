@@ -2,9 +2,8 @@ from .config import sample_data
 from .context import pandas_ta
 
 from unittest import skip, TestCase
-from unittest.mock import patch
 
-from pandas import DataFrame, Series
+from pandas import DataFrame
 
 
 
