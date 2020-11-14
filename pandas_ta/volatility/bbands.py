@@ -26,30 +26,40 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     lower = mid - deviations
     upper = mid + deviations
 
+    bandwidth = 100 * (upper - lower) / mid
+
     # Offset
     if offset != 0:
         lower = lower.shift(offset)
         mid = mid.shift(offset)
         upper = upper.shift(offset)
+        bandwidth = bandwidth.shift(offset)
 
     # Handle fills
     if "fillna" in kwargs:
         lower.fillna(kwargs["fillna"], inplace=True)
         mid.fillna(kwargs["fillna"], inplace=True)
         upper.fillna(kwargs["fillna"], inplace=True)
+        bandwidth.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         lower.fillna(method=kwargs["fill_method"], inplace=True)
         mid.fillna(method=kwargs["fill_method"], inplace=True)
         upper.fillna(method=kwargs["fill_method"], inplace=True)
+        bandwidth.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     lower.name = f"BBL_{length}_{std}"
     mid.name = f"BBM_{length}_{std}"
     upper.name = f"BBU_{length}_{std}"
-    mid.category = upper.category = lower.category = "volatility"
+    bandwidth.name = f"BBB_{length}_{std}"
+    upper.category = lower.category = "volatility"
+    mid.category = bandwidth.category = upper.category
 
     # Prepare DataFrame to return
-    data = {lower.name: lower, mid.name: mid, upper.name: upper}
+    data = {
+        lower.name: lower, mid.name: mid,
+        upper.name: upper, bandwidth.name: bandwidth
+    }
     bbandsdf = DataFrame(data)
     bbandsdf.name = f"BBANDS_{length}_{std}"
     bbandsdf.category = mid.category
@@ -80,17 +90,19 @@ Calculation:
     LOWER = MID - std * stdev
     UPPER = MID + std * stdev
 
+    BANDWIDTH = 100 * (UPPER - LOWER) / MID
+
 Args:
     close (pd.Series): Series of 'close's
-    length (int): The short period.  Default: 20
-    std (int): The long period.   Default: 2
-    mamode (str): Two options: "sma" or "ema".  Default: "ema"
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The short period. Default: 20
+    std (int): The long period. Default: 2
+    mamode (str): Two options: "sma" or "ema". Default: "ema"
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 
 Returns:
-    pd.DataFrame: lower, mid, upper columns.
+    pd.DataFrame: lower, mid, upper, bandwidth columns.
 """

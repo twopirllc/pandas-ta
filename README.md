@@ -611,6 +611,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 
 ## **Breaking**
+* _Bollinger Bands_ (**bbands**): New column 'bandwidth' appended to the returning DataFrame. See: ```help(ta.bbands)```
 * _Stochastic Oscillator_ (**stoch**): Now in line with Trading View's calculation. See: ```help(ta.stoch)```
 * _Linear Decay_ (**linear_decay**): Renamed to _Decay_ (**decay**) and with the option for Exponential decay using ```mode="exp"```. See: ```help(ta.decay)```
 

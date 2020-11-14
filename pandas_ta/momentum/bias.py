@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import ema, hma, rma, sma, wma
-from pandas_ta.utils import get_offset, verify_series, zero
+from pandas_ta.utils import get_offset, verify_series
 
 
 def bias(close, length=None, mamode=None, offset=None, **kwargs):

@@ -126,7 +126,7 @@ class TestStrategyMethods(TestCase):
     def test_custom_col_names_tuple(self):
         self.category = "Custom C"
 
-        custom_args_ta = [{"kind": "bbands", "col_names": ("LB", "MB", "UB")}]
+        custom_args_ta = [{"kind": "bbands", "col_names": ("LB", "MB", "UB", "BW")}]
 
         custom = pandas_ta.Strategy(
             "Custom Col Numbers Tuple",
