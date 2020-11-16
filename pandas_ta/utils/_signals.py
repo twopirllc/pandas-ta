@@ -92,8 +92,7 @@ def cross(series_a: Series, series_b: Series, above: bool = True, asint: bool = 
     return cross
 
 
-def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b,
-            cross_series, offset) -> DataFrame:
+def signals(indicator, xa, xb, cross_values, xserie, xserie_a, xserie_b, cross_series, offset) -> DataFrame:
     df = DataFrame()
     if xa is not None and isinstance(xa, (int, float)):
         if cross_values:

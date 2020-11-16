@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
-from pandas import concat, DataFrame
+from pandas import DataFrame
 
 from pandas_ta.momentum import mom
 from pandas_ta.overlap import ema, linreg, sma

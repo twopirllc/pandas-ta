@@ -3,6 +3,7 @@ from .context import pandas_ta
 
 from unittest import skip, TestCase
 
+from numpy import nan as npNaN
 from pandas import DataFrame
 
 

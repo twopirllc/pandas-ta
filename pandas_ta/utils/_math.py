@@ -177,8 +177,7 @@ def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
 
 # PRIVATE
 def _linear_regression_np(x: Series, y: Series) -> dict:
-    """Simple Linear Regression in Numpy for two 1d arrays for environments
-    without the sklearn package."""
+    """Simple Linear Regression in Numpy for two 1d arrays for environments without the sklearn package."""
     m = x.size
     x_sum = x.sum()
     y_sum = y.sum()
