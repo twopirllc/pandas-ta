@@ -176,6 +176,19 @@ class TestOverlap(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_ma(self):
+        result = pandas_ta.ma()
+        self.assertIsInstance(result, list)
+        self.assertGreater(len(result), 0)
+
+        result = pandas_ta.ma("ema", self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "EMA_10")
+
+        result = pandas_ta.ma("fwma", self.close, length=15)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "FWMA_15")
+
     def test_midpoint(self):
         result = pandas_ta.midpoint(self.close)
         self.assertIsInstance(result, Series)

@@ -20,15 +20,38 @@ from .wma import wma
 from .zlma import zlma
 
 
-def ma(name:str, source:Series, **kwargs) -> Series:
-    """Simple MA Strategy Utility for Indicator MA selection"""
+def ma(name:str = None, source:Series = None, **kwargs) -> Series:
+    """Simple MA Utility for easier MA selection
+
+    Available MAs:
+        dema, ema, fwma, hma, linreg, midpoint, pwma, rma,
+        sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma
+
+    Examples:
+        ema8 = ta.ma("ema", df.close, length=8)
+        sma50 = ta.ma("sma", df.close, length=50)
+        pwma10 = ta.ma("pwma", df.close, length=10, asc=False)
+
+    Args:
+        name (str): One of the Available MAs. Default: "ema"
+        source (pd.Series): The 'source' Series.
+
+    Kwargs:
+        Any additional kwargs the MA may require.
+
+    Returns:
+        pd.Series: New feature generated.
+    """
+
     _mas = [
         "dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
         "sinwma", "sma", "swma", "t3", "tema", "trima", "vidya", "wma", "zlma"
     ]
-    if isinstance(name, str) and name.lower() in _mas:
+    if name is None and source is None:
+        return _mas
+    elif isinstance(name, str) and name.lower() in _mas:
         name = name.lower()
-    else:
+    else: # "ema"
         name = _mas[1]
 
     if   name == "dema": return dema(source, **kwargs)

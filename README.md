@@ -21,6 +21,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Installation](#installation)
     * [Stable](#stable)
     * [Latest Version](#latest-version)
+    * [Cutting Edge](#cutting-edge)
 * [Quick Start](#quick-start)
 * [Help](#help)
 * [Issues and Contributions](#issues-and-contributions)
@@ -28,17 +29,21 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Pandas TA Strategies](#pandas-ta-strategies)
     * [Types of Strategies](#types-of-strategies)
 * [DataFrame Properties](#dataframe-properties)
-* [Changes](#changes)
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-3)
-    * [Momentum](#momentum-34)
-    * [Overlap](#overlap-27)
-    * [Performance](#performance-3)
+    * [Momentum](#momentum-35)
+    * [Overlap](#overlap-29)
+    * [Performance](#performance-4)
     * [Statistics](#statistics-9)
     * [Trend](#trend-15)
     * [Utility](#utility-5)
-    * [Volatility](#volatility-12)
+    * [Volatility](#volatility-13)
     * [Volume](#volume-13)
+* [Changes](#changes)
+    * [Recent](#recent)
+    * [Breaking](#breaking)
+    * [New](#new)
+    * [Updated](#updated)
 <!--te-->
 
 <!-- * [Specifying Strategies in **Pandas TA**](#specifying-strategies-in-pandas-ta) -->
@@ -72,6 +77,13 @@ Latest Version
 Best choice!
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
+```
+
+Cutting Edge
+------------
+This is the _Development Version_ which could have bugs and other undesireable side effects. Use at own risk!
+```sh
+$ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 ```
 
 <br/>
@@ -606,30 +618,24 @@ Use parameter: cumulative=**True** for cumulative results.
 # **Changes**
 ## **Recent**
 * A __Strategy__ Class to help name and group your favorite indicators.
+* Some indicators have had their ```mamode``` _kwarg_ updated with more _moving average_ choices with the **Moving Average Utility** function ```ta.ma()```. For simplicity, all _choices_ are single source _moving averages_. This is primarily an internal utility used by indicators that have a ```mamode``` _kwarg_. This includes indicators: _accbands_, _amat_, _aobv_, _atr_, _bbands_, _bias_, _efi_, _hilo_, _kc_, _natr_, _qqe_, _rvi_, and _thermo_; the default ```mamode``` parameters have not changed. However, ```ta.ma()``` can be used by the user as well if needed. For more information: ```help(ta.ma)```
+    * **Moving Average Choices**: dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma.
 * An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
 * _Linear Regression_ (**linear_regression**) is a new utility method for Simple Linear Regression using _Numpy_ or _Scikit Learn_'s implementation.
 
 
 ## **Breaking**
 * _Bollinger Bands_ (**bbands**): New column 'bandwidth' appended to the returning DataFrame. See: ```help(ta.bbands)```
-* _Stochastic Oscillator_ (**stoch**): Now in line with Trading View's calculation. See: ```help(ta.stoch)```
-* _Linear Decay_ (**linear_decay**): Renamed to _Decay_ (**decay**) and with the option for Exponential decay using ```mode="exp"```. See: ```help(ta.decay)```
+
 
 ## **New**
-* _Chande Forecast Oscillator_ (**cfo**) It calculates the percentage difference between the actual price and the Time Series Forecast (the endpoint of a linear regression line).
 * _Drawdown_ (**drawdown**) It is a peak-to-trough decline during a specific period for an investment,
-trading account, or fund..
-* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998.
-* _Inside Bar_ (**cdl_inside**) An Inside Bar is a bar contained within it's previous bar's high and low See: ```help(ta.cdl_inside)```
+trading account, or fund. See: ```help(ta.drawdown)```
+* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
 * _Quantitative Qualitative Estimation_ (**qqe**) The Quantitative Qualitative Estimation (QQE) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
-* _SMI Ergodic_ (**smi**) Developed by William Blau, the SMI Ergodic Indicator is the same as the True Strength Index (TSI) except the SMI includes a signal line and oscillator.
-* _Squeeze_ (**squeeze**). A Momentum indicator. Both John Carter's TTM **and** Lazybear's TradingView versions are implemented. The default is John Carter's, or ```lazybear=False```. Set ```lazybear=True``` to enable Lazybear's.
 * _Ehler's Super Smoother Filter_ (**ssf**). Ehler's solution to reduce lag and remove aliasing noise compared to other common moving average indicators. See: ```help(ta.ssf)```
-* _Stochastic RSI_ (**stochrsi**) "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll. In line with Trading View's calculation. See: ```help(ta.stochrsi)```
 * _Elder's Thermometer_ (**thermo**) Elder's Thermometer measures price volatility. See: ```help(ta.thermo)```
-* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade"
-issue of Stocks & Commodities Magazine. It is a moving average based trend
-indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
+* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade" issue of Stocks & Commodities Magazine. It is a moving average based trend indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
 * _Variable Index Dynamic Average_ (**vidya**) A popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
 
 ## **Updated**
