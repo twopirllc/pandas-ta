@@ -26,7 +26,7 @@ class TestTrendExtension(TestCase):
     def test_amat_ext(self):
         self.data.ta.amat(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ["AMAT_LR_2", "AMAT_SR_2"])
+        self.assertEqual(list(self.data.columns[-2:]), ["AMATe_LR_2", "AMATe_SR_2"])
 
     def test_aroon_ext(self):
         self.data.ta.aroon(append=True)

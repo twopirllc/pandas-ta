@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
 from .obv import obv
-from pandas_ta.overlap import ema, hma, linreg, sma, wma
+from pandas_ta.overlap import ma
 from pandas_ta.trend import long_run, short_run
 from pandas_ta.utils import get_offset, verify_series
 
@@ -18,27 +18,30 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, mi
     min_lookback = int(min_lookback) if min_lookback and min_lookback > 0 else 2
     if slow < fast:
         fast, slow = slow, fast
-    mamode = mamode.upper() if mamode else None
+    mamode = mamode if isinstance(mamode, str) else "ema"
     run_length = kwargs.pop("run_length", 2)
 
     # Calculate Result
     obv_ = obv(close=close, volume=volume, **kwargs)
-    if mamode is None or mamode == "EMA":
-        mamode = "EMA"
-        maf = ema(close=obv_, length=fast, **kwargs)
-        mas = ema(close=obv_, length=slow, **kwargs)
-    elif mamode == "HMA":
-        maf = hma(close=obv_, length=fast, **kwargs)
-        mas = hma(close=obv_, length=slow, **kwargs)
-    elif mamode == "LINREG":
-        maf = linreg(close=obv_, length=fast, **kwargs)
-        mas = linreg(close=obv_, length=slow, **kwargs)
-    elif mamode == "SMA":
-        maf = sma(close=obv_, length=fast, **kwargs)
-        mas = sma(close=obv_, length=slow, **kwargs)
-    elif mamode == "WMA":
-        maf = wma(close=obv_, length=fast, **kwargs)
-        mas = wma(close=obv_, length=slow, **kwargs)
+    # if mamode is None or mamode == "EMA":
+    #     mamode = "EMA"
+    #     maf = ema(close=obv_, length=fast, **kwargs)
+    #     mas = ema(close=obv_, length=slow, **kwargs)
+    # elif mamode == "HMA":
+    #     maf = hma(close=obv_, length=fast, **kwargs)
+    #     mas = hma(close=obv_, length=slow, **kwargs)
+    # elif mamode == "LINREG":
+    #     maf = linreg(close=obv_, length=fast, **kwargs)
+    #     mas = linreg(close=obv_, length=slow, **kwargs)
+    # elif mamode == "SMA":
+    #     maf = sma(close=obv_, length=fast, **kwargs)
+    #     mas = sma(close=obv_, length=slow, **kwargs)
+    # elif mamode == "WMA":
+    #     maf = wma(close=obv_, length=fast, **kwargs)
+    #     mas = wma(close=obv_, length=slow, **kwargs)
+
+    maf = ma(mamode, obv_, length=fast, **kwargs)
+    mas = ma(mamode, obv_, length=slow, **kwargs)
 
     # When MAs are long and short
     obv_long = long_run(maf, mas, length=run_length)
@@ -67,21 +70,20 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, mi
         obv_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Prepare DataFrame to return
+    _mode = mamode.lower()[0] if len(mamode) else ""
     data = {
         obv_.name: obv_,
         f"OBV_min_{min_lookback}": obv_.rolling(min_lookback).min(),
         f"OBV_max_{max_lookback}": obv_.rolling(max_lookback).max(),
-        f"OBV_{maf.name}": maf,
-        f"OBV_{mas.name}": mas,
+        f"OBV{_mode}_{fast}": maf,
+        f"OBV{_mode}_{slow}": mas,
         f"AOBV_LR_{run_length}": obv_long,
         f"AOBV_SR_{run_length}": obv_short,
     }
     aobvdf = DataFrame(data)
 
     # Name and Categorize it
-    aobvdf.name = (
-        f"AOBV_{mamode}_{fast}_{slow}_{min_lookback}_{max_lookback}_{run_length}"
-    )
+    aobvdf.name = f"AOBV{_mode}_{fast}_{slow}_{min_lookback}_{max_lookback}_{run_length}"
     aobvdf.category = "volume"
 
     return aobvdf

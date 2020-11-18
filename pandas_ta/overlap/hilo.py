@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
 from pandas import DataFrame, Series
-from .ema import ema
-from .hma import hma
-from .sma import sma
+from pandas_ta.overlap.ma import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -15,7 +13,7 @@ def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offse
     close = verify_series(close)
     high_length = int(high_length) if high_length and high_length > 0 else 13
     low_length = int(low_length) if low_length and low_length > 0 else 21
-    mamode = mamode.lower() if mamode else "sma"
+    mamode = mamode if isinstance(mamode, str) else "sma"
     offset = get_offset(offset)
 
     # Calculate Result
@@ -24,15 +22,8 @@ def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offse
     long = Series(npNaN, index=close.index)
     short = Series(npNaN, index=close.index)
 
-    if mamode == "ema":
-        high_ma = ema(high, high_length)
-        low_ma = ema(low, low_length)
-    if mamode == "hma":
-        high_ma = hma(high, high_length)
-        low_ma = hma(low, low_length)
-    else:  # "sma"
-        high_ma = sma(high, high_length)
-        low_ma = sma(low, low_length)
+    high_ma = ma(mamode, high, length=high_length)
+    low_ma = ma(mamode, low, length=low_length)
 
     for i in range(1, m):
         if close.iloc[i] > high_ma.iloc[i - 1]:

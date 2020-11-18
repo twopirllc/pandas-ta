@@ -14,8 +14,6 @@ def trima(close, length=None, offset=None, **kwargs):
     half_length = round(0.5 * (length + 1))
     sma1 = sma(close, length=half_length)
     trima = sma(sma1, length=half_length)
-    # sma1 = close.rolling(half_length, min_periods=half_length).mean()
-    # trima = sma1.rolling(half_length, min_periods=half_length).mean()
 
     # Offset
     if offset != 0:

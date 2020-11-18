@@ -40,15 +40,7 @@ class TestVolumeExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(
             list(self.data.columns[-7:]),
-            [
-                "OBV",
-                "OBV_min_2",
-                "OBV_max_2",
-                "OBV_EMA_4",
-                "OBV_EMA_12",
-                "AOBV_LR_2",
-                "AOBV_SR_2",
-            ],
+            ["OBV", "OBV_min_2", "OBV_max_2", "OBVe_4", "OBVe_12", "AOBV_LR_2", "AOBV_SR_2"],
         )
         # Remove "OBV" so it does not interfere with test_obv_ext()
         self.data.drop("OBV", axis=1, inplace=True)

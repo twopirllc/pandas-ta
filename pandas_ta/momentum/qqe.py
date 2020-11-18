@@ -5,7 +5,7 @@ from numpy import nan as npNaN
 from pandas import DataFrame, Series
 
 from .rsi import rsi
-from pandas_ta.overlap import ema, hma, rma, sma, wma
+from pandas_ta.overlap import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
@@ -16,22 +16,14 @@ def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, o
     length = int(length) if length and length > 0 else 14
     smooth = int(smooth) if smooth and smooth > 0 else 5
     factor = float(factor) if factor else 4.236
-    mamode = mamode.lower() if mamode else "ema"
+    mamode = mamode if isinstance(mamode, str) else "ema"
     drift = get_drift(drift)
     offset = get_offset(offset)
 
     # Calculate Result
     rsi_ = rsi(close, length)
-    if mamode == "hma":
-        rsi_ma, _mode = hma(rsi_, length=smooth), "h"
-    elif mamode == "rma":
-        rsi_ma, _mode = rma(rsi_, length=smooth), "r"
-    elif mamode == "sma":
-        rsi_ma, _mode = sma(rsi_, length=smooth), "s"
-    elif mamode == "wma":
-        rsi_ma, _mode = wma(rsi_, length=smooth), "w"
-    else: # "ema"
-        rsi_ma, _mode = ema(rsi_, length=smooth), ""
+    _mode = mamode.lower()[0] if mamode != "ema" else ""
+    rsi_ma = ma(mamode, rsi_, length=smooth)
 
     # RSI MA True Range
     rsi_ma_tr = rsi_ma.diff(drift).abs()
@@ -39,8 +31,8 @@ def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, o
     # Double Smooth the RSI MA True Range using Wilder's Length with a default
     # width of 4.236.
     wilders_length = 2 * length - 1
-    smoothed_rsi_tr_ma = ema(rsi_ma_tr, length=wilders_length)
-    dar = factor * ema(smoothed_rsi_tr_ma, length=wilders_length)
+    smoothed_rsi_tr_ma = ma("ema", rsi_ma_tr, length=wilders_length)
+    dar = factor * ma("ema", smoothed_rsi_tr_ma, length=wilders_length)
 
     # Create the Upper and Lower Bands around RSI MA.
     upperband = rsi_ma + dar

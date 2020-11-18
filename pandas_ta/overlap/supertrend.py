@@ -45,15 +45,12 @@ def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kw
 
     # Prepare DataFrame to return
     _props = f"_{length}_{multiplier}"
-    df = DataFrame(
-        {
+    df = DataFrame({
             f"SUPERT{_props}": trend,
             f"SUPERTd{_props}": dir_,
             f"SUPERTl{_props}": long,
             f"SUPERTs{_props}": short,
-        },
-        index=close.index,
-    )
+        }, index=close.index)
 
     df.name = f"SUPERT{_props}"
     df.category = "overlap"

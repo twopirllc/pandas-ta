@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import ema, sma
+from pandas_ta.overlap import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
@@ -10,16 +10,12 @@ def efi(close, volume, length=None, drift=None, mamode=None, offset=None, **kwar
     volume = verify_series(volume)
     length = int(length) if length and length > 0 else 13
     drift = get_drift(drift)
-    mamode = mamode.lower() if mamode else None
+    mamode = mamode if isinstance(mamode, str) else "ema"
     offset = get_offset(offset)
 
     # Calculate Result
     pv_diff = close.diff(drift) * volume
-
-    if mamode == "sma":
-        efi = sma(pv_diff, length)
-    else:
-        efi = ema(pv_diff, length)
+    efi = ma(mamode, pv_diff, length=length)
 
     # Offset
     if offset != 0:

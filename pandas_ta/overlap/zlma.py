@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-from .ema import ema
-from .hma import hma
-from .rma import rma
-from .sma import sma
-from .wma import wma
+from pandas_ta.overlap import (
+    dema, ema, hma, linreg, rma, sma, swma, t3, tema, trima, vidya, wma, zlma
+)
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -12,24 +10,25 @@ def zlma(close, length=None, mamode=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     offset = get_offset(offset)
-    mamode = mamode.lower() if mamode else None
+    mamode = mamode if isinstance(mamode, str) else "ema"
 
     # Calculate Result
     lag = int(0.5 * (length - 1))
     close = 2 * close - close.shift(lag)
 
-    if mamode == "sma":
-        zlma = sma(close, length=length, **kwargs)
-    elif mamode == "hma":
-        zlma = hma(close, length=length, **kwargs)
-    elif mamode == "rma":
-        zlma = rma(close, length=length, **kwargs)
-    elif mamode == "wma":
-        zlma = wma(close, length=length, **kwargs)
-    else: # "ema"
-        zlma = ema(close, length=length, **kwargs)
+    if  mamode == "dema": zlma = dema(close, length=length, **kwargs)
+    elif mamode == "hma": zlma = hma(close, length=length, **kwargs)
+    elif mamode == "linreg": zlma = linreg(close, length=length, **kwargs)
+    elif mamode == "rma": zlma = rma(close, length=length, **kwargs)
+    elif mamode == "sma": zlma = sma(close, length=length, **kwargs)
+    elif mamode == "swma": zlma = swma(close, length=length, **kwargs)
+    elif mamode == "t3": zlma = t3(close, length=length, **kwargs)
+    elif mamode == "tema": zlma = tema(close, length=length, **kwargs)
+    elif mamode == "trima": zlma = trima(close, length=length, **kwargs)
+    elif mamode == "vidya": zlma = vidya(close, length=length, **kwargs)
+    elif mamode == "wma": zlma = wma(close, length=length, **kwargs)
+    else: zlma = ema(close, length=length, **kwargs) # "ema"
 
     # Offset
     if offset != 0:

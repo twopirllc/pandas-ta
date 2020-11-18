@@ -10,7 +10,7 @@ def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, of
     low = verify_series(low)
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
-    mamode = mamode.lower() if mamode else "ema"
+    mamode = mamode if isinstance(mamode, str) else "ema"
     scalar = float(scalar) if scalar else 100
     drift = get_drift(drift)
     offset = get_offset(offset)
