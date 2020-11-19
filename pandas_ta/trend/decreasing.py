@@ -2,7 +2,7 @@
 from pandas_ta.utils import get_offset, verify_series
 
 
-def decreasing(close, length=None, asint=True, offset=None, **kwargs):
+def decreasing(close, length=None, asint=True, strictly=False, offset=None, **kwargs):
     """Indicator: Decreasing"""
     # Validate Arguments
     close = verify_series(close)
@@ -10,7 +10,10 @@ def decreasing(close, length=None, asint=True, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    decreasing = close.diff(length) < 0
+    if strictly:
+        decreasing = all(i > j for i, j in zip(close[-length:], close[1:]))
+    else:
+        decreasing = close.diff(length) < 0
     if asint:
         decreasing = decreasing.astype(int)
 
@@ -48,6 +51,7 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 1
     asint (bool): Returns as binary.  Default: True
+    strictly (bool): If True check for strictly continuous decreasing  Default: False
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
