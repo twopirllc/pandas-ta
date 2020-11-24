@@ -39,11 +39,11 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 30
+    length (int): It's period. Default: 30
     ddof (int): Delta Degrees of Freedom.
                 The divisor used in calculations is N - ddof,
                 where N represents the number of elements. Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

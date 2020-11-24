@@ -119,6 +119,7 @@ pandas_ta/_wrapper.py
 AlphaVantageAPI/
 
 data/datas.csv
+data/f500.csv
 data/GLD_D_tv.csv
 data/SPY_5min.csv
 data/SPY_1min.csv

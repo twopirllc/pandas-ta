@@ -185,17 +185,17 @@ class AnalysisIndicators(BasePandasObject):
     >>> ichimoku, span = ta.ichimoku(df["High"], df["Low"], df["Close"])
 
     Args:
-        kind (str, optional): Default: None.  Kind is the 'name' of the indicator.
+        kind (str, optional): Default: None. Kind is the 'name' of the indicator.
             It converts kind to lowercase before calling.
-        timed (bool, optional): Default: False.  Curious about the execution
+        timed (bool, optional): Default: False. Curious about the execution
             speed?
         kwargs: Extension specific modifiers.
-            append (bool, optional):  Default: False.  When True, it appends the
+            append (bool, optional): Default: False. When True, it appends the
             resultant column(s) to the DataFrame.
 
     Returns:
-        Most Indicators will return a Pandas Series.  Others like MACD, BBANDS,
-        KC, et al will return a Pandas DataFrame.  Ichimoku on the other hand
+        Most Indicators will return a Pandas Series. Others like MACD, BBANDS,
+        KC, et al will return a Pandas DataFrame. Ichimoku on the other hand
         will return two DataFrames, the Ichimoku DataFrame for the known period
         and a Span DataFrame for the future of the Span values.
 
@@ -1239,9 +1239,9 @@ class AnalysisIndicators(BasePandasObject):
         result = decay(close=close, length=length, mode=mode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def decreasing(self, length=None, asint=True, offset=None, **kwargs):
+    def decreasing(self, length=None, strict=None, asint=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = decreasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
+        result = decreasing(close=close, length=length, strict=strict, asint=asint, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def dpo(self, length=None, centered=True, offset=None, **kwargs):
@@ -1249,9 +1249,9 @@ class AnalysisIndicators(BasePandasObject):
         result = dpo(close=close, length=length, centered=centered, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def increasing(self, length=None, asint=True, offset=None, **kwargs):
+    def increasing(self, length=None, strict=None, asint=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = increasing(close=close, length=length, asint=asint, offset=offset, **kwargs)
+        result = increasing(close=close, length=length, strict=strict, asint=asint, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def long_run(self, fast=None, slow=None, length=None, offset=None, **kwargs):

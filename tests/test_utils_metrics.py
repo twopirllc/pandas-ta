@@ -36,6 +36,12 @@ class TestUtilityMetrics(TestCase):
         self.assertIsInstance(result, float)
         self.assertGreaterEqual(result, 0)
 
+        result = pandas_ta.calmar_ratio(self.close, years=0)
+        self.assertIsNone(result)
+
+        result = pandas_ta.calmar_ratio(self.close, years=-2)
+        self.assertIsNone(result)
+
     def test_downside_deviation(self):
         result = pandas_ta.downside_deviation(self.pctret)
         self.assertIsInstance(result, float)
@@ -101,6 +107,11 @@ class TestUtilityMetrics(TestCase):
         self.assertGreaterEqual(result, 0)
 
     def test_volatility(self):
+        returns_ = pandas_ta.percent_return(self.close)
+        result = pandas_ta.utils.volatility(returns_, returns=True)
+        self.assertIsInstance(result, float)
+        self.assertGreaterEqual(result, 0)
+
         for tf in ["years", "months", "weeks", "days", "hours", "minutes", "seconds"]:
             result = pandas_ta.utils.volatility(self.close, tf)
             self.assertIsInstance(result, float)

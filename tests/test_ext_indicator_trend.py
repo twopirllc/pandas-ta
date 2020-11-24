@@ -57,6 +57,10 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "DEC_1")
 
+        self.data.ta.decreasing(length=3, strict=True, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "SDEC_3")
+
     def test_dpo_ext(self):
         self.data.ta.dpo(append=True)
         self.assertIsInstance(self.data, DataFrame)
@@ -66,6 +70,10 @@ class TestTrendExtension(TestCase):
         self.data.ta.increasing(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "INC_1")
+
+        self.data.ta.increasing(length=3, strict=True, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "SINC_3")
 
     def test_long_run_ext(self):
         # Nothing passed, return self

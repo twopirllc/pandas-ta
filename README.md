@@ -39,11 +39,12 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Utility](#utility-5)
     * [Volatility](#volatility-13)
     * [Volume](#volume-13)
+* [Performance Metrics](#performance-metrics)
 * [Changes](#changes)
-    * [Recent](#recent)
-    * [Breaking](#breaking)
-    * [New](#new)
-    * [Updated](#updated)
+    * [General](#general)
+    * [Breaking Indicators](#breaking-indicators)
+    * [New Indicators](#new-indicators)
+    * [Updated Indicators](#updated-indicators)
 <!--te-->
 
 <!-- * [Specifying Strategies in **Pandas TA**](#specifying-strategies-in-pandas-ta) -->
@@ -56,9 +57,11 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 * Has 120+ indicators and utility functions.
 * Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
-* Have the need for speed? By using the _strategy_ method, you get **multiprocessing** for free!
+* Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or both to columns names. Useful for Custom Chained Strategies.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
+* **NEW** Performance Metrics
+    <!-- * **Performance Metrics** These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called conventionally. Included Metrics: **cagr**, **calmar_ratio**, **downside_deviation**, **jensens_alpha**, **log_max_drawdown**, **max_drawdown**, **pure_profit_score**, **sharpe_ratio**, **sortino_ratio**, **volatility**. Example: -->
 
 <br/>
 
@@ -160,7 +163,7 @@ Thanks for trying **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
@@ -174,21 +177,21 @@ _Conventional_
 You explicitly define the input columns and take care of the output.
 
 * ```sma10 = ta.sma(df["Close"], length=10)```
-    * Returns a series with name: ```SMA_10```
+    * Returns a Series with name: ```SMA_10```
 * ```donchiandf = ta.donchian(df["HIGH"], df["low"], lower_length=10, upper_length=15)```
     * Returns a DataFrame named ```DC_10_15``` and column names: ```DCL_10_15, DCM_10_15, DCU_10_15```
 * ```ema10_ohlc4 = ta.ema(ta.ohlc4(df["Open"], df["High"], df["Low"], df["Close"]), length=10)```
     * Conventional Chaining is possible but more explicit.
-    * Since it returns a series named ```EMA_10```. If needed, you may need to uniquely name it.
+    * Since it returns a Series named ```EMA_10```. If needed, you may need to uniquely name it.
 
 _Pandas TA DataFrame Extension_
 ====================
 
 Calling ```df.ta``` will automatically lowercase _OHLCVA_ to _ohlcva_: _open, high, low, close, volume_, _adj_close_. By default, ```df.ta``` will use the _ohlcva_ for the indicator arguments removing the need to specify input columns directly.
 * ```sma10 = df.ta.sma(length=10)```
-    * Returns a series with name: ```SMA_10```
+    * Returns a Series with name: ```SMA_10```
 * ```ema10_ohlc4 = df.ta.ema(close=df.ta.ohlc4(), length=10, suffix="OHLC4")```
-    * Returns a series with name: ```EMA_10_OHLC4```
+    * Returns a Series with name: ```EMA_10_OHLC4```
     * Chaining Indicators _require_ specifying the input like: ```close=df.ta.ohlc4()```.
 * ```donchiandf = df.ta.donchian(lower_length=10, upper_length=15)```
     * Returns a DataFrame named ```DC_10_15``` and column names: ```DCL_10_15, DCM_10_15, DCU_10_15```
@@ -356,18 +359,18 @@ df.ta.strategy(NonMPStrategy)
 ## **adjusted**
 
 ```python
-# Set ta to default to an adjusted column, 'adj_close', overriding default 'close'
+# Set ta to default to an adjusted column, 'adj_close', overriding default 'close'.
 df.ta.adjusted = "adj_close"
 df.ta.sma(length=10, append=True)
 
-# To reset back to 'close', set adjusted back to None
+# To reset back to 'close', set adjusted back to None.
 df.ta.adjusted = None
 ```
 
 ## **categories**
 
 ```python
-# List of Pandas TA categories
+# List of Pandas TA categories.
 df.ta.categories
 ```
 
@@ -375,7 +378,7 @@ df.ta.categories
 
 ```python
 # Set the number of cores to use for strategy multiprocessing
-# Defaults to the number of cpus you have
+# Defaults to the number of cpus you have.
 df.ta.cores = 4
 
 # Returns the number of cores you set or your default number of cpus.
@@ -386,36 +389,31 @@ df.ta.cores
 
 ```python
 # The 'datetime_ordered' property returns True if the DataFrame
-# index is of Pandas datetime64 and df.index[0] < df.index[-1]
-# Otherwise it returns False
+# index is of Pandas datetime64 and df.index[0] < df.index[-1].
+# Otherwise it returns False.
 df.ta.datetime_ordered
 ```
 
 ## **reverse**
 
 ```python
-# The 'datetime_ordered' property returns True if the DataFrame
-# index is of Pandas datetime64 and df.index[0] < df.index[-1]
-# Otherwise it returns False
-df.ta.datetime_ordered
-
 # The 'reverse' is a helper property that returns the DataFrame
-# in reverse order
+# in reverse order.
 df.ta.reverse
 ```
 
 ## **prefix & suffix**
 
 ```python
-# Applying a prefix to the name of an indicator
+# Applying a prefix to the name of an indicator.
 prehl2 = df.ta.hl2(prefix="pre")
 print(prehl2.name)  # "pre_HL2"
 
-# Applying a suffix to the name of an indicator
+# Applying a suffix to the name of an indicator.
 endhl2 = df.ta.hl2(suffix="post")
 print(endhl2.name)  # "HL2_post"
 
-# Applying a prefix and suffix to the name of an indicator
+# Applying a prefix and suffix to the name of an indicator.
 bothhl2 = df.ta.hl2(prefix="pre", suffix="post")
 print(bothhl2.name)  # "pre_HL2_post"
 ```
@@ -615,20 +613,43 @@ Use parameter: cumulative=**True** for cumulative results.
 
 <br/><br/>
 
+# **Performance Metrics**
+_Performance Metrics_ are a **new** addition to the package. These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called conventionally. For Example:
+```python
+import pandas_ta as ta
+result = ta.cagr(df.close)
+```
+
+### Available Metrics
+* _Compounded Annual Growth Rate_: **cagr**
+* _Calmar Ratio_: **calmar_ratio**
+* _Downside Deviation_: **downside_deviation**
+* _Jensen's Alpha_: **jensens_alpha**
+* _Log Max Drawdown_: **log_max_drawdown**
+* _Max Drawdown_: **max_drawdown**
+* _Pure Profit Score_: **pure_profit_score**
+* _Sharpe Ratio_: **sharpe_ratio**
+* _Sortino Ratio_: **sortino_ratio**
+* _Volatility_: **volatility**
+
+
+<br/><br/>
+
 # **Changes**
-## **Recent**
+## **General**
 * A __Strategy__ Class to help name and group your favorite indicators.
 * Some indicators have had their ```mamode``` _kwarg_ updated with more _moving average_ choices with the **Moving Average Utility** function ```ta.ma()```. For simplicity, all _choices_ are single source _moving averages_. This is primarily an internal utility used by indicators that have a ```mamode``` _kwarg_. This includes indicators: _accbands_, _amat_, _aobv_, _atr_, _bbands_, _bias_, _efi_, _hilo_, _kc_, _natr_, _qqe_, _rvi_, and _thermo_; the default ```mamode``` parameters have not changed. However, ```ta.ma()``` can be used by the user as well if needed. For more information: ```help(ta.ma)```
     * **Moving Average Choices**: dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma.
 * An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
 * _Linear Regression_ (**linear_regression**) is a new utility method for Simple Linear Regression using _Numpy_ or _Scikit Learn_'s implementation.
 
+<br />
 
-## **Breaking**
+## **Breaking Indicators**
 * _Bollinger Bands_ (**bbands**): New column 'bandwidth' appended to the returning DataFrame. See: ```help(ta.bbands)```
 
 
-## **New**
+## **New Indicators**
 * _Drawdown_ (**drawdown**) It is a peak-to-trough decline during a specific period for an investment,
 trading account, or fund. See: ```help(ta.drawdown)```
 * _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
@@ -638,10 +659,13 @@ trading account, or fund. See: ```help(ta.drawdown)```
 * _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade" issue of Stocks & Commodities Magazine. It is a moving average based trend indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
 * _Variable Index Dynamic Average_ (**vidya**) A popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
 
-## **Updated**
+## **Updated Indicators**
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
+* _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length```. Default: ```False```. See ```help(ta.decreasing)```.
+* _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length```. Default: ```False```. See ```help(ta.increasing)```.
 * _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series with pertinenet trade info for a _trend_. An example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.
 
+<br />
 
 # **Sources**
 * [Original TA-LIB](http://ta-lib.org/)
