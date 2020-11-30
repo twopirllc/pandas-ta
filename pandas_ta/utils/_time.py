@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from time import localtime, perf_counter
+from typing import Tuple
 
-from pandas import DataFrame, date_range, Series, Timestamp
+from pandas import DataFrame, Series, Timestamp
 
 from pandas_ta import EXCHANGE_TZ
 
 
-def df_dates(df: DataFrame, dates: (str, list) = None) -> DataFrame:
+def df_dates(df: DataFrame, dates: Tuple[str, list] = None) -> DataFrame:
     """Yields the DataFrame with the given dates"""
     if dates is None: return None
     if not isinstance(dates, list):
@@ -41,7 +42,7 @@ def final_time(stime):
     return f"{time_diff * 1000:2.4f} ms ({time_diff:2.4f} s)"
 
 
-def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -> (None, str):
+def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -> Tuple[None, str]:
     """Returns Current Time, Day of the Year and Percentage, and the current
     time of the selected Exchange."""
     tz = EXCHANGE_TZ["NYSE"] # Default is NYSE (Eastern Time Zone)
@@ -87,6 +88,19 @@ def total_time(series: Series, tf: str = "years") -> float:
     if isinstance(tf, str) and tf in TimeFrame.keys():
         return TimeFrame[tf]
     return TimeFrame["years"]
+
+
+def to_utc(df: DataFrame) -> DataFrame:
+    """Either localizes the DataFrame Index to UTC or it applies
+    tz_convert to set the Index to UTC.
+    """
+    if not df.empty:
+        try:
+            df.index = df.index.tz_localize("UTC")
+        except TypeError:
+            df.index = df.index.tz_convert("UTC")
+    return df
+
 
 # Aliases
 mtd_df = df_month_to_date

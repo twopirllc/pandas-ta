@@ -7,6 +7,8 @@ from unittest.mock import patch
 import numpy as np
 import numpy.testing as npt
 from pandas import DataFrame, Series
+from pandas.api.types import is_datetime64_ns_dtype, is_datetime64tz_dtype
+
 
 data = {
     "zero": [0, 0],
@@ -258,6 +260,11 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.get_offset(0), 0)
         self.assertEqual(self.utils.get_offset(-1.1), 0)
         self.assertEqual(self.utils.get_offset(1), 1)
+
+    def test_to_utc(self):
+        result = self.utils.to_utc(self.data.copy())
+        self.assertTrue(is_datetime64_ns_dtype(result.index))
+        self.assertTrue(is_datetime64tz_dtype(result.index))        
 
     def test_total_time(self):
         result = self.utils.total_time(self.data)
