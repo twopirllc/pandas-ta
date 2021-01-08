@@ -48,7 +48,7 @@ Category = {
     # Overlap
     "overlap": [
         "dema", "ema", "fwma", "hilo", "hl2", "hlc3", "hma", "ichimoku",
-        "kama", "linreg", "midpoint", "midprice", "ohlc4", "pwma", "rma",
+        "kama", "linreg", "mcg", "midpoint", "midprice", "ohlc4", "pwma", "rma",
         "sinwma", "sma", "ssf", "supertrend", "swma", "t3", "tema", "trima",
         "vidya", "vwap", "vwma", "wcp", "wma", "zlma"
     ],
