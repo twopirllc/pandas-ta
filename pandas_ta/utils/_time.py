@@ -5,7 +5,7 @@ from typing import Tuple
 
 from pandas import DataFrame, Series, Timestamp
 
-from pandas_ta import EXCHANGE_TZ
+from pandas_ta import EXCHANGE_TZ, RATE
 
 
 def df_dates(df: DataFrame, dates: Tuple[str, list] = None) -> DataFrame:
@@ -35,7 +35,7 @@ def df_year_to_date(df: DataFrame) -> DataFrame:
     return df[df.index >= Timestamp.now().strftime("%Y-01-01")]
 
 
-def final_time(stime):
+def final_time(stime: float) -> str:
     """Human readable elapsed time. Calculates the final time elasped since
     stime and returns a string with microseconds and seconds."""
     time_diff = perf_counter() - stime
@@ -76,7 +76,7 @@ def total_time(series: Series, tf: str = "years") -> float:
     Useful for annualization."""
     time_diff = series.index[-1] - series.index[0]
     TimeFrame = {
-        "years": time_diff.days / 365.25,
+        "years": time_diff.days / RATE["TRADING_DAYS_PER_YEAR"],
         "months": time_diff.days / 30.417,
         "weeks": time_diff.days / 7,
         "days": time_diff.days,

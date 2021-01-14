@@ -47,7 +47,7 @@ class Strategy:
     name: str  # = None # Required.
     ta: List = field(default_factory=list)  # Required.
     # Helpful. More descriptive version or notes or w/e.
-    description: str = None
+    description: str = "TA Description"
     # Optional. May change type later to datetime
     created: str = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
@@ -89,8 +89,7 @@ class Strategy:
 # All Default Strategy
 AllStrategy = Strategy(
     name="All",
-    description=
-    "All the indicators with their default settings. Pandas TA default.",
+    description="All the indicators with their default settings. Pandas TA default.",
     ta=None,
 )
 
@@ -238,7 +237,11 @@ class AnalysisIndicators(BasePandasObject):
     _mp = False
 
     # DataFrame Behavioral Methods
-    def __call__(self, kind: str = None, alias: str = None, timed: bool = False, verbose: bool = False, **kwargs):
+    def __call__(
+            self, kind: str = None,
+            alias: str = None, timed: bool = False,
+            verbose: bool = False, **kwargs
+        ):
         try:
             if isinstance(kind, str):
                 kind = kind.lower()
@@ -620,6 +623,9 @@ class AnalysisIndicators(BasePandasObject):
                 kwds["append"] = True
         elif mode["all"]:
             ta = self.indicators(as_list=True, exclude=excluded)
+        else:
+            print(f"[X] Not an available strategy.")
+            return None
 
         verbose = kwargs.pop("verbose", False)
         if verbose:
@@ -634,34 +640,29 @@ class AnalysisIndicators(BasePandasObject):
         if timed:
             stime = perf_counter()
         if mode["custom"]:
+            # Determine if the Custom Model has 'col_names' parameter
             has_col_names = (True if len([
                 True for x in ta
                 if "col_names" in x and isinstance(x["col_names"], tuple)
             ]) else False)
+
+            # Create a list of all the custom indicators into a list
             custom_ta = [(
                 ind["kind"],
-                ind["params"]
-                if "params" in ind and isinstance(ind["params"], tuple) else (),
-                {
-                    **ind,
-                    **kwargs
-                },
+                ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (),
+                {**ind, **kwargs},
             ) for ind in ta]
 
             if has_col_names:
                 if verbose:
-                    print(
-                        f"[i] No mulitproccessing support for 'col_names' option."
-                    )
+                    print(f"[i] No mulitproccessing support for 'col_names' option.")
                 # Without multiprocessing:
                 for ind in ta:
                     params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
                     getattr(self, ind["kind"])(*params, **{**ind, **kwargs})
             else:
                 if verbose:
-                    print(
-                        f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores."
-                    )
+                    print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
 
                 # Custom multiprocessing pool. Must be ordered for Chained Strategies
                 # May fix this to cpus if Chaining/Composition if it remains
@@ -670,9 +671,7 @@ class AnalysisIndicators(BasePandasObject):
 
         else:
             if verbose:
-                print(
-                    f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores."
-                )
+                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
             default_ta = [(ind, tuple(), kwargs) for ind in ta]
             # All and Categorical multiprocessing pool. Speed over Order.
             results = pool.imap_unordered(self._mp_worker, default_ta, self.cores)

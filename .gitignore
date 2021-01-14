@@ -156,4 +156,5 @@ tds.py
 simple.ipynb
 ta.json
 
-# Indicator
+# Issue Data
+*.csv

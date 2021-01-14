@@ -34,7 +34,7 @@ def drawdown(close, offset=None, **kwargs) -> DataFrame:
     if "fillna" in kwargs:
         dd.fillna(kwargs["fillna"], inplace=True)
         dd_pct.fillna(kwargs["fillna"], inplace=True)
-        log_return.fillna(kwargs["fillna"], inplace=True)
+        dd_log.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         dd.fillna(method=kwargs["fill_method"], inplace=True)
         dd_pct.fillna(method=kwargs["fill_method"], inplace=True)

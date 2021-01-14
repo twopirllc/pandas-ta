@@ -78,6 +78,14 @@ Category = {
     ],
 }
 
+CANGLE_AGG = {
+    "open": "first",
+    "high": "max",
+    "low": "min",
+    "close": "last",
+    "volume": "sum"
+}
+
 # https://www.worldtimezone.com/markets24.php
 EXCHANGE_TZ = {
     "NZSX": 12, "ASX": 11,
@@ -88,9 +96,14 @@ EXCHANGE_TZ = {
 }
 
 RATE = {
+    "DAYS_PER_MONTH": 21,
+    "MINUTES_PER_HOUR": 60,
+    "MONTHS_PER_YEAR": 12,
+    "QUARTERS_PER_YEAR": 4,
     "TRADING_DAYS_PER_YEAR": 252,  # Keep even
     "TRADING_HOURS_PER_DAY": 6.5,
-    "MINUTES_PER_HOUR": 60,
+    "WEEKS_PER_YEAR": 52,
+    "YEARLY": 1,
 }
 
 from pandas_ta.core import *

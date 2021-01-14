@@ -60,8 +60,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or both to columns names. Useful for Custom Chained Strategies.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
-* **NEW** Performance Metrics
-    <!-- * **Performance Metrics** These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called conventionally. Included Metrics: **cagr**, **calmar_ratio**, **downside_deviation**, **jensens_alpha**, **log_max_drawdown**, **max_drawdown**, **pure_profit_score**, **sharpe_ratio**, **sortino_ratio**, **volatility**. Example: -->
+* **UNDER DEVELOPMENT** Performance Metrics
 
 <br/>
 

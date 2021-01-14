@@ -3,12 +3,16 @@ from functools import reduce
 from math import fabs, floor
 from operator import mul
 from sys import float_info as sflt
+from typing import List, Optional, Tuple
 
-from numpy import dot, ones, triu
+from numpy import ones, triu
+from numpy import all as npAll
 from numpy import append as npAppend
 from numpy import array as npArray
 from numpy import corrcoef as npCorrcoef
-from numpy import dot
+from numpy import dot as npDot
+from numpy import exp as npExp
+from numpy import log as npLog
 from numpy import ndarray as npNdArray
 from numpy import seterr
 from numpy import sqrt as npSqrt
@@ -20,7 +24,7 @@ from pandas_ta import Imports
 from ._core import verify_series
 
 
-def combination(**kwargs):
+def combination(**kwargs: dict) -> int:
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""
     n = int(fabs(kwargs.pop("n", 1)))
     r = int(fabs(kwargs.pop("r", 0)))
@@ -38,7 +42,7 @@ def combination(**kwargs):
     return numerator // denominator
 
 
-def fibonacci(n:int = 2, **kwargs) -> npNdArray:
+def fibonacci(n: int = 2, **kwargs) -> npNdArray:
     """Fibonacci Sequence as a numpy array"""
     n = int(fabs(n)) if n >= 0 else 2
 
@@ -65,16 +69,29 @@ def fibonacci(n:int = 2, **kwargs) -> npNdArray:
         return result
 
 
-def linear_regression(x:Series, y:Series) -> dict:
+def geometric_mean(series: Series) -> float:
+    """Returns the Geometric Mean for a Series of positive values."""
+    n = series.size
+    if n < 1:
+        return series.iloc[0]
+
+    has_zeros = 0 in series.values
+    if has_zeros:
+        series = series.fillna(0) + 1
+    if npAll(series > 0):
+        mean = series.prod() ** (1 / n)
+        return mean if not has_zeros else mean - 1
+    return 0
+
+
+def linear_regression(x: Series, y: Series) -> dict:
     """Classic Linear Regression in Numpy or Scikit-Learn"""
     x, y = verify_series(x), verify_series(y)
     m, n = x.size, y.size
 
     if m != n:
-        print(
-            f"[X] Linear Regression X and y observations do not match: {m} != {n}"
-        )
-        return
+        print(f"[X] Linear Regression X and y have unequal total observations: {m} != {n}")
+        return {}
 
     if Imports["sklearn"]:
         return _linear_regression_sklearn(x, y)
@@ -82,7 +99,18 @@ def linear_regression(x:Series, y:Series) -> dict:
         return _linear_regression_np(x, y)
 
 
-def pascals_triangle(n:int = None, **kwargs) -> npNdArray:
+def log_geometric_mean(series: Series) -> float:
+    """Returns the Logarithmic Geometric Mean"""
+    n = series.size
+    if n < 2: return 0
+    else:
+        series = series.fillna(0) + 1
+        if npAll(series > 0):
+            return npExp(npLog(series).sum() / n) - 1
+        return 0
+
+
+def pascals_triangle(n: int = None, **kwargs) -> npNdArray:
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -110,7 +138,7 @@ def pascals_triangle(n:int = None, **kwargs) -> npNdArray:
     return triangle
 
 
-def symmetric_triangle(n:int = None, **kwargs) -> list:
+def symmetric_triangle(n: int = None, **kwargs) -> Optional[List[int]]:
     """Symmetric Triangle with n >= 2
 
     Returns a numpy array of the nth row of Symmetric Triangle.
@@ -119,6 +147,7 @@ def symmetric_triangle(n:int = None, **kwargs) -> list:
     """
     n = int(fabs(n)) if n is not None else 2
 
+    triangle = None
     if n == 2:
         triangle = [1, 1]
 
@@ -132,7 +161,7 @@ def symmetric_triangle(n:int = None, **kwargs) -> list:
             front.pop()
             triangle += front[::-1]
 
-    if kwargs.pop("weighted", False):
+    if kwargs.pop("weighted", False) and isinstance(triangle, list):
         triangle_sum = npSum(triangle)
         triangle_weights = triangle / triangle_sum
         return triangle_weights
@@ -140,15 +169,15 @@ def symmetric_triangle(n:int = None, **kwargs) -> list:
     return triangle
 
 
-def weights(w):
+def weights(w: npNdArray):
+    """Calculates the dot product of weights with values x"""
     def _dot(x):
-        return dot(w, x)
+        return npDot(w, x)
     return _dot
 
 
-def zero(x:[int, float]) -> [int, float]:
-    """If the value is close to zero, then return zero.
-    Otherwise return itself."""
+def zero(x: Tuple[int, float]) -> Tuple[int, float]:
+    """If the value is close to zero, then return zero. Otherwise return itself."""
     return 0 if abs(x) < sflt.epsilon else x
 
 
@@ -185,8 +214,8 @@ def _linear_regression_np(x: Series, y: Series) -> dict:
     # 1st row, 2nd col value corr(x, y)
     r = npCorrcoef(x, y)[0, 1]
 
-    r_mixture = m * (x * y).sum() - x_sum * y_sum
-    b = r_mixture / (m * (x * x).sum() - x_sum * x_sum)
+    r_mix = m * (x * y).sum() - x_sum * y_sum
+    b = r_mix / (m * (x * x).sum() - x_sum * x_sum)
     a = y.mean() - b * x.mean()
     line = a + b * x
 
@@ -200,7 +229,7 @@ def _linear_regression_np(x: Series, y: Series) -> dict:
     seterr(divide=_np_err["divide"], invalid=_np_err["invalid"])
     return result
 
-def _linear_regression_sklearn(x: Series, y: Series):
+def _linear_regression_sklearn(x: Series, y: Series) -> dict:
     """Simple Linear Regression in Scikit Learn for two 1d arrays for
     environments with the sklearn package."""
     from sklearn.linear_model import LinearRegression

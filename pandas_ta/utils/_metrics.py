@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-# from numpy import arange as npArange
+from typing import Tuple
+
 from numpy import log as npLog
 from numpy import sqrt as npSqrt
-from pandas import DataFrame, Series, Timedelta
+from pandas import Series, Timedelta
 
 from ._core import verify_series
 from ._time import total_time
-from ._math import linear_regression
+from ._math import linear_regression, log_geometric_mean
+from pandas_ta import RATE
 from pandas_ta.performance import drawdown, log_return, percent_return
 
 
@@ -123,6 +125,38 @@ def max_drawdown(close: Series, method:str = None, all:bool = False) -> float:
     return max_dd_["dollar"]
 
 
+def optimal_leverage(
+        close: Series, benchmark_rate: float = 0.0,
+        period: Tuple[float, int] = RATE["TRADING_DAYS_PER_YEAR"],
+        log: bool = False, capital: float = 1., **kwargs
+    ) -> float:
+    """Optimal Leverage of a series. NOTE: Incomplete. Do NOT use.
+
+    Args:
+        close (pd.Series): Series of 'close's
+        benchmark_rate (float): Benchmark Rate to use. Default: 0.0
+        period (int, float): Period to use to calculate Mean Annual Return and Annual Standard Deviation. Default: None or the default sharpe_ratio.period()
+        log (bool): If True, calculates log_return. Otherwise it returns percent_return. Default: False
+
+    >>> result = ta.optimal_leverage(close, benchmark_rate=0.0, log=False)
+    """
+    close = verify_series(close)
+
+    use_cagr = kwargs.pop("use_cagr", False)
+    returns = percent_return(close=close) if not log else log_return(close=close)
+    # sharpe = sharpe_ratio(close, benchmark_rate=benchmark_rate, log=log, use_cagr=use_cagr, period=period)
+
+    period_mu = period * returns.mean()
+    period_std = npSqrt(period) * returns.std()
+
+    mean_excess_return = period_mu - benchmark_rate
+    # sharpe = mean_excess_return / period_std
+    opt_leverage = (period_std ** -2) * mean_excess_return
+
+    amount = int(capital * opt_leverage)
+    return amount
+
+
 def pure_profit_score(close: Series) -> float:
     """Pure Profit Score of a series.
 
@@ -131,7 +165,6 @@ def pure_profit_score(close: Series) -> float:
 
     >>> result = ta.pure_profit_score(df.close)
     """
-    # from sklearn.linear_model import LinearRegression
     close = verify_series(close)
     close_index = Series(0, index=close.reset_index().index)
 
@@ -139,22 +172,27 @@ def pure_profit_score(close: Series) -> float:
     return r * cagr(close)
 
 
-def sharpe_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False) -> float:
+def sharpe_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False, use_cagr: bool = False, period: int = RATE["TRADING_DAYS_PER_YEAR"]) -> float:
     """Sharpe Ratio of a series.
 
     Args:
         close (pd.Series): Series of 'close's
         benchmark_rate (float): Benchmark Rate to use. Default: 0.0
         log (bool): If True, calculates log_return. Otherwise it returns percent_return. Default: False
+        use_cagr (bool): Use cagr - benchmark_rate instead. Default: False
+        period (int, float): Period to use to calculate Mean Annual Return and Annual Standard Deviation. Default: RATE["TRADING_DAYS_PER_YEAR"] (currently 252)
 
     >>> result = ta.sharpe_ratio(close, benchmark_rate=0.0, log=False)
     """
     close = verify_series(close)
     returns = percent_return(close=close) if not log else log_return(close=close)
 
-    result  = cagr(close) - benchmark_rate
-    result /= volatility(close, returns, log=log)
-    return result
+    if use_cagr:
+        return cagr(close) / volatility(close, returns, log=log)
+    else:
+        period_mu = period * returns.mean()
+        period_std = npSqrt(period) * returns.std()
+        return (period_mu - benchmark_rate) / period_std
 
 
 def sortino_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False) -> float:
@@ -193,8 +231,9 @@ def volatility(close: Series, tf: str = "years", returns: bool = False, log: boo
     else:
         returns = close
 
-    factor = returns.shape[0] / total_time(returns, tf)
-    if kwargs.pop("nearest_day", False) and tf.lower() == "years":
-        factor = int(factor + 1)
-
-    return returns.std() * npSqrt(factor)
+    returns = log_geometric_mean(returns).std()
+    # factor = returns.shape[0] / total_time(returns, tf)
+    # if kwargs.pop("nearest_day", False) and tf.lower() == "years":
+        # factor = int(factor + 1)
+    # return npSqrt(factor) * returns.std()
+    return returns

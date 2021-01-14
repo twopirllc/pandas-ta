@@ -3,7 +3,6 @@ from .context import pandas_ta
 
 from unittest import skip, TestCase
 
-from numpy import nan as npNaN
 from pandas import DataFrame
 
 
@@ -90,6 +89,12 @@ class TestUtilityMetrics(TestCase):
         self.assertIsInstance(result["dollar"], float)
         self.assertIsInstance(result["percent"], float)
         self.assertIsInstance(result["log"], float)
+
+    def test_optimal_leverage(self):
+        result = pandas_ta.optimal_leverage(self.close)
+        self.assertIsInstance(result, int)
+        result = pandas_ta.optimal_leverage(self.close, log=True)
+        self.assertIsInstance(result, int)
 
     def test_pure_profit_score(self):
         result = pandas_ta.pure_profit_score(self.close)
