@@ -20,8 +20,8 @@ def vwap(high, low, close, volume, offset=None, **kwargs):
 
     # Calculate Result
     weighted_price = typical_price * volume
-    vwap = weighted_price.groupby(weighted_price.index.to_period('d')).cumsum() / \
-           volume.groupby(volume.index.to_period('d')).cumsum()
+    vwap  = weighted_price.groupby(weighted_price.index.to_period("d")).cumsum()
+    vwap /= volume.groupby(volume.index.to_period("d")).cumsum()
 
     # Offset
     if offset != 0:
