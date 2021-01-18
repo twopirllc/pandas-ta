@@ -1546,6 +1546,13 @@ class AnalysisIndicators(BasePandasObject):
         result = pvol(close=close, volume=volume, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def pvr(self, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        volume = self._get_column(kwargs.pop("volume", "volume"))
+
+        result = pvr(close=close, volume=volume)
+        return self._post_process(result, **kwargs)
+
     def pvt(self, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
