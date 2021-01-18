@@ -880,7 +880,7 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
         result = rsi(close=close, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
-                  
+
     def rsx(self, length=None, drift=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = rsx(close=close, length=length, drift=drift, offset=offset, **kwargs)

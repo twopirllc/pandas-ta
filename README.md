@@ -162,7 +162,7 @@ Thanks for trying **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
@@ -426,7 +426,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Inside Bar_: **cdl_inside**
 * _Heikin-Ashi_: **ha**
 
-### **Momentum** (35)
+### **Momentum** (36)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -453,6 +453,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Quantitative Qualitative Estimation_: **qqe**
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
+* _Relative Strength Xtra_: **rsx**
 * _Relative Vigor Index_: **rvgi**
 * _Slope_: **slope**
 * _SMI Ergodic_ **smi**
@@ -652,16 +653,17 @@ result = ta.cagr(df.close)
 
 
 ## **New Indicators**
-* _Drawdown_ (**drawdown**) It is a peak-to-trough decline during a specific period for an investment,
+* _Drawdown_ (**drawdown**) shows the peak-to-trough decline during a specific period for an investment,
 trading account, or fund. See: ```help(ta.drawdown)```
-* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
-* _Quantitative Qualitative Estimation_ (**qqe**) The Quantitative Qualitative Estimation (QQE) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
-* _Price Volume Rank_ (**pvr**) Price Volume Rank (PVR) was created by Anthony J. Macek and is described in his
+* _Gann High-Low Activator_ (**hilo**) was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
+* _Quantitative Qualitative Estimation_ (**qqe**) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
+* _Price Volume Rank_ (**pvr**) was created by Anthony J. Macek and is described in his
 article in the June, 1994 issue of Technical Analysis of Stocks & Commodities Magazine. See: ```help(ta.pvr)```
+* _Relative Strength Xtra_ (**rsx**) is based on the popular RSI indicator and inspired by the work Jurik Research. See: ```help(ta.rsx)```
 * _Ehler's Super Smoother Filter_ (**ssf**). Ehler's solution to reduce lag and remove aliasing noise compared to other common moving average indicators. See: ```help(ta.ssf)```
-* _Elder's Thermometer_ (**thermo**) Elder's Thermometer measures price volatility. See: ```help(ta.thermo)```
-* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade" issue of Stocks & Commodities Magazine. It is a moving average based trend indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
-* _Variable Index Dynamic Average_ (**vidya**) A popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
+* _Elder's Thermometer_ (**thermo**) measures price volatility. See: ```help(ta.thermo)```
+* _TTM Trend_ (**ttm_trend**) is a trend indicator inspired from John Carter's book "Mastering the Trade" issue of Stocks & Commodities Magazine. It is a moving average based trend indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
+* _Variable Index Dynamic Average_ (**vidya**) is a popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
 
 ## **Updated Indicators**
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
