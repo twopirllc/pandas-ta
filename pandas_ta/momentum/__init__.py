@@ -24,6 +24,7 @@ from .pvo import pvo
 from .qqe import qqe
 from .roc import roc
 from .rsi import rsi
+from .rsx import rsx
 from .rvgi import rvgi
 from .slope import slope
 from .smi import smi
