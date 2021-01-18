@@ -10,6 +10,7 @@ from .kama import kama
 from .ichimoku import ichimoku
 from .linreg import linreg
 from .ma import ma
+from .mcg import mcg
 from .midpoint import midpoint
 from .midprice import midprice
 from .ohlc4 import ohlc4
