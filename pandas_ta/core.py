@@ -1021,9 +1021,9 @@ class AnalysisIndicators(BasePandasObject):
         result = linreg(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def mcg(self, length=None, offset=None, **kwargs):
+    def mcgd(self, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = mcg(close=close, length=length, offset=offset, **kwargs)
+        result = mcgd(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def midpoint(self, length=None, offset=None, **kwargs):

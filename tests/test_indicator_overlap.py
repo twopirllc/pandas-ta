@@ -189,6 +189,11 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "FWMA_15")
 
+    def test_mcgd(self):
+        result = pandas_ta.mcgd(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "MCGD_10")
+
     def test_midpoint(self):
         result = pandas_ta.midpoint(self.close)
         self.assertIsInstance(result, Series)

@@ -68,6 +68,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "LR_14")
 
+    def test_mcgd_ext(self):
+        self.data.ta.mcgd(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "MCGD_10")
+
     def test_midpoint_ext(self):
         self.data.ta.midpoint(append=True)
         self.assertIsInstance(self.data, DataFrame)

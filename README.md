@@ -471,7 +471,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-### **Overlap** (29)
+### **Overlap** (30)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -485,6 +485,7 @@ print(bothhl2.name)  # "pre_HL2_post"
     * Use: help(ta.ichimoku). Returns two DataFrames.
 * _Kaufman's Adaptive Moving Average_: **kama**
 * _Linear Regression_: **linreg**
+* _McGinley Dynamic_: **mcgd**
 * _Midpoint_: **midpoint**
 * _Midprice_: **midprice**
 * _Open-High-Low-Close Average_: **ohlc4**
@@ -656,8 +657,9 @@ result = ta.cagr(df.close)
 * _Drawdown_ (**drawdown**) shows the peak-to-trough decline during a specific period for an investment,
 trading account, or fund. See: ```help(ta.drawdown)```
 * _Gann High-Low Activator_ (**hilo**) was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
+* _McGinley Dynamic_ (**mcgd**) is an overlap indicator developed by John R. McGinley, a Certified Market Technician. See: ```help(ta.mcgd)```
+* _Price Volume Rank_ (**pvr**) was created by Anthony J. Macek. See: ```help(ta.pvr)```
 * _Quantitative Qualitative Estimation_ (**qqe**) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
-* _Price Volume Rank_ (**pvr**) was created by Anthony J. Macek and is described in his
 article in the June, 1994 issue of Technical Analysis of Stocks & Commodities Magazine. See: ```help(ta.pvr)```
 * _Relative Strength Xtra_ (**rsx**) is based on the popular RSI indicator and inspired by the work Jurik Research. See: ```help(ta.rsx)```
 * _Ehler's Super Smoother Filter_ (**ssf**). Ehler's solution to reduce lag and remove aliasing noise compared to other common moving average indicators. See: ```help(ta.ssf)```
