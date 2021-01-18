@@ -13,6 +13,7 @@ from numpy import corrcoef as npCorrcoef
 from numpy import dot as npDot
 from numpy import exp as npExp
 from numpy import log as npLog
+from numpy import NaN as npNaN
 from numpy import ndarray as npNdArray
 from numpy import seterr
 from numpy import sqrt as npSqrt
@@ -42,7 +43,7 @@ def combination(**kwargs: dict) -> int:
     return numerator // denominator
 
 
-def fibonacci(n: int = 2, **kwargs) -> npNdArray:
+def fibonacci(n: int = 2, **kwargs: dict) -> npNdArray:
     """Fibonacci Sequence as a numpy array"""
     n = int(fabs(n)) if n >= 0 else 2
 
@@ -110,7 +111,7 @@ def log_geometric_mean(series: Series) -> float:
         return 0
 
 
-def pascals_triangle(n: int = None, **kwargs) -> npNdArray:
+def pascals_triangle(n: int = None, **kwargs: dict) -> npNdArray:
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -138,7 +139,7 @@ def pascals_triangle(n: int = None, **kwargs) -> npNdArray:
     return triangle
 
 
-def symmetric_triangle(n: int = None, **kwargs) -> Optional[List[int]]:
+def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:
     """Symmetric Triangle with n >= 2
 
     Returns a numpy array of the nth row of Symmetric Triangle.
@@ -184,7 +185,7 @@ def zero(x: Tuple[int, float]) -> Tuple[int, float]:
 # TESTING
 
 
-def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
+def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs: dict) -> DataFrame:
     """DataFrame Correlation Analysis helper"""
     corr_method = kwargs.pop("corr_method", "pearson")
 
@@ -207,26 +208,29 @@ def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
 # PRIVATE
 def _linear_regression_np(x: Series, y: Series) -> dict:
     """Simple Linear Regression in Numpy for two 1d arrays for environments without the sklearn package."""
-    m = x.size
+    result = {"a": npNaN, "b": npNaN, "r": npNaN, "t": npNaN, "line": npNaN}
     x_sum = x.sum()
     y_sum = y.sum()
 
-    # 1st row, 2nd col value corr(x, y)
-    r = npCorrcoef(x, y)[0, 1]
+    if int(x_sum) != 0:
+        # 1st row, 2nd col value corr(x, y)
+        r = npCorrcoef(x, y)[0, 1]
 
-    r_mix = m * (x * y).sum() - x_sum * y_sum
-    b = r_mix / (m * (x * x).sum() - x_sum * x_sum)
-    a = y.mean() - b * x.mean()
-    line = a + b * x
+        m = x.size
+        r_mix = m * (x * y).sum() - x_sum * y_sum
+        b = r_mix // (m * (x * x).sum() - x_sum * x_sum)
+        a = y.mean() - b * x.mean()
+        line = a + b * x
 
-    _np_err = seterr()
-    seterr(divide="ignore", invalid="ignore")
-    result = {
-        "a": a, "b": b, "r": r,
-        "t": r / npSqrt((1 - r * r) / (m - 2)),
-        "line": line,
-    }
-    seterr(divide=_np_err["divide"], invalid=_np_err["invalid"])
+        _np_err = seterr()
+        seterr(divide="ignore", invalid="ignore")
+        result = {
+            "a": a, "b": b, "r": r,
+            "t": r / npSqrt((1 - r * r) / (m - 2)),
+            "line": line,
+        }
+        seterr(divide=_np_err["divide"], invalid=_np_err["invalid"])
+
     return result
 
 def _linear_regression_sklearn(x: Series, y: Series) -> dict:

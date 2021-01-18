@@ -116,6 +116,7 @@ env/**
 pandas_ta/_wrapper.py
 
 # twopirllc stuff
+ta-lib/
 AlphaVantageAPI/
 
 data/datas.csv

@@ -9,8 +9,8 @@ from .context import pandas_ta
 from unittest import skip, skipUnless, TestCase
 from pandas import DataFrame
 
-
-cores = 4
+# Strategy Testing Parameters
+cores = cpu_count()
 cumulative = False
 speed_table = False
 strategy_timed = False

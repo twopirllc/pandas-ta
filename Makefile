@@ -29,3 +29,4 @@ test_ta:
 
 test_utils:
 	python -m unittest -v -f tests/test_utils.py
+	python -m unittest -v -f tests/test_utils_metrics.py

@@ -39,7 +39,7 @@ def drawdown(close, offset=None, **kwargs) -> DataFrame:
         dd.fillna(method=kwargs["fill_method"], inplace=True)
         dd_pct.fillna(method=kwargs["fill_method"], inplace=True)
         dd_log.fillna(method=kwargs["fill_method"], inplace=True)
-        
+
     # Name and Categorize it
     dd.name = "DD"
     dd_pct.name = f"{dd.name}_PCT"

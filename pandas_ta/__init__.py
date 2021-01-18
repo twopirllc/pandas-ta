@@ -2,11 +2,13 @@ name = "pandas_ta"
 """
 .. moduleauthor:: Kevin Johnson
 """
+from importlib.util import find_spec
 from pkg_resources import get_distribution, DistributionNotFound
 import os.path
 
+
+_dist = get_distribution("pandas_ta")
 try:
-    _dist = get_distribution("pandas_ta")
     # Normalize case for Windows systems
     dist_loc = os.path.normcase(_dist.location)
     here = os.path.normcase(__file__)
@@ -18,7 +20,6 @@ except DistributionNotFound:
 
 version = __version__ = _dist.version
 
-from importlib.util import find_spec
 
 Imports = {
     "scipy": find_spec("scipy") is not None,

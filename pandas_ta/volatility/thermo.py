@@ -62,7 +62,7 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
     thermo_ma.name = f"THERMOma{_props}"
     thermo_long.name = f"THERMOl{_props}"
     thermo_short.name = f"THERMOs{_props}"
-    
+
     thermo.category = thermo_ma.category = thermo_long.category = thermo_short.category = "volatility"
 
     # Prepare Dataframe to return
@@ -97,7 +97,7 @@ Calculation:
 
     thermo_long = thermo < (thermo_ma * long)
     thermo_short = thermo > (thermo_ma * short)
-    thermo_long = thermo_long.astype(int)  
+    thermo_long = thermo_long.astype(int)
     thermo_short = thermo_short.astype(int)
 
 Args:

@@ -2,6 +2,7 @@
 from typing import Tuple
 
 from numpy import log as npLog
+from numpy import NaN as npNaN
 from numpy import sqrt as npSqrt
 from pandas import Series, Timedelta
 
@@ -92,7 +93,7 @@ def log_max_drawdown(close: Series) -> float:
 
     Args:
         close (pd.Series): Series of 'close's
-    
+
     >>> result = ta.log_max_drawdown(close)
     """
     close = verify_series(close)
@@ -102,7 +103,7 @@ def log_max_drawdown(close: Series) -> float:
 
 def max_drawdown(close: Series, method:str = None, all:bool = False) -> float:
     """Maximum Drawdown from close. Default: 'dollar'.
-    
+
     Args:
         close (pd.Series): Series of 'close's
         method (str): Max DD calculation options: 'dollar', 'percent', 'log'. Default: 'dollar'
@@ -157,7 +158,7 @@ def optimal_leverage(
     return amount
 
 
-def pure_profit_score(close: Series) -> float:
+def pure_profit_score(close: Series) -> Tuple[float, int]:
     """Pure Profit Score of a series.
 
     Args:
@@ -169,7 +170,9 @@ def pure_profit_score(close: Series) -> float:
     close_index = Series(0, index=close.reset_index().index)
 
     r = linear_regression(close_index, close)["r"]
-    return r * cagr(close)
+    if r is not npNaN:
+        return r * cagr(close)
+    return 0
 
 
 def sharpe_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False, use_cagr: bool = False, period: int = RATE["TRADING_DAYS_PER_YEAR"]) -> float:
@@ -225,7 +228,7 @@ def volatility(close: Series, tf: str = "years", returns: bool = False, log: boo
     >>> result = ta.volatility(close, tf="years", returns=False, log=False, **kwargs)
     """
     close = verify_series(close)
-    
+
     if not returns:
         returns = percent_return(close=close) if not log else log_return(close=close)
     else:

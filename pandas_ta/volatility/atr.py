@@ -55,8 +55,8 @@ Calculation:
         length=14, drift=1, percent=False
     SMA = Simple Moving Average
     EMA = Exponential Moving Average
-    WMA = Weighted Moving Average 
-    WMA = Weighted Moving Average 
+    WMA = Weighted Moving Average
+    WMA = Weighted Moving Average
     RMA = WildeR's Moving Average
     TR = True Range
 
@@ -69,7 +69,7 @@ Calculation:
         ATR = WMA(tr, length)
     else:
         ATR = RMA(tr, length)
-        
+
     if percent:
         ATR *= 100 / close
 

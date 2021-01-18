@@ -29,23 +29,23 @@ def increasing(close, length=None, strict=None, asint=None, offset=None, **kwarg
     # Offset
     if offset != 0:
         increasing = increasing.shift(offset)
-    
+
     # Handle fills
     if "fillna" in kwargs:
         increasing.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         increasing.fillna(method=kwargs["fill_method"], inplace=True)
-    
+
     # Name and Categorize it
     increasing.name = f"{'S' if strict else ''}INC_{length}"
     increasing.category = "trend"
-    
+
     return increasing
 
 
 increasing.__doc__ = \
 """Increasing
-    
+
 Returns True if the series is increasing over a period, False otherwise. If the kwarg 'strict' is True, it returns True if it is continuously increasing over the period. When using the kwarg 'asint', then it returns 1 for True or 0 for False. 
 
 Calculation:
