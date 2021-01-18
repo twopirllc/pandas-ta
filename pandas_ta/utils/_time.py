@@ -53,7 +53,7 @@ def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -
     # today = Timestamp.utcnow()
     today = Timestamp.now()
     date = f"{today.day_name()} {today.month_name()} {today.day}, {today.year}"
-    
+
     _today = today.timetuple()
     exchange_time = f"{(_today.tm_hour + tz) % 24}:{_today.tm_min:02d}:{_today.tm_sec:02d}"
 

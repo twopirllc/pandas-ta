@@ -75,7 +75,7 @@ Category = {
     # Volume, "vp" or "Volume Profile" is unique
     "volume": [
         "ad", "adosc", "aobv", "cmf", "efi", "eom", "mfi", "nvi", "obv", "pvi",
-        "pvol", "pvt"
+        "pvol", "pvr", "pvt"
     ],
 }
 

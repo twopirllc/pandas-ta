@@ -147,7 +147,7 @@ class TestVolatility(TestCase):
         result = pandas_ta.thermo(self.high, self.low)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "THERMO_20_2_0.5")
-    
+
     def test_true_range(self):
         result = pandas_ta.true_range(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)

@@ -60,7 +60,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or both to columns names. Useful for Custom Chained Strategies.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
-* **UNDER DEVELOPMENT** Performance Metrics
+* **UNDER DEVELOPMENT:** Performance Metrics
 
 <br/>
 
@@ -590,7 +590,7 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example ATR](/images/SPY_ATR.png) |
 
-### **Volume** (13)
+### **Volume** (14)
 
 * _Accumulation/Distribution Index_: **ad**
 * _Accumulation/Distribution Oscillator_: **adosc**
@@ -603,6 +603,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _On-Balance Volume_: **obv**
 * _Positive Volume Index_: **pvi**
 * _Price-Volume_: **pvol**
+* _Price Volume Rank_: **pvr**
 * _Price Volume Trend_: **pvt**
 * _Volume Profile_: **vp**
 
@@ -612,8 +613,9 @@ Use parameter: cumulative=**True** for cumulative results.
 
 <br/><br/>
 
-# **Performance Metrics**
-_Performance Metrics_ are a **new** addition to the package. These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called conventionally. For Example:
+# **Performance Metrics** (BETA)
+_Performance Metrics_ are a **new** addition to the package and consequentially are likely unreliable. These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called conventionally. For Example:
+
 ```python
 import pandas_ta as ta
 result = ta.cagr(df.close)
@@ -654,6 +656,8 @@ result = ta.cagr(df.close)
 trading account, or fund. See: ```help(ta.drawdown)```
 * _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
 * _Quantitative Qualitative Estimation_ (**qqe**) The Quantitative Qualitative Estimation (QQE) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
+* _Price Volume Rank_ (**pvr**) Price Volume Rank (PVR) was created by Anthony J. Macek and is described in his
+article in the June, 1994 issue of Technical Analysis of Stocks & Commodities Magazine. See: ```help(ta.pvr)```
 * _Ehler's Super Smoother Filter_ (**ssf**). Ehler's solution to reduce lag and remove aliasing noise compared to other common moving average indicators. See: ```help(ta.ssf)```
 * _Elder's Thermometer_ (**thermo**) Elder's Thermometer measures price volatility. See: ```help(ta.thermo)```
 * _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade" issue of Stocks & Commodities Magazine. It is a moving average based trend indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
