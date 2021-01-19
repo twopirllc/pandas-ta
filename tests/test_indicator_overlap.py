@@ -331,7 +331,7 @@ class TestOverlap(TestCase):
     def test_vwap(self):
         result = pandas_ta.vwap(self.high, self.low, self.close, self.volume)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "VWAP")
+        self.assertEqual(result.name, "VWAP_D")
 
     def test_vwma(self):
         result = pandas_ta.vwma(self.close, self.volume)

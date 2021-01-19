@@ -2,33 +2,33 @@
 from .hlc3 import hlc3
 from pandas_ta.utils import get_offset, is_datetime_ordered, verify_series
 
-def vwap(high, low, close, volume, offset=None, **kwargs):
+def vwap(high, low, close, volume, anchor=None, offset=None, **kwargs):
     """Indicator: Volume Weighted Average Price (VWAP)"""
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     volume = verify_series(volume)
+    anchor = anchor.upper() if anchor and isinstance(anchor, str) and len(anchor) >= 1 else "D"
     offset = get_offset(offset)
 
     typical_price = hlc3(high=high, low=low, close=close)
-
     if not is_datetime_ordered(volume):
         print(f"[!] VWAP volume series is not datetime ordered. Results may not be as expected.")
     if not is_datetime_ordered(typical_price):
         print(f"[!] VWAP price series is not datetime ordered. Results may not be as expected.")
 
     # Calculate Result
-    weighted_price = typical_price * volume
-    vwap  = weighted_price.groupby(weighted_price.index.to_period("d")).cumsum()
-    vwap /= volume.groupby(volume.index.to_period("d")).cumsum()
+    wp = typical_price * volume
+    vwap  = wp.groupby(wp.index.to_period(anchor)).cumsum()
+    vwap /= volume.groupby(volume.index.to_period(anchor)).cumsum()
 
     # Offset
     if offset != 0:
         vwap = vwap.shift(offset)
 
     # Name & Category
-    vwap.name = "VWAP"
+    vwap.name = f"VWAP_{anchor}"
     vwap.category = "overlap"
 
     return vwap
@@ -56,7 +56,11 @@ Args:
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
-    offset (int): How many periods to offset the result.  Default: 0
+    anchor (str): How to anchor VWAP. Depending on the index values, it will
+        implement various Timeseries Offset Aliases as listed here:
+        https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
+        Default: "D".
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

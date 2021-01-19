@@ -1104,7 +1104,7 @@ class AnalysisIndicators(BasePandasObject):
         result = vidya(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def vwap(self, offset=None, **kwargs):
+    def vwap(self, anchor=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
@@ -1113,7 +1113,7 @@ class AnalysisIndicators(BasePandasObject):
         if not self.datetime_ordered:
             volume.index = self._df.index
 
-        result = vwap(high=high, low=low, close=close, volume=volume, offset=offset, **kwargs)
+        result = vwap(high=high, low=low, close=close, volume=volume, anchor=anchor, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def vwma(self, volume=None, length=None, offset=None, **kwargs):

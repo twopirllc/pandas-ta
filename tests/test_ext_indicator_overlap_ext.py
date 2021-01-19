@@ -150,7 +150,7 @@ class TestOverlapExtension(TestCase):
     def test_vwap_ext(self):
         self.data.ta.vwap(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "VWAP")
+        self.assertEqual(self.data.columns[-1], "VWAP_D")
 
     def test_vwma_ext(self):
         self.data.ta.vwma(append=True)
