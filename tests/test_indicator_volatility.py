@@ -47,7 +47,7 @@ class TestVolatility(TestCase):
     def test_atr(self):
         result = pandas_ta.atr(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "ATR_14")
+        self.assertEqual(result.name, "ATRr_14")
 
         try:
             expected = tal.ATR(self.high, self.low, self.close)
