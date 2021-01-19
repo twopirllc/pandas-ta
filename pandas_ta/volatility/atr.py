@@ -11,13 +11,12 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
     low = verify_series(low)
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
-    mamode = mamode if isinstance(mamode, str) else "rma"
+    mamode = mamode.lower() if mamode and isinstance(mamode, str) else "rma"
     drift = get_drift(drift)
     offset = get_offset(offset)
 
     # Calculate Result
-    _mode = ""
-    tr = true_range(high=high, low=low, close=close, drift=drift)    
+    tr = true_range(high=high, low=low, close=close, drift=drift)
     atr = ma(mamode, tr, length=length)
 
     percentage = kwargs.pop("percent", False)
@@ -35,7 +34,7 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
         atr.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    atr.name = f"ATR{_mode}_{length}{'p' if percentage else ''}"
+    atr.name = f"ATR{mamode[0]}_{length}{'p' if percentage else ''}"
     atr.category = "volatility"
 
     return atr
@@ -53,9 +52,8 @@ Sources:
 Calculation:
     Default Inputs:
         length=14, drift=1, percent=False
-    SMA = Simple Moving Average
     EMA = Exponential Moving Average
-    WMA = Weighted Moving Average
+    SMA = Simple Moving Average
     WMA = Weighted Moving Average
     RMA = WildeR's Moving Average
     TR = True Range
