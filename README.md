@@ -134,7 +134,8 @@ help(ta.log_return)
 
 # **Issues and Contributions**
 
-Thanks for trying **Pandas TA**!
+Thanks for using **Pandas TA**!
+<br/>
 
 * ### [Comments and Feedback](https://github.com/twopirllc/pandas-ta/issues)
     * Have you read **_this_** document?
@@ -147,13 +148,16 @@ Thanks for trying **Pandas TA**!
     * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/master/examples/PandasTA_Strategy_Examples.ipynb) Class**?
     * Documentation could _always_ be improved. Can you help contribute?
 
-* ### [Indicator or Feature Requests & Contributions](https://github.com/twopirllc/pandas-ta/issues)
-    * Please be as **detailed** as possible. Links, screenshots, and sometimes data samples are welcome.
+* ### [Bugs, Indicators or Feature Requests](https://github.com/twopirllc/pandas-ta/issues)
+    * First, search the _Closed_ Issues **before** you _Open_ a new Issue; it may have already been solved.
+    * Please be as **detailed** as possible _with_ reproducible code, links if any, applicable screenshots, errors, logs, and data samples. You **will** be asked again if you provide nothing.
         * You want a new indicator not currently listed.
         * You want an alternate version of an existing indicator.
         * The indicator does not match another website, library, broker platform, language, et al.
             * Do you have correlation analysis to back your claim?
             * Can you contribute?
+    * You will be asked to fill out an Issue even if you email my personal email address.
+
 
 <br/>
 
@@ -169,9 +173,9 @@ _Thank you for your contributions!_
 **Programming Conventions**
 ===========================
 
-**Pandas TA** has three primary "styles" of processing Technical Indicators for your use case and/or requirements. They are: _Conventional_, _DataFrame Extension_, and the _Pandas TA Strategy_. Each with increasing levels of abstraction for ease of use. As you become more familiar with **Pandas TA**, the simplicity and speed of using a _Pandas TA Strategy_ may become more apparent. Furthermore, you can create your own indicators through Chaining or Composition. Lastly, each indicator either returns a _Series_ or a _DataFrame_ in Uppercase Underscore format regardless of style.
+**Pandas TA** has three primary "styles" of processing Technical Indicators for your use case and/or requirements. They are: _Standard_, _DataFrame Extension_, and the _Pandas TA Strategy_. Each with increasing levels of abstraction for ease of use. As you become more familiar with **Pandas TA**, the simplicity and speed of using a _Pandas TA Strategy_ may become more apparent. Furthermore, you can create your own indicators through Chaining or Composition. Lastly, each indicator either returns a _Series_ or a _DataFrame_ in Uppercase Underscore format regardless of style.
 
-_Conventional_
+_Standard_
 ====================
 You explicitly define the input columns and take care of the output.
 
@@ -180,7 +184,7 @@ You explicitly define the input columns and take care of the output.
 * ```donchiandf = ta.donchian(df["HIGH"], df["low"], lower_length=10, upper_length=15)```
     * Returns a DataFrame named ```DC_10_15``` and column names: ```DCL_10_15, DCM_10_15, DCU_10_15```
 * ```ema10_ohlc4 = ta.ema(ta.ohlc4(df["Open"], df["High"], df["Low"], df["Close"]), length=10)```
-    * Conventional Chaining is possible but more explicit.
+    * Chaining indicators is possible but you have to be explicit.
     * Since it returns a Series named ```EMA_10```. If needed, you may need to uniquely name it.
 
 _Pandas TA DataFrame Extension_
@@ -616,7 +620,7 @@ Use parameter: cumulative=**True** for cumulative results.
 <br/><br/>
 
 # **Performance Metrics** (BETA)
-_Performance Metrics_ are a **new** addition to the package and consequentially are likely unreliable. These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called conventionally. For Example:
+_Performance Metrics_ are a **new** addition to the package and consequentially are likely unreliable. **Use at your own risk.** These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called the Standard way. For Example:
 
 ```python
 import pandas_ta as ta

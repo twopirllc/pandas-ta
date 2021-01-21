@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from multiprocessing import cpu_count, Pool
 from time import perf_counter
-from typing import List
+from typing import List, Tuple
 
 import pandas as pd
 from numpy import ndarray as npndarray
@@ -242,6 +242,7 @@ class AnalysisIndicators(BasePandasObject):
             alias: str = None, timed: bool = False,
             verbose: bool = False, **kwargs
         ):
+        if verbose: print(f"Pandas TA - Technical Analysis Indicators - v{self.version}")
         try:
             if isinstance(kind, str):
                 kind = kind.lower()
@@ -335,7 +336,7 @@ class AnalysisIndicators(BasePandasObject):
         return version
 
     # Private DataFrame Methods
-    def _add_prefix_suffix(self, result=None, **kwargs):
+    def _add_prefix_suffix(self, result=None, **kwargs) -> None:
         """Add prefix and/or suffix to the result columns"""
         if result is None:
             return
@@ -355,7 +356,7 @@ class AnalysisIndicators(BasePandasObject):
                     prefix + column + suffix for column in result.columns
                 ]
 
-    def _append(self, result=None, **kwargs):
+    def _append(self, result=None, **kwargs) -> None:
         """Appends a Pandas Series or DataFrame columns to self._df."""
         if "append" in kwargs and kwargs["append"]:
             df = self._df
@@ -425,7 +426,7 @@ class AnalysisIndicators(BasePandasObject):
         """Returns indicators by Categorical name."""
         return Category[name] if name in self.categories else None
 
-    def _mp_worker(self, arguments):
+    def _mp_worker(self, arguments: tuple):
         """Multiprocessing Worker to handle different Methods."""
         method, args, kwargs = arguments
 
@@ -434,7 +435,7 @@ class AnalysisIndicators(BasePandasObject):
         else:
             return getattr(self, method)(*args, **kwargs)[0]
 
-    def _post_process(self, result, **kwargs) -> (pd.Series, pd.DataFrame):
+    def _post_process(self, result, **kwargs) -> Tuple[pd.Series, pd.DataFrame]:
         """Applies any additional modifications to the DataFrame
         * Applies prefixes and/or suffixes
         * Appends the result to main DataFrame
