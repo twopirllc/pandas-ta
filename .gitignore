@@ -116,9 +116,22 @@ env/**
 pandas_ta/_wrapper.py
 
 # twopirllc stuff
+notes.md
+setup.cfg
+doc.py
+pandas_pips
+reqs.txt
+requirements.txt
+driver.py
+qd.py
+
+# Local package installs
 ta-lib/
 AlphaVantageAPI/
 
+# Data & NB Exclusions
+*.ipynb
+*.csv
 data/datas.csv
 data/f500.csv
 data/GLD_D_tv.csv
@@ -129,33 +142,4 @@ data/SPY_D_TV2.csv
 data/SPY_D_TV3.csv
 data/TV_5min.csv
 data/tulip.csv
-
-examples/cache.sqlite
-examples/taplot.py
-examples/alpaca_trader.py
-examples/ChartTA.ipynb
-examples/charting.ipynb
-examples/ib_trader.ipynb
-examples/example2.ipynb
 examples/*.csv
-
-setup.cfg
-note.md
-driver.py
-doc.py
-bt.ipynb
-scratch.ipynb
-ta_extension.ipynb
-scratch.ipynb
-kerasmodeller.ipynb
-Charts.ipynb
-pandas_pips
-reqs.txt
-requirements.txt
-qd.py
-tds.py
-simple.ipynb
-ta.json
-
-# Issue Data
-*.csv
