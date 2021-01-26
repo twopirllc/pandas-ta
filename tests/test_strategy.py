@@ -182,3 +182,38 @@ class TestStrategyMethods(TestCase):
     def test_volume_category(self):
         self.category = "Volume"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+
+    # @skip
+    def test_all_no_multiprocessing(self):
+        self.category = "All with No Multiprocessing"
+
+        cores = self.data.ta.cores
+        self.data.ta.cores = 0
+        self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
+        self.data.ta.cores = cores
+
+    # @skip
+    def test_custom_no_multiprocessing(self):
+        self.category = "Custom A with No Multiprocessing"
+
+        cores = self.data.ta.cores
+        self.data.ta.cores = 0
+
+        momo_bands_sma_ta = [
+            {"kind": "rsi"},  # 1
+            {"kind": "macd"},  # 3
+            {"kind": "sma", "length": 50},  # 1
+            {"kind": "sma", "length": 200 },  # 1
+            {"kind": "bbands", "length": 20},  # 3
+            {"kind": "log_return", "cumulative": True},  # 1
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
+        ]
+
+        custom = pandas_ta.Strategy(
+            "Commons with Cumulative Log Return EMA Chain",  # name
+            momo_bands_sma_ta,  # ta
+            "Common indicators with specific lengths and a chained indicator",  # description
+        )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+
+        self.data.ta.cores = cores

@@ -341,6 +341,7 @@ df.ta.strategy(verbose=True)
 df.ta.strategy(timed=True)
 
 # Choose the number of cores to use. Default is all available cores.
+# For no multiprocessing, set this value to 0.
 df.ta.cores = 4
 
 # Maybe you do not want certain indicators.
@@ -404,6 +405,9 @@ df.ta.categories
 # Set the number of cores to use for strategy multiprocessing
 # Defaults to the number of cpus you have.
 df.ta.cores = 4
+
+# Set the number of cores to 0 for no multiprocessing.
+df.ta.cores = 0
 
 # Returns the number of cores you set or your default number of cpus.
 df.ta.cores
