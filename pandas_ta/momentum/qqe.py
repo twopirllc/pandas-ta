@@ -90,28 +90,28 @@ def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, o
     if "fillna" in kwargs:
         rsi_ma.fillna(kwargs["fillna"], inplace=True)
         qqe.fillna(kwargs["fillna"], inplace=True)
-        long.fillna(kwargs["fillna"], inplace=True)
-        short.fillna(kwargs["fillna"], inplace=True)
+        qqe_long.fillna(kwargs["fillna"], inplace=True)
+        qqe_short.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         rsi_ma.fillna(method=kwargs["fill_method"], inplace=True)
         qqe.fillna(method=kwargs["fill_method"], inplace=True)
-        long.fillna(method=kwargs["fill_method"], inplace=True)
-        short.fillna(method=kwargs["fill_method"], inplace=True)
+        qqe_long.fillna(method=kwargs["fill_method"], inplace=True)
+        qqe_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     _props = f"{_mode}_{length}_{smooth}_{factor}"
     qqe.name = f"QQE{_props}"
     rsi_ma.name = f"QQE{_props}_RSI{_mode.upper()}MA"
-    long.name = f"QQEl{_props}"
-    short.name = f"QQEs{_props}"
+    qqe_long.name = f"QQEl{_props}"
+    qqe_short.name = f"QQEs{_props}"
     qqe.category = rsi_ma.category = "momentum"
-    long.category = short.category = qqe.category
+    qqe_long.category = qqe_short.category = qqe.category
 
     # Prepare DataFrame to return
     data = {
         qqe.name: qqe, rsi_ma.name: rsi_ma,
         # long.name: long, short.name: short
-        long.name: qqe_long, short.name: qqe_short
+        qqe_long.name: qqe_long, qqe_short.name: qqe_short
     }
     df = DataFrame(data)
     df.name = f"QQE{_props}"
