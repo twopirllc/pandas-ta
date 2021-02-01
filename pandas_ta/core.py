@@ -364,9 +364,7 @@ class AnalysisIndicators(BasePandasObject):
             if df is None or result is None:
                 return
             elif len(na_columns):
-                print(
-                    f"[X] {result.name} column(s) values are all na: {', '.join(na_columns)}"
-                )
+                print(f"[X] {result.name} column(s) values are all na: {', '.join(na_columns)}")
                 return
             else:
                 if isinstance(result, pd.DataFrame):
