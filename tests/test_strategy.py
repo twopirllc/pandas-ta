@@ -6,11 +6,11 @@ from time import perf_counter
 from .config import sample_data
 from .context import pandas_ta
 
-from unittest import skip, TestCase
+from unittest import skip, skipUnless, TestCase
 from pandas import DataFrame
 
-
-cores = 4
+# Strategy Testing Parameters
+cores = cpu_count()
 cumulative = False
 speed_table = False
 strategy_timed = False
@@ -67,11 +67,11 @@ class TestStrategyMethods(TestCase):
         self.category = "All"
         self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
 
-    @skip
+    @skipUnless(verbose, "verbose mode only")
     def test_all_strategy(self):
         self.data.ta.strategy(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
 
-    @skip
+    @skipUnless(verbose, "verbose mode only")
     def test_all_name_strategy(self):
         self.category = "All"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)

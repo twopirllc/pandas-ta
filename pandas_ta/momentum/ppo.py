@@ -14,7 +14,6 @@ def ppo(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kw
     scalar = float(scalar) if scalar else 100
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else fast
     offset = get_offset(offset)
 
     # Calculate Result

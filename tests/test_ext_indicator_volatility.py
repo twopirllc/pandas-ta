@@ -31,7 +31,7 @@ class TestVolatilityExtension(TestCase):
     def test_atr_ext(self):
         self.data.ta.atr(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "ATR_14")
+        self.assertEqual(self.data.columns[-1], "ATRr_14")
 
     def test_bbands_ext(self):
         self.data.ta.bbands(append=True)
@@ -46,7 +46,7 @@ class TestVolatilityExtension(TestCase):
     def test_kc_ext(self):
         self.data.ta.kc(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["KCL_20_2", "KCB_20_2", "KCU_20_2"])
+        self.assertEqual(list(self.data.columns[-3:]), ["KCLe_20_2", "KCBe_20_2", "KCUe_20_2"])
 
     def test_massi_ext(self):
         self.data.ta.massi(append=True)

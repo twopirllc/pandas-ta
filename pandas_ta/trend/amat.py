@@ -2,7 +2,7 @@
 from pandas import DataFrame
 from .long_run import long_run
 from .short_run import short_run
-from pandas_ta.overlap import ema, hma, linreg, rma, sma, wma
+from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -13,28 +13,12 @@ def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=No
     fast = int(fast) if fast and fast > 0 else 8
     slow = int(slow) if slow and slow > 0 else 21
     lookback = int(lookback) if lookback and lookback > 0 else 2
-    mamode = mamode.lower() if mamode else "ema"
+    mamode = mamode if isinstance(mamode, str) else "ema"
     offset = get_offset(offset)
 
-    # Calculate Result
-    if mamode == "hma":
-        fast_ma = hma(close=close, length=fast, **kwargs)
-        slow_ma = hma(close=close, length=slow, **kwargs)
-    elif mamode == "linreg":
-        fast_ma = linreg(close=close, length=fast, **kwargs)
-        slow_ma = linreg(close=close, length=slow, **kwargs)
-    elif mamode == "rma":
-        fast_ma = rma(close=close, length=fast, **kwargs)
-        slow_ma = rma(close=close, length=slow, **kwargs)
-    elif mamode == "sma":
-        fast_ma = sma(close=close, length=fast, **kwargs)
-        slow_ma = sma(close=close, length=slow, **kwargs)
-    elif mamode == "wma":
-        fast_ma = wma(close=close, length=fast, **kwargs)
-        slow_ma = wma(close=close, length=slow, **kwargs)
-    else:  # "ema"
-        fast_ma = ema(close=close, length=fast, **kwargs)
-        slow_ma = ema(close=close, length=slow, **kwargs)
+    # # Calculate Result
+    fast_ma = ma(mamode, close, length=fast, **kwargs)
+    slow_ma = ma(mamode, close, length=slow, **kwargs)
 
     mas_long = long_run(fast_ma, slow_ma, length=lookback)
     mas_short = short_run(fast_ma, slow_ma, length=lookback)
@@ -54,9 +38,10 @@ def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=No
         mas_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Prepare DataFrame to return
+    _lmode = mamode.lower()[0]
     amatdf = DataFrame({
-        f"AMAT_{mas_long.name}": mas_long,
-        f"AMAT_{mas_short.name}": mas_short
+        f"AMAT{_lmode}_{mas_long.name}": mas_long,
+        f"AMAT{_lmode}_{mas_short.name}": mas_short
     })
 
     # Name and Categorize it

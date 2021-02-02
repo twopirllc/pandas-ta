@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import ema, rma, sma, wma
 from .true_range import true_range
+from pandas_ta.overlap import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
@@ -11,21 +11,13 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
     low = verify_series(low)
     close = verify_series(close)
     length = int(length) if length and length > 0 else 14
-    mamode = mamode = mamode.lower() if mamode else "rma"
+    mamode = mamode.lower() if mamode and isinstance(mamode, str) else "rma"
     drift = get_drift(drift)
     offset = get_offset(offset)
 
     # Calculate Result
-    _mode = ""
     tr = true_range(high=high, low=low, close=close, drift=drift)
-    if mamode == "ema":
-        atr, _mode = ema(tr, length=length), "ema"
-    elif mamode == "sma":
-        atr, _mode = sma(tr, length=length), "sma"
-    elif mamode == "wma":
-        atr, _mode = wma(tr, length=length), "wma"
-    else: # "rma"
-        atr = rma(tr, length=length)
+    atr = ma(mamode, tr, length=length)
 
     percentage = kwargs.pop("percent", False)
     if percentage:
@@ -42,7 +34,7 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
         atr.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    atr.name = f"ATR{_mode}_{length}{'p' if percentage else ''}"
+    atr.name = f"ATR{mamode[0]}_{length}{'p' if percentage else ''}"
     atr.category = "volatility"
 
     return atr
@@ -60,10 +52,9 @@ Sources:
 Calculation:
     Default Inputs:
         length=14, drift=1, percent=False
-    SMA = Simple Moving Average
     EMA = Exponential Moving Average
-    WMA = Weighted Moving Average 
-    WMA = Weighted Moving Average 
+    SMA = Simple Moving Average
+    WMA = Weighted Moving Average
     RMA = WildeR's Moving Average
     TR = True Range
 
@@ -76,7 +67,7 @@ Calculation:
         ATR = WMA(tr, length)
     else:
         ATR = RMA(tr, length)
-        
+
     if percent:
         ATR *= 100 / close
 

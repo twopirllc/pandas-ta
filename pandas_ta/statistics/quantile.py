@@ -37,9 +37,9 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 30
-    q (float): The quantile.  Default: 0.5
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 30
+    q (float): The quantile. Default: 0.5
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

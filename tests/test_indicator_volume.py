@@ -72,7 +72,7 @@ class TestVolume(TestCase):
     def test_aobv(self):
         result = pandas_ta.aobv(self.close, self.volume_)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "AOBV_EMA_4_12_2_2_2")
+        self.assertEqual(result.name, "AOBVe_4_12_2_2_2")
 
     def test_cmf(self):
         result = pandas_ta.cmf(self.high, self.low, self.close, self.volume_)
@@ -133,6 +133,16 @@ class TestVolume(TestCase):
         result = pandas_ta.pvol(self.close, self.volume_)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "PVOL")
+
+    def test_pvr(self):
+        result = pandas_ta.pvr(self.close, self.volume_)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "PVR")
+        # sample indicator values from SPY
+        self.assertEqual(result[0], 1)
+        self.assertEqual(result[1], 3)
+        self.assertEqual(result[4], 2)
+        self.assertEqual(result[6], 4)
 
     def test_pvt(self):
         result = pandas_ta.pvt(self.close, self.volume_)

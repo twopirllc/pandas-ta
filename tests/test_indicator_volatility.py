@@ -47,7 +47,7 @@ class TestVolatility(TestCase):
     def test_atr(self):
         result = pandas_ta.atr(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "ATR_14")
+        self.assertEqual(result.name, "ATRr_14")
 
         try:
             expected = tal.ATR(self.high, self.low, self.close)
@@ -99,7 +99,7 @@ class TestVolatility(TestCase):
     def test_kc(self):
         result = pandas_ta.kc(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "KC_20_2")
+        self.assertEqual(result.name, "KCe_20_2")
 
         result = pandas_ta.kc(self.high, self.low, self.close, mamode="sma")
         self.assertIsInstance(result, DataFrame)
@@ -147,7 +147,7 @@ class TestVolatility(TestCase):
         result = pandas_ta.thermo(self.high, self.low)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "THERMO_20_2_0.5")
-    
+
     def test_true_range(self):
         result = pandas_ta.true_range(self.high, self.low, self.close)
         self.assertIsInstance(result, Series)

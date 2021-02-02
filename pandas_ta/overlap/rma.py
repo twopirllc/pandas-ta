@@ -11,7 +11,7 @@ def rma(close, length=None, offset=None, **kwargs):
     alpha = (1.0 / length) if length > 0 else 0.5
 
     # Calculate Result
-    rma = close.ewm(alpha=alpha).mean()
+    rma = close.ewm(alpha=alpha, min_periods=length).mean()
 
     # Offset
     if offset != 0:

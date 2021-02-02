@@ -40,15 +40,7 @@ class TestVolumeExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(
             list(self.data.columns[-7:]),
-            [
-                "OBV",
-                "OBV_min_2",
-                "OBV_max_2",
-                "OBV_EMA_4",
-                "OBV_EMA_12",
-                "AOBV_LR_2",
-                "AOBV_SR_2",
-            ],
+            ["OBV", "OBV_min_2", "OBV_max_2", "OBVe_4", "OBVe_12", "AOBV_LR_2", "AOBV_SR_2"],
         )
         # Remove "OBV" so it does not interfere with test_obv_ext()
         self.data.drop("OBV", axis=1, inplace=True)
@@ -77,14 +69,10 @@ class TestVolumeExtension(TestCase):
         self.data.ta.nvi(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "NVI_1")
-        # print(f"\nNVI: {self.data.columns[-1]}")
-        # print(f"NVI: {self.data.columns}")
 
     def test_obv_ext(self):
         self.data.ta.obv(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        # print(f"\nOBV: {self.data.columns[-1]}")
-        # print(f"OBV: {self.data.columns}")
         self.assertEqual(self.data.columns[-1], "OBV")
 
     def test_pvi_ext(self):
@@ -96,6 +84,11 @@ class TestVolumeExtension(TestCase):
         self.data.ta.pvol(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "PVOL")
+
+    def test_pvr_ext(self):
+        self.data.ta.pvr(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "PVR")
 
     def test_pvt_ext(self):
         self.data.ta.pvt(append=True)

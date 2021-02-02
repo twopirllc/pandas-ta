@@ -26,7 +26,7 @@ class TestTrendExtension(TestCase):
     def test_amat_ext(self):
         self.data.ta.amat(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ["AMAT_LR_2", "AMAT_SR_2"])
+        self.assertEqual(list(self.data.columns[-2:]), ["AMATe_LR_2", "AMATe_SR_2"])
 
     def test_aroon_ext(self):
         self.data.ta.aroon(append=True)
@@ -57,6 +57,10 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "DEC_1")
 
+        self.data.ta.decreasing(length=3, strict=True, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "SDEC_3")
+
     def test_dpo_ext(self):
         self.data.ta.dpo(append=True)
         self.assertIsInstance(self.data, DataFrame)
@@ -66,6 +70,10 @@ class TestTrendExtension(TestCase):
         self.data.ta.increasing(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "INC_1")
+
+        self.data.ta.increasing(length=3, strict=True, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "SINC_3")
 
     def test_long_run_ext(self):
         # Nothing passed, return self

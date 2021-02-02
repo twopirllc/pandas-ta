@@ -15,16 +15,16 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
     # Calculate Result
     diff = non_zero_range(close, open_)
 
-    if ma in [None, "sma"]:
-        qstick = sma(diff, length=length)
     if ma == "dema":
         qstick = dema(diff, length=length, **kwargs)
-    if ma == "ema":
+    elif ma == "ema":
         qstick = ema(diff, length=length, **kwargs)
-    if ma == "hma":
+    elif ma == "hma":
         qstick = hma(diff, length=length)
-    if ma == "rma":
+    elif ma == "rma":
         qstick = rma(diff, length=length)
+    else: # "sma"
+        qstick = sma(diff, length=length)
 
     # Offset
     if offset != 0:

@@ -13,6 +13,7 @@ def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scala
     scalar = float(scalar) if scalar and scalar > 0 else 100
     refined = False if refined is None else True
     thirds = False if thirds is None else True
+    mamode = mamode if isinstance(mamode, str) else "ema"
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -21,30 +22,14 @@ def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scala
         low = verify_series(low)
 
     # Calculate Result
-    _mode = ""
     if refined:
-        rvi_ = rvi(
-            close,
-            high=high,
-            low=low,
-            length=rvi_length,
-            scalar=scalar,
-            refined=refined,
-            mamode=mamode,
-        )
         _mode = "r"
+        rvi_ = rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, refined=refined, mamode=mamode)
     elif thirds:
-        rvi_ = rvi(
-            close,
-            high=high,
-            low=low,
-            length=rvi_length,
-            scalar=scalar,
-            thirds=thirds,
-            mamode=mamode,
-        )
         _mode = "t"
+        rvi_ = rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, thirds=thirds, mamode=mamode)
     else:
+        _mode = ""
         rvi_ = rvi(close, length=rvi_length, scalar=scalar, mamode=mamode)
 
     inertia = linreg(rvi_, length=length)

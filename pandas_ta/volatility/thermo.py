@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-from pandas import DataFrame, Series
-from pandas_ta.overlap import ema, sma
+from pandas import DataFrame
+from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series, get_drift
 
 
@@ -10,12 +10,12 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
     # Validate arguments
     high = verify_series(high)
     low = verify_series(low)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
     length = int(length) if length and length > 0 else 20
     long = float(long) if long and long > 0 else 2
     short = float(short) if short and short > 0 else 0.5
-    mamode = mamode.lower() if mamode else "ema"
+    mamode = mamode if isinstance(mamode, str) else "ema"
+    drift = get_drift(drift)
+    offset = get_offset(offset)
     asint = kwargs.pop("asint", True)
 
     # Calculate Result
@@ -26,12 +26,7 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
     thermo = thermo.where(thermoH < thermoL, thermoH)
     thermo.index = high.index
 
-    if mamode == "sma":
-        thermo_ma = sma(thermo, length)
-    if mamode == "hma":
-        thermo_ma = hma(thermo, length)
-    else: # "ema"
-        thermo_ma = ema(thermo, length)
+    thermo_ma = ma(mamode, thermo, length=length)
 
     # Create signals
     thermo_long = thermo < (thermo_ma * long)
@@ -67,7 +62,7 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
     thermo_ma.name = f"THERMOma{_props}"
     thermo_long.name = f"THERMOl{_props}"
     thermo_short.name = f"THERMOs{_props}"
-    
+
     thermo.category = thermo_ma.category = thermo_long.category = thermo_short.category = "volatility"
 
     # Prepare Dataframe to return
@@ -102,7 +97,7 @@ Calculation:
 
     thermo_long = thermo < (thermo_ma * long)
     thermo_short = thermo > (thermo_ma * short)
-    thermo_long = thermo_long.astype(int)  
+    thermo_long = thermo_long.astype(int)
     thermo_short = thermo_short.astype(int)
 
 Args:

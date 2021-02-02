@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import ema, hma, rma, sma, wma
+from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -8,22 +8,12 @@ def bias(close, length=None, mamode=None, offset=None, **kwargs):
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 26
-    mamode = mamode.lower() if mamode else None
+    mamode = mamode if isinstance(mamode, str) else "sma"
     offset = get_offset(offset)
 
     # Calculate Result
-    if mamode == "ema":
-        ma = ema(close, length=length, **kwargs)
-    elif mamode == "hma":
-        ma = hma(close, length=length, **kwargs)
-    elif mamode == "rma":
-        ma = rma(close, length=length, **kwargs)
-    elif mamode == "wma":
-        ma = wma(close, length=length, **kwargs)
-    else: # "sma"
-        ma = sma(close, length=length, **kwargs)
-
-    bias = (close / ma) - 1
+    bma = ma(mamode, close, length=length, **kwargs)
+    bias = (close / bma) - 1
 
     # Offset
     if offset != 0:
@@ -36,7 +26,7 @@ def bias(close, length=None, mamode=None, offset=None, **kwargs):
         bias.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    bias.name = f"BIAS_{ma.name}"
+    bias.name = f"BIAS_{bma.name}"
     bias.category = "momentum"
 
     return bias

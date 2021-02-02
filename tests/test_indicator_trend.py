@@ -113,6 +113,10 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "DEC_1")
 
+        result = pandas_ta.decreasing(self.close, length=3, strict=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "SDEC_3")
+
     def test_dpo(self):
         result = pandas_ta.dpo(self.close)
         self.assertIsInstance(result, Series)
@@ -122,6 +126,10 @@ class TestTrend(TestCase):
         result = pandas_ta.increasing(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "INC_1")
+
+        result = pandas_ta.increasing(self.close, length=3, strict=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "SINC_3")
 
     def test_long_run(self):
         result = pandas_ta.long_run(self.close, self.open)

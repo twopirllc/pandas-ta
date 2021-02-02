@@ -2,15 +2,27 @@
 from pandas_ta.utils import get_offset, verify_series
 
 
-def decreasing(close, length=None, asint=True, offset=None, **kwargs):
+def decreasing(close, length=None, strict=None, asint=None, offset=None, **kwargs):
     """Indicator: Decreasing"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 1
+    strict = strict if isinstance(strict, bool) else False
+    asint = asint if isinstance(asint, bool) else True
     offset = get_offset(offset)
 
+    def stricly_decreasing(series, n):
+        return all([i > j for i,j in zip(series[-n:], series[1:])])
+
     # Calculate Result
-    decreasing = close.diff(length) < 0
+    if strict:
+        # Returns value as float64? Have to cast to bool
+        decreasing = close.rolling(length, min_periods=length).apply(stricly_decreasing, args=(length,), raw=False)
+        decreasing.fillna(0, inplace=True)
+        decreasing = decreasing.astype(bool)
+    else:
+        decreasing = close.diff(length) < 0
+
     if asint:
         decreasing = decreasing.astype(int)
 
@@ -25,7 +37,7 @@ def decreasing(close, length=None, asint=True, offset=None, **kwargs):
         decreasing.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    decreasing.name = f"DEC_{length}"
+    decreasing.name = f"{'S' if strict else ''}DEC_{length}"
     decreasing.category = "trend"
 
     return decreasing
@@ -34,21 +46,23 @@ def decreasing(close, length=None, asint=True, offset=None, **kwargs):
 decreasing.__doc__ = \
 """Decreasing
 
-Returns True or False if the series is decreasing over a periods.  By default,
-it returns True and False as 1 and 0 respectively with kwarg 'asint'.
-
-Sources:
+Returns True if the series is decreasing over a period, False otherwise. If the kwarg 'strict' is True, it returns True if it is continuously decreasing over the period. When using the kwarg 'asint', then it returns 1 for True or 0 for False. 
 
 Calculation:
-    decreasing = close.diff(length) < 0
+    if strict:
+        decreasing = all(i > j for i, j in zip(close[-length:], close[1:]))
+    else:
+        decreasing = close.diff(length) < 0
+
     if asint:
         decreasing = decreasing.astype(int)
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 1
-    asint (bool): Returns as binary.  Default: True
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 1
+    asint (bool): Returns as binary. Default: True
+    strict (bool): If True, checks if the series is continuously decreasing over the period. Default: False
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

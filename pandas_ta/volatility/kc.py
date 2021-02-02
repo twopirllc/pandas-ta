@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from numpy import sqrt as npsqrt
 from pandas import DataFrame
-from .atr import atr
 from .true_range import true_range
-from pandas_ta.overlap import ema, hlc3, sma
-from pandas_ta.utils import get_offset, high_low_range, non_zero_range, verify_series
+from pandas_ta.overlap import ma
+from pandas_ta.utils import get_offset, high_low_range, verify_series
 
 
 def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **kwargs):
@@ -15,7 +13,7 @@ def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **k
     close = verify_series(close)
     length = int(length) if length and length > 0 else 20
     scalar = float(scalar) if scalar and scalar > 0 else 2
-    mamode = mamode.lower() if mamode else None
+    mamode = mamode if isinstance(mamode, str) else "ema"
     offset = get_offset(offset)
 
     # Calculate Result
@@ -25,14 +23,8 @@ def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **k
     else:
         range_ = high_low_range(high, low)
 
-    _mode = ""
-    if mamode == "sma":
-        basis = sma(close, length)
-        band = sma(range_, length=length)
-        _mode += "s"
-    elif mamode is None or mamode == "ema":
-        basis = ema(close, length=length)
-        band = ema(range_, length=length)
+    basis = ma(mamode, close, length=length)
+    band = ma(mamode, range_, length=length)
 
     lower = basis - scalar * band
     upper = basis + scalar * band
@@ -54,7 +46,7 @@ def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **k
         upper.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    _props = f"{_mode if len(_mode) else ''}_{length}_{scalar}"
+    _props = f"{mamode.lower()[0] if len(mamode) else ''}_{length}_{scalar}"
     lower.name = f"KCL{_props}"
     basis.name = f"KCB{_props}"
     upper.name = f"KCU{_props}"

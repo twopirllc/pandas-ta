@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from pandas_ta.overlap import ema, sma
+from pandas_ta.overlap import ma
 from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_offset, verify_series
 
@@ -11,17 +11,14 @@ def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
     close = verify_series(close)
     length = int(length) if length and length > 0 else 5
     std = float(std) if std and std > 0 else 2.0
-    mamode = mamode.lower() if mamode else "sma"
+    mamode = mamode if isinstance(mamode, str) else "sma"
     offset = get_offset(offset)
 
     # Calculate Result
     standard_deviation = stdev(close=close, length=length)
     deviations = std * standard_deviation
 
-    if mamode == "sma":
-        mid = sma(close=close, length=length, **kwargs)
-    else: # "ema"
-        mid = ema(close=close, length=length)
+    mid = ma(mamode, close, length=length, **kwargs)
 
     lower = mid - deviations
     upper = mid + deviations

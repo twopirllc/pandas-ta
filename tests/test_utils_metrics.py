@@ -3,7 +3,6 @@ from .context import pandas_ta
 
 from unittest import skip, TestCase
 
-from numpy import nan as npNaN
 from pandas import DataFrame
 
 
@@ -36,6 +35,12 @@ class TestUtilityMetrics(TestCase):
         self.assertIsInstance(result, float)
         self.assertGreaterEqual(result, 0)
 
+        result = pandas_ta.calmar_ratio(self.close, years=0)
+        self.assertIsNone(result)
+
+        result = pandas_ta.calmar_ratio(self.close, years=-2)
+        self.assertIsNone(result)
+
     def test_downside_deviation(self):
         result = pandas_ta.downside_deviation(self.pctret)
         self.assertIsInstance(result, float)
@@ -56,7 +61,6 @@ class TestUtilityMetrics(TestCase):
 
     def test_jensens_alpha(self):
         bench_return = self.pctret.sample(n=self.close.shape[0], random_state=1)
-    
         result = pandas_ta.jensens_alpha(self.close, bench_return)
         self.assertIsInstance(result, float)
         self.assertGreaterEqual(result, 0)
@@ -85,9 +89,15 @@ class TestUtilityMetrics(TestCase):
         self.assertIsInstance(result["percent"], float)
         self.assertIsInstance(result["log"], float)
 
+    def test_optimal_leverage(self):
+        result = pandas_ta.optimal_leverage(self.close)
+        self.assertIsInstance(result, int)
+        result = pandas_ta.optimal_leverage(self.close, log=True)
+        self.assertIsInstance(result, int)
+
     def test_pure_profit_score(self):
         result = pandas_ta.pure_profit_score(self.close)
-        self.assertIsInstance(result, float)
+        self.assertIsInstance(result, int or float)
         self.assertGreaterEqual(result, 0)
 
     def test_sharpe_ratio(self):
@@ -101,7 +111,13 @@ class TestUtilityMetrics(TestCase):
         self.assertGreaterEqual(result, 0)
 
     def test_volatility(self):
+        returns_ = pandas_ta.percent_return(self.close)
+        result = pandas_ta.utils.volatility(returns_, returns=True)
+        self.assertIsInstance(result, float)
+        self.assertGreaterEqual(result, 0)
+
         for tf in ["years", "months", "weeks", "days", "hours", "minutes", "seconds"]:
             result = pandas_ta.utils.volatility(self.close, tf)
-            self.assertIsInstance(result, float)
-            self.assertGreaterEqual(result, 0)
+            with self.subTest(tf=tf):
+                self.assertIsInstance(result, float)
+                self.assertGreaterEqual(result, 0)

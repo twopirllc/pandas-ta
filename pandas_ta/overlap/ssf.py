@@ -24,7 +24,7 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
         a0 = npExp(-x) # e^(-x)
         b0 = 2 * a0 * npCos(npSqrt(3) * x) # 2e^(-x)*cos(3^(.5) * x)
         c0 = a0 * a0 # e^(-2x)
-        
+
         c4 = c0 * c0 # e^(-4x)
         c3 = -c0 * (1 + b0) # -e^(-2x) * (1 + 2e^(-x)*cos(3^(.5) * x))
         c2 = c0 + b0 # e^(-2x) + 2e^(-x)*cos(3^(.5) * x)
