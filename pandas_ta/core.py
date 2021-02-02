@@ -361,11 +361,7 @@ class AnalysisIndicators(BasePandasObject):
         if "append" in kwargs and kwargs["append"]:
             df = self._df
             na_columns = self._check_na_columns()
-            if df is None or result is None:
-                return
-            elif len(na_columns):
-                print(f"[X] {result.name} column(s) values are all na: {', '.join(na_columns)}")
-                return
+            if df is None or result is None: return
             else:
                 if isinstance(result, pd.DataFrame):
                     # If specified in kwargs, rename the columns. If not, use

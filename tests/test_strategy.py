@@ -183,7 +183,7 @@ class TestStrategyMethods(TestCase):
         self.category = "Volume"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-    # @skip
+    # @skipUnless(verbose, "verbose mode only")
     def test_all_no_multiprocessing(self):
         self.category = "All with No Multiprocessing"
 
@@ -192,7 +192,7 @@ class TestStrategyMethods(TestCase):
         self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
         self.data.ta.cores = cores
 
-    # @skip
+    # @skipUnless(verbose, "verbose mode only")
     def test_custom_no_multiprocessing(self):
         self.category = "Custom A with No Multiprocessing"
 
@@ -215,5 +215,4 @@ class TestStrategyMethods(TestCase):
             "Common indicators with specific lengths and a chained indicator",  # description
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
-
         self.data.ta.cores = cores
