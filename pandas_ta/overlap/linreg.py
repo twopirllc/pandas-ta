@@ -105,12 +105,12 @@ Args:
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
-    angle (bool, optional): Default: False. If True, returns the angle of the slope in radians
-    degrees (bool, optional): Default: False. If True, returns the angle of the slope in degrees
-    intercept (bool, optional): Default: False. If True, returns the angle of the slope in radians
-    r (bool, optional): Default: False. If True, returns it's correlation 'r'
-    slope (bool, optional): Default: False. If True, returns the slope
-    tsf (bool, optional): Default: False. If True, returns the Time Series Forecast value.
+    angle (bool, optional): If True, returns the angle of the slope in radians. Default: False.
+    degrees (bool, optional): If True, returns the angle of the slope in degrees. Default: False.
+    intercept (bool, optional): If True, returns the angle of the slope in radians. Default: False.
+    r (bool, optional): If True, returns it's correlation 'r'. Default: False. 
+    slope (bool, optional): If True, returns the slope. Default: False.
+    tsf (bool, optional): If True, returns the Time Series Forecast value. Default: False.
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

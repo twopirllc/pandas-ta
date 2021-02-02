@@ -2,12 +2,12 @@
 from pandas_ta.utils import get_offset, verify_series
 
 
-def variance(close, length=None, ddof=1, offset=None, **kwargs):
+def variance(close, length=None, ddof=None, offset=None, **kwargs):
     """Indicator: Variance"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 1 else 30
-    ddof = int(ddof) if ddof >= 0 and ddof < length else 1
+    ddof = int(ddof) if ddof and ddof >= 0 and ddof < length else 0
 
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     offset = get_offset(offset)
@@ -41,7 +41,7 @@ Args:
     length (int): It's period. Default: 30
     ddof (int): Delta Degrees of Freedom.
                 The divisor used in calculations is N - ddof,
-                where N represents the number of elements. Default: 1
+                where N represents the number of elements. Default: 0
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

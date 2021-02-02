@@ -153,6 +153,11 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "RSI_14")
 
+    def test_rsx_ext(self):
+        self.data.ta.rsx(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "RSX_14")
+
     def test_rvgi_ext(self):
         self.data.ta.rvgi(append=True)
         self.assertIsInstance(self.data, DataFrame)

@@ -14,8 +14,7 @@ def short_run(fast, slow, length=None, offset=None, **kwargs):
 
     # Calculate Result
     pt = decreasing(fast, length) & increasing(slow, length)  # potential top or top
-    bd = decreasing(fast, length) & decreasing(
-        slow, length)  # fast and slow are decreasing
+    bd = decreasing(fast, length) & decreasing(slow, length)  # fast and slow are decreasing
     short_run = pt | bd
 
     # Offset

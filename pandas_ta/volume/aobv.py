@@ -23,23 +23,6 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, mi
 
     # Calculate Result
     obv_ = obv(close=close, volume=volume, **kwargs)
-    # if mamode is None or mamode == "EMA":
-    #     mamode = "EMA"
-    #     maf = ema(close=obv_, length=fast, **kwargs)
-    #     mas = ema(close=obv_, length=slow, **kwargs)
-    # elif mamode == "HMA":
-    #     maf = hma(close=obv_, length=fast, **kwargs)
-    #     mas = hma(close=obv_, length=slow, **kwargs)
-    # elif mamode == "LINREG":
-    #     maf = linreg(close=obv_, length=fast, **kwargs)
-    #     mas = linreg(close=obv_, length=slow, **kwargs)
-    # elif mamode == "SMA":
-    #     maf = sma(close=obv_, length=fast, **kwargs)
-    #     mas = sma(close=obv_, length=slow, **kwargs)
-    # elif mamode == "WMA":
-    #     maf = wma(close=obv_, length=fast, **kwargs)
-    #     mas = wma(close=obv_, length=slow, **kwargs)
-
     maf = ma(mamode, obv_, length=fast, **kwargs)
     mas = ma(mamode, obv_, length=slow, **kwargs)
 

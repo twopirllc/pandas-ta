@@ -20,7 +20,7 @@ def adx(high, low, close, length=None, scalar=None, drift=None, offset=None, **k
     atr_ = atr(high=high, low=low, close=close, length=length)
 
     up = high - high.shift(drift)  # high.diff(drift)
-    dn = low.shift(drift) - low  # low.diff(-drift).shift(drift)
+    dn = low.shift(drift) - low    # low.diff(-drift).shift(drift)
 
     pos = ((up > dn) & (up > 0)) * up
     neg = ((dn > up) & (dn > 0)) * dn

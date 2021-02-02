@@ -10,5 +10,6 @@ from .nvi import nvi
 from .obv import obv
 from .pvi import pvi
 from .pvol import pvol
+from .pvr import pvr
 from .pvt import pvt
 from .vp import vp

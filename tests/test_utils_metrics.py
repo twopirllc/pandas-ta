@@ -3,7 +3,6 @@ from .context import pandas_ta
 
 from unittest import skip, TestCase
 
-from numpy import nan as npNaN
 from pandas import DataFrame
 
 
@@ -62,7 +61,6 @@ class TestUtilityMetrics(TestCase):
 
     def test_jensens_alpha(self):
         bench_return = self.pctret.sample(n=self.close.shape[0], random_state=1)
-    
         result = pandas_ta.jensens_alpha(self.close, bench_return)
         self.assertIsInstance(result, float)
         self.assertGreaterEqual(result, 0)
@@ -91,9 +89,15 @@ class TestUtilityMetrics(TestCase):
         self.assertIsInstance(result["percent"], float)
         self.assertIsInstance(result["log"], float)
 
+    def test_optimal_leverage(self):
+        result = pandas_ta.optimal_leverage(self.close)
+        self.assertIsInstance(result, int)
+        result = pandas_ta.optimal_leverage(self.close, log=True)
+        self.assertIsInstance(result, int)
+
     def test_pure_profit_score(self):
         result = pandas_ta.pure_profit_score(self.close)
-        self.assertIsInstance(result, float)
+        self.assertIsInstance(result, int or float)
         self.assertGreaterEqual(result, 0)
 
     def test_sharpe_ratio(self):
@@ -114,5 +118,6 @@ class TestUtilityMetrics(TestCase):
 
         for tf in ["years", "months", "weeks", "days", "hours", "minutes", "seconds"]:
             result = pandas_ta.utils.volatility(self.close, tf)
-            self.assertIsInstance(result, float)
-            self.assertGreaterEqual(result, 0)
+            with self.subTest(tf=tf):
+                self.assertIsInstance(result, float)
+                self.assertGreaterEqual(result, 0)

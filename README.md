@@ -1,4 +1,8 @@
-
+<p align="center">
+  <a href="https://github.com/twopirllc/pandas_ta">
+    <img src="images/logo.png" alt="Pandas TA">
+  </a>
+</p>
 
 Pandas TA - A Technical Analysis Library in Python 3
 =================
@@ -60,8 +64,8 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or both to columns names. Useful for Custom Chained Strategies.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
-* **NEW** Performance Metrics
-    <!-- * **Performance Metrics** These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called conventionally. Included Metrics: **cagr**, **calmar_ratio**, **downside_deviation**, **jensens_alpha**, **log_max_drawdown**, **max_drawdown**, **pure_profit_score**, **sharpe_ratio**, **sortino_ratio**, **volatility**. Example: -->
+* Potential Data Leaks: **ichimoku** and **dpo**. See indicator list below for details.
+* **UNDER DEVELOPMENT:** Performance Metrics
 
 <br/>
 
@@ -99,6 +103,10 @@ import pandas_ta as ta
 # Load data
 df = pd.read_csv("path/to/symbol.csv", sep=",")
 
+# VWAP requires the DataFrame index to be a DatetimeIndex.
+# Replace "datetime" with the appropriate column from your DataFrame
+df.set_index(pd.DatetimeIndex(df["datetime"]), inplace=True)
+
 # Calculate Returns and append to the df DataFrame
 df.ta.log_return(cumulative=True, append=True)
 df.ta.percent_return(cumulative=True, append=True)
@@ -135,7 +143,8 @@ help(ta.log_return)
 
 # **Issues and Contributions**
 
-Thanks for trying **Pandas TA**!
+Thanks for using **Pandas TA**!
+<br/>
 
 * ### [Comments and Feedback](https://github.com/twopirllc/pandas-ta/issues)
     * Have you read **_this_** document?
@@ -148,13 +157,16 @@ Thanks for trying **Pandas TA**!
     * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/master/examples/PandasTA_Strategy_Examples.ipynb) Class**?
     * Documentation could _always_ be improved. Can you help contribute?
 
-* ### [Indicator or Feature Requests & Contributions](https://github.com/twopirllc/pandas-ta/issues)
-    * Please be as **detailed** as possible. Links, screenshots, and sometimes data samples are welcome.
+* ### [Bugs, Indicators or Feature Requests](https://github.com/twopirllc/pandas-ta/issues)
+    * First, search the _Closed_ Issues **before** you _Open_ a new Issue; it may have already been solved.
+    * Please be as **detailed** as possible _with_ reproducible code, links if any, applicable screenshots, errors, logs, and data samples. You **will** be asked again if you provide nothing.
         * You want a new indicator not currently listed.
         * You want an alternate version of an existing indicator.
         * The indicator does not match another website, library, broker platform, language, et al.
             * Do you have correlation analysis to back your claim?
             * Can you contribute?
+    * You will be asked to fill out an Issue even if you email my personal email address.
+
 
 <br/>
 
@@ -163,16 +175,18 @@ Thanks for trying **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [whubsch](https://github.com/whubsch) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
 **Programming Conventions**
 ===========================
 
-**Pandas TA** has three primary "styles" of processing Technical Indicators for your use case and/or requirements. They are: _Conventional_, _DataFrame Extension_, and the _Pandas TA Strategy_. Each with increasing levels of abstraction for ease of use. As you become more familiar with **Pandas TA**, the simplicity and speed of using a _Pandas TA Strategy_ may become more apparent. Furthermore, you can create your own indicators through Chaining or Composition. Lastly, each indicator either returns a _Series_ or a _DataFrame_ in Uppercase Underscore format regardless of style.
+**Pandas TA** has three primary "styles" of processing Technical Indicators for your use case and/or requirements. They are: _Standard_, _DataFrame Extension_, and the _Pandas TA Strategy_. Each with increasing levels of abstraction for ease of use. As you become more familiar with **Pandas TA**, the simplicity and speed of using a _Pandas TA Strategy_ may become more apparent. Furthermore, you can create your own indicators through Chaining or Composition. Lastly, each indicator either returns a _Series_ or a _DataFrame_ in Uppercase Underscore format regardless of style.
 
-_Conventional_
+<br/>
+
+_Standard_
 ====================
 You explicitly define the input columns and take care of the output.
 
@@ -181,8 +195,10 @@ You explicitly define the input columns and take care of the output.
 * ```donchiandf = ta.donchian(df["HIGH"], df["low"], lower_length=10, upper_length=15)```
     * Returns a DataFrame named ```DC_10_15``` and column names: ```DCL_10_15, DCM_10_15, DCU_10_15```
 * ```ema10_ohlc4 = ta.ema(ta.ohlc4(df["Open"], df["High"], df["Low"], df["Close"]), length=10)```
-    * Conventional Chaining is possible but more explicit.
+    * Chaining indicators is possible but you have to be explicit.
     * Since it returns a Series named ```EMA_10```. If needed, you may need to uniquely name it.
+
+<br/>
 
 _Pandas TA DataFrame Extension_
 ====================
@@ -203,6 +219,8 @@ Same as the last three examples, but appending the results directly to the DataF
     * Chaining Indicators _require_ specifying the input like: ```close=df.ta.ohlc4()```.
 * ```df.ta.donchian(lower_length=10, upper_length=15, append=True)```
     * Appends to ```df``` with column names: ```DCL_10_15, DCM_10_15, DCU_10_15```.
+
+<br/>
 
 _Pandas TA Strategy_
 ====================
@@ -296,12 +314,18 @@ CustomStrategy = ta.Strategy(
 df.ta.strategy(CustomStrategy)
 ```
 
+<br/>
+
 **Multiprocessing**
 =======================
 
 The **Pandas TA** _strategy_ method utilizes **multiprocessing** for bulk indicator processing of all Strategy types with **ONE EXCEPTION!** When using the ```col_names``` parameter to rename resultant column(s), the indicators in ```ta``` array will be ran in order.
 
 ```python
+# VWAP requires the DataFrame index to be a DatetimeIndex.
+# * Replace "datetime" with the appropriate column from your DataFrame
+df.set_index(pd.DatetimeIndex(df["datetime"]), inplace=True)
+
 # Runs and appends all indicators to the current DataFrame by default
 # The resultant DataFrame will be large.
 df.ta.strategy()
@@ -427,7 +451,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Inside Bar_: **cdl_inside**
 * _Heikin-Ashi_: **ha**
 
-### **Momentum** (35)
+### **Momentum** (36)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -454,6 +478,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Quantitative Qualitative Estimation_: **qqe**
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
+* _Relative Strength Xtra_: **rsx**
 * _Relative Vigor Index_: **rvgi**
 * _Slope_: **slope**
 * _SMI Ergodic_ **smi**
@@ -471,7 +496,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-### **Overlap** (29)
+### **Overlap** (30)
 
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -483,8 +508,10 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Hull Exponential Moving Average_: **hma**
 * _Ichimoku Kinkō Hyō_: **ichimoku**
     * Use: help(ta.ichimoku). Returns two DataFrames.
+    * Drop the Chikou Span Column, the final column of the first resultant DataFrame, remove potential data leak.
 * _Kaufman's Adaptive Moving Average_: **kama**
 * _Linear Regression_: **linreg**
+* _McGinley Dynamic_: **mcgd**
 * _Midpoint_: **midpoint**
 * _Midprice_: **midprice**
 * _Open-High-Low-Close Average_: **ohlc4**
@@ -499,7 +526,8 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Triple Exponential Moving Average_: **tema**
 * _Triangular Moving Average_: **trima**
 * _Variable Index Dynamic Average_: **vidya**
-* _Volume Weighted Average Price_: **vwap** 
+* _Volume Weighted Average Price_: **vwap**
+    * **Requires** the DataFrame index to be a DatetimeIndex
 * _Volume Weighted Moving Average_: **vwma**
 * _Weighted Closing Price_: **wcp**
 * _Weighted Moving Average_: **wma**
@@ -551,6 +579,7 @@ Use parameter: cumulative=**True** for cumulative results.
     * Formally: **linear_decay**
 * _Decreasing_: **decreasing**
 * _Detrended Price Oscillator_: **dpo**
+    * Set ```centered=False``` to remove potential data leak.
 * _Increasing_: **increasing**
 * _Long Run_: **long_run**
 * _Parabolic Stop and Reverse_: **psar**
@@ -591,7 +620,7 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example ATR](/images/SPY_ATR.png) |
 
-### **Volume** (13)
+### **Volume** (14)
 
 * _Accumulation/Distribution Index_: **ad**
 * _Accumulation/Distribution Oscillator_: **adosc**
@@ -604,6 +633,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _On-Balance Volume_: **obv**
 * _Positive Volume Index_: **pvi**
 * _Price-Volume_: **pvol**
+* _Price Volume Rank_: **pvr**
 * _Price Volume Trend_: **pvt**
 * _Volume Profile_: **vp**
 
@@ -613,8 +643,9 @@ Use parameter: cumulative=**True** for cumulative results.
 
 <br/><br/>
 
-# **Performance Metrics**
-_Performance Metrics_ are a **new** addition to the package. These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called conventionally. For Example:
+# **Performance Metrics** (BETA)
+_Performance Metrics_ are a **new** addition to the package and consequentially are likely unreliable. **Use at your own risk.** These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called the Standard way. For Example:
+
 ```python
 import pandas_ta as ta
 result = ta.cagr(df.close)
@@ -642,28 +673,35 @@ result = ta.cagr(df.close)
     * **Moving Average Choices**: dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma.
 * An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
 * _Linear Regression_ (**linear_regression**) is a new utility method for Simple Linear Regression using _Numpy_ or _Scikit Learn_'s implementation.
+* Added utility/convience function, ```to_utc```, to convert the DataFrame index to UTC. See: ```help(ta.to_utc)```
 
 <br />
 
 ## **Breaking Indicators**
 * _Bollinger Bands_ (**bbands**): New column 'bandwidth' appended to the returning DataFrame. See: ```help(ta.bbands)```
+* _Volume Weighted Average Price_ (**vwap**): **Requires** the DataFrame index to be a DatetimeIndex.
 
 
 ## **New Indicators**
-* _Drawdown_ (**drawdown**) It is a peak-to-trough decline during a specific period for an investment,
+* _Drawdown_ (**drawdown**) shows the peak-to-trough decline during a specific period for an investment,
 trading account, or fund. See: ```help(ta.drawdown)```
-* _Gann High-Low Activator_ (**hilo**) The Gann High Low Activator Indicator was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
-* _Quantitative Qualitative Estimation_ (**qqe**) The Quantitative Qualitative Estimation (QQE) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
+* _Gann High-Low Activator_ (**hilo**) was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
+* _McGinley Dynamic_ (**mcgd**) is an overlap indicator developed by John R. McGinley, a Certified Market Technician. See: ```help(ta.mcgd)```
+* _Price Volume Rank_ (**pvr**) was created by Anthony J. Macek. See: ```help(ta.pvr)```
+* _Quantitative Qualitative Estimation_ (**qqe**) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
+article in the June, 1994 issue of Technical Analysis of Stocks & Commodities Magazine. See: ```help(ta.pvr)```
+* _Relative Strength Xtra_ (**rsx**) is based on the popular RSI indicator and inspired by the work Jurik Research. See: ```help(ta.rsx)```
 * _Ehler's Super Smoother Filter_ (**ssf**). Ehler's solution to reduce lag and remove aliasing noise compared to other common moving average indicators. See: ```help(ta.ssf)```
-* _Elder's Thermometer_ (**thermo**) Elder's Thermometer measures price volatility. See: ```help(ta.thermo)```
-* _TTM Trend_ (**ttm_trend**). A trend indicator inspired from John Carter's book "Mastering the Trade" issue of Stocks & Commodities Magazine. It is a moving average based trend indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
-* _Variable Index Dynamic Average_ (**vidya**) A popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
+* _Elder's Thermometer_ (**thermo**) measures price volatility. See: ```help(ta.thermo)```
+* _TTM Trend_ (**ttm_trend**) is a trend indicator inspired from John Carter's book "Mastering the Trade" issue of Stocks & Commodities Magazine. It is a moving average based trend indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
+* _Variable Index Dynamic Average_ (**vidya**) is a popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
 
 ## **Updated Indicators**
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
 * _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length```. Default: ```False```. See ```help(ta.decreasing)```.
 * _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length```. Default: ```False```. See ```help(ta.increasing)```.
 * _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series with pertinenet trade info for a _trend_. An example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.
+* _Volume Weighted Average Price_ (**vwap**) Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex
 
 <br />
 
