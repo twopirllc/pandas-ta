@@ -2,7 +2,7 @@
 from numpy import NaN as npNaN
 from pandas import DataFrame, Series, concat
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
-  
+
 def rsx(close, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Strength Xtra (inspired by Jurik RSX)"""
     # Validate arguments
@@ -10,38 +10,15 @@ def rsx(close, length=None, drift=None, offset=None, **kwargs):
     length = int(length) if length and length > 0 else 14
     drift = get_drift(drift)
     offset = get_offset(offset)
-    
+
     # variables
-    f0 = 0
-    f8 = 0
-    f10 = 0
-    f18 = 0
-    f20 = 0
-    f28 = 0
-    f30 = 0
-    f38 = 0
-    f40 = 0
-    f48 = 0
-    f50 = 0
-    f58 = 0
-    f60 = 0
-    f68 = 0
-    f70 = 0
-    f78 = 0
-    f80 = 0
-    f88 = 0
-    f90 = 0
+    vC, v1C = 0, 0
+    v4, v8, v10, v14, v18, v20 = 0, 0, 0, 0, 0, 0
 
-    v4 = 0
-    v8 = 0
-    v10 = 0
-    v14 = 0
-    v18 = 0
-    v20 = 0
+    f0, f8, f10, f18, f20, f28, f30, f38 = 0, 0, 0, 0, 0, 0, 0, 0
+    f40, f48, f50, f58, f60, f68, f70, f78 = 0, 0, 0, 0, 0, 0, 0, 0
+    f80, f88, f90 = 0, 0, 0
 
-    vC = 0
-    v1C = 0
-    
     # Calculate Result
     m = close.size
     result = [npNaN for _ in range(0, length - 1)] + [0]
@@ -66,26 +43,28 @@ def rsx(close, length=None, drift=None, offset=None, **kwargs):
             v8 = f8 - f10
             f28 = f20 * f28 + f18 * v8
             f30 = f18 * f28 + f20 * f30
-            vC = f28 * 1.5 - f30 * 0.5
+            vC = 1.5 * f28 - 0.5 * f30
             f38 = f20 * f38 + f18 * vC
             f40 = f18 * f38 + f20 * f40
-            v10 = f38 * 1.5 - f40 * 0.5
+            v10 = 1.5 * f38 - 0.5 * f40
             f48 = f20 * f48 + f18 * v10
             f50 = f18 * f48 + f20 * f50
-            v14 = f48 * 1.5 - f50 * 0.5
+            v14 = 1.5 * f48 - 0.5 * f50
             f58 = f20 * f58 + f18 * abs(v8)
             f60 = f18 * f58 + f20 * f60
-            v18 = f58 * 1.5 - f60 * 0.5
+            v18 = 1.5 * f58 - 0.5 * f60
             f68 = f20 * f68 + f18 * v18
             f70 = f18 * f68 + f20 * f70
-            v1C = f68 * 1.5 - f70 * 0.5
+            v1C = 1.5 * f68 - 0.5 * f70
             f78 = f20 * f78 + f18 * v1C
             f80 = f18 * f78 + f20 * f80
-            v20 = f78 * 1.5 - f80 * 0.5
+            v20 = 1.5 * f78 - 0.5 * f80
+
             if f88 >= f90 and f8 != f10:
                 f0 = 1.0
             if f88 == f90 and f0 == 0.0:
                 f90 = 0.0
+
         if f88 < f90 and v20 > 0.0000000001:
             v4 = (v14 / v20 + 1.0) * 50.0
             if v4 > 100.0:
@@ -95,7 +74,6 @@ def rsx(close, length=None, drift=None, offset=None, **kwargs):
         else:
             v4 = 50.0
         result.append(v4)
-        # print('v4', v4)
     rsx = Series(result, index=close.index)
 
     # Offset
@@ -109,8 +87,6 @@ def rsx(close, length=None, drift=None, offset=None, **kwargs):
         rsx.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    # print(rsx)
-    # print(length)
     rsx.name = f"RSX_{length}"
     rsx.category = "momentum"
 
@@ -142,9 +118,11 @@ def rsx(close, length=None, drift=None, offset=None, **kwargs):
 rsx.__doc__ = \
 """Relative Strength Xtra (rsx)
 
-The Relative Strength Xtra is based on the popular RSI indicator and inspired by the work Jurik Research.
-The code implemented is based on published code found at 'prorealcode.com'. This enhanced version of the rsi
-reduces noise and provides a clearer, only slightly delayed insight on momentum and velocity of price movements.
+The Relative Strength Xtra is based on the popular RSI indicator and inspired
+by the work Jurik Research. The code implemented is based on published code
+found at 'prorealcode.com'. This enhanced version of the rsi reduces noise and
+provides a clearer, only slightly delayed insight on momentum and velocity of
+price movements.
 
 Sources:
     http://www.jurikres.com/catalog1/ms_rsx.htm
@@ -152,12 +130,12 @@ Sources:
 
 Calculation:
     Refer to the sources above for information as well as code example.
-  
+
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 14    
-    drift (int): The difference period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 14
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -134,6 +134,16 @@ class TestVolume(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "PVOL")
 
+    def test_pvr(self):
+        result = pandas_ta.pvr(self.close, self.volume_)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "PVR")
+        # sample indicator values from SPY
+        self.assertEqual(result[0], 1)
+        self.assertEqual(result[1], 3)
+        self.assertEqual(result[4], 2)
+        self.assertEqual(result[6], 4)
+
     def test_pvt(self):
         result = pandas_ta.pvt(self.close, self.volume_)
         self.assertIsInstance(result, Series)

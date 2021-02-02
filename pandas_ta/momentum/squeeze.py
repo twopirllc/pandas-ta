@@ -4,10 +4,9 @@ from pandas import DataFrame
 
 from pandas_ta.momentum import mom
 from pandas_ta.overlap import ema, linreg, sma
-from pandas_ta.statistics import stdev
 from pandas_ta.trend import decreasing, increasing
-from pandas_ta.volatility import bbands, kc, true_range
-from pandas_ta.utils import get_drift, get_offset, high_low_range
+from pandas_ta.volatility import bbands, kc
+from pandas_ta.utils import get_offset
 from pandas_ta.utils import unsigned_differences, verify_series
 
 
@@ -28,9 +27,9 @@ def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_sc
 
     use_tr = kwargs.setdefault("tr", True)
     asint = kwargs.pop("asint", True)
-    mamode = kwargs.pop("mamode", "sma").lower()
-    lazybear = kwargs.pop("lazybear", False)
     detailed = kwargs.pop("detailed", False)
+    lazybear = kwargs.pop("lazybear", False)
+    mamode = kwargs.pop("mamode", "sma").lower()
 
     def simplify_columns(df, n=3):
         df.columns = df.columns.str.lower()
@@ -53,9 +52,9 @@ def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_sc
 
     else:
         momo = mom(close, length=mom_length)
-        if mamode == "ema":
+        if mamode.lower() == "ema":
             squeeze = ema(momo, length=mom_smooth)
-        else:
+        else: # "sma"
             squeeze = sma(momo, length=mom_smooth)
 
     # Classify Squeezes

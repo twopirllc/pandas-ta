@@ -295,6 +295,11 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_rsx(self):
+        result = pandas_ta.rsx(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "RSX_14")
+
     def test_rvgi(self):
         result = pandas_ta.rvgi(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
