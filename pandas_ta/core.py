@@ -294,7 +294,7 @@ class AnalysisIndicators(BasePandasObject):
         """property: df.ta.cores = integer"""
         cpus = cpu_count()
         if value is not None and isinstance(value, int):
-            self._cores = int(value) if 0 < value <= cpus else cpus
+            self._cores = int(value) if 0 <= value <= cpus else cpus
         else:
             self._cores = cpus
 
@@ -635,47 +635,61 @@ class AnalysisIndicators(BasePandasObject):
 
         timed = kwargs.pop("timed", False)
         results = []
-        pool = Pool(self.cores)
+        use_multiprocessing = True if self.cores > 0 else False
+        has_col_names = False
+
         if timed:
             stime = perf_counter()
-        if mode["custom"]:
+
+        if use_multiprocessing and mode["custom"]:
             # Determine if the Custom Model has 'col_names' parameter
             has_col_names = (True if len([
                 True for x in ta
                 if "col_names" in x and isinstance(x["col_names"], tuple)
             ]) else False)
 
-            # Create a list of all the custom indicators into a list
-            custom_ta = [(
-                ind["kind"],
-                ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (),
-                {**ind, **kwargs},
-            ) for ind in ta]
-
             if has_col_names:
-                if verbose:
-                    print(f"[i] No mulitproccessing support for 'col_names' option.")
-                # Without multiprocessing:
-                for ind in ta:
-                    params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
-                    getattr(self, ind["kind"])(*params, **{**ind, **kwargs})
-            else:
-                if verbose:
-                    print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
+                use_multiprocessing = False
 
+        if use_multiprocessing:
+            if verbose:
+                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
+
+            pool = Pool(self.cores)
+
+            if mode["custom"]:
+                # Create a list of all the custom indicators into a list
+                custom_ta = [(
+                    ind["kind"],
+                    ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else (),
+                    {**ind, **kwargs},
+                ) for ind in ta]
                 # Custom multiprocessing pool. Must be ordered for Chained Strategies
                 # May fix this to cpus if Chaining/Composition if it remains
                 # inconsistent
                 results = pool.imap(self._mp_worker, custom_ta, self.cores)
+            else:
+                default_ta = [(ind, tuple(), kwargs) for ind in ta]
+                # All and Categorical multiprocessing pool. Speed over Order.
+                results = pool.imap_unordered(self._mp_worker, default_ta, self.cores)
 
+            pool.close()
+            pool.join()
         else:
+            # Without multiprocessing:
             if verbose:
-                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
-            default_ta = [(ind, tuple(), kwargs) for ind in ta]
-            # All and Categorical multiprocessing pool. Speed over Order.
-            results = pool.imap_unordered(self._mp_worker, default_ta, self.cores)
-        pool.close()
-        pool.join()
+                if has_col_names:
+                    print(f"[i] No mulitproccessing support for 'col_names' option.")
+                else:
+                    print(f"[i] No mulitproccessing (cores = 0).")
+
+            if mode["custom"]:
+                for ind in ta:
+                    params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
+                    getattr(self, ind["kind"])(*params, **{**ind, **kwargs})
+            else:
+                for ind in ta:
+                    getattr(self, ind)(*tuple(), **kwargs)
 
         # Apply prefixes/suffixes and appends indicator results to the
         # DataFrame
