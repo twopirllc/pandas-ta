@@ -997,6 +997,11 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
         result = hma(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
+    
+    def hwma(self, na=None, nb=None, nc=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = hwma(close=close, na=na, nb=nb, nc=nc, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
 
     def kama(self, length=None, fast=None, slow=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
@@ -1399,6 +1404,11 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(kwargs.pop("low", "low"))
 
         result = donchian(high=high, low=low, lower_length=lower_length, upper_length=upper_length, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def hwc(self, na=None, nb=None, nc=None, nd=None, scalar=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = hwc(close=close, na=na, nb=nb, nc=nc, nd=nd, scalar=scalar, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def kc(self, length=None, scalar=None, mamode=None, offset=None, **kwargs):

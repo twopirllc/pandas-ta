@@ -49,7 +49,7 @@ Category = {
     ],
     # Overlap
     "overlap": [
-        "dema", "ema", "fwma", "hilo", "hl2", "hlc3", "hma", "ichimoku",
+        "dema", "ema", "fwma", "hilo", "hl2", "hlc3", "hma", "hwma", "ichimoku",
         "kama", "linreg", "mcgd", "midpoint", "midprice", "ohlc4", "pwma", "rma",
         "sinwma", "sma", "ssf", "supertrend", "swma", "t3", "tema", "trima",
         "vidya", "vwap", "vwma", "wcp", "wma", "zlma"
@@ -69,7 +69,7 @@ Category = {
     ],
     # Volatility
     "volatility": [
-        "aberration", "accbands", "atr", "bbands", "donchian", "kc", "massi",
+        "aberration", "accbands", "atr", "bbands", "donchian", "hwc", "kc", "massi",
         "natr", "pdist", "rvi", "thermo", "true_range", "ui"
     ],
 
