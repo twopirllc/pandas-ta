@@ -5,7 +5,7 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
-    """Indicator: Kaufman's Adaptive Moving Average (HMA)"""
+    """Indicator: Kaufman's Adaptive Moving Average (KAMA)"""
     # Validate Arguments
     close = verify_series(close)
     length = int(length) if length and length > 0 else 10
