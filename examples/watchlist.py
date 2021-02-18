@@ -3,11 +3,13 @@ import datetime as dt
 
 from pathlib import Path
 from random import random
+from typing import Tuple
 
 import pandas as pd  # pip install pandas
+from pandas_datareader import data as pdr
 import yfinance as yf
 
-# yf.pdr_override() # <== that's all it takes :-)
+yf.pdr_override() # <== that's all it takes :-)
 
 from numpy import arange as npArange
 from numpy import append as npAppend
@@ -72,14 +74,9 @@ class Watchlist(object):
     - tickers: A list of strings containing tickers. Example: ["SPY", "AAPL"]
     """
 
-    def __init__(
-        self,
-        tickers: list,
-        tf: str = None,
-        name: str = None,
-        strategy: ta.Strategy = None,
-        ds: object = None,
-        **kwargs,
+    def __init__(self,
+        tickers: list, tf: str = None, name: str = None,
+        strategy: ta.Strategy = None, ds_name: str = "av", **kwargs,
     ):
         self.verbose = kwargs.pop("verbose", False)
         self.debug = kwargs.pop("debug", False)
@@ -92,24 +89,25 @@ class Watchlist(object):
         self.kwargs = kwargs
         self.strategy = strategy
 
-        self._init_data_source(ds)
+        self._init_data_source(ds_name)
 
-    def _init_data_source(self, ds: object):
-        if ds is not None:
-            self.ds = ds
-        elif isinstance(ds, str) and ds.lower() == "yahoo":
+
+    def _init_data_source(self, ds: str) -> None:
+        self.ds_name = ds.lower() if isinstance(ds, str) else "av"
+
+        # Default: AlphaVantage
+        AVkwargs = {"api_key": "YOUR API KEY", "clean": True, "export": True, "output_size": "full", "premium": False}
+        self.av_kwargs = self.kwargs.pop("av_kwargs", AVkwargs)
+        self.ds = AV.AlphaVantage(**self.av_kwargs)
+        self.file_path = self.ds.export_path
+
+        if self.ds_name == "yahoo":
             self.ds = yf
-        else:
-            AVkwargs = {"api_key": "YOUR API KEY", "clean": True, "export": True, "output_size": "full", "premium": False}
-            self.av_kwargs = self.kwargs.pop("av_kwargs", AVkwargs)
-            self.ds = AV.AlphaVantage(**self.av_kwargs)
-            self.file_path = self.ds.export_path
 
-    def _drop_columns(
-        self,
-        df: pd.DataFrame,
-        cols: list = ["Unnamed: 0", "date", "split_coefficient", "dividend"],
-    ):
+    def _drop_columns(self, df: pd.DataFrame, cols: list = None) -> pd.DataFrame:
+        if cols is None or not isinstance(cols, list):
+            cols = ["Unnamed: 0", "date", "split_coefficient", "dividend"]
+        else: cols
         """Helper methods to drop columns silently."""
         df_columns = list(df.columns)
         if any(_ in df_columns for _ in cols):
@@ -123,12 +121,10 @@ class Watchlist(object):
         keyed by ticker."""
         if (self.tickers is not None and isinstance(self.tickers, list) and
                 len(self.tickers)):
-            self.data = {
-                ticker: self.load(ticker, **kwargs) for ticker in self.tickers
-            }
+            self.data = {ticker: self.load(ticker, **kwargs) for ticker in self.tickers}
             return self.data
 
-    def _plot(self, df, mas:bool = True, constants:bool = True, **kwargs) -> None:
+    def _plot(self, df, mas:bool = True, constants:bool = False, **kwargs) -> None:
 
         if constants:
             chart_lines = npAppend(npArange(-5, 6, 1), npArange(-100, 110, 10))
@@ -145,22 +141,25 @@ class Watchlist(object):
             _grid = kwargs.pop("grid", True)
             _alpha = kwargs.pop("alpha", 1)
             _last = kwargs.pop("last", 252)
-            _title = kwargs.pop("title", f"{df.ticker} {_time}")
+            _title = kwargs.pop("title", f"{df.ticker}   {_time}   [{self.ds_name}]")
 
             col = kwargs.pop("close", "close")
-            price = df[[col, "SMA_10", "SMA_20", "SMA_50", "SMA_200"]] if mas else df[col]
+            if mas:
+                # df.ta.strategy(self.strategy, append=True)
+                price = df[[col, "SMA_10", "SMA_20", "SMA_50", "SMA_200"]]
+            else:
+                price = df[col]
 
-            price.tail(_last).plot(figsize=_figsize, color=_colors, linewidth=2, title=_title, grid=_grid, alpha=_alpha)
+            if _kind is None:
+                price.tail(_last).plot(figsize=_figsize, color=_colors, linewidth=2, title=_title, grid=_grid, alpha=_alpha)
+            else:
+                print(f"[X] Plot kind not implemented")
+                return
 
 
-    def load(
-        self,
-        ticker: str = None,
-        tf: str = None,
-        index: str = "date",
-        drop: list = [],
-        plot: bool = False,
-        **kwargs
+    def load(self,
+        ticker: str = None, tf: str = None, index: str = "date",
+        drop: list = [], plot: bool = False, **kwargs
     ) -> pd.DataFrame:
         """Loads or Downloads (if a local csv does not exist) the data from the
         Data Source. When successful, it returns a Data Frame for the requested
@@ -179,22 +178,28 @@ class Watchlist(object):
 
         # Load local or from Data Source
         if current_file.exists():
-            df = pd.read_csv(current_file, index_col=index)
-            if not df.ta.datetime_ordered:
-                df = df.set_index(pd.DatetimeIndex(df.index))
-            print(f"[i] Loaded['{tf}']: {filename_}")
+            file_loaded = f"[i] Loaded {ticker}[{tf}]: {filename_}"
+            # if self.ds_name == "av":
+            if self.ds_name in ["av", "yahoo"]:
+                df = pd.read_csv(current_file, index_col=0)
+                if not df.ta.datetime_ordered:
+                    df = df.set_index(pd.DatetimeIndex(df.index))
+                print(file_loaded)
+            else:
+                print(f"[X] {filename_} not found in {Path(self.file_path)}")
+                return
         else:
-            print(f"[+] Downloading['{tf}']: {ticker}")
-            if isinstance(self.ds, AV.AlphaVantage):
+            print(f"[+] Downloading[{self.ds_name}]: {ticker}[{tf}]")
+            if self.ds_name == "av":
                 df = self.ds.data(ticker, tf)
                 if not df.ta.datetime_ordered:
                     df = df.set_index(pd.DatetimeIndex(df[index]))
-            elif isinstance(self.ds, yfinance):
-                print("[!] In Development")
+            if self.ds_name == "yahoo":
                 yf_data = self.ds.Ticker(ticker)
                 df = yf_data.history(period="max")
-                print(yf_data.info)
-                print(df)
+                to_save = f"{self.file_path}/{ticker}_{tf}.csv"
+                print(f"[+] Saving: {to_save}")
+                df.to_csv(to_save)
 
         # Remove select columns
         df = self._drop_columns(df, drop)
@@ -207,7 +212,6 @@ class Watchlist(object):
         df.tf = tf
 
         if plot: self._plot(df, **kwargs)
-
         return df
 
     @property
@@ -273,7 +277,7 @@ class Watchlist(object):
         return self._tickers
 
     @tickers.setter
-    def tickers(self, value: (list, str)) -> None:
+    def tickers(self, value: Tuple[list, str]) -> None:
         if value is None:
             print(f"[X] {value} is not a value in Watchlist ticker.")
             return
@@ -300,7 +304,7 @@ class Watchlist(object):
         pd.DataFrame().ta.indicators(*args, **kwargs)
 
     def __repr__(self) -> str:
-        s = f"Watch(name='{self.name}', tickers[{len(self.tickers)}]='{', '.join(self.tickers)}', tf='{self.tf}', strategy[{self.strategy.total_ta()}]='{self.strategy.name}'"
+        s = f"Watch(name='{self.name}', ds_name='{self.ds_name}', tickers[{len(self.tickers)}]='{', '.join(self.tickers)}', tf='{self.tf}', strategy[{self.strategy.total_ta()}]='{self.strategy.name}'"
         if self.data is not None:
             s += f", data[{len(self.data.keys())}])"
             return s

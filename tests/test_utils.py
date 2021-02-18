@@ -326,3 +326,8 @@ class TestUtilities(TestCase):
 
         result = self.utils.total_time(self.data, "seconds")
         self.assertEqual(657158400.0, result)
+
+    def test_version(self):
+        result = pandas_ta.version
+        self.assertIsInstance(result, str)
+        print(f"\nPandas TA v{result}")

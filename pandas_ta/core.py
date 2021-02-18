@@ -594,6 +594,7 @@ class AnalysisIndicators(BasePandasObject):
             "below_value",
             "cross",
             "cross_value",
+            # "data", # reserved
             "long_run",
             "short_run",
             "trend_return",
@@ -621,6 +622,16 @@ class AnalysisIndicators(BasePandasObject):
         else:
             print(f"[X] Not an available strategy.")
             return None
+
+        # Remove indicators with "length" keyward when larger than the DataFrame
+        # Possible to have other indicator main window lengths to be included
+        removal = []
+        for kwds in ta:
+            _ = False
+            if "length" in kwds and kwds["length"] > self._df.shape[0]:
+                _ = True
+            if _: removal.append(kwds)
+        if len(removal) > 0: [ta.remove(x) for x in removal]
 
         verbose = kwargs.pop("verbose", False)
         if verbose:

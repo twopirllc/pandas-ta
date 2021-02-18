@@ -6,14 +6,14 @@ from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
+def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, slope_length=None, offset=None, **kwargs):
     """Indicator: Archer Moving Averages Trends (AMAT)"""
     # Validate Arguments
     close = verify_series(close)
     fast = int(fast) if fast and fast > 0 else 8
     slow = int(slow) if slow and slow > 0 else 21
     lookback = int(lookback) if lookback and lookback > 0 else 2
-    mamode = mamode if isinstance(mamode, str) else "ema"
+    mamode = mamode.lower() if isinstance(mamode, str) else "ema"
     offset = get_offset(offset)
 
     # # Calculate Result
@@ -38,10 +38,9 @@ def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=No
         mas_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Prepare DataFrame to return
-    _lmode = mamode.lower()[0]
     amatdf = DataFrame({
-        f"AMAT{_lmode}_{mas_long.name}": mas_long,
-        f"AMAT{_lmode}_{mas_short.name}": mas_short
+        f"AMAT{mamode[0]}_{mas_long.name}": mas_long,
+        f"AMAT{mamode[0]}_{mas_short.name}": mas_short
     })
 
     # Name and Categorize it
