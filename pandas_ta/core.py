@@ -11,6 +11,7 @@ from pandas.core.base import PandasObject
 
 from pandas_ta import version, Category
 from pandas_ta.candles import *
+from pandas_ta.cycles import *
 from pandas_ta.momentum import *
 from pandas_ta.overlap import *
 from pandas_ta.performance import *
@@ -740,6 +741,13 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
 
         result = ha(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    # Cycles
+    def ebsw(self, close=None, length=None, bars=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+
+        result = ebsw(close=close, length=length, bars=bars, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     # Momentum

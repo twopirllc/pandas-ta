@@ -39,6 +39,8 @@ Category = {
     "candles": [
         "cdl_doji", "cdl_inside", "ha"
     ],
+    # Cycles
+    "cycles": ["ebsw"],
     # Momentum
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",

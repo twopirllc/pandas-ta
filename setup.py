@@ -8,6 +8,7 @@ setup(
     packages=[
         "pandas_ta",
         "pandas_ta.candles",
+        "pandas_ta.cycles",
         "pandas_ta.momentum",
         "pandas_ta.overlap",
         "pandas_ta.performance",
