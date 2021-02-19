@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# import numpy as np
 from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
@@ -16,8 +15,8 @@ def hwma(close, na=None, nb=None, nc=None, offset=None, **kwargs):
     # Initialize ..
     m = close.size
     last_f = close[0]
-    last_v = 0
-    last_a = 0
+    # last_a, last_v = 0, 0
+    last_a = last_v = 0
     result = []
 
     # Calculate ..
@@ -25,14 +24,10 @@ def hwma(close, na=None, nb=None, nc=None, offset=None, **kwargs):
         F = (1.0 - na) * (last_f + last_v + 0.5 * last_a) + na * close[i]
         V = (1.0 - nb) * (last_v + last_a) + nb * (F - last_f)
         A = (1.0 - nc) * last_a + nc * (V - last_v)
-        # print('F|V|A:', F, V, A)
         result.append((F + V + 0.5 * A))
         # update values
-        last_a = A
-        last_f = F
-        last_v = V
+        last_a, last_f, last_v = A, F, V
 
-    # Serialize ..
     hwma = Series(result, index=close.index)
 
     # Offset
@@ -45,8 +40,8 @@ def hwma(close, na=None, nb=None, nc=None, offset=None, **kwargs):
     if "fill_method" in kwargs:
         hwma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category    
-    suffix = f'{na}_{nb}_{nc}'
+    # Name & Category
+    suffix = f"{na}_{nb}_{nc}"
     hwma.name = f"HWMA_{suffix}"
     hwma.category = "overlap"
 
@@ -58,8 +53,11 @@ hwma.__doc__ = \
 """HWMA (Holt-Winter Moving Average)
 
 Indicator HWMA (Holt-Winter Moving Average) is a three-parameter moving average
-by the Holt-Winter method; the three parameters should be selected to obtain a forecast.
-This version has been implemented for Pandas TA by rengel8 based on a publication for MetaTrader 5. 
+by the Holt-Winter method; the three parameters should be selected to obtain a
+forecast.
+
+This version has been implemented for Pandas TA by rengel8 based
+on a publication for MetaTrader 5.
 
 Sources:
     https://www.mql5.com/en/code/20856
