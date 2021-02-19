@@ -34,6 +34,11 @@ class TestOverlap(TestCase):
     def tearDown(self): pass
 
 
+    def test_alma(self):
+        result = pandas_ta.alma(self.close)# , length=None, sigma=None, distribution_offset=)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "ALMA_10_6.0_0.85")
+
     def test_dema(self):
         result = pandas_ta.dema(self.close)
         self.assertIsInstance(result, Series)

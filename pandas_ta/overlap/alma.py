@@ -18,8 +18,8 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
     m = (distribution_offset * (length - 1))
     s = length / sigma
     wtd = list(range(length))
-    for j in range(0, length):
-        wtd[j] = math.exp(-1 * ((j - m) * (j - m)) / (2 * s * s))
+    for i in range(0, length):
+        wtd[i] = math.exp(-1 * ((i - m) * (i - m)) / (2 * s * s))
 
     # Calculate Result
     result = [npNaN for _ in range(0, length - 1)] + [0]
@@ -49,7 +49,7 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
         alma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name & Category
-    alma.name = f"ALMA_{length}"
+    alma.name = f"ALMA_{length}_{sigma}_{distribution_offset}"
     alma.category = "overlap"
 
     return alma
@@ -58,10 +58,11 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
 alma.__doc__ = \
 """Arnaud Legoux Moving Average (ALMA)
 
-The ALMA moving average uses the curve of the Normal (Gauss) distribution, which can be shifted  
-from 0 to 1. This allows regulating the smoothness and high sensitivity of the indicator. 
-Sigma is another parameter that is responsible for the shape of the curve coefficients. This moving average 
-reduces lag of the data in conjunction with smoothing to reduce noise.
+The ALMA moving average uses the curve of the Normal (Gauss) distribution, which
+can be shifted from 0 to 1. This allows regulating the smoothness and high
+sensitivity of the indicator. Sigma is another parameter that is responsible for
+the shape of the curve coefficients. This moving average reduces lag of the data
+in conjunction with smoothing to reduce noise.
 
 Implemented for Pandas TA by rengel8 based on the source provided below.
 
@@ -75,7 +76,9 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period, window size. Default: 10
     sigma (float): Smoothing value. Default 6.0
-    distribution_offset (float): Value to offset the distribution min 0 (smoother), max 1 (more responsive). Default 0.85  
+    distribution_offset (float):
+        Value to offset the distribution min 0 (smoother),
+        max 1 (more responsive). Default 0.85
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
