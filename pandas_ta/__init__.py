@@ -69,7 +69,7 @@ Category = {
     ],
     # Volatility
     "volatility": [
-        "aberration", "accbands", "atr", "bbands", "donchian", "kc", "massi",
+        "aberration", "accbands", "atr", "bbands", "donchian", "hwc", "kc", "massi",
         "natr", "pdist", "rvi", "thermo", "true_range", "ui"
     ],
 

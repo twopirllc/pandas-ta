@@ -58,6 +58,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "HMA_10")
 
+    def test_hwma_ext(self):
+        self.data.ta.hwma(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "HWMA_0.2_0.1_0.1")
+
     def test_kama_ext(self):
         self.data.ta.kama(append=True)
         self.assertIsInstance(self.data, DataFrame)

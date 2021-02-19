@@ -104,6 +104,13 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "HMA_10")
 
+    def test_hwma(self):
+        result = pandas_ta.hwma(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "HWMA_0.2_0.1_0.1")
+        print(f"\n{result.head(30)}")
+        print(f"\n{result.tail(30)}")
+
     def test_kama(self):
         result = pandas_ta.kama(self.close)
         self.assertIsInstance(result, Series)

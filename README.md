@@ -511,6 +511,7 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _High-Low-Close Average_: **hlc3**
     * Commonly known as 'Typical Price' in Technical Analysis literature
 * _Hull Exponential Moving Average_: **hma**
+* _Holt-Winter Moving Average_: **hwma**
 * _Ichimoku Kinkō Hyō_: **ichimoku**
     * Use: help(ta.ichimoku). Returns two DataFrames.
     * Drop the Chikou Span Column, the final column of the first resultant DataFrame, remove potential data leak.
@@ -692,6 +693,7 @@ result = ta.cagr(df.close)
 * _Drawdown_ (**drawdown**) shows the peak-to-trough decline during a specific period for an investment,
 trading account, or fund. See: ```help(ta.drawdown)```
 * _Gann High-Low Activator_ (**hilo**) was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
+* _Holt-Winter Moving Average_ (**hwma**) is a three-parameter moving average by the Holt-Winter method.
 * _McGinley Dynamic_ (**mcgd**) is an overlap indicator developed by John R. McGinley, a Certified Market Technician. See: ```help(ta.mcgd)```
 * _Price Volume Rank_ (**pvr**) was created by Anthony J. Macek. See: ```help(ta.pvr)```
 * _Quantitative Qualitative Estimation_ (**qqe**) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
