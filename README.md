@@ -14,7 +14,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 ![Example Chart](/images/TA_Chart.png)
 
 
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas library with more than 120 Indicators and Utility functions. Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas library with more than 130 Indicators and Utility functions. Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
 
 <br/>
 
@@ -59,7 +59,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 # **Features**
 
-* Has 120+ indicators and utility functions.
+* Has 130+ indicators and utility functions.
 * Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or both to columns names. Useful for Custom Chained Strategies.
@@ -500,8 +500,9 @@ print(bothhl2.name)  # "pre_HL2_post"
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
-### **Overlap** (30)
+### **Overlap** (31)
 
+* _Arnaud Legoux Moving Average_: **alma**
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
 * _Fibonacci's Weighted Moving Average_: **fwma**
@@ -687,6 +688,7 @@ result = ta.cagr(df.close)
 
 
 ## **New Indicators**
+* _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
 * _Drawdown_ (**drawdown**) shows the peak-to-trough decline during a specific period for an investment,
 trading account, or fund. See: ```help(ta.drawdown)```
 * _Gann High-Low Activator_ (**hilo**) was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```

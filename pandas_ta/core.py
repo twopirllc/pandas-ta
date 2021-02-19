@@ -976,6 +976,11 @@ class AnalysisIndicators(BasePandasObject):
         return self._post_process(result, **kwargs)
 
     # Overlap
+    def alma(self, length=None, sigma=None, distribution_offset=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = alma(close=close, length=length, sigma=sigma, distribution_offset=distribution_offset, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+        
     def dema(self, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = dema(close=close, length=length, offset=offset, **kwargs)
