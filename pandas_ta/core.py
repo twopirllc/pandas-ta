@@ -721,12 +721,13 @@ class AnalysisIndicators(BasePandasObject):
 
         result = ha(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
- 
-    # Cycles    
+
+    # Cycles
     def ebsw(self, close=None, length=None, bars=None, offset=None, **kwargs):
-        close = self._get_column(close, "close")
+        close = self._get_column(kwargs.pop("close", "close"))
+
         result = ebsw(close=close, length=length, bars=bars, offset=offset, **kwargs)
-        return result
+        return self._post_process(result, **kwargs)
 
     # Momentum
     def ao(self, fast=None, slow=None, offset=None, **kwargs):

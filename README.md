@@ -35,6 +35,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [DataFrame Properties](#dataframe-properties)
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-3)
+    * [Cycles](#cycles-1)
     * [Momentum](#momentum-35)
     * [Overlap](#overlap-29)
     * [Performance](#performance-4)
@@ -451,6 +452,11 @@ print(bothhl2.name)  # "pre_HL2_post"
 * _Inside Bar_: **cdl_inside**
 * _Heikin-Ashi_: **ha**
 
+
+### **Cycles** (1)
+
+* _Even Better Sinewave_: **ebsw**
+
 ### **Momentum** (36)
 
 * _Awesome Oscillator_: **ao**
@@ -571,6 +577,7 @@ Use parameter: cumulative=**True** for cumulative results.
 ### **Trend** (15)
 
 * _Average Directional Movement Index_: **adx**
+    * Also includes **dmp** and **dmn** in the resultant DataFrame.
 * _Archer Moving Averages Trends_: **amat**
 * _Aroon & Aroon Oscillator_: **aroon**
 * _Choppiness Index_: **chop**
@@ -685,6 +692,7 @@ result = ta.cagr(df.close)
 ## **New Indicators**
 * _Drawdown_ (**drawdown**) shows the peak-to-trough decline during a specific period for an investment,
 trading account, or fund. See: ```help(ta.drawdown)```
+* _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
 * _Gann High-Low Activator_ (**hilo**) was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
 * _McGinley Dynamic_ (**mcgd**) is an overlap indicator developed by John R. McGinley, a Certified Market Technician. See: ```help(ta.mcgd)```
 * _Price Volume Rank_ (**pvr**) was created by Anthony J. Macek. See: ```help(ta.pvr)```
