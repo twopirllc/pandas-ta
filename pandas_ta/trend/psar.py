@@ -128,9 +128,9 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series, optional): Series of 'close's. Optional
-    af (float): Acceleration Factor.  Default: 0.02
-    max_af (float): Maximum Acceleration Factor.  Default: 0.2
-    offset (int): How many periods to offset the result.  Default: 0
+    af (float): Acceleration Factor. Default: 0.02
+    max_af (float): Maximum Acceleration Factor. Default: 0.2
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

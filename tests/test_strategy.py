@@ -89,7 +89,6 @@ class TestStrategyMethods(TestCase):
     def test_cycles_category(self):
         self.category = "Cycles"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
-        print(f"\n{self.data}")
 
     # @skip
     def test_custom_a(self):

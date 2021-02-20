@@ -43,8 +43,8 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
 atr.__doc__ = \
 """Average True Range (ATR)
 
-Averge True Range is used to measure volatility, especially
-volatility caused by gaps or limit moves.
+Averge True Range is used to measure volatility, especially volatility caused by
+gaps or limit moves.
 
 Sources:
     https://www.tradingview.com/wiki/Average_True_Range_(ATR)

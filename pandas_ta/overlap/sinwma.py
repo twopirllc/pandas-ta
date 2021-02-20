@@ -32,8 +32,8 @@ def sinwma(close, length=None, offset=None, **kwargs):
 sinwma.__doc__ = \
 """Sine Weighted Moving Average (SWMA)
 
-A weighted average using sine cycles.  The middle term(s) of the average have the highest
-weight(s).
+A weighted average using sine cycles. The middle term(s) of the average have the
+highest weight(s).
 
 Source:
     https://www.tradingview.com/script/6MWFvnPO-Sine-Weighted-Moving-Average/
@@ -54,8 +54,8 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

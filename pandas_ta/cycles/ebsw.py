@@ -36,8 +36,7 @@ def ebsw(close, length=None, bars=None, offset=None, **kwargs):
         c3 = -1 * a1 * a1
         c1 = 1 - c2 - c3
         Filt = c1 * (HP + lastHP) / 2 + c2 * FilterHist[1] + c3 * FilterHist[0]
-        # Filt = float("{:.8f}".format(float(Filt)))        # to fix for small scientific notations, the big ones fail
-        # print('Filt: ', Filt, 'FilterHist (list): ', FilterHist)
+        # Filt = float("{:.8f}".format(float(Filt))) # to fix for small scientific notations, the big ones fail
 
         # 3 Bar average of Wave amplitude and power
         Wave = (Filt + FilterHist[1] + FilterHist[0]) / 3

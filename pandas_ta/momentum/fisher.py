@@ -102,9 +102,9 @@ Calculation:
 Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
-    length (int): Fisher period.  Default: 9
-    signal (int): Fisher Signal period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): Fisher period. Default: 9
+    signal (int): Fisher Signal period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

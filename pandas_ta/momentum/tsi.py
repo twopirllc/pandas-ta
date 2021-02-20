@@ -73,7 +73,7 @@ Args:
     slow (int): The long period. Default: 25
     scalar (float): How much to magnify. Default: 100
     drift (int): The difference period. Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

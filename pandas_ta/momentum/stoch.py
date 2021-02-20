@@ -88,7 +88,7 @@ Args:
     k (int): The Fast %K period. Default: 14
     d (int): The Slow %K period. Default: 3
     smooth_k (int): The Slow %D period. Default: 3
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

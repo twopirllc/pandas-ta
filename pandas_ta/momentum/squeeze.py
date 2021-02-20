@@ -203,7 +203,7 @@ Args:
     mom_length (int): Momentum Period. Default: 12
     mom_smooth (int): Smoothing Period of Momentum. Default: 6
     mamode (str): Only "ema" or "sma". Default: "sma"
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     tr (value, optional): Use True Range for Keltner Channels. Default: True

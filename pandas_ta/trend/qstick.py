@@ -46,8 +46,8 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
 qstick.__doc__ = \
 """Q Stick
 
-The Q Stick indicator, developed by Tushar Chande, attempts to quantify and identify
-trends in candlestick charts.
+The Q Stick indicator, developed by Tushar Chande, attempts to quantify and
+identify trends in candlestick charts.
 
 Sources:
     https://library.tradingtechnologies.com/trade/chrt-ti-qstick.html
@@ -61,9 +61,9 @@ Calculation:
 Args:
     open (pd.Series): Series of 'open's
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 1
-    ma (str): The type of moving average to use.  Default: None, which is 'sma'
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 1
+    ma (str): The type of moving average to use. Default: None, which is 'sma'
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

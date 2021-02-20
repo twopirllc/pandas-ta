@@ -115,10 +115,10 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    tenkan (int): Tenkan period.  Default: 9
-    kijun (int): Kijun period.  Default: 26
-    senkou (int): Senkou period.  Default: 52
-    offset (int): How many periods to offset the result.  Default: 0
+    tenkan (int): Tenkan period. Default: 9
+    kijun (int): Kijun period. Default: 26
+    senkou (int): Senkou period. Default: 52
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

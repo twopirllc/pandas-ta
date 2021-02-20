@@ -86,9 +86,9 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): The short period.  Default: 5
-    atr_length (int): The short period.  Default: 15
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The short period. Default: 5
+    atr_length (int): The short period. Default: 15
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

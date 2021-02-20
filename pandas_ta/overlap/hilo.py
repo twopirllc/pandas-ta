@@ -113,8 +113,8 @@ Args:
     close (pd.Series): Series of 'close's
     high_length (int): It's period. Default: 13
     low_length (int): It's period. Default: 21
-    mamode (str): Options: 'sma' or 'ema'.  Default: 'sma'
-    offset (int): How many periods to offset the result.  Default: 0
+    mamode (str): Options: 'sma' or 'ema'. Default: 'sma'
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     adjust (bool): Default: True

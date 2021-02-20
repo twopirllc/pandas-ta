@@ -39,7 +39,8 @@ def slope( close, length=None, as_angle=None, to_degrees=None, vertical=None, of
 slope.__doc__ = \
 """Slope
 
-Returns the slope of a series of length n.  Can convert the slope to angle. Default: slope.
+Returns the slope of a series of length n. Can convert the slope to angle.
+Default: slope.
 
 Sources: Algebra I
 

@@ -27,7 +27,8 @@ def rma(close, length=None, offset=None, **kwargs):
 rma.__doc__ = \
 """wildeR's Moving Average (RMA)
 
-The WildeR's Moving Average is simply an Exponential Moving Average (EMA) with a modified alpha = 1 / length.
+The WildeR's Moving Average is simply an Exponential Moving Average (EMA) with
+a modified alpha = 1 / length.
 
 Sources:
     https://tlc.thinkorswim.com/center/reference/Tech-Indicators/studies-library/V-Z/WildersSmoothing
@@ -42,8 +43,8 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

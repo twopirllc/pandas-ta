@@ -75,14 +75,14 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 Stable
 ------
-The ```pip``` version is the last most stable release.
+The ```pip``` version is the last most stable release. Version: *0.2.23b*
 ```sh
 $ pip install pandas_ta
 ```
 
 Latest Version
 --------------
-Best choice!
+Best choice! Version: *0.2.45b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -656,7 +656,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 <br/><br/>
 
-# **Performance Metrics** (BETA)
+# **Performance Metrics** &nbsp; _BETA_
 _Performance Metrics_ are a **new** addition to the package and consequentially are likely unreliable. **Use at your own risk.** These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called the Standard way. For Example:
 
 ```python
@@ -722,8 +722,4 @@ article in the June, 1994 issue of Technical Analysis of Stocks & Commodities Ma
 <br />
 
 # **Sources**
-* [Original TA-LIB](http://ta-lib.org/)
-* [TradingView](http://www.tradingview.com)
-* [Sierra Chart](https://search.sierrachart.com/?Query=indicators&submitted=true)
-* [FM Labs](https://www.fmlabs.com/reference/default.htm)
-* [User 42](https://user42.tuxfamily.org/chart/manual/index.html)
+[Original TA-LIB](http://ta-lib.org/) | [TradingView](http://www.tradingview.com) | [Sierra Chart](https://search.sierrachart.com/?Query=indicators&submitted=true) | [MQL5](https://www.mql5.com) | [FM Labs](https://www.fmlabs.com/reference/default.htm) | [Pro Real Code](https://www.prorealcode.com/prorealtime-indicators) | [User 42](https://user42.tuxfamily.org/chart/manual/index.html)

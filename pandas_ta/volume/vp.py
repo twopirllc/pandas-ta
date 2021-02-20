@@ -63,7 +63,8 @@ def vp(close, volume, width=None, **kwargs):
 vp.__doc__ = \
 """Volume Profile (VP)
 
-Calculates the Volume Profile by slicing price into ranges.  Note: Value Area is not calculated.
+Calculates the Volume Profile by slicing price into ranges.
+Note: Value Area is not calculated.
 
 Sources:
     https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:volume_by_price
@@ -89,7 +90,8 @@ Args:
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
-    sort_close (value, optional): Whether to sort by close before splitting into ranges. Default: False
+    sort_close (value, optional): Whether to sort by close before splitting
+        into ranges. Default: False
 
 Returns:
     pd.DataFrame: New feature generated.

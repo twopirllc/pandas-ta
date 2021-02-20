@@ -131,7 +131,6 @@ Sources:
     https://www.tradingview.com/script/IYfA9R2k-QQE-MT4/
     https://www.tradingpedia.com/forex-trading-indicators/quantitative-qualitative-estimation
     https://www.prorealcode.com/prorealtime-indicators/qqe-quantitative-qualitative-estimation/
-    
 
 Calculation:
     Default Inputs:
@@ -142,7 +141,8 @@ Args:
     length (int): RSI period. Default: 14
     smooth (int): RSI smoothing period. Default: 5
     factor (float): QQE Factor. Default: 4.236
-    mamode (str): Smoothing MA type: "ema", "hma", "rma", "sma" or "wma". Default: "ema"
+    mamode (str): Smoothing MA type: "ema", "hma", "rma", "sma" or "wma".
+        Default: "ema"
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

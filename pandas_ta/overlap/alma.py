@@ -15,7 +15,7 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
     offset = get_offset(offset)
 
     # Pre-Calculations
-    m = (distribution_offset * (length - 1))
+    m = distribution_offset * (length - 1)
     s = length / sigma
     wtd = list(range(length))
     for i in range(0, length):
@@ -31,6 +31,7 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
             window_sum = window_sum + wtd[j] * close[i - j]
             cum_sum = cum_sum + wtd[j]
         almean = window_sum / cum_sum
+
         if i == length:
             result.append(npNaN)                                            # additional one bar NaN as pre-roll
         else:
@@ -76,10 +77,9 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period, window size. Default: 10
     sigma (float): Smoothing value. Default 6.0
-    distribution_offset (float):
-        Value to offset the distribution min 0 (smoother),
-        max 1 (more responsive). Default 0.85
-    offset (int): How many periods to offset the result.  Default: 0
+    distribution_offset (float): Value to offset the distribution min 0
+        (smoother), max 1 (more responsive). Default 0.85
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

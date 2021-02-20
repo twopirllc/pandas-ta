@@ -31,7 +31,6 @@ def hwc(close, na=None, nb=None, nc=None, nd=None, scalar=None, channel_eval=Non
     chan_width = []
     chan_pct_width = []
 
-    print(channel_eval)
     # Calculate ..
     for i in range(m):
         F = (1.0 - na) * (last_f + last_v + 0.5 * last_a) + na * close[i]
@@ -125,10 +124,12 @@ def hwc(close, na=None, nb=None, nc=None, nd=None, scalar=None, channel_eval=Non
 hwc.__doc__ = \
 """HWC (Holt-Winter Channel)
 
-Channel indicator HWC (Holt-Winters Channel) based on HWMA - a three-parameter moving average 
-calculated by the method of Holt-Winters.
-This version has been implemented for Pandas TA by rengel8 based on a publication for MetaTrader 5
-extended by width and percentage price position against width of channel.
+Channel indicator HWC (Holt-Winters Channel) based on HWMA - a three-parameter
+moving average calculated by the method of Holt-Winters.
+
+This version has been implemented for Pandas TA by rengel8 based on a
+publication for MetaTrader 5 extended by width and percentage price position
+against width of channel.
 
 Sources:
     https://www.mql5.com/en/code/20857
@@ -139,7 +140,7 @@ Calculation:
     F[i] = (1-na) * (F[i-1] + V[i-1] + 0.5 * A[i-1]) + na * Price[i]
     V[i] = (1-nb) * (V[i-1] + A[i-1]) + nb * (F[i] - F[i-1])
     A[i] = (1-nc) * A[i-1] + nc * (V[i] - V[i-1])
-    
+
     Top = HWMA + Multiplier * StDt
     Bottom = HWMA - Multiplier * StDt
     where..
@@ -152,7 +153,7 @@ Args:
     nc - parameter of the equation to assess seasonality (from 0 to 1)
     nd - parameter of the channel equation (from 0 to 1)
     scaler - multiplier for the width of the channel calculated
-    channel_eval - boolean to return width and percentage price position against price  
+    channel_eval - boolean to return width and percentage price position against price
     close (pd.Series): Series of 'close's
 
 Kwargs:

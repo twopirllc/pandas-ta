@@ -90,7 +90,7 @@ Args:
     rsi_length (int): RSI period. Default: 14
     k (int): The Fast %K period. Default: 3
     d (int): The Slow %K period. Default: 3
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -57,9 +57,9 @@ Calculation:
 Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
-    fast (int): The short period.  Default: 5
-    slow (int): The long period.   Default: 34
-    offset (int): How many periods to offset the result.  Default: 0
+    fast (int): The short period. Default: 5
+    slow (int): The long period. Default: 34
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

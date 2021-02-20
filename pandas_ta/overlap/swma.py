@@ -31,8 +31,9 @@ swma.__doc__ = \
 """Symmetric Weighted Moving Average (SWMA)
 
 Symmetric Weighted Moving Average where weights are based on a symmetric
-triangle.  For example: n=3 -> [1, 2, 1], n=4 -> [1, 2, 2, 1], etc...  This moving
-average has variable length in contrast to TradingView's fixed length of 4.
+triangle.  For example: n=3 -> [1, 2, 1], n=4 -> [1, 2, 2, 1], etc...
+This moving average has variable length in contrast to TradingView's fixed
+length of 4.
 
 Source:
     https://www.tradingview.com/study-script-reference/#fun_swma
@@ -51,9 +52,9 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    asc (bool): Recent values weigh more.  Default: True
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    asc (bool): Recent values weigh more. Default: True
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -34,7 +34,7 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
 
     # Binary output, useful for signals
     if asint:
-        thermo_long = thermo_long.astype(int)  
+        thermo_long = thermo_long.astype(int)
         thermo_short = thermo_short.astype(int)
 
     # Offset
@@ -66,7 +66,12 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
     thermo.category = thermo_ma.category = thermo_long.category = thermo_short.category = "volatility"
 
     # Prepare Dataframe to return
-    data = {thermo.name: thermo, thermo_ma.name: thermo_ma, thermo_long.name: thermo_long, thermo_short.name: thermo_short}
+    data = {
+        thermo.name: thermo,
+        thermo_ma.name: thermo_ma,
+        thermo_long.name: thermo_long,
+        thermo_short.name: thermo_short
+    }
     df = DataFrame(data)
     df.name = f"THERMO{_props}"
     df.category = thermo.category

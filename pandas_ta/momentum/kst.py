@@ -83,17 +83,17 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    roc1 (int): ROC 1 period.  Default: 10
-    roc2 (int): ROC 2 period.  Default: 15
-    roc3 (int): ROC 3 period.  Default: 20
-    roc4 (int): ROC 4 period.  Default: 30
-    sma1 (int): SMA 1 period.  Default: 10
-    sma2 (int): SMA 2 period.  Default: 10
-    sma3 (int): SMA 3 period.  Default: 10
-    sma4 (int): SMA 4 period.  Default: 15
-    signal (int): It's period.  Default: 9
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    roc1 (int): ROC 1 period. Default: 10
+    roc2 (int): ROC 2 period. Default: 15
+    roc3 (int): ROC 3 period. Default: 20
+    roc4 (int): ROC 4 period. Default: 30
+    sma1 (int): SMA 1 period. Default: 10
+    sma2 (int): SMA 2 period. Default: 10
+    sma3 (int): SMA 3 period. Default: 10
+    sma4 (int): SMA 4 period. Default: 15
+    signal (int): It's period. Default: 9
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

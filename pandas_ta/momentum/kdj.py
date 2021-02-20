@@ -86,7 +86,7 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): Default: 9
     signal (int): Default: 3
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -7,19 +7,18 @@ def hwma(close, na=None, nb=None, nc=None, offset=None, **kwargs):
     """Indicator: Holt-Winter Moving Average"""
     # Validate Arguments
     close = verify_series(close)
-    na = float(na) if na and na > 0 else 0.2
-    nb = float(nb) if nb and nb > 0 else 0.1
-    nc = float(nc) if nc and nc > 0 else 0.1
+    na = float(na) if na and na > 0 and na < 1 else 0.2
+    nb = float(nb) if nb and nb > 0 and nb < 1 else 0.1
+    nc = float(nc) if nc and nc > 0 and nc < 1 else 0.1
     offset = get_offset(offset)
 
-    # Initialize ..
-    m = close.size
-    last_f = close[0]
-    # last_a, last_v = 0, 0
-    last_a = last_v = 0
-    result = []
 
-    # Calculate ..
+    # Calculate Result
+    last_a = last_v = 0
+    last_f = close[0]
+
+    result = []
+    m = close.size
     for i in range(m):
         F = (1.0 - na) * (last_f + last_v + 0.5 * last_a) + na * close[i]
         V = (1.0 - nb) * (last_v + last_a) + nb * (F - last_f)
@@ -70,9 +69,10 @@ Calculation:
     A[i] = (1-nc) * A[i-1] + nc * (V[i] - V[i-1])
 
 Args:
-    na - parameter of the equation that describes a smoothed series (from 0 to 1)
-    nb - parameter of the equation to assess the trend (from 0 to 1)
-    nc - parameter of the equation to assess seasonality (from 0 to 1)
+    close (pd.Series): Series of 'close's
+    na (float): Smoothed series parameter (from 0 to 1). Default: 0.2
+    nb (float): Trend parameter (from 0 to 1). Default: 0.1
+    nc (float): Seasonality parameter (from 0 to 1). Default: 0.1
     close (pd.Series): Series of 'close's
 
 Kwargs:

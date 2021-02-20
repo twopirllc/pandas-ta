@@ -60,9 +60,9 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    mamode (str): Options: 'ema', 'hma', 'sma', 'wma'.  Default: 'ema'
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    mamode (str): Options: 'ema', 'hma', 'sma', 'wma'. Default: 'ema'
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -90,14 +90,14 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    fast (int): The Fast %K period.  Default: 7
-    medium (int): The Slow %K period.  Default: 14
-    slow (int): The Slow %D period.  Default: 28
-    fast_w (float): The Fast %K period.  Default: 4.0
-    medium_w (float): The Slow %K period.  Default: 2.0
-    slow_w (float): The Slow %D period.  Default: 1.0
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    fast (int): The Fast %K period. Default: 7
+    medium (int): The Slow %K period. Default: 14
+    slow (int): The Slow %D period. Default: 28
+    fast_w (float): The Fast %K period. Default: 4.0
+    medium_w (float): The Slow %K period. Default: 2.0
+    slow_w (float): The Slow %D period. Default: 1.0
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

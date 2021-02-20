@@ -42,7 +42,8 @@ pvi.__doc__ = \
 """Positive Volume Index (PVI)
 
 The Positive Volume Index is a cumulative indicator that uses volume change in
-an attempt to identify where smart money is active.  Used in conjunction with NVI.
+an attempt to identify where smart money is active.
+Used in conjunction with NVI.
 
 Sources:
     https://www.investopedia.com/terms/p/pvi.asp
@@ -62,9 +63,9 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
-    length (int): The short period.  Default: 13
-    initial (int): The short period.  Default: 1000
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The short period. Default: 13
+    initial (int): The short period. Default: 1000
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

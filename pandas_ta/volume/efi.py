@@ -59,10 +59,10 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
-    length (int): The short period.  Default: 13
-    drift (int): The diff period.   Default: 1
-    mamode (str): Two options: None or "sma".  Default: None
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The short period. Default: 13
+    drift (int): The diff period. Default: 1
+    mamode (str): Two options: None or "sma". Default: None
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

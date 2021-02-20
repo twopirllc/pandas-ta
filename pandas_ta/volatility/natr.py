@@ -39,8 +39,7 @@ def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, of
 natr.__doc__ = \
 """Normalized Average True Range (NATR)
 
-Normalized Average True Range attempt to normalize the average
-true range.
+Normalized Average True Range attempt to normalize the average true range.
 
 Sources:
     https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/normalized-average-true-range-natr/
@@ -55,9 +54,9 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): The short period.  Default: 20
-    scalar (float): How much to magnify.  Default: 100
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The short period. Default: 20
+    scalar (float): How much to magnify. Default: 100
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

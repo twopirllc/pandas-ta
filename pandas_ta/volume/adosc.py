@@ -63,9 +63,9 @@ Args:
     close (pd.Series): Series of 'close's
     open (pd.Series): Series of 'open's
     volume (pd.Series): Series of 'volume's
-    fast (int): The short period.  Default: 12
-    slow (int): The long period.   Default: 26
-    offset (int): How many periods to offset the result.  Default: 0
+    fast (int): The short period. Default: 12
+    slow (int): The long period. Default: 26
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

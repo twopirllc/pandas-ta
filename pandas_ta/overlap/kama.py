@@ -66,11 +66,11 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    fast (int): Fast MA period.  Default: 2
-    slow (int): Slow MA period.  Default: 30
-    drift (int): The difference period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    fast (int): Fast MA period. Default: 2
+    slow (int): Slow MA period. Default: 30
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -27,7 +27,7 @@ def median(close, length=None, offset=None, **kwargs):
 median.__doc__ = \
 """Rolling Median
 
-Rolling Median of over 'n' periods.  Sibling of a Simple Moving Average.
+Rolling Median of over 'n' periods. Sibling of a Simple Moving Average.
 
 Sources:
     https://www.incrediblecharts.com/indicators/median_price.php

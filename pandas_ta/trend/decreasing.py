@@ -46,7 +46,10 @@ def decreasing(close, length=None, strict=None, asint=None, offset=None, **kwarg
 decreasing.__doc__ = \
 """Decreasing
 
-Returns True if the series is decreasing over a period, False otherwise. If the kwarg 'strict' is True, it returns True if it is continuously decreasing over the period. When using the kwarg 'asint', then it returns 1 for True or 0 for False. 
+Returns True if the series is decreasing over a period, False otherwise.
+If the kwarg 'strict' is True, it returns True if it is continuously decreasing
+over the period. When using the kwarg 'asint', then it returns 1 for True
+or 0 for False.
 
 Calculation:
     if strict:
