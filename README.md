@@ -76,7 +76,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 Stable
 ------
-The ```pip``` version is the last most stable release. Version: *0.2.23b*
+The ```pip``` version is the last most stable release. Version: *0.2.45b*
 ```sh
 $ pip install pandas_ta
 ```
