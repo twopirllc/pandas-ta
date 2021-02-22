@@ -11,6 +11,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 [![PyPi Version](https://img.shields.io/pypi/v/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![Package Status](https://img.shields.io/pypi/status/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta.svg?style=flat)](https://pypistats.org/packages/pandas_ta)
+[![Contributors](https://img.shields.io/badge/contributors-19-orange.svg?style=flat)](#contributors-)
 ![Example Chart](/images/TA_Chart.png)
 
 
