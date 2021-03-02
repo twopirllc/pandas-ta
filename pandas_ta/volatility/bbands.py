@@ -74,7 +74,7 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=20, std=2
+        length=5, std=2, mamode="sma"
     EMA = Exponential Moving Average
     SMA = Simple Moving Average
     STDEV = Standard Deviation
