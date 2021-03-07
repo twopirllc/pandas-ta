@@ -9,7 +9,7 @@ def ebsw(close, length=None, bars=None, offset=None, **kwargs):
     """Indicator: Even Better SineWave (EBSW)"""
     # Validate arguments
     close = verify_series(close)
-    length = int(length) if length and length > 0 else 40
+    length = int(length) if length and length > 38 else 40
     bars = int(bars) if bars and bars > 0 else 10
     offset = get_offset(offset)
 
@@ -23,7 +23,7 @@ def ebsw(close, length=None, bars=None, offset=None, **kwargs):
 
     # Calculate Result
     m = close.size
-    result = [npNaN for _ in range(0, length -1)] + [0]
+    result = [npNaN for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
         # HighPass filter cyclic components whose periods are shorter than Duration input
         alpha1 = (1 - math.sin(360 / length)) / math.cos(360 / length)
@@ -94,8 +94,8 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's max cycle/trend period. Vvalues between 40-48 work like
-        expected. Default: 40.
+    length (int): It's max cycle/trend period. Values between 40-48 work like
+        expected with minimum value: 39. Default: 40.
     bars (int): Period of low pass filtering. Default: 10
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0

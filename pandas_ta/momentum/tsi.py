@@ -14,6 +14,7 @@ def tsi(close, fast=None, slow=None, scalar=None, drift=None, offset=None, **kwa
     scalar = float(scalar) if scalar else 100
     drift = get_drift(drift)
     offset = get_offset(offset)
+    if "length" in kwargs: kwargs.pop("length")
 
     # Calculate Result
     diff = close.diff(drift)

@@ -17,7 +17,8 @@ def decreasing(close, length=None, strict=None, asint=None, offset=None, **kwarg
     # Calculate Result
     if strict:
         # Returns value as float64? Have to cast to bool
-        decreasing = close.rolling(length, min_periods=length).apply(stricly_decreasing, args=(length,), raw=False)
+        decreasing = close.rolling(length, min_periods=length) \
+            .apply(stricly_decreasing, args=(length,), raw=False)
         decreasing.fillna(0, inplace=True)
         decreasing = decreasing.astype(bool)
     else:

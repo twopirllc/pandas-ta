@@ -14,6 +14,7 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, offset=Non
     fast = int(fast) if fast and fast > 0 else 3
     slow = int(slow) if slow and slow > 0 else 10
     offset = get_offset(offset)
+    if "length" in kwargs: kwargs.pop("length")
 
     # Calculate Result
     ad_ = ad(high=high, low=low, close=close, volume=volume, open_=open_)

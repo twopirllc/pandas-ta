@@ -76,6 +76,13 @@ class TestStrategyMethods(TestCase):
         self.category = "All"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
+    @skipUnless(verbose, "verbose mode only")
+    def test_all_multiparams_strategy(self):
+        self.category = "All"
+        self.data.ta.strategy(self.category, length=10, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, length=50, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, fast=5, verbose=verbose, timed=strategy_timed)
+
     # @skip
     def test_candles_category(self):
         self.category = "Candles"

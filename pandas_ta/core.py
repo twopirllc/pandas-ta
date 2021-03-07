@@ -361,21 +361,17 @@ class AnalysisIndicators(BasePandasObject):
         """Appends a Pandas Series or DataFrame columns to self._df."""
         if "append" in kwargs and kwargs["append"]:
             df = self._df
-            na_columns = self._check_na_columns()
             if df is None or result is None: return
             else:
                 if isinstance(result, pd.DataFrame):
-                    # If specified in kwargs, rename the columns. If not, use
-                    # the default names.
-                    if "col_names" in kwargs and isinstance(
-                            kwargs["col_names"], tuple):
+                    # If specified in kwargs, rename the columns.
+                    # If not, use the default names.
+                    if "col_names" in kwargs and isinstance(kwargs["col_names"], tuple):
                         if len(kwargs["col_names"]) >= len(result.columns):
                             for col, ind_name in zip(result.columns, kwargs["col_names"]):
                                 df[ind_name] = result.loc[:, col]
                         else:
-                            print(
-                                f"Not enough col_names were specified : got {len(kwargs['col_names'])}, expected {len(result.columns)}."
-                            )
+                            print(f"Not enough col_names were specified : got {len(kwargs['col_names'])}, expected {len(result.columns)}.")
                             return
                     else:
                         for i, column in enumerate(result.columns):
@@ -383,7 +379,8 @@ class AnalysisIndicators(BasePandasObject):
                 else:
                     ind_name = (
                         kwargs["col_names"][0] if "col_names" in kwargs and
-                        isinstance(kwargs["col_names"], tuple) else result.name)
+                        isinstance(kwargs["col_names"], tuple) else result.name
+                    )
                     df[ind_name] = result
 
     def _check_na_columns(self, stdout: bool = True):

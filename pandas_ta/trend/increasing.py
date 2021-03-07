@@ -17,7 +17,8 @@ def increasing(close, length=None, strict=None, asint=None, offset=None, **kwarg
     # Calculate Result
     if strict:
         # Returns value as float64? Have to cast to bool
-        increasing = close.rolling(length, min_periods=length).apply(stricly_increasing, args=(length,), raw=False)
+        increasing = close.rolling(length, min_periods=length) \
+            .apply(stricly_increasing, args=(length,), raw=False)
         increasing.fillna(0, inplace=True)
         increasing = increasing.astype(bool)
     else:

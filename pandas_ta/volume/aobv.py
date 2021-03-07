@@ -2,6 +2,7 @@
 from pandas import DataFrame
 from .obv import obv
 from pandas_ta.overlap import ma
+from pandas_ta.overlap import ema
 from pandas_ta.trend import long_run, short_run
 from pandas_ta.utils import get_offset, verify_series
 
@@ -19,6 +20,7 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, mi
     if slow < fast:
         fast, slow = slow, fast
     mamode = mamode if isinstance(mamode, str) else "ema"
+    if "length" in kwargs: kwargs.pop("length")
     run_length = kwargs.pop("run_length", 2)
 
     # Calculate Result

@@ -15,6 +15,7 @@ def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, slope_len
     lookback = int(lookback) if lookback and lookback > 0 else 2
     mamode = mamode.lower() if isinstance(mamode, str) else "ema"
     offset = get_offset(offset)
+    if "length" in kwargs: kwargs.pop("length")
 
     # # Calculate Result
     fast_ma = ma(mamode, close, length=fast, **kwargs)

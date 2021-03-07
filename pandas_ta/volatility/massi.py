@@ -13,8 +13,8 @@ def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
     slow = int(slow) if slow and slow > 0 else 25
     if slow < fast:
         fast, slow = slow, fast
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else fast
     offset = get_offset(offset)
+    if "length" in kwargs: kwargs.pop("length")
 
     # Calculate Result
     hl_ema1 = ema(close=high_low_range, length=fast, **kwargs)
