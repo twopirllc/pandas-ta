@@ -67,6 +67,11 @@ class TestStrategyMethods(TestCase):
         self.category = "All"
         self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
 
+    def test_all_ordered(self):
+        self.category = "All"
+        self.data.ta.strategy(ordered=True, verbose=verbose, timed=strategy_timed)
+        self.category = "All Ordered" # Rename for Speed Table
+
     @skipUnless(verbose, "verbose mode only")
     def test_all_strategy(self):
         self.data.ta.strategy(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
@@ -76,12 +81,13 @@ class TestStrategyMethods(TestCase):
         self.category = "All"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
-    @skipUnless(verbose, "verbose mode only")
+    # @skipUnless(verbose, "verbose mode only")
     def test_all_multiparams_strategy(self):
         self.category = "All"
         self.data.ta.strategy(self.category, length=10, verbose=verbose, timed=strategy_timed)
         self.data.ta.strategy(self.category, length=50, verbose=verbose, timed=strategy_timed)
-        self.data.ta.strategy(self.category, fast=5, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, fast=5, slow=10, verbose=verbose, timed=strategy_timed)
+        self.category = "All Multiruns with diff Args" # Rename for Speed Table
 
     # @skip
     def test_candles_category(self):

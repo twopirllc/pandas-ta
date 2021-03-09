@@ -83,7 +83,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.45b*
+Best choice! Version: *0.2.47b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -715,6 +715,7 @@ article in the June, 1994 issue of Technical Analysis of Stocks & Commodities Ma
 
 ## **Updated Indicators**
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
+* _Bollinger Bands_ (**bbands**): New argument ```ddoff``` to control the Degrees of Freedom. Default is 0.  See ```help(ta.bbands)```.
 * _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length```. Default: ```False```. See ```help(ta.decreasing)```.
 * _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length```. Default: ```False```. See ```help(ta.increasing)```.
 * _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series with pertinenet trade info for a _trend_. An example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.

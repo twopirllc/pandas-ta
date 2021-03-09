@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
 from datetime import datetime
+from math import log as mlog
 from multiprocessing import cpu_count, Pool
 from time import perf_counter
 from typing import List, Tuple
@@ -582,6 +583,8 @@ class AnalysisIndicators(BasePandasObject):
         # cpus = cpu_count()
         # Ensure indicators are appended to the DataFrame
         kwargs["append"] = True
+        all_ordered = kwargs.pop("ordered", False)
+        mp_chunksize = kwargs.pop("chunksize", self.cores)
 
         # Initialize
         initial_column_count = len(self._df.columns)
@@ -657,11 +660,14 @@ class AnalysisIndicators(BasePandasObject):
                 use_multiprocessing = False
 
         if use_multiprocessing:
-            if verbose:
-                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores.")
-
+            _total_ta = len(ta)
             pool = Pool(self.cores)
+            # Some magic to optimize chunksize for speed based on total ta indicators
+            _chunksize = mp_chunksize - 1 if mp_chunksize > _total_ta else int(mlog(_total_ta)) + 1
+            if verbose:
+                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores of {_total_ta} indicators.")
 
+            results = None
             if mode["custom"]:
                 # Create a list of all the custom indicators into a list
                 custom_ta = [(
@@ -671,15 +677,21 @@ class AnalysisIndicators(BasePandasObject):
                 ) for ind in ta]
                 # Custom multiprocessing pool. Must be ordered for Chained Strategies
                 # May fix this to cpus if Chaining/Composition if it remains
-                # inconsistent
-                results = pool.imap(self._mp_worker, custom_ta, self.cores)
+                results = pool.imap(self._mp_worker, custom_ta, _chunksize)
             else:
                 default_ta = [(ind, tuple(), kwargs) for ind in ta]
-                # All and Categorical multiprocessing pool. Speed over Order.
-                results = pool.imap_unordered(self._mp_worker, default_ta, self.cores)
+                # All and Categorical multiprocessing pool.
+                if all_ordered:
+                    results = pool.imap(self._mp_worker, default_ta, _chunksize) # Order over Speed
+                else:
+                    results = pool.imap_unordered(self._mp_worker, default_ta, _chunksize) # Speed over Order
+            if results is None:
+                print(f"[X] ta.strategy('{name}') has no results.")
+                return
 
             pool.close()
             pool.join()
+
         else:
             # Without multiprocessing:
             if verbose:
@@ -705,9 +717,7 @@ class AnalysisIndicators(BasePandasObject):
 
         if verbose:
             print(f"[i] Total indicators: {len(ta)}")
-            print(
-                f"[i] Columns added: {len(self._df.columns) - initial_column_count}"
-            )
+            print(f"[i] Columns added: {len(self._df.columns) - initial_column_count}")
         if timed:
             print(f"[i] Runtime: {ftime}")
 
