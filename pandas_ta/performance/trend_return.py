@@ -12,7 +12,8 @@ def trend_return(close, trend, log=True, cumulative=None, trend_reset=0, trade_o
     trend = verify_series(trend)
     cumulative = cumulative if cumulative is not None and isinstance(cumulative, bool) else False
     trend_reset = int(trend_reset) if trend_reset and isinstance(trend_reset, int) else 0
-    trade_offset = int(trade_offset) if trade_offset and isinstance(trade_offset, int) else -1
+    if trade_offset !=0:
+        trade_offset = int(trade_offset) if trade_offset and isinstance(trade_offset, int) else -1
     offset = get_offset(offset)
 
     # Calculate Result
