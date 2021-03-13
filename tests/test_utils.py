@@ -303,7 +303,7 @@ class TestUtilities(TestCase):
     def test_to_utc(self):
         result = self.utils.to_utc(self.data.copy())
         self.assertTrue(is_datetime64_ns_dtype(result.index))
-        self.assertTrue(is_datetime64tz_dtype(result.index))        
+        self.assertTrue(is_datetime64tz_dtype(result.index))
 
     def test_total_time(self):
         result = self.utils.total_time(self.data)

@@ -5,9 +5,11 @@ from pandas_ta.utils import get_offset, verify_series
 def percent_return(close, length=None, cumulative=False, offset=None, **kwargs):
     """Indicator: Percent Return"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 1
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     pct_return = close.pct_change(length)

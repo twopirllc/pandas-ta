@@ -3,18 +3,21 @@
 from pandas import DataFrame
 from .atr import atr
 from pandas_ta.overlap import hlc3, sma
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def aberration(high, low, close, length=None, atr_length=None, offset=None, **kwargs):
     """Indicator: Aberration (ABER)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 5
     atr_length = int(atr_length) if atr_length and atr_length > 0 else 15
+    _length = max(atr_length, length)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     atr_ = atr(high=high, low=low, close=close, length=atr_length)

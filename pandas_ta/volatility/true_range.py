@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+from numpy import NaN as npNaN
 from pandas import DataFrame
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
-from numpy import NaN as npNaN
+
 
 def true_range(high, low, close, drift=None, offset=None, **kwargs):
     """Indicator: True Range"""
@@ -9,11 +10,11 @@ def true_range(high, low, close, drift=None, offset=None, **kwargs):
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
-    high_low_range = non_zero_range(high, low)
     drift = get_drift(drift)
     offset = get_offset(offset)
 
     # Calculate Result
+    high_low_range = non_zero_range(high, low)
     prev_close = close.shift(drift)
     ranges = [high_low_range, high - prev_close, prev_close - low]
     true_range = DataFrame(ranges).T

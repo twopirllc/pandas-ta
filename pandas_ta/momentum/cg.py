@@ -5,9 +5,11 @@ from pandas_ta.utils import get_offset, verify_series, weights
 def cg(close, length=None, offset=None, **kwargs):
     """Indicator: Center of Gravity (CG)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     coefficients = [length - i for i in range(0, length)]

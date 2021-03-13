@@ -6,10 +6,12 @@ from pandas_ta.utils import get_offset, verify_series
 def bias(close, length=None, mamode=None, offset=None, **kwargs):
     """Indicator: Bias (BIAS)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 26
     mamode = mamode if isinstance(mamode, str) else "sma"
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     bma = ma(mamode, close, length=length, **kwargs)

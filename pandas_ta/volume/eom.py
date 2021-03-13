@@ -6,14 +6,16 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 def eom(high, low, close, volume, length=None, divisor=None, drift=None, offset=None, **kwargs):
     """Indicator: Ease of Movement (EOM)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    volume = verify_series(volume)
     length = int(length) if length and length > 0 else 14
     divisor = divisor if divisor and divisor > 0 else 100000000
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None or volume is None: return
 
     # Calculate Result
     high_low_range = non_zero_range(high, low)

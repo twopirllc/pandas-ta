@@ -8,12 +8,14 @@ from pandas_ta.utils import get_offset, verify_series
 def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwargs):
     """Indicator: Bollinger Bands (BBANDS)"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 5
     std = float(std) if std and std > 0 else 2.0
     mamode = mamode if isinstance(mamode, str) else "sma"
     ddof = int(ddof) if ddof >= 0 and ddof < length else 1
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     standard_deviation = stdev(close=close, length=length, ddof=ddof)

@@ -1,46 +1,36 @@
 # -*- coding: utf-8 -*-
-# import numpy as np
+from numpy import sqrt as npSqrt
 from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
-from math import sqrt
 
 
 def hwc(close, na=None, nb=None, nc=None, nd=None, scalar=None, channel_eval=None, offset=None, **kwargs):
     """Indicator: Holt-Winter Channel"""
     # Validate Arguments
-    close = verify_series(close)
     na = float(na) if na and na > 0 else 0.2
     nb = float(nb) if nb and nb > 0 else 0.1
     nc = float(nc) if nc and nc > 0 else 0.1
     nd = float(nd) if nd and nd > 0 else 0.1
     scalar = float(scalar) if scalar and scalar > 0 else 1
     channel_eval = bool(channel_eval) if channel_eval and channel_eval else False
+    close = verify_series(close)
     offset = get_offset(offset)
 
-    # Initialize ..
-    m = close.size
-    last_price = close[0]
-    last_f = close[0]
-    last_v = 0
-    last_a = 0
-    result = []
-    last_result = close[0]
-    last_var = 0
-    upper = []
-    lower = []
-    chan_width = []
-    chan_pct_width = []
+    # Calculate Result
+    last_a = last_v = last_var = 0
+    last_f = last_price = last_result = close[0]
+    lower, result, upper = [], [], []
+    chan_pct_width, chan_width = [], []
 
-    # Calculate ..
+    m = close.size
     for i in range(m):
         F = (1.0 - na) * (last_f + last_v + 0.5 * last_a) + na * close[i]
         V = (1.0 - nb) * (last_v + last_a) + nb * (F - last_f)
         A = (1.0 - nc) * last_a + nc * (V - last_v)
-        # print('F|V|A:', F, V, A)
         result.append((F + V + 0.5 * A))
 
         var = (1.0 - nd) * last_var + nd * (last_price - last_result) * (last_price - last_result)
-        stddev = sqrt(last_var)
+        stddev = npSqrt(last_var)
         upper.append(result[i] + scalar * stddev)
         lower.append(result[i] - scalar * stddev)
 
@@ -75,7 +65,6 @@ def hwc(close, na=None, nb=None, nc=None, nd=None, scalar=None, channel_eval=Non
         if channel_eval:
             hwc_width = hwc_width.shift(offset)
             hwc_pctwidth = hwc_pctwidth.shift(offset)
-
 
     # Handle fills
     if "fillna" in kwargs:

@@ -6,17 +6,20 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Mass Index (MASSI)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    high_low_range = non_zero_range(high, low)
     fast = int(fast) if fast and fast > 0 else 9
     slow = int(slow) if slow and slow > 0 else 25
     if slow < fast:
         fast, slow = slow, fast
+    _length = max(fast, slow)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
     offset = get_offset(offset)
     if "length" in kwargs: kwargs.pop("length")
 
+    if high is None or low is None: return
+
     # Calculate Result
+    high_low_range = non_zero_range(high, low)
     hl_ema1 = ema(close=high_low_range, length=fast, **kwargs)
     hl_ema2 = ema(close=hl_ema1, length=fast, **kwargs)
 

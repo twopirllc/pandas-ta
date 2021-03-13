@@ -15,5 +15,5 @@ def high_low_range(high: Series, low: Series) -> Series:
     return non_zero_range(high, low)
 
 
-def real_body(close: Series, open_: Series) -> Series:
+def real_body(open_: Series, close: Series) -> Series:
     return non_zero_range(close, open_)

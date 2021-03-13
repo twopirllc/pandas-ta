@@ -5,11 +5,13 @@ from pandas_ta.utils import get_offset, verify_series
 def increasing(close, length=None, strict=None, asint=None, offset=None, **kwargs):
     """Indicator: Increasing"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 1
     strict = strict if isinstance(strict, bool) else False
     asint = asint if isinstance(asint, bool) else True
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     def stricly_increasing(series, n):
         return all([i < j for i,j in zip(series[-n:], series[1:])])

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
 from datetime import datetime
-from math import log as mlog
 from multiprocessing import cpu_count, Pool
 from time import perf_counter
 from typing import List, Tuple
 
 import pandas as pd
-from numpy import ndarray as npndarray
+from numpy import log10 as npLog10
+from numpy import ndarray as npNdarray
 from pandas.core.base import PandasObject
 
 from pandas_ta import version, Category
@@ -118,9 +118,7 @@ class BasePandasObject(PandasObject):
     """
 
     def __init__(self, df, **kwargs):
-        if df.empty:
-            return
-
+        if df.empty: return
         if len(df.columns) > 0:
             common_names = {
                 "Date": "date",
@@ -237,6 +235,7 @@ class AnalysisIndicators(BasePandasObject):
     _adjusted = None
     _cores = cpu_count()
     _mp = False
+    _time_range = "years"
 
     # DataFrame Behavioral Methods
     def __call__(
@@ -325,6 +324,19 @@ class AnalysisIndicators(BasePandasObject):
     def reverse(self) -> pd.DataFrame:
         """Reverses the DataFrame. Simply: df.iloc[::-1]"""
         return self._df.iloc[::-1]
+
+    @property
+    def time_range(self) -> str:
+        """"""
+        return total_time(self._df, self._time_range)
+
+    @time_range.setter
+    def time_range(self, value: str) -> None:
+        """property: df.ta.mp = False (Default)"""
+        if value is not None and isinstance(value, str):
+            self._time_range = value
+        else:
+            self._time_range = "years"
 
     @property
     def version(self) -> str:
@@ -425,8 +437,10 @@ class AnalysisIndicators(BasePandasObject):
         * Applies prefixes and/or suffixes
         * Appends the result to main DataFrame
         """
+        verbose = kwargs.pop("verbose", False)
         if not isinstance(result, (pd.Series, pd.DataFrame)):
-            print(f"[X] Oops! The result was not a Series or DataFrame.")
+            if verbose:
+                print(f"[X] Oops! The result was not a Series or DataFrame.")
             return self._df
         else:
             # Append only specific columns to the dataframe (via
@@ -495,7 +509,7 @@ class AnalysisIndicators(BasePandasObject):
             Returns nothing to the user.  Either adds or removes constant ranges
             from the working DataFrame.
         """
-        if isinstance(values, npndarray) or isinstance(values, list):
+        if isinstance(values, npNdarray) or isinstance(values, list):
             if append:
                 for x in values:
                     self._df[f"{x}"] = x
@@ -528,6 +542,7 @@ class AnalysisIndicators(BasePandasObject):
             "datetime_ordered",
             "mp",
             "reverse",
+            "time_range",
             "version",
         ]
 
@@ -654,9 +669,9 @@ class AnalysisIndicators(BasePandasObject):
             _total_ta = len(ta)
             pool = Pool(self.cores)
             # Some magic to optimize chunksize for speed based on total ta indicators
-            _chunksize = mp_chunksize - 1 if mp_chunksize > _total_ta else int(mlog(_total_ta)) + 1
+            _chunksize = mp_chunksize - 1 if mp_chunksize > _total_ta else int(npLog10(_total_ta)) + 1
             if verbose:
-                print(f"[i] Multiprocessing: {self.cores} of {cpu_count()} cores of {_total_ta} indicators.")
+                print(f"[i] Multiprocessing: {_chunksize} chunks over {cpu_count()} cores for {_total_ta} indicators.")
 
             results = None
             if mode["custom"]:

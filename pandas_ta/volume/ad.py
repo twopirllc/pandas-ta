@@ -9,7 +9,6 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     low = verify_series(low)
     close = verify_series(close)
     volume = verify_series(volume)
-    high_low_range = non_zero_range(high, low)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -19,6 +18,7 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     else:
         ad = 2 * close - (high + low)  # AD with High, Low, Close
 
+    high_low_range = non_zero_range(high, low)
     ad *= volume / high_low_range
     ad = ad.cumsum()
 

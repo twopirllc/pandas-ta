@@ -7,10 +7,12 @@ from pandas_ta.utils import get_offset, verify_series
 def zscore(close, length=None, std=None, offset=None, **kwargs):
     """Indicator: Z Score"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 1 else 30
     std = float(std) if std and std > 1 else 1
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     std *= stdev(close=close, length=length, **kwargs)

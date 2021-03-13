@@ -7,10 +7,12 @@ from pandas_ta.utils import get_offset, verify_series
 def short_run(fast, slow, length=None, offset=None, **kwargs):
     """Indicator: Short Run"""
     # Validate Arguments
-    fast = verify_series(fast)
-    slow = verify_series(slow)
     length = int(length) if length and length > 0 else 2
+    fast = verify_series(fast, length)
+    slow = verify_series(slow, length)
     offset = get_offset(offset)
+
+    if fast is None or slow is None: return
 
     # Calculate Result
     pt = decreasing(fast, length) & increasing(slow, length)  # potential top or top

@@ -8,13 +8,15 @@ from pandas_ta.utils import get_offset, high_low_range, verify_series
 def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **kwargs):
     """Indicator: Keltner Channels (KC)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 20
     scalar = float(scalar) if scalar and scalar > 0 else 2
     mamode = mamode if isinstance(mamode, str) else "ema"
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     use_tr = kwargs.pop("tr", True)

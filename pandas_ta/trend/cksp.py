@@ -7,13 +7,16 @@ from pandas_ta.utils import get_offset, verify_series
 def cksp(high, low, close, p=None, x=None, q=None, offset=None, **kwargs):
     """Indicator: Chande Kroll Stop (CKSP)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     p = int(p) if p and p > 0 else 10
     x = float(x) if x and x > 0 else 1
     q = int(q) if q and q > 0 else 9
+    _length = max(p, q, x)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     atr_ = atr(high=high, low=low, close=close, length=p)

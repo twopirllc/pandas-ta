@@ -7,12 +7,14 @@ from pandas_ta.utils import get_offset, verify_series
 def cci(high, low, close, length=None, c=None, offset=None, **kwargs):
     """Indicator: Commodity Channel Index (CCI)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     c = float(c) if c and c > 0 else 0.015
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     typical_price = hlc3(high=high, low=low, close=close)

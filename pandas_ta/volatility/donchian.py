@@ -6,13 +6,16 @@ from pandas_ta.utils import get_offset, verify_series
 def donchian(high, low, lower_length=None, upper_length=None, offset=None, **kwargs):
     """Indicator: Donchian Channels (DC)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
     lower_length = int(lower_length) if lower_length and lower_length > 0 else 20
     upper_length = int(upper_length) if upper_length and upper_length > 0 else 20
     lower_min_periods = int(kwargs["lower_min_periods"]) if "lower_min_periods" in kwargs and kwargs["lower_min_periods"] is not None else lower_length
     upper_min_periods = int(kwargs["upper_min_periods"]) if "upper_min_periods" in kwargs and kwargs["upper_min_periods"] is not None else upper_length
+    _length = max(lower_length, lower_min_periods, upper_length, upper_min_periods)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None: return
 
     # Calculate Result
     lower = low.rolling(lower_length, min_periods=lower_min_periods).min()

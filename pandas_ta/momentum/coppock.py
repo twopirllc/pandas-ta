@@ -7,11 +7,13 @@ from pandas_ta.utils import get_offset, verify_series
 def coppock(close, length=None, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Coppock Curve (COPC)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     fast = int(fast) if fast and fast > 0 else 11
     slow = int(slow) if slow and slow > 0 else 14
+    close = verify_series(close, max(length, fast, slow))
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     total_roc = roc(close, fast) + roc(close, slow)

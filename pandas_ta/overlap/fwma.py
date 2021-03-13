@@ -5,10 +5,12 @@ from pandas_ta.utils import fibonacci, get_offset, verify_series, weights
 def fwma(close, length=None, asc=None, offset=None, **kwargs):
     """Indicator: Fibonacci's Weighted Moving Average (FWMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     asc = asc if asc else True
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     fibs = fibonacci(n=length, weighted=True)

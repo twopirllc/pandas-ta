@@ -6,9 +6,11 @@ from pandas_ta.utils import get_offset, verify_series
 def dpo(close, length=None, centered=True, offset=None, **kwargs):
     """Indicator: Detrend Price Oscillator (DPO)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 20
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     t = int(0.5 * length) + 1

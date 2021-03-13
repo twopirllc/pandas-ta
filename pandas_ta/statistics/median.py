@@ -5,10 +5,12 @@ from pandas_ta.utils import get_offset, verify_series
 def median(close, length=None, offset=None, **kwargs):
     """Indicator: Median"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 30
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    close = verify_series(close, max(length, min_periods))
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     median = close.rolling(length, min_periods=min_periods).median()

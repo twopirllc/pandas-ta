@@ -7,10 +7,12 @@ from pandas_ta.utils import get_offset, verify_series
 def stdev(close, length=None, ddof=1, offset=None, **kwargs):
     """Indicator: Standard Deviation"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 30
     ddof = int(ddof) if ddof >= 0 and ddof < length else 1
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     stdev = variance(close=close, length=length, ddof=ddof).apply(npsqrt)

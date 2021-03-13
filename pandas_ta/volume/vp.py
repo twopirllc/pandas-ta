@@ -7,10 +7,12 @@ from pandas_ta.utils import signed_series, verify_series
 def vp(close, volume, width=None, **kwargs):
     """Indicator: Volume Profile (VP)"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
     width = int(width) if width and width > 0 else 10
+    close = verify_series(close, width)
+    volume = verify_series(volume, width)
     sort_close = kwargs.pop("sort_close", False)
+
+    if close is None or volume is None: return
 
     # Setup
     signed_volume = signed_series(volume, initial=1)

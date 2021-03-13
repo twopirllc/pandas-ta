@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, high_low_range, is_percent
-from pandas_ta.utils import non_zero_range, real_body, verify_series
+from pandas_ta.utils import real_body, verify_series
 
 
-def cdl_doji( open_, high, low, close, length=None, factor=None, scalar=None, asint=True, offset=None, **kwargs):
+def cdl_doji(open_, high, low, close, length=None, factor=None, scalar=None, asint=True, offset=None, **kwargs):
     """Candle Type: Doji"""
     # Validate Arguments
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     factor = float(factor) if is_percent(factor) else 10
     scalar = float(scalar) if scalar else 100
+    open_ = verify_series(open_, length)
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     offset = get_offset(offset)
     naive = kwargs.pop("naive", False)
+
+    if open_ is None or high is None or low is None or close is None: return
 
     # Calculate Result
     body = real_body(open_, close).abs()

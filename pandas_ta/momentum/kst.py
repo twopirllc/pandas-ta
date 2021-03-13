@@ -7,7 +7,6 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None, sma3=None, sma4=None, signal=None, drift=None, offset=None, **kwargs):
     """Indicator: 'Know Sure Thing' (KST)"""
     # Validate arguments
-    close = verify_series(close)
     roc1 = int(roc1) if roc1 and roc1 > 0 else 10
     roc2 = int(roc2) if roc2 and roc2 > 0 else 15
     roc3 = int(roc3) if roc3 and roc3 > 0 else 20
@@ -19,8 +18,12 @@ def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None,
     sma4 = int(sma4) if sma4 and sma4 > 0 else 15
 
     signal = int(signal) if signal and signal > 0 else 9
+    _length = max(roc1, roc2, roc3, roc4, sma1, sma2, sma3, sma4, signal)
+    close = verify_series(close, _length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     rocma1 = roc(close, roc1).rolling(sma1).mean()

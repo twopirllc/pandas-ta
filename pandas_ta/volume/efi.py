@@ -6,12 +6,14 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def efi(close, volume, length=None, drift=None, mamode=None, offset=None, **kwargs):
     """Indicator: Elder's Force Index (EFI)"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
     length = int(length) if length and length > 0 else 13
-    drift = get_drift(drift)
     mamode = mamode if isinstance(mamode, str) else "ema"
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
+    drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None or volume is None: return
 
     # Calculate Result
     pv_diff = close.diff(drift) * volume

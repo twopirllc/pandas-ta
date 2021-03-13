@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import numpy as np
 from pandas import DataFrame
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series, get_drift
@@ -8,15 +7,17 @@ from pandas_ta.utils import get_offset, verify_series, get_drift
 def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Elders Thermometer (THERMO)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
     length = int(length) if length and length > 0 else 20
     long = float(long) if long and long > 0 else 2
     short = float(short) if short and short > 0 else 0.5
     mamode = mamode if isinstance(mamode, str) else "ema"
+    high = verify_series(high, length)
+    low = verify_series(low, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
     asint = kwargs.pop("asint", True)
+
+    if high is None or low is None: return
 
     # Calculate Result
     thermoL = (low.shift(drift) - low).abs()

@@ -7,12 +7,14 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def trix(close, length=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Trix (TRIX)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 30
     signal = int(signal) if signal and signal > 0 else 9
     scalar = float(scalar) if scalar else 100
+    close = verify_series(close, max(length, signal))
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     ema1 = ema(close=close, length=length, **kwargs)

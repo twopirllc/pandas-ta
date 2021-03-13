@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import get_offset, verify_series
 
 
 def willr(high, low, close, length=None, offset=None, **kwargs):
     """Indicator: William's Percent R (WILLR)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    _length = max(length, min_periods)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     lowest_low = low.rolling(length, min_periods=min_periods).min()

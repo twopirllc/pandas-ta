@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
-from pandas import Series, DataFrame
+from pandas import Series
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
     """Indicator: Kaufman's Adaptive Moving Average (KAMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     fast = int(fast) if fast and fast > 0 else 2
     slow = int(slow) if slow and slow > 0 else 30
+    close = verify_series(close, max(fast, slow, length))
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    # Calculate Result
-    m = close.size
+    if close is None: return
 
+    # Calculate Result
     def weight(length: int) -> float:
         return 2 / (length + 1)
 
@@ -30,6 +30,7 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     x = er * (fr - sr) + sr
     sc = x * x
 
+    m = close.size
     result = [npNaN for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
         result.append(sc[i] * close[i] + (1 - sc[i]) * result[i - 1])

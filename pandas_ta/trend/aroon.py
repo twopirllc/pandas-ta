@@ -7,11 +7,13 @@ from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 def aroon(high, low, length=None, scalar=None, offset=None, **kwargs):
     """Indicator: Aroon & Aroon Oscillator"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
     length = length if length and length > 0 else 14
     scalar = float(scalar) if scalar else 100
+    high = verify_series(high, length)
+    low = verify_series(low, length)
     offset = get_offset(offset)
+
+    if high is None or low is None: return
 
     # Calculate Result
     periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index, raw=True)

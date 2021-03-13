@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
-from pandas import DataFrame, Series, concat
+from pandas import concat, DataFrame, Series
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
+
 
 def rsx(close, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Strength Xtra (inspired by Jurik RSX)"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # variables
     vC, v1C = 0, 0

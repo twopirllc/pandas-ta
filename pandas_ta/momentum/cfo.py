@@ -6,11 +6,13 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def cfo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Chande Forcast Oscillator (CFO)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 9
     scalar = float(scalar) if scalar else 100
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Finding linear regression of Series
     cfo = scalar * (close - linreg(close, length=length, tsf=True))

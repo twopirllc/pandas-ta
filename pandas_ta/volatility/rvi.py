@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import ma
 from pandas_ta.statistics import stdev
-from pandas_ta.utils import get_drift, get_offset, non_zero_range
+from pandas_ta.utils import get_drift, get_offset
 from pandas_ta.utils import unsigned_differences, verify_series
 
 
 def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Volatility Index (RVI)"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar and scalar > 0 else 100
     refined = False if refined is None else refined
     thirds = False if thirds is None else thirds
     mamode = mamode if isinstance(mamode, str) else "ema"
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     if refined or thirds:
         high = verify_series(high)

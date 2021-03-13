@@ -18,7 +18,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "2", "49b")),
+    version=".".join(("0", "2", "50b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -35,6 +35,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",

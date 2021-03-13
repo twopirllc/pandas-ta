@@ -12,13 +12,16 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Quantitative Qualitative Estimation (QQE)"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     smooth = int(smooth) if smooth and smooth > 0 else 5
     factor = float(factor) if factor else 4.236
+    wilders_length = 2 * length - 1
     mamode = mamode if isinstance(mamode, str) else "ema"
+    close = verify_series(close, max(length, smooth, wilders_length))
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     rsi_ = rsi(close, length)
@@ -30,7 +33,6 @@ def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, o
 
     # Double Smooth the RSI MA True Range using Wilder's Length with a default
     # width of 4.236.
-    wilders_length = 2 * length - 1
     smoothed_rsi_tr_ma = ma("ema", rsi_ma_tr, length=wilders_length)
     dar = factor * ma("ema", smoothed_rsi_tr_ma, length=wilders_length)
 

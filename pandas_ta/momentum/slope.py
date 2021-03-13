@@ -1,23 +1,26 @@
 # -*- coding: utf-8 -*-
-from math import atan, pi
+from numpy import arctan as npAtan
+from numpy import pi as npPi
 from pandas_ta.utils import get_offset, verify_series
 
 
 def slope( close, length=None, as_angle=None, to_degrees=None, vertical=None, offset=None, **kwargs):
     """Indicator: Slope"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 1
     as_angle = True if isinstance(as_angle, bool) else False
     to_degrees = True if isinstance(to_degrees, bool) else False
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     slope = close.diff(length) / length
     if as_angle:
-        slope = slope.apply(atan)
+        slope = slope.apply(npAtan)
         if to_degrees:
-            slope *= 180 / pi
+            slope *= 180 / npPi
 
     # Offset
     if offset != 0:

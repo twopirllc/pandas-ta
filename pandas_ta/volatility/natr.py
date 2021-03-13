@@ -6,14 +6,16 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Normalized Average True Range (NATR)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     mamode = mamode if isinstance(mamode, str) else "ema"
     scalar = float(scalar) if scalar else 100
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     natr = scalar / close

@@ -6,12 +6,14 @@ from pandas_ta.utils import get_offset, verify_series
 def apo(close, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Absolute Price Oscillator (APO)"""
     # Validate Arguments
-    close = verify_series(close)
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     if slow < fast:
         fast, slow = slow, fast
+    close = verify_series(close, max(fast, slow))
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     fastma = sma(close, length=fast)

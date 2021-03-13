@@ -6,10 +6,12 @@ from pandas_ta.utils import get_offset, verify_series
 def vwma(close, volume, length=None, offset=None, **kwargs):
     """Indicator: Volume Weighted Moving Average (VWMA)"""
     # Validate Arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
     offset = get_offset(offset)
+
+    if close is None or volume is None: return
 
     # Calculate Result
     pv = close * volume

@@ -7,14 +7,17 @@ from pandas_ta.utils import get_offset, verify_series
 def adosc(high, low, close, volume, open_=None, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Accumulation/Distribution Oscillator"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    volume = verify_series(volume)
     fast = int(fast) if fast and fast > 0 else 3
     slow = int(slow) if slow and slow > 0 else 10
+    _length = max(fast, slow)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
+    volume = verify_series(volume, _length)
     offset = get_offset(offset)
     if "length" in kwargs: kwargs.pop("length")
+
+    if high is None or low is None or close is None or volume is None: return
 
     # Calculate Result
     ad_ = ad(high=high, low=low, close=close, volume=volume, open_=open_)

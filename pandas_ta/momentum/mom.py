@@ -5,9 +5,11 @@ from pandas_ta.utils import get_offset, verify_series
 def mom(close, length=None, offset=None, **kwargs):
     """Indicator: Momentum (MOM)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     mom = close.diff(length)

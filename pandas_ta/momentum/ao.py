@@ -6,13 +6,16 @@ from pandas_ta.utils import get_offset, verify_series
 def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Awesome Oscillator (AO)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
     fast = int(fast) if fast and fast > 0 else 5
     slow = int(slow) if slow and slow > 0 else 34
     if slow < fast:
         fast, slow = slow, fast
+    _length = max(fast, slow)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None: return
 
     # Calculate Result
     median_price = 0.5 * (high + low)

@@ -6,9 +6,11 @@ from pandas_ta.utils import get_offset, verify_series
 def trima(close, length=None, offset=None, **kwargs):
     """Indicator: Triangular Moving Average (TRIMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     half_length = round(0.5 * (length + 1))
@@ -41,7 +43,7 @@ Calculation:
     Default Inputs:
         length=10
     SMA = Simple Moving Average
-    half_length = math.round(0.5 * (length + 1))
+    half_length = round(0.5 * (length + 1))
     SMA1 = SMA(close, half_length)
     TRIMA = SMA(SMA1, half_length)
 

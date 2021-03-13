@@ -6,18 +6,20 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def cmo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Chande Momentum Oscillator (CMO)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar else 100
-    talib = kwargs.pop("talib", True)
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     mom = close.diff(drift)
     positive = mom.copy().clip(lower=0)
     negative = mom.copy().clip(upper=0).abs()
 
+    talib = kwargs.pop("talib", True)
     if talib:
         pos_ = rma(positive, length)
         neg_ = rma(negative, length)

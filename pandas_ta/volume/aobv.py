@@ -2,7 +2,6 @@
 from pandas import DataFrame
 from .obv import obv
 from pandas_ta.overlap import ma
-from pandas_ta.overlap import ema
 from pandas_ta.trend import long_run, short_run
 from pandas_ta.utils import get_offset, verify_series
 
@@ -10,9 +9,6 @@ from pandas_ta.utils import get_offset, verify_series
 def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, min_lookback=None, offset=None, **kwargs):
     """Indicator: Archer On Balance Volume (AOBV)"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
-    offset = get_offset(offset)
     fast = int(fast) if fast and fast > 0 else 4
     slow = int(slow) if slow and slow > 0 else 12
     max_lookback = int(max_lookback) if max_lookback and max_lookback > 0 else 2
@@ -20,8 +16,14 @@ def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, mi
     if slow < fast:
         fast, slow = slow, fast
     mamode = mamode if isinstance(mamode, str) else "ema"
+    _length = max(fast, slow, max_lookback, min_lookback)
+    close = verify_series(close, _length)
+    volume = verify_series(volume, _length)
+    offset = get_offset(offset)
     if "length" in kwargs: kwargs.pop("length")
     run_length = kwargs.pop("run_length", 2)
+
+    if close is None or volume is None: return
 
     # Calculate Result
     obv_ = obv(close=close, volume=volume, **kwargs)

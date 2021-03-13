@@ -8,13 +8,15 @@ from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 def adx(high, low, close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: ADX"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = length if length and length > 0 else 14
     scalar = float(scalar) if scalar else 100
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     atr_ = atr(high=high, low=low, close=close, length=length)

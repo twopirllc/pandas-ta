@@ -9,11 +9,14 @@ from pandas_ta.utils import get_offset, high_low_range, verify_series, zero
 def fisher(high, low, length=None, signal=None, offset=None, **kwargs):
     """Indicator: Fisher Transform (FISHT)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
     length = int(length) if length and length > 0 else 9
     signal = int(signal) if signal and signal > 0 else 1
+    _length = max(length, signal)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None: return
 
     # Calculate Result
     hl2_ = hl2(high, low)

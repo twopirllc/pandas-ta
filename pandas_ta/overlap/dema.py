@@ -6,9 +6,11 @@ from pandas_ta.utils import get_offset, verify_series
 def dema(close, length=None, offset=None, **kwargs):
     """Indicator: Double Exponential Moving Average (DEMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     ema1 = ema(close=close, length=length)

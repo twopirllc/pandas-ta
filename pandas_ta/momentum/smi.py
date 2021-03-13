@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
-from pandas import concat, DataFrame
+from pandas import DataFrame
 from .tsi import tsi
 from pandas_ta.overlap import ema
-from pandas_ta.utils import get_offset, verify_series, signals
+from pandas_ta.utils import get_offset, verify_series
 
 
 def smi(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
     """Indicator: SMI Ergodic Indicator (SMIIO)"""
     # Validate arguments
-    close = verify_series(close)
     fast = int(fast) if fast and fast > 0 else 5
     slow = int(slow) if slow and slow > 0 else 20
     signal = int(signal) if signal and signal > 0 else 5
     if slow < fast:
         fast, slow = slow, fast
     scalar = float(scalar) if scalar else 1
+    close = verify_series(close, max(fast, slow, signal))
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     smi = tsi(close, fast=fast, slow=slow, scalar=scalar)

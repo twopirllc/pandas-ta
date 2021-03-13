@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame, Series
+from pandas import DataFrame
 from .log_return import log_return
 from .percent_return import percent_return
 from pandas_ta.utils import get_offset, verify_series, zero

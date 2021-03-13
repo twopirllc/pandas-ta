@@ -6,10 +6,12 @@ from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 def er(close, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Efficiency Ratio (ER)"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
     offset = get_offset(offset)
     drift = get_drift(drift)
+
+    if close is None: return
 
     # Calculate Result
     abs_diff = close.diff(length).abs()
