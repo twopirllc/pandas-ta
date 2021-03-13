@@ -957,6 +957,12 @@ class AnalysisIndicators(BasePandasObject):
         result = stochrsi(high=high, low=low, close=close, length=length, rsi_length=rsi_length, k=k, d=d, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def td(self, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+
+        result = td(close=close, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def trix(self, length=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = trix(close=close, length=length, signal=signal, scalar=scalar, drift=drift, offset=offset, **kwargs)

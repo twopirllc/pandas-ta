@@ -207,6 +207,11 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-2:]), ["STOCHRSIk_14_14_3_3", "STOCHRSId_14_14_3_3"])
 
+    def test_td_ext(self):
+        self.data.ta.td(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-2:]), ["TD_up", "TD_down"])
+
     def test_trix_ext(self):
         self.data.ta.trix(append=True)
         self.assertIsInstance(self.data, DataFrame)
