@@ -424,6 +424,13 @@ df.ta.cores
 df.ta.datetime_ordered
 ```
 
+## **last_run**
+
+```python
+# Returns the time Pandas TA was last run as a string.
+df.ta.last_run
+```
+
 ## **reverse**
 
 ```python
@@ -446,6 +453,25 @@ print(endhl2.name)  # "HL2_post"
 # Applying a prefix and suffix to the name of an indicator.
 bothhl2 = df.ta.hl2(prefix="pre", suffix="post")
 print(bothhl2.name)  # "pre_HL2_post"
+```
+
+## **time_range**
+
+```python
+# Returns the time range of the DataFrame as a float.
+# By default, it returns the time in "years"
+df.ta.time_range
+
+# Available time_ranges include: "years", "months", "weeks", "days", "hours", "minutes". "seconds"
+df.ta.time_range = "days"
+df.ta.time_range # prints DataFrame time in "days" as float
+```
+
+## **to_utc**
+
+```python
+# Sets the DataFrame index to UTC format.
+df.ta.to_utc
 ```
 
 <br/><br/>
@@ -687,7 +713,7 @@ result = ta.cagr(df.close)
     * **Moving Average Choices**: dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma.
 * An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
 * _Linear Regression_ (**linear_regression**) is a new utility method for Simple Linear Regression using _Numpy_ or _Scikit Learn_'s implementation.
-* Added utility/convience function, ```to_utc```, to convert the DataFrame index to UTC. See: ```help(ta.to_utc)```
+* Added utility/convience function, ```to_utc```, to convert the DataFrame index to UTC. See: ```help(ta.to_utc)``` **Now** as a Pandas TA DataFrame Property to easily convert the DataFrame index to UTC.
 
 <br />
 

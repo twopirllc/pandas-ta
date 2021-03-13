@@ -50,8 +50,8 @@ class Strategy:
     ta: List = field(default_factory=list)  # Required.
     # Helpful. More descriptive version or notes or w/e.
     description: str = "TA Description"
-    # Optional. May change type later to datetime
-    created: str = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    # Optional. Gets Exchange Time and Local Time execution time
+    created: str = get_time(to_string=True)
 
     def __post_init__(self):
         has_name = True
@@ -234,8 +234,8 @@ class AnalysisIndicators(BasePandasObject):
 
     _adjusted = None
     _cores = cpu_count()
-    _mp = False
     _time_range = "years"
+    _last_run = get_time(to_string=True)
 
     # DataFrame Behavioral Methods
     def __call__(
@@ -253,6 +253,7 @@ class AnalysisIndicators(BasePandasObject):
 
                 # Run the indicator
                 result = fn(**kwargs)  # = getattr(self, kind)(**kwargs)
+                self._last_run = get_time(to_string=True) # Save when it completed it's run
 
                 if timed:
                     result.timed = final_time(stime)
@@ -294,17 +295,9 @@ class AnalysisIndicators(BasePandasObject):
             self._cores = cpus
 
     @property
-    def mp(self) -> bool:
-        """property: df.ta.mp"""
-        return self._mp
-
-    @mp.setter
-    def mp(self, value: bool) -> None:
-        """property: df.ta.mp = False (Default)"""
-        if value is not None and isinstance(value, bool):
-            self._mp = value
-        else:
-            self._mp = False
+    def last_run(self) -> str:
+        """Returns the time when the DataFrame was last run."""
+        return self._last_run
 
     # Public Get DataFrame Properties
     @property
@@ -326,17 +319,22 @@ class AnalysisIndicators(BasePandasObject):
         return self._df.iloc[::-1]
 
     @property
-    def time_range(self) -> str:
-        """"""
+    def time_range(self) -> float:
+        """Returns the time ranges of the DataFrame as a float. Default is in "years". help(ta.toal_time)"""
         return total_time(self._df, self._time_range)
 
     @time_range.setter
     def time_range(self, value: str) -> None:
-        """property: df.ta.mp = False (Default)"""
+        """property: df.ta.time_range = "years" (Default)"""
         if value is not None and isinstance(value, str):
             self._time_range = value
         else:
             self._time_range = "years"
+
+    @property
+    def to_utc(self) -> None:
+        """Sets the DataFrame index to UTC format"""
+        self._df = to_utc(self._df)
 
     @property
     def version(self) -> str:
@@ -540,9 +538,10 @@ class AnalysisIndicators(BasePandasObject):
             "categories",
             "cores",
             "datetime_ordered",
-            "mp",
+            "last_run",
             "reverse",
             "time_range",
+            "to_utc",
             "version",
         ]
 
@@ -671,7 +670,7 @@ class AnalysisIndicators(BasePandasObject):
             # Some magic to optimize chunksize for speed based on total ta indicators
             _chunksize = mp_chunksize - 1 if mp_chunksize > _total_ta else int(npLog10(_total_ta)) + 1
             if verbose:
-                print(f"[i] Multiprocessing: {_chunksize} chunks over {cpu_count()} cores for {_total_ta} indicators.")
+                print(f"[i] Multiprocessing {_total_ta} indicators with {_chunksize} chunks over {self.cores}/{cpu_count()} cpus.")
 
             results = None
             if mode["custom"]:
@@ -697,6 +696,7 @@ class AnalysisIndicators(BasePandasObject):
 
             pool.close()
             pool.join()
+            self._last_run = get_time(to_string=True)
 
         else:
             # Without multiprocessing:
@@ -718,14 +718,12 @@ class AnalysisIndicators(BasePandasObject):
         # DataFrame
         [self._post_process(r, **kwargs) for r in results]
 
-        if timed:
-            ftime = final_time(stime)
-
         if verbose:
             print(f"[i] Total indicators: {len(ta)}")
             print(f"[i] Columns added: {len(self._df.columns) - initial_column_count}")
+            print(f"[i] Last Run: {self._last_run}")
         if timed:
-            print(f"[i] Runtime: {ftime}")
+            print(f"[i] Runtime: {final_time(stime)}")
 
     # Public DataFrame Methods: Indicators and Utilities
     # Candles

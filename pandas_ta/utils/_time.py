@@ -19,10 +19,6 @@ def df_dates(df: DataFrame, dates: Tuple[str, list] = None) -> DataFrame:
 
 def df_month_to_date(df: DataFrame) -> DataFrame:
     """Yields the Month-to-Date (MTD) DataFrame"""
-    # if df.empty: print("[X] Month-to-Date not in range"); return
-    # print(df.shape)
-    # print(type(df))
-    # print(df)
     return df[df.index >= Timestamp.now().strftime("%Y-%m-01")]
 
 
