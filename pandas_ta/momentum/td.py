@@ -12,17 +12,21 @@ def true_sequence_count(s):
         s = s[s.index > index]
         return s.count()
 
-def calc_td(close, direction='up'):
+def calc_td(close, direction, show_all):
     td_bool = close.diff(4) > 0 if direction=='up' else close.diff(4) < 0
     td_num = np.where(td_bool, td_bool.rolling(13, min_periods=0).apply(true_sequence_count), 0)
     td_num = Series(td_num)
-    td_num = td_num.mask(~td_num.between(6,9))
+    
+    if show_all:
+        td_num = td_num.mask(td_num == 0)
+    else:
+        td_num = td_num.mask(~td_num.between(6,9))
 
     return td_num       
 
-def td(close, offset=None, **kwargs):
-    up = calc_td(close, 'up')
-    down = calc_td(close, 'down')
+def td(close, offset=None, show_all=True, **kwargs):
+    up = calc_td(close, 'up', show_all)
+    down = calc_td(close, 'down', show_all)
     df = DataFrame({'TD_up': up, 'TD_down': down})
     
      # Offset
@@ -53,6 +57,7 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     offset (int): How many periods to offset the result. Default: 0
+    show_all (bool): default True, show 1 - 13. If set to false, only show 6 - 9
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
