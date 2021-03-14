@@ -424,6 +424,17 @@ df.ta.cores
 df.ta.datetime_ordered
 ```
 
+## **exchange**
+
+```python
+# Sets the Exchange to use when calculating the last_run property. Default: "NYSE"
+df.ta.exchange
+
+# Set the Exchange to use.
+# Available Exchanges: "ASX", "BMF", "DIFX", "FWB", "HKE", "JSE", "LSE", "NSE", "NYSE", "NZSX", "RTS", "SGX", "SSE", "TSE", "TSX"
+df.ta.exchange = "LSE"
+```
+
 ## **last_run**
 
 ```python

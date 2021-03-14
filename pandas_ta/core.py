@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
-from datetime import datetime
 from multiprocessing import cpu_count, Pool
 from time import perf_counter
 from typing import List, Tuple
@@ -10,7 +9,7 @@ from numpy import log10 as npLog10
 from numpy import ndarray as npNdarray
 from pandas.core.base import PandasObject
 
-from pandas_ta import version, Category
+from pandas_ta import Category, version
 from pandas_ta.candles import *
 from pandas_ta.cycles import *
 from pandas_ta.momentum import *
@@ -234,8 +233,9 @@ class AnalysisIndicators(BasePandasObject):
 
     _adjusted = None
     _cores = cpu_count()
+    _exchange = "NYSE"
     _time_range = "years"
-    _last_run = get_time(to_string=True)
+    _last_run = get_time(_exchange, to_string=True)
 
     # DataFrame Behavioral Methods
     def __call__(
@@ -253,7 +253,7 @@ class AnalysisIndicators(BasePandasObject):
 
                 # Run the indicator
                 result = fn(**kwargs)  # = getattr(self, kind)(**kwargs)
-                self._last_run = get_time(to_string=True) # Save when it completed it's run
+                self._last_run = get_time(self.exchange, to_string=True) # Save when it completed it's run
 
                 if timed:
                     result.timed = final_time(stime)
@@ -293,6 +293,17 @@ class AnalysisIndicators(BasePandasObject):
             self._cores = int(value) if 0 <= value <= cpus else cpus
         else:
             self._cores = cpus
+
+    @property
+    def exchange(self) -> str:
+        """Returns the current Exchange. Default: "NYSE"."""
+        return self._exchange
+
+    @exchange.setter
+    def exchange(self, value: str) -> None:
+        """property: df.ta.exchange = "LSE" """
+        if value is not None and isinstance(value, str) and value in EXCHANGE_TZ.keys():
+            self._exchange = value
 
     @property
     def last_run(self) -> str:
@@ -538,6 +549,7 @@ class AnalysisIndicators(BasePandasObject):
             "categories",
             "cores",
             "datetime_ordered",
+            "exchange",
             "last_run",
             "reverse",
             "time_range",
@@ -696,7 +708,7 @@ class AnalysisIndicators(BasePandasObject):
 
             pool.close()
             pool.join()
-            self._last_run = get_time(to_string=True)
+            self._last_run = get_time(self.exchange, to_string=True)
 
         else:
             # Without multiprocessing:
