@@ -28,7 +28,7 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
         cum_sum = 0
         for j in range(0, length):
             # wtd = math.exp(-1 * ((j - m) * (j - m)) / (2 * s * s))        # moved to pre-calc for efficiency
-            window_sum = window_sum + wtd[j] * close[i - j]
+            window_sum = window_sum + wtd[j] * close.iloc[i - j]
             cum_sum = cum_sum + wtd[j]
         almean = window_sum / cum_sum
 
