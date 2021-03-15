@@ -15,12 +15,12 @@ def hwma(close, na=None, nb=None, nc=None, offset=None, **kwargs):
 
     # Calculate Result
     last_a = last_v = 0
-    last_f = close[0]
+    last_f = close.iloc[0]
 
     result = []
     m = close.size
     for i in range(m):
-        F = (1.0 - na) * (last_f + last_v + 0.5 * last_a) + na * close[i]
+        F = (1.0 - na) * (last_f + last_v + 0.5 * last_a) + na * close.iloc[i]
         V = (1.0 - nb) * (last_v + last_a) + nb * (F - last_f)
         A = (1.0 - nc) * last_a + nc * (V - last_v)
         result.append((F + V + 0.5 * A))
