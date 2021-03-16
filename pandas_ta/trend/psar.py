@@ -35,47 +35,47 @@ def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
     # Calculate Result
     for i in range(2, m):
         reverse = False
-        _af[i] = af
+        _af.iloc[i] = af
 
         if bullish:
-            sar[i] = sar[i - 1] + af * (high_point - sar[i - 1])
+            sar.iloc[i] = sar.iloc[i - 1] + af * (high_point - sar.iloc[i - 1])
 
-            if low[i] < sar[i]:
+            if low.iloc[i] < sar.iloc[i]:
                 bullish, reverse, af = False, True, af0
-                sar[i] = high_point
-                low_point = low[i]
+                sar.iloc[i] = high_point
+                low_point = low.iloc[i]
         else:
-            sar[i] = sar[i - 1] + af * (low_point - sar[i - 1])
+            sar.iloc[i] = sar.iloc[i - 1] + af * (low_point - sar.iloc[i - 1])
 
-            if high[i] > sar[i]:
+            if high.iloc[i] > sar.iloc[i]:
                 bullish, reverse, af = True, True, af0
-                sar[i] = low_point
-                high_point = high[i]
+                sar.iloc[i] = low_point
+                high_point = high.iloc[i]
 
-        reversal[i] = reverse
+        reversal.iloc[i] = reverse
 
         if not reverse:
             if bullish:
-                if high[i] > high_point:
-                    high_point = high[i]
+                if high.iloc[i] > high_point:
+                    high_point = high.iloc[i]
                     af = min(af + af0, max_af)
-                if low[i - 1] < sar[i]:
-                    sar[i] = low[i - 1]
-                if low[i - 2] < sar[i]:
-                    sar[i] = low[i - 2]
+                if low.iloc[i - 1] < sar.iloc[i]:
+                    sar.iloc[i] = low.iloc[i - 1]
+                if low.iloc[i - 2] < sar.iloc[i]:
+                    sar.iloc[i] = low.iloc[i - 2]
             else:
-                if low[i] < low_point:
-                    low_point = low[i]
+                if low.iloc[i] < low_point:
+                    low_point = low.iloc[i]
                     af = min(af + af0, max_af)
-                if high[i - 1] > sar[i]:
-                    sar[i] = high[i - 1]
-                if high[i - 2] > sar[i]:
-                    sar[i] = high[i - 2]
+                if high.iloc[i - 1] > sar.iloc[i]:
+                    sar.iloc[i] = high.iloc[i - 1]
+                if high.iloc[i - 2] > sar.iloc[i]:
+                    sar.iloc[i] = high.iloc[i - 2]
 
         if bullish:
-            long[i] = sar[i]
+            long.iloc[i] = sar.iloc[i]
         else:
-            short[i] = sar[i]
+            short.iloc[i] = sar.iloc[i]
 
     # Offset
     if offset != 0:
