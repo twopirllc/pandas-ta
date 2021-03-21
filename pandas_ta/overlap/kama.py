@@ -33,7 +33,7 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     m = close.size
     result = [npNaN for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
-        result.append(sc[i] * close[i] + (1 - sc[i]) * result[i - 1])
+        result.append(sc.iloc[i] * close.iloc[i] + (1 - sc.iloc[i]) * result[i - 1])
 
     kama = Series(result, index=close.index)
 
