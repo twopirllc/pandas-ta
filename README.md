@@ -103,12 +103,12 @@ $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 import pandas as pd
 import pandas_ta as ta
 
-e = pd.DataFrame() # Empty DataFrame
+df = pd.DataFrame() # Empty DataFrame
 
 # Load data
 df = pd.read_csv("path/to/symbol.csv", sep=",")
 # OR if you have yfinance installed
-df = e.ta.ticker("aapl")
+df = df.ta.ticker("aapl")
 
 # VWAP requires the DataFrame index to be a DatetimeIndex.
 # Replace "datetime" with the appropriate column from your DataFrame
