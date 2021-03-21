@@ -601,6 +601,7 @@ help(ta.yf)
     * Default is John Carter's. Enable Lazybear's with ```lazybear=True```
 * _Stochastic Oscillator_: **stoch**
 * _Stochastic RSI_: **stochrsi**
+* _TD Sequential_: **td**
 * _Trix_: **trix**
 * _True strength index_: **tsi**
 * _Ultimate Oscillator_: **uo**

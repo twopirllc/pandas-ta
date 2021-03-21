@@ -31,6 +31,7 @@ from .smi import smi
 from .squeeze import squeeze
 from .stoch import stoch
 from .stochrsi import stochrsi
+from .td import td
 from .trix import trix
 from .tsi import tsi
 from .uo import uo
