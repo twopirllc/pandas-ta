@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
 from multiprocessing import cpu_count, Pool
-from sys import exit
 from time import perf_counter
 from typing import List, Tuple
 
@@ -807,10 +806,10 @@ class AnalysisIndicators(BasePandasObject):
         # df = av(ticker, **kwargs) if ds and ds == "av" else yf(ticker, **kwargs)
         df = yf(ticker, **kwargs)
 
-        if df is None: exit(1)
+        if df is None: return
         elif df.empty:
             print(f"[X] DataFrame is empty: {df.shape}")
-            exit(1)
+            return
         else: self._df = df
 
         if strategy is not None: self.strategy(strategy, **kwargs)

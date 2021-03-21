@@ -105,9 +105,6 @@ def yf(ticker: str, **kwargs):
     kind = kwargs.pop("kind", None)
     if kind is not None and isinstance(kind, str) and len(kind):
         kind = kind.lower()
-    else:
-        print(f'[?] Available "kind" values: "" ')
-        return
 
     period = kwargs.pop("period", "max")
     interval = kwargs.pop("interval", "1d")
