@@ -182,7 +182,7 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [moritzgun](https://github.com/moritzgun) | [M6stafa](https://github.com/M6stafa) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [moritzgun](https://github.com/moritzgun) | [M6stafa](https://github.com/M6stafa) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
@@ -821,6 +821,7 @@ article in the June, 1994 issue of Technical Analysis of Stocks & Commodities Ma
 * _Variable Index Dynamic Average_ (**vidya**) is a popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
 
 ## **Updated Indicators**
+* _ADX_ (**adx**): Added ```mamode``` with default "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.adx)```.
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
 * _Bollinger Bands_ (**bbands**): New argument ```ddoff``` to control the Degrees of Freedom. Default is 0.  See ```help(ta.bbands)```.
 * _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length```. Default: ```False```. See ```help(ta.decreasing)```.
