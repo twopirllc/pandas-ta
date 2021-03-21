@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
 from multiprocessing import cpu_count, Pool
+from sys import exit
 from time import perf_counter
 from typing import List, Tuple
 
@@ -21,6 +22,8 @@ from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
 
+
+df = pd.DataFrame()
 
 # Strategy DataClass
 @dataclass
@@ -130,6 +133,8 @@ class BasePandasObject(PandasObject):
                 "Close": "close",
                 "Adj Close": "adj_close",
                 "Volume": "volume",
+                "Dividends": "dividends",
+                "Stock Splits": "split",
             }
             # Preemptively drop the rows that are all NaNs
             # Might need to be moved to AnalysisIndicators.__call__() to be
@@ -154,17 +159,23 @@ class BasePandasObject(PandasObject):
 # Pandas TA - DataFrame Analysis Indicators
 @pd.api.extensions.register_dataframe_accessor("ta")
 class AnalysisIndicators(BasePandasObject):
-    """AnalysisIndicators is a class that extends the Pandas DataFrame via
-    Pandas @pd.api.extensions.register_dataframe_accessor('name') decorator.
+    """
+    This Pandas Extension is named 'ta' for Technical Analysis. In other words,
+    it is a Numerical Time Series Feature Generator where the Time Series data
+    is biased towards Financial Market data; typical data includes columns
+    named :"open", "high", "low", "close", "volume".
 
-    This Pandas Extension is named 'ta' for Technical Analysis that allows us
-    to apply technical indicators by extension.  Even though 'ta' is a
-    Pandas DataFrame Extension, you can still call the Indicators
-    individually. Use help() if needed.
+    This TA Library hopefully allows you to apply familiar and unique Technical
+    Analysis Indicators easily with the DataFrame Extension named 'ta'. Even
+    though 'ta' is a Pandas DataFrame Extension, you can still call Technical
+    Analysis indicators individually if you are more comfortable with that
+    approach or it allows you to easily and automatically apply the indicators
+    with the strategy method. See: help(ta.strategy).
 
-    By default the 'ta' extension uses lower case column names: open, high,
-    low, close, and volume.  You can override the defaults by providing the
-    it's replacement name when calling the indicator.  For example, to call the indicator hl2().
+    By default, the 'ta' extension uses lower case column names: open, high,
+    low, close, and volume. You can override the defaults by providing the it's
+    replacement name when calling the indicator. For example, to call the
+    indicator hl2().
 
     With 'default' columns: open, high, low, close, and volume.
     >>> df.ta.hl2()
@@ -233,16 +244,27 @@ class AnalysisIndicators(BasePandasObject):
 
     _adjusted = None
     _cores = cpu_count()
+    _df = DataFrame()
     _exchange = "NYSE"
     _time_range = "years"
     _last_run = get_time(_exchange, to_string=True)
 
+    # def __init__(self, pandas_obj):
+    #     # self._validate(pandas_obj)
+    #     self._df = pandas_obj
+    #     self._last_run = get_time(self._exchange, to_string=True)
+
+    # @staticmethod
+    # def _validate(df: Tuple[pd.DataFrame, pd.Series]):
+    #     if isinstance(df, pd.Series) or isinstance(df, pd.DataFrame):
+    #         raise AttributeError("[X] Must be either a Pandas Series or DataFrame.")
+
     # DataFrame Behavioral Methods
     def __call__(
             self, kind: str = None,
-            timed: bool = False, verbose: bool = False, **kwargs
+            timed: bool = False, version: bool = False, **kwargs
         ):
-        if verbose: print(f"Pandas TA - Technical Analysis Indicators - v{self.version}")
+        if version: print(f"Pandas TA - Technical Analysis Indicators - v{self.version}")
         try:
             if isinstance(kind, str):
                 kind = kind.lower()
@@ -404,8 +426,7 @@ class AnalysisIndicators(BasePandasObject):
     def _get_column(self, series):
         """Attempts to get the correct series or 'column' and return it."""
         df = self._df
-        if df is None:
-            return
+        if df is None: return
 
         # Explicitly passing a pd.Series to override default.
         if isinstance(series, pd.Series):
@@ -501,7 +522,7 @@ class AnalysisIndicators(BasePandasObject):
         Remove constant '1' to the DataFrame
         >>> df.ta.constants(False, [1])
 
-        Adding the constants for the charts
+        Adding constants for charting
         >>> import numpy as np
         >>> chart_lines = np.append(np.arange(-4, 5, 1), np.arange(-100, 110, 10))
         >>> df.ta.constants(True, chart_lines)
@@ -530,12 +551,11 @@ class AnalysisIndicators(BasePandasObject):
     def indicators(self, **kwargs):
         """List of Indicators
 
-        Args:
-            kwargs:
-                as_list (bool, optional):  Default: False.  When True, it
-                    returns a list of the indicators.
-                exclude (list, optional):  Default: None.  The passed in list
-                    will be excluded from the indicators list.
+        kwargs:
+            as_list (bool, optional): When True, it returns a list of the
+                indicators. Default: False.
+            exclude (list, optional): The passed in list will be excluded
+                from the indicators list. Default: None.
 
         Returns:
             Prints the list of indicators. If as_list=True, then a list.
@@ -552,6 +572,7 @@ class AnalysisIndicators(BasePandasObject):
             "exchange",
             "last_run",
             "reverse",
+            "ticker",
             "time_range",
             "to_utc",
             "version",
@@ -736,6 +757,65 @@ class AnalysisIndicators(BasePandasObject):
             print(f"[i] Last Run: {self._last_run}")
         if timed:
             print(f"[i] Runtime: {final_time(stime)}")
+
+    def ticker(self, ticker, **kwargs):
+        """ticker
+
+        This method downloads Historical Data if the package yfinance is installed.
+        Additionally it can run a ta.Strategy; Builtin or Custom. It returns a
+        DataFrame if there the DataFrame is not empty, otherwise it exits. For
+        additional yfinance arguments, use help(ta.yf).
+
+        Historical Data
+        >>> df = df.ta.ticker("aapl")
+        More specifically
+        >>> df = df.ta.ticker("aapl", period="max", interval="1d", kind=None)
+
+        Changing the period of Historical Data
+        Period is used instead of start/end
+        >>> df = df.ta.ticker("aapl", period="1y")
+
+        Changing the period and interval of Historical Data
+        Retrieves the past year in weeks
+        >>> df = df.ta.ticker("aapl", period="1y", interval="1wk")
+        Retrieves the past month in hours
+        >>> df = df.ta.ticker("aapl", period="1mo", interval="1h")
+
+        Show everything
+        >>> df = df.ta.ticker("aapl", kind="all")
+
+        Args:
+            ticker (str): Any string for a ticker you would use with yfinance.
+                Default: "SPY"
+        Kwargs:
+            kind (str): Options see above. Default: "history"
+            ds (str): Data Source to use. Default: "yahoo"
+            strategy (str | ta.Strategy): Which strategy to apply after
+                downloading chart history. Default: None
+
+            See help(ta.yf) for additional kwargs
+
+        Returns:
+            Exits if the DataFrame is empty or None
+            Otherwise it returns a DataFrame
+        """
+        ds = kwargs.pop("ds", "yahoo")
+        strategy = kwargs.pop("strategy", None)
+
+        # Fetch the Data
+        ds = ds.lower() is not None and isinstance(ds, str)
+        # df = av(ticker, **kwargs) if ds and ds == "av" else yf(ticker, **kwargs)
+        df = yf(ticker, **kwargs)
+
+        if df is None: exit(1)
+        elif df.empty:
+            print(f"[X] DataFrame is empty: {df.shape}")
+            exit(1)
+        else: self._df = df
+
+        if strategy is not None: self.strategy(strategy, **kwargs)
+        return df
+
 
     # Public DataFrame Methods: Indicators and Utilities
     # Candles

@@ -68,6 +68,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
 * Potential Data Leaks: **ichimoku** and **dpo**. See indicator list below for details.
 * **UNDER DEVELOPMENT:** Performance Metrics
+* **UNDER DEVELOPMENT:** Easy Downloading of _ohlcv_ data using [yfinance](https://github.com/ranaroussi/yfinance). See ```help(ta.ticker)``` and ```help(ta.yf)```
 
 <br/>
 
@@ -83,7 +84,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.48b*
+Best choice! Version: *0.2.53b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -102,8 +103,12 @@ $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 import pandas as pd
 import pandas_ta as ta
 
+e = pd.DataFrame() # Empty DataFrame
+
 # Load data
 df = pd.read_csv("path/to/symbol.csv", sep=",")
+# OR if you have yfinance installed
+df = e.ta.ticker("aapl")
 
 # VWAP requires the DataFrame index to be a DatetimeIndex.
 # Replace "datetime" with the appropriate column from your DataFrame
@@ -138,8 +143,8 @@ help(df.ta)
 # List of all indicators
 df.ta.indicators()
 
-# Help about the log_return indicator
-help(ta.log_return)
+# Help about an indicator such as bbands
+help(ta.bbands)
 ```
 <br/>
 
@@ -487,17 +492,79 @@ df.ta.to_utc
 
 <br/><br/>
 
+
+# **DataFrame Methods**
+
+## **constants**
+
+```python
+import numpy as np
+
+# Add constant '1' to the DataFrame
+df.ta.constants(True, [1])
+# Remove constant '1' to the DataFrame
+df.ta.constants(False, [1])
+
+# Adding constants for charting
+import numpy as np
+chart_lines = np.append(np.arange(-4, 5, 1), np.arange(-100, 110, 10))
+df.ta.constants(True, chart_lines)
+# Removing some constants from the DataFrame
+df.ta.constants(False, np.array([-60, -40, 40, 60]))
+```
+
+## **indicators**
+
+```python
+# Prints the indicators and utility functions
+df.ta.indicators()
+
+# Returns a list of indicators and utility functions
+ind_list = df.ta.indicators(as_list=True)
+
+# Prints the indicators and utility functions that are not in the excluded list
+df.ta.indicators(exclude=["cg", "pgo", "ui"])
+# Returns a list of the indicators and utility functions that are not in the excluded list
+smaller_list = df.ta.indicators(exclude=["cg", "pgo", "ui"], as_list=True)
+```
+
+## **ticker**
+
+```python
+# Download Chart history using yfinance. (pip install yfinance) https://github.com/ranaroussi/yfinance
+# It uses the same keyword arguments as yfinance (excluding start and end)
+df = df.ta.ticker("aapl") # Default ticker is "SPY"
+
+# Period is used instead of start/end
+# Valid periods: 1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max
+# Default: "max"
+df = df.ta.ticker("aapl", period="1y") # Gets this past year
+
+# History by Interval by interval (including intraday if period < 60 days)
+# Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+# Default: "1d"
+df = df.ta.ticker("aapl", period="1y", interval="1wk") # Gets this past year in weeks
+df = df.ta.ticker("aapl", period="1mo", interval="1h") # Gets this past month in hours
+
+# BUT WAIT!! THERE'S MORE!!
+help(ta.yf)
+```
+
+<br/><br/>
+
 # **Indicators** (_by Category_)
 ### **Candles** (3)
 
 * _Doji_: **cdl_doji**
 * _Inside Bar_: **cdl_inside**
 * _Heikin-Ashi_: **ha**
+<br/>
 
 
 ### **Cycles** (1)
 
 * _Even Better Sinewave_: **ebsw**
+<br/>
 
 ### **Momentum** (36)
 
@@ -543,6 +610,7 @@ df.ta.to_utc
 | _Moving Average Convergence Divergence_ (MACD) |
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
+<br/>
 
 ### **Overlap** (31)
 
@@ -586,6 +654,7 @@ df.ta.to_utc
 | _Simple Moving Averages_ (SMA) and _Bollinger Bands_ (BBANDS) |
 |:--------:|
 | ![Example Chart](/images/TA_Chart.png) |
+<br/>
 
 
 ### **Performance** (4)
@@ -600,7 +669,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | _Percent Return_ (Cumulative) with _Simple Moving Average_ (SMA) |
 |:--------:|
 | ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
-
+<br/>
 
 ### **Statistics** (9)
 
@@ -617,6 +686,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | _Z Score_ |
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
+<br/>
 
 ### **Trend** (15)
 
