@@ -33,7 +33,7 @@ def rsx(close, length=None, drift=None, offset=None, **kwargs):
                 f88 = length - 1.0
             else:
                 f88 = 5.0
-            f8 = 100.0 * close[i]
+            f8 = 100.0 * close.iloc[i]
             f18 = 3.0 / (length + 2.0)
             f20 = 1.0 - f18
         else:
@@ -42,7 +42,7 @@ def rsx(close, length=None, drift=None, offset=None, **kwargs):
             else:
                 f90 = f90 + 1
             f10 = f8
-            f8 = 100 * close[i]
+            f8 = 100 * close.iloc[i]
             v8 = f8 - f10
             f28 = f20 * f28 + f18 * v8
             f30 = f18 * f28 + f20 * f30
