@@ -34,10 +34,11 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Pandas TA Strategies](#pandas-ta-strategies)
     * [Types of Strategies](#types-of-strategies)
 * [DataFrame Properties](#dataframe-properties)
+* [DataFrame Methods](#dataframe-methods)
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-3)
     * [Cycles](#cycles-1)
-    * [Momentum](#momentum-36)
+    * [Momentum](#momentum-37)
     * [Overlap](#overlap-31)
     * [Performance](#performance-4)
     * [Statistics](#statistics-9)
@@ -84,7 +85,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.53b*
+Best choice! Version: *0.2.62b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -182,7 +183,7 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [daikts](https://github.com/daikts) | [DrPaprikaa](https://github.com/DrPaprikaa) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [maxdignan](https://github.com/maxdignan) | [moritzgun](https://github.com/moritzgun) | [M6stafa](https://github.com/M6stafa) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [lluissalord](https://github.com/lluissalord) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
@@ -566,7 +567,7 @@ help(ta.yf)
 * _Even Better Sinewave_: **ebsw**
 <br/>
 
-### **Momentum** (36)
+### **Momentum** (37)
 
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -601,7 +602,8 @@ help(ta.yf)
     * Default is John Carter's. Enable Lazybear's with ```lazybear=True```
 * _Stochastic Oscillator_: **stoch**
 * _Stochastic RSI_: **stochrsi**
-* _TD Sequential_: **td**
+* _TD Sequential_: **td_seq**
+    * Excluded from ```df.ta.strategy()```.
 * _Trix_: **trix**
 * _True strength index_: **tsi**
 * _Ultimate Oscillator_: **uo**
@@ -799,27 +801,12 @@ result = ta.cagr(df.close)
 
 <br />
 
-## **Breaking Indicators**
-* _Bollinger Bands_ (**bbands**): New column 'bandwidth' appended to the returning DataFrame. See: ```help(ta.bbands)```
-* _Volume Weighted Average Price_ (**vwap**): **Requires** the DataFrame index to be a DatetimeIndex.
-
-
 ## **New Indicators**
 * _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
-* _Drawdown_ (**drawdown**) shows the peak-to-trough decline during a specific period for an investment,
 trading account, or fund. See: ```help(ta.drawdown)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
-* _Gann High-Low Activator_ (**hilo**) was created by Robert Krausz in a 1998. See: ```help(ta.hilo)```
-* _Holt-Winter Moving Average_ (**hwma**) is a three-parameter moving average by the Holt-Winter method.
-* _McGinley Dynamic_ (**mcgd**) is an overlap indicator developed by John R. McGinley, a Certified Market Technician. See: ```help(ta.mcgd)```
-* _Price Volume Rank_ (**pvr**) was created by Anthony J. Macek. See: ```help(ta.pvr)```
-* _Quantitative Qualitative Estimation_ (**qqe**) is like SuperTrend for a Smoothed RSI. See: ```help(ta.qqe)```
-article in the June, 1994 issue of Technical Analysis of Stocks & Commodities Magazine. See: ```help(ta.pvr)```
-* _Relative Strength Xtra_ (**rsx**) is based on the popular RSI indicator and inspired by the work Jurik Research. See: ```help(ta.rsx)```
-* _Ehler's Super Smoother Filter_ (**ssf**). Ehler's solution to reduce lag and remove aliasing noise compared to other common moving average indicators. See: ```help(ta.ssf)```
-* _Elder's Thermometer_ (**thermo**) measures price volatility. See: ```help(ta.thermo)```
-* _TTM Trend_ (**ttm_trend**) is a trend indicator inspired from John Carter's book "Mastering the Trade" issue of Stocks & Commodities Magazine. It is a moving average based trend indicator consisting of two different simple moving averages. See: ```help(ta.ttm_trend)```
-* _Variable Index Dynamic Average_ (**vidya**) is a popular Dynamic Moving Average created by Tushar Chande. See: ```help(ta.vidya)```
+* _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See: ```help(ta.td_seq)```
+<br/>
 
 ## **Updated Indicators**
 * _ADX_ (**adx**): Added ```mamode``` with default "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.adx)```.

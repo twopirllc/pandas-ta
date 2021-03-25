@@ -57,10 +57,9 @@ def cksp(high, low, close, p=None, x=None, q=None, offset=None, **kwargs):
 cksp.__doc__ = \
 """Chande Kroll Stop (CKSP)
 
-The Tushar Chande and Stanley Kroll in their book
-“The New Technical Trader”. It is a trend-following indicator,
-identifying your stop by calculating the average true range of
-the recent market volatility.
+The Tushar Chande and Stanley Kroll in their book “The New Technical Trader”.
+It is a trend-following indicator, identifying your stop by calculating the
+average true range of the recent market volatility.
 
 Sources:
     https://www.multicharts.com/discussion/viewtopic.php?t=48914

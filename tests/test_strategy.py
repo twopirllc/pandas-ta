@@ -166,6 +166,25 @@ class TestStrategyMethods(TestCase):
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 
     # @skip
+    def test_custom_a(self):
+        self.category = "Custom E"
+
+        amat_logret_ta = [
+            {"kind": "amat", "fast": 20, "slow": 50 },  # 2
+            {"kind": "log_return", "cumulative": True},  # 1
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5} # 1
+        ]
+
+        custom = pandas_ta.Strategy(
+            "AMAT Log Returns",  # name
+            amat_logret_ta,  # ta
+            "AMAT Log Returns",  # description
+        )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed, ordered=True)
+        self.data.ta.trend_return(trend=self.data["AMATe_LR_2"], cumulative=True, append=True)
+        self.assertEqual(len(self.data.columns), 13)
+
+    # @skip
     def test_momentum_category(self):
         self.category = "Momentum"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)

@@ -57,7 +57,7 @@ def fibonacci(n: int = 2, **kwargs: dict) -> npNdArray:
         a, b = 1, 1
 
     result = npArray([a])
-    for i in range(0, n):
+    for _ in range(0, n):
         a, b = b, a + b
         result = npAppend(result, a)
 

@@ -47,7 +47,7 @@ Category = {
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
         "coppock", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd",
         "mom", "pgo", "ppo", "psl", "pvo", "qqe", "roc", "rsi", "rsx", "rvgi",
-        "slope", "smi", "squeeze", "stoch", "stochrsi", "trix", "tsi", "uo",
+        "slope", "smi", "squeeze", "stoch", "stochrsi", "td_seq", "trix", "tsi", "uo",
         "willr"
     ],
     # Overlap

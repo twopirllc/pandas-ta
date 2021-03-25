@@ -607,21 +607,30 @@ class AnalysisIndicators(BasePandasObject):
         """Strategy Method
 
         An experimental method that by default runs all applicable indicators.
-        Future implementations will allow more specific indicator generation through
-        a json config file.
+        Future implementations will allow more specific indicator generation
+        with possibly as json, yaml config file or an sqlite3 table.
 
-        Args:
-            name (str, optional): Default: "all"
-            exclude (list, optional): Default: []. List of indicator names to exclude.
 
-            kwargs:
-                (optional) Default: {}. Any indicator argument you want to modify.
-                    For example, length=20 or offset=-1 or high=df["high"] ...
+        Kwargs:
+            chunksize (bool): Adjust the chunksize for the Multiprocessing Pool.
+                Default: Number of cores of the OS
+            exclude (list): List of indicator names to exclude. Some are
+                excluded by default for various reasons; they require additional
+                sources, performance (td_seq), not a ohlcv chart (vp) etc.
+            name (str): Select all indicators or indicators by
+                Category such as: "candles", "cycles", "momentum", "overlap",
+                "performance", "statistics", "trend", "volatility", "volume", or
+                "all". Default: "all"
+            ordered (bool): Whether to run "all" in order. Default: True
+            timed (bool): Show the process time of the strategy().
+                Default: False
+            verbose (bool): Provide some additional insight on the progress of
+                the strategy() execution. Default: False
         """
         # cpus = cpu_count()
         # Ensure indicators are appended to the DataFrame
         kwargs["append"] = True
-        all_ordered = kwargs.pop("ordered", False)
+        all_ordered = kwargs.pop("ordered", True)
         mp_chunksize = kwargs.pop("chunksize", self.cores)
 
         # Initialize
@@ -637,6 +646,7 @@ class AnalysisIndicators(BasePandasObject):
             "long_run",
             "short_run",
             "trend_return",
+            "td_seq", # Performance exclusion
             "vp",
         ]
 
@@ -702,7 +712,7 @@ class AnalysisIndicators(BasePandasObject):
             # Some magic to optimize chunksize for speed based on total ta indicators
             _chunksize = mp_chunksize - 1 if mp_chunksize > _total_ta else int(npLog10(_total_ta)) + 1
             if verbose:
-                print(f"[i] Multiprocessing {_total_ta} indicators with {_chunksize} chunks over {self.cores}/{cpu_count()} cpus.")
+                print(f"[i] Multiprocessing {_total_ta} indicators with {_chunksize} chunks and {self.cores}/{cpu_count()} cpus.")
 
             results = None
             if mode["custom"]:
@@ -810,7 +820,11 @@ class AnalysisIndicators(BasePandasObject):
         elif df.empty:
             print(f"[X] DataFrame is empty: {df.shape}")
             return
-        else: self._df = df
+        else:
+            if kwargs.pop("lc_input", False):
+                df.index.name = df.index.name.lower()
+                df.columns = df.columns.str.lower()
+            self._df = df
 
         if strategy is not None: self.strategy(strategy, **kwargs)
         return df
@@ -1043,10 +1057,9 @@ class AnalysisIndicators(BasePandasObject):
         result = stochrsi(high=high, low=low, close=close, length=length, rsi_length=rsi_length, k=k, d=d, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def td(self, offset=None, show_all=True, **kwargs):
+    def td_seq(self, asint=None, offset=None, show_all=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-
-        result = td(close=close, offset=offset, show_all=show_all, **kwargs)
+        result = td_seq(close=close, asint=asint, offset=offset, show_all=show_all, **kwargs)
         return self._post_process(result, **kwargs)
 
     def trix(self, length=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
