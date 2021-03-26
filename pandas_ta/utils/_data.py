@@ -75,6 +75,8 @@ def yf(ticker: str, **kwargs):
         ticker (str): Any string for a ticker you would use with yfinance.
             Default: "SPY"
     Kwargs:
+        calls (bool): When True, prints only Option Calls for the Option Chain.
+            Default: None
         desc (bool): Will print Company Description when printing Company
             Information. Default: False
         exp (str): Used to print other Option Chains for the given Expiration
@@ -85,6 +87,8 @@ def yf(ticker: str, **kwargs):
         kind (str): Options see above. Default: None
         period (str): A yfinance argument. Default: "max"
         proxy (dict): Proxy for yfinance to use. Default: {}
+        puts (bool): When True, prints only Option Puts for the Option Chain.
+            Default: None
         show (int > 0): How many last rows of Chart History to show.
             Default: None
         snd (int): How many recent Splits and Dividends to show in Company
@@ -237,7 +241,7 @@ def yf(ticker: str, **kwargs):
             if not earndf.empty:
                 earndf["Revenue"] = earndf.apply(lambda x: f"{x['Revenue']:,}", axis=1)
                 earndf["Earnings"] = earndf.apply(lambda x: f"{x['Earnings']:,}", axis=1)
-                print("\n====  Earnings          " + div + f"\n{earndf}")
+                print("\n====  Earnings            " + div + f"\n{earndf}")
 
         if kind in _all + ["sustainability", "sus", "esg"]:
             susdf = yfd.sustainability
@@ -272,12 +276,17 @@ def yf(ticker: str, **kwargs):
 
             if yfd_options is not None:
                 opt_expirations = list(yfd_options)
+                just_calls = kwargs.pop("calls", None)
+                just_puts = kwargs.pop("puts", None)
                 itm = kwargs.pop("itm", None)
                 opt_date = kwargs.pop("exp", opt_expirations[0])
                 opt_expirations_str = f"{ticker} Option Expirations:\n\t{', '.join(opt_expirations)}\n"
 
-                print("\n====  Option Chains       " + div)
+                if isinstance(itm, bool) and itm: print("\n====  ITM Option Chains   " + div)
+                elif isinstance(itm, bool) and not itm: print("\n====  OTM Option Chains   " + div)
+                else: print("\n====  Option Chains       " + div)
                 print(opt_expirations_str)
+
                 if opt_date not in opt_expirations:
                     print(f"[X] No Options for {ticker_info['quoteType']} {ticker_info['symbol']}")
                 else:
@@ -291,16 +300,25 @@ def yf(ticker: str, **kwargs):
                     calls.name = f"{ticker} Calls for {opt_date}"
                     puts.name = f"{ticker} Puts for {opt_date}"
 
-                    if itm is not None:
-                        calls.name, puts.name = f"{calls.name} ITM: {itm}", f"{puts.name}  ITM: {itm}"
-                        print(f"{calls.name}\n{calls[calls['ITM'] == itm]}\n\n{puts.name}\n{puts[puts['ITM'] == itm]}")
+                    if isinstance(itm, bool):
+                        in_or_out = "ITM" if itm else "OTM"
+                        calls.name, puts.name = f"{calls.name} {in_or_out}", f"{puts.name} {in_or_out}"
+                        itm_calls = f"{calls.name}\n{calls[calls['ITM'] == itm]}"
+                        itm_puts = f"{puts.name}\n{puts[puts['ITM'] == itm]}"
+
+                        if    just_calls: print(itm_calls)
+                        elif  just_puts: print(itm_puts)
+                        else: print(f"{itm_calls}\n\n{itm_puts}")
                     else:
-                        print(f"{calls.name}\n{calls}\n\n{puts.name}\n{puts}")
+                        all_calls, all_puts = f"{calls.name}\n{calls}", f"{puts.name}\n{puts}"
+                        if    just_calls: print(all_calls)
+                        elif  just_puts: print(all_puts)
+                        else: print(f"{all_calls}\n\n{all_puts}")
 
         df = yfd.history(period=period, interval=interval, proxy=proxy, **kwargs)
         df.name = ticker
         if verbose:
-            print("\n====  Chart History       " + div + f"\n[*] Pandas TA v{version} & yfinance v{yfra.__version__}")
+            print("\n====  Chart History        " + div + f"\n[*] Pandas TA v{version} & yfinance v{yfra.__version__}")
             print(f"[+] Downloading {ticker}[{interval}:{period}] from Yahoo Finance")
         if show is not None and isinstance(show, int) and show > 0:
             print(f"\n{df.name}\n{df.tail(show)}\n")
