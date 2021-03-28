@@ -22,15 +22,16 @@ version = __version__ = _dist.version
 
 
 Imports = {
+    "alphaVantage-api": find_spec("alphaVantageAPI") is not None,
+    "matplotlib": find_spec("matplotlib") is not None,
+    "mplfinance": find_spec("mplfinance") is not None,
     "scipy": find_spec("scipy") is not None,
     "sklearn": find_spec("sklearn") is not None,
     "statsmodels": find_spec("statsmodels") is not None,
     "stochastic": find_spec("stochastic") is not None,
-    "matplotlib": find_spec("matplotlib") is not None,
-    "mplfinance": find_spec("mplfinance") is not None,
-    "alphaVantage-api": find_spec("alphaVantageAPI") is not None,
-    "yfinance": find_spec("yfinance") is not None,
     "talib": find_spec("talib") is not None,
+    "tqdm": find_spec("tqdm") is not None,
+    "yfinance": find_spec("yfinance") is not None,
 }
 
 # Not ideal and not dynamic but it works.

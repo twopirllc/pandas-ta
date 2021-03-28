@@ -203,7 +203,7 @@ def yf(ticker: str, **kwargs):
                 ihdf.set_index("Date Reported", inplace=True)
                 ihdf["Shares"] = ihdf.apply(lambda x: f"{x['Shares']:,}", axis=1)
                 ihdf["Value"] = ihdf.apply(lambda x: f"{x['Value']:,}", axis=1)
-                print("\n====  Instl Holders       " + div + f"\n{ihdf}")
+                print("\n====  Instl. Holders       " + div + f"\n{ihdf}")
 
         if kind in _all + ["major_holders", "mh"]:
             mhdf = yfd.major_holders
@@ -220,7 +220,7 @@ def yf(ticker: str, **kwargs):
                 mfhdf.set_index("Date Reported", inplace=True)
                 mfhdf["Shares"] = mfhdf.apply(lambda x: f"{x['Shares']:,}", axis=1)
                 mfhdf["Value"] = mfhdf.apply(lambda x: f"{x['Value']:,}", axis=1)
-                print("\n====  Mutual Fund Holders" + div + f"\n{mfhdf}")
+                print("\n====  Mutual Fund Holders  " + div + f"\n{mfhdf}")
 
         if kind in _all + ["recommendations", "rec"]:
             recdf = yfd.recommendations
@@ -228,7 +228,7 @@ def yf(ticker: str, **kwargs):
                 recdf = ytd_df(recdf)
                 # recdf_grade = recdf["To Grade"].value_counts().T
                 # recdf_grade.name = "Grades"
-                print("\n====  Recommendations(YTD)" + div + f"\n{recdf}")
+                print("\n====  Recommendation(YTD)  " + div + f"\n{recdf}")
 
         if kind in _all + ["calendar", "cal"]:
             caldf = yfd.calendar
@@ -241,7 +241,7 @@ def yf(ticker: str, **kwargs):
             if not earndf.empty:
                 earndf["Revenue"] = earndf.apply(lambda x: f"{x['Revenue']:,}", axis=1)
                 earndf["Earnings"] = earndf.apply(lambda x: f"{x['Earnings']:,}", axis=1)
-                print("\n====  Earnings            " + div + f"\n{earndf}")
+                print("\n====  Earnings             " + div + f"\n{earndf}")
 
         if kind in _all + ["sustainability", "sus", "esg"]:
             susdf = yfd.sustainability
@@ -254,7 +254,6 @@ def yf(ticker: str, **kwargs):
                 print("\n====  Sustainability/ESG   " + div + f"\n{susdf}")
 
         if kind in _all + ["financials", "fin"]:
-            print("\n====  Company Financials  " + div)
             icdf = yfd.financials
             bsdf = yfd.balance_sheet
             cfdf = yfd.cashflow
@@ -264,6 +263,7 @@ def yf(ticker: str, **kwargs):
                     print(f"[!] Otherwise to enable Company Financials, see yfinance Issue #517 patch.")
                     print(f"[!] https://github.com/ranaroussi/yfinance/pull/517/files")
             else:
+                print("\n====  Company Financials   " + div)
                 if not icdf.empty: print(f"Income Statement:\n{icdf}\n")
                 if not bsdf.empty: print(f"Balance Sheet:\n{bsdf}\n")
                 if not cfdf.empty: print(f"Cash Flow:\n{cfdf}\n")
@@ -282,9 +282,9 @@ def yf(ticker: str, **kwargs):
                 opt_date = kwargs.pop("exp", opt_expirations[0])
                 opt_expirations_str = f"{ticker} Option Expirations:\n\t{', '.join(opt_expirations)}\n"
 
-                if isinstance(itm, bool) and itm: print("\n====  ITM Option Chains   " + div)
-                elif isinstance(itm, bool) and not itm: print("\n====  OTM Option Chains   " + div)
-                else: print("\n====  Option Chains       " + div)
+                if isinstance(itm, bool) and itm: print("\n====  ITM Option Chains    " + div)
+                elif isinstance(itm, bool) and not itm: print("\n====  OTM Option Chains    " + div)
+                else: print("\n====  Option Chains        " + div)
                 print(opt_expirations_str)
 
                 if opt_date not in opt_expirations:
