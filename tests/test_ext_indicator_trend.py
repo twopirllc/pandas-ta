@@ -40,6 +40,7 @@ class TestTrendExtension(TestCase):
 
     def test_cksp_ext(self):
         self.data.ta.cksp(append=True)
+        self.data.ta.cksp(tv=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "CKSPs_10_1_9")
 
