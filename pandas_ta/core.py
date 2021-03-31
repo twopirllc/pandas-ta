@@ -832,20 +832,12 @@ class AnalysisIndicators(BasePandasObject):
 
     # Public DataFrame Methods: Indicators and Utilities
     # Candles
-    def cdl_doji(self, offset=None, **kwargs):
+    def cdl_pattern(self, name="all", offset=None, **kwargs):
         open_ = self._get_column(kwargs.pop("open", "open"))
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = cdl_doji(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def cdl_inside(self, offset=None, **kwargs):
-        open_ = self._get_column(kwargs.pop("open", "open"))
-        high = self._get_column(kwargs.pop("high", "high"))
-        low = self._get_column(kwargs.pop("low", "low"))
-        close = self._get_column(kwargs.pop("close", "close"))
-        result = cdl_inside(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
+        result = cdl_pattern(open_=open_, high=high, low=low, close=close, name=name, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def ha(self, offset=None, **kwargs):

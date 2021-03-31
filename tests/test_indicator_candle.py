@@ -39,6 +39,17 @@ class TestCandle(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "Heikin-Ashi")
 
+    def test_cdl_pattern(self):
+        result = pandas_ta.cdl_pattern(self.open, self.high, self.low, self.close, name="all")
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(len(result.columns), len(pandas_ta.CDL_PATTERN_NAMES))
+
+        result = pandas_ta.cdl_pattern(self.open, self.high, self.low, self.close, name="doji")
+        self.assertIsInstance(result, DataFrame)
+
+        result = pandas_ta.cdl_pattern(self.open, self.high, self.low, self.close, name=["doji", "inside"])
+        self.assertIsInstance(result, DataFrame)
+
     def test_cdl_doji(self):
         result = pandas_ta.cdl_doji(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
