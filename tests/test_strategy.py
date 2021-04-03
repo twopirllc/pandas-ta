@@ -67,6 +67,11 @@ class TestStrategyMethods(TestCase):
         self.category = "All"
         self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
 
+    def test_all_ordered(self):
+        self.category = "All"
+        self.data.ta.strategy(ordered=True, verbose=verbose, timed=strategy_timed)
+        self.category = "All Ordered" # Rename for Speed Table
+
     @skipUnless(verbose, "verbose mode only")
     def test_all_strategy(self):
         self.data.ta.strategy(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
@@ -75,6 +80,14 @@ class TestStrategyMethods(TestCase):
     def test_all_name_strategy(self):
         self.category = "All"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+
+    # @skipUnless(verbose, "verbose mode only")
+    def test_all_multiparams_strategy(self):
+        self.category = "All"
+        self.data.ta.strategy(self.category, length=10, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, length=50, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, fast=5, slow=10, verbose=verbose, timed=strategy_timed)
+        self.category = "All Multiruns with diff Args" # Rename for Speed Table
 
     # @skip
     def test_candles_category(self):
@@ -85,6 +98,10 @@ class TestStrategyMethods(TestCase):
     def test_common(self):
         self.category = "Common"
         self.data.ta.strategy(pandas_ta.CommonStrategy, verbose=verbose, timed=strategy_timed)
+
+    def test_cycles_category(self):
+        self.category = "Cycles"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_custom_a(self):
@@ -149,6 +166,25 @@ class TestStrategyMethods(TestCase):
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 
     # @skip
+    def test_custom_a(self):
+        self.category = "Custom E"
+
+        amat_logret_ta = [
+            {"kind": "amat", "fast": 20, "slow": 50 },  # 2
+            {"kind": "log_return", "cumulative": True},  # 1
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5} # 1
+        ]
+
+        custom = pandas_ta.Strategy(
+            "AMAT Log Returns",  # name
+            amat_logret_ta,  # ta
+            "AMAT Log Returns",  # description
+        )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed, ordered=True)
+        self.data.ta.trend_return(trend=self.data["AMATe_LR_2"], cumulative=True, append=True)
+        self.assertEqual(len(self.data.columns), 13)
+
+    # @skip
     def test_momentum_category(self):
         self.category = "Momentum"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
@@ -182,3 +218,37 @@ class TestStrategyMethods(TestCase):
     def test_volume_category(self):
         self.category = "Volume"
         self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+
+    # @skipUnless(verbose, "verbose mode only")
+    def test_all_no_multiprocessing(self):
+        self.category = "All with No Multiprocessing"
+
+        cores = self.data.ta.cores
+        self.data.ta.cores = 0
+        self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
+        self.data.ta.cores = cores
+
+    # @skipUnless(verbose, "verbose mode only")
+    def test_custom_no_multiprocessing(self):
+        self.category = "Custom A with No Multiprocessing"
+
+        cores = self.data.ta.cores
+        self.data.ta.cores = 0
+
+        momo_bands_sma_ta = [
+            {"kind": "rsi"},  # 1
+            {"kind": "macd"},  # 3
+            {"kind": "sma", "length": 50},  # 1
+            {"kind": "sma", "length": 200 },  # 1
+            {"kind": "bbands", "length": 20},  # 3
+            {"kind": "log_return", "cumulative": True},  # 1
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
+        ]
+
+        custom = pandas_ta.Strategy(
+            "Commons with Cumulative Log Return EMA Chain",  # name
+            momo_bands_sma_ta,  # ta
+            "Common indicators with specific lengths and a chained indicator",  # description
+        )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        self.data.ta.cores = cores

@@ -124,6 +124,7 @@ reqs.txt
 requirements.txt
 driver.py
 qd.py
+tdseq.py
 
 # Local package installs
 ta-lib/

@@ -9,11 +9,14 @@ from pandas_ta.utils import get_offset, high_low_range, verify_series, zero
 def fisher(high, low, length=None, signal=None, offset=None, **kwargs):
     """Indicator: Fisher Transform (FISHT)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
     length = int(length) if length and length > 0 else 9
     signal = int(signal) if signal and signal > 0 else 1
+    _length = max(length, signal)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None: return
 
     # Calculate Result
     hl2_ = hl2(high, low)
@@ -29,7 +32,7 @@ def fisher(high, low, length=None, signal=None, offset=None, **kwargs):
     m = high.size
     result = [npNaN for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
-        v = 0.66 * position[i] + 0.67 * v
+        v = 0.66 * position.iloc[i] + 0.67 * v
         if v < -0.99:
             v = -0.999
         if v > 0.99:
@@ -102,9 +105,9 @@ Calculation:
 Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
-    length (int): Fisher period.  Default: 9
-    signal (int): Fisher Signal period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): Fisher period. Default: 9
+    signal (int): Fisher Signal period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

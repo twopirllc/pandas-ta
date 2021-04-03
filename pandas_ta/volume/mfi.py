@@ -7,13 +7,15 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Money Flow Index (MFI)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    volume = verify_series(volume)
     length = int(length) if length and length > 0 else 14
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None or volume is None: return
 
     # Calculate Result
     typical_price = hlc3(high=high, low=low, close=close)
@@ -76,9 +78,9 @@ Args:
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
-    length (int): The sum period.  Default: 14
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The sum period. Default: 14
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
 
-long_description = "An easy to use Python 3 Pandas Extension with 115+ Technical Analysis Indicators. Can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
+long_description = "An easy to use Python 3 Pandas Extension with 130+ Technical Analysis Indicators. Can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
 
 setup(
     name="pandas_ta",
     packages=[
         "pandas_ta",
         "pandas_ta.candles",
+        "pandas_ta.cycles",
         "pandas_ta.momentum",
         "pandas_ta.overlap",
         "pandas_ta.performance",
@@ -17,7 +18,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "2", "42b")),
+    version=".".join(("0", "2", "62b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -34,6 +35,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",

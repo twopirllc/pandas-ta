@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame, Series
+from pandas import DataFrame
 from .log_return import log_return
 from .percent_return import percent_return
 from pandas_ta.utils import get_offset, verify_series, zero
@@ -12,7 +12,8 @@ def trend_return(close, trend, log=True, cumulative=None, trend_reset=0, trade_o
     trend = verify_series(trend)
     cumulative = cumulative if cumulative is not None and isinstance(cumulative, bool) else False
     trend_reset = int(trend_reset) if trend_reset and isinstance(trend_reset, int) else 0
-    trade_offset = int(trade_offset) if trade_offset and isinstance(trade_offset, int) else -1
+    if trade_offset !=0:
+        trade_offset = int(trade_offset) if trade_offset and isinstance(trade_offset, int) else -1
     offset = get_offset(offset)
 
     # Calculate Result

@@ -5,11 +5,13 @@ from pandas_ta.utils import get_offset, verify_series
 def decreasing(close, length=None, strict=None, asint=None, offset=None, **kwargs):
     """Indicator: Decreasing"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 1
     strict = strict if isinstance(strict, bool) else False
     asint = asint if isinstance(asint, bool) else True
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     def stricly_decreasing(series, n):
         return all([i > j for i,j in zip(series[-n:], series[1:])])
@@ -17,7 +19,8 @@ def decreasing(close, length=None, strict=None, asint=None, offset=None, **kwarg
     # Calculate Result
     if strict:
         # Returns value as float64? Have to cast to bool
-        decreasing = close.rolling(length, min_periods=length).apply(stricly_decreasing, args=(length,), raw=False)
+        decreasing = close.rolling(length, min_periods=length) \
+            .apply(stricly_decreasing, args=(length,), raw=False)
         decreasing.fillna(0, inplace=True)
         decreasing = decreasing.astype(bool)
     else:
@@ -46,7 +49,10 @@ def decreasing(close, length=None, strict=None, asint=None, offset=None, **kwarg
 decreasing.__doc__ = \
 """Decreasing
 
-Returns True if the series is decreasing over a period, False otherwise. If the kwarg 'strict' is True, it returns True if it is continuously decreasing over the period. When using the kwarg 'asint', then it returns 1 for True or 0 for False. 
+Returns True if the series is decreasing over a period, False otherwise.
+If the kwarg 'strict' is True, it returns True if it is continuously decreasing
+over the period. When using the kwarg 'asint', then it returns 1 for True
+or 0 for False.
 
 Calculation:
     if strict:

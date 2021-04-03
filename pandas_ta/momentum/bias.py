@@ -6,10 +6,12 @@ from pandas_ta.utils import get_offset, verify_series
 def bias(close, length=None, mamode=None, offset=None, **kwargs):
     """Indicator: Bias (BIAS)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 26
     mamode = mamode if isinstance(mamode, str) else "sma"
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     bma = ma(mamode, close, length=length, **kwargs)
@@ -50,10 +52,10 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): The period.  Default: 26
-    mamode (str): Options: 'ema', 'hma', 'rma', 'sma', 'wma'.  Default: 'sma'
-    drift (int): The short period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The period. Default: 26
+    mamode (str): Options: 'ema', 'hma', 'rma', 'sma', 'wma'. Default: 'sma'
+    drift (int): The short period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

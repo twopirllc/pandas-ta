@@ -8,10 +8,12 @@ from pandas_ta.utils import get_offset, verify_series
 def wma(close, length=None, asc=None, offset=None, **kwargs):
     """Indicator: Weighted Moving Average (WMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     asc = asc if asc else True
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     total_weight = 0.5 * length * (length + 1)
@@ -62,9 +64,9 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    asc (bool): Recent values weigh more.  Default: True
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    asc (bool): Recent values weigh more. Default: True
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

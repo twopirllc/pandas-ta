@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
 from pandas import DataFrame
-
 from pandas_ta.momentum import mom
 from pandas_ta.overlap import ema, linreg, sma
 from pandas_ta.trend import decreasing, increasing
@@ -13,17 +12,19 @@ from pandas_ta.utils import unsigned_differences, verify_series
 def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, offset=None, **kwargs):
     """Indicator: Squeeze Momentum (SQZ)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    offset = get_offset(offset)
-
     bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
     bb_std = float(bb_std) if bb_std and bb_std > 0 else 2.0
     kc_length = int(kc_length) if kc_length and kc_length > 0 else 20
     kc_scalar = float(kc_scalar) if kc_scalar and kc_scalar > 0 else 1.5
     mom_length = int(mom_length) if mom_length and mom_length > 0 else 12
     mom_smooth = int(mom_smooth) if mom_smooth and mom_smooth > 0 else 6
+    _length = max(bb_length, kc_length, mom_length, mom_smooth)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
+    offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     use_tr = kwargs.setdefault("tr", True)
     asint = kwargs.pop("asint", True)
@@ -203,7 +204,7 @@ Args:
     mom_length (int): Momentum Period. Default: 12
     mom_smooth (int): Smoothing Period of Momentum. Default: 6
     mamode (str): Only "ema" or "sma". Default: "sma"
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     tr (value, optional): Use True Range for Keltner Channels. Default: True

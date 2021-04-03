@@ -6,12 +6,14 @@ from pandas_ta.utils import get_offset, verify_series
 def apo(close, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Absolute Price Oscillator (APO)"""
     # Validate Arguments
-    close = verify_series(close)
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     if slow < fast:
         fast, slow = slow, fast
+    close = verify_series(close, max(fast, slow))
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     fastma = sma(close, length=fast)
@@ -40,7 +42,7 @@ apo.__doc__ = \
 
 The Absolute Price Oscillator is an indicator used to measure a security's
 momentum.  It is simply the difference of two Exponential Moving Averages
-(EMA) of two different periods.  Note: APO and MACD lines are equivalent.
+(EMA) of two different periods. Note: APO and MACD lines are equivalent.
 
 Sources:
     https://www.tradingtechnologies.com/xtrader-help/x-study/technical-indicator-definitions/absolute-price-oscillator-apo/
@@ -53,9 +55,9 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    fast (int): The short period.  Default: 12
-    slow (int): The long period.   Default: 26
-    offset (int): How many periods to offset the result.  Default: 0
+    fast (int): The short period. Default: 12
+    slow (int): The long period. Default: 26
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

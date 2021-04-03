@@ -6,14 +6,17 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def tsi(close, fast=None, slow=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: True Strength Index (TSI)"""
     # Validate Arguments
-    close = verify_series(close)
     fast = int(fast) if fast and fast > 0 else 13
     slow = int(slow) if slow and slow > 0 else 25
     # if slow < fast:
     #     fast, slow = slow, fast
     scalar = float(scalar) if scalar else 100
+    close = verify_series(close, max(fast, slow))
     drift = get_drift(drift)
     offset = get_offset(offset)
+    if "length" in kwargs: kwargs.pop("length")
+
+    if close is None: return
 
     # Calculate Result
     diff = close.diff(drift)
@@ -73,7 +76,7 @@ Args:
     slow (int): The long period. Default: 25
     scalar (float): How much to magnify. Default: 100
     drift (int): The difference period. Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

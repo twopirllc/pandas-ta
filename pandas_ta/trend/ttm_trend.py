@@ -7,11 +7,13 @@ from pandas_ta.utils import get_offset, verify_series
 def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
     """Indicator: TTM Trend (TTM_TRND)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 6
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     trend_avg = hl2(high, low)
@@ -72,8 +74,8 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 6
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 6
+    offset (int): How many periods to offset the result. Default: 0
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method

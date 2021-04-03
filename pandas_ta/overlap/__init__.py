@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from .alma import alma
 from .dema import dema
 from .ema import ema
 from .fwma import fwma
@@ -6,6 +7,7 @@ from .hilo import hilo
 from .hl2 import hl2
 from .hlc3 import hlc3
 from .hma import hma
+from .hwma import hwma
 from .kama import kama
 from .ichimoku import ichimoku
 from .linreg import linreg

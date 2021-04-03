@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-import math
+from numpy import arctan as npAtan
+from numpy import pi as npPi
+from numpy import sqrt as npSqrt
 from pandas_ta.utils import get_offset, verify_series
 
 
 def linreg(close, length=None, offset=None, **kwargs):
     """Indicator: Linear Regression"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
+    close = verify_series(close, length)
     offset = get_offset(offset)
     angle = kwargs.pop("angle", False)
     intercept = kwargs.pop("intercept", False)
@@ -15,6 +17,8 @@ def linreg(close, length=None, offset=None, **kwargs):
     r = kwargs.pop("r", False)
     slope = kwargs.pop("slope", False)
     tsf = kwargs.pop("tsf", False)
+
+    if close is None: return
 
     # Calculate Result
     x = range(1, length + 1)  # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
@@ -34,15 +38,15 @@ def linreg(close, length=None, offset=None, **kwargs):
             return b
 
         if angle:
-            theta = math.atan(m)
+            theta = npAtan(m)
             if degrees:
-                theta *= 180 / math.pi
+                theta *= 180 / npPi
             return theta
 
         if r:
             y2_sum = (series * series).sum()
             rn = length * xy_sum - x_sum * y_sum
-            rd = math.sqrt(divisor * (length * y2_sum - y_sum * y_sum))
+            rd = npSqrt(divisor * (length * y2_sum - y_sum * y_sum))
             return rn / rd
 
         return m * length + b if tsf else m * (length - 1) + b
@@ -105,12 +109,16 @@ Args:
     offset (int): How many periods to offset the result.  Default: 0
 
 Kwargs:
-    angle (bool, optional): If True, returns the angle of the slope in radians. Default: False.
-    degrees (bool, optional): If True, returns the angle of the slope in degrees. Default: False.
-    intercept (bool, optional): If True, returns the angle of the slope in radians. Default: False.
-    r (bool, optional): If True, returns it's correlation 'r'. Default: False. 
+    angle (bool, optional): If True, returns the angle of the slope in radians.
+        Default: False.
+    degrees (bool, optional): If True, returns the angle of the slope in
+        degrees. Default: False.
+    intercept (bool, optional): If True, returns the angle of the slope in
+        radians. Default: False.
+    r (bool, optional): If True, returns it's correlation 'r'. Default: False.
     slope (bool, optional): If True, returns the slope. Default: False.
-    tsf (bool, optional): If True, returns the Time Series Forecast value. Default: False.
+    tsf (bool, optional): If True, returns the Time Series Forecast value.
+        Default: False.
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

@@ -7,12 +7,15 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, **kwargs):
     """Indicator: KDJ (KDJ)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 9
     signal = int(signal) if signal and signal > 0 else 3
+    _length = max(length, signal)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     highest_high = high.rolling(length).max()
@@ -86,7 +89,7 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): Default: 9
     signal (int): Default: 3
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

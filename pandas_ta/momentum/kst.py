@@ -7,7 +7,6 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None, sma3=None, sma4=None, signal=None, drift=None, offset=None, **kwargs):
     """Indicator: 'Know Sure Thing' (KST)"""
     # Validate arguments
-    close = verify_series(close)
     roc1 = int(roc1) if roc1 and roc1 > 0 else 10
     roc2 = int(roc2) if roc2 and roc2 > 0 else 15
     roc3 = int(roc3) if roc3 and roc3 > 0 else 20
@@ -19,8 +18,12 @@ def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None,
     sma4 = int(sma4) if sma4 and sma4 > 0 else 15
 
     signal = int(signal) if signal and signal > 0 else 9
+    _length = max(roc1, roc2, roc3, roc4, sma1, sma2, sma3, sma4, signal)
+    close = verify_series(close, _length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     rocma1 = roc(close, roc1).rolling(sma1).mean()
@@ -83,17 +86,17 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    roc1 (int): ROC 1 period.  Default: 10
-    roc2 (int): ROC 2 period.  Default: 15
-    roc3 (int): ROC 3 period.  Default: 20
-    roc4 (int): ROC 4 period.  Default: 30
-    sma1 (int): SMA 1 period.  Default: 10
-    sma2 (int): SMA 2 period.  Default: 10
-    sma3 (int): SMA 3 period.  Default: 10
-    sma4 (int): SMA 4 period.  Default: 15
-    signal (int): It's period.  Default: 9
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    roc1 (int): ROC 1 period. Default: 10
+    roc2 (int): ROC 2 period. Default: 15
+    roc3 (int): ROC 3 period. Default: 20
+    roc4 (int): ROC 4 period. Default: 30
+    sma1 (int): SMA 1 period. Default: 10
+    sma2 (int): SMA 2 period. Default: 10
+    sma3 (int): SMA 3 period. Default: 10
+    sma4 (int): SMA 4 period. Default: 15
+    signal (int): It's period. Default: 9
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

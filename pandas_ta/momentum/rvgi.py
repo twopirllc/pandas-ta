@@ -7,15 +7,18 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **kwargs):
     """Indicator: Relative Vigor Index (RVGI)"""
     # Validate Arguments
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     high_low_range = non_zero_range(high, low)
     close_open_range = non_zero_range(close, open_)
     length = int(length) if length and length > 0 else 14
     swma_length = int(swma_length) if swma_length and swma_length > 0 else 4
+    _length = max(length, swma_length)
+    open_ = verify_series(open_, _length)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     offset = get_offset(offset)
+
+    if open_ is None or high is None or low is None or close is None: return
 
     # Calculate Result
     numerator = swma(close_open_range, length=swma_length).rolling(length).sum()
@@ -74,9 +77,9 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 14
-    swma_length (int): It's period.  Default: 4
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 14
+    swma_length (int): It's period. Default: 4
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from math import pi
-from math import sin
+from numpy import pi as npPi
+from numpy import sin as npSin
 from pandas import Series
 from pandas_ta.utils import get_offset, verify_series, weights
 
@@ -8,12 +8,14 @@ from pandas_ta.utils import get_offset, verify_series, weights
 def sinwma(close, length=None, offset=None, **kwargs):
     """Indicator: Sine Weighted Moving Average (SINWMA) by Everget of TradingView"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
+    close = verify_series(close, length)
     offset = get_offset(offset)
 
+    if close is None: return
+
     # Calculate Result
-    sines = Series([sin((i + 1) * pi / (length + 1)) for i in range(0, length)])
+    sines = Series([npSin((i + 1) * npPi / (length + 1)) for i in range(0, length)])
     w = sines / sines.sum()
 
     sinwma = close.rolling(length, min_periods=length).apply(weights(w), raw=True)
@@ -32,8 +34,8 @@ def sinwma(close, length=None, offset=None, **kwargs):
 sinwma.__doc__ = \
 """Sine Weighted Moving Average (SWMA)
 
-A weighted average using sine cycles.  The middle term(s) of the average have the highest
-weight(s).
+A weighted average using sine cycles. The middle term(s) of the average have the
+highest weight(s).
 
 Source:
     https://www.tradingview.com/script/6MWFvnPO-Sine-Weighted-Moving-Average/
@@ -54,8 +56,8 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

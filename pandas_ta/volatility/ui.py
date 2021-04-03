@@ -7,10 +7,12 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 def ui(close, length=None, scalar=None, offset=None, **kwargs):
     """Indicator: Ulcer Index (UI)"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar and scalar > 0 else 100
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     highest_close = close.rolling(length).max()

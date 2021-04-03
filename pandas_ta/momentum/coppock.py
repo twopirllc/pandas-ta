@@ -7,11 +7,13 @@ from pandas_ta.utils import get_offset, verify_series
 def coppock(close, length=None, fast=None, slow=None, offset=None, **kwargs):
     """Indicator: Coppock Curve (COPC)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     fast = int(fast) if fast and fast > 0 else 11
     slow = int(slow) if slow and slow > 0 else 14
+    close = verify_series(close, max(length, fast, slow))
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     total_roc = roc(close, fast) + roc(close, slow)
@@ -58,10 +60,10 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): WMA period.  Default: 10
-    fast (int): Fast ROC period.  Default: 11
-    slow (int): Slow ROC period.  Default: 14
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): WMA period. Default: 10
+    fast (int): Fast ROC period. Default: 11
+    slow (int): Slow ROC period. Default: 14
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

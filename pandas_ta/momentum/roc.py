@@ -6,9 +6,11 @@ from pandas_ta.utils import get_offset, verify_series
 def roc(close, length=None, offset=None, **kwargs):
     """Indicator: Rate of Change (ROC)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     roc = 100 * mom(close=close, length=length) / close.shift(length)
@@ -48,8 +50,8 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

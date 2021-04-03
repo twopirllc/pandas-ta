@@ -7,11 +7,13 @@ from pandas_ta.utils import get_offset, verify_series
 def eri(high, low, close, length=None, offset=None, **kwargs):
     """Indicator: Elder Ray Index (ERI)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 13
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     ema_ = ema(close, length)
@@ -73,8 +75,8 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 14
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 14
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

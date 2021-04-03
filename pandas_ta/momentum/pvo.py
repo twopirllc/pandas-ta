@@ -7,14 +7,16 @@ from pandas_ta.utils import get_offset, verify_series
 def pvo(volume, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
     """Indicator: Percentage Volume Oscillator (PVO)"""
     # Validate Arguments
-    volume = verify_series(volume)
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     signal = int(signal) if signal and signal > 0 else 9
     scalar = float(scalar) if scalar else 100
     if slow < fast:
         fast, slow = slow, fast
+    volume = verify_series(volume, max(fast, slow, signal))
     offset = get_offset(offset)
+
+    if volume is None: return
 
     # Calculate Result
     fastma = ema(volume, length=fast)
@@ -76,11 +78,11 @@ Calculation:
 
 Args:
     volume (pd.Series): Series of 'volume's
-    fast (int): The short period.  Default: 12
-    slow (int): The long period.   Default: 26
-    signal (int): The signal period.   Default: 9
-    scalar (float): How much to magnify.  Default: 100
-    offset (int): How many periods to offset the result.  Default: 0
+    fast (int): The short period. Default: 12
+    slow (int): The long period. Default: 26
+    signal (int): The signal period. Default: 9
+    scalar (float): How much to magnify. Default: 100
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

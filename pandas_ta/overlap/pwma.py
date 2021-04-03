@@ -5,11 +5,12 @@ from pandas_ta.utils import get_offset, pascals_triangle, verify_series, weights
 def pwma(close, length=None, asc=None, offset=None, **kwargs):
     """Indicator: Pascals Weighted Moving Average (PWMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     asc = asc if asc else True
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     triangle = pascals_triangle(n=length - 1, weighted=True)
@@ -29,8 +30,8 @@ def pwma(close, length=None, asc=None, offset=None, **kwargs):
 pwma.__doc__ = \
 """Pascal's Weighted Moving Average (PWMA)
 
-Pascal's Weighted Moving Average is similar to a symmetric triangular
-window except PWMA's weights are based on Pascal's Triangle.
+Pascal's Weighted Moving Average is similar to a symmetric triangular window
+except PWMA's weights are based on Pascal's Triangle.
 
 Source: Kevin Johnson
 
@@ -49,8 +50,8 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period.  Default: 10
-    asc (bool): Recent values weigh more.  Default: True
-    offset (int): How many periods to offset the result.  Default: 0
+    asc (bool): Recent values weigh more. Default: True
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import NaN as npNaN
 from pandas import DataFrame
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
@@ -9,15 +10,16 @@ def true_range(high, low, close, drift=None, offset=None, **kwargs):
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
-    high_low_range = non_zero_range(high, low)
     drift = get_drift(drift)
     offset = get_offset(offset)
 
     # Calculate Result
+    high_low_range = non_zero_range(high, low)
     prev_close = close.shift(drift)
     ranges = [high_low_range, high - prev_close, prev_close - low]
     true_range = DataFrame(ranges).T
     true_range = true_range.abs().max(axis=1)
+    true_range.iloc[:drift] = npNaN
 
     # Offset
     if offset != 0:
@@ -56,8 +58,8 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    drift (int): The shift period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    drift (int): The shift period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

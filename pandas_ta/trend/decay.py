@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from math import exp
+from numpy import exp as npExp
 from pandas import DataFrame
 from pandas_ta.utils import get_offset, verify_series
 
@@ -7,16 +7,18 @@ from pandas_ta.utils import get_offset, verify_series
 def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
     """Indicator: Decay"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 5
     mode = mode.lower() if isinstance(mode, str) else "linear"
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     _mode = "L"
     if mode == "exp" or kind == "exponential":
         _mode = "EXP"
-        diff = close.shift(1) - exp(-length)
+        diff = close.shift(1) - npExp(-length)
     else:  # "linear"
         diff = close.shift(1) - (1 / length)
     diff[0] = close[0]

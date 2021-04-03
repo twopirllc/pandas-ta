@@ -7,10 +7,12 @@ from pandas_ta.utils import get_offset, verify_series
 def long_run(fast, slow, length=None, offset=None, **kwargs):
     """Indicator: Long Run"""
     # Validate Arguments
-    fast = verify_series(fast)
-    slow = verify_series(slow)
     length = int(length) if length and length > 0 else 2
+    fast = verify_series(fast, length)
+    slow = verify_series(slow, length)
     offset = get_offset(offset)
+
+    if fast is None or slow is None: return
 
     # Calculate Result
     pb = increasing(fast, length) & decreasing(slow, length)  # potential bottom or bottom

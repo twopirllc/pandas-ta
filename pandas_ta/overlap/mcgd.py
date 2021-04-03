@@ -5,10 +5,12 @@ from pandas_ta.utils import get_offset, verify_series
 def mcgd(close, length=None, offset=None, c=None, **kwargs):
     """Indicator: McGinley Dynamic Indicator"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     c = float(c) if c and 0 < c <= 1 else 1
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     close = close.copy()

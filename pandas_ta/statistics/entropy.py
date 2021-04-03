@@ -6,10 +6,12 @@ from pandas_ta.utils import get_offset, verify_series
 def entropy(close, length=None, base=None, offset=None, **kwargs):
     """Indicator: Entropy (ENTP)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     base = float(base) if base and base > 0 else 2.0
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     p = close / close.rolling(length).sum()

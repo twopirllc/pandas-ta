@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
 from pandas import DataFrame, Series
-# from pandas_ta.overlap.ma import ma
 from .ma import ma
 from pandas_ta.utils import get_offset, verify_series
 
@@ -9,13 +8,16 @@ from pandas_ta.utils import get_offset, verify_series
 def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offset=None, **kwargs):
     """Indicator: Gann HiLo (HiLo)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     high_length = int(high_length) if high_length and high_length > 0 else 13
     low_length = int(low_length) if low_length and low_length > 0 else 21
     mamode = mamode.lower() if isinstance(mamode, str) else "sma"
+    _length = max(high_length, low_length)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     m = close.size
@@ -113,8 +115,8 @@ Args:
     close (pd.Series): Series of 'close's
     high_length (int): It's period. Default: 13
     low_length (int): It's period. Default: 21
-    mamode (str): Options: 'sma' or 'ema'.  Default: 'sma'
-    offset (int): How many periods to offset the result.  Default: 0
+    mamode (str): Options: 'sma' or 'ema'. Default: 'sma'
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     adjust (bool): Default: True

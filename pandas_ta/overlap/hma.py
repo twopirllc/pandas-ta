@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from math import sqrt
+from numpy import sqrt as npSqrt
 from .wma import wma
 from pandas_ta.utils import get_offset, verify_series
 
@@ -7,13 +7,15 @@ from pandas_ta.utils import get_offset, verify_series
 def hma(close, length=None, offset=None, **kwargs):
     """Indicator: Hull Moving Average (HMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     half_length = int(length / 2)
-    sqrt_length = int(sqrt(length))
+    sqrt_length = int(npSqrt(length))
 
     wmaf = wma(close=close, length=half_length)
     wmas = wma(close=close, length=length)
@@ -44,7 +46,7 @@ Calculation:
         length=10
     WMA = Weighted Moving Average
     half_length = int(0.5 * length)
-    sqrt_length = int(math.sqrt(length))
+    sqrt_length = int(sqrt(length))
 
     wmaf = WMA(close, half_length)
     wmas = WMA(close, length)
@@ -52,8 +54,8 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

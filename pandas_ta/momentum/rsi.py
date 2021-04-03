@@ -7,11 +7,13 @@ from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Strength Index (RSI)"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar else 100
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     negative = close.diff(drift)

@@ -6,16 +6,18 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 def brar(open_, high, low, close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: BRAR (BRAR)"""
     # Validate Arguments
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 26
     scalar = float(scalar) if scalar else 100
     high_open_range = non_zero_range(high, open_)
     open_low_range = non_zero_range(open_, low)
+    open_ = verify_series(open_, length)
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if open_ is None or high is None or low is None or close is None: return
 
     # Calculate Result
     hcy = non_zero_range(high, close.shift(drift))
@@ -85,10 +87,10 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): The period.  Default: 26
-    scalar (float): How much to magnify.  Default: 100
-    drift (int): The difference period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The period. Default: 26
+    scalar (float): How much to magnify. Default: 100
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

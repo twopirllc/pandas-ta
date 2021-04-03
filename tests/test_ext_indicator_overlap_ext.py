@@ -18,6 +18,11 @@ class TestOverlapExtension(TestCase):
     def tearDown(self): pass
 
 
+    def test_alma_ext(self):
+        self.data.ta.alma(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "ALMA_10_6.0_0.85")
+
     def test_dema_ext(self):
         self.data.ta.dema(append=True)
         self.assertIsInstance(self.data, DataFrame)
@@ -52,6 +57,11 @@ class TestOverlapExtension(TestCase):
         self.data.ta.hma(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "HMA_10")
+
+    def test_hwma_ext(self):
+        self.data.ta.hwma(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "HWMA_0.2_0.1_0.1")
 
     def test_kama_ext(self):
         self.data.ta.kama(append=True)

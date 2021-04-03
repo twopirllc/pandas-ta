@@ -7,13 +7,15 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Average True Range (ATR)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 14
     mamode = mamode.lower() if mamode and isinstance(mamode, str) else "rma"
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     tr = true_range(high=high, low=low, close=close, drift=drift)
@@ -43,8 +45,8 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
 atr.__doc__ = \
 """Average True Range (ATR)
 
-Averge True Range is used to measure volatility, especially
-volatility caused by gaps or limit moves.
+Averge True Range is used to measure volatility, especially volatility caused by
+gaps or limit moves.
 
 Sources:
     https://www.tradingview.com/wiki/Average_True_Range_(ATR)

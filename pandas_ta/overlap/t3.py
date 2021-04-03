@@ -6,10 +6,12 @@ from pandas_ta.utils import get_offset, verify_series
 def t3(close, length=None, a=None, offset=None, **kwargs):
     """Indicator: T3"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
     a = float(a) if a and a > 0 and a < 1 else 0.7
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     c1 = -a * a**2
@@ -62,9 +64,9 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    a (float): 0 < a < 1.  Default: 0.7
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    a (float): 0 < a < 1. Default: 0.7
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     adjust (bool): Default: True

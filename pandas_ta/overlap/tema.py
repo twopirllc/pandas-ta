@@ -6,9 +6,11 @@ from pandas_ta.utils import get_offset, verify_series
 def tema(close, length=None, offset=None, **kwargs):
     """Indicator: Triple Exponential Moving Average (TEMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
+    close = verify_series(close, length)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     ema1 = ema(close=close, length=length, **kwargs)
@@ -46,8 +48,8 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     adjust (bool): Default: True

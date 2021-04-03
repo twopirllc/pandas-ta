@@ -5,21 +5,23 @@ from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_offset, verify_series
 
 
-def bbands(close, length=None, std=None, mamode=None, offset=None, **kwargs):
+def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwargs):
     """Indicator: Bollinger Bands (BBANDS)"""
     # Validate arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 5
     std = float(std) if std and std > 0 else 2.0
     mamode = mamode if isinstance(mamode, str) else "sma"
+    ddof = int(ddof) if ddof >= 0 and ddof < length else 1
+    close = verify_series(close, length)
     offset = get_offset(offset)
 
+    if close is None: return
+
     # Calculate Result
-    standard_deviation = stdev(close=close, length=length)
+    standard_deviation = stdev(close=close, length=length, ddof=ddof)
     deviations = std * standard_deviation
 
     mid = ma(mamode, close, length=length, **kwargs)
-
     lower = mid - deviations
     upper = mid + deviations
 
@@ -74,11 +76,11 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=20, std=2
+        length=5, std=2, mamode="sma", ddof=0
     EMA = Exponential Moving Average
     SMA = Simple Moving Average
     STDEV = Standard Deviation
-    stdev = STDEV(close, length)
+    stdev = STDEV(close, length, ddof)
     if "ema":
         MID = EMA(close, length)
     else:
@@ -91,9 +93,10 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): The short period. Default: 20
+    length (int): The short period. Default: 5
     std (int): The long period. Default: 2
-    mamode (str): Two options: "sma" or "ema". Default: "ema"
+    mamode (str): Two options: "sma" or "ema". Default: "sma"
+    ddof (int): Degrees of Freedom to use. Default: 0
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

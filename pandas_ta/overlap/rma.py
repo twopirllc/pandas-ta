@@ -5,10 +5,12 @@ from pandas_ta.utils import get_offset, verify_series
 def rma(close, length=None, offset=None, **kwargs):
     """Indicator: wildeR's Moving Average (RMA)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    offset = get_offset(offset)
     alpha = (1.0 / length) if length > 0 else 0.5
+    close = verify_series(close, length)
+    offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     rma = close.ewm(alpha=alpha, min_periods=length).mean()
@@ -27,7 +29,8 @@ def rma(close, length=None, offset=None, **kwargs):
 rma.__doc__ = \
 """wildeR's Moving Average (RMA)
 
-The WildeR's Moving Average is simply an Exponential Moving Average (EMA) with a modified alpha = 1 / length.
+The WildeR's Moving Average is simply an Exponential Moving Average (EMA) with
+a modified alpha = 1 / length.
 
 Sources:
     https://tlc.thinkorswim.com/center/reference/Tech-Indicators/studies-library/V-Z/WildersSmoothing
@@ -42,8 +45,8 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

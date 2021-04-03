@@ -7,13 +7,16 @@ from pandas_ta.utils import get_offset, verify_series
 def cksp(high, low, close, p=None, x=None, q=None, offset=None, **kwargs):
     """Indicator: Chande Kroll Stop (CKSP)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     p = int(p) if p and p > 0 else 10
     x = float(x) if x and x > 0 else 1
     q = int(q) if q and q > 0 else 9
+    _length = max(p, q, x)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     atr_ = atr(high=high, low=low, close=close, length=p)
@@ -54,10 +57,9 @@ def cksp(high, low, close, p=None, x=None, q=None, offset=None, **kwargs):
 cksp.__doc__ = \
 """Chande Kroll Stop (CKSP)
 
-The Tushar Chande and Stanley Kroll in their book
-“The New Technical Trader”. It is a trend-following indicator,
-identifying your stop by calculating the average true range of
-the recent market volatility.
+The Tushar Chande and Stanley Kroll in their book “The New Technical Trader”.
+It is a trend-following indicator, identifying your stop by calculating the
+average true range of the recent market volatility.
 
 Sources:
     https://www.multicharts.com/discussion/viewtopic.php?t=48914
@@ -75,10 +77,10 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    p (int): ATR and first stop period.  Default: 10
-    x (float): ATR scalar.  Default: 1
-    q (int): Second stop period.  Default: 9
-    offset (int): How many periods to offset the result.  Default: 0
+    p (int): ATR and first stop period. Default: 10
+    x (float): ATR scalar. Default: 1
+    q (int): Second stop period. Default: 9
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

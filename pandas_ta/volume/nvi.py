@@ -6,12 +6,14 @@ from pandas_ta.utils import get_offset, signed_series, verify_series
 def nvi(close, volume, length=None, initial=None, offset=None, **kwargs):
     """Indicator: Negative Volume Index (NVI)"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
     length = int(length) if length and length > 0 else 1
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    # min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     initial = int(initial) if initial and initial > 0 else 1000
+    close = verify_series(close, length)
+    volume = verify_series(volume, length)
     offset = get_offset(offset)
+
+    if close is None or volume is None: return
 
     # Calculate Result
     roc_ = roc(close=close, length=length)
@@ -63,9 +65,9 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
-    length (int): The short period.  Default: 13
-    initial (int): The short period.  Default: 1000
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The short period. Default: 13
+    initial (int): The short period. Default: 1000
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

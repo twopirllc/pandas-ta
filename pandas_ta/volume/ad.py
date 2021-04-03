@@ -9,7 +9,6 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     low = verify_series(low)
     close = verify_series(close)
     volume = verify_series(volume)
-    high_low_range = non_zero_range(high, low)
     offset = get_offset(offset)
 
     # Calculate Result
@@ -19,6 +18,7 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     else:
         ad = 2 * close - (high + low)  # AD with High, Low, Close
 
+    high_low_range = non_zero_range(high, low)
     ad *= volume / high_low_range
     ad = ad.cumsum()
 
@@ -65,7 +65,7 @@ Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
     open (pd.Series): Series of 'open's
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

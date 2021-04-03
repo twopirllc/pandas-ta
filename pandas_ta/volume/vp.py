@@ -7,10 +7,12 @@ from pandas_ta.utils import signed_series, verify_series
 def vp(close, volume, width=None, **kwargs):
     """Indicator: Volume Profile (VP)"""
     # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
     width = int(width) if width and width > 0 else 10
+    close = verify_series(close, width)
+    volume = verify_series(volume, width)
     sort_close = kwargs.pop("sort_close", False)
+
+    if close is None or volume is None: return
 
     # Setup
     signed_volume = signed_series(volume, initial=1)
@@ -63,7 +65,8 @@ def vp(close, volume, width=None, **kwargs):
 vp.__doc__ = \
 """Volume Profile (VP)
 
-Calculates the Volume Profile by slicing price into ranges.  Note: Value Area is not calculated.
+Calculates the Volume Profile by slicing price into ranges.
+Note: Value Area is not calculated.
 
 Sources:
     https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:volume_by_price
@@ -89,7 +92,8 @@ Args:
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
-    sort_close (value, optional): Whether to sort by close before splitting into ranges. Default: False
+    sort_close (value, optional): Whether to sort by close before splitting
+        into ranges. Default: False
 
 Returns:
     pd.DataFrame: New feature generated.

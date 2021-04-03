@@ -6,11 +6,13 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def psl(close, open_=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Psychological Line (PSL)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 12
     scalar = float(scalar) if scalar and scalar > 0 else 100
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     if open_ is not None:
@@ -71,10 +73,10 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     open_ (pd.Series, optional): Series of 'open's
-    length (int): It's period.  Default: 12
-    scalar (float): How much to magnify.  Default: 100
-    drift (int): The difference period.  Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 12
+    scalar (float): How much to magnify. Default: 100
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

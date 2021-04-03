@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from functools import reduce
-from math import fabs, floor
+from math import floor as mfloor
 from operator import mul
 from sys import float_info as sflt
 from typing import List, Optional, Tuple
@@ -11,6 +11,8 @@ from numpy import append as npAppend
 from numpy import array as npArray
 from numpy import corrcoef as npCorrcoef
 from numpy import dot as npDot
+from numpy import fabs as npFabs
+from numpy import floor as npFloor
 from numpy import exp as npExp
 from numpy import log as npLog
 from numpy import NaN as npNaN
@@ -27,8 +29,8 @@ from ._core import verify_series
 
 def combination(**kwargs: dict) -> int:
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""
-    n = int(fabs(kwargs.pop("n", 1)))
-    r = int(fabs(kwargs.pop("r", 0)))
+    n = int(npFabs(kwargs.pop("n", 1)))
+    r = int(npFabs(kwargs.pop("r", 0)))
 
     if kwargs.pop("repetition", False) or kwargs.pop("multichoose", False):
         n = n + r - 1
@@ -45,7 +47,7 @@ def combination(**kwargs: dict) -> int:
 
 def fibonacci(n: int = 2, **kwargs: dict) -> npNdArray:
     """Fibonacci Sequence as a numpy array"""
-    n = int(fabs(n)) if n >= 0 else 2
+    n = int(npFabs(n)) if n >= 0 else 2
 
     zero = kwargs.pop("zero", False)
     if zero:
@@ -55,7 +57,7 @@ def fibonacci(n: int = 2, **kwargs: dict) -> npNdArray:
         a, b = 1, 1
 
     result = npArray([a])
-    for i in range(0, n):
+    for _ in range(0, n):
         a, b = b, a + b
         result = npAppend(result, a)
 
@@ -119,7 +121,7 @@ def pascals_triangle(n: int = None, **kwargs: dict) -> npNdArray:
          => weighted: [0.0625, 0.25, 0.375, 0.25, 0.0625]
          => inverse weighted: [0.9375, 0.75, 0.625, 0.75, 0.9375]
     """
-    n = int(fabs(n)) if n is not None else 0
+    n = int(npFabs(n)) if n is not None else 0
 
     # Calculation
     triangle = npArray([combination(n=n, r=i) for i in range(0, n + 1)])
@@ -146,7 +148,7 @@ def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:
     n=4  => triangle: [1, 2, 2, 1]
          => weighted: [0.16666667 0.33333333 0.33333333 0.16666667]
     """
-    n = int(fabs(n)) if n is not None else 2
+    n = int(npFabs(n)) if n is not None else 2
 
     triangle = None
     if n == 2:
@@ -154,10 +156,10 @@ def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:
 
     if n > 2:
         if n % 2 == 0:
-            front = [i + 1 for i in range(0, floor(n / 2))]
+            front = [i + 1 for i in range(0, mfloor(n / 2))]
             triangle = front + front[::-1]
         else:
-            front = [i + 1 for i in range(0, floor(0.5 * (n + 1)))]
+            front = [i + 1 for i in range(0, mfloor(0.5 * (n + 1)))]
             triangle = front.copy()
             front.pop()
             triangle += front[::-1]

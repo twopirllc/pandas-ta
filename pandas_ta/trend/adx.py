@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from pandas_ta.overlap import rma
+from pandas_ta.overlap import ma
 from pandas_ta.volatility import atr
 from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 
 
-def adx(high, low, close, length=None, scalar=None, drift=None, offset=None, **kwargs):
+def adx(high, low, close, length=None, scalar=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: ADX"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = length if length and length > 0 else 14
+    mamode = mamode if isinstance(mamode, str) else "rma"
     scalar = float(scalar) if scalar else 100
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     atr_ = atr(high=high, low=low, close=close, length=length)
@@ -29,11 +32,11 @@ def adx(high, low, close, length=None, scalar=None, drift=None, offset=None, **k
     neg = neg.apply(zero)
 
     k = scalar / atr_
-    dmp = k * rma(close=pos, length=length)
-    dmn = k * rma(close=neg, length=length)
+    dmp = k * ma(mamode, pos, length=length)
+    dmn = k * ma(mamode, neg, length=length)
 
     dx = scalar * (dmp - dmn).abs() / (dmp + dmn)
-    adx = rma(close=dx, length=length)
+    adx = ma(mamode, dx, length=length)
 
     # Offset
     if offset != 0:

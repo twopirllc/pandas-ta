@@ -5,14 +5,16 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs):
     """Indicator: Chaikin Money Flow (CMF)"""
     # Validate Arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    volume = verify_series(volume)
-    high_low_range = non_zero_range(high, low)
     length = int(length) if length and length > 0 else 20
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    _length = max(length, min_periods)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
+    volume = verify_series(volume, _length)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None or volume is None: return
 
     # Calculate Result
     if open_ is not None:
@@ -21,7 +23,7 @@ def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs
     else:
         ad = 2 * close - (high + low)  # AD with High, Low, Close
 
-    ad *= volume / high_low_range
+    ad *= volume / non_zero_range(high, low)
     cmf = ad.rolling(length, min_periods=min_periods).sum()
     cmf /= volume.rolling(length, min_periods=min_periods).sum()
 
@@ -70,8 +72,8 @@ Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
     open_ (pd.Series): Series of 'open's. Default: None
-    length (int): The short period.  Default: 20
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): The short period. Default: 20
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

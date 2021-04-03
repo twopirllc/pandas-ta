@@ -7,13 +7,16 @@ from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Vortex"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
     length = length if length and length > 0 else 14
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    _length = max(length, min_periods)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     tr = true_range(high=high, low=low, close=close)
@@ -78,9 +81,9 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): ROC 1 period.  Default: 14
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): ROC 1 period. Default: 14
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

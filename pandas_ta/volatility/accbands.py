@@ -7,17 +7,19 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, offset=None, **kwargs):
     """Indicator: Acceleration Bands (ACCBANDS)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    high_low_range = non_zero_range(high, low)
     length = int(length) if length and length > 0 else 20
     c = float(c) if c and c > 0 else 4
     mamode = mamode if isinstance(mamode, str) else "sma"
+    high = verify_series(high, length)
+    low = verify_series(low, length)
+    close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
 
+    if high is None or low is None or close is None: return
+
     # Calculate Result
+    high_low_range = non_zero_range(high, low)
     hl_ratio = high_low_range / (high + low)
     hl_ratio *= c
     _lower = low * (1 - hl_ratio)
@@ -89,11 +91,11 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    c (int): Multiplier.  Default: 4
-    mamode (str): Two options: None or 'ema'.  Default: 'ema'
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    c (int): Multiplier. Default: 4
+    mamode (str): Two options: None or 'ema'. Default: 'ema'
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

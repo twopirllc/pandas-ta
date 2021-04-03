@@ -7,12 +7,14 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def trix(close, length=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Trix (TRIX)"""
     # Validate Arguments
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 30
     signal = int(signal) if signal and signal > 0 else 9
     scalar = float(scalar) if scalar else 100
+    close = verify_series(close, max(length, signal))
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     ema1 = ema(close=close, length=length, **kwargs)
@@ -68,11 +70,11 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 18
-    signal (int): It's period.  Default: 9
-    scalar (float): How much to magnify.  Default: 100
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 18
+    signal (int): It's period. Default: 9
+    scalar (float): How much to magnify. Default: 100
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

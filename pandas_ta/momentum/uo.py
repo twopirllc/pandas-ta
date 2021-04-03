@@ -6,20 +6,20 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_w=None, slow_w=None, drift=None, offset=None, **kwargs):
     """Indicator: Ultimate Oscillator (UO)"""
     # Validate arguments
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
+    fast = int(fast) if fast and fast > 0 else 7
+    fast_w = float(fast_w) if fast_w and fast_w > 0 else 4.0
+    medium = int(medium) if medium and medium > 0 else 14
+    medium_w = float(medium_w) if medium_w and medium_w > 0 else 2.0
+    slow = int(slow) if slow and slow > 0 else 28
+    slow_w = float(slow_w) if slow_w and slow_w > 0 else 1.0
+    _length = max(fast, medium, slow)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    fast = int(fast) if fast and fast > 0 else 7
-    fast_w = float(fast_w) if fast_w and fast_w > 0 else 4.0
-
-    medium = int(medium) if medium and medium > 0 else 14
-    medium_w = float(medium_w) if medium_w and medium_w > 0 else 2.0
-
-    slow = int(slow) if slow and slow > 0 else 28
-    slow_w = float(slow_w) if slow_w and slow_w > 0 else 1.0
+    if high is None or low is None or close is None: return
 
     # Calculate Result
     tdf = DataFrame({
@@ -90,14 +90,14 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
-    fast (int): The Fast %K period.  Default: 7
-    medium (int): The Slow %K period.  Default: 14
-    slow (int): The Slow %D period.  Default: 28
-    fast_w (float): The Fast %K period.  Default: 4.0
-    medium_w (float): The Slow %K period.  Default: 2.0
-    slow_w (float): The Slow %D period.  Default: 1.0
-    drift (int): The difference period.   Default: 1
-    offset (int): How many periods to offset the result.  Default: 0
+    fast (int): The Fast %K period. Default: 7
+    medium (int): The Slow %K period. Default: 14
+    slow (int): The Slow %D period. Default: 28
+    fast_w (float): The Fast %K period. Default: 4.0
+    medium_w (float): The Slow %K period. Default: 2.0
+    slow_w (float): The Slow %D period. Default: 1.0
+    drift (int): The difference period. Default: 1
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

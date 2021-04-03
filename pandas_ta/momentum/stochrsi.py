@@ -8,12 +8,14 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 def stochrsi(close, length=None, rsi_length=None, k=None, d=None, offset=None, **kwargs):
     """Indicator: Stochastic RSI Oscillator (STOCHRSI)"""
     # Validate arguments
-    close = verify_series(close)
     length = length if length and length > 0 else 14
     rsi_length = rsi_length if rsi_length and rsi_length > 0 else 14
     k = k if k and k > 0 else 3
     d = d if d and d > 0 else 3
+    close = verify_series(close, max(length, rsi_length, k, d))
     offset = get_offset(offset)
+
+    if close is None: return
 
     # Calculate Result
     rsi_ = rsi(close, length=rsi_length)
@@ -90,7 +92,7 @@ Args:
     rsi_length (int): RSI period. Default: 14
     k (int): The Fast %K period. Default: 3
     d (int): The Slow %K period. Default: 3
-    offset (int): How many periods to offset the result.  Default: 0
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

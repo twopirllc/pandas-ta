@@ -6,11 +6,13 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 def qstick(open_, close, length=None, offset=None, **kwargs):
     """Indicator: Q Stick"""
     # Validate Arguments
-    open_ = verify_series(open_)
-    close = verify_series(close)
     length = int(length) if length and length > 0 else 10
-    offset = get_offset(offset)
     ma = kwargs.pop("ma", "sma")
+    open_ = verify_series(open_, length)
+    close = verify_series(close, length)
+    offset = get_offset(offset)
+
+    if open_ is None or close is None: return
 
     # Calculate Result
     diff = non_zero_range(close, open_)
@@ -46,8 +48,8 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
 qstick.__doc__ = \
 """Q Stick
 
-The Q Stick indicator, developed by Tushar Chande, attempts to quantify and identify
-trends in candlestick charts.
+The Q Stick indicator, developed by Tushar Chande, attempts to quantify and
+identify trends in candlestick charts.
 
 Sources:
     https://library.tradingtechnologies.com/trade/chrt-ti-qstick.html
@@ -61,9 +63,9 @@ Calculation:
 Args:
     open (pd.Series): Series of 'open's
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 1
-    ma (str): The type of moving average to use.  Default: None, which is 'sma'
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 1
+    ma (str): The type of moving average to use. Default: None, which is 'sma'
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
