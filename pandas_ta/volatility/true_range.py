@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
-from pandas import DataFrame
+from pandas import DataFrame, concat
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
@@ -17,7 +17,7 @@ def true_range(high, low, close, drift=None, offset=None, **kwargs):
     high_low_range = non_zero_range(high, low)
     prev_close = close.shift(drift)
     ranges = [high_low_range, high - prev_close, prev_close - low]
-    true_range = DataFrame(ranges).T
+    true_range = concat(ranges, axis=1)
     true_range = true_range.abs().max(axis=1)
     true_range.iloc[:drift] = npNaN
 
