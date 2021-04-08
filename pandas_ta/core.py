@@ -1043,6 +1043,11 @@ class AnalysisIndicators(BasePandasObject):
         result = squeeze(high=high, low=low, close=close, bb_length=bb_length, bb_std=bb_std, kc_length=kc_length, kc_scalar=kc_scalar, mom_length=mom_length, mom_smooth=mom_smooth, use_tr=use_tr, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def stc(self, ma1=None, ma2=None, osc=None, tclen=None, fast=None, slow=None, factor=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = stc(close=close, ma1=ma1, ma2=ma2, osc=osc, tclen=tclen, fast=fast, slow=slow, factor=factor, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def stoch(self, fast_k=None, slow_k=None, slow_d=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
