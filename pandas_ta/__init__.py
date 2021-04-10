@@ -40,7 +40,7 @@ Imports = {
 Category = {
     # Candles
     "candles": [
-        "cdl_doji", "cdl_inside", "ha"
+        "cdl_pattern", "ha"
     ],
     # Cycles
     "cycles": ["ebsw"],

@@ -554,11 +554,82 @@ help(ta.yf)
 <br/><br/>
 
 # **Indicators** (_by Category_)
-### **Candles** (3)
+### **Candles** (63)
 
-* _Doji_: **cdl_doji**
-* _Inside Bar_: **cdl_inside**
+* _Patterns_: cdl_pattern (Patterns that aren't bold, need TA-Lib to be installed: "```pip install TA-Lib```")
+    * 2crows
+    * 3blackcrows
+    * 3inside
+    * 3linestrike
+    * 3outside
+    * 3starsinsouth
+    * 3whitesoldiers
+    * abandonedbaby
+    * advanceblock
+    * belthold
+    * breakaway
+    * closingmarubozu
+    * concealbabyswall
+    * counterattack
+    * darkcloudcover
+    * **doji**
+    * dojistar
+    * dragonflydoji
+    * engulfing
+    * eveningdojistar
+    * eveningstar
+    * gapsidesidewhite
+    * gravestonedoji
+    * hammer
+    * hangingman
+    * harami
+    * haramicross
+    * highwave
+    * hikkake
+    * hikkakemod
+    * homingpigeon
+    * identical3crows
+    * inneck
+    * **inside**
+    * invertedhammer
+    * kicking
+    * kickingbylength
+    * ladderbottom
+    * longleggeddoji
+    * longline
+    * marubozu
+    * matchinglow
+    * mathold
+    * morningdojistar
+    * morningstar
+    * onneck
+    * piercing
+    * rickshawman
+    * risefall3methods
+    * separatinglines
+    * shootingstar
+    * shortline
+    * spinningtop
+    * stalledpattern
+    * sticksandwich
+    * takuri
+    * tasukigap
+    * thrusting
+    * tristar
+    * unique3river
+    * upsidegap2crows
+    * xsidegap3methods
 * _Heikin-Ashi_: **ha**
+```python
+# Get all candle patterns (This is the default behaviour)
+df = df.ta.cdl_pattern(name="all")
+
+# Get only one pattern
+df = df.ta.cdl_pattern(name="doji")
+
+# Get some patterns
+df = df.ta.cdl_pattern(name=["doji", "inside"])
+```
 <br/>
 
 
