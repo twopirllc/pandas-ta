@@ -95,7 +95,12 @@ class TestTrend(TestCase):
         self.assertEqual(result.name, "CHOP_14_1_100")
 
     def test_cksp(self):
-        result = pandas_ta.cksp(self.high, self.low, self.close)
+        result = pandas_ta.cksp(self.high, self.low, self.close, tvmode=False)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "CKSP_10_3_20")
+
+    def test_cksp_tv(self):
+        result = pandas_ta.cksp(self.high, self.low, self.close, tvmode=True)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "CKSP_10_1_9")
 

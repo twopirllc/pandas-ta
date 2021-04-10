@@ -11,19 +11,18 @@ def cksp(high, low, close, p=None, x=None, q=None, offset=None, tvmode=None, **k
     p = int(p) if p and p > 0 else 10
     x = float(x) if x and x > 0 else 1 if tvmode is True else 3
     q = int(q) if q and q > 0 else 9 if tvmode is True else 20
-
     _length = max(p, q, x)
 
     high = verify_series(high, _length)
     low = verify_series(low, _length)
     close = verify_series(close, _length)
-
     if high is None or low is None or close is None: return
 
     offset = get_offset(offset)
     tvmode = tvmode if isinstance(tvmode, bool) else True
-
     mamode = "rma" if tvmode is True else "sma"
+
+    # Calculate Result
     atr_ = atr(high=high, low=low, close=close, length=p, mamode = mamode)
 
     long_stop_ = high.rolling(p).max() - x * atr_
