@@ -18,7 +18,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "2", "64b")),
+    version=".".join(("0", "2", "65b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -55,7 +55,11 @@ setup(
     # You can install these using the following syntax, for example:
     # $ pip install -e .[dev,test]
     extras_require={
-        "dev": ["ta-lib", "jupyterlab", "sklearn", "statsmodels"],
+        "dev": [
+            "alphaVantage-api", "matplotlib", "mplfinance", "scipy",
+            "sklearn", "statsmodels", "stochastic",
+            "talib", "tqdm", "vectorbt", "yfinance",
+        ],
         "test": ["ta-lib"],
     },
 )

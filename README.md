@@ -85,7 +85,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.62b*
+Best choice! Version: *0.2.65b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -801,6 +801,9 @@ result = ta.cagr(df.close)
 
 <br />
 
+## **Breaking Indicators**
+* _Trend Return_ (**trend_return**) when given a trend Series like ```close > sma(close, 50)``` it now returns by default log and cumulative log returns of the trend as well as the Trends, Trades, Trade Entries and Trade Exits of that trend. Now compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See: ```help(ta.trend_return)```
+
 ## **New Indicators**
 * _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
 trading account, or fund. See: ```help(ta.drawdown)```
@@ -814,7 +817,6 @@ trading account, or fund. See: ```help(ta.drawdown)```
 * _Bollinger Bands_ (**bbands**): New argument ```ddoff``` to control the Degrees of Freedom. Default is 0.  See ```help(ta.bbands)```.
 * _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length```. Default: ```False```. See ```help(ta.decreasing)```.
 * _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length```. Default: ```False```. See ```help(ta.increasing)```.
-* _Trend Return_ (**trend_return**): Returns a DataFrame now instead of Series with pertinenet trade info for a _trend_. An example can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/AIExample.ipynb). The notebook is still a work in progress and open to colloboration.
 * _Volume Weighted Average Price_ (**vwap**) Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex
 
 <br />

@@ -97,7 +97,7 @@ class TestUtilityMetrics(TestCase):
 
     def test_pure_profit_score(self):
         result = pandas_ta.pure_profit_score(self.close)
-        self.assertIsInstance(result, int or float)
+        self.assertIsInstance(result, float)
         self.assertGreaterEqual(result, 0)
 
     def test_sharpe_ratio(self):

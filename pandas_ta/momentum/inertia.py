@@ -27,14 +27,11 @@ def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scala
 
     # Calculate Result
     if refined:
-        _mode = "r"
-        rvi_ = rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, refined=refined, mamode=mamode)
+        _mode, rvi_ = "r", rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, refined=refined, mamode=mamode)
     elif thirds:
-        _mode = "t"
-        rvi_ = rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, thirds=thirds, mamode=mamode)
+        _mode, rvi_ = "t", rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, thirds=thirds, mamode=mamode)
     else:
-        _mode = ""
-        rvi_ = rvi(close, length=rvi_length, scalar=scalar, mamode=mamode)
+        _mode, rvi_ = "",  rvi(close, length=rvi_length, scalar=scalar, mamode=mamode)
 
     inertia = linreg(rvi_, length=length)
 

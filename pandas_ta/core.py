@@ -767,7 +767,7 @@ class AnalysisIndicators(BasePandasObject):
         if timed:
             print(f"[i] Runtime: {final_time(stime)}")
 
-    def ticker(self, ticker, **kwargs):
+    def ticker(self, ticker: str, **kwargs):
         """ticker
 
         This method downloads Historical Data if the package yfinance is installed.
@@ -1285,12 +1285,12 @@ class AnalysisIndicators(BasePandasObject):
         result = percent_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def trend_return(self, trend=None, log=True, cumulative=None, offset=None, trend_reset=None, **kwargs):
+    def trend_return(self, trend=None, log=True, asbool=None, offset=None, trend_reset=None, **kwargs):
         if trend is None:
             return self._df
         else:
             close = self._get_column(kwargs.pop("close", "close"))
-            result = trend_return(close=close, trend=trend, log=log, cumulative=cumulative, offset=offset, trend_reset=trend_reset, **kwargs)
+            result = trend_return(close=close, trend=trend, log=log, asbool=asbool, offset=offset, trend_reset=trend_reset, **kwargs)
             return self._post_process(result, **kwargs)
 
     # Statistics

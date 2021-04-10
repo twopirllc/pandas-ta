@@ -131,8 +131,8 @@ ta-lib/
 AlphaVantageAPI/
 
 # Data & NB Exclusions
-*.ipynb
 *.csv
+*.ipynb
 data/datas.csv
 data/f500.csv
 data/GLD_D_tv.csv
