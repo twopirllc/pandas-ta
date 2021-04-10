@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
 from multiprocessing import cpu_count, Pool
+from pandas_ta.candles.cdl_pattern import ALL_PATTERNS
 from time import perf_counter
 from typing import List, Tuple
 
@@ -597,9 +598,9 @@ class AnalysisIndicators(BasePandasObject):
 
         total_indicators = len(ta_indicators)
         header = f"Pandas TA - Technical Analysis Indicators - v{self.version}"
-        s = f"{header}\nTotal Indicators: {total_indicators}\n"
+        s = f"{header}\nTotal Indicators: {total_indicators + len(ALL_PATTERNS)}\n"
         if total_indicators > 0:
-            print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}")
+            print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}\n\nCandle Patterns:\n    {', '.join(ALL_PATTERNS)}")
         else:
             print(s)
 
@@ -640,6 +641,7 @@ class AnalysisIndicators(BasePandasObject):
             "above_value",
             "below",
             "below_value",
+            "cdl", # Alias for "cdl_pattern"
             "cross",
             "cross_value",
             # "data", # reserved
@@ -839,6 +841,8 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
         result = cdl_pattern(open_=open_, high=high, low=low, close=close, name=name, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
+
+    cdl = cdl_pattern
 
     def ha(self, offset=None, **kwargs):
         open_ = self._get_column(kwargs.pop("open", "open"))

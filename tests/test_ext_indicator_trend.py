@@ -41,7 +41,6 @@ class TestTrendExtension(TestCase):
     def test_cksp_ext(self):
         self.data.ta.cksp(tvmode=False, append=True)
         self.assertIsInstance(self.data, DataFrame)
-        print(self.data.columns[-3:])
         self.assertEqual(list(self.data.columns[-2:]), ["CKSPl_10_3_20", "CKSPs_10_3_20"])
 
     def test_cksp_tv_ext(self):

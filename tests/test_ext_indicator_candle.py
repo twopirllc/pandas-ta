@@ -19,12 +19,12 @@ class TestCandleExtension(TestCase):
 
 
     def test_cdl_doji_ext(self):
-        self.data.ta.cdl_doji(append=True)
+        self.data.ta.cdl_pattern("doji", append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "CDL_DOJI_10_0.1")
 
     def test_cdl_inside_ext(self):
-        self.data.ta.cdl_inside(append=True)
+        self.data.ta.cdl_pattern("inside", append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "CDL_INSIDE")
 

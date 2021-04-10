@@ -106,15 +106,18 @@ class TestStrategyMethods(TestCase):
     # @skip
     def test_custom_a(self):
         self.category = "Custom A"
+        print()
+        print(self.category)
 
         momo_bands_sma_ta = [
+            {"kind": "cdl_pattern", "name": "tristar"},  # 1
             {"kind": "rsi"},  # 1
             {"kind": "macd"},  # 3
             {"kind": "sma", "length": 50},  # 1
             {"kind": "sma", "length": 200 },  # 1
             {"kind": "bbands", "length": 20},  # 3
             {"kind": "log_return", "cumulative": True},  # 1
-            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"} # 1
         ]
 
         custom = pandas_ta.Strategy(
@@ -123,6 +126,7 @@ class TestStrategyMethods(TestCase):
             "Common indicators with specific lengths and a chained indicator",  # description
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        self.assertEqual(len(self.data.columns), 15)
 
     # @skip
     def test_custom_args_tuple(self):

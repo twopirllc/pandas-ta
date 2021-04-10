@@ -15,7 +15,10 @@ Pandas TA - A Technical Analysis Library in Python 3
 ![Example Chart](/images/TA_Chart.png)
 
 
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas library with more than 130 Indicators and Utility functions. Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas library with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+
+
+**Note:** _TA Lib_ must be installed to use **all** the Candlestick Patterns. ```pip install TA-Lib```. If _TA Lib_ is not installed, then only the builtin Candlestick Patterns will be available.
 
 <br/>
 
@@ -36,7 +39,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [DataFrame Properties](#dataframe-properties)
 * [DataFrame Methods](#dataframe-methods)
 * [Indicators by Category](#indicators-by-category)
-    * [Candles](#candles-3)
+    * [Candles](#candles-63)
     * [Cycles](#cycles-1)
     * [Momentum](#momentum-37)
     * [Overlap](#overlap-31)
@@ -63,13 +66,22 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 # **Features**
 
 * Has 130+ indicators and utility functions.
+    * With **TA Lib** installed there are an additional 63 Chart Patterns available.
 * Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
-* Easily add _prefixes_ or _suffixes_ or both to columns names. Useful for Custom Chained Strategies.
+* Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
 * Potential Data Leaks: **ichimoku** and **dpo**. See indicator list below for details.
-* **UNDER DEVELOPMENT:** Performance Metrics
-* **UNDER DEVELOPMENT:** Easy Downloading of _ohlcv_ data using [yfinance](https://github.com/ranaroussi/yfinance). See ```help(ta.ticker)``` and ```help(ta.yf)```
+
+<br/>
+
+**Under Development**
+===================
+**Pandas TA** checks if the user has some common trading packages installed including but not limited to: [**TA Lib**](https://mrjbq7.github.io/ta-lib/), [**Vector BT**](https://github.com/polakowo/vectorbt), [**YFinance**](https://github.com/ranaroussi/yfinance) ... Much of which is experimental and likely to break until it stabilizes more.
+* If **TA Lib** installed, existing indicators will _eventually_ get a **TA Lib** version.
+* Easy Downloading of _ohlcv_ data using [yfinance](https://github.com/ranaroussi/yfinance). See ```help(ta.ticker)``` and ```help(ta.yf)``` and examples below.
+* Hopefully soon a Pandas TA _YAML_ configuration file contained in ```~/pandas_ta/``` can be implemented. To see the proposed specification and leave comments and suggestions on it's implementation, see Issue [#258](https://github.com/twopirllc/pandas-ta/issues/258).
+* Some Common Performance Metrics
 
 <br/>
 
@@ -85,7 +97,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.67b*
+Best choice! Version: *0.2.68b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -556,79 +568,90 @@ help(ta.yf)
 # **Indicators** (_by Category_)
 ### **Candles** (63)
 
-* _Patterns_: cdl_pattern (Patterns that aren't bold, need TA-Lib to be installed: "```pip install TA-Lib```")
-    * 2crows
-    * 3blackcrows
-    * 3inside
-    * 3linestrike
-    * 3outside
-    * 3starsinsouth
-    * 3whitesoldiers
-    * abandonedbaby
-    * advanceblock
-    * belthold
-    * breakaway
-    * closingmarubozu
-    * concealbabyswall
-    * counterattack
-    * darkcloudcover
-    * **doji**
-    * dojistar
-    * dragonflydoji
-    * engulfing
-    * eveningdojistar
-    * eveningstar
-    * gapsidesidewhite
-    * gravestonedoji
-    * hammer
-    * hangingman
-    * harami
-    * haramicross
-    * highwave
-    * hikkake
-    * hikkakemod
-    * homingpigeon
-    * identical3crows
-    * inneck
-    * **inside**
-    * invertedhammer
-    * kicking
-    * kickingbylength
-    * ladderbottom
-    * longleggeddoji
-    * longline
-    * marubozu
-    * matchinglow
-    * mathold
-    * morningdojistar
-    * morningstar
-    * onneck
-    * piercing
-    * rickshawman
-    * risefall3methods
-    * separatinglines
-    * shootingstar
-    * shortline
-    * spinningtop
-    * stalledpattern
-    * sticksandwich
-    * takuri
-    * tasukigap
-    * thrusting
-    * tristar
-    * unique3river
-    * upsidegap2crows
-    * xsidegap3methods
+_Candle Patterns_: ```ta.cdl_pattern``` or ```ta.cdl```
+
+
+Patterns that are **not bold**, require TA-Lib to be installed: ```pip install TA-Lib```
+
+* 2crows
+* 3blackcrows
+* 3inside
+* 3linestrike
+* 3outside
+* 3starsinsouth
+* 3whitesoldiers
+* abandonedbaby
+* advanceblock
+* belthold
+* breakaway
+* closingmarubozu
+* concealbabyswall
+* counterattack
+* darkcloudcover
+* **doji**
+* dojistar
+* dragonflydoji
+* engulfing
+* eveningdojistar
+* eveningstar
+* gapsidesidewhite
+* gravestonedoji
+* hammer
+* hangingman
+* harami
+* haramicross
+* highwave
+* hikkake
+* hikkakemod
+* homingpigeon
+* identical3crows
+* inneck
+* **inside**
+* invertedhammer
+* kicking
+* kickingbylength
+* ladderbottom
+* longleggeddoji
+* longline
+* marubozu
+* matchinglow
+* mathold
+* morningdojistar
+* morningstar
+* onneck
+* piercing
+* rickshawman
+* risefall3methods
+* separatinglines
+* shootingstar
+* shortline
+* spinningtop
+* stalledpattern
+* sticksandwich
+* takuri
+* tasukigap
+* thrusting
+* tristar
+* unique3river
+* upsidegap2crows
+* xsidegap3methods
 * _Heikin-Ashi_: **ha**
 ```python
 # Get all candle patterns (This is the default behaviour)
 df = df.ta.cdl_pattern(name="all")
+# Or
+df.ta.cdl("all", append=True) # = df.ta.cdl_pattern("all", append=True)
+
 
 # Get only one pattern
 df = df.ta.cdl_pattern(name="doji")
+# Or
+df.ta.cdl("doji", append=True)
 
 # Get some patterns
 df = df.ta.cdl_pattern(name=["doji", "inside"])
+# Or
+df.ta.cdl(["doji", "inside"], append=True)
 ```
 <br/>
 
@@ -878,6 +901,7 @@ result = ta.cagr(df.close)
 ## **New Indicators**
 * _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
 trading account, or fund. See: ```help(ta.drawdown)```
+* _Candle Patterns_ (**cdl_pattern**) If TA Lib is installed, then all those Candle Patterns are available. See the list and examples above on how to call the patterns. See: ```help(ta.cdl_pattern)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See: ```help(ta.td_seq)```
 <br/>

@@ -125,7 +125,7 @@ def yf(ticker: str, **kwargs):
         # Ticker Info & Chart History
         yfd = yfra.Ticker(ticker)
         df = yfd.history(period=period, interval=interval, proxy=proxy, **kwargs)
-        print(f"[X] df[{type(df)}:{df.empty}]\n{df}\n")
+
         if df.empty: return
         df.name = ticker
 
@@ -134,18 +134,16 @@ def yf(ticker: str, **kwargs):
         except KeyError as ke:
             print(f"[X] Ticker '{ticker}' not found.")
             return
-        print(f"[X] ticker_info[{type(ticker_info)}:{len(ticker_info.keys())}]\n{ticker_info}\n")
+        # print(f"[X] ticker_info[{type(ticker_info)}:{len(ticker_info.keys())}]\n{ticker_info}\n")
 
         try:
             infodf = DataFrame.from_dict(ticker_info, orient="index")
         except TypeError as te:
             print(f"[X] TypeError: {te}")
-        # else:
-        #     infodf = DataFrame(ticker_info)
 
-        print(f"[X] infodf.empty: {infodf.empty}")
+        # print(f"[X] infodf.empty: {infodf.empty}")
         if infodf.empty: return
-        print(f"[X] infodf[{type(infodf)}:{len(infodf.keys())}]\n{infodf}\n")
+        # print(f"[X] infodf[{type(infodf)}:{len(infodf.keys())}]\n{infodf}\n")
         infodf.name, infodf.columns = ticker, [ticker]
 
         # Dividends and Splits
@@ -155,9 +153,6 @@ def yf(ticker: str, **kwargs):
         if kind in _all + ["info"] or verbose:
             description = kwargs.pop("desc", False)
             snd_length = kwargs.pop("snd", 5)
-
-            [print(f"{_[0]}: {_[1]}") for _ in sorted(ticker_info.items())]
-            print()
 
             print("\n====  Company Information  " + div)
             print(f"{ticker_info['longName']} ({ticker_info['shortName']}) [{ticker_info['symbol']}]")

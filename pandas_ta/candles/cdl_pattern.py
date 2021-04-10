@@ -5,8 +5,6 @@ from pandas import Series, DataFrame
 from . import cdl_doji, cdl_inside
 from pandas_ta.utils import get_offset, verify_series
 from pandas_ta import Imports
-if Imports["talib"]:
-    import talib.abstract as tala
 
 
 ALL_PATTERNS = [
@@ -45,11 +43,15 @@ def cdl_pattern(open_, high, low, close, name: Union[str, Sequence[str]]="all", 
     if type(name) is str:
         name = [name]
 
+    if Imports["talib"]:
+        import talib.abstract as tala
+
     result = {}
     for n in name:
         if n not in ALL_PATTERNS:
             print(f"[X] There is no candle pattern named {n} available!")
             continue
+
         if n in pta_patterns:
             pattern_result = pta_patterns[n](open_, high, low, close, offset=offset, scalar=scalar, **kwargs)
             result[pattern_result.name] = pattern_result
@@ -58,7 +60,7 @@ def cdl_pattern(open_, high, low, close, name: Union[str, Sequence[str]]="all", 
                 print(f"[X] Please install TA-Lib to use {n}. (pip install TA-Lib)")
                 continue
 
-            pattern_func = tala.Function("CDL" + n.upper())
+            pattern_func = tala.Function(f"CDL{n.upper()}")
             pattern_result = Series(pattern_func(open_, high, low, close, **kwargs) / 100 * scalar)
             pattern_result.index = close.index
 
@@ -72,10 +74,9 @@ def cdl_pattern(open_, high, low, close, name: Union[str, Sequence[str]]="all", 
             if "fill_method" in kwargs:
                 pattern_result.fillna(method=kwargs["fill_method"], inplace=True)
 
-            result["CDL_" + n.upper()] = pattern_result
+            result[f"CDL_{n.upper()}"] = pattern_result
 
-    if len(result) == 0:
-        return
+    if len(result) == 0: return
 
     # Prepare DataFrame to return
     df = DataFrame(result)
@@ -88,6 +89,23 @@ cdl_pattern.__doc__ = \
 """Candle Pattern
 
 A wrapper around all candle patterns.
+
+Examples:
+
+Get all candle patterns (This is the default behaviour)
+>>> df = df.ta.cdl_pattern(name="all")
+Or
+>>> df.ta.cdl("all", append=True) # = df.ta.cdl_pattern("all", append=True)
+
+Get only one pattern
+>>> df = df.ta.cdl_pattern(name="doji")
+Or
+>>> df.ta.cdl("doji", append=True)
+
+Get some patterns
+>>> df = df.ta.cdl_pattern(name=["doji", "inside"])
+Or
+>>> df.ta.cdl(["doji", "inside"], append=True)
 
 Args:
     open_ (pd.Series): Series of 'open's
@@ -105,3 +123,5 @@ Kwargs:
 Returns:
     pd.DataFrame: one column for each pattern.
 """
+
+cdl = cdl_pattern

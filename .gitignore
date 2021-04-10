@@ -144,3 +144,4 @@ data/SPY_D_TV3.csv
 data/TV_5min.csv
 data/tulip.csv
 examples/*.csv
+examples/Chande_Kroll_Stop.ipynb
