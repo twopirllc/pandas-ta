@@ -690,6 +690,7 @@ df.ta.cdl(["doji", "inside"], append=True)
 * _Relative Strength Index_: **rsi**
 * _Relative Strength Xtra_: **rsx**
 * _Relative Vigor Index_: **rvgi**
+* _Schaff Trend Cycle_: **stc**
 * _Slope_: **slope**
 * _SMI Ergodic_ **smi**
 * _Squeeze_: **squeeze**
