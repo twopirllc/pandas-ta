@@ -349,6 +349,11 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "SQZhlr_20_2.0_20_1.5_LB")
 
+    def test_stc(self):
+        result = pandas_ta.stc(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "STC_10_12_26_0.5")
+
     # @skip
     def test_stoch(self):
         # TV Correlation

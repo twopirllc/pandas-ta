@@ -41,7 +41,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-63)
     * [Cycles](#cycles-1)
-    * [Momentum](#momentum-37)
+    * [Momentum](#momentum-38)
     * [Overlap](#overlap-31)
     * [Performance](#performance-4)
     * [Statistics](#statistics-9)
@@ -97,7 +97,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.68b*
+Best choice! Version: *0.2.69b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -567,10 +567,6 @@ help(ta.yf)
 
 # **Indicators** (_by Category_)
 ### **Candles** (63)
-
-_Candle Patterns_: ```ta.cdl_pattern``` or ```ta.cdl```
-
-
 Patterns that are **not bold**, require TA-Lib to be installed: ```pip install TA-Lib```
 
 * 2crows
@@ -657,12 +653,11 @@ df.ta.cdl(["doji", "inside"], append=True)
 
 
 ### **Cycles** (1)
-
 * _Even Better Sinewave_: **ebsw**
+
 <br/>
 
-### **Momentum** (37)
-
+### **Momentum** (38)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Bias_: **bias**
@@ -708,6 +703,7 @@ df.ta.cdl(["doji", "inside"], append=True)
 | _Moving Average Convergence Divergence_ (MACD) |
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
+
 <br/>
 
 ### **Overlap** (31)
@@ -752,8 +748,8 @@ df.ta.cdl(["doji", "inside"], append=True)
 | _Simple Moving Averages_ (SMA) and _Bollinger Bands_ (BBANDS) |
 |:--------:|
 | ![Example Chart](/images/TA_Chart.png) |
-<br/>
 
+<br/>
 
 ### **Performance** (4)
 
@@ -811,6 +807,8 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example ADX](/images/SPY_ADX.png) |
 
+<br/>
+
 ### **Utility** (5)
 
 * _Above_: **above**
@@ -818,6 +816,8 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Below_: **below**
 * _Below Value_: **below_value**
 * _Cross_: **cross**
+
+<br/>
 
 ### **Volatility** (13)
 
@@ -838,6 +838,8 @@ Use parameter: cumulative=**True** for cumulative results.
 | _Average True Range_ (ATR) |
 |:--------:|
 | ![Example ATR](/images/SPY_ATR.png) |
+
+<br/>
 
 ### **Volume** (14)
 
@@ -899,12 +901,17 @@ result = ta.cagr(df.close)
 ## **Breaking Indicators**
 * _Trend Return_ (**trend_return**) when given a trend Series like ```close > sma(close, 50)``` it now returns by default log and cumulative log returns of the trend as well as the Trends, Trades, Trade Entries and Trade Exits of that trend. Now compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See: ```help(ta.trend_return)```
 
+<br/>
+
 ## **New Indicators**
 * _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
 trading account, or fund. See: ```help(ta.drawdown)```
 * _Candle Patterns_ (**cdl_pattern**) If TA Lib is installed, then all those Candle Patterns are available. See the list and examples above on how to call the patterns. See: ```help(ta.cdl_pattern)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
+* _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two
+cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See: ```help(ta.td_seq)```
+
 <br/>
 
 ## **Updated Indicators**

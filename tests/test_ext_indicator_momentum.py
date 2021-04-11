@@ -197,6 +197,11 @@ class TestMomentumExtension(TestCase):
             ["SQZ_ON", "SQZ_OFF", "SQZ_NO", "SQZhlr_20_2.0_20_1.5"]
         )
 
+    def test_stc_ext(self):
+        self.data.ta.stc(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-3:]), ["STC_10_12_26_0.5", "STCmacd_10_12_26_0.5", "STCstoch_10_12_26_0.5"])
+
     def test_stoch_ext(self):
         self.data.ta.stoch(append=True)
         self.assertIsInstance(self.data, DataFrame)
