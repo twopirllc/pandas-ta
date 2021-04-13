@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import math
 from pandas_ta.utils import get_offset, verify_series
+import numpy as np
+import pandas as pd
 
 
 def linreg(close, length=None, offset=None, **kwargs):
@@ -23,8 +24,8 @@ def linreg(close, length=None, offset=None, **kwargs):
     divisor = length * x2_sum - x_sum * x_sum
 
     def linear_regression(series):
-        y_sum = series.sum()
-        xy_sum = (x * series).sum()
+        y_sum = sum(series)
+        xy_sum = sum(x * series)
 
         m = (length * xy_sum - x_sum * y_sum) / divisor
         if slope:
@@ -34,20 +35,25 @@ def linreg(close, length=None, offset=None, **kwargs):
             return b
 
         if angle:
-            theta = math.atan(m)
+            theta = np.arctan(m)
             if degrees:
-                theta *= 180 / math.pi
+                theta *= 180 / np.pi
             return theta
 
         if r:
-            y2_sum = (series * series).sum()
+            y2_sum = sum(series ** 2)
             rn = length * xy_sum - x_sum * y_sum
-            rd = math.sqrt(divisor * (length * y2_sum - y_sum * y_sum))
+            rd = (divisor * (length * y2_sum - y_sum * y_sum)) ** 0.5
             return rn / rd
 
         return m * length + b if tsf else m * (length - 1) + b
 
-    linreg = close.rolling(length, min_periods=length).apply(linear_regression, raw=False)
+    values = [
+        linear_regression(each)
+        for each in np.lib.stride_tricks.sliding_window_view(np.array(close), length)
+    ]
+    linreg = pd.Series([np.NaN] * (length - 1) + values)
+    linreg.index = close.index
 
     # Offset
     if offset != 0:

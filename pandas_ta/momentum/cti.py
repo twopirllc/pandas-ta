@@ -1,6 +1,6 @@
 import pandas as pd
-import numpy as np
 from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.overlap import linreg
 
 
 def cti(close: pd.Series, length: int, offset=None, **kwargs) -> pd.Series:
@@ -9,35 +9,7 @@ def cti(close: pd.Series, length: int, offset=None, **kwargs) -> pd.Series:
     length = int(length) if length and length > 0 else 12
     offset = get_offset(offset)
 
-    def _cti(series: pd.Series) -> float:
-        """
-        Provide cell CTI value for numpy strides.
-
-        Args:
-            series (pd.Series): Rolling window of pd.Series.
-
-        Returns:
-            float: Value for cell.
-        """
-        r = np.arange(0, length)
-        sx = sum(series)
-        sy = -sum(r)
-        sxx = sum(np.square(series))
-        sxy = sum(series * r * -1)
-        syy = sum(r ** 2)
-
-        x_denom = length * sxx - sx ** 2
-        y_denom = length * syy - sy ** 2
-        if x_denom > 0 and y_denom > 0:
-            return ((length * sxy - sx * sy) / (x_denom * y_denom) ** 0.5) * -1
-        return 0
-
-    values = [
-        _cti(each)
-        for each in np.lib.stride_tricks.sliding_window_view(np.array(close), length)
-    ]
-    cti_ds = pd.Series([np.NaN] * (length - 1) + values)
-    cti_ds.index = close.index
+    cti_ds = linreg(close, length, r=True)
 
     # Offset
     if offset != 0:
