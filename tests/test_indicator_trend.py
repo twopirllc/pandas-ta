@@ -90,9 +90,13 @@ class TestTrend(TestCase):
                 error_analysis(result.iloc[:, 0], CORRELATION, ex)
 
     def test_chop(self):
-        result = pandas_ta.chop(self.high, self.low, self.close)
+        result = pandas_ta.chop(self.high, self.low, self.close, ln=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "CHOP_14_1_100")
+
+        result = pandas_ta.chop(self.high, self.low, self.close, ln=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "CHOPln_14_1_100")
 
     def test_cksp(self):
         result = pandas_ta.cksp(self.high, self.low, self.close, tvmode=False)

@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from numpy import log10 as npLog10
+from numpy import log as npLn
 from pandas_ta.volatility import atr
 from pandas_ta.utils import get_offset, get_drift, verify_series
 
 
-def chop(high, low, close, length=None, atr_length=None, scalar=None, drift=None, offset=None, **kwargs):
+def chop(high, low, close, length=None, atr_length=None, ln=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: Choppiness Index (CHOP)"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 14
     atr_length = int(atr_length) if atr_length is not None and atr_length > 0 else 1
+    ln = bool(ln) if isinstance(ln, bool) else False
     scalar = float(scalar) if scalar else 100
     high = verify_series(high, length)
     low = verify_series(low, length)
@@ -24,8 +26,11 @@ def chop(high, low, close, length=None, atr_length=None, scalar=None, drift=None
     atr_ = atr(high=high, low=low, close=close, length=atr_length)
     atr_sum = atr_.rolling(length).sum()
 
-    chop = scalar * (npLog10(atr_sum) - npLog10(diff))
-    chop /= npLog10(length)
+    chop = scalar
+    if ln:
+        chop *= (npLn(atr_sum) - npLn(diff)) / npLn(length)
+    else:
+        chop *= (npLog10(atr_sum) - npLog10(diff)) / npLog10(length)
 
     # Offset
     if offset != 0:
@@ -38,7 +43,7 @@ def chop(high, low, close, length=None, atr_length=None, scalar=None, drift=None
         chop.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    chop.name = f"CHOP_{length}_{atr_length}_{scalar}"
+    chop.name = f"CHOP{'ln' if ln else ''}_{length}_{atr_length}_{scalar}"
     chop.category = "trend"
 
     return chop
@@ -73,6 +78,7 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 14
     atr_length (int): Length for ATR. Default: 1
+    ln (bool): If True, uses ln otherwise log10. Default: False
     scalar (float): How much to magnify. Default: 100
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0

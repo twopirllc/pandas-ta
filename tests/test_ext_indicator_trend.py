@@ -34,9 +34,13 @@ class TestTrendExtension(TestCase):
         self.assertEqual(list(self.data.columns[-3:]), ["AROOND_14", "AROONU_14", "AROONOSC_14"])
 
     def test_chop_ext(self):
-        self.data.ta.chop(append=True)
+        self.data.ta.chop(append=True, ln=False)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "CHOP_14_1_100")
+
+        self.data.ta.chop(append=True, ln=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "CHOPln_14_1_100")
 
     def test_cksp_ext(self):
         self.data.ta.cksp(tvmode=False, append=True)
