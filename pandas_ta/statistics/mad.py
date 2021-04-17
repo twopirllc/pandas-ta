@@ -24,6 +24,12 @@ def mad(close, length=None, offset=None, **kwargs):
     if offset != 0:
         mad = mad.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        mad.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        mad.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     mad.name = f"MAD_{length}"
     mad.category = "statistics"

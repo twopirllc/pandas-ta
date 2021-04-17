@@ -20,6 +20,12 @@ def pwma(close, length=None, asc=None, offset=None, **kwargs):
     if offset != 0:
         pwma = pwma.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        pwma.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        pwma.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     pwma.name = f"PWMA_{length}"
     pwma.category = "overlap"

@@ -21,6 +21,12 @@ def stdev(close, length=None, ddof=None, offset=None, **kwargs):
     if offset != 0:
         stdev = stdev.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        stdev.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        stdev.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     stdev.name = f"STDEV_{length}"
     stdev.category = "statistics"

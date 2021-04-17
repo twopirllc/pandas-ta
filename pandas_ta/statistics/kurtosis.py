@@ -19,6 +19,12 @@ def kurtosis(close, length=None, offset=None, **kwargs):
     if offset != 0:
         kurtosis = kurtosis.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        kurtosis.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        kurtosis.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     kurtosis.name = f"KURT_{length}"
     kurtosis.category = "statistics"

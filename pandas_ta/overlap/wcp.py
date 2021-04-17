@@ -17,6 +17,12 @@ def wcp(high, low, close, offset=None, **kwargs):
     if offset != 0:
         wcp = wcp.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        wcp.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        wcp.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     wcp.name = "WCP"
     wcp.category = "overlap"

@@ -21,6 +21,12 @@ def entropy(close, length=None, base=None, offset=None, **kwargs):
     if offset != 0:
         entropy = entropy.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        entropy.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        entropy.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     entropy.name = f"ENTP_{length}"
     entropy.category = "statistics"

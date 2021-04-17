@@ -24,6 +24,12 @@ def sinwma(close, length=None, offset=None, **kwargs):
     if offset != 0:
         sinwma = sinwma.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        sinwma.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        sinwma.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     sinwma.name = f"SINWMA_{length}"
     sinwma.category = "overlap"

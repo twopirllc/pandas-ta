@@ -20,6 +20,12 @@ def quantile(close, length=None, q=None, offset=None, **kwargs):
     if offset != 0:
         quantile = quantile.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        quantile.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        quantile.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     quantile.name = f"QTL_{length}_{q}"
     quantile.category = "statistics"

@@ -31,6 +31,12 @@ def t3(close, length=None, a=None, offset=None, **kwargs):
     if offset != 0:
         t3 = t3.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        t3.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        t3.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     t3.name = f"T3_{length}_{a}"
     t3.category = "overlap"

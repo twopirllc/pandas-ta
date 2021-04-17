@@ -22,6 +22,12 @@ def tema(close, length=None, offset=None, **kwargs):
     if offset != 0:
         tema = tema.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        tema.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        tema.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     tema.name = f"TEMA_{length}"
     tema.category = "overlap"

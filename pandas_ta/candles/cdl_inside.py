@@ -25,7 +25,6 @@ def cdl_inside(open_, high, low, close, asbool=False, offset=None, **kwargs):
     # Handle fills
     if "fillna" in kwargs:
         inside.fillna(kwargs["fillna"], inplace=True)
-
     if "fill_method" in kwargs:
         inside.fillna(method=kwargs["fill_method"], inplace=True)
 

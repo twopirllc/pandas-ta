@@ -39,14 +39,11 @@ Sources:
     https://www.fmlabs.com/reference/default.htm?url=PVrank.htm
 
 Calculation:
-    if 'close change' >= 0 and 'volume change' >= 0
-        return 1
-    if 'close change' >= 0 and 'volume change' < 0
-        return 2
-    if 'close change' < 0 and 'volume change' >= 0
-        return 3
-    if 'close change' < 0 and 'volume change' < 0
-        return 4
+    return 1 if 'close change' >= 0 and 'volume change' >= 0
+    return 2 if 'close change' >= 0 and 'volume change' < 0
+    return 3 if 'close change' < 0 and 'volume change' >= 0
+    return 4 if 'close change' < 0 and 'volume change' < 0
+
 Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's

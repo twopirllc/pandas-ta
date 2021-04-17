@@ -19,6 +19,12 @@ def median(close, length=None, offset=None, **kwargs):
     if offset != 0:
         median = median.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        median.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        median.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     median.name = f"MEDIAN_{length}"
     median.category = "statistics"

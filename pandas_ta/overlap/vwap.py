@@ -27,6 +27,12 @@ def vwap(high, low, close, volume, anchor=None, offset=None, **kwargs):
     if offset != 0:
         vwap = vwap.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        vwap.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        vwap.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     vwap.name = f"VWAP_{anchor}"
     vwap.category = "overlap"

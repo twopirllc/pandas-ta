@@ -23,6 +23,12 @@ def zscore(close, length=None, std=None, offset=None, **kwargs):
     if offset != 0:
         zscore = zscore.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        zscore.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        zscore.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     zscore.name = f"Z_{length}"
     zscore.category = "statistics"

@@ -41,6 +41,12 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     if offset != 0:
         kama = kama.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        kama.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        kama.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     kama.name = f"KAMA_{length}_{fast}_{slow}"
     kama.category = "overlap"

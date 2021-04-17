@@ -22,6 +22,12 @@ def swma(close, length=None, asc=None, offset=None, **kwargs):
     if offset != 0:
         swma = swma.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        swma.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        swma.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     swma.name = f"SWMA_{length}"
     swma.category = "overlap"

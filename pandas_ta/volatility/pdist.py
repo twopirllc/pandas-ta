@@ -21,6 +21,12 @@ def pdist(open_, high, low, close, drift=None, offset=None, **kwargs):
     if offset != 0:
         pdist = pdist.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        pdist.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        pdist.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     pdist.name = "PDIST"
     pdist.category = "volatility"

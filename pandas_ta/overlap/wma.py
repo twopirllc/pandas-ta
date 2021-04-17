@@ -32,6 +32,12 @@ def wma(close, length=None, asc=None, offset=None, **kwargs):
     if offset != 0:
         wma = wma.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        wma.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        wma.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     wma.name = f"WMA_{length}"
     wma.category = "overlap"

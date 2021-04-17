@@ -41,6 +41,12 @@ def vidya(close, length=None, drift=None, offset=None, **kwargs):
     if offset != 0:
         vidya = vidya.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        vidya.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        vidya.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     vidya.name = f"VIDYA_{length}"
     vidya.category = "overlap"

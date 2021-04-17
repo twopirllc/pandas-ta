@@ -20,6 +20,12 @@ def variance(close, length=None, ddof=None, offset=None, **kwargs):
     if offset != 0:
         variance = variance.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        variance.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        variance.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     variance.name = f"VAR_{length}"
     variance.category = "statistics"

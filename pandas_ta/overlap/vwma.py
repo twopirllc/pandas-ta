@@ -21,6 +21,12 @@ def vwma(close, volume, length=None, offset=None, **kwargs):
     if offset != 0:
         vwma = vwma.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        vwma.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        vwma.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     vwma.name = f"VWMA_{length}"
     vwma.category = "overlap"

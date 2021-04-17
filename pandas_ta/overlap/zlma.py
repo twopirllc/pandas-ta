@@ -35,6 +35,12 @@ def zlma(close, length=None, mamode=None, offset=None, **kwargs):
     if offset != 0:
         zlma = zlma.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        zlma.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        zlma.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     zlma.name = f"ZL_{zlma.name}"
     zlma.category = "overlap"
