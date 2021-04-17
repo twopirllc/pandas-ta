@@ -57,6 +57,12 @@ def trend_return(close, trend, log=True, asbool=None, trend_reset=0, trade_offse
     if offset != 0:
         df = df.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        df.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        df.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     df.name = f"TR{'l' if log else 'p'}"
     df.category = "performance"
@@ -94,11 +100,7 @@ Calculation:
         if item == trend_reset:
             sum = 0
         else:
-            return_ = returns.iloc[i]
-            if cumulative:
-                sum += return_
-            else:
-                sum = return_
+            returns += returns.iloc[i]
         trend_return.append(sum)
 
 Args:

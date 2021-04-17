@@ -97,7 +97,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.71b*
+Best choice! Version: *0.2.72b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```

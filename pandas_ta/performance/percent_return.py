@@ -21,6 +21,12 @@ def percent_return(close, length=None, cumulative=False, offset=None, **kwargs):
     if offset != 0:
         pct_return = pct_return.shift(offset)
 
+    # Handle fills
+    if "fillna" in kwargs:
+        pct_return.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        pct_return.fillna(method=kwargs["fill_method"], inplace=True)
+
     # Name & Category
     pct_return.name = f"{'CUM' if cumulative else ''}PCTRET_{length}"
     pct_return.category = "performance"
