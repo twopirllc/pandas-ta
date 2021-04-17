@@ -39,9 +39,9 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [DataFrame Properties](#dataframe-properties)
 * [DataFrame Methods](#dataframe-methods)
 * [Indicators by Category](#indicators-by-category)
-    * [Candles](#candles-63)
+    * [Candles](#candles-64)
     * [Cycles](#cycles-1)
-    * [Momentum](#momentum-38)
+    * [Momentum](#momentum-39)
     * [Overlap](#overlap-31)
     * [Performance](#performance-4)
     * [Statistics](#statistics-9)
@@ -97,7 +97,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.69b*
+Best choice! Version: *0.2.70b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -632,6 +632,7 @@ Patterns that are **not bold**, require TA-Lib to be installed: ```pip install T
 * upsidegap2crows
 * xsidegap3methods
 * _Heikin-Ashi_: **ha**
+* _Z Score_: **cdl_z**
 ```python
 # Get all candle patterns (This is the default behaviour)
 df = df.ta.cdl_pattern(name="all")
@@ -668,6 +669,8 @@ df.ta.cdl(["doji", "inside"], append=True)
 * _Center of Gravity_: **cg**
 * _Chande Momentum Oscillator_: **cmo**
 * _Coppock Curve_: **coppock**
+* _Correlation Trend Indicator_: **cti**
+    * A wrapper for ```ta.linreg(series, r=True)```
 * _Efficiency Ratio_: **er**
 * _Elder Ray Index_: **eri**
 * _Fisher Transform_: **fisher**
@@ -907,6 +910,8 @@ result = ta.cagr(df.close)
 * _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
 trading account, or fund. See: ```help(ta.drawdown)```
 * _Candle Patterns_ (**cdl_pattern**) If TA Lib is installed, then all those Candle Patterns are available. See the list and examples above on how to call the patterns. See: ```help(ta.cdl_pattern)```
+* _Candle Z Score_ (**cdl_z**) normalizes OHLC Candles with a rolling Z Score. See: ```help(ta.cdl_z)```
+* _Correlation Trend Indicator_ (**cti**) is an oscillator created by John Ehler in 2020. See: ```help(ta.cti)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
 * _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two
 cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)```

@@ -40,17 +40,17 @@ Imports = {
 Category = {
     # Candles
     "candles": [
-        "cdl", "cdl_pattern", "ha"
+        "cdl", "cdl_pattern", "cdl_z", "ha"
     ],
     # Cycles
     "cycles": ["ebsw"],
     # Momentum
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
-        "coppock", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd",
+        "coppock", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd",
         "mom", "pgo", "ppo", "psl", "pvo", "qqe", "roc", "rsi", "rsx", "rvgi",
-        "slope", "smi", "squeeze", "stc", "stoch", "stochrsi", "td_seq", "trix", "tsi", "uo",
-        "willr"
+        "slope", "smi", "squeeze", "stc", "stoch", "stochrsi", "td_seq", "trix",
+        "tsi", "uo", "willr"
     ],
     # Overlap
     "overlap": [

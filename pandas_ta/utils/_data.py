@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from packaging import version
 from pandas import DataFrame
 from pandas_ta import Imports, RATE, version
 from ._core import _camelCase2Title
@@ -134,17 +133,6 @@ def yf(ticker: str, **kwargs):
         except KeyError as ke:
             print(f"[X] Ticker '{ticker}' not found.")
             return
-        # print(f"[X] ticker_info[{type(ticker_info)}:{len(ticker_info.keys())}]\n{ticker_info}\n")
-
-        try:
-            infodf = DataFrame.from_dict(ticker_info, orient="index")
-        except TypeError as te:
-            print(f"[X] TypeError: {te}")
-
-        # print(f"[X] infodf.empty: {infodf.empty}")
-        if infodf.empty: return
-        # print(f"[X] infodf[{type(infodf)}:{len(infodf.keys())}]\n{infodf}\n")
-        infodf.name, infodf.columns = ticker, [ticker]
 
         # Dividends and Splits
         dividends, splits = yfd.splits, yfd.dividends
@@ -156,7 +144,7 @@ def yf(ticker: str, **kwargs):
 
             print("\n====  Company Information  " + div)
             print(f"{ticker_info['longName']} ({ticker_info['shortName']}) [{ticker_info['symbol']}]")
-            print(f"[i] {type(ticker_info['longBusinessSummary'])}: {ticker_info['longBusinessSummary']}")
+
             if description:
                 print(f"{ticker_info['longBusinessSummary']}\n")
             if "address1" in ticker_info and len(ticker_info["address1"]):

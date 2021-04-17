@@ -4,11 +4,11 @@ from .variance import variance
 from pandas_ta.utils import get_offset, verify_series
 
 
-def stdev(close, length=None, ddof=1, offset=None, **kwargs):
+def stdev(close, length=None, ddof=None, offset=None, **kwargs):
     """Indicator: Standard Deviation"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 30
-    ddof = int(ddof) if ddof >= 0 and ddof < length else 1
+    ddof = int(ddof) if ddof and ddof >= 0 and ddof < length else 1
     close = verify_series(close, length)
     offset = get_offset(offset)
 

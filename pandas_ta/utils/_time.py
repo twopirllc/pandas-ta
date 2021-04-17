@@ -3,7 +3,7 @@ from datetime import datetime
 from time import localtime, perf_counter
 from typing import Tuple
 
-from pandas import DataFrame, DatetimeIndex, Timestamp
+from pandas import DataFrame, Timestamp
 
 from pandas_ta import EXCHANGE_TZ, RATE
 from pandas_ta.utils import verify_series

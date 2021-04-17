@@ -842,7 +842,15 @@ class AnalysisIndicators(BasePandasObject):
         result = cdl_pattern(open_=open_, high=high, low=low, close=close, name=name, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    cdl = cdl_pattern
+    cdl = cdl_pattern # Alias for cdl_pattern
+
+    def cdl_z(self, full=None, offset=None, **kwargs):
+        open_ = self._get_column(kwargs.pop("open", "open"))
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = cdl_z(open_=open_, high=high, low=low, close=close, full=full, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
 
     def ha(self, offset=None, **kwargs):
         open_ = self._get_column(kwargs.pop("open", "open"))
@@ -916,6 +924,11 @@ class AnalysisIndicators(BasePandasObject):
     def coppock(self, length=None, fast=None, slow=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = coppock(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def cti(self, length=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = cti(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def er(self, length=None, drift=None, offset=None, **kwargs):

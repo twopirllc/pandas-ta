@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from numpy import array as npArray
 from numpy import arctan as npAtan
+from numpy import NaN as npNaN
 from numpy import pi as npPi
-from numpy import sqrt as npSqrt
+from numpy.lib.stride_tricks import sliding_window_view
+from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -46,12 +49,13 @@ def linreg(close, length=None, offset=None, **kwargs):
         if r:
             y2_sum = (series * series).sum()
             rn = length * xy_sum - x_sum * y_sum
-            rd = npSqrt(divisor * (length * y2_sum - y_sum * y_sum))
+            rd = (divisor * (length * y2_sum - y_sum * y_sum)) ** 0.5
             return rn / rd
 
         return m * length + b if tsf else m * (length - 1) + b
 
-    linreg = close.rolling(length, min_periods=length).apply(linear_regression, raw=False)
+    linreg_ = [linear_regression(_) for _ in sliding_window_view(npArray(close), length)]
+    linreg = Series([npNaN] * (length - 1) + linreg_, index=close.index)
 
     # Offset
     if offset != 0:
@@ -69,6 +73,7 @@ def linreg(close, length=None, offset=None, **kwargs):
     if intercept: linreg.name += "b"
     if angle: linreg.name += "a"
     if r: linreg.name += "r"
+
     linreg.name += f"_{length}"
     linreg.category = "overlap"
 

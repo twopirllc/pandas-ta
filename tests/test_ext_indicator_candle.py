@@ -28,6 +28,11 @@ class TestCandleExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "CDL_INSIDE")
 
+    def test_cdl_z_ext(self):
+        self.data.ta.cdl_z(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ["open_Z_30_1", "high_Z_30_1", "low_Z_30_1", "close_Z_30_1"])
+
     def test_ha_ext(self):
         self.data.ta.ha(append=True)
         self.assertIsInstance(self.data, DataFrame)

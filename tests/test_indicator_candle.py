@@ -73,3 +73,8 @@ class TestCandle(TestCase):
         result = pandas_ta.cdl_inside(self.open, self.high, self.low, self.close, asbool=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "CDL_INSIDE")
+
+    def test_cdl_z(self):
+        result = pandas_ta.cdl_z(self.open, self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "CDL_Z_30_1")

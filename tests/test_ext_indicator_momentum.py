@@ -68,6 +68,11 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "COPC_11_14_10")
 
+    def test_cti_ext(self):
+        self.data.ta.cti(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "CTI_12")
+
     def test_er_ext(self):
         self.data.ta.er(append=True)
         self.assertIsInstance(self.data, DataFrame)
