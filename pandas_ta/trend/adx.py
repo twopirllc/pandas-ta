@@ -5,7 +5,7 @@ from pandas_ta.volatility import atr
 from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 
 
-def adx(high, low, close, length=None, scalar=None, mamode=None, drift=None, offset=None, lensig=None **kwargs):
+def adx(high, low, close, length=None, scalar=None, mamode=None, drift=None, offset=None, lensig=None, **kwargs):
     """Indicator: ADX"""
     # Validate Arguments
     length = length if length and length > 0 else 14
