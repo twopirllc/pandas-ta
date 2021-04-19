@@ -56,7 +56,7 @@ def adx(high, low, close, length=None, scalar=None, mamode=None, drift=None, off
         dmn.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    adx.name = f"ADX_{length}"
+    adx.name = f"ADX_{lensig}"
     dmp.name = f"DMP_{length}"
     dmn.name = f"DMN_{length}"
 
@@ -65,7 +65,7 @@ def adx(high, low, close, length=None, scalar=None, mamode=None, drift=None, off
     # Prepare DataFrame to return
     data = {adx.name: adx, dmp.name: dmp, dmn.name: dmn}
     adxdf = DataFrame(data)
-    adxdf.name = f"ADX_{length}"
+    adxdf.name = f"ADX_{lensig}"
     adxdf.category = "trend"
 
     return adxdf
