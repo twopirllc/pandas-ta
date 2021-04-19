@@ -5,10 +5,11 @@ from pandas_ta.volatility import atr
 from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 
 
-def adx(high, low, close, length=None, scalar=None, mamode=None, drift=None, offset=None, **kwargs):
+def adx(high, low, close, length=None, scalar=None, mamode=None, drift=None, offset=None, lensig=None **kwargs):
     """Indicator: ADX"""
     # Validate Arguments
     length = length if length and length > 0 else 14
+    lensig = lensig if lensig and lensig > 0 else length
     mamode = mamode if isinstance(mamode, str) else "rma"
     scalar = float(scalar) if scalar else 100
     high = verify_series(high, length)
@@ -36,7 +37,7 @@ def adx(high, low, close, length=None, scalar=None, mamode=None, drift=None, off
     dmn = k * ma(mamode, neg, length=length)
 
     dx = scalar * (dmp - dmn).abs() / (dmp + dmn)
-    adx = ma(mamode, dx, length=length)
+    adx = ma(mamode, dx, length=lensig)
 
     # Offset
     if offset != 0:
