@@ -61,7 +61,7 @@ def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -
     if full:
         lt = localtime()
         local_ = f"Local: {lt.tm_hour}:{lt.tm_min:02d}:{lt.tm_sec:02d} {lt.tm_zone}"
-        doy = f"Day {today.dayofyear}/365 ({100 * round(today.dayofyear/365, 2)}%)"
+        doy = f"Day {today.dayofyear}/365 ({100 * round(today.dayofyear/365, 2):.2f}%)"
         exchange_ = f"{exchange}: {exchange_time}"
 
         s = f"{date}, {exchange_}, {local_}, {doy}"

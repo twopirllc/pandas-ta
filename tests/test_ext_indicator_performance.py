@@ -39,15 +39,3 @@ class TestPerformaceExtension(TestCase):
         self.data.ta.percent_return(append=True, cumulative=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "CUMPCTRET_1")
-
-    def test_log_trend_return_ext(self):
-        tr = self.data.ta.trend_return(trend=self.islong, log=True, append=True)
-        self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-6:]), list(tr.columns))
-        self.data.drop(columns=tr.columns, inplace=True, errors="ignore")
-
-    def test_pct_trend_return_ext(self):
-        tr = self.data.ta.trend_return(trend=self.islong, log=False, append=True)
-        self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-6:]), list(tr.columns))
-        self.data.drop(columns=tr.columns, inplace=True, errors="ignore")

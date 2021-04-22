@@ -185,8 +185,8 @@ class TestStrategyMethods(TestCase):
             "AMAT Log Returns",  # description
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed, ordered=True)
-        self.data.ta.trend_return(trend=self.data["AMATe_LR_2"], cumulative=True, append=True)
-        self.assertEqual(len(self.data.columns), 15)
+        self.data.ta.tsignals(trend=self.data["AMATe_LR_2"], append=True)
+        self.assertEqual(len(self.data.columns), 13)
 
     # @skip
     def test_momentum_category(self):

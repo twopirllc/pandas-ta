@@ -45,6 +45,29 @@ def combination(**kwargs: dict) -> int:
     return numerator // denominator
 
 
+def erf(x):
+    """Error Function erf(x)
+    The algorithm comes from Handbook of Mathematical Functions, formula 7.1.26.
+    Source: https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python
+    """
+    # save the sign of x
+    sign = 1 if x >= 0 else -1
+    x = abs(x)
+
+    # constants
+    a1 =  0.254829592
+    a2 = -0.284496736
+    a3 =  1.421413741
+    a4 = -1.453152027
+    a5 =  1.061405429
+    p  =  0.3275911
+
+    # A&S formula 7.1.26
+    t = 1.0 / (1.0 + p * x)
+    y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * math.exp(-x * x)
+    return sign * y # erf(-x) = -erf(x)
+
+
 def fibonacci(n: int = 2, **kwargs: dict) -> npNdArray:
     """Fibonacci Sequence as a numpy array"""
     n = int(npFabs(n)) if n >= 0 else 2

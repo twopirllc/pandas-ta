@@ -134,6 +134,11 @@ def yf(ticker: str, **kwargs):
             print(f"[X] Ticker '{ticker}' not found.")
             return
 
+        filtered = {k: v for k, v in ticker_info.items() if v is not None}
+        # print(f"\n{type(ticker_info)}\n{ticker_info}\n{ticker_info.items()}")
+        ticker_info.clear()
+        ticker_info.update(filtered)
+
         # Dividends and Splits
         dividends, splits = yfd.splits, yfd.dividends
 
@@ -143,7 +148,11 @@ def yf(ticker: str, **kwargs):
             snd_length = kwargs.pop("snd", 5)
 
             print("\n====  Company Information  " + div)
-            print(f"{ticker_info['longName']} ({ticker_info['shortName']}) [{ticker_info['symbol']}]")
+            ci_header = f"({ticker_info['shortName']}) [{ticker_info['symbol']}]"
+            if "longName" in ticker_info and len(ticker_info["longName"]):
+                print(f"{ticker_info['longName']}" + ci_header)
+            else:
+                print(ci_header)
 
             if description:
                 print(f"{ticker_info['longBusinessSummary']}\n")
@@ -195,7 +204,7 @@ def yf(ticker: str, **kwargs):
             if "shortPercentOfFloat" in ticker_info and ticker_info['shortPercentOfFloat'] is not None and "sharesShortPriorMonth" in ticker_info and ticker_info['sharesShortPriorMonth'] is not None:
                 print(f"Short % of Float | Short prior Month".ljust(39), f"{100 * ticker_info['shortPercentOfFloat']:.4f}% | {ticker_info['sharesShortPriorMonth']:,}".rjust(40))
             if "heldPercentInstitutions" in ticker_info and ticker_info['heldPercentInstitutions'] is not None or "heldPercentInsiders" in ticker_info and ticker_info['heldPercentInsiders'] is not None:
-                print(f"Insiders % | Institution %".ljust(39), f"{100 * ticker_info['heldPercentInsiders']:.4f}% | {100 * ticker_info['heldPercentInstitutions']:.4f}".rjust(40))
+                print(f"Insiders % | Institution %".ljust(39), f"{100 * ticker_info['heldPercentInsiders']:.4f}% | {100 * ticker_info['heldPercentInstitutions']:.4f}%".rjust(40))
 
             print()
             if "bookValue" in ticker_info and ticker_info['bookValue'] is not None or "priceToBook" in ticker_info and ticker_info['priceToBook'] is not None or "pegRatio" in ticker_info and ticker_info['pegRatio'] is not None:
@@ -223,11 +232,16 @@ def yf(ticker: str, **kwargs):
 
             print("\n====  Price Information    " + div)
             _o, _h, _l, _c, _v = ticker_info['open'], ticker_info['dayHigh'], ticker_info['dayLow'], ticker_info['regularMarketPrice'], ticker_info['regularMarketVolume']
-            print(f"Open High Low Close".ljust(39), f"{_o:.4f}, {_o:.4f}, {_l:.4f}, {_c:.4f}".rjust(40))
+            print(f"Open High Low | Close".ljust(39), f"{_o:.4f}  {_o:.4f}  {_l:.4f} | {_c:.4f}".rjust(40))
             print(f"HL2 | HLC3 | OHLC4 | C - OHLC4".ljust(39), f"{0.5 * (_h + _l):.4f}, {(_h + _l + _c) / 3.:.4f}, {0.25 * (_o + _h + _l + _c):.4f}, {_c - 0.25 * (_o + _h + _l + _c):.4f}".rjust(40))
             print(f"Change (%)".ljust(39), f"{_c - ticker_info['previousClose']:.4f} ({100 * ((_c / ticker_info['previousClose']) - 1):.4f}%)".rjust(40))
-            print(f"Volume | Avg Vol (10Day)".ljust(39), f"{ticker_info['volume']:,} | {ticker_info['averageVolume']:,} ({ticker_info['averageDailyVolume10Day']:,})".rjust(40))
-            print(f"Bid | Ask | Spread".ljust(39), f"{ticker_info['bid']} x {ticker_info['bidSize']} | {ticker_info['ask']} x {ticker_info['askSize']} | {ticker_info['ask'] - ticker_info['bid']:.4f}".rjust(40))
+            if "bid" in ticker_info and ticker_info['bid'] is not None \
+                and "bidSize" in ticker_info and ticker_info['bidSize'] is not None \
+                and "ask" in ticker_info and ticker_info['ask'] is not None \
+                and "askSize" in ticker_info and ticker_info['askSize'] is not None:
+                print(f"Bid | Ask | Spread".ljust(39), f"{ticker_info['bid']} x {ticker_info['bidSize']} | {ticker_info['ask']} x {ticker_info['askSize']} | {ticker_info['ask'] - ticker_info['bid']:.4f}".rjust(40))
+            print(f"Volume | Market | Avg Vol (10Day)".ljust(40))
+            print(f"{ticker_info['volume']:,} | {_v:,} | {ticker_info['averageVolume']:,} ({ticker_info['averageDailyVolume10Day']:,})".rjust(80))
 
             print()
             if "52WeekChange" in ticker_info and ticker_info['52WeekChange'] is not None:
@@ -245,9 +259,11 @@ def yf(ticker: str, **kwargs):
                 print(f"SMA 50".ljust(39), f"{ticker_info['fiftyDayAverage']:.4f}".rjust(40))
             elif avg200:
                 print(f"SMA 200".ljust(39), f"{ticker_info['twoHundredDayAverage']:.4f}".rjust(40))
-            if "beta" in ticker_info and ticker_info['beta'] is not None:
+            if "beta" in ticker_info and ticker_info['beta'] is not None and "beta3Year" in ticker_info and ticker_info['beta3Year'] is not None:
                 print(f"Beta | 3Yr".ljust(39), f"{ticker_info['beta']} | {ticker_info['beta3Year']}".rjust(40))
-            if "threeYearAverageReturn" in ticker_info and ticker_info['threeYearAverageReturn'] is not None or "fiveYearAverageReturn" in ticker_info and ticker_info['fiveYearAverageReturn'] is not None:
+            elif "beta" in ticker_info and ticker_info['beta'] is not None:
+                print(f"Beta".ljust(39), f"{ticker_info['beta']}".rjust(40))
+            if "threeYearAverageReturn" in ticker_info and ticker_info['threeYearAverageReturn'] is not None and "fiveYearAverageReturn" in ticker_info and ticker_info['fiveYearAverageReturn'] is not None:
                 print(f"Avg. Return 3Yr | 5Yr".ljust(39), f"{100 * ticker_info['threeYearAverageReturn']:.4f}% | {100 * ticker_info['fiveYearAverageReturn']:.4f}%".rjust(40))
 
             # Dividends and Splits

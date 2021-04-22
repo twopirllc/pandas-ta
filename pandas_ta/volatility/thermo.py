@@ -42,8 +42,8 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
     if offset != 0:
         thermo = thermo.shift(offset)
         thermo_ma = thermo_ma.shift(offset)
-        therthermo_longmo_ma = thermo_ma.shift(offset)
-        thermo_short = thermo_ma.shift(offset)
+        thermo_long = thermo_long.shift(offset)
+        thermo_short = thermo_short.shift(offset)
 
     # Handle fills
     if "fillna" in kwargs:

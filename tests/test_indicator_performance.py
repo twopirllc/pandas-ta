@@ -45,19 +45,3 @@ class TestPerformace(TestCase):
     def test_cum_percent_return(self):
         result = pandas_ta.percent_return(self.close, cumulative=True)
         self.assertEqual(result.name, "CUMPCTRET_1")
-
-    def test_log_trend_return(self):
-        result = pandas_ta.trend_return(self.close, self.islong, log=True)
-        self.assertEqual(result.name, "TRl")
-
-    def test_cum_log_trend_return(self):
-        result = pandas_ta.trend_return(self.close, self.islong, log=True)
-        self.assertEqual(result.name, "TRl")
-
-    def test_pct_trend_return(self):
-        result = pandas_ta.trend_return(self.close, self.islong, log=False)
-        self.assertEqual(result.name, "TRp")
-
-    def test_cum_pct_trend_return(self):
-        result = pandas_ta.trend_return(self.close, self.islong, log=False)
-        self.assertEqual(result.name, "TRp")

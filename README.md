@@ -15,7 +15,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 ![Example Chart](/images/TA_Chart.png)
 
 
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas library with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas library with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
 
 
 **Note:** _TA Lib_ must be installed to use **all** the Candlestick Patterns. ```pip install TA-Lib```. If _TA Lib_ is not installed, then only the builtin Candlestick Patterns will be available.
@@ -43,9 +43,9 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Cycles](#cycles-1)
     * [Momentum](#momentum-39)
     * [Overlap](#overlap-31)
-    * [Performance](#performance-4)
+    * [Performance](#performance-3)
     * [Statistics](#statistics-9)
-    * [Trend](#trend-15)
+    * [Trend](#trend-16)
     * [Utility](#utility-5)
     * [Volatility](#volatility-13)
     * [Volume](#volume-14)
@@ -97,7 +97,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.73b*
+Best choice! Version: *0.2.74b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -636,19 +636,12 @@ Patterns that are **not bold**, require TA-Lib to be installed: ```pip install T
 ```python
 # Get all candle patterns (This is the default behaviour)
 df = df.ta.cdl_pattern(name="all")
-# Or
-df.ta.cdl("all", append=True) # = df.ta.cdl_pattern("all", append=True)
-
 
 # Get only one pattern
 df = df.ta.cdl_pattern(name="doji")
-# Or
-df.ta.cdl("doji", append=True)
 
 # Get some patterns
 df = df.ta.cdl_pattern(name=["doji", "inside"])
-# Or
-df.ta.cdl(["doji", "inside"], append=True)
 ```
 <br/>
 
@@ -754,14 +747,13 @@ df.ta.cdl(["doji", "inside"], append=True)
 
 <br/>
 
-### **Performance** (4)
+### **Performance** (3)
 
 Use parameter: cumulative=**True** for cumulative results.
 
 * _Draw Down_: **drawdown**
 * _Log Return_: **log_return**
 * _Percent Return_: **percent_return**
-* _Trend Return_: **trend_return**
 
 | _Percent Return_ (Cumulative) with _Simple Moving Average_ (SMA) |
 |:--------:|
@@ -785,7 +777,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | ![Example Z Score](/images/SPY_ZScore.png) |
 <br/>
 
-### **Trend** (15)
+### **Trend** (16)
 
 * _Average Directional Movement Index_: **adx**
     * Also includes **dmp** and **dmn** in the resultant DataFrame.
@@ -803,6 +795,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Parabolic Stop and Reverse_: **psar**
 * _Q Stick_: **qstick**
 * _Short Run_: **short_run**
+* _Trend Signals_: **tsignals**
 * _TTM Trend_: **ttm_trend**
 * _Vortex_: **vortex**
 
@@ -902,7 +895,7 @@ result = ta.cagr(df.close)
 <br />
 
 ## **Breaking Indicators**
-* _Trend Return_ (**trend_return**) when given a trend Series like ```close > sma(close, 50)``` it now returns by default log and cumulative log returns of the trend as well as the Trends, Trades, Trade Entries and Trade Exits of that trend. Now compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See: ```help(ta.trend_return)```
+* _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See: ```help(ta.tsignals)```
 
 <br/>
 

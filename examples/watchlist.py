@@ -22,18 +22,19 @@ import pandas_ta as ta # pip install pandas_ta
 def colors(colors: str = None, default: str = "GrRd"):
     aliases = {
         # Pairs
-        "GrRd": ["green", "red"],
-        "RdGr": ["red", "green"],
         "BkGy": ["black", "gray"],
         "BkSv": ["black", "silver"],
         "BkPr": ["black", "purple"],
         "BkBl": ["black", "blue"],
-        "GyBk": ["gray", "black"],
-        "GySv": ["gray", "silver"],
-        "GyPr": ["gray", "purple"],
-        "GyBl": ["gray", "blue"],
-        "SvGy": ["silver", "gray"],
         "FcLi": ["fuchsia", "lime"],
+        "GrRd": ["green", "red"],
+        "GyBk": ["gray", "black"],
+        "GyBl": ["gray", "blue"],
+        "GyOr": ["gray", "orange"],
+        "GyPr": ["gray", "purple"],
+        "GySv": ["gray", "silver"],
+        "RdGr": ["red", "green"],
+        "SvGy": ["silver", "gray"],
         # Triples
         "BkGrRd": ["black", "green", "red"],
         "BkBlPr": ["black", "blue", "purple"],
@@ -106,7 +107,7 @@ class Watchlist(object):
 
     def _drop_columns(self, df: pd.DataFrame, cols: list = None) -> pd.DataFrame:
         if cols is None or not isinstance(cols, list):
-            cols = ["Unnamed: 0", "date", "split_coefficient", "dividend"]
+            cols = ["Unnamed: 0", "date", "split", "split_coefficient", "dividend", "dividends"]
         else: cols
         """Helper methods to drop columns silently."""
         df_columns = list(df.columns)

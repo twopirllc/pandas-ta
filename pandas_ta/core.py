@@ -641,14 +641,13 @@ class AnalysisIndicators(BasePandasObject):
             "above_value",
             "below",
             "below_value",
-            "cdl", # Alias for "cdl_pattern"
             "cross",
             "cross_value",
             # "data", # reserved
             "long_run",
             "short_run",
-            "trend_return",
             "td_seq", # Performance exclusion
+            "tsignals",
             "vp",
         ]
 
@@ -708,6 +707,10 @@ class AnalysisIndicators(BasePandasObject):
             if has_col_names:
                 use_multiprocessing = False
 
+        if Imports["tqdm"]:
+            # from tqdm import tqdm
+            from tqdm import tqdm
+
         if use_multiprocessing:
             _total_ta = len(ta)
             pool = Pool(self.cores)
@@ -731,9 +734,15 @@ class AnalysisIndicators(BasePandasObject):
                 default_ta = [(ind, tuple(), kwargs) for ind in ta]
                 # All and Categorical multiprocessing pool.
                 if all_ordered:
-                    results = pool.imap(self._mp_worker, default_ta, _chunksize) # Order over Speed
+                    if Imports["tqdm"]:
+                        results = tqdm(pool.imap(self._mp_worker, default_ta, _chunksize)) # Order over Speed
+                    else:
+                        results = pool.imap(self._mp_worker, default_ta, _chunksize) # Order over Speed
                 else:
-                    results = pool.imap_unordered(self._mp_worker, default_ta, _chunksize) # Speed over Order
+                    if Imports["tqdm"]:
+                        results = tqdm(pool.imap_unordered(self._mp_worker, default_ta, _chunksize)) # Speed over Order
+                    else:
+                        results = pool.imap_unordered(self._mp_worker, default_ta, _chunksize) # Speed over Order
             if results is None:
                 print(f"[X] ta.strategy('{name}') has no results.")
                 return
@@ -751,15 +760,25 @@ class AnalysisIndicators(BasePandasObject):
                     print(f"[i] No mulitproccessing (cores = 0).")
 
             if mode["custom"]:
-                for ind in ta:
-                    params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
-                    getattr(self, ind["kind"])(*params, **{**ind, **kwargs})
+                if Imports["tqdm"] and verbose:
+                    pbar = tqdm(ta, f"[i] Progress")
+                    for ind in pbar:
+                        params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
+                        getattr(self, ind["kind"])(*params, **{**ind, **kwargs})
+                else:
+                    for ind in ta:
+                        params = ind["params"] if "params" in ind and isinstance(ind["params"], tuple) else tuple()
+                        getattr(self, ind["kind"])(*params, **{**ind, **kwargs})
             else:
-                for ind in ta:
-                    getattr(self, ind)(*tuple(), **kwargs)
+                if Imports["tqdm"] and verbose:
+                    pbar = tqdm(ta, f"[i] Progress")
+                    for ind in pbar:
+                        getattr(self, ind)(*tuple(), **kwargs)
+                else:
+                    for ind in ta:
+                        getattr(self, ind)(*tuple(), **kwargs)
 
-        # Apply prefixes/suffixes and appends indicator results to the
-        # DataFrame
+        # Apply prefixes/suffixes and appends indicator results to the  DataFrame
         [self._post_process(r, **kwargs) for r in results]
 
         if verbose:
@@ -823,7 +842,7 @@ class AnalysisIndicators(BasePandasObject):
             print(f"[X] DataFrame is empty: {df.shape}")
             return
         else:
-            if kwargs.pop("lc_input", False):
+            if kwargs.pop("lc_cols", False):
                 df.index.name = df.index.name.lower()
                 df.columns = df.columns.str.lower()
             self._df = df
@@ -841,8 +860,6 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
         result = cdl_pattern(open_=open_, high=high, low=low, close=close, name=name, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
-
-    cdl = cdl_pattern # Alias for cdl_pattern
 
     def cdl_z(self, full=None, offset=None, **kwargs):
         open_ = self._get_column(kwargs.pop("open", "open"))
@@ -1299,14 +1316,6 @@ class AnalysisIndicators(BasePandasObject):
         result = percent_return(close=close, length=length, cumulative=cumulative, percent=percent, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def trend_return(self, trend=None, log=True, asbool=None, offset=None, trend_reset=None, **kwargs):
-        if trend is None:
-            return self._df
-        else:
-            close = self._get_column(kwargs.pop("close", "close"))
-            result = trend_return(close=close, trend=trend, log=log, asbool=asbool, offset=offset, trend_reset=trend_reset, **kwargs)
-            return self._post_process(result, **kwargs)
-
     # Statistics
     def entropy(self, length=None, base=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
@@ -1439,6 +1448,13 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
         result = supertrend(high=high, low=low, close=close, period=period, multiplier=multiplier, mamode=mamode, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
+
+    def tsignals(self, trend=None, asbool=None, trend_reset=None, trend_offset=None, offset=None, **kwargs):
+        if trend is None:
+            return self._df
+        else:
+            result = tsignals(trend, asbool=asbool, trend_offset=trend_offset, trend_reset=trend_reset, offset=offset, **kwargs)
+            return self._post_process(result, **kwargs)
 
     def ttm_trend(self, length=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))

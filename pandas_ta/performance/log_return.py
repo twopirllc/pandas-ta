@@ -3,20 +3,22 @@ from numpy import log as nplog
 from pandas_ta.utils import get_offset, verify_series
 
 
-def log_return(close, length=None, cumulative=False, offset=None, **kwargs):
+def log_return(close, length=None, cumulative=None, offset=None, **kwargs):
     """Indicator: Log Return"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 1
+    cumulative = bool(cumulative) if cumulative is not None and cumulative else False
     close = verify_series(close, length)
     offset = get_offset(offset)
 
     if close is None: return
 
     # Calculate Result
-    log_return = nplog(close).diff(periods=length)
-
     if cumulative:
-        log_return = log_return.cumsum()
+        # log_return = nplog(close).diff(length).cumsum()
+        log_return = nplog(close / close.iloc[0])
+    else:
+        log_return = nplog(close / close.shift(length)) # nplog(close).diff(length)
 
     # Offset
     if offset != 0:

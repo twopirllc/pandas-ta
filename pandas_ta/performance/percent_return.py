@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def percent_return(close, length=None, cumulative=False, offset=None, **kwargs):
+def percent_return(close, length=None, cumulative=None, offset=None, **kwargs):
     """Indicator: Percent Return"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 1
+    cumulative = bool(cumulative) if cumulative is not None and cumulative else False
     close = verify_series(close, length)
     offset = get_offset(offset)
 
     if close is None: return
 
     # Calculate Result
-    pct_return = close.pct_change(length)
-
     if cumulative:
-        pct_return = pct_return.cumsum()
+        pct_return = (close / close.iloc[0]) - 1
+    else:
+        pct_return = close.pct_change(length) # (close / close.shift(length)) - 1
 
     # Offset
     if offset != 0:

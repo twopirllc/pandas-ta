@@ -40,7 +40,7 @@ Imports = {
 Category = {
     # Candles
     "candles": [
-        "cdl", "cdl_pattern", "cdl_z", "ha"
+        "cdl_pattern", "cdl_z", "ha"
     ],
     # Cycles
     "cycles": ["ebsw"],
@@ -60,7 +60,7 @@ Category = {
         "vidya", "vwap", "vwma", "wcp", "wma", "zlma"
     ],
     # Performance
-    "performance": ["log_return", "percent_return", "trend_return"],
+    "performance": ["log_return", "percent_return"],
     # Statistics
     "statistics": [
         "entropy", "kurtosis", "mad", "median", "quantile", "skew", "stdev",
@@ -69,8 +69,8 @@ Category = {
     # Trend
     "trend": [
         "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
-        "increasing", "long_run", "psar", "qstick", "short_run", "ttm_trend",
-        "vortex"
+        "increasing", "long_run", "psar", "qstick", "short_run", "tsignals",
+        "ttm_trend", "vortex"
     ],
     # Volatility
     "volatility": [
