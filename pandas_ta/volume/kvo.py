@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 from numpy import where as npWhere
 from pandas import DataFrame
+from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, offset=None, **kwargs):
+def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, mamode=None, offset=None, **kwargs):
     """Indicator: Klinger Volume Oscillator (KVO)"""
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 34
     slow = int(slow) if slow and slow > 0 else 55
     length_sig = int(length_sig) if length_sig and length_sig > 0 else 13
+    mamode = mamode.lower() if mamode and isinstance(mamode, str) else "ema"
     high = verify_series(high, max(fast, slow) + length_sig)
     low = verify_series(low, max(fast, slow) + length_sig)
     close = verify_series(close, max(fast, slow) + length_sig)
@@ -29,12 +31,8 @@ def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, offset=
 
     vf = volume * trend * abs(dm / cm * 2 - 1) * 100
 
-    # this is the ma used by the tradingview script
-    def ema(x, n):
-        return x.ewm(alpha=2 / (n + 1), min_periods=n).mean()
-
-    kvo = ema(vf, fast) - ema(vf, slow)
-    kvo_signal = ema(kvo, length_sig)
+    kvo = ma(mamode, vf, length=fast) - ma(mamode, vf, length=slow)
+    kvo_signal = ma(mamode, kvo, length=length_sig)
 
     # Offset
     if offset != 0:
@@ -98,6 +96,7 @@ Args:
     fast (int): The fast period. Default: 34
     long (int): The long period. Default: 55
     length_sig (int): The signal period. Default: 13
+    mamode (str): "sma", "ema", "wma" or "rma". Default: "ema"
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
