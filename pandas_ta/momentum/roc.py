@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
 from .mom import mom
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def roc(close, length=None, offset=None, **kwargs):
+def roc(close, length=None, scalar=None, offset=None, **kwargs):
     """Indicator: Rate of Change (ROC)"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
+    scalar = float(scalar) if scalar and scalar > 0 else 100
     close = verify_series(close, length)
     offset = get_offset(offset)
 
     if close is None: return
 
     # Calculate Result
-    roc = 100 * mom(close=close, length=length) / close.shift(length)
+    if Imports["talib"]:
+        from talib import ROC
+        roc = ROC(close, length)
+    else:
+        roc = scalar * mom(close=close, length=length) / close.shift(length)
 
     # Offset
     if offset != 0:

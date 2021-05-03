@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
@@ -12,15 +13,19 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    if open_ is not None:
-        open_ = verify_series(open_)
-        ad = non_zero_range(close, open_)  # AD with Open
+    if Imports["talib"]:
+        from talib import AD
+        ad = AD(high, low, close, volume)
     else:
-        ad = 2 * close - (high + low)  # AD with High, Low, Close
+        if open_ is not None:
+            open_ = verify_series(open_)
+            ad = non_zero_range(close, open_)  # AD with Open
+        else:
+            ad = 2 * close - (high + low)  # AD with High, Low, Close
 
-    high_low_range = non_zero_range(high, low)
-    ad *= volume / high_low_range
-    ad = ad.cumsum()
+        high_low_range = non_zero_range(high, low)
+        ad *= volume / high_low_range
+        ad = ad.cumsum()
 
     # Offset
     if offset != 0:

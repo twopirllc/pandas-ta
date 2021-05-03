@@ -60,7 +60,11 @@ class TestVolatility(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_bbands(self):
-        result = pandas_ta.bbands(self.close)
+        result = pandas_ta.bbands(self.close, ddof=0)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "BBANDS_5_2.0")
+
+        result = pandas_ta.bbands(self.close, ddof=1)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "BBANDS_5_2.0")
 

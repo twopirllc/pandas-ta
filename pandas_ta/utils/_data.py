@@ -419,7 +419,7 @@ def yf(ticker: str, **kwargs):
         if show is not None and isinstance(show, int) and show > 0:
             print(f"\n{df.name}\n{df.tail(show)}\n")
         if verbose: print("=" * 80 + "\n")
-        else: print()
+        # else: print()
         return df
 
     else:

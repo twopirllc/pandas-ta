@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .ema import ema
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -13,9 +14,13 @@ def dema(close, length=None, offset=None, **kwargs):
     if close is None: return
 
     # Calculate Result
-    ema1 = ema(close=close, length=length)
-    ema2 = ema(close=ema1, length=length)
-    dema = 2 * ema1 - ema2
+    if Imports["talib"]:
+        from talib import DEMA
+        dema = DEMA(close, length)
+    else:
+        ema1 = ema(close=close, length=length)
+        ema2 = ema(close=ema1, length=length)
+        dema = 2 * ema1 - ema2
 
     # Offset
     if offset != 0:

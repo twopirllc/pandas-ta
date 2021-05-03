@@ -52,7 +52,7 @@ increasing.__doc__ = \
 Returns True if the series is increasing over a period, False otherwise.
 If the kwarg 'strict' is True, it returns True if it is continuously increasing
 over the period. When using the kwarg 'asint', then it returns 1 for True
-or 0 for False. 
+or 0 for False.
 
 Calculation:
     if strict:

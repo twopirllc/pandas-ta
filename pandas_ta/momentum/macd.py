@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import concat, DataFrame
+from pandas_ta import Imports
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series, signals
 
@@ -18,12 +19,16 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     if close is None: return
 
     # Calculate Result
-    fastma = ema(close, length=fast)
-    slowma = ema(close, length=slow)
+    if Imports["talib"]:
+        from talib import MACD
+        macd, signalma, histogram = MACD(close, fast, slow)
+    else:
+        fastma = ema(close, length=fast)
+        slowma = ema(close, length=slow)
 
-    macd = fastma - slowma
-    signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal)
-    histogram = macd - signalma
+        macd = fastma - slowma
+        signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal)
+        histogram = macd - signalma
 
     # Offset
     if offset != 0:

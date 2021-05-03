@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat
+from pandas_ta import Imports
 from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
@@ -16,16 +17,20 @@ def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     if close is None: return
 
     # Calculate Result
-    negative = close.diff(drift)
-    positive = negative.copy()
+    if Imports["talib"]:
+        from talib import RSI
+        rsi = RSI(close, length)
+    else:
+        negative = close.diff(drift)
+        positive = negative.copy()
 
-    positive[positive < 0] = 0  # Make negatives 0 for the postive series
-    negative[negative > 0] = 0  # Make postives 0 for the negative series
+        positive[positive < 0] = 0  # Make negatives 0 for the postive series
+        negative[negative > 0] = 0  # Make postives 0 for the negative series
 
-    positive_avg = rma(positive, length=length)
-    negative_avg = rma(negative, length=length)
+        positive_avg = rma(positive, length=length)
+        negative_avg = rma(negative, length=length)
 
-    rsi = scalar * positive_avg / (positive_avg + negative_avg.abs())
+        rsi = scalar * positive_avg / (positive_avg + negative_avg.abs())
 
     # Offset
     if offset != 0:

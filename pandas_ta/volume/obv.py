@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
@@ -10,8 +11,12 @@ def obv(close, volume, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    signed_volume = signed_series(close, initial=1) * volume
-    obv = signed_volume.cumsum()
+    if Imports["talib"]:
+        from talib import OBV
+        obv = OBV(close, volume)
+    else:
+        signed_volume = signed_series(close, initial=1) * volume
+        obv = signed_volume.cumsum()
 
     # Offset
     if offset != 0:

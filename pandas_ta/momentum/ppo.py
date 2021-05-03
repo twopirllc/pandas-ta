@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
+from pandas_ta import Imports
 from pandas_ta.overlap import ema, sma
 from pandas_ta.utils import get_offset, verify_series
 
@@ -19,10 +20,14 @@ def ppo(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kw
     if close is None: return
 
     # Calculate Result
-    fastma = sma(close, length=fast)
-    slowma = sma(close, length=slow)
-    ppo = scalar * (fastma - slowma)
-    ppo /= slowma
+    if Imports["talib"]:
+        from talib import PPO
+        ppo = PPO(close, fast, slow)
+    else:
+        fastma = sma(close, length=fast)
+        slowma = sma(close, length=slow)
+        ppo = scalar * (fastma - slowma)
+        ppo /= slowma
 
     signalma = ema(ppo, length=signal)
     histogram = ppo - signalma

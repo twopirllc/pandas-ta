@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
+from pandas_ta import Imports
 from pandas_ta.overlap import ma
 from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_offset, verify_series
@@ -18,12 +19,17 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
     if close is None: return
 
     # Calculate Result
-    standard_deviation = stdev(close=close, length=length, ddof=ddof)
-    deviations = std * standard_deviation
+    if Imports["talib"]:
+        from talib import BBANDS
+        lower, mid, upper = BBANDS(close, length)
+    else:
+        standard_deviation = stdev(close=close, length=length, ddof=ddof)
+        deviations = std * standard_deviation
+        # deviations = std * standard_deviation.loc[standard_deviation.first_valid_index():,]
 
-    mid = ma(mamode, close, length=length, **kwargs)
-    lower = mid - deviations
-    upper = mid + deviations
+        mid = ma(mamode, close, length=length, **kwargs)
+        lower = mid - deviations
+        upper = mid + deviations
 
     bandwidth = 100 * (upper - lower) / mid
 
@@ -56,8 +62,8 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
 
     # Prepare DataFrame to return
     data = {
-        lower.name: lower, mid.name: mid,
-        upper.name: upper, bandwidth.name: bandwidth
+        lower.name: lower, mid.name: mid, upper.name: upper,
+        bandwidth.name: bandwidth
     }
     bbandsdf = DataFrame(data)
     bbandsdf.name = f"BBANDS_{length}_{std}"

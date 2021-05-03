@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -11,7 +12,11 @@ def wcp(high, low, close, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    wcp = (high + low + 2 * close) / 4
+    if Imports["talib"]:
+        from talib import WCLPRICE
+        wcp = WCLPRICE(high, low, close)
+    else:
+        wcp = (high + low + 2 * close) / 4
 
     # Offset
     if offset != 0:

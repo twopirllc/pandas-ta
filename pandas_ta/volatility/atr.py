@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .true_range import true_range
+from pandas_ta import Imports
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
@@ -18,8 +19,12 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
     if high is None or low is None or close is None: return
 
     # Calculate Result
-    tr = true_range(high=high, low=low, close=close, drift=drift)
-    atr = ma(mamode, tr, length=length)
+    if Imports["talib"]:
+        from talib import ATR
+        atr = ATR(high, low, close)
+    else:
+        tr = true_range(high=high, low=low, close=close, drift=drift)
+        atr = ma(mamode, tr, length=length)
 
     percentage = kwargs.pop("percent", False)
     if percentage:

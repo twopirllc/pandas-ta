@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import sqrt as npsqrt
 from .variance import variance
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -15,7 +16,11 @@ def stdev(close, length=None, ddof=None, offset=None, **kwargs):
     if close is None: return
 
     # Calculate Result
-    stdev = variance(close=close, length=length, ddof=ddof).apply(npsqrt)
+    if Imports["talib"]:
+        from talib import STDDEV
+        stdev = STDDEV(close, length)
+    else:
+        stdev = variance(close=close, length=length, ddof=ddof).apply(npsqrt)
 
     # Offset
     if offset != 0:

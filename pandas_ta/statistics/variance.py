@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -14,7 +15,11 @@ def variance(close, length=None, ddof=None, offset=None, **kwargs):
     if close is None: return
 
     # Calculate Result
-    variance = close.rolling(length, min_periods=min_periods).var(ddof)
+    if Imports["talib"]:
+        from talib import VAR
+        variance = VAR(close, length)
+    else:
+        variance = close.rolling(length, min_periods=min_periods).var(ddof)
 
     # Offset
     if offset != 0:

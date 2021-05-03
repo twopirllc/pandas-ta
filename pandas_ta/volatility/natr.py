@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .atr import atr
+from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
@@ -18,8 +19,12 @@ def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, of
     if high is None or low is None or close is None: return
 
     # Calculate Result
-    natr = scalar / close
-    natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)
+    if Imports["talib"]:
+        from talib import NATR
+        natr = NATR(high, low, close)
+    else:
+        natr = scalar / close
+        natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)
 
     # Offset
     if offset != 0:

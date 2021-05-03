@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .sma import sma
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -13,9 +14,13 @@ def trima(close, length=None, offset=None, **kwargs):
     if close is None: return
 
     # Calculate Result
-    half_length = round(0.5 * (length + 1))
-    sma1 = sma(close, length=half_length)
-    trima = sma(sma1, length=half_length)
+    if Imports["talib"]:
+        from talib import TRIMA
+        trima = TRIMA(close, length)
+    else:
+        half_length = round(0.5 * (length + 1))
+        sma1 = sma(close, length=half_length)
+        trima = sma(sma1, length=half_length)
 
     # Offset
     if offset != 0:

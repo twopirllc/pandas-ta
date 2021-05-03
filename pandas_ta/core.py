@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
 from multiprocessing import cpu_count, Pool
-from pandas_ta.candles.cdl_pattern import ALL_PATTERNS
+from pathlib import Path
 from time import perf_counter
 from typing import List, Tuple
 
@@ -10,7 +10,8 @@ from numpy import log10 as npLog10
 from numpy import ndarray as npNdarray
 from pandas.core.base import PandasObject
 
-from pandas_ta import Category, version
+from pandas_ta import Category, Imports, version
+from pandas_ta.candles.cdl_pattern import ALL_PATTERNS
 from pandas_ta.candles import *
 from pandas_ta.cycles import *
 from pandas_ta.momentum import *
@@ -446,7 +447,7 @@ class AnalysisIndicators(BasePandasObject):
                 match = [i for i, x in enumerate(matches) if x]
                 # If found, awesome.  Return it or return the 'series'.
                 cols = ", ".join(list(df.columns))
-                NOT_FOUND = f"[X] Ooops!!!: It's {series not in df.columns}, the series '{series}' was not found in {cols}"
+                NOT_FOUND = f"[X] Ooops!!! It's {series not in df.columns}, the series '{series}' was not found in {cols}"
                 return df.iloc[:, match[0]] if len(match) else print(NOT_FOUND)
 
     def _indicators_by_category(self, name: str) -> list:

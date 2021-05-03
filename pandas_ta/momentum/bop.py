@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
@@ -10,12 +11,16 @@ def bop(open_, high, low, close, scalar=None, offset=None, **kwargs):
     low = verify_series(low)
     close = verify_series(close)
     scalar = float(scalar) if scalar else 1
-    high_low_range = non_zero_range(high, low)
-    close_open_range = non_zero_range(close, open_)
     offset = get_offset(offset)
 
     # Calculate Result
-    bop = scalar * close_open_range / high_low_range
+    if Imports["talib"]:
+        from talib import BOP
+        bop = BOP(open_, high, low, close)
+    else:
+        high_low_range = non_zero_range(high, low)
+        close_open_range = non_zero_range(close, open_)
+        bop = scalar * close_open_range / high_low_range
 
     # Offset
     if offset != 0:

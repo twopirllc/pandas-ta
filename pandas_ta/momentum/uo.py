@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
+from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
@@ -22,25 +23,29 @@ def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_
     if high is None or low is None or close is None: return
 
     # Calculate Result
-    tdf = DataFrame({
-        "high": high,
-        "low": low,
-        f"close_{drift}": close.shift(drift)
-    })
-    max_h_or_pc = tdf.loc[:, ["high", f"close_{drift}"]].max(axis=1)
-    min_l_or_pc = tdf.loc[:, ["low", f"close_{drift}"]].min(axis=1)
-    del tdf
+    if Imports["talib"]:
+        from talib import ULTOSC
+        uo = ULTOSC(high, low, close)
+    else:
+        tdf = DataFrame({
+            "high": high,
+            "low": low,
+            f"close_{drift}": close.shift(drift)
+        })
+        max_h_or_pc = tdf.loc[:, ["high", f"close_{drift}"]].max(axis=1)
+        min_l_or_pc = tdf.loc[:, ["low", f"close_{drift}"]].min(axis=1)
+        del tdf
 
-    bp = close - min_l_or_pc
-    tr = max_h_or_pc - min_l_or_pc
+        bp = close - min_l_or_pc
+        tr = max_h_or_pc - min_l_or_pc
 
-    fast_avg = bp.rolling(fast).sum() / tr.rolling(fast).sum()
-    medium_avg = bp.rolling(medium).sum() / tr.rolling(medium).sum()
-    slow_avg = bp.rolling(slow).sum() / tr.rolling(slow).sum()
+        fast_avg = bp.rolling(fast).sum() / tr.rolling(fast).sum()
+        medium_avg = bp.rolling(medium).sum() / tr.rolling(medium).sum()
+        slow_avg = bp.rolling(slow).sum() / tr.rolling(slow).sum()
 
-    total_weight = fast_w + medium_w + slow_w
-    weights = (fast_w * fast_avg) + (medium_w * medium_avg) + (slow_w * slow_avg)
-    uo = 100 * weights / total_weight
+        total_weight = fast_w + medium_w + slow_w
+        weights = (fast_w * fast_avg) + (medium_w * medium_avg) + (slow_w * slow_avg)
+        uo = 100 * weights / total_weight
 
     # Offset
     if offset != 0:

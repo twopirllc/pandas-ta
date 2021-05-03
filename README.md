@@ -66,7 +66,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 # **Features**
 
 * Has 130+ indicators and utility functions.
-    * With **TA Lib** installed there are an additional 63 Chart Patterns available.
+    * Also Pandas TA will run TA Lib's version. (**BETA**), this includes TA Lib's 63 Chart Patterns.
 * Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
@@ -97,7 +97,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.75b*
+Best choice! Version: *0.2.76b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -380,7 +380,7 @@ df.columns
 <br/>
 
 ## Custom Strategy without Multiprocessing
-**Remember** These will not be utilizing **multiprocessing** 
+**Remember** These will not be utilizing **multiprocessing**
 ```python
 NonMPStrategy = ta.Strategy(
     name="EMAs, BBs, and MACD",
@@ -886,6 +886,7 @@ result = ta.cagr(df.close)
 # **Changes**
 ## **General**
 * A __Strategy__ Class to help name and group your favorite indicators.
+* If a **TA Lib** is already installed, Pandas TA will run TA Lib's version. (**BETA**)
 * Some indicators have had their ```mamode``` _kwarg_ updated with more _moving average_ choices with the **Moving Average Utility** function ```ta.ma()```. For simplicity, all _choices_ are single source _moving averages_. This is primarily an internal utility used by indicators that have a ```mamode``` _kwarg_. This includes indicators: _accbands_, _amat_, _aobv_, _atr_, _bbands_, _bias_, _efi_, _hilo_, _kc_, _natr_, _qqe_, _rvi_, and _thermo_; the default ```mamode``` parameters have not changed. However, ```ta.ma()``` can be used by the user as well if needed. For more information: ```help(ta.ma)```
     * **Moving Average Choices**: dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma.
 * An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.

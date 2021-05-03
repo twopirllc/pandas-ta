@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN as npNaN
-from pandas import DataFrame, concat
+from pandas import concat
+from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
@@ -14,12 +15,16 @@ def true_range(high, low, close, drift=None, offset=None, **kwargs):
     offset = get_offset(offset)
 
     # Calculate Result
-    high_low_range = non_zero_range(high, low)
-    prev_close = close.shift(drift)
-    ranges = [high_low_range, high - prev_close, prev_close - low]
-    true_range = concat(ranges, axis=1)
-    true_range = true_range.abs().max(axis=1)
-    true_range.iloc[:drift] = npNaN
+    if Imports["talib"]:
+        from talib import TRANGE
+        true_range = TRANGE(high, low, close)
+    else:
+        high_low_range = non_zero_range(high, low)
+        prev_close = close.shift(drift)
+        ranges = [high_low_range, high - prev_close, prev_close - low]
+        true_range = concat(ranges, axis=1)
+        true_range = true_range.abs().max(axis=1)
+        true_range.iloc[:drift] = npNaN
 
     # Offset
     if offset != 0:

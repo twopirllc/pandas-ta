@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -12,7 +13,11 @@ def mom(close, length=None, offset=None, **kwargs):
     if close is None: return
 
     # Calculate Result
-    mom = close.diff(length)
+    if Imports["talib"]:
+        from talib import MOM
+        mom = MOM(close, length)
+    else:
+        mom = close.diff(length)
 
     # Offset
     if offset != 0:

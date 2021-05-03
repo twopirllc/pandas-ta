@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -15,9 +16,13 @@ def midprice(high, low, length=None, offset=None, **kwargs):
     if high is None or low is None: return
 
     # Calculate Result
-    lowest_low = low.rolling(length, min_periods=min_periods).min()
-    highest_high = high.rolling(length, min_periods=min_periods).max()
-    midprice = 0.5 * (lowest_low + highest_high)
+    if Imports["talib"]:
+        from talib import MIDPRICE
+        midprice = MIDPRICE(high, low, length)
+    else:
+        lowest_low = low.rolling(length, min_periods=min_periods).min()
+        highest_high = high.rolling(length, min_periods=min_periods).max()
+        midprice = 0.5 * (lowest_low + highest_high)
 
     # Offset
     if offset != 0:

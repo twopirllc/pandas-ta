@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -16,10 +17,14 @@ def willr(high, low, close, length=None, offset=None, **kwargs):
     if high is None or low is None or close is None: return
 
     # Calculate Result
-    lowest_low = low.rolling(length, min_periods=min_periods).min()
-    highest_high = high.rolling(length, min_periods=min_periods).max()
+    if Imports["talib"]:
+        from talib import WILLR
+        willr = WILLR(high, low, close, length)
+    else:
+        lowest_low = low.rolling(length, min_periods=min_periods).min()
+        highest_high = high.rolling(length, min_periods=min_periods).max()
 
-    willr = 100 * ((close - lowest_low) / (highest_high - lowest_low) - 1)
+        willr = 100 * ((close - lowest_low) / (highest_high - lowest_low) - 1)
 
     # Offset
     if offset != 0:

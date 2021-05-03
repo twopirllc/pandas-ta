@@ -10,7 +10,7 @@ def tsignals(trend, asbool=None, trend_reset=0, trade_offset=None, offset=None, 
     asbool = bool(asbool) if isinstance(asbool, bool) else False
     trend_reset = int(trend_reset) if trend_reset and isinstance(trend_reset, int) else 0
     if trade_offset !=0:
-        trade_offset = int(trade_offset) if trade_offset and isinstance(trade_offset, int) else -1
+        trade_offset = int(trade_offset) if trade_offset and isinstance(trade_offset, int) else 0
     offset = get_offset(offset)
 
     # Calculate Result
@@ -68,7 +68,7 @@ Sources: Kevin Johnson
 
 Calculation:
     Default Inputs:
-        asbool=False, trend_reset=0, trade_offset=-1
+        asbool=False, trend_reset=0, trade_offset=0
 
     trades = trends.diff().shift(trade_offset).fillna(0).astype(int)
     entries = (trades > 0).astype(int)
@@ -81,7 +81,8 @@ Args:
         booleans. When boolean, it is also useful for backtesting with
         vectorbt's Portfolio.from_signal(close, entries, exits) Default: False
     trend_reset (value): Value used to identify if a trend has ended. Default: 0
-    trade_offset (value): Value used shift the trade entries/exits. Default: -1
+    trade_offset (value): Value used shift the trade entries/exits Use 1 for
+        backtesting and 0 for live. Default: 0
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
