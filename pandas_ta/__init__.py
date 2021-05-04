@@ -5,6 +5,7 @@ name = "pandas_ta"
 from importlib.util import find_spec
 from pkg_resources import get_distribution, DistributionNotFound
 import os.path
+import pkgutil
 
 
 _dist = get_distribution("pandas_ta")
@@ -35,55 +36,11 @@ Imports = {
     "yfinance": find_spec("yfinance") is not None,
 }
 
-# Not ideal and not dynamic but it works.
-# Will find a dynamic solution later.
-Category = {
-    # Candles
-    "candles": [
-        "cdl_pattern", "cdl_z", "ha"
-    ],
-    # Cycles
-    "cycles": ["ebsw"],
-    # Momentum
-    "momentum": [
-        "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
-        "coppock", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd",
-        "mom", "pgo", "ppo", "psl", "pvo", "qqe", "roc", "rsi", "rsx", "rvgi",
-        "slope", "smi", "squeeze", "stc", "stoch", "stochrsi", "td_seq", "trix",
-        "tsi", "uo", "willr"
-    ],
-    # Overlap
-    "overlap": [
-        "alma", "dema", "ema", "fwma", "hilo", "hl2", "hlc3", "hma", "ichimoku",
-        "kama", "linreg", "mcgd", "midpoint", "midprice", "ohlc4", "pwma", "rma",
-        "sinwma", "sma", "ssf", "supertrend", "swma", "t3", "tema", "trima",
-        "vidya", "vwap", "vwma", "wcp", "wma", "zlma"
-    ],
-    # Performance
-    "performance": ["log_return", "percent_return"],
-    # Statistics
-    "statistics": [
-        "entropy", "kurtosis", "mad", "median", "quantile", "skew", "stdev",
-        "variance", "zscore"
-    ],
-    # Trend
-    "trend": [
-        "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
-        "increasing", "long_run", "psar", "qstick", "short_run", "tsignals",
-        "ttm_trend", "vortex"
-    ],
-    # Volatility
-    "volatility": [
-        "aberration", "accbands", "atr", "bbands", "donchian", "hwc", "kc", "massi",
-        "natr", "pdist", "rvi", "thermo", "true_range", "ui"
-    ],
-
-    # Volume, "vp" or "Volume Profile" is unique
-    "volume": [
-        "ad", "adosc", "aobv", "cmf", "efi", "eom", "mfi", "nvi", "obv", "pvi",
-        "pvol", "pvr", "pvt"
-    ],
-}
+ignore_list = ['vp', 'cdl_inside', 'cdl_doji', 'ma', 'hwma', 'drawdown']
+categories = ["candles", "cycles", "momentum", "overlap", "performance", "statistics", "trend", "volatility", "volume"]
+Category = {}
+for category in categories:
+    Category[category] = [name for _, name, _ in pkgutil.iter_modules([category]) if name not in ignore_list]
 
 CANGLE_AGG = {
     "open": "first",
