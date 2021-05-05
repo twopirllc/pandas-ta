@@ -51,7 +51,7 @@ vhf.__doc__ = """Vertical Horizontal Filter (VHF)
         VHF = (HCP - LCP) / RollingSum[length] of Change     
                 
     Args:
-        close (pd.Series): Series of 'close's
+        source (pd.Series): Series of prices (usually close). 
         length (int): The period length. Default: 28
         offset (int): How many periods to offset the result. Default: 0
     
