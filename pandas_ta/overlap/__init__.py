@@ -8,8 +8,8 @@ from .hl2 import hl2
 from .hlc3 import hlc3
 from .hma import hma
 from .hwma import hwma
-from .kama import kama
 from .ichimoku import ichimoku
+from .kama import kama
 from .linreg import linreg
 from .ma import ma
 from .mcgd import mcgd

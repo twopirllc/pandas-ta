@@ -87,7 +87,7 @@ def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Series
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
     on the differences of the original series. The positive series are only the
-    increases and the negative series is only the decreases.
+    increases and the negative series are only the decreases.
 
     Default Example:
     series   = Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5, 3]) and returns

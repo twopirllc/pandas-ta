@@ -1,35 +1,38 @@
 # -*- coding: utf-8 -*-
 from numpy import where as npWhere
 from pandas import DataFrame
-from pandas_ta.overlap import ma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.overlap import hlc3, ma
+from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, mamode=None, offset=None, **kwargs):
+def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Klinger Volume Oscillator (KVO)"""
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 34
     slow = int(slow) if slow and slow > 0 else 55
     length_sig = int(length_sig) if length_sig and length_sig > 0 else 13
     mamode = mamode.lower() if mamode and isinstance(mamode, str) else "ema"
-    high = verify_series(high, max(fast, slow) + length_sig)
-    low = verify_series(low, max(fast, slow) + length_sig)
-    close = verify_series(close, max(fast, slow) + length_sig)
-    volume = verify_series(volume, max(fast, slow) + length_sig)
+    _length = max(fast, slow, length_sig)
+    high = verify_series(high, _length)
+    low = verify_series(low, _length)
+    close = verify_series(close, _length)
+    volume = verify_series(volume, _length)
+    drift = get_drift(drift)
     offset = get_offset(offset)
 
     if high is None or low is None or close is None or volume is None: return
 
     # Calculate Result
-    mom = (high + low + close).diff(1)
+    mom = hlc3(high, low, close).diff(drift)
     trend = npWhere(mom > 0, 1, 0) + npWhere(mom < 0, -1, 0)
-    dm = high - low
+    dm = non_zero_range(high, low)
 
-    cm = [0.0] * len(high)
-    for i in range(1, len(high)):
+    m = high.size
+    cm = [0] * m
+    for i in range(1, m):
         cm[i] = (cm[i - 1] + dm[i]) if trend[i] == trend[i - 1] else (dm[i - 1] + dm[i])
 
-    vf = volume * trend * abs(dm / cm * 2 - 1) * 100
+    vf = 100 * volume * trend * abs(2 * dm / cm - 1)
 
     kvo = ma(mamode, vf, length=fast) - ma(mamode, vf, length=slow)
     kvo_signal = ma(mamode, kvo, length=length_sig)
@@ -64,8 +67,8 @@ def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, mamode=
 kvo.__doc__ = \
 """Klinger Volume Oscillator (KVO)
 
-This indicator was developed by Stephen J. Klinger. It is designed to predict price reversals in a market 
-by comparing volume to price. 
+This indicator was developed by Stephen J. Klinger. It is designed to predict
+price reversals in a market by comparing volume to price.
 
 Sources:
     https://www.tradingview.com/script/Qnn7ymRK-Klinger-Volume-Oscillator/
@@ -73,20 +76,18 @@ Sources:
 
 Calculation:
     Default Inputs:
-        fast = 34, slow = 55, length_sig = 13. 
-    HLC3 = (h + l + c) / 3
-    MOM = HLC3t - HLC3t-1
-    TREND = { 1   if MOM > 0  \
-             -1   if MOM < 0  \
-              0   otherwise
-    DM = h - l
-    CM = { CMt-1 + DMt  if TRENDt == TRENDt-1   \
-           DMt-1 + DMt  otherwise
+        fast=34, slow=55, length_sig=13, drift=1
+    MOM = HLC3.diff(drift)
+    NEG_TREND = -1 if MOM < 0 else 0
+    POS_TREND =  1 if MOM > 0 else 0
+    TREND = POS_TREND + NEG_TREND
+    DM = high - low
+    CM = [CMt-1 + DMt if TRENDt == TRENDt-1 else DMt-1 + DMt]
 
-    vf = 100 * v * TREND * abs(2 * dm / cm - 1) 
+    vf = 100 * volume * TREND * abs(2 * dm / cm - 1)
     kvo = ema(vf, fast) - ema(vf, slow)
     kvo_signal = ema(kvo, length_sig)
-    
+
 
 Args:
     high (pd.Series): Series of 'high's
@@ -104,5 +105,5 @@ Kwargs:
     fill_method (value, optional): Type of fill method
 
 Returns:
-    pd.DataFrame: kvo and kvo_signal columns. 
+    pd.DataFrame: kvo and kvo_signal columns.
 """

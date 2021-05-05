@@ -7,8 +7,8 @@ from .donchian import donchian
 from .hwc import hwc
 from .kc import kc
 from .massi import massi
-from .pdist import pdist
 from .natr import natr
+from .pdist import pdist
 from .rvi import rvi
 from .thermo import thermo
 from .true_range import true_range

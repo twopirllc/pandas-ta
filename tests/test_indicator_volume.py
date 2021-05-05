@@ -89,6 +89,11 @@ class TestVolume(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "EOM_14_100000000")
 
+    def test_kvo(self):
+        result = pandas_ta.kvo(self.high, self.low, self.close, self.volume_)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "KVO_34_55_13")
+
     def test_mfi(self):
         result = pandas_ta.mfi(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, Series)

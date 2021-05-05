@@ -42,13 +42,13 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Candles](#candles-64)
     * [Cycles](#cycles-1)
     * [Momentum](#momentum-39)
-    * [Overlap](#overlap-31)
+    * [Overlap](#overlap-32)
     * [Performance](#performance-3)
     * [Statistics](#statistics-9)
     * [Trend](#trend-16)
     * [Utility](#utility-5)
-    * [Volatility](#volatility-13)
-    * [Volume](#volume-14)
+    * [Volatility](#volatility-14)
+    * [Volume](#volume-15)
 * [Performance Metrics](#performance-metrics)
 * [Changes](#changes)
     * [General](#general)
@@ -97,7 +97,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.76b*
+Best choice! Version: *0.2.77b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -195,7 +195,7 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) |[M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) |[M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
@@ -566,7 +566,7 @@ help(ta.yf)
 <br/><br/>
 
 # **Indicators** (_by Category_)
-### **Candles** (63)
+### **Candles** (64)
 Patterns that are **not bold**, require TA-Lib to be installed: ```pip install TA-Lib```
 
 * 2crows
@@ -651,7 +651,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Momentum** (38)
+### **Momentum** (39)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Bias_: **bias**
@@ -702,7 +702,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Overlap** (31)
+### **Overlap** (32)
 
 * _Arnaud Legoux Moving Average_: **alma**
 * _Double Exponential Moving Average_: **dema**
@@ -815,13 +815,14 @@ Use parameter: cumulative=**True** for cumulative results.
 
 <br/>
 
-### **Volatility** (13)
+### **Volatility** (14)
 
 * _Aberration_: **aberration**
 * _Acceleration Bands_: **accbands**
 * _Average True Range_: **atr**
 * _Bollinger Bands_: **bbands**
 * _Donchian Channel_: **donchian**
+* _Holt-Winter Channel_: **hwc**
 * _Keltner Channel_: **kc**
 * _Mass Index_: **massi**
 * _Normalized Average True Range_: **natr**
@@ -837,7 +838,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 <br/>
 
-### **Volume** (14)
+### **Volume** (15)
 
 * _Accumulation/Distribution Index_: **ad**
 * _Accumulation/Distribution Oscillator_: **adosc**
@@ -845,6 +846,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Chaikin Money Flow_: **cmf**
 * _Elder's Force Index_: **efi**
 * _Ease of Movement_: **eom**
+* _Klinger Volume Oscillator_: **kvo**
 * _Money Flow Index_: **mfi**
 * _Negative Volume Index_: **nvi**
 * _On-Balance Volume_: **obv**
@@ -907,6 +909,7 @@ trading account, or fund. See: ```help(ta.drawdown)```
 * _Candle Z Score_ (**cdl_z**) normalizes OHLC Candles with a rolling Z Score. See: ```help(ta.cdl_z)```
 * _Correlation Trend Indicator_ (**cti**) is an oscillator created by John Ehler in 2020. See: ```help(ta.cti)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
+* _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price.. See: ```help(ta.kvo)```
 * _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two
 cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See: ```help(ta.td_seq)```

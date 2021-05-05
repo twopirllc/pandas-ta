@@ -60,6 +60,11 @@ class TestVolumeExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "EOM_14_100000000")
 
+    def test_kvo_ext(self):
+        self.data.ta.kvo(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "KVOSig_13")
+
     def test_mfi_ext(self):
         self.data.ta.mfi(append=True)
         self.assertIsInstance(self.data, DataFrame)

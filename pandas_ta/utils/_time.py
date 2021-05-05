@@ -66,7 +66,7 @@ def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -
 
         s = f"{date}, {exchange_}, {local_}, {doy}"
     else:
-        s = f"{exchange}: {exchange_time}"
+        s = f"{date}, {exchange}: {exchange_time}"
 
     return s if to_string else print(s)
 
