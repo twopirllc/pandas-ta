@@ -14,4 +14,5 @@ from .qstick import qstick
 from .short_run import short_run
 from .tsignals import tsignals
 from .ttm_trend import ttm_trend
+from .vhf import vhf
 from .vortex import vortex
