@@ -68,6 +68,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Has 130+ indicators and utility functions.
     * Also Pandas TA will run TA Lib's version. (**BETA**), this includes TA Lib's 63 Chart Patterns.
 * Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
+* Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
@@ -97,7 +98,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.77b*
+Best choice! Version: *0.2.78b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -881,6 +882,39 @@ result = ta.cagr(df.close)
 * _Sharpe Ratio_: **sharpe_ratio**
 * _Sortino Ratio_: **sortino_ratio**
 * _Volatility_: **volatility**
+
+<br/>
+
+## Backtesting with **vectorbt**
+For **easier** integration with **vectorbt**'s Portfolio ```from_signals``` method, the ```ta.trend_return``` method has been replaced with ```ta.tsignals``` method to simplify the generation of trading signals. For a comprehensive example, see the example Jupyter Notebook [VectorBT Backtest with Pandas TA](https://github.com/twopirllc/pandas-ta/blob/master/examples/VectorBT_Backtest_with_Pandas_TA.ipynb.ipynb) in the examples directory.
+
+<br/>
+
+### Brief example
+* See the [**vectorbt**](https://polakowo.io/vectorbt/) website more options and examples.
+```python
+import pandas as pd
+import pandas_ta as ta
+import vectorbt as vbt
+
+df = pd.DataFrame().ta.ticker("AAPL") # requires 'yfinance' installed
+
+# Create the "Golden Cross" 
+df["GC"] = df.ta.sma(50, append=True) > df.ta.sma(200, append=True)
+
+# Create boolean Signals(TS_Entries, TS_Exits) for vectorbt
+golden = df.ta.tsignals(df.GC, asbool=True, append=True)
+
+# Sanity Check (Ensure data exists)
+print(df)
+
+# Create the Signals Portfolio
+pf = vbt.Portfolio.from_signals(df.close, entries=golden.TS_Entries, exits=golden.TS_Exits, freq="D", init_cash=100_000, fees=0.0025, slippage=0.0025)
+
+# Print Portfolio Stats and Return Stats
+print(pf.stats())
+print(pf.returns_stats())
+```
 
 
 <br/><br/>

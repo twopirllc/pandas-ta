@@ -121,7 +121,6 @@ setup.cfg
 doc.py
 pandas_pips
 reqs.txt
-requirements.txt
 driver.py
 qd.py
 tdseq.py
@@ -132,7 +131,7 @@ AlphaVantageAPI/
 
 # Data & NB Exclusions
 *.csv
-*.ipynb
+jnb/*.ipynb
 data/datas.csv
 data/f500.csv
 data/GLD_D_tv.csv
