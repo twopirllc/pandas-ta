@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from numpy import fabs as npFabs
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def vhf(close, length=None, drift=None, offset=None, **kwargs):
     """Indicator: Vertical Horizontal Filter (VHF)"""
     # Validate arguments
-    length = int(length ) if length and length > 0 else 28
+    length = int(length) if length and length > 0 else 28
     close = verify_series(close, length)
-    drift = get_offset(drift)
+    drift = get_drift(drift)
     offset = get_offset(offset)
 
     if close is None: return
@@ -16,12 +16,12 @@ def vhf(close, length=None, drift=None, offset=None, **kwargs):
     # Calculate Result
     hcp = close.rolling(length).max()
     lcp = close.rolling(length).min()
-    diff = npFabs(close - close.shift(drift))
-    vhf = npFabs(hcp - lcp) / diff.rolling(length).sum()
+    diff = npFabs(close.diff(drift))
+    vhf  = npFabs(non_zero_range(hcp, lcp)) / diff.rolling(length).sum()
 
     # Offset
     if offset != 0:
-        vhf = vhf_.shift(offset)
+        vhf = vhf.shift(offset)
 
     # Handle fills
     if "fillna" in kwargs:

@@ -2,7 +2,7 @@
 from numpy import log10 as npLog10
 from numpy import log as npLn
 from pandas_ta.volatility import atr
-from pandas_ta.utils import get_offset, get_drift, verify_series
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def chop(high, low, close, length=None, atr_length=None, ln=None, scalar=None, drift=None, offset=None, **kwargs):
