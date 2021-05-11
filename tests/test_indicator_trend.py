@@ -180,6 +180,11 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "TTMTREND_6")
 
+    def test_vhf(self):
+        result = pandas_ta.vhf(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "VHF_28")
+
     def test_vortex(self):
         result = pandas_ta.vortex(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)

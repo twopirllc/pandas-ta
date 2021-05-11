@@ -599,7 +599,7 @@ class AnalysisIndicators(BasePandasObject):
 
         total_indicators = len(ta_indicators)
         header = f"Pandas TA - Technical Analysis Indicators - v{self.version}"
-        s = f"{header}\nTotal Indicators: {total_indicators + len(ALL_PATTERNS)}\n"
+        s = f"{header}\nTotal Indicators & Utilities: {total_indicators + len(ALL_PATTERNS)}\n"
         if total_indicators > 0:
             print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}\n\nCandle Patterns:\n    {', '.join(ALL_PATTERNS)}")
         else:
@@ -1462,6 +1462,11 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
         result = ttm_trend(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def vhf(self, length=None, drift=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = vhf(close=close, length=length, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def vortex(self, drift=None, offset=None, **kwargs):

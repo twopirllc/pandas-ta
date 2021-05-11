@@ -45,7 +45,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Overlap](#overlap-32)
     * [Performance](#performance-3)
     * [Statistics](#statistics-9)
-    * [Trend](#trend-16)
+    * [Trend](#trend-17)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
     * [Volume](#volume-15)
@@ -778,7 +778,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | ![Example Z Score](/images/SPY_ZScore.png) |
 <br/>
 
-### **Trend** (16)
+### **Trend** (17)
 
 * _Average Directional Movement Index_: **adx**
     * Also includes **dmp** and **dmn** in the resultant DataFrame.
@@ -798,6 +798,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Short Run_: **short_run**
 * _Trend Signals_: **tsignals**
 * _TTM Trend_: **ttm_trend**
+* _Vertical Horizontal Filter_: **vhf**
 * _Vortex_: **vortex**
 
 | _Average Directional Movement Index_ (ADX) |
@@ -947,6 +948,7 @@ trading account, or fund. See: ```help(ta.drawdown)```
 * _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two
 cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See: ```help(ta.td_seq)```
+* _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets.. See: ```help(ta.vhf)```
 
 <br/>
 
