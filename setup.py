@@ -18,7 +18,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "2", "78b")),
+    version=".".join(("0", "2", "78")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -26,7 +26,6 @@ setup(
     url="https://github.com/twopirllc/pandas-ta",
     maintainer="Kevin Johnson",
     maintainer_email="appliedmathkj@gmail.com",
-    # install_requires=["pandas"],
     download_url="https://github.com/twopirllc/pandas-ta.git",
     keywords=["technical analysis", "trading", "python3", "pandas"],
     license="The MIT License (MIT)",
