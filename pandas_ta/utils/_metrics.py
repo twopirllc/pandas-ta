@@ -9,7 +9,7 @@ from pandas import Series, Timedelta
 from ._core import verify_series
 from ._time import total_time
 from ._math import linear_regression, log_geometric_mean
-from pandas_ta import RATE
+from pandas_ta import Imports, RATE
 from pandas_ta.performance import drawdown, log_return, percent_return
 
 

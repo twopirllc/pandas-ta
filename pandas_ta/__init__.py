@@ -25,6 +25,7 @@ Imports = {
     "alphaVantage-api": find_spec("alphaVantageAPI") is not None,
     "matplotlib": find_spec("matplotlib") is not None,
     "mplfinance": find_spec("mplfinance") is not None,
+    "numba": find_spec("numba") is not None,
     "yaml": find_spec("yaml") is not None,
     "scipy": find_spec("scipy") is not None,
     "sklearn": find_spec("sklearn") is not None,

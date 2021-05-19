@@ -1,30 +1,31 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import get_drift, get_offset, is_percent, verify_series
 
-
-def decreasing(close, length=None, strict=None, asint=None, offset=None, **kwargs):
+def decreasing(close, length=None, strict=None, asint=None, percent=None, drift=None, offset=None, **kwargs):
     """Indicator: Decreasing"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 1
     strict = strict if isinstance(strict, bool) else False
     asint = asint if isinstance(asint, bool) else True
     close = verify_series(close, length)
+    drift = get_drift(drift)
     offset = get_offset(offset)
+    percent = float(percent) if is_percent(percent) else False
 
     if close is None: return
 
-    def stricly_decreasing(series, n):
-        return all([i > j for i,j in zip(series[-n:], series[1:])])
-
     # Calculate Result
+    close_ = (1 - 0.01 * percent) * close if percent else close
     if strict:
         # Returns value as float64? Have to cast to bool
-        decreasing = close.rolling(length, min_periods=length) \
-            .apply(stricly_decreasing, args=(length,), raw=False)
+        decreasing = close < close_.shift(drift)
+        for x in range(3, length + 1):
+            decreasing = decreasing & (close.shift(x - (drift + 1)) < close_.shift(x - drift))
+
         decreasing.fillna(0, inplace=True)
         decreasing = decreasing.astype(bool)
     else:
-        decreasing = close.diff(length) < 0
+        decreasing = close_.diff(length) < 0
 
     if asint:
         decreasing = decreasing.astype(int)
@@ -40,7 +41,9 @@ def decreasing(close, length=None, strict=None, asint=None, offset=None, **kwarg
         decreasing.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    decreasing.name = f"{'S' if strict else ''}DEC_{length}"
+    _percent = f"_{0.01 * percent}" if percent else ''
+    _props = f"{'S' if strict else ''}DEC{'p' if percent else ''}"
+    decreasing.name = f"{_props}_{length}{_percent}"
     decreasing.category = "trend"
 
     return decreasing
@@ -66,8 +69,10 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 1
-    asint (bool): Returns as binary. Default: True
     strict (bool): If True, checks if the series is continuously decreasing over the period. Default: False
+    percent (float): Percent as an integer. Default: None
+    asint (bool): Returns as binary. Default: True
+    drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

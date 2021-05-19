@@ -98,7 +98,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.79*
+Best choice! Version: *0.2.80*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -958,8 +958,8 @@ cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)
 * _Bollinger Bands_ (**bbands**): New argument ```ddoff``` to control the Degrees of Freedom. Default is 0.  See ```help(ta.bbands)```.
 * _Choppiness Index_ (**chop**): New argument ```ln``` to use Natural Logarithm (True) instead of the Standard Logarithm (False). Default is False.  See ```help(ta.chop)```.
 * _Chande Kroll Stop_ (**cksp**): Added ```tvmode``` with default ```True```. When ```tvmode=False```, **cksp** implements “The New Technical Trader” with default values. See ```help(ta.cksp)```.
-* _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length```. Default: ```False```. See ```help(ta.decreasing)```.
-* _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length```. Default: ```False```. See ```help(ta.increasing)```.
+* _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.decreasing)```.
+* _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.increasing)```.
 * _Volume Weighted Average Price_ (**vwap**) Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex
 
 <br />

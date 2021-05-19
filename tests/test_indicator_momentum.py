@@ -359,12 +359,28 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "STC_10_12_26_0.5")
 
-    # @skip
     def test_stoch(self):
         # TV Correlation
         result = pandas_ta.stoch(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "STOCH_14_3_3")
+
+        try:
+            expected = tal.STOCH(self.high, self.low, self.close, 14, 3, 0, 3)
+            expecteddf = DataFrame({"STOCHk_14_3_0_3": expected[0], "STOCHd_14_3_0_3": expected[1]})
+            pdt.assert_frame_equal(result, expecteddf)
+        except AssertionError as ae:
+            try:
+                stochk_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0], expecteddf.iloc[:, 0], col=CORRELATION)
+                self.assertGreater(stochk_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result.iloc[:, 0], CORRELATION, ex)
+
+            try:
+                stochd_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 1], expecteddf.iloc[:, 1], col=CORRELATION)
+                self.assertGreater(stochd_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result.iloc[:, 1], CORRELATION, ex, newline=False)
 
     def test_stochrsi(self):
         # TV Correlation
@@ -372,7 +388,20 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "STOCHRSI_14_14_3_3")
 
+        try:
+            expected = tal.STOCHRSI(self.close, 14, 14, 3, 0)
+            expecteddf = DataFrame({"STOCHRSIk_14_14_0_3": expected[0], "STOCHRSId_14_14_3_0": expected[1]})
+            pdt.assert_frame_equal(result, expecteddf)
+        except AssertionError as ae:
+            try:
+                stochrsid_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0], expecteddf.iloc[:, 1], col=CORRELATION)
+                self.assertGreater(stochrsid_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result.iloc[:, 0], CORRELATION, ex, newline=False)
+
+    @skip
     def test_td_seq(self):
+        """TS Sequential: Working but SLOW implementation"""
         result = pandas_ta.td_seq(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "TD_SEQ")
