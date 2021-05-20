@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat
-from pandas_ta.overlap import rma
+from pandas_ta.overlap import ema
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
@@ -22,8 +22,8 @@ def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     positive[positive < 0] = 0  # Make negatives 0 for the postive series
     negative[negative > 0] = 0  # Make postives 0 for the negative series
 
-    positive_avg = rma(positive, length=length)
-    negative_avg = rma(negative, length=length)
+    positive_avg = ema(positive, length=length)
+    negative_avg = ema(negative, length=length)
 
     rsi = scalar * positive_avg / (positive_avg + negative_avg.abs())
 
@@ -81,8 +81,10 @@ Calculation:
     ABS = Absolute Value
     EMA = Exponential Moving Average
 
-    positive = close if close.diff(drift) > 0 else 0
-    negative = close if close.diff(drift) < 0 else 0
+    diff = close.diff(drift)
+
+    positive = diff if diff > 0 else 0
+    negative = diff if diff < 0 else 0
 
     pos_avg = EMA(positive, length)
     neg_avg = ABS(EMA(negative, length))
