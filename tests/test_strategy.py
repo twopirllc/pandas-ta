@@ -36,9 +36,19 @@ class TestStrategyMethods(TestCase):
         if speed_table:
             cls.speed_test.to_csv("tests/speed_test.csv")
         if timed:
+            tca = cls.speed_test['Columns'].sum()
+            tcs = cls.speed_test['Seconds'].sum()
+            cps = f"[i] Total Columns / Second for All Tests: { tca / tcs:.5f} "
+            print("=" * len(cps))
+            print(cls.speed_test)
             print(f"[i] Cores: {cls.data.ta.cores}")
             print(f"[i] Total Datapoints: {cls.data.shape[0]}")
-            print(cls.speed_test)
+            print(f"[i] Total Columns added: {tca}")
+            print(f"[i] Total Seconds for All Tests: {tcs:.5f}")
+            print(cps)
+            print("=" * len(cps))
+            # tmp = concat([cls.speed_test, cls.speed_test["Columns"].sum(), cls.speed_test["Seconds"].sum()])
+            # print(tmp)
         del cls.data
 
     def setUp(self):
