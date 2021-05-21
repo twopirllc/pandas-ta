@@ -79,13 +79,14 @@ Calculation:
     Default Inputs:
         length=14, scalar=100, drift=1
     ABS = Absolute Value
-    EMA = Exponential Moving Average
+    RMA = Rolling Moving Average
 
-    positive = close if close.diff(drift) > 0 else 0
-    negative = close if close.diff(drift) < 0 else 0
+    diff = close.diff(drift)
+    positive = diff if diff > 0 else 0
+    negative = diff if diff < 0 else 0
 
-    pos_avg = EMA(positive, length)
-    neg_avg = ABS(EMA(negative, length))
+    pos_avg = RMA(positive, length)
+    neg_avg = ABS(RMA(negative, length))
 
     RSI = scalar * pos_avg / (pos_avg + neg_avg)
 
