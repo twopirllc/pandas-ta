@@ -42,7 +42,7 @@ class TestStrategyMethods(TestCase):
             print("=" * len(cps))
             print(cls.speed_test)
             print(f"[i] Cores: {cls.data.ta.cores}")
-            print(f"[i] Total Datapoints: {cls.data.shape[0]}")
+            print(f"[i] Total Datapoints per run: {cls.data.shape[0]}")
             print(f"[i] Total Columns added: {tca}")
             print(f"[i] Total Seconds for All Tests: {tcs:.5f}")
             print(cps)
