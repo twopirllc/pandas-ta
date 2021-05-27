@@ -4,18 +4,19 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
+def psar(high, low, close=None, af0=None, af=None, max_af=None, offset=None, **kwargs):
     """Indicator: Parabolic Stop and Reverse (PSAR)"""
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)
-    af = float(af) if af and af > 0 else 0.02
+    start_af = float(af) if af and af > 0 else 0.02
     max_af = float(max_af) if max_af and max_af > 0 else 0.2
     offset = get_offset(offset)
 
     # Initialize
     m = high.shape[0]
-    af0 = af
+    af0 = start_af if not af0 else float(af0)
+    af = af0
     bullish = True
     high_point = high.iloc[0]
     low_point = low.iloc[0]
@@ -58,7 +59,7 @@ def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
             if bullish:
                 if high.iloc[i] > high_point:
                     high_point = high.iloc[i]
-                    af = min(af + af0, max_af)
+                    af = min(af + start_af, max_af)
                 if low.iloc[i - 1] < sar.iloc[i]:
                     sar.iloc[i] = low.iloc[i - 1]
                 if low.iloc[i - 2] < sar.iloc[i]:
@@ -66,7 +67,7 @@ def psar(high, low, close=None, af=None, max_af=None, offset=None, **kwargs):
             else:
                 if low.iloc[i] < low_point:
                     low_point = low.iloc[i]
-                    af = min(af + af0, max_af)
+                    af = min(af + start_af, max_af)
                 if high.iloc[i - 1] > sar.iloc[i]:
                     sar.iloc[i] = high.iloc[i - 1]
                 if high.iloc[i - 2] > sar.iloc[i]:
@@ -121,13 +122,13 @@ Source:
 
 Calculation:
     Default Inputs:
-        af=0.02
-        max_af=0.2
+        af0=0.02, af=0.02, max_af=0.2
 
 Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series, optional): Series of 'close's. Optional
+    af0 (float): Initial Acceleration Factor. Default: 0.02
     af (float): Acceleration Factor. Default: 0.02
     max_af (float): Maximum Acceleration Factor. Default: 0.2
     offset (int): How many periods to offset the result. Default: 0
