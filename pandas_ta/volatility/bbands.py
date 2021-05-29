@@ -21,7 +21,7 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
     # Calculate Result
     if Imports["talib"]:
         from talib import BBANDS
-        lower, mid, upper = BBANDS(close, length)
+        upper, mid, lower = BBANDS(close, length)
     else:
         standard_deviation = stdev(close=close, length=length, ddof=ddof)
         deviations = std * standard_deviation
