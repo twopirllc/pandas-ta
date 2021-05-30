@@ -3,6 +3,7 @@ name = "pandas_ta"
 .. moduleauthor:: Kevin Johnson
 """
 from importlib.util import find_spec
+from pathlib import Path
 from pkg_resources import get_distribution, DistributionNotFound
 import os.path
 
@@ -10,16 +11,14 @@ import os.path
 _dist = get_distribution("pandas_ta")
 try:
     # Normalize case for Windows systems
-    dist_loc = os.path.normcase(_dist.location)
-    here = os.path.normcase(__file__)
-    if not here.startswith(os.path.join(dist_loc, "pandas_ta")):
+    here = Path(_dist.location) / __file__
+    if not here.exists():
         # not installed, but there is another version that *is*
         raise DistributionNotFound
 except DistributionNotFound:
     __version__ = "Please install this project with setup.py"
 
 version = __version__ = _dist.version
-
 
 Imports = {
     "alphaVantage-api": find_spec("alphaVantageAPI") is not None,

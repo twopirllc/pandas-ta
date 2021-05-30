@@ -6,7 +6,7 @@ from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, slope_length=None, offset=None, **kwargs):
+def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
     """Indicator: Archer Moving Averages Trends (AMAT)"""
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 8
@@ -42,12 +42,12 @@ def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, slope_len
 
     # Prepare DataFrame to return
     amatdf = DataFrame({
-        f"AMAT{mamode[0]}_{mas_long.name}": mas_long,
-        f"AMAT{mamode[0]}_{mas_short.name}": mas_short
+        f"AMAT{mamode[0]}_LR_{fast}_{slow}_{lookback}": mas_long,
+        f"AMAT{mamode[0]}_SR_{fast}_{slow}_{lookback}": mas_short
     })
 
     # Name and Categorize it
-    amatdf.name = f"AMAT_{mamode.upper()}_{fast}_{slow}_{lookback}"
+    amatdf.name = f"AMAT{mamode[0]}_{fast}_{slow}_{lookback}"
     amatdf.category = "trend"
 
     return amatdf

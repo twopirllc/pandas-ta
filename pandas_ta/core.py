@@ -629,6 +629,8 @@ class AnalysisIndicators(BasePandasObject):
             verbose (bool): Provide some additional insight on the progress of
                 the strategy() execution. Default: False
         """
+        # If True, it returns the resultant DataFrame. Default: False
+        returns = kwargs.pop("returns", False)
         # cpus = cpu_count()
         # Ensure indicators are appended to the DataFrame
         kwargs["append"] = True
@@ -788,6 +790,9 @@ class AnalysisIndicators(BasePandasObject):
             print(f"[i] Last Run: {self._last_run}")
         if timed:
             print(f"[i] Runtime: {final_time(stime)}")
+
+        if returns: return self._df
+
 
     def ticker(self, ticker: str, **kwargs):
         """ticker

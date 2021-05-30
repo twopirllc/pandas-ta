@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def tsignals(trend, asbool=None, trend_reset=0, trade_offset=None, offset=None, **kwargs):
+def tsignals(trend, asbool=None, trend_reset=0, trade_offset=None, drift=None, offset=None, **kwargs):
     """Indicator: Trend Signals"""
     # Validate Arguments
     trend = verify_series(trend)
@@ -11,11 +11,12 @@ def tsignals(trend, asbool=None, trend_reset=0, trade_offset=None, offset=None, 
     trend_reset = int(trend_reset) if trend_reset and isinstance(trend_reset, int) else 0
     if trade_offset !=0:
         trade_offset = int(trade_offset) if trade_offset and isinstance(trade_offset, int) else 0
+    drift = get_drift(drift)
     offset = get_offset(offset)
 
     # Calculate Result
     trends = trend.astype(int)
-    trades = trends.diff().shift(trade_offset).fillna(0).astype(int)
+    trades = trends.diff(drift).shift(trade_offset).fillna(0).astype(int)
     entries = (trades > 0).astype(int)
     exits = (trades < 0).abs().astype(int)
 
@@ -68,7 +69,7 @@ Sources: Kevin Johnson
 
 Calculation:
     Default Inputs:
-        asbool=False, trend_reset=0, trade_offset=0
+        asbool=False, trend_reset=0, trade_offset=0, drift=1
 
     trades = trends.diff().shift(trade_offset).fillna(0).astype(int)
     entries = (trades > 0).astype(int)
@@ -83,6 +84,7 @@ Args:
     trend_reset (value): Value used to identify if a trend has ended. Default: 0
     trade_offset (value): Value used shift the trade entries/exits Use 1 for
         backtesting and 0 for live. Default: 0
+    drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

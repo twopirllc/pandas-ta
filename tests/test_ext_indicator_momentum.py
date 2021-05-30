@@ -217,7 +217,9 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-2:]), ["STOCHRSIk_14_14_3_3", "STOCHRSId_14_14_3_3"])
 
+    @skip
     def test_td_seq_ext(self):
+        """TS Sequential DataFrame: Working but SLOW implementation"""
         self.data.ta.td_seq(show_all=False, append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-2:]), ["TD_SEQ_UP", "TD_SEQ_DN"])

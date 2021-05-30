@@ -30,7 +30,7 @@ def zscore(close, length=None, std=None, offset=None, **kwargs):
         zscore.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name & Category
-    zscore.name = f"Z_{length}"
+    zscore.name = f"ZS_{length}"
     zscore.category = "statistics"
 
     return zscore

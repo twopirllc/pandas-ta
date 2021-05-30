@@ -52,7 +52,7 @@ class TestTrend(TestCase):
     def test_amat(self):
         result = pandas_ta.amat(self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "AMAT_EMA_8_21_2")
+        self.assertEqual(result.name, "AMATe_8_21_2")
 
     def test_aroon(self):
         result = pandas_ta.aroon(self.high, self.low)

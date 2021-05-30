@@ -97,4 +97,4 @@ class TestStatistics(TestCase):
     def test_zscore(self):
         result = pandas_ta.zscore(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "Z_30")
+        self.assertEqual(result.name, "ZS_30")

@@ -195,7 +195,7 @@ class TestStrategyMethods(TestCase):
             "AMAT Log Returns",  # description
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed, ordered=True)
-        self.data.ta.tsignals(trend=self.data["AMATe_LR_2"], append=True)
+        self.data.ta.tsignals(trend=self.data["AMATe_LR_20_50_2"], append=True)
         self.assertEqual(len(self.data.columns), 13)
 
     # @skip
