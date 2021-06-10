@@ -887,7 +887,7 @@ result = ta.cagr(df.close)
 <br/>
 
 ## Backtesting with **vectorbt**
-For **easier** integration with **vectorbt**'s Portfolio ```from_signals``` method, the ```ta.trend_return``` method has been replaced with ```ta.tsignals``` method to simplify the generation of trading signals. For a comprehensive example, see the example Jupyter Notebook [VectorBT Backtest with Pandas TA](https://github.com/twopirllc/pandas-ta/blob/master/examples/VectorBT_Backtest_with_Pandas_TA.ipynb.ipynb) in the examples directory.
+For **easier** integration with **vectorbt**'s Portfolio ```from_signals``` method, the ```ta.trend_return``` method has been replaced with ```ta.tsignals``` method to simplify the generation of trading signals. For a comprehensive example, see the example Jupyter Notebook [VectorBT Backtest with Pandas TA](https://github.com/twopirllc/pandas-ta/blob/master/examples/VectorBT_Backtest_with_Pandas_TA.ipynb) in the examples directory.
 
 <br/>
 
