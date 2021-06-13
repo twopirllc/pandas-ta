@@ -16,3 +16,4 @@ from .tsignals import tsignals
 from .ttm_trend import ttm_trend
 from .vhf import vhf
 from .vortex import vortex
+from .xsignals import xsignals

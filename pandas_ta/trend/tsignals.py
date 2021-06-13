@@ -65,7 +65,7 @@ Examples:
 ta.tsignals(close > ta.sma(close, 50), asbool=False)
 ta.tsignals(ta.ema(close, 8) > ta.ema(close, 21), asbool=True)
 
-Sources: Kevin Johnson
+Source: Kevin Johnson
 
 Calculation:
     Default Inputs:

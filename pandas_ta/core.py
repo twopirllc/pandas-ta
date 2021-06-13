@@ -652,6 +652,7 @@ class AnalysisIndicators(BasePandasObject):
             "td_seq", # Performance exclusion
             "tsignals",
             "vp",
+            "xsignals",
         ]
 
         # Get the Strategy Name and mode
@@ -1481,6 +1482,13 @@ class AnalysisIndicators(BasePandasObject):
         result = vortex(high=high, low=low, close=close, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def xsignals(self, signal=None, xa=None, xb=None, above=None, long=None, asbool=None, trend_reset=None, trend_offset=None, offset=None, **kwargs):
+        if signal is None:
+            return self._df
+        else:
+            result = xsignals(signal=signal, xa=xa, xb=xb, above=above, long=long, asbool=asbool, trend_offset=trend_offset, trend_reset=trend_reset, offset=offset, **kwargs)
+            return self._post_process(result, **kwargs)
+
     # Utility
     def above(self, asint=True, offset=None, **kwargs):
         a = self._get_column(kwargs.pop("close", "a"))
@@ -1511,7 +1519,8 @@ class AnalysisIndicators(BasePandasObject):
         return self._post_process(result, **kwargs)
 
     def cross_value(self, value=None, above=True, asint=True, offset=None, **kwargs):
-        a = self._get_column(a, f"{a}")
+        a = self._get_column(kwargs.pop("close", "a"))
+        # a = self._get_column(a, f"{a}")
         result = cross_value(series_a=a, value=value, above=above, asint=asint, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 

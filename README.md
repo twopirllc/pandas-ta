@@ -11,7 +11,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 [![PyPi Version](https://img.shields.io/pypi/v/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![Package Status](https://img.shields.io/pypi/status/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta.svg?style=flat)](https://pypistats.org/packages/pandas_ta)
-[![Contributors](https://img.shields.io/badge/contributors-25-orange.svg?style=flat)](#contributors-)
+[![Contributors](https://img.shields.io/badge/contributors-29-orange.svg?style=flat)](#contributors-)
 ![Example Chart](/images/TA_Chart.png)
 
 
@@ -45,7 +45,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Overlap](#overlap-32)
     * [Performance](#performance-3)
     * [Statistics](#statistics-9)
-    * [Trend](#trend-17)
+    * [Trend](#trend-18)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
     * [Volume](#volume-15)
@@ -66,7 +66,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 # **Features**
 
 * Has 130+ indicators and utility functions.
-    * Also Pandas TA will run TA Lib's version. (**BETA**), this includes TA Lib's 63 Chart Patterns.
+    * **BETA** Also Pandas TA will run TA Lib's version, this includes TA Lib's 63 Chart Patterns.
 * Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
 * Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
@@ -98,7 +98,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.86b*
+Best choice! Version: *0.2.87b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -778,7 +778,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | ![Example Z Score](/images/SPY_ZScore.png) |
 <br/>
 
-### **Trend** (17)
+### **Trend** (18)
 
 * _Average Directional Movement Index_: **adx**
     * Also includes **dmp** and **dmn** in the resultant DataFrame.
@@ -800,6 +800,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _TTM Trend_: **ttm_trend**
 * _Vertical Horizontal Filter_: **vhf**
 * _Vortex_: **vortex**
+* _Cross Signals_: **xsignals**
 
 | _Average Directional Movement Index_ (ADX) |
 |:--------:|
@@ -943,6 +944,7 @@ trading account, or fund. See: ```help(ta.drawdown)```
 * _Candle Patterns_ (**cdl_pattern**) If TA Lib is installed, then all those Candle Patterns are available. See the list and examples above on how to call the patterns. See: ```help(ta.cdl_pattern)```
 * _Candle Z Score_ (**cdl_z**) normalizes OHLC Candles with a rolling Z Score. See: ```help(ta.cdl_z)```
 * _Correlation Trend Indicator_ (**cti**) is an oscillator created by John Ehler in 2020. See: ```help(ta.cti)```
+* _Cross Signals_ (**xsignals**) was created by Kevin Johnson. It is a wrapper of Trade Signals that returns Trends, Trades, Entries and Exits. Cross Signals are commonly used for **bbands**, **rsi**, **zscore** crossing some value either above or below two values at different times. See: ```help(ta.xsignals)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
 * _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price.. See: ```help(ta.kvo)```
 * _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two
