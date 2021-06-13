@@ -98,7 +98,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.87b*
+Best choice! Version: *0.2.88b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -196,7 +196,7 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
+[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [nicoloridulfo](https://github.com/nicoloridulfo) [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
