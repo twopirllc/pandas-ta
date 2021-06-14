@@ -2,6 +2,7 @@
 from numpy import NaN as npNaN
 from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.momentum import dm
 
 
 def psar(high, low, close=None, af0=None, af=None, max_af=None, offset=None, **kwargs):
@@ -9,74 +10,76 @@ def psar(high, low, close=None, af0=None, af=None, max_af=None, offset=None, **k
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)
-    start_af = float(af) if af and af > 0 else 0.02
+    af = float(af) if af and af > 0 else 0.02
+    af0 = float(af0) if af0 and af0 > 0 else af
     max_af = float(max_af) if max_af and max_af > 0 else 0.2
     offset = get_offset(offset)
 
-    # Initialize
-    m = high.shape[0]
-    af0 = start_af if not af0 else float(af0)
-    af = af0
-    bullish = True
-    high_point = high.iloc[0]
-    low_point = low.iloc[0]
+    _dm = dm(high, low, close)
+
+    falling = _dm["-DM_1"].iloc[1] > 0
+    if falling:
+        sar = high.iloc[0]
+        ep = low.iloc[0]
+    else:
+        sar = low.iloc[0]
+        ep = high.iloc[0]
 
     if close is not None:
         close = verify_series(close)
-        sar = close.copy()
-    else:
-        sar = low.copy()
+        sar = close.iloc[0]
 
-    long = Series(npNaN, index=sar.index)
+    long = Series(npNaN, index=high.index)
     short = long.copy()
-    reversal = Series(False, index=sar.index)
+    reversal = Series(False, index=high.index)
     _af = long.copy()
-    _af.iloc[0:2] = af0
+    _af.iloc[0:1] = af0
+
+    m = high.shape[0]
 
     # Calculate Result
-    for i in range(2, m):
-        reverse = False
-        _af.iloc[i] = af
+    for row in range(1, m):
+        HIGH = high.iloc[row]
+        LOW = low.iloc[row]
 
-        if bullish:
-            sar.iloc[i] = sar.iloc[i - 1] + af * (high_point - sar.iloc[i - 1])
+        if falling:
+            new_sar = sar + af * (ep - sar)
+            reverse = HIGH > new_sar
 
-            if low.iloc[i] < sar.iloc[i]:
-                bullish, reverse, af = False, True, af0
-                sar.iloc[i] = high_point
-                low_point = low.iloc[i]
+            if LOW < ep:
+                ep = LOW
+                af = min(af + af0, max_af)
+
+            new_sar = max(high.iloc[row - 1], high.iloc[row - 2], new_sar)
         else:
-            sar.iloc[i] = sar.iloc[i - 1] + af * (low_point - sar.iloc[i - 1])
+            new_sar = sar + af * (ep - sar)
+            reverse = LOW < new_sar
 
-            if high.iloc[i] > sar.iloc[i]:
-                bullish, reverse, af = True, True, af0
-                sar.iloc[i] = low_point
-                high_point = high.iloc[i]
+            if HIGH > ep:
+                ep = HIGH
+                af = min(af + af0, max_af)
 
-        reversal.iloc[i] = reverse
+            new_sar = min(low.iloc[row - 1], low.iloc[row - 2], new_sar)
 
-        if not reverse:
-            if bullish:
-                if high.iloc[i] > high_point:
-                    high_point = high.iloc[i]
-                    af = min(af + start_af, max_af)
-                if low.iloc[i - 1] < sar.iloc[i]:
-                    sar.iloc[i] = low.iloc[i - 1]
-                if low.iloc[i - 2] < sar.iloc[i]:
-                    sar.iloc[i] = low.iloc[i - 2]
+        if reverse:
+            new_sar = ep
+            af = af0
+            falling = not falling
+
+            if falling:
+                ep = LOW
             else:
-                if low.iloc[i] < low_point:
-                    low_point = low.iloc[i]
-                    af = min(af + start_af, max_af)
-                if high.iloc[i - 1] > sar.iloc[i]:
-                    sar.iloc[i] = high.iloc[i - 1]
-                if high.iloc[i - 2] > sar.iloc[i]:
-                    sar.iloc[i] = high.iloc[i - 2]
+                ep = HIGH
 
-        if bullish:
-            long.iloc[i] = sar.iloc[i]
+        sar = new_sar
+
+        if not falling:
+            long.iloc[row] = sar
         else:
-            short.iloc[i] = sar.iloc[i]
+            short.iloc[row] = sar
+
+        _af.iloc[row] = af
+        reversal.iloc[row] = reverse
 
     # Offset
     if offset != 0:
@@ -116,9 +119,6 @@ psar.__doc__ = \
 """Parabolic Stop and Reverse (psar)
 
 Parabolic Stop and Reverse
-
-Source:
-    https://github.com/virtualizedfrog/blog_code/blob/master/PSAR/psar.py
 
 Calculation:
     Default Inputs:
