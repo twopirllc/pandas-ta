@@ -7,11 +7,20 @@
 Pandas TA - A Technical Analysis Library in Python 3
 =================
 
-[![Python Version](https://img.shields.io/pypi/pyversions/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
-[![PyPi Version](https://img.shields.io/pypi/v/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
-[![Package Status](https://img.shields.io/pypi/status/pandas_ta.svg)](https://pypi.org/project/pandas_ta/)
-[![Downloads](https://img.shields.io/pypi/dm/pandas_ta.svg?style=flat)](https://pypistats.org/packages/pandas_ta)
-[![Contributors](https://img.shields.io/badge/contributors-29-orange.svg?style=flat)](#contributors-)
+[![license](https://img.shields.io/github/license/twopirllc/pandas-ta)](#license)
+[![Python Version](https://img.shields.io/pypi/pyversions/pandas-ta?style=flat)](https://pypi.org/project/pandas_ta/)
+[![PyPi Version](https://img.shields.io/pypi/v/pandas-ta?style=flat)](https://pypi.org/project/pandas_ta/)
+[![Package Status](https://img.shields.io/pypi/status/pandas-ta?style=flat)](https://pypi.org/project/pandas_ta/)
+[![Downloads](https://img.shields.io/pypi/dm/pandas_ta?style=flat)](https://pypistats.org/packages/pandas_ta)
+[![Stars](https://img.shields.io/github/stars/twopirllc/pandas-ta?style=flat)](#stars)
+[![Forks](https://img.shields.io/github/forks/twopirllc/pandas-ta?style=flat)](#forks)
+[![Used By](https://img.shields.io/badge/used_by-136-orange.svg?style=flat)](#usedby)
+[![Contributors](https://img.shields.io/github/contributors/twopirllc/pandas-ta?style=flat)](#contributors)
+[![Issues](https://img.shields.io/github/issues-raw/twopirllc/pandas-ta?style=flat)](#issues)
+[![Closed Issues](https://img.shields.io/github/issues-closed-raw/twopirllc/pandas-ta?style=flat)](#closed-issues)
+
+
+
 ![Example Chart](/images/TA_Chart.png)
 
 
