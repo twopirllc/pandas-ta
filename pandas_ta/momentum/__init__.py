@@ -10,6 +10,7 @@ from .cg import cg
 from .cmo import cmo
 from .coppock import coppock
 from .cti import cti
+from .dm import dm
 from .er import er
 from .eri import eri
 from .fisher import fisher

@@ -955,6 +955,12 @@ class AnalysisIndicators(BasePandasObject):
         result = cti(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def dm(self, drift=None, offset=None, **kwargs):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        result = dm(high=high, low=low, drift=drift, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def er(self, length=None, drift=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = er(close=close, length=length, drift=drift, offset=offset, **kwargs)
