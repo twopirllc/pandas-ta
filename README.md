@@ -83,7 +83,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
-* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
+* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/main/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandaTA_Strategy_Examples.ipynb)
 * Potential Data Leaks: **ichimoku** and **dpo**. See indicator list below for details.
 
 <br/>
@@ -183,11 +183,11 @@ Thanks for using **Pandas TA**!
     * Have you read **_this_** document?
     * Are you running the latest version?
         * ```$ pip install -U git+https://github.com/twopirllc/pandas-ta```
-    * Have you tried the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/)?
+    * Have you tried the [Examples](https://github.com/twopirllc/pandas-ta/tree/main/examples/)?
         * Did they help?
         * What is missing?
         * Could you help improve them?
-    * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/master/examples/PandasTA_Strategy_Examples.ipynb) Class**?
+    * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Strategy_Examples.ipynb) Class**?
     * Documentation could _always_ be improved. Can you help contribute?
 
 * ### [Bugs, Indicators or Feature Requests](https://github.com/twopirllc/pandas-ta/issues)
@@ -289,7 +289,7 @@ The _Strategy_ Class is a simple way to name and group your favorite TA Indicato
 * You are using a Chained Strategy when you have the output of one indicator as input into one or more indicators in the same _Strategy_.
 * **Note:** Use the 'prefix' and/or 'suffix' keywords to distinguish the composed indicator from it's default Series.
 
-See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
+See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
 
 Strategy Requirements
 ---------------------
@@ -901,7 +901,7 @@ result = ta.cagr(df.close)
 <br/>
 
 ## Backtesting with **vectorbt**
-For **easier** integration with **vectorbt**'s Portfolio ```from_signals``` method, the ```ta.trend_return``` method has been replaced with ```ta.tsignals``` method to simplify the generation of trading signals. For a comprehensive example, see the example Jupyter Notebook [VectorBT Backtest with Pandas TA](https://github.com/twopirllc/pandas-ta/blob/master/examples/VectorBT_Backtest_with_Pandas_TA.ipynb) in the examples directory.
+For **easier** integration with **vectorbt**'s Portfolio ```from_signals``` method, the ```ta.trend_return``` method has been replaced with ```ta.tsignals``` method to simplify the generation of trading signals. For a comprehensive example, see the example Jupyter Notebook [VectorBT Backtest with Pandas TA](https://github.com/twopirllc/pandas-ta/blob/main/examples/VectorBT_Backtest_with_Pandas_TA.ipynb) in the examples directory.
 
 <br/>
 
@@ -940,7 +940,7 @@ print(pf.returns_stats())
 * If a **TA Lib** is already installed, Pandas TA will run TA Lib's version. (**BETA**)
 * Some indicators have had their ```mamode``` _kwarg_ updated with more _moving average_ choices with the **Moving Average Utility** function ```ta.ma()```. For simplicity, all _choices_ are single source _moving averages_. This is primarily an internal utility used by indicators that have a ```mamode``` _kwarg_. This includes indicators: _accbands_, _amat_, _aobv_, _atr_, _bbands_, _bias_, _efi_, _hilo_, _kc_, _natr_, _qqe_, _rvi_, and _thermo_; the default ```mamode``` parameters have not changed. However, ```ta.ma()``` can be used by the user as well if needed. For more information: ```help(ta.ma)```
     * **Moving Average Choices**: dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma.
-* An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/master/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
+* An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/main/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
 * _Linear Regression_ (**linear_regression**) is a new utility method for Simple Linear Regression using _Numpy_ or _Scikit Learn_'s implementation.
 * Added utility/convience function, ```to_utc```, to convert the DataFrame index to UTC. See: ```help(ta.to_utc)``` **Now** as a Pandas TA DataFrame Property to easily convert the DataFrame index to UTC.
 
