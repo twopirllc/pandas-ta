@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import NaN as npNaN
+from numpy import nan as npNaN
 from pandas import DataFrame
 from .tsignals import tsignals
 from pandas_ta.utils._signals import cross_value

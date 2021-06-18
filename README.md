@@ -14,7 +14,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta?style=flat)](https://pypistats.org/packages/pandas_ta)
 [![Stars](https://img.shields.io/github/stars/twopirllc/pandas-ta?style=flat)](#stars)
 [![Forks](https://img.shields.io/github/forks/twopirllc/pandas-ta?style=flat)](#forks)
-[![Used By](https://img.shields.io/badge/used_by-136-orange.svg?style=flat)](#usedby)
+[![Used By](https://img.shields.io/badge/used_by-138-orange.svg?style=flat)](#usedby)
 [![Contributors](https://img.shields.io/github/contributors/twopirllc/pandas-ta?style=flat)](#contributors)
 [![Issues](https://img.shields.io/github/issues-raw/twopirllc/pandas-ta?style=flat)](#issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/twopirllc/pandas-ta?style=flat)](#closed-issues)
@@ -43,6 +43,9 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Help](#help)
 * [Issues and Contributions](#issues-and-contributions)
 * [Programming Conventions](#programming-conventions)
+    * [Standard](#standard)
+    * [Pandas TA DataFrame Extension](#pandas-ta-dataframe-extension)
+    * [Pandas TA Strategy](#pandas-ta-strategy)
 * [Pandas TA Strategies](#pandas-ta-strategies)
     * [Types of Strategies](#types-of-strategies)
 * [DataFrame Properties](#dataframe-properties)
@@ -50,7 +53,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-64)
     * [Cycles](#cycles-1)
-    * [Momentum](#momentum-39)
+    * [Momentum](#momentum-40)
     * [Overlap](#overlap-32)
     * [Performance](#performance-3)
     * [Statistics](#statistics-9)
@@ -107,7 +110,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.88b*
+Best choice! Version: *0.2.89b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -195,7 +198,7 @@ Thanks for using **Pandas TA**!
         * The indicator does not match another website, library, broker platform, language, et al.
             * Do you have correlation analysis to back your claim?
             * Can you contribute?
-    * You will be asked to fill out an Issue even if you email my personal email address.
+    * You **will** be asked to fill out an Issue even if you email my personally.
 
 
 <br/>
@@ -203,9 +206,9 @@ Thanks for using **Pandas TA**!
 **Contributors**
 ================
 
-_Thank you for your contributions!_
+_Thank you for your contributions!_ 
 
-[alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [nicoloridulfo](https://github.com/nicoloridulfo) [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
+[AbyssAlora](https://github.com/AbyssAlora) | [alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [nicoloridulfo](https://github.com/nicoloridulfo) [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
@@ -661,7 +664,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Momentum** (39)
+### **Momentum** (40)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Bias_: **bias**
@@ -674,6 +677,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _Coppock Curve_: **coppock**
 * _Correlation Trend Indicator_: **cti**
     * A wrapper for ```ta.linreg(series, r=True)```
+* _Directional Movement_: **dm**
 * _Efficiency Ratio_: **er**
 * _Elder Ray Index_: **eri**
 * _Fisher Transform_: **fisher**
@@ -725,7 +729,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _Hull Exponential Moving Average_: **hma**
 * _Holt-Winter Moving Average_: **hwma**
 * _Ichimoku Kinkō Hyō_: **ichimoku**
-    * Use: help(ta.ichimoku). Returns two DataFrames.
+    * Returns two DataFrames. For more information: ```help(ta.ichimoku)```.
     * Drop the Chikou Span Column, the final column of the first resultant DataFrame, remove potential data leak.
 * _Kaufman's Adaptive Moving Average_: **kama**
 * _Linear Regression_: **linreg**
@@ -942,7 +946,7 @@ print(pf.returns_stats())
 
 <br />
 
-## **Breaking Indicators**
+## **Breaking / Depreciated Indicators**
 * _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See: ```help(ta.tsignals)```
 
 <br/>
@@ -954,10 +958,10 @@ trading account, or fund. See: ```help(ta.drawdown)```
 * _Candle Z Score_ (**cdl_z**) normalizes OHLC Candles with a rolling Z Score. See: ```help(ta.cdl_z)```
 * _Correlation Trend Indicator_ (**cti**) is an oscillator created by John Ehler in 2020. See: ```help(ta.cti)```
 * _Cross Signals_ (**xsignals**) was created by Kevin Johnson. It is a wrapper of Trade Signals that returns Trends, Trades, Entries and Exits. Cross Signals are commonly used for **bbands**, **rsi**, **zscore** crossing some value either above or below two values at different times. See: ```help(ta.xsignals)```
+* _Directional Movement_ (**dm**) developed by J. Welles Wilder in 1978 attempts to determine which direction the price of an asset is moving. See: ```help(ta.dm)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
 * _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price.. See: ```help(ta.kvo)```
-* _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two
-cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)```
+* _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See: ```help(ta.td_seq)```
 * _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets.. See: ```help(ta.vhf)```
 
@@ -972,7 +976,7 @@ cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)
 * _Chande Kroll Stop_ (**cksp**): Added ```tvmode``` with default ```True```. When ```tvmode=False```, **cksp** implements “The New Technical Trader” with default values. See ```help(ta.cksp)```.
 * _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.decreasing)```.
 * _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.increasing)```.
-* _Parabolic Stop and Reverse_ (**psar**): New argument ```af0``` to initialize the Acceleration Factor. ```help(ta.psar)```.
+* _Parabolic Stop and Reverse_ (**psar**): Bug fix and adjustment to match TradingView's ```sar```. New argument ```af0``` to initialize the Acceleration Factor. ```help(ta.psar)```.
 * _Volume Weighted Average Price_ (**vwap**): Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex
 * _Z Score_ (**zscore**): Changed return column name from ```Z_length``` to ```ZS_length```.
 

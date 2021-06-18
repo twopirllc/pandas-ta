@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import NaN as npNaN
+from numpy import nan as npNaN
 from pandas import DataFrame
 from pandas_ta.overlap import hl2
 from pandas_ta.volatility import atr

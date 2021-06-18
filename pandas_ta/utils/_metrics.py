@@ -2,7 +2,7 @@
 from typing import Tuple
 
 from numpy import log as npLog
-from numpy import NaN as npNaN
+from numpy import nan as npNaN
 from numpy import sqrt as npSqrt
 from pandas import Series, Timedelta
 

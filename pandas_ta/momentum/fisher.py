@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import log as nplog
-from numpy import NaN as npNaN
+from numpy import nan as npNaN
 from pandas import DataFrame, Series
 from pandas_ta.overlap import ema, hl2
 from pandas_ta.utils import get_offset, high_low_range, verify_series, zero

@@ -159,6 +159,29 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "ER_10")
 
+    def test_dm(self):
+        result = pandas_ta.dm(self.high, self.low)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "DM_14")
+
+        try:
+            expected_pos = tal.PLUS_DM(self.high, self.low)
+            expected_neg = tal.MINUS_DM(self.high, self.low)
+            expecteddf = DataFrame({"DMP_14": expected_pos, "DMN_14": expected_neg})
+            pdt.assert_frame_equal(result, expecteddf)
+        except AssertionError as ae:
+            try:
+                dmp = pandas_ta.utils.df_error_analysis(result.iloc[:,0], expecteddf.iloc[:,0], col=CORRELATION)
+                self.assertGreater(dmp, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)
+
+            try:
+                dmn = pandas_ta.utils.df_error_analysis(result.iloc[:,1], expecteddf.iloc[:,1], col=CORRELATION)
+                self.assertGreater(dmn, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)
+
     def test_eri(self):
         result = pandas_ta.eri(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)

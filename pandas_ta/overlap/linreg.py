@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import array as npArray
 from numpy import arctan as npAtan
-from numpy import NaN as npNaN
+from numpy import nan as npNaN
 from numpy import pi as npPi
 from numpy.lib.stride_tricks import sliding_window_view
 from pandas import Series

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import cos as npCos
 from numpy import exp as npExp
-from numpy import NaN as npNaN
+from numpy import nan as npNaN
 from numpy import pi as npPi
 from numpy import sin as npSin
 from numpy import sqrt as npSqrt

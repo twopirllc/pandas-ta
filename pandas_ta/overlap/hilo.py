@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import NaN as npNaN
+from numpy import nan as npNaN
 from pandas import DataFrame, Series
 from .ma import ma
 from pandas_ta.utils import get_offset, verify_series

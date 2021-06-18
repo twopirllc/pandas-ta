@@ -4,7 +4,7 @@ from pathlib import Path
 from sys import float_info as sflt
 
 from numpy import argmax, argmin
-from numpy import NaN as npNaN
+from numpy import nan as npNaN
 from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
 
