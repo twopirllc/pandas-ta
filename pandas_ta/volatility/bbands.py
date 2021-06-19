@@ -3,7 +3,7 @@ from pandas import DataFrame
 from pandas_ta import Imports
 from pandas_ta.overlap import ma
 from pandas_ta.statistics import stdev
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwargs):
@@ -31,7 +31,9 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
         lower = mid - deviations
         upper = mid + deviations
 
-    bandwidth = 100 * (upper - lower) / mid
+    ulr = non_zero_range(upper, lower)
+    bandwidth = 100 * ulr / mid
+    percent = non_zero_range(close, lower) / ulr
 
     # Offset
     if offset != 0:
@@ -39,6 +41,7 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
         mid = mid.shift(offset)
         upper = upper.shift(offset)
         bandwidth = bandwidth.shift(offset)
+        percent = bandwidth.shift(offset)
 
     # Handle fills
     if "fillna" in kwargs:
@@ -46,24 +49,27 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
         mid.fillna(kwargs["fillna"], inplace=True)
         upper.fillna(kwargs["fillna"], inplace=True)
         bandwidth.fillna(kwargs["fillna"], inplace=True)
+        percent.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         lower.fillna(method=kwargs["fill_method"], inplace=True)
         mid.fillna(method=kwargs["fill_method"], inplace=True)
         upper.fillna(method=kwargs["fill_method"], inplace=True)
         bandwidth.fillna(method=kwargs["fill_method"], inplace=True)
+        percent.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
     lower.name = f"BBL_{length}_{std}"
     mid.name = f"BBM_{length}_{std}"
     upper.name = f"BBU_{length}_{std}"
     bandwidth.name = f"BBB_{length}_{std}"
+    percent.name = f"BBP_{length}_{std}"
     upper.category = lower.category = "volatility"
     mid.category = bandwidth.category = upper.category
 
     # Prepare DataFrame to return
     data = {
         lower.name: lower, mid.name: mid, upper.name: upper,
-        bandwidth.name: bandwidth
+        bandwidth.name: bandwidth, percent.name: percent
     }
     bbandsdf = DataFrame(data)
     bbandsdf.name = f"BBANDS_{length}_{std}"
@@ -75,7 +81,7 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
 bbands.__doc__ = \
 """Bollinger Bands (BBANDS)
 
-A popular volatility indicator.
+A popular volatility indicator by John Bollinger.
 
 Sources:
     https://www.tradingview.com/wiki/Bollinger_Bands_(BB)
@@ -96,6 +102,7 @@ Calculation:
     UPPER = MID + std * stdev
 
     BANDWIDTH = 100 * (UPPER - LOWER) / MID
+    PERCENT = (close - LOWER) / (UPPER - LOWER)
 
 Args:
     close (pd.Series): Series of 'close's
@@ -110,5 +117,5 @@ Kwargs:
     fill_method (value, optional): Type of fill method
 
 Returns:
-    pd.DataFrame: lower, mid, upper, bandwidth columns.
+    pd.DataFrame: lower, mid, upper, bandwidth, and percent columns.
 """
