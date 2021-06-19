@@ -20,7 +20,7 @@ def psar(high, low, close=None, af0=None, af=None, max_af=None, offset=None, **k
         # Not to be confused with ta.falling()
         up = high - high.shift(drift)
         dn = low.shift(drift) - low
-        _dmn = (((dn > up) & (dn > 0)) * dn).apply(zero)[-1]
+        _dmn = (((dn > up) & (dn > 0)) * dn).apply(zero).iloc[-1]
         return _dmn > 0
 
     # Falling if the first NaN -DM is positive
