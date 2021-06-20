@@ -289,7 +289,7 @@ The _Strategy_ Class is a simple way to name and group your favorite TA Indicato
 * You are using a Chained Strategy when you have the output of one indicator as input into one or more indicators in the same _Strategy_.
 * **Note:** Use the 'prefix' and/or 'suffix' keywords to distinguish the composed indicator from it's default Series.
 
-See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
+See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
 
 Strategy Requirements
 ---------------------
