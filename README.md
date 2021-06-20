@@ -71,7 +71,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free!
 * Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
-* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandaTA_Strategy_Examples.ipynb)
+* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/master/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Strategy_Examples.ipynb)
 * Potential Data Leaks: **ichimoku** and **dpo**. See indicator list below for details.
 
 <br/>
@@ -175,7 +175,7 @@ Thanks for using **Pandas TA**!
         * Did they help?
         * What is missing?
         * Could you help improve them?
-    * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/master/examples/PandasTA_Strategy_Examples.ipynb) Class**?
+    * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Strategy_Examples.ipynb) Class**?
     * Documentation could _always_ be improved. Can you help contribute?
 
 * ### [Bugs, Indicators or Feature Requests](https://github.com/twopirllc/pandas-ta/issues)
@@ -277,7 +277,7 @@ The _Strategy_ Class is a simple way to name and group your favorite TA Indicato
 * You are using a Chained Strategy when you have the output of one indicator as input into one or more indicators in the same _Strategy_.
 * **Note:** Use the 'prefix' and/or 'suffix' keywords to distinguish the composed indicator from it's default Series.
 
-See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/tree/master/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
+See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
 
 Strategy Requirements
 ---------------------
