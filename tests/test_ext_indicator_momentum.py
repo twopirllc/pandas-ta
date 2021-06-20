@@ -197,8 +197,7 @@ class TestMomentumExtension(TestCase):
 
         self.data.ta.squeeze(tr=False, append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(
-            list(self.data.columns[-4:]),
+        self.assertEqual(list(self.data.columns[-4:]),
             ["SQZ_ON", "SQZ_OFF", "SQZ_NO", "SQZhlr_20_2.0_20_1.5"]
         )
 

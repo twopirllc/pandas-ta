@@ -1,9 +1,9 @@
 from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
 
-from unittest import TestCase, skip
+from unittest import skip, TestCase
 import pandas.testing as pdt
-from pandas import Series
+from pandas import DataFrame, Series
 
 import talib as tal
 
@@ -78,6 +78,23 @@ class TestStatistics(TestCase):
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+    @skip
+    def test_tos_sdtevall(self):
+        result = pandas_ta.tos_stdevall(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "STDEVALL")
+        self.assertEqual(len(result.columns), 7)
+
+        result = pandas_ta.tos_stdevall(self.close, length=30)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "STDEVALL_30")
+        self.assertEqual(len(result.columns), 7)
+
+        result = pandas_ta.tos_stdevall(self.close, length=30, stds=[1, 2])
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "STDEVALL_30")
+        self.assertEqual(len(result.columns), 5)
 
     def test_variance(self):
         result = pandas_ta.variance(self.close)

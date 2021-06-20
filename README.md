@@ -56,7 +56,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Momentum](#momentum-40)
     * [Overlap](#overlap-32)
     * [Performance](#performance-3)
-    * [Statistics](#statistics-9)
+    * [Statistics](#statistics-10)
     * [Trend](#trend-18)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
@@ -110,7 +110,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.92b*
+Best choice! Version: *0.2.93b*
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
@@ -774,7 +774,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
 <br/>
 
-### **Statistics** (9)
+### **Statistics** (10)
 
 * _Entropy_: **entropy**
 * _Kurtosis_: **kurtosis**
