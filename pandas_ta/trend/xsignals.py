@@ -42,7 +42,7 @@ def xsignals(signal, xa, xb, above:bool=True, long:bool=True, asbool:bool=None, 
     DataFrame({
         f"XS_LONG": df.TS_Trends,
         f"XS_SHORT": 1 - df.TS_Trends
-    }).plot(figsize=(16,1.5), kind="area", stacked=False, color=["green", "red"], alpha=0.4, grid=True)
+    })
 
 
     # Handle fills
