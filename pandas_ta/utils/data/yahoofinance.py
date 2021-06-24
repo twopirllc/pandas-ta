@@ -2,7 +2,7 @@
 from pandas import DataFrame
 from pandas_ta import Imports, RATE, version
 from .._core import _camelCase2Title
-from .._time import ytd_df
+from .._time import ytd
 
 
 def yf(ticker: str, **kwargs):
@@ -280,7 +280,7 @@ def yf(ticker: str, **kwargs):
         if kind in _all + ["recommendations", "rec"]:
             recdf = yfd.recommendations
             if recdf is not None:
-                recdf = ytd_df(recdf)
+                recdf = ytd(recdf)
                 # recdf_grade = recdf["To Grade"].value_counts().T
                 # recdf_grade.name = "Grades"
                 if kind not in _all: print(f"\n{ticker_info['symbol']}")

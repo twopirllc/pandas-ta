@@ -19,7 +19,9 @@ def df_dates(df: DataFrame, dates: Tuple[str, list] = None) -> DataFrame:
 
 def df_month_to_date(df: DataFrame) -> DataFrame:
     """Yields the Month-to-Date (MTD) DataFrame"""
-    return df[df.index >= Timestamp.now().strftime("%Y-%m-01")]
+    in_mtd = df.index >= Timestamp.now().strftime("%Y-%m-01")
+    if any(in_mtd): return df[in_mtd]
+    return df
 
 
 def df_quarter_to_date(df: DataFrame) -> DataFrame:
@@ -27,13 +29,16 @@ def df_quarter_to_date(df: DataFrame) -> DataFrame:
     now = Timestamp.now()
     for m in [1, 4, 7, 10]:
         if now.month <= m:
-            return df[df.index >= datetime(now.year, m, 1).strftime("%Y-%m-01")]
+                in_qtr = df.index >= datetime(now.year, m, 1).strftime("%Y-%m-01")
+                if any(in_qtr): return df[in_qtr]
     return df[df.index >= now.strftime("%Y-%m-01")]
 
 
 def df_year_to_date(df: DataFrame) -> DataFrame:
     """Yields the Year-to-Date (YTD) DataFrame"""
-    return df[df.index >= Timestamp.now().strftime("%Y-01-01")]
+    in_ytd = df.index >= Timestamp.now().strftime("%Y-01-01")
+    if any(in_ytd): return df[in_ytd]
+    return df
 
 
 def final_time(stime: float) -> str:
@@ -105,6 +110,6 @@ def to_utc(df: DataFrame) -> DataFrame:
 
 
 # Aliases
-mtd_df = df_month_to_date
-qtd_df = df_quarter_to_date
-ytd_df = df_year_to_date
+mtd = df_month_to_date
+qtd = df_quarter_to_date
+ytd = df_year_to_date
