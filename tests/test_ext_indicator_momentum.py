@@ -202,6 +202,18 @@ class TestMomentumExtension(TestCase):
             ["SQZ_ON", "SQZ_OFF", "SQZ_NO", "SQZhlr_20_2.0_20_1.5"]
         )
 
+    def test_squeeze_pro_ext(self):
+        self.data.ta.squeeze_pro(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-4:]), ["SQZPRO_ON_NORMAL", "SQZPRO_ON_NARROW", "SQZPRO_OFF", "SQZPRO_NO"])
+
+        self.data.ta.squeeze_pro(tr=False, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(
+            list(self.data.columns[-4:]),
+            ["SQZPRO_ON_NARROW", "SQZPRO_OFF", "SQZPRO_NO", "SQZPROhlr_20_2.0_20_2_1.5_1"]
+        )
+
     def test_stc_ext(self):
         self.data.ta.stc(append=True)
         self.assertIsInstance(self.data, DataFrame)
