@@ -54,7 +54,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-64)
     * [Cycles](#cycles-1)
-    * [Momentum](#momentum-40)
+    * [Momentum](#momentum-41)
     * [Overlap](#overlap-32)
     * [Performance](#performance-3)
     * [Statistics](#statistics-10)
@@ -111,7 +111,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.96b*
+Best choice! Version: *0.2.97b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -210,7 +210,7 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_ 
 
-[AbyssAlora](https://github.com/AbyssAlora) | [alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [bizso09](https://github.com/bizso09) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DannyMartens](https://github.com/DannyMartens) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [FGU1](https://github.com/FGU1) | [ffhirata](https://github.com/ffhirata) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [nicoloridulfo](https://github.com/nicoloridulfo) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
+[AbyssAlora](https://github.com/AbyssAlora) | [alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [bizso09](https://github.com/bizso09) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DannyMartens](https://github.com/DannyMartens) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [FGU1](https://github.com/FGU1) | [ffhirata](https://github.com/ffhirata) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [nicoloridulfo](https://github.com/nicoloridulfo) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein) | [zlpatel](https://github.com/zlpatel)
 
 <br/>
 
@@ -666,7 +666,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Momentum** (40)
+### **Momentum** (41)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Bias_: **bias**
@@ -702,6 +702,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _SMI Ergodic_ **smi**
 * _Squeeze_: **squeeze**
     * Default is John Carter's. Enable Lazybear's with ```lazybear=True```
+* _Squeeze Pro_: **squeeze_pro**
 * _Stochastic Oscillator_: **stoch**
 * _Stochastic RSI_: **stochrsi**
 * _TD Sequential_: **td_seq**
@@ -949,23 +950,24 @@ print(pf.returns_stats())
 <br />
 
 ## **Breaking / Depreciated Indicators**
-* _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See: ```help(ta.tsignals)```
+* _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See ```help(ta.tsignals)```
 
 <br/>
 
 ## **New Indicators**
 * _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
-trading account, or fund. See: ```help(ta.drawdown)```
-* _Candle Patterns_ (**cdl_pattern**) If TA Lib is installed, then all those Candle Patterns are available. See the list and examples above on how to call the patterns. See: ```help(ta.cdl_pattern)```
-* _Candle Z Score_ (**cdl_z**) normalizes OHLC Candles with a rolling Z Score. See: ```help(ta.cdl_z)```
-* _Correlation Trend Indicator_ (**cti**) is an oscillator created by John Ehler in 2020. See: ```help(ta.cti)```
-* _Cross Signals_ (**xsignals**) was created by Kevin Johnson. It is a wrapper of Trade Signals that returns Trends, Trades, Entries and Exits. Cross Signals are commonly used for **bbands**, **rsi**, **zscore** crossing some value either above or below two values at different times. See: ```help(ta.xsignals)```
-* _Directional Movement_ (**dm**) developed by J. Welles Wilder in 1978 attempts to determine which direction the price of an asset is moving. See: ```help(ta.dm)```
+trading account, or fund. See ```help(ta.drawdown)```
+* _Candle Patterns_ (**cdl_pattern**) If TA Lib is installed, then all those Candle Patterns are available. See the list and examples above on how to call the patterns. See ```help(ta.cdl_pattern)```
+* _Candle Z Score_ (**cdl_z**) normalizes OHLC Candles with a rolling Z Score. See ```help(ta.cdl_z)```
+* _Correlation Trend Indicator_ (**cti**) is an oscillator created by John Ehler in 2020. See ```help(ta.cti)```
+* _Cross Signals_ (**xsignals**) was created by Kevin Johnson. It is a wrapper of Trade Signals that returns Trends, Trades, Entries and Exits. Cross Signals are commonly used for **bbands**, **rsi**, **zscore** crossing some value either above or below two values at different times. See ```help(ta.xsignals)```
+* _Directional Movement_ (**dm**) developed by J. Welles Wilder in 1978 attempts to determine which direction the price of an asset is moving. See ```help(ta.dm)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
-* _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price.. See: ```help(ta.kvo)```
-* _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two cascaded stochastic calculations with additional smoothing. See: ```help(ta.stc)```
-* _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See: ```help(ta.td_seq)```
-* _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets.. See: ```help(ta.vhf)```
+* _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price.. See ```help(ta.kvo)```
+* _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two cascaded stochastic calculations with additional smoothing. See ```help(ta.stc)```
+* _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
+* _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
+* _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets.. See ```help(ta.vhf)```
 
 <br/>
 
@@ -973,14 +975,15 @@ trading account, or fund. See: ```help(ta.drawdown)```
 * _ADX_ (**adx**): Added ```mamode``` with default "**RMA**" and with the same ```mamode``` options as TradingView. New argument ```lensig``` so it behaves like TradingView's builtin ADX indicator. See ```help(ta.adx)```.
 * _Archer Moving Averages Trends_ (**amat**): Added ```drift``` argument and more descriptive column names.
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
-* _Bollinger Bands_ (**bbands**): New argument ```ddoff``` to control the Degrees of Freedom. Included BB Percent (BBP) as the final column. Default is 0. See ```help(ta.bbands)```.
+* _Bollinger Bands_ (**bbands**): New argument ```ddoff``` to control the Degrees of Freedom. Also included BB Percent (BBP) as the final column. Default is 0. See ```help(ta.bbands)```.
 * _Choppiness Index_ (**chop**): New argument ```ln``` to use Natural Logarithm (True) instead of the Standard Logarithm (False). Default is False.  See ```help(ta.chop)```.
 * _Chande Kroll Stop_ (**cksp**): Added ```tvmode``` with default ```True```. When ```tvmode=False```, **cksp** implements “The New Technical Trader” with default values. See ```help(ta.cksp)```.
 * _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.decreasing)```.
 * _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.increasing)```.
-* _Parabolic Stop and Reverse_ (**psar**): Bug fix and adjustment to match TradingView's ```sar```. New argument ```af0``` to initialize the Acceleration Factor. ```help(ta.psar)```.
-* _Volume Weighted Average Price_ (**vwap**): Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex
-* _Z Score_ (**zscore**): Changed return column name from ```Z_length``` to ```ZS_length```.
+* _Parabolic Stop and Reverse_ (**psar**): Bug fix and adjustment to match TradingView's ```sar```. New argument ```af0``` to initialize the Acceleration Factor. See ```help(ta.psar)```.
+* _Volume Weighted Moving Average_ (**vwma**): Fixed bug in DataFrame Extension call. See ```help(ta.vwma)```.
+* _Volume Weighted Average Price_ (**vwap**): Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex. See ```help(ta.vwap)```.
+* _Z Score_ (**zscore**): Changed return column name from ```Z_length``` to ```ZS_length```. See ```help(ta.zscore)```.
 
 <br />
 

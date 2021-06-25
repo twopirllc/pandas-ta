@@ -2,7 +2,7 @@
 from numpy import NaN as npNaN
 from pandas import DataFrame
 from pandas_ta.momentum import mom
-from pandas_ta.overlap import ema, linreg, sma
+from pandas_ta.overlap import ema, sma
 from pandas_ta.trend import decreasing, increasing
 from pandas_ta.volatility import bbands, kc
 from pandas_ta.utils import get_offset
@@ -20,6 +20,7 @@ def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, k
     kc_scalar_narrow = float(kc_scalar_narrow) if kc_scalar_narrow and kc_scalar_narrow > 0 else 1
     mom_length = int(mom_length) if mom_length and mom_length > 0 else 12
     mom_smooth = int(mom_smooth) if mom_smooth and mom_smooth > 0 else 6
+
     _length = max(bb_length, kc_length, mom_length, mom_smooth)
     high = verify_series(high, _length)
     low = verify_series(low, _length)
@@ -27,9 +28,8 @@ def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, k
     offset = get_offset(offset)
 
     valid_kc_scaler = kc_scalar_wide > kc_scalar_normal and kc_scalar_normal > kc_scalar_narrow
-    
+
     if not valid_kc_scaler: return
-    
     if high is None or low is None or close is None: return
 
     use_tr = kwargs.setdefault("tr", True)
