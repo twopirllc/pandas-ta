@@ -14,7 +14,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta?style=flat)](https://pypistats.org/packages/pandas_ta)
 [![Stars](https://img.shields.io/github/stars/twopirllc/pandas-ta?style=flat)](#stars)
 [![Forks](https://img.shields.io/github/forks/twopirllc/pandas-ta?style=flat)](#forks)
-[![Used By](https://img.shields.io/badge/used_by-142-orange.svg?style=flat)](#usedby)
+[![Used By](https://img.shields.io/badge/used_by-140-orange.svg?style=flat)](#usedby)
 [![Contributors](https://img.shields.io/github/contributors/twopirllc/pandas-ta?style=flat)](#contributors)
 [![Issues](https://img.shields.io/github/issues-raw/twopirllc/pandas-ta?style=flat)](#issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/twopirllc/pandas-ta?style=flat)](#closed-issues)
@@ -111,7 +111,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.95b*
+Best choice! Version: *0.2.96b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -210,7 +210,7 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_ 
 
-[AbyssAlora](https://github.com/AbyssAlora) | [alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [bizso09](https://github.com/bizso09) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [ffhirata](https://github.com/ffhirata) | [FGU1](https://github.com/FGU1) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [nicoloridulfo](https://github.com/nicoloridulfo) [NkosenhleDuma](https://github.com/NkosenhleDuma) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
+[AbyssAlora](https://github.com/AbyssAlora) | [alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [bizso09](https://github.com/bizso09) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DannyMartens](https://github.com/DannyMartens) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [FGU1](https://github.com/FGU1) | [ffhirata](https://github.com/ffhirata) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [nicoloridulfo](https://github.com/nicoloridulfo) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein)
 
 <br/>
 
