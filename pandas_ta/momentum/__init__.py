@@ -31,6 +31,7 @@ from .rvgi import rvgi
 from .slope import slope
 from .smi import smi
 from .squeeze import squeeze
+from .squeeze_pro import squeeze_pro
 from .stc import stc
 from .stoch import stoch
 from .stochrsi import stochrsi

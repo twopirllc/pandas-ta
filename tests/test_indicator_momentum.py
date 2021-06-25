@@ -377,6 +377,23 @@ class TestMomentum(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "SQZhlr_20_2.0_20_1.5_LB")
 
+    def test_squeeze_pro(self):
+        result = pandas_ta.squeeze_pro(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SQZPRO_20_2.0_20_2_1.5_1")
+
+        result = pandas_ta.squeeze_pro(self.high, self.low, self.close, tr=False)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SQZPROhlr_20_2.0_20_2_1.5_1")
+
+        result = pandas_ta.squeeze_pro(self.high, self.low, self.close, 20, 2, 20, 3, 2, 1)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SQZPRO_20_2.0_20_3.0_2.0_1.0")
+
+        result = pandas_ta.squeeze_pro(self.high, self.low, self.close, 20, 2, 20, 3, 2, 1, tr=False)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "SQZPROhlr_20_2.0_20_3.0_2.0_1.0")
+
     def test_stc(self):
         result = pandas_ta.stc(self.close)
         self.assertIsInstance(result, DataFrame)
