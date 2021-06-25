@@ -1298,7 +1298,7 @@ class AnalysisIndicators(BasePandasObject):
     def vwma(self, volume=None, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
-        result = vwma(close=close, volume=close, length=length, offset=offset, **kwargs)
+        result = vwma(close=close, volume=volume, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def wcp(self, offset=None, **kwargs):
