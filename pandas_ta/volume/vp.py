@@ -18,17 +18,20 @@ def vp(close, volume, width=None, **kwargs):
     # Setup
     signed_price = signed_series(close, initial=1)
     pos_volume = signed_price[signed_price > 0] * volume
+    pos_volume.name = volume.name
     neg_volume = signed_price[signed_price < 0] * -volume
+    neg_volume.name = volume.name
     vp = concat([close, pos_volume, neg_volume], axis=1)
 
-    close_col = 'close'
-    high_price_col = 'high_close'
-    low_price_col = 'low_close'
-    mean_price_col = 'mean_close'
-    pos_volume_col = 'pos_volume'
-    neg_volume_col = 'neg_volume'
-    total_volume_col = 'total_volume'
+    close_col = f"{vp.columns[0]}"
+    high_price_col = f"high_{close_col}"
+    low_price_col = f"low_{close_col}"
+    mean_price_col = f"mean_{close_col}"
 
+    volume_col = f"{vp.columns[1]}"
+    pos_volume_col = f"pos_{volume_col}"
+    neg_volume_col = f"neg_{volume_col}"
+    total_volume_col = f"total_{volume_col}"
     vp.columns = [close_col, pos_volume_col, neg_volume_col]
 
     # sort_close: Sort by close before splitting into ranges. Default: False
