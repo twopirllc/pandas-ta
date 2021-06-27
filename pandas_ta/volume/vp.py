@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import array_split
-from pandas import concat, DataFrame
+from numpy import mean
+from pandas import cut, concat, DataFrame
 from pandas_ta.utils import signed_series, verify_series
 
 
@@ -15,38 +16,45 @@ def vp(close, volume, width=None, **kwargs):
     if close is None or volume is None: return
 
     # Setup
-    signed_volume = signed_series(volume, initial=1)
-    pos_volume = signed_volume[signed_volume > 0] * volume
-    neg_volume = signed_volume[signed_volume < 0] * -volume
+    signed_price = signed_series(close, initial=1)
+    pos_volume = signed_price[signed_price > 0] * volume
+    neg_volume = signed_price[signed_price < 0] * -volume
     vp = concat([close, pos_volume, neg_volume], axis=1)
 
-    close_col = f"{vp.columns[0]}"
-    high_price_col = f"high_{close_col}"
-    low_price_col = f"low_{close_col}"
-    mean_price_col = f"mean_{close_col}"
-    mid_price_col = f"mid_{close_col}"
+    close_col = 'close'
+    high_price_col = 'high_close'
+    low_price_col = 'low_close'
+    mean_price_col = 'mean_close'
+    pos_volume_col = 'pos_volume'
+    neg_volume_col = 'neg_volume'
+    total_volume_col = 'total_volume'
 
-    volume_col = f"{vp.columns[1]}"
-    pos_volume_col = f"pos_{volume_col}"
-    neg_volume_col = f"neg_{volume_col}"
-    total_volume_col = f"total_{volume_col}"
     vp.columns = [close_col, pos_volume_col, neg_volume_col]
 
     # sort_close: Sort by close before splitting into ranges. Default: False
     # If False, it sorts by date index or chronological versus by price
-    if sort_close:
-        vp.sort_values(by=[close_col], inplace=True)
 
-    # Calculate Result
-    vp_ranges = array_split(vp, width)
-    result = ({
-        low_price_col: r[close_col].min(),
-        mean_price_col: r[close_col].mean(),
-        high_price_col: r[close_col].max(),
-        pos_volume_col: r[pos_volume_col].sum(),
-        neg_volume_col: r[neg_volume_col].sum(),
-    } for r in vp_ranges)
-    vpdf = DataFrame(result)
+    if sort_close:
+        vp[mean_price_col] = vp[close_col]
+        vpdf = vp.groupby(cut(vp[close_col], width, include_lowest=True, precision=2)).agg({
+            mean_price_col: mean,
+            pos_volume_col: sum,
+            neg_volume_col: sum,
+        })
+        vpdf[low_price_col] = [x.left for x in vpdf.index]
+        vpdf[high_price_col] = [x.right for x in vpdf.index]
+        vpdf = vpdf.reset_index(drop=True)
+        vpdf = vpdf[[low_price_col, mean_price_col, high_price_col, pos_volume_col, neg_volume_col]]
+    else:
+        vp_ranges = array_split(vp, width)
+        result = ({
+            low_price_col: r[close_col].min(),
+            mean_price_col: r[close_col].mean(),
+            high_price_col: r[close_col].max(),
+            pos_volume_col: r[pos_volume_col].sum(),
+            neg_volume_col: r[neg_volume_col].sum(),
+        } for r in vp_ranges)
+        vpdf = DataFrame(result)
     vpdf[total_volume_col] = vpdf[pos_volume_col] + vpdf[neg_volume_col]
 
     # Handle fills
