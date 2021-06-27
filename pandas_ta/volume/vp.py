@@ -90,8 +90,12 @@ Calculation:
         width=10
 
     vp = pd.concat([close, pos_volume, neg_volume], axis=1)
-    vp_ranges = np.array_split(vp, width)
-    result = ({high_close, low_close, mean_close, neg_volume, pos_volume} foreach range in vp_ranges)
+    if sort_close:
+        vp_ranges = cut(vp[close_col], width)
+        result = ({range_left, mean_close, range_right, pos_volume, neg_volume} foreach range in vp_ranges
+    else:
+        vp_ranges = np.array_split(vp, width)
+        result = ({low_close, mean_close, high_close, pos_volume, neg_volume} foreach range in vp_ranges
     vpdf = pd.DataFrame(result)
     vpdf['total_volume'] = vpdf['pos_volume'] + vpdf['neg_volume']
 
