@@ -80,7 +80,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 * Has 130+ indicators and utility functions.
     * **BETA** Also Pandas TA will run TA Lib's version, this includes TA Lib's 63 Chart Patterns.
-* Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
+* Indicators are tightly correlated with the de facto [TA Lib](https://github.com/mrjbq7/ta-lib) if they share common indicators.
 * Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free! __Conditions permitting__.
 * Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
