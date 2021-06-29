@@ -1019,9 +1019,9 @@ class AnalysisIndicators(BasePandasObject):
         result = pgo(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def ppo(self, fast=None, slow=None, scalar=None, offset=None, **kwargs):
+    def ppo(self, fast=None, slow=None, scalar=None, mamode=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = ppo(close=close, fast=fast, slow=slow, scalar=scalar, offset=offset, **kwargs)
+        result = ppo(close=close, fast=fast, slow=slow, scalar=scalar, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def psl(self, open_=None, length=None, scalar=None, drift=None, offset=None, **kwargs):

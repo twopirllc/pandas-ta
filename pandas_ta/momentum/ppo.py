@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
 from pandas_ta import Imports
+from pandas_ta.overlap import ma
 from pandas_ta.overlap import ema, sma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ppo(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
+def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, offset=None, **kwargs):
     """Indicator: Percentage Price Oscillator (PPO)"""
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     signal = int(signal) if signal and signal > 0 else 9
     scalar = float(scalar) if scalar else 100
+    mamode = mamode if isinstance(mamode, str) else "sma"
     if slow < fast:
         fast, slow = slow, fast
     close = verify_series(close, max(fast, slow, signal))
@@ -24,8 +26,8 @@ def ppo(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kw
         from talib import PPO
         ppo = PPO(close, fast, slow)
     else:
-        fastma = sma(close, length=fast)
-        slowma = sma(close, length=slow)
+        fastma = ma(mamode, close, length=fast)
+        slowma = ma(mamode, close, length=slow)
         ppo = scalar * (fastma - slowma)
         ppo /= slowma
 
@@ -89,6 +91,7 @@ Args:
     slow(int): The long period. Default: 26
     signal(int): The signal period. Default: 9
     scalar (float): How much to magnify. Default: 100
+    mamode (str): Options: 'ema', 'hma', 'rma', 'sma', 'wma'. Default: 'sma'
     offset(int): How many periods to offset the result. Default: 0
 
 Kwargs:
