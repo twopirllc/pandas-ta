@@ -24,7 +24,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 ![Example Chart](/images/TA_Chart.png)
 
 
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas library with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas package with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
 
 
 **Note:** _TA Lib_ must be installed to use **all** the Candlestick Patterns. ```pip install TA-Lib```. If _TA Lib_ is not installed, then only the builtin Candlestick Patterns will be available.
@@ -57,7 +57,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Momentum](#momentum-41)
     * [Overlap](#overlap-32)
     * [Performance](#performance-3)
-    * [Statistics](#statistics-10)
+    * [Statistics](#statistics-11)
     * [Trend](#trend-18)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
@@ -111,7 +111,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.2.98b*
+Best choice! Version: *0.2.99b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -777,7 +777,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
 <br/>
 
-### **Statistics** (10)
+### **Statistics** (11)
 
 * _Entropy_: **entropy**
 * _Kurtosis_: **kurtosis**
@@ -786,6 +786,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Quantile_: **quantile**
 * _Skew_: **skew**
 * _Standard Deviation_: **stdev**
+* _Think or Swim Standard Deviation All_: **tos_stdevall**
 * _Variance_: **variance**
 * _Z Score_: **zscore**
 
@@ -967,6 +968,9 @@ trading account, or fund. See ```help(ta.drawdown)```
 * _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two cascaded stochastic calculations with additional smoothing. See ```help(ta.stc)```
 * _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
+* _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which
+returns the standard deviation of data for the entire plot or for the interval
+of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
 * _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets.. See ```help(ta.vhf)```
 
 <br/>

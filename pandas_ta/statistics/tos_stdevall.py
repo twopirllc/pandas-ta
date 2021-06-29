@@ -18,37 +18,33 @@ def tos_stdevall(close, length=None, stds=None, ddof=None, offset=None, **kwargs
     ddof = int(ddof) if ddof and ddof >= 0 and ddof < length else 1
     offset = get_offset(offset)
 
+    _props = f"TOS_STDEVALL"
     if length is None:
         length = close.size
-        _props = f"STDEVALL"
     else:
-        length = int(length) if length and length > 2 else 30
+        length = int(length) if isinstance(length, int) and length > 2 else 30
         close = close.iloc[-length:]
-        _props = f"STDEVALL_{length}"
+        _props = f"{_props}_{length}"
 
     close = verify_series(close, length)
 
     if close is None: return
 
     # Calculate Result
+    X = src_index = close.index
     if isinstance(close.index, DatetimeIndex):
-        close_ = npArray(close)
-        np_index = npArange(length)
-        m, b = npPolyfit(np_index, close_, 1)
-        lr_ = m * np_index + b
-    else:
-        m, b = npPolyfit(close.index, close, 1)
-        lr_ = m * close.index + b
+        X = npArange(length)
+        close = npArray(close)
 
-    lr = Series(lr_, index=close.index)
-    stdevall = stdev(Series(close), length=length, ddof=ddof)
-    # std = npStd(close, ddof=ddof)
+    m, b = npPolyfit(X, close, 1)
+    lr = Series(m * X + b, index=src_index)
+    stdev = npStd(close, ddof=ddof)
 
     # Name and Categorize it
-    df = DataFrame({f"{_props}_LR": lr}, index=close.index)
+    df = DataFrame({f"{_props}_LR": lr}, index=src_index)
     for i in stds:
-        df[f"{_props}_L_{i}"] = lr - i * stdevall.iloc[-1]
-        df[f"{_props}_U_{i}"] = lr + i * stdevall.iloc[-1]
+        df[f"{_props}_L_{i}"] = lr - i * stdev
+        df[f"{_props}_U_{i}"] = lr + i * stdev
         df[f"{_props}_L_{i}"].name = df[f"{_props}_U_{i}"].name = f"{_props}"
         df[f"{_props}_L_{i}"].category = df[f"{_props}_U_{i}"].category = "statistics"
 
@@ -72,8 +68,6 @@ def tos_stdevall(close, length=None, stds=None, ddof=None, offset=None, **kwargs
 tos_stdevall.__doc__ = \
 """TD Ameritrade's Think or Swim Standard Deviation All (TOS_STDEV)
 
-**UNDER DEVELOPMENT**
-
 A port of TD Ameritrade's Think or Swim Standard Deviation All indicator which
 returns the standard deviation of data for the entire plot or for the interval
 of the last bars defined by the length parameter.
@@ -83,13 +77,21 @@ Sources:
 
 Calculation:
     Default Inputs:
-        length=30
-    VAR = Variance
-    STDEV = variance(close, length).apply(np.sqrt)
+        length=None (All), stds=[1, 2, 3], ddof=1
+    LR = Linear Regression
+    STDEV = Standard Deviation
+
+    LR = LR(close, length)
+    STDEV = STDEV(close, length, ddof)
+    for level in stds:
+        LOWER = LR - level * STDEV
+        UPPER = LR + level * STDEV
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 30
+    length (int): Bars from current bar. Default: None
+    stds (list): List of Standard Deviations in increasing order from the
+                 central Linear Regression line. Default: [1,2,3]
     ddof (int): Delta Degrees of Freedom.
                 The divisor used in calculations is N - ddof,
                 where N represents the number of elements. Default: 1
@@ -100,5 +102,6 @@ Kwargs:
     fill_method (value, optional): Type of fill method
 
 Returns:
-    pd.Series: New feature generated.
+    pd.DataFrame: Central LR, Pairs of Lower and Upper LR Lines based on
+        mulitples of the standard deviation. Default: returns 7 columns.
 """

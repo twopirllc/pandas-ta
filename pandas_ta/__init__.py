@@ -65,8 +65,7 @@ Category = {
     # Statistics
     "statistics": [
         "entropy", "kurtosis", "mad", "median", "quantile", "skew", "stdev",
-        # "tos_stdevall",
-        "variance", "zscore"
+        "tos_stdevall", "variance", "zscore"
     ],
     # Trend
     "trend": [

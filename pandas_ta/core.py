@@ -1372,10 +1372,10 @@ class AnalysisIndicators(BasePandasObject):
         result = stdev(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    # def tos_stdevall(self, length=None, stds=None, offset=None, **kwargs):
-    #     close = self._get_column(kwargs.pop("close", "close"))
-    #     result = tos_stdevall(close=close, length=length, stds=stds, offset=offset, **kwargs)
-    #     return self._post_process(result, **kwargs)
+    def tos_stdevall(self, length=None, stds=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = tos_stdevall(close=close, length=length, stds=stds, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
 
     def variance(self, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
