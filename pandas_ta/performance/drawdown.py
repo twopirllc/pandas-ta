@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-from sys import float_info as sflt
-
 from numpy import log as nplog
 from numpy import seterr
 from pandas import DataFrame
-
 from pandas_ta.utils import get_offset, verify_series
 
 

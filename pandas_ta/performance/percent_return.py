@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 

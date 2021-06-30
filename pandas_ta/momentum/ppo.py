@@ -2,7 +2,6 @@
 from pandas import DataFrame
 from pandas_ta import Imports
 from pandas_ta.overlap import ma
-from pandas_ta.overlap import ema, sma
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -31,7 +30,7 @@ def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, offs
         ppo = scalar * (fastma - slowma)
         ppo /= slowma
 
-    signalma = ema(ppo, length=signal)
+    signalma = ma("ema", ppo, length=signal)
     histogram = ppo - signalma
 
     # Offset

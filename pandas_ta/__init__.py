@@ -5,7 +5,6 @@ name = "pandas_ta"
 from importlib.util import find_spec
 from pathlib import Path
 from pkg_resources import get_distribution, DistributionNotFound
-import os.path
 
 
 _dist = get_distribution("pandas_ta")
