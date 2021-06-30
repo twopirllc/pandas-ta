@@ -400,6 +400,9 @@ class AnalysisIndicators(BasePandasObject):
             df = self._df
             if df is None or result is None: return
             else:
+                if "col_names" in kwargs and not isinstance(kwargs["col_names"], tuple):
+                    kwargs["col_names"] = (kwargs["col_names"],)
+
                 if isinstance(result, pd.DataFrame):
                     # If specified in kwargs, rename the columns.
                     # If not, use the default names.

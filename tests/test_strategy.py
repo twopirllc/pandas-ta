@@ -253,6 +253,7 @@ class TestStrategyMethods(TestCase):
             {"kind": "rsi"},  # 1
             {"kind": "macd"},  # 3
             {"kind": "sma", "length": 50},  # 1
+            {"kind": "sma", "length": 100, "col_names": "sma100"},  # 1
             {"kind": "sma", "length": 200 },  # 1
             {"kind": "bbands", "length": 20},  # 3
             {"kind": "log_return", "cumulative": True},  # 1
