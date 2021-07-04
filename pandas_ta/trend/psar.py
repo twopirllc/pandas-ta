@@ -37,7 +37,7 @@ def psar(high, low, close=None, af0=None, af=None, max_af=None, offset=None, **k
 
     long = Series(npNaN, index=high.index)
     short = long.copy()
-    reversal = Series(False, index=high.index)
+    reversal = Series(0, index=high.index)
     _af = long.copy()
     _af.iloc[0:2] = af0
 
@@ -81,7 +81,7 @@ def psar(high, low, close=None, af0=None, af=None, max_af=None, offset=None, **k
             long.iloc[row] = sar
 
         _af.iloc[row] = af
-        reversal.iloc[row] = reverse
+        reversal.iloc[row] = int(reverse)
 
     # Offset
     if offset != 0:
