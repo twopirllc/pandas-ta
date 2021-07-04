@@ -9,6 +9,8 @@ def dpo(close, length=None, centered=True, offset=None, **kwargs):
     length = int(length) if length and length > 0 else 20
     close = verify_series(close, length)
     offset = get_offset(offset)
+    if not kwargs.get("lookahead", True):
+        centered = False
 
     if close is None: return
 
