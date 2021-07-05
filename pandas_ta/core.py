@@ -4,6 +4,7 @@ from multiprocessing import cpu_count, Pool
 from pathlib import Path
 from time import perf_counter
 from typing import List, Tuple
+from warnings import simplefilter
 
 import pandas as pd
 from numpy import log10 as npLog10
@@ -250,15 +251,15 @@ class AnalysisIndicators(BasePandasObject):
     _time_range = "years"
     _last_run = get_time(_exchange, to_string=True)
 
-    # def __init__(self, pandas_obj):
-    #     # self._validate(pandas_obj)
-    #     self._df = pandas_obj
-    #     self._last_run = get_time(self._exchange, to_string=True)
+    def __init__(self, pandas_obj):
+        self._validate(pandas_obj)
+        self._df = pandas_obj
+        self._last_run = get_time(self._exchange, to_string=True)
 
-    # @staticmethod
-    # def _validate(df: Tuple[pd.DataFrame, pd.Series]):
-    #     if isinstance(df, pd.Series) or isinstance(df, pd.DataFrame):
-    #         raise AttributeError("[X] Must be either a Pandas Series or DataFrame.")
+    @staticmethod
+    def _validate(obj: Tuple[pd.DataFrame, pd.Series]):
+        if not isinstance(obj, pd.DataFrame) and not isinstance(obj, pd.Series):
+            raise AttributeError("[X] Must be either a Pandas Series or DataFrame.")
 
     # DataFrame Behavioral Methods
     def __call__(
@@ -400,8 +401,9 @@ class AnalysisIndicators(BasePandasObject):
             df = self._df
             if df is None or result is None: return
             else:
+                simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
                 if "col_names" in kwargs and not isinstance(kwargs["col_names"], tuple):
-                    kwargs["col_names"] = (kwargs["col_names"],)
+                    kwargs["col_names"] = (kwargs["col_names"],) # Note: tuple(kwargs["col_names"]) doesn't work
 
                 if isinstance(result, pd.DataFrame):
                     # If specified in kwargs, rename the columns.
@@ -761,10 +763,10 @@ class AnalysisIndicators(BasePandasObject):
         else:
             # Without multiprocessing:
             if verbose:
+                _col_msg = f"[i] No mulitproccessing (cores = 0)."
                 if has_col_names:
-                    print(f"[i] No mulitproccessing support for 'col_names' option.")
-                else:
-                    print(f"[i] No mulitproccessing (cores = 0).")
+                    _col_msg = f"[i] No mulitproccessing support for 'col_names' option."
+                print(_col_msg)
 
             if mode["custom"]:
                 if Imports["tqdm"] and verbose:
@@ -784,6 +786,7 @@ class AnalysisIndicators(BasePandasObject):
                 else:
                     for ind in ta:
                         getattr(self, ind)(*tuple(), **kwargs)
+                self._last_run = get_time(self.exchange, to_string=True)
 
         # Apply prefixes/suffixes and appends indicator results to the  DataFrame
         [self._post_process(r, **kwargs) for r in results]
@@ -1196,11 +1199,11 @@ class AnalysisIndicators(BasePandasObject):
         result = kama(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def ichimoku(self, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):
+    def ichimoku(self, tenkan=None, kijun=None, senkou=None, include_chikou=True, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
+        result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, include_chikou=include_chikou, offset=offset, **kwargs)
         self._add_prefix_suffix(result, **kwargs)
         self._add_prefix_suffix(span, **kwargs)
         self._append(result, **kwargs)

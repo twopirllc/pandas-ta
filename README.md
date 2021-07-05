@@ -85,7 +85,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free! __Conditions permitting__.
 * Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
 * Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/main/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandaTA_Strategy_Examples.ipynb)
-* Potential Data Leaks: **ichimoku** and **dpo**. See indicator list below for details.
+* Potential Data Leaks: **ichimoku** and **dpo**. See indicator list below for details. Set ```lookahead=False``` to disable.
 
 <br/>
 
@@ -733,7 +733,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _Holt-Winter Moving Average_: **hwma**
 * _Ichimoku Kinkō Hyō_: **ichimoku**
     * Returns two DataFrames. For more information: ```help(ta.ichimoku)```.
-    * Drop the Chikou Span Column, the final column of the first resultant DataFrame, remove potential data leak.
+    * ```lookahead=False``` drops the Chikou Span Column to prevent potential data leak.
 * _Kaufman's Adaptive Moving Average_: **kama**
 * _Linear Regression_: **linreg**
 * _McGinley Dynamic_: **mcgd**
@@ -807,7 +807,7 @@ Use parameter: cumulative=**True** for cumulative results.
     * Formally: **linear_decay**
 * _Decreasing_: **decreasing**
 * _Detrended Price Oscillator_: **dpo**
-    * Set ```centered=False``` to remove potential data leak.
+    * Set ```lookahead=False``` to disable centering and remove potential data leak.
 * _Increasing_: **increasing**
 * _Long Run_: **long_run**
 * _Parabolic Stop and Reverse_: **psar**
