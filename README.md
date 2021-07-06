@@ -1004,7 +1004,7 @@ of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)``
 
 # **Support**
 
-Feeling generous, like the package or want to see it become more mature package? Please consider:
+Feeling generous, like the package or want to see it become more a mature package? Please consider:
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/twopirllc)
 
