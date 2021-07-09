@@ -3,7 +3,7 @@ from pandas import DataFrame
 from pandas_ta import Imports
 from pandas_ta.overlap import ma
 from pandas_ta.statistics import stdev
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
 def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwargs):
@@ -21,7 +21,7 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
     # Calculate Result
     if Imports["talib"]:
         from talib import BBANDS
-        upper, mid, lower = BBANDS(close, length)
+        upper, mid, lower = BBANDS(close, length, std, std, tal_ma(mamode))
     else:
         standard_deviation = stdev(close=close, length=length, ddof=ddof)
         deviations = std * standard_deviation

@@ -20,7 +20,8 @@ def dm(high, low, length=None, mamode=None, drift=None, offset=None, **kwargs):
 
     if Imports["talib"]:
         from talib import MINUS_DM, PLUS_DM
-        pos, neg = PLUS_DM(high, low), MINUS_DM(high, low)
+        pos = PLUS_DM(high, low, length)
+        neg = MINUS_DM(high, low, length)
     else:
         up = high - high.shift(drift)
         dn = low.shift(drift) - low

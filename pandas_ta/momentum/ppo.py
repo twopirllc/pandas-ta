@@ -2,7 +2,7 @@
 from pandas import DataFrame
 from pandas_ta import Imports
 from pandas_ta.overlap import ma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
 def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, offset=None, **kwargs):
@@ -23,7 +23,7 @@ def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, offs
     # Calculate Result
     if Imports["talib"]:
         from talib import PPO
-        ppo = PPO(close, fast, slow)
+        ppo = PPO(close, fast, slow, tal_ma(mamode))
     else:
         fastma = ma(mamode, close, length=fast)
         slowma = ma(mamode, close, length=slow)

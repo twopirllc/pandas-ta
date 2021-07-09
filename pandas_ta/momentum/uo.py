@@ -25,7 +25,7 @@ def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_
     # Calculate Result
     if Imports["talib"]:
         from talib import ULTOSC
-        uo = ULTOSC(high, low, close)
+        uo = ULTOSC(high, low, close, fast, medium, slow)
     else:
         tdf = DataFrame({
             "high": high,

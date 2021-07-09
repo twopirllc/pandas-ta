@@ -21,7 +21,7 @@ def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs
     # Calculate Result
     if Imports["talib"]:
         from talib import MFI
-        mfi = MFI(high, low, close, volume)
+        mfi = MFI(high, low, close, volume, length)
     else:
         typical_price = hlc3(high=high, low=low, close=close)
         raw_money_flow = typical_price * volume

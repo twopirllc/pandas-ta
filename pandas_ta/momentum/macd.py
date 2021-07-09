@@ -21,7 +21,7 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
     # Calculate Result
     if Imports["talib"]:
         from talib import MACD
-        macd, signalma, histogram = MACD(close, fast, slow)
+        macd, signalma, histogram = MACD(close, fast, slow, signal)
     else:
         fastma = ema(close, length=fast)
         slowma = ema(close, length=slow)

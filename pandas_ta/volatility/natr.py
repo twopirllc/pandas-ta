@@ -21,7 +21,7 @@ def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, of
     # Calculate Result
     if Imports["talib"]:
         from talib import NATR
-        natr = NATR(high, low, close)
+        natr = NATR(high, low, close, length)
     else:
         natr = scalar / close
         natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)

@@ -23,7 +23,7 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, offset=Non
     # Calculate Result
     if Imports["talib"]:
         from talib import ADOSC
-        adosc = ADOSC(high, low, close, volume)
+        adosc = ADOSC(high, low, close, volume, fast, slow)
     else:
         ad_ = ad(high=high, low=low, close=close, volume=volume, open_=open_)
         fast_ad = ema(close=ad_, length=fast, **kwargs)

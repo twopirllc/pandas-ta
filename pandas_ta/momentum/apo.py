@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
-from pandas_ta.overlap import sma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.overlap import ma
+from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
-def apo(close, fast=None, slow=None, offset=None, **kwargs):
+def apo(close, fast=None, slow=None, mamode=None, offset=None, **kwargs):
     """Indicator: Absolute Price Oscillator (APO)"""
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 12
@@ -12,6 +12,7 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     if slow < fast:
         fast, slow = slow, fast
     close = verify_series(close, max(fast, slow))
+    mamode = mamode if isinstance(mamode, str) else "sma"
     offset = get_offset(offset)
 
     if close is None: return
@@ -19,10 +20,10 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     # Calculate Result
     if Imports["talib"]:
         from talib import APO
-        apo = APO(close, fast, slow)
+        apo = APO(close, fast, slow, tal_ma(mamode))
     else:
-        fastma = sma(close, length=fast)
-        slowma = sma(close, length=slow)
+        fastma = ma(mamode, close, length=fast)
+        slowma = ma(mamode, close, length=slow)
         apo = fastma - slowma
 
     # Offset

@@ -17,7 +17,7 @@ def t3(close, length=None, a=None, offset=None, **kwargs):
     # Calculate Result
     if Imports["talib"]:
         from talib import T3
-        t3 = T3(close, length)
+        t3 = T3(close, length, a)
     else:
         c1 = -a * a**2
         c2 = 3 * a**2 + 3 * a**3
