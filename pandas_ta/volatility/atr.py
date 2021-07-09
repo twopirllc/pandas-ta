@@ -21,7 +21,7 @@ def atr(high, low, close, length=None, mamode=None, drift=None, offset=None, **k
     # Calculate Result
     if Imports["talib"]:
         from talib import ATR
-        atr = ATR(high, low, close)
+        atr = ATR(high, low, close, length)
     else:
         tr = true_range(high=high, low=low, close=close, drift=drift)
         atr = ma(mamode, tr, length=length)
