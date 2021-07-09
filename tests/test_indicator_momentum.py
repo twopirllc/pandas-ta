@@ -144,6 +144,13 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
+    def test_cmo_no_talib(self):
+        result = pandas_ta.cmo(self.close, talib=False)
+
+        talib_result = tal.CMO(self.close)
+        corr = pandas_ta.utils.df_error_analysis(result, talib_result, col=CORRELATION)
+        self.assertLess(corr, CORRELATION_THRESHOLD)
+
     def test_coppock(self):
         result = pandas_ta.coppock(self.close)
         self.assertIsInstance(result, Series)
