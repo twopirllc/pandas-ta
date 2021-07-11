@@ -243,6 +243,11 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result.iloc[:, 2], CORRELATION, ex, newline=False)
 
+    def test_macdas(self):
+        result = pandas_ta.macd(self.close, asmode=True)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "MACDAS_12_26_9")
+
     def test_mom(self):
         result = pandas_ta.mom(self.close)
         self.assertIsInstance(result, Series)

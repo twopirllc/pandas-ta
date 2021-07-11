@@ -18,6 +18,8 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
 
     if close is None: return
 
+    as_mode = kwargs.setdefault("asmode", False)
+
     # Calculate Result
     if Imports["talib"]:
         from talib import MACD
@@ -27,6 +29,11 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
         slowma = ema(close, length=slow)
 
         macd = fastma - slowma
+        signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal)
+        histogram = macd - signalma
+
+    if as_mode:
+        macd = macd - signalma
         signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal)
         histogram = macd - signalma
 
@@ -47,16 +54,17 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
         signalma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
+    _asmode = "AS" if as_mode else ""
     _props = f"_{fast}_{slow}_{signal}"
-    macd.name = f"MACD{_props}"
-    histogram.name = f"MACDh{_props}"
-    signalma.name = f"MACDs{_props}"
+    macd.name = f"MACD{_asmode}{_props}"
+    histogram.name = f"MACD{_asmode}h{_props}"
+    signalma.name = f"MACD{_asmode}s{_props}"
     macd.category = histogram.category = signalma.category = "momentum"
 
     # Prepare DataFrame to return
     data = {macd.name: macd, histogram.name: histogram, signalma.name: signalma}
     df = DataFrame(data)
-    df.name = f"MACD{_props}"
+    df.name = f"MACD{_asmode}{_props}"
     df.category = macd.category
 
     signal_indicators = kwargs.pop("signal_indicators", False)
@@ -105,6 +113,7 @@ the difference of MACD and Signal.
 
 Sources:
     https://www.tradingview.com/wiki/MACD_(Moving_Average_Convergence/Divergence)
+    AS Mode: https://tr.tradingview.com/script/YFlKXHnP/
 
 Calculation:
     Default Inputs:
@@ -114,6 +123,11 @@ Calculation:
     Signal = EMA(MACD, signal)
     Histogram = MACD - Signal
 
+    if asmode:
+        MACD = MACD - Signal
+        Signal = EMA(MACD, signal)
+        Histogram = MACD - Signal
+
 Args:
     close (pd.Series): Series of 'close's
     fast (int): The short period. Default: 12
@@ -122,6 +136,8 @@ Args:
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
+    asmode (value, optional): When True, enables AS version of MACD.
+        Default: False
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

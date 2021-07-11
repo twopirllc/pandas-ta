@@ -17,7 +17,7 @@ def nvi(close, volume, length=None, initial=None, offset=None, **kwargs):
 
     # Calculate Result
     roc_ = roc(close=close, length=length)
-    signed_volume = signed_series(volume, initial=1)
+    signed_volume = signed_series(volume, 1)
     nvi = signed_volume[signed_volume < 0].abs() * roc_
     nvi.fillna(0, inplace=True)
     nvi.iloc[0] = initial

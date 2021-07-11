@@ -11,10 +11,9 @@ def pvol(close, volume, offset=None, **kwargs):
     signed = kwargs.pop("signed", False)
 
     # Calculate Result
+    pvol = close * volume
     if signed:
-        pvol = signed_series(close, 1) * close * volume
-    else:
-        pvol = close * volume
+         pvol *= signed_series(close, 1)
 
     # Offset
     if offset != 0:

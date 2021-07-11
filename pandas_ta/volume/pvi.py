@@ -16,9 +16,8 @@ def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
     if close is None or volume is None: return
 
     # Calculate Result
-    roc_ = roc(close=close, length=length)
-    signed_volume = signed_series(volume, initial=1)
-    pvi = signed_volume[signed_volume > 0].abs() * roc_
+    signed_volume = signed_series(volume, 1)
+    pvi = roc(close=close, length=length) * signed_volume[signed_volume > 0].abs()
     pvi.fillna(0, inplace=True)
     pvi.iloc[0] = initial
     pvi = pvi.cumsum()
