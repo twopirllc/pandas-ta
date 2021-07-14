@@ -12,11 +12,12 @@ def cmo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+    talib_mode = kwargs.pop("talib", True)
 
     if close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if talib_mode and Imports["talib"]:
         from talib import CMO
         cmo = CMO(close, length)
     else:
@@ -24,8 +25,7 @@ def cmo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
         positive = mom.copy().clip(lower=0)
         negative = mom.copy().clip(upper=0).abs()
 
-        talib = kwargs.pop("talib", True)
-        if talib:
+        if talib_mode:
             pos_ = rma(positive, length)
             neg_ = rma(negative, length)
         else:
