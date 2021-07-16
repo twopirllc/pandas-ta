@@ -67,9 +67,8 @@ def import_dir(dir_path, verbose=True):
             module = splitext(basename(module))[0]
 
             # check that we only load modules not already loaded in pandas_ta 
-            if module in names_already_in_use:
-                print(f"[i] Warning: the custom module '{module}' will replace a module in pandas_ta.")
-                continue
+            if verbose and module in names_already_in_use:
+                print(f"[i] Warning: the custom module '{module}' will replace a module currently loaded in pandas_ta.")
 
             # ensure that the supplied path is included in our python path
             if d not in sys.path:
