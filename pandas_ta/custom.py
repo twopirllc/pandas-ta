@@ -95,22 +95,33 @@ Let's get started!
 
 1. Loading the 'ta' module:
 >>> import pandas as pd
->>> import ta as ta
+>>> import pandas_ta as ta
 
 2. Create an empty directory on your machine where you want to work with your
 indicators. Invoke pandas_ta.custom.import_dir once to pre-populate it with 
 sub-folders for all available indicator categories, e.g.:
 
->>> ta.custom.create_dir('~/my_indicators')
+>>> import os
+>>> from os.path import abspath, join, expanduser
+>>> from pandas_ta.custom import create_dir, import_dir
+>>> my_dir = abspath(join(expanduser("~"), "my_indicators"))
+>>> create_dir(my_dir)
 
 3. You can now create your own custom indicator e.g. by copying existing 
 ones from pandas_ta core module and modifying them. Each custom indicator 
-should have a unique name and have both a function and a method defined.
+should have a unique name and have both a function and a method defined
+within the module. In essence these modules should look exactly like the
+standard indicators available in categories under the pandas_ta-folder.
+
+The only difference will be an addition of a matching class method that
+will be imported dynamically to the AnalysisIndicators class and a
+call to the utility function that binds the indicator name to pandas_ta.
+
 For an example of the correct structure, look at the example ni.py in the 
 examples folder.
 
-The ni.py indicator is a trend indicator so we drop it into the sub-folder
-named trend. Thus we have a folder structure like this:
+The ni.py indicator is a trend indicator so therefoe we drop it into the 
+sub-folder named trend. Thus we have a folder structure like this:
 
 ~/my_indicators/
 │
@@ -125,22 +136,10 @@ named trend. Thus we have a folder structure like this:
 4. We can now dynamically load all our custom indicators located in our
 designated indicators directory like this:
 
->>> ta.custom.import_dir('~/my_indicators')
+>>> import_dir(my_dir)
 
 If your custom indicator loaded succesfully then it should behave exactly
-like all other native indicators in pandas_ta. E.g.
-
->>> help(ta.ni)
->>> help(df.ta.ni)
->>> df = pd.read_csv("AAPL.csv", index_col="date", parse_dates=True)
->>> ta.ni(df["close"])
->>> df.ta.ni()
->>> df.ta(kind="ni")
->>> df.ta.strategy("All") # Default
->>> df.ta.strategy(ta.Strategy("My Strat", ta=[{"kind": "ni"}])) # Custom
->>> df.ta.ni(append=True)
->>> ni = df.ta(kind="ni", timed=True)
->>> print(ni.timed)
+like all other native indicators in pandas_ta, including help functions.
 """
 
 def bind(function_name, function, method):
