@@ -7,6 +7,7 @@ from glob import glob
 import importlib
 import pandas_ta
 import pandas as pd
+from pandas_ta import AnalysisIndicators
 
 def create_dir(dir_path, create_categories=True, verbose=True):
     """ 
@@ -45,10 +46,6 @@ def import_dir(dir_path, verbose=True):
         print(f"[X] Unable to read the directory '{dir_path}'.")
         return
 
-    # obtain a list of all reserved pandas_ta indicator names 
-    df = pd.DataFrame()
-    names_already_in_use = df.ta.indicators(as_list=True)
-
     # list the contents of the directory
     dirs = glob(abspath(join(dir_path, '*')))
 
@@ -65,10 +62,6 @@ def import_dir(dir_path, verbose=True):
         # for each module found in that category (directory)...
         for module in glob(abspath(join(dir_path, dirname, '*.py'))):
             module = splitext(basename(module))[0]
-
-            # check that we only load modules not already loaded in pandas_ta 
-            if verbose and module in names_already_in_use:
-                print(f"[i] Warning: the custom module '{module}' will replace a module currently loaded in pandas_ta.")
 
             # ensure that the supplied path is included in our python path
             if d not in sys.path:
@@ -149,3 +142,17 @@ like all other native indicators in pandas_ta. E.g.
 >>> ni = df.ta(kind="ni", timed=True)
 >>> print(ni.timed)
 """
+
+def bind(function_name, function, method):
+    """ 
+    Helper function to bind the function and class method defined in a custom
+    indicator module to the active pandas_ta instance. It is supposed to be
+    invoked last in all custom indicator modules.
+
+    Args:
+        function_name (str): The name of the indicator within pandas_ta
+        function (fcn): The indicator function
+        method (fcn): The class method corresponding to the passed function
+    """
+    setattr(pandas_ta, function_name, function)
+    setattr(AnalysisIndicators, function_name, method)
