@@ -72,7 +72,7 @@ def import_dir(dir_path, verbose=True):
             pandas_ta.Category[dirname].append(module)
 
             if verbose:
-                print(f"[i] Successfully imported the indicator '{module}' into category '{dirname}'.")
+                print(f"[i] Successfully imported the custom indicator '{module}' into category '{dirname}'.")
 
 import_dir.__doc__ = \
 """
