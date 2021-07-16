@@ -2,97 +2,102 @@
 
 import os
 import sys
-from os.path import dirname, abspath, join
+from os.path import abspath, join, exists, basename, splitext
 from glob import glob
 import importlib
 import pandas_ta
+import pandas as pd
 
-def import_dir(dir_path, create_categories=True, verbose=True):
+def create_dir(dir_path, create_categories=True, verbose=True):
+    """ 
+    Helper function to setup a suitable folder structure for working with 
+    custom indicators.
+
+    Args:
+        dir_path (str): Full path to where you want your indicator tree
+        create_categories (bool): If True create category sub-folders
+        verbose (bool): If True verbose output of results
+    """
 
     # ensure that the passed directory exists / is readable
-    if not os.path.exists(dir_path):
-        print(f"[X] Unable to read the directory '{dir_path}'.")
-        return
-   
+    if not exists(dir_path):
+        os.makedirs(dir_path)
+        if verbose:
+            print(f"[i] Created main directory '{dir_path}'.")
+
     # list the contents of the directory
     dirs = glob(abspath(join(dir_path, '*')))
 
     # optionally add any missing category subdirectories
     if create_categories:
         for sd in [*pandas_ta.Category]:
-            d = abspath(join(dir_path, sd)
-            if not os.path.exists(d):
-                os.makedirs(directory
+            d = abspath(join(dir_path, sd))
+            if not exists(d):
+                os.makedirs(d)
+                if verbose:
+                    dirname = basename(d)
+                    print(f"[i] Created an empty sub-directory '{dirname}'.")
 
-    # traverse the directory, importing all modules found there
+def import_dir(dir_path, verbose=True):
+
+    # ensure that the passed directory exists / is readable
+    if not exists(dir_path):
+        print(f"[X] Unable to read the directory '{dir_path}'.")
+        return
+
+    # obtain a list of all reserved pandas_ta indicator names 
+    df = pd.DataFrame()
+    names_already_in_use = df.ta.indicators(as_list=True)
+
+    # list the contents of the directory
+    dirs = glob(abspath(join(dir_path, '*')))
+
+    # traverse full directory, importing all modules found there
     for d in dirs:
-        dirname = os.path.basename(d)
+        dirname = basename(d)
 
+        # only look in directories which are valid pandas_ta categories
         if dirname not in [*pandas_ta.Category]:
-            print(f"[i] Skipping the sub-directory '{dirname}' since it's not a pandas_ta category.")
+            if verbose:
+                print(f"[i] Skipping the sub-directory '{dirname}' since it's not a valid pandas_ta category.")
             continue
 
+        # for each module found in that category (directory)...
         for module in glob(abspath(join(dir_path, dirname, '*.py'))):
-            module = os.path.splitext(os.path.basename(module))[0]
+            module = splitext(basename(module))[0]
 
-            if module in pandas_ta.Category[dirname]:
-                print(f"[X] Skipping the custom module '{module}' since a function with that name already exists in pandas_ta.")
+            # check that we only load modules not already loaded in pandas_ta 
+            if module in names_already_in_use:
+                print(f"[i] Warning: the custom module '{module}' will replace a module in pandas_ta.")
                 continue
 
-            # import the module and add it to the correct category
-            pandas_ta.Category[dirname].append(module)
+            # ensure that the supplied path is included in our python path
             if d not in sys.path:
                 sys.path.append(d) 
+
+            # import the module and add it to the correct category
             importlib.import_module(module, d)
+            pandas_ta.Category[dirname].append(module)
 
             if verbose:
-                print(f"[i] Successfully imported the module '{module}' into category '{dirname}'.")
+                print(f"[i] Successfully imported the indicator '{module}' into category '{dirname}'.")
 
 import_dir.__doc__ = \
 """
+Import a directory of custom indicators into pandas_ta
+
+Args:
+    dir_path (str): Full path to your indicator tree
+    verbose (bool): If True verbose output of results
+
 This method allows you to experiment and develop your own technical analysis
-indicators independantly in a separate local directory of your choice but
-still use them seamlessly together with the existing pandas_ta functions just 
-like if they were part of pandas_ta.
+indicators in a separate local directory of your choice but use them seamlessly 
+together with the existing pandas_ta functions just like if they were part of 
+pandas_ta.
 
 If you at some late point would like to push them into the pandas_ta library
 you can do so very easily by following the step by step instruction here
 https://github.com/twopirllc/pandas-ta/issues/264.
-
-----------------------------------
-
-By default, the 'ta' extension uses lower case column names: open, high,
-low, close, and volume. You can override the defaults by providing the it's
-replacement name when calling the indicator. For example, to call the
-indicator hl2().
-
-With 'default' columns: open, high, low, close, and volume.
->>> df.ta.hl2()
->>> df.ta(kind="hl2")
-
-With DataFrame columns: Open, High, Low, Close, and Volume.
->>> df.ta.hl2(high="High", low="Low")
->>> df.ta(kind="hl2", high="High", low="Low")
-
-If you do not want to use a DataFrame Extension, just call it normally.
->>> sma10 = ta.sma(df["Close"]) # Default length=10
->>> sma50 = ta.sma(df["Close"], length=50)
->>> ichimoku, span = ta.ichimoku(df["High"], df["Low"], df["Close"])
-
-Args:
-    kind (str, optional): Default: None. Kind is the 'name' of the indicator.
-        It converts kind to lowercase before calling.
-    timed (bool, optional): Default: False. Curious about the execution
-        speed?
-    kwargs: Extension specific modifiers.
-        append (bool, optional): Default: False. When True, it appends the
-        resultant column(s) to the DataFrame.
-
-Returns:
-    Most Indicators will return a Pandas Series. Others like MACD, BBANDS,
-    KC, et al will return a Pandas DataFrame. Ichimoku on the other hand
-    will return two DataFrames, the Ichimoku DataFrame for the known period
-    and a Span DataFrame for the future of the Span values.
 
 Let's get started!
 
@@ -100,33 +105,48 @@ Let's get started!
 >>> import pandas as pd
 >>> import ta as ta
 
-2. Load some data:
+2. Create an empty directory on your machine where you want to work with your
+indicators. Invoke pandas_ta.custom.import_dir once to pre-populate it with 
+sub-folders for all available indicator categories, e.g.:
+
+>>> ta.custom.create_dir('~/my_indicators')
+
+3. You can now create your own custom indicator e.g. by copying existing 
+ones from pandas_ta core module and modifying them. Each custom indicator 
+should have a unique name and have both a function and a method defined.
+For an example of the correct structure, look at the example ni.py in the 
+examples folder.
+
+The ni.py indicator is a trend indicator so we drop it into the sub-folder
+named trend. Thus we have a folder structure like this:
+
+~/my_indicators/
+│
+├── candles/
+.
+.
+└── trend/
+.      └── ni.py
+.
+└── volume/
+
+4. We can now dynamically load all our custom indicators located in our
+designated indicators directory like this:
+
+>>> ta.custom.import_dir('~/my_indicators')
+
+If your custom indicator loaded succesfully then it should behave exactly
+like all other native indicators in pandas_ta. E.g.
+
+>>> help(ta.ni)
+>>> help(df.ta.ni)
 >>> df = pd.read_csv("AAPL.csv", index_col="date", parse_dates=True)
-
-3. Help!
-3a. General Help:
->>> help(df.ta)
->>> df.ta()
-3b. Indicator Help:
->>> help(ta.apo)
-3c. Indicator Extension Help:
->>> help(df.ta.apo)
-
-4. Ways of calling an indicator.
-4a. Standard: Calling just the APO indicator without "ta" DataFrame extension.
->>> ta.apo(df["close"])
-4b. DataFrame Extension: Calling just the APO indicator with "ta" DataFrame extension.
->>> df.ta.apo()
-4c. DataFrame Extension (kind): Calling APO using 'kind'
->>> df.ta(kind="apo")
-4d. Strategy:
+>>> ta.ni(df["close"])
+>>> df.ta.ni()
+>>> df.ta(kind="ni")
 >>> df.ta.strategy("All") # Default
->>> df.ta.strategy(ta.Strategy("My Strat", ta=[{"kind": "apo"}])) # Custom
-
-5. Working with kwargs
-5a. Append the result to the working df.
->>> df.ta.apo(append=True)
-5b. Timing an indicator.
->>> apo = df.ta(kind="apo", timed=True)
->>> print(apo.timed)
+>>> df.ta.strategy(ta.Strategy("My Strat", ta=[{"kind": "ni"}])) # Custom
+>>> df.ta.ni(append=True)
+>>> ni = df.ta(kind="ni", timed=True)
+>>> print(ni.timed)
 """
