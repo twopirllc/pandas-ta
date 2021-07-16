@@ -6,7 +6,6 @@ from typing import Tuple
 from pandas import DataFrame, Timestamp
 
 from pandas_ta import EXCHANGE_TZ, RATE
-from pandas_ta.utils import verify_series
 
 
 def df_dates(df: DataFrame, dates: Tuple[str, list] = None) -> DataFrame:

@@ -79,21 +79,20 @@ class TestStatistics(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
-    @skip
     def test_tos_sdtevall(self):
         result = pandas_ta.tos_stdevall(self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "STDEVALL")
+        self.assertEqual(result.name, "TOS_STDEVALL")
         self.assertEqual(len(result.columns), 7)
 
         result = pandas_ta.tos_stdevall(self.close, length=30)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "STDEVALL_30")
+        self.assertEqual(result.name, "TOS_STDEVALL_30")
         self.assertEqual(len(result.columns), 7)
 
         result = pandas_ta.tos_stdevall(self.close, length=30, stds=[1, 2])
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "STDEVALL_30")
+        self.assertEqual(result.name, "TOS_STDEVALL_30")
         self.assertEqual(len(result.columns), 5)
 
     def test_variance(self):

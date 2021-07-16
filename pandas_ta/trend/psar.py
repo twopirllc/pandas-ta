@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import nan as npNaN
 from pandas import DataFrame, Series
-from pandas_ta.momentum import dm
 from pandas_ta.utils import get_offset, verify_series, zero
 
 

@@ -14,7 +14,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta?style=flat)](https://pypistats.org/packages/pandas_ta)
 [![Stars](https://img.shields.io/github/stars/twopirllc/pandas-ta?style=flat)](#stars)
 [![Forks](https://img.shields.io/github/forks/twopirllc/pandas-ta?style=flat)](#forks)
-[![Used By](https://img.shields.io/badge/used_by-140-orange.svg?style=flat)](#usedby)
+[![Used By](https://img.shields.io/badge/used_by-146-orange.svg?style=flat)](#usedby)
 [![Contributors](https://img.shields.io/github/contributors/twopirllc/pandas-ta?style=flat)](#contributors)
 [![Issues](https://img.shields.io/github/issues-raw/twopirllc/pandas-ta?style=flat)](#issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/twopirllc/pandas-ta?style=flat)](#closed-issues)
@@ -24,7 +24,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 ![Example Chart](/images/TA_Chart.png)
 
 
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas library with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas package with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
 
 
 **Note:** _TA Lib_ must be installed to use **all** the Candlestick Patterns. ```pip install TA-Lib```. If _TA Lib_ is not installed, then only the builtin Candlestick Patterns will be available.
@@ -57,7 +57,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Momentum](#momentum-41)
     * [Overlap](#overlap-32)
     * [Performance](#performance-3)
-    * [Statistics](#statistics-10)
+    * [Statistics](#statistics-11)
     * [Trend](#trend-18)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
@@ -80,7 +80,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 * Has 130+ indicators and utility functions.
     * **BETA** Also Pandas TA will run TA Lib's version, this includes TA Lib's 63 Chart Patterns.
-* Indicators are tightly correlated with the de facto [TA Lib](https://mrjbq7.github.io/ta-lib/) if they share common indicators.
+* Indicators are tightly correlated with the de facto [TA Lib](https://github.com/mrjbq7/ta-lib) if they share common indicators.
 * Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free! __Conditions permitting__.
 * Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
@@ -104,14 +104,14 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 Stable
 ------
-The ```pip``` version is the last stable release. Version: *0.2.45b*
+The ```pip``` version is the last stable release. Version: *0.3.02b*
 ```sh
 $ pip install pandas_ta
 ```
 
 Latest Version
 --------------
-Best choice! Version: *0.2.97b*
+Best choice! Version: *0.3.02b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -210,7 +210,7 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_ 
 
-[AbyssAlora](https://github.com/AbyssAlora) | [alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [bizso09](https://github.com/bizso09) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DannyMartens](https://github.com/DannyMartens) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [FGU1](https://github.com/FGU1) | [ffhirata](https://github.com/ffhirata) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [nicoloridulfo](https://github.com/nicoloridulfo) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein) | [zlpatel](https://github.com/zlpatel)
+[AbyssAlora](https://github.com/AbyssAlora) | [alexonab](https://github.com/alexonab) | [allahyarzadeh](https://github.com/allahyarzadeh) | [bizso09](https://github.com/bizso09) | [CMobley7](https://github.com/CMobley7) | [codesutras](https://github.com/codesutras) | [DannyMartens](https://github.com/DannyMartens) | [DrPaprikaa](https://github.com/DrPaprikaa) | [daikts](https://github.com/daikts) | [delicateear](https://github.com/delicateear) | [dorren](https://github.com/dorren) | [edwardwang1](https://github.com/edwardwang1) | [FGU1](https://github.com/FGU1) | [ffhirata](https://github.com/ffhirata) | [floatinghotpot](https://github.com/floatinghotpot) | [GSlinger](https://github.com/gslinger) | [JoeSchr](https://github.com/JoeSchr) | [lluissalord](https://github.com/lluissalord) | [luisbarrancos](https://github.com/luisbarrancos) | [M6stafa](https://github.com/M6stafa) | [maxdignan](https://github.com/maxdignan) | [mchant](https://github.com/mchant) | [moritzgun](https://github.com/moritzgun) | [NkosenhleDuma](https://github.com/NkosenhleDuma) | [nicoloridulfo](https://github.com/nicoloridulfo) | [pbrumblay](https://github.com/pbrumblay) | [RajeshDhalange](https://github.com/RajeshDhalange) | [rengel8](https://github.com/rengel8) | [rluong003](https://github.com/rluong003) | [SoftDevDanial](https://github.com/SoftDevDanial) | [tg12](https://github.com/tg12) | [twrobel](https://github.com/twrobel) | [WellMaybeItIs](https://github.com/WellMaybeItIs) | [whubsch](https://github.com/whubsch) | [witokondoria](https://github.com/witokondoria) | [wouldayajustlookatit](https://github.com/wouldayajustlookatit) | [YuvalWein](https://github.com/YuvalWein) | [zlpatel](https://github.com/zlpatel)
 
 <br/>
 
@@ -777,7 +777,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
 <br/>
 
-### **Statistics** (10)
+### **Statistics** (11)
 
 * _Entropy_: **entropy**
 * _Kurtosis_: **kurtosis**
@@ -786,6 +786,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Quantile_: **quantile**
 * _Skew_: **skew**
 * _Standard Deviation_: **stdev**
+* _Think or Swim Standard Deviation All_: **tos_stdevall**
 * _Variance_: **variance**
 * _Z Score_: **zscore**
 
@@ -967,6 +968,9 @@ trading account, or fund. See ```help(ta.drawdown)```
 * _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two cascaded stochastic calculations with additional smoothing. See ```help(ta.stc)```
 * _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
+* _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which
+returns the standard deviation of data for the entire plot or for the interval
+of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
 * _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets.. See ```help(ta.vhf)```
 
 <br/>
@@ -981,6 +985,8 @@ trading account, or fund. See ```help(ta.drawdown)```
 * _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.decreasing)```.
 * _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.increasing)```.
 * _Parabolic Stop and Reverse_ (**psar**): Bug fix and adjustment to match TradingView's ```sar```. New argument ```af0``` to initialize the Acceleration Factor. See ```help(ta.psar)```.
+* _Percentage Price Oscillator_ (**ppo**): Included new argument ```mamode``` as an option. Default is **sma** to match TA Lib. See ```help(ta.ppo)```.
+* _Volume Profile_ (**vp**): Calculation improvements. See [Pull Request #320](https://github.com/twopirllc/pandas-ta/pull/320) See ```help(ta.vp)```.
 * _Volume Weighted Moving Average_ (**vwma**): Fixed bug in DataFrame Extension call. See ```help(ta.vwma)```.
 * _Volume Weighted Average Price_ (**vwap**): Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex. See ```help(ta.vwap)```.
 * _Z Score_ (**zscore**): Changed return column name from ```Z_length``` to ```ZS_length```. See ```help(ta.zscore)```.

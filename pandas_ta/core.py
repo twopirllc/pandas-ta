@@ -400,6 +400,9 @@ class AnalysisIndicators(BasePandasObject):
             df = self._df
             if df is None or result is None: return
             else:
+                if "col_names" in kwargs and not isinstance(kwargs["col_names"], tuple):
+                    kwargs["col_names"] = (kwargs["col_names"],)
+
                 if isinstance(result, pd.DataFrame):
                     # If specified in kwargs, rename the columns.
                     # If not, use the default names.
@@ -1019,9 +1022,9 @@ class AnalysisIndicators(BasePandasObject):
         result = pgo(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def ppo(self, fast=None, slow=None, scalar=None, offset=None, **kwargs):
+    def ppo(self, fast=None, slow=None, scalar=None, mamode=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = ppo(close=close, fast=fast, slow=slow, scalar=scalar, offset=offset, **kwargs)
+        result = ppo(close=close, fast=fast, slow=slow, scalar=scalar, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def psl(self, open_=None, length=None, scalar=None, drift=None, offset=None, **kwargs):
@@ -1372,10 +1375,10 @@ class AnalysisIndicators(BasePandasObject):
         result = stdev(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    # def tos_stdevall(self, length=None, stds=None, offset=None, **kwargs):
-    #     close = self._get_column(kwargs.pop("close", "close"))
-    #     result = tos_stdevall(close=close, length=length, stds=stds, offset=offset, **kwargs)
-    #     return self._post_process(result, **kwargs)
+    def tos_stdevall(self, length=None, stds=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = tos_stdevall(close=close, length=length, stds=stds, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
 
     def variance(self, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))

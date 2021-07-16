@@ -53,15 +53,14 @@ class TestStatisticsExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "STDEV_30")
 
-    @skip
     def test_tos_stdevall_ext(self):
         self.data.ta.tos_stdevall(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-7:]), [
-            "STDEVALL_LR",
-            "STDEVALL_L_1", "STDEVALL_U_1",
-            "STDEVALL_L_2", "STDEVALL_U_2",
-            "STDEVALL_L_3", "STDEVALL_U_3"
+            "TOS_STDEVALL_LR",
+            "TOS_STDEVALL_L_1", "TOS_STDEVALL_U_1",
+            "TOS_STDEVALL_L_2", "TOS_STDEVALL_U_2",
+            "TOS_STDEVALL_L_3", "TOS_STDEVALL_U_3"
         ])
 
     def test_variance_ext(self):

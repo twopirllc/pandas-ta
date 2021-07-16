@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
 from pandas import DataFrame
 from pandas_ta import Imports
 from pandas_ta.overlap import ma
