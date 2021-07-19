@@ -73,17 +73,7 @@ Returns:
 
 # - Define a matching class method --------------------------------------------
 
-# NOTE: we need to temporarily use another name for the method than for the 
-# function to avoid a name conflict in this module. But by using the bind 
-# function below we can name it right so that doesn't really matter. 
-# Just remember to rename the method if you at a later stage decide to move it 
-# into the core.py module inside pandas_ta
 def ni_method(self, length=None, offset=None, **kwargs):
     close = self._get_column(kwargs.pop("close", "close"))
     result = ni(close=close, length=length, offset=offset, **kwargs)
     return self._post_process(result, **kwargs)
-
-# - Bind the function to pandas_ta and the method to AnalysisIndicators -------
-
-from pandas_ta.custom import bind
-bind('ni', ni, ni_method)
