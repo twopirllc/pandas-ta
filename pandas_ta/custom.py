@@ -4,6 +4,7 @@ import os
 import sys
 from os.path import abspath, join, exists, basename, splitext
 from glob import glob
+import types
 import importlib
 import pandas_ta
 import pandas as pd
@@ -61,16 +62,32 @@ def import_dir(dir_path, verbose=True):
 
         # for each module found in that category (directory)...
         for module in glob(abspath(join(dir_path, dirname, '*.py'))):
-            module = splitext(basename(module))[0]
+            module_name = splitext(basename(module))[0]
 
             # ensure that the supplied path is included in our python path
             if d not in sys.path:
-                sys.path.append(d) 
+                sys.path.append(d)
 
-            # import the module and add it to the correct category
-            importlib.import_module(module, d)
-            pandas_ta.Category[dirname].append(module)
+            # (re)load the indicator module 
+            module_functions = load_indicator_module(module_name)
 
+            # figure out which of the modules functions to bind to pandas_ta
+            fcn_callable = module_functions.get(module_name, None)
+            fcn_method_callable = module_functions.get(module_name + "_method", None)
+            
+            if fcn_callable == None:
+                print(f"[X] Unable to find a function named '{module_name}' in the module '{module_name}.py'.")
+                continue
+            if fcn_method_callable == None:
+                missing_method = module_name + "_method"
+                print(f"[X] Unable to find a method function named '{missing_method}' in the module '{module_name}.py'.")
+                continue
+
+            # add it to the correct category if it's not there yet
+            if module_name not in pandas_ta.Category[dirname]:
+                pandas_ta.Category[dirname].append(module_name)
+
+            bind(module_name, fcn_callable, fcn_method_callable)
             if verbose:
                 print(f"[i] Successfully imported the custom indicator '{module}' into category '{dirname}'.")
 
@@ -108,19 +125,21 @@ sub-folders for all available indicator categories, e.g.:
 >>> create_dir(my_dir)
 
 3. You can now create your own custom indicator e.g. by copying existing 
-ones from pandas_ta core module and modifying them. Each custom indicator 
-should have a unique name and have both a function and a method defined
-within the module. In essence these modules should look exactly like the
-standard indicators available in categories under the pandas_ta-folder.
+ones from pandas_ta core module and modifying them. 
 
-The only difference will be an addition of a matching class method that
-will be imported dynamically to the AnalysisIndicators class and a
-call to the utility function that binds the indicator name to pandas_ta.
+IMPORTANT: Each custom indicator should have a unique name and have both 
+a) a function named exactly as the module, e.g. 'ni' if the module is ni.py
+b) a matching method used by AnalysisIndicators named as the module but
+   ending with '_method'. E.g. 'ni_method'
+
+In essence these modules should look exactly like the standard indicators 
+available in categories under the pandas_ta-folder. The only difference will
+be an addition of a matching class method.
 
 For an example of the correct structure, look at the example ni.py in the 
 examples folder.
 
-The ni.py indicator is a trend indicator so therefoe we drop it into the 
+The ni.py indicator is a trend indicator so therefore we drop it into the 
 sub-folder named trend. Thus we have a folder structure like this:
 
 ~/my_indicators/
@@ -155,3 +174,53 @@ def bind(function_name, function, method):
     """
     setattr(pandas_ta, function_name, function)
     setattr(AnalysisIndicators, function_name, method)
+
+def load_indicator_module(module_name):
+    """
+     Helper function to (re)load an indicator module.
+
+    Returns:
+        dict: module functions mapping
+        {
+            "func1_name": func,
+            "func2_name": func2
+            .
+            .
+            .
+        }
+
+    """
+    # load module
+    try:
+        module = importlib.import_module(module_name)
+    except Exception as ex:
+        print(f"[X] An error occurred when attempting to load module {module_name}: {ex}")
+        sys.exit(1)
+
+    # reload to refresh previously loaded module
+    module = importlib.reload(module)
+    return get_module_functions(module)
+
+def get_module_functions(module):
+    """ 
+     Helper function to get the functions of an imported module as a dictionary.
+
+    Args:
+        module: python module
+
+    Returns:
+        dict: functions mapping for specified python module
+
+            {
+                "func1_name": func1,
+                "func2_name": func2
+            }
+
+    """
+    module_functions = {}
+
+    for name, item in vars(module).items():
+        if isinstance(item, types.FunctionType):
+            module_functions[name] = item
+
+    return module_functions
