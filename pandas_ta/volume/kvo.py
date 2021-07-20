@@ -82,7 +82,7 @@ Args:
     fast (int): The fast period. Default: 34
     long (int): The long period. Default: 55
     length_sig (int): The signal period. Default: 13
-    mamode (str): "sma", "ema", "wma" or "rma". Default: "ema"
+    mamode (str): See ```help(ta.ma)```. Default: 'ema'
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

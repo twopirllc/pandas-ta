@@ -4,18 +4,19 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def t3(close, length=None, a=None, offset=None, **kwargs):
+def t3(close, length=None, a=None, talib=None, offset=None, **kwargs):
     """Indicator: T3"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
     a = float(a) if a and a > 0 and a < 1 else 0.7
     close = verify_series(close, length)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import T3
         t3 = T3(close, length, a)
     else:
@@ -77,6 +78,8 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 10
     a (float): 0 < a < 1. Default: 0.7
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

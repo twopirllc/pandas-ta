@@ -4,7 +4,7 @@ from pandas_ta.volatility import atr
 from pandas_ta.utils import get_offset, verify_series
 
 
-def cksp(high, low, close, p=None, x=None, q=None, offset=None, tvmode=None, **kwargs):
+def cksp(high, low, close, p=None, x=None, q=None, tvmode=None, offset=None, **kwargs):
     """Indicator: Chande Kroll Stop (CKSP)"""
     # Validate Arguments
     # TV defaults=(10,1,9), book defaults = (10,3,20)
@@ -23,7 +23,7 @@ def cksp(high, low, close, p=None, x=None, q=None, offset=None, tvmode=None, **k
     mamode = "rma" if tvmode is True else "sma"
 
     # Calculate Result
-    atr_ = atr(high=high, low=low, close=close, length=p, mamode = mamode)
+    atr_ = atr(high=high, low=low, close=close, length=p, mamode=mamode)
 
     long_stop_ = high.rolling(p).max() - x * atr_
     long_stop = long_stop_.rolling(q).max()
@@ -90,8 +90,8 @@ Args:
     p (int): ATR and first stop period. Default: 10 in both modes
     x (float): ATR scalar. Default: 1 in TV mode, 3 otherwise
     q (int): Second stop period. Default: 9 in TV mode, 20 otherwise
-    offset (int): How many periods to offset the result. Default: 0
     tvmode (bool): Trading View or book implementation mode. Default: True
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)

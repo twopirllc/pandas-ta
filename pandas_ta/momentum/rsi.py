@@ -5,7 +5,7 @@ from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
-def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
+def rsi(close, length=None, scalar=None, talib=None, drift=None, offset=None, **kwargs):
     """Indicator: Relative Strength Index (RSI)"""
     # Validate arguments
     length = int(length) if length and length > 0 else 14
@@ -13,11 +13,12 @@ def rsi(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import RSI
         rsi = RSI(close, length)
     else:
@@ -99,6 +100,8 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 14
     scalar (float): How much to magnify. Default: 100
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

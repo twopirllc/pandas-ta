@@ -5,7 +5,7 @@ from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
-def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, offset=None, **kwargs):
+def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, talib=None, offset=None, **kwargs):
     """Indicator: Percentage Price Oscillator (PPO)"""
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 12
@@ -17,11 +17,12 @@ def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, offs
         fast, slow = slow, fast
     close = verify_series(close, max(fast, slow, signal))
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import PPO
         ppo = PPO(close, fast, slow, tal_ma(mamode))
     else:
@@ -90,7 +91,9 @@ Args:
     slow(int): The long period. Default: 26
     signal(int): The signal period. Default: 9
     scalar (float): How much to magnify. Default: 100
-    mamode (str): Options: 'ema', 'hma', 'rma', 'sma', 'wma'. Default: 'sma'
+    mamode (str): See ```help(ta.ma)```. Default: 'sma'
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset(int): How many periods to offset the result. Default: 0
 
 Kwargs:

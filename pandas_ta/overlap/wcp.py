@@ -3,16 +3,17 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def wcp(high, low, close, offset=None, **kwargs):
+def wcp(high, low, close, talib=None, offset=None, **kwargs):
     """Indicator: Weighted Closing Price (WCP)"""
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import WCLPRICE
         wcp = WCLPRICE(high, low, close)
     else:
@@ -51,6 +52,8 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

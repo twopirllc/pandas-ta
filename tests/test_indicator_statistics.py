@@ -65,19 +65,23 @@ class TestStatistics(TestCase):
         self.assertEqual(result.name, "SKEW_30")
 
     def test_stdev(self):
-        result = pandas_ta.stdev(self.close)
+        result = pandas_ta.stdev(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "STDEV_30")
 
         try:
             expected = tal.STDDEV(self.close, 30)
             pdt.assert_series_equal(result, expected, check_names=False)
-        except AssertionError as ae:
+        except AssertionError:
             try:
                 corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+        result = pandas_ta.stdev(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "STDEV_30")
 
     def test_tos_sdtevall(self):
         result = pandas_ta.tos_stdevall(self.close)
@@ -96,19 +100,23 @@ class TestStatistics(TestCase):
         self.assertEqual(len(result.columns), 5)
 
     def test_variance(self):
-        result = pandas_ta.variance(self.close)
+        result = pandas_ta.variance(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "VAR_30")
 
         try:
             expected = tal.VAR(self.close, 30)
             pdt.assert_series_equal(result, expected, check_names=False)
-        except AssertionError as ae:
+        except AssertionError:
             try:
                 corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+        result = pandas_ta.variance(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "VAR_30")
 
     def test_zscore(self):
         result = pandas_ta.zscore(self.close)

@@ -4,7 +4,7 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ema(close, length=None, offset=None, **kwargs):
+def ema(close, length=None, talib=None, offset=None, **kwargs):
     """Indicator: Exponential Moving Average (EMA)"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
@@ -12,11 +12,12 @@ def ema(close, length=None, offset=None, **kwargs):
     sma = kwargs.pop("sma", True)
     close = verify_series(close, length)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import EMA
         ema = EMA(close, length)
     else:
@@ -69,6 +70,8 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 10
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

@@ -5,7 +5,7 @@ from pandas_ta.overlap import hlc3
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs):
+def mfi(high, low, close, volume, length=None, talib=None, drift=None, offset=None, **kwargs):
     """Indicator: Money Flow Index (MFI)"""
     # Validate arguments
     length = int(length) if length and length > 0 else 14
@@ -15,11 +15,12 @@ def mfi(high, low, close, volume, length=None, drift=None, offset=None, **kwargs
     volume = verify_series(volume, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if high is None or low is None or close is None or volume is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import MFI
         mfi = MFI(high, low, close, volume, length)
     else:
@@ -84,6 +85,8 @@ Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
     length (int): The sum period. Default: 14
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

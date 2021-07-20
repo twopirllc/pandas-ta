@@ -78,6 +78,9 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 20
     rvi_length (int): RVI period. Default: 14
+    refined (bool): Use 'refined' calculation. Default: False
+    thirds (bool): Use 'thirds' calculation. Default: False
+    mamode (str): See ```help(ta.ma)```. Default: 'ema'
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

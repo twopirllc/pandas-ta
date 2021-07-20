@@ -6,7 +6,7 @@ from pandas_ta.trend import long_run, short_run
 from pandas_ta.utils import get_offset, verify_series
 
 
-def aobv(close, volume, fast=None, slow=None, mamode=None, max_lookback=None, min_lookback=None, offset=None, **kwargs):
+def aobv(close, volume, fast=None, slow=None, max_lookback=None, min_lookback=None, mamode=None, offset=None, **kwargs):
     """Indicator: Archer On Balance Volume (AOBV)"""
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 4

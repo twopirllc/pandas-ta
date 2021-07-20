@@ -4,7 +4,7 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_w=None, slow_w=None, drift=None, offset=None, **kwargs):
+def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_w=None, slow_w=None, talib=None, drift=None, offset=None, **kwargs):
     """Indicator: Ultimate Oscillator (UO)"""
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 7
@@ -19,11 +19,12 @@ def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_
     close = verify_series(close, _length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if high is None or low is None or close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import ULTOSC
         uo = ULTOSC(high, low, close, fast, medium, slow)
     else:
@@ -101,6 +102,8 @@ Args:
     fast_w (float): The Fast %K period. Default: 4.0
     medium_w (float): The Slow %K period. Default: 2.0
     slow_w (float): The Slow %D period. Default: 1.0
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

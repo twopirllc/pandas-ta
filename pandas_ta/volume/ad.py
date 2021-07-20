@@ -3,7 +3,7 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
+def ad(high, low, close, volume, open_=None, talib=None, offset=None, **kwargs):
     """Indicator: Accumulation/Distribution (AD)"""
     # Validate Arguments
     high = verify_series(high)
@@ -11,9 +11,10 @@ def ad(high, low, close, volume, open_=None, offset=None, **kwargs):
     close = verify_series(close)
     volume = verify_series(volume)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import AD
         ad = AD(high, low, close, volume)
     else:
@@ -70,6 +71,8 @@ Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
     open (pd.Series): Series of 'open's
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

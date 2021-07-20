@@ -35,19 +35,23 @@ class TestTrend(TestCase):
 
 
     def test_adx(self):
-        result = pandas_ta.adx(self.high, self.low, self.close)
+        result = pandas_ta.adx(self.high, self.low, self.close, talib=False)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "ADX_14")
 
         try:
             expected = tal.ADX(self.high, self.low, self.close)
             pdt.assert_series_equal(result.iloc[:, 0], expected)
-        except AssertionError as ae:
+        except AssertionError:
             try:
                 corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0], expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
+
+        result = pandas_ta.adx(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "ADX_14")
 
     def test_amat(self):
         result = pandas_ta.amat(self.close)
@@ -55,7 +59,7 @@ class TestTrend(TestCase):
         self.assertEqual(result.name, "AMATe_8_21_2")
 
     def test_aroon(self):
-        result = pandas_ta.aroon(self.high, self.low)
+        result = pandas_ta.aroon(self.high, self.low, talib=False)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "AROON_14")
 
@@ -63,7 +67,7 @@ class TestTrend(TestCase):
             expected = tal.AROON(self.high, self.low)
             expecteddf = DataFrame({"AROOND_14": expected[0], "AROONU_14": expected[1]})
             pdt.assert_frame_equal(result, expecteddf)
-        except AssertionError as ae:
+        except AssertionError:
             try:
                 aroond_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0], expecteddf.iloc[:, 0], col=CORRELATION)
                 self.assertGreater(aroond_corr, CORRELATION_THRESHOLD)
@@ -76,13 +80,19 @@ class TestTrend(TestCase):
             except Exception as ex:
                 error_analysis(result.iloc[:, 1], CORRELATION, ex, newline=False)
 
+        result = pandas_ta.aroon(self.high, self.low)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "AROON_14")
+
     def test_aroon_osc(self):
         result = pandas_ta.aroon(self.high, self.low)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "AROON_14")
 
         try:
             expected = tal.AROONOSC(self.high, self.low)
             pdt.assert_series_equal(result.iloc[:, 2], expected)
-        except AssertionError as ae:
+        except AssertionError:
             try:
                 aroond_corr = pandas_ta.utils.df_error_analysis(result.iloc[:,2], expected,col=CORRELATION)
                 self.assertGreater(aroond_corr, CORRELATION_THRESHOLD)
@@ -158,7 +168,7 @@ class TestTrend(TestCase):
         try:
             expected = tal.SAR(self.high, self.low)
             pdt.assert_series_equal(psar, expected)
-        except AssertionError as ae:
+        except AssertionError:
             try:
                 psar_corr = pandas_ta.utils.df_error_analysis(psar, expected, col=CORRELATION)
                 self.assertGreater(psar_corr, CORRELATION_THRESHOLD)

@@ -5,7 +5,7 @@ from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series, signals
 
 
-def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
+def macd(close, fast=None, slow=None, signal=None, talib=None, offset=None, **kwargs):
     """Indicator: Moving Average, Convergence/Divergence (MACD)"""
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 12
@@ -15,13 +15,14 @@ def macd(close, fast=None, slow=None, signal=None, offset=None, **kwargs):
         fast, slow = slow, fast
     close = verify_series(close, max(fast, slow, signal))
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     as_mode = kwargs.setdefault("asmode", False)
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import MACD
         macd, signalma, histogram = MACD(close, fast, slow, signal)
     else:
@@ -133,6 +134,8 @@ Args:
     fast (int): The short period. Default: 12
     slow (int): The long period. Default: 26
     signal (int): The signal period. Default: 9
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

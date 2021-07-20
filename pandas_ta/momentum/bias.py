@@ -53,7 +53,7 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     length (int): The period. Default: 26
-    mamode (str): Options: 'ema', 'hma', 'rma', 'sma', 'wma'. Default: 'sma'
+    mamode (str): See ```help(ta.ma)```. Default: 'sma'
     drift (int): The short period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

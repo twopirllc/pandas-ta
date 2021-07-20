@@ -5,7 +5,7 @@ from pandas_ta.volatility import atr
 from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 
 
-def adx(high, low, close, length=None, lensig=None, mamode=None, scalar=None, drift=None, offset=None, **kwargs):
+def adx(high, low, close, length=None, lensig=None, scalar=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: ADX"""
     # Validate Arguments
     length = length if length and length > 0 else 14
@@ -138,6 +138,7 @@ Args:
     length (int): It's period. Default: 14
     lensig (int): Signal Length. Like TradingView's default ADX. Default: length
     scalar (float): How much to magnify. Default: 100
+    mamode (str): See ```help(ta.ma)```. Default: 'rma'
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

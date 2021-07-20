@@ -5,7 +5,7 @@ from pandas_ta.utils import get_offset, verify_series
 from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 
 
-def aroon(high, low, length=None, scalar=None, offset=None, **kwargs):
+def aroon(high, low, length=None, scalar=None, talib=None, offset=None, **kwargs):
     """Indicator: Aroon & Aroon Oscillator"""
     # Validate Arguments
     length = length if length and length > 0 else 14
@@ -13,11 +13,12 @@ def aroon(high, low, length=None, scalar=None, offset=None, **kwargs):
     high = verify_series(high, length)
     low = verify_series(low, length)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if high is None or low is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import AROON, AROONOSC
         aroon_down, aroon_up = AROON(high, low, length)
         aroon_osc = AROONOSC(high, low, length)
@@ -94,6 +95,8 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 14
     scalar (float): How much to magnify. Default: 100
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

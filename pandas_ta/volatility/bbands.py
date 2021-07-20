@@ -6,7 +6,7 @@ from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
-def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwargs):
+def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset=None, **kwargs):
     """Indicator: Bollinger Bands (BBANDS)"""
     # Validate arguments
     length = int(length) if length and length > 0 else 5
@@ -15,11 +15,12 @@ def bbands(close, length=None, std=None, mamode=None, ddof=0, offset=None, **kwa
     ddof = int(ddof) if ddof >= 0 and ddof < length else 1
     close = verify_series(close, length)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import BBANDS
         upper, mid, lower = BBANDS(close, length, std, std, tal_ma(mamode))
     else:
@@ -108,8 +109,10 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): The short period. Default: 5
     std (int): The long period. Default: 2
-    mamode (str): Two options: "sma" or "ema". Default: "sma"
     ddof (int): Degrees of Freedom to use. Default: 0
+    mamode (str): See ```help(ta.ma)```. Default: 'sma'
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
