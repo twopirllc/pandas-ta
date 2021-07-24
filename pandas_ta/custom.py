@@ -10,36 +10,6 @@ import pandas_ta
 import pandas as pd
 from pandas_ta import AnalysisIndicators
 
-def create_dir(dir_path, create_categories=True, verbose=True):
-    """ 
-    Helper function to setup a suitable folder structure for working with 
-    custom indicators.
-
-    Args:
-        dir_path (str): Full path to where you want your indicator tree
-        create_categories (bool): If True create category sub-folders
-        verbose (bool): If True verbose output of results
-    """
-
-    # ensure that the passed directory exists / is readable
-    if not exists(dir_path):
-        os.makedirs(dir_path)
-        if verbose:
-            print(f"[i] Created main directory '{dir_path}'.")
-
-    # list the contents of the directory
-    dirs = glob(abspath(join(dir_path, '*')))
-
-    # optionally add any missing category subdirectories
-    if create_categories:
-        for sd in [*pandas_ta.Category]:
-            d = abspath(join(dir_path, sd))
-            if not exists(d):
-                os.makedirs(d)
-                if verbose:
-                    dirname = basename(d)
-                    print(f"[i] Created an empty sub-directory '{dirname}'.")
-
 def import_dir(dir_path, verbose=True):
 
     # ensure that the passed directory exists / is readable
@@ -108,7 +78,7 @@ If you at some late point would like to push them into the pandas_ta library
 you can do so very easily by following the step by step instruction here
 https://github.com/twopirllc/pandas-ta/issues/264.
 
-Let's get started!
+A brief example of usage:
 
 1. Loading the 'ta' module:
 >>> import pandas as pd
@@ -157,15 +127,14 @@ designated indicators directory like this:
 
 >>> import_dir(my_dir)
 
-If your custom indicator loaded succesfully then it should behave exactly
+If your custom indicator(s) loaded succesfully then it should behave exactly
 like all other native indicators in pandas_ta, including help functions.
 """
 
 def bind(function_name, function, method):
     """ 
     Helper function to bind the function and class method defined in a custom
-    indicator module to the active pandas_ta instance. It is supposed to be
-    invoked last in all custom indicator modules.
+    indicator module to the active pandas_ta instance.
 
     Args:
         function_name (str): The name of the indicator within pandas_ta
@@ -182,11 +151,8 @@ def load_indicator_module(module_name):
     Returns:
         dict: module functions mapping
         {
-            "func1_name": func,
-            "func2_name": func2
-            .
-            .
-            .
+            "func1_name": func1,
+            "func2_name": func2,...
         }
 
     """
@@ -209,12 +175,11 @@ def get_module_functions(module):
         module: python module
 
     Returns:
-        dict: functions mapping for specified python module
-
-            {
-                "func1_name": func1,
-                "func2_name": func2
-            }
+        dict: module functions mapping
+        {
+            "func1_name": func1,
+            "func2_name": func2,...
+        }
 
     """
     module_functions = {}
@@ -224,3 +189,34 @@ def get_module_functions(module):
             module_functions[name] = item
 
     return module_functions
+
+def create_dir(dir_path, create_categories=True, verbose=True):
+    """ 
+    Helper function to setup a suitable folder structure for working with 
+    custom indicators. You only need to call this once whenever you want to
+    setup a new custom indicators folder. 
+
+    Args:
+        dir_path (str): Full path to where you want your indicator tree
+        create_categories (bool): If True create category sub-folders
+        verbose (bool): If True print verbose output of results
+    """
+
+    # ensure that the passed directory exists / is readable
+    if not exists(dir_path):
+        os.makedirs(dir_path)
+        if verbose:
+            print(f"[i] Created main directory '{dir_path}'.")
+
+    # list the contents of the directory
+    dirs = glob(abspath(join(dir_path, '*')))
+
+    # optionally add any missing category subdirectories
+    if create_categories:
+        for sd in [*pandas_ta.Category]:
+            d = abspath(join(dir_path, sd))
+            if not exists(d):
+                os.makedirs(d)
+                if verbose:
+                    dirname = basename(d)
+                    print(f"[i] Created an empty sub-directory '{dirname}'.")
