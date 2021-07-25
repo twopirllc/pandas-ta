@@ -1194,6 +1194,11 @@ class AnalysisIndicators(BasePandasObject):
         result = hwma(close=close, na=na, nb=nb, nc=nc, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def jma(self, length=None, phase=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = jma(close=close, length=length, phase=phase, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def kama(self, length=None, fast=None, slow=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = kama(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
