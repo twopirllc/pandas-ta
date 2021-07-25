@@ -82,9 +82,7 @@ def jma(close, length=None, phase=0, offset=None, **kwargs):
 
 
 jma.__doc__ = \
-"""Volume Weighted Moving Average (VWMA)
-
-Jurik Moving Average
+""" Jurik Moving Average Average (JMA)
 
 Sources:
     Implementation of: https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
