@@ -247,7 +247,7 @@ class TestMomentumExtension(TestCase):
     def test_tsi_ext(self):
         self.data.ta.tsi(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "TSI_13_25")
+        self.assertEqual(list(self.data.columns[-2:]), ["TSI_13_25_13", "TSIs_13_25_13"])
 
     def test_uo_ext(self):
         self.data.ta.uo(append=True)
