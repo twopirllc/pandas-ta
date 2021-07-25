@@ -3,7 +3,7 @@ from numpy import log as nplog
 from numpy import nan as npNaN
 from pandas import DataFrame, Series
 from pandas_ta.overlap import hl2
-from pandas_ta.utils import get_offset, high_low_range, verify_series, zero
+from pandas_ta.utils import get_offset, high_low_range, verify_series
 
 
 def fisher(high, low, length=None, signal=None, offset=None, **kwargs):

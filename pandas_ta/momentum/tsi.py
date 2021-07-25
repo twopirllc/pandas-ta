@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from pandas_ta.overlap import ema
+from pandas_ta.overlap import ema, ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def tsi(close, fast=None, slow=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
+def tsi(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: True Strength Index (TSI)"""
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 13
@@ -16,6 +16,7 @@ def tsi(close, fast=None, slow=None, signal=None, scalar=None, drift=None, offse
     close = verify_series(close, max(fast, slow))
     drift = get_drift(drift)
     offset = get_offset(offset)
+    mamode = mamode if isinstance(mamode, str) else "ema"
     if "length" in kwargs: kwargs.pop("length")
 
     if close is None: return
@@ -30,8 +31,7 @@ def tsi(close, fast=None, slow=None, signal=None, scalar=None, drift=None, offse
     abs_fast_slow_ema = ema(close=abs_slow_ema, length=fast, **kwargs)
 
     tsi = scalar * fast_slow_ema / abs_fast_slow_ema
-
-    tsi_signal = ema(close=tsi, length=signal)
+    tsi_signal = ma(mamode, tsi, length=signal)
 
     # Offset
     if offset != 0:
@@ -90,6 +90,8 @@ Args:
     slow (int): The long period. Default: 25
     signal (int): The signal period. Default: 13
     scalar (float): How much to magnify. Default: 100
+    mamode (str): Moving Average of TSI Signal Line.
+        See ```help(ta.ma)```. Default: 'ema'
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 
