@@ -498,8 +498,8 @@ class TestMomentum(TestCase):
 
     def test_tsi(self):
         result = pandas_ta.tsi(self.close)
-        self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "TSI_13_25")
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "TSI_13_25_13")
 
     def test_uo(self):
         result = pandas_ta.uo(self.high, self.low, self.close, talib=False)

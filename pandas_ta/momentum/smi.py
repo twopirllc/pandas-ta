@@ -20,8 +20,9 @@ def smi(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kw
     if close is None: return
 
     # Calculate Result
-    smi = tsi(close, fast=fast, slow=slow, scalar=scalar)
-    signalma = ema(smi, signal)
+    tsi_df = tsi(close, fast=fast, slow=slow, signal=signal, scalar=scalar)
+    smi = tsi_df.iloc[:, 0]
+    signalma = tsi_df.iloc[:, 1]
     osc = smi - signalma
 
     # Offset

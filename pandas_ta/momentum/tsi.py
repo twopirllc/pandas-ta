@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
+from pandas import DataFrame
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def tsi(close, fast=None, slow=None, scalar=None, drift=None, offset=None, **kwargs):
+def tsi(close, fast=None, slow=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
     """Indicator: True Strength Index (TSI)"""
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 13
     slow = int(slow) if slow and slow > 0 else 25
+    signal = int(signal) if signal and signal > 0 else 13
     # if slow < fast:
     #     fast, slow = slow, fast
     scalar = float(scalar) if scalar else 100
@@ -29,21 +31,32 @@ def tsi(close, fast=None, slow=None, scalar=None, drift=None, offset=None, **kwa
 
     tsi = scalar * fast_slow_ema / abs_fast_slow_ema
 
+    tsi_signal = ema(close=tsi, length=signal)
+
     # Offset
     if offset != 0:
         tsi = tsi.shift(offset)
+        tsi_signal = tsi_signal.shift(offset)
 
     # Handle fills
     if "fillna" in kwargs:
         tsi.fillna(kwargs["fillna"], inplace=True)
+        tsi_signal.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         tsi.fillna(method=kwargs["fill_method"], inplace=True)
+        tsi_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    tsi.name = f"TSI_{fast}_{slow}"
-    tsi.category = "momentum"
+    tsi.name = f"TSI_{fast}_{slow}_{signal}"
+    tsi_signal.name = f"TSIs_{fast}_{slow}_{signal}"
+    tsi.category = tsi_signal.category =  "momentum"
 
-    return tsi
+    # Prepare DataFrame to return
+    df = DataFrame({tsi.name: tsi, tsi_signal.name: tsi_signal})
+    df.name = f"TSI_{fast}_{slow}_{signal}"
+    df.category = "momentum"
+
+    return df
 
 
 tsi.__doc__ = \
@@ -58,7 +71,7 @@ Sources:
 
 Calculation:
     Default Inputs:
-        fast=13, slow=25, scalar=100, drift=1
+        fast=13, slow=25, signal=13, scalar=100, drift=1
     EMA = Exponential Moving Average
     diff = close.diff(drift)
 
@@ -69,11 +82,13 @@ Calculation:
     abema = abs_diff_fast_slow_ema = EMA(abs_diff_slow_ema, fast)
 
     TSI = scalar * fast_slow_ema / abema
+    Signal = EMA(TSI, signal)
 
 Args:
     close (pd.Series): Series of 'close's
     fast (int): The short period. Default: 13
     slow (int): The long period. Default: 25
+    signal (int): The signal period. Default: 13
     scalar (float): How much to magnify. Default: 100
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
@@ -83,5 +98,5 @@ Kwargs:
     fill_method (value, optional): Type of fill method
 
 Returns:
-    pd.Series: New feature generated.
+    pd.DataFrame: tsi, signal.
 """
