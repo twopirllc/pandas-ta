@@ -17,38 +17,48 @@ def jma(close, length=None, phase=0, offset=None, **kwargs):
     offset = get_offset(offset)
     if close is None: return
 
-    # Calculate base variables
-    jma = Volty = vsum = np.zeros_like(close)
-    det0 = det1 = ma2 = bsmax = bsmin = 0.0
-    jma[0] = ma1 = close[0]
-    len1 = max(((math.log(math.sqrt(0.5*(length-1)))/math.log(2.0))+2),0)
-    len2 = math.sqrt(0.5*(length-1))*len1
-    pow1 = max(len1-2.0,0.5)
-    PR = 0.5 if phase<-100 else (2.5 if phase>100 else phase/100+1.5)
-    beta = 0.45*(length-1)/(0.45*(length-1)+2)
-
-    # Iterate through the dataset, calculate Volty and jma
+    # Define base variables
+    jma = np.zeros_like(close)
+    Volty = np.zeros_like(close)
+    vSum = np.zeros_like(close)
+    Kv = det0 = det1 = ma2 = 0.0
+    jma[0] = ma1 = uBand = lBand = close[0]
+    # Static variables
+    SumLen = 10
+    len = 0.5*(length-1)
+    PR = 0.5 if phase<-100 else 2.5 if phase>100 else phase*0.01+1.5
+    len1 = max((math.log(math.sqrt(len))/math.log(2.0))+2.0, 0)
+    pow1 = max(len1-2.0, 0.5)
+    len2 = math.sqrt(len)*len1
+    bet = len2/(len2+1)
+    beta = 0.45*(length-1)/(0.45*(length-1)+2.0)
     for i in range(1, close.shape[0]):
-      hprice = np.amax(close[max(i-length,0):i])
-      lprice = np.amin(close[max(i-length,0):i])
-      del1 = hprice - bsmax
-      del2 = lprice - bsmin
-      Volty[i] = abs(del1) if del1>del2 else abs(del2) if del1<del2 else 0
-      vsum[i] = vsum[i-1] + 0.1 * (Volty[i]-Volty[i-min(i,10)])
-      avgVolty = np.mean(vsum[i-min(i,65):i])
-      dVolty = max(min(math.exp((1/pow1)*math.log(len1)),Volty[i]/avgVolty),1)
-      pow2 = math.exp(pow1*math.log(dVolty))
-      Kv = math.exp(math.sqrt(pow2)*math.log(len2/(len2+1)))
-      bsmax = hprice if del1>0 else hprice - Kv*del1
-      bsmin = lprice if del2<0 else lprice - Kv*del2
-      rVolty = max(min(math.pow(len1,1/pow1), Volty[i]/avgVolty),1)
-      power = math.pow(rVolty,pow1)
-      alpha = math.pow(beta, power)
-      ma1 = (1 - alpha) * close[i] + alpha * ma1
-      det0 = (close[i] - ma1) * (1 - beta) + beta * det0
-      ma2 = ma1 + PR * det0 
-      det1 = (ma2 - jma[i-1]) * math.pow(1-alpha,2) + math.pow(alpha,2) * det1
-      jma[i] = jma[i-1] + det1
+        price = close[i]
+        # Price volatility
+        del1 = price-uBand
+        del2 = price-lBand
+        Volty[i] = max(abs(del1),abs(del2)) if abs(del1)!=abs(del2) else 0
+        # Relative price volatility factor
+        vSum[i] = vSum[i-1] + (Volty[i]-Volty[max(i-SumLen,0)])/SumLen
+        avgVolty = np.average(vSum[max(i-65,0):i+1])
+        dVolty = 0 if avgVolty==0 else Volty[i]/avgVolty
+        rVolty = max(1.0, min(math.pow(len1, 1/pow1), dVolty))
+        # Jurik volatility bands
+        pow2 = math.pow(rVolty, pow1)
+        Kv = math.pow(bet, math.sqrt(pow2))
+        uBand = price if (del1 > 0) else price - (Kv*del1)
+        lBand = price if (del2 < 0) else price - (Kv*del2)
+        # Jurik Dynamic Factor
+        power = math.pow(rVolty, pow1)
+        alpha = math.pow(beta, power)
+        # 1st stage - prelimimary smoothing by adaptive EMA
+        ma1 = ((1-alpha)*price)+(alpha*ma1) #
+        # 2nd stage - one more prelimimary smoothing by Kalman filter
+        det0 = ((price-ma1)*(1-beta))+(beta*det0)
+        ma2 = ma1+PR*det0
+        # 3rd stage - final smoothing by unique Jurik adaptive filter
+        det1 = ((ma2-jma[i-1])*(1-alpha)*(1-alpha))+(alpha*alpha*det1)
+        jma[i] = jma[i-1] + det1
 
     # Remove initial lookback data and convert to pandas frame
     jma[0:length-1] = npNaN
@@ -78,7 +88,6 @@ Jurik Moving Average
 
 Sources:
     Implementation of: https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
-    Jurik volatility: https://www.prorealcode.com/prorealtime-indicators/jurik-volatility-bands/
 
 Calculation:
     Default Inputs:
