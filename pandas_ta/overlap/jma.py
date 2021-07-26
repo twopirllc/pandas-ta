@@ -34,7 +34,7 @@ def jma(close, length=None, phase=None, offset=None, **kwargs):
     pow1 = max(length1 - 2.0, 0.5)
     length2 = length1 * npSqrt(length)
     bet = length2 / (length2 + 1)
-    beta = 0.45 * (length - 1) / (0.45 * (length - 1) + 2.0)
+    beta = 0.45 * (_length - 1) / (0.45 * (_length - 1) + 2.0)
 
     m = close.shape[0]
     for i in range(1, m):
