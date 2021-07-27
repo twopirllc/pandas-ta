@@ -2,11 +2,12 @@
 import importlib
 import os
 import sys
+import types
+
 from os.path import abspath, join, exists, basename, splitext
 from glob import glob
-import types
+
 import pandas_ta
-import pandas as pd
 from pandas_ta import AnalysisIndicators
 
 
@@ -86,7 +87,7 @@ def import_dir(path, verbose=True):
         return
 
     # list the contents of the directory
-    dirs = glob(abspath(join(path, '*')))
+    dirs = glob(abspath(join(path, "*")))
 
     # traverse full directory, importing all modules found there
     for d in dirs:
@@ -99,7 +100,7 @@ def import_dir(path, verbose=True):
             continue
 
         # for each module found in that category (directory)...
-        for module in glob(abspath(join(path, dirname, '*.py'))):
+        for module in glob(abspath(join(path, dirname, "*.py"))):
             module_name = splitext(basename(module))[0]
 
             # ensure that the supplied path is included in our python path
@@ -111,13 +112,13 @@ def import_dir(path, verbose=True):
 
             # figure out which of the modules functions to bind to pandas_ta
             fcn_callable = module_functions.get(module_name, None)
-            fcn_method_callable = module_functions.get(module_name + "_method", None)
+            fcn_method_callable = module_functions.get(f"{module_name}_method", None)
 
             if fcn_callable == None:
                 print(f"[X] Unable to find a function named '{module_name}' in the module '{module_name}.py'.")
                 continue
             if fcn_method_callable == None:
-                missing_method = module_name + "_method"
+                missing_method = f"{module_name}_method"
                 print(f"[X] Unable to find a method function named '{missing_method}' in the module '{module_name}.py'.")
                 continue
 
@@ -145,7 +146,7 @@ pandas_ta.
 
 If you at some late point would like to push them into the pandas_ta library
 you can do so very easily by following the step by step instruction here
-https://github.com/twopirllc/pandas-ta/issues/264.
+https://github.com/twopirllc/pandas-ta/issues/355.
 
 A brief example of usage:
 
@@ -160,8 +161,8 @@ sub-folders for all available indicator categories, e.g.:
 >>> import os
 >>> from os.path import abspath, join, expanduser
 >>> from pandas_ta.custom import create_dir, import_dir
->>> my_dir = abspath(join(expanduser("~"), "my_indicators"))
->>> create_dir(my_dir)
+>>> ta_dir = abspath(join(expanduser("~"), "my_indicators"))
+>>> create_dir(ta_dir)
 
 3. You can now create your own custom indicator e.g. by copying existing
 ones from pandas_ta core module and modifying them.
@@ -194,14 +195,14 @@ sub-folder named trend. Thus we have a folder structure like this:
 4. We can now dynamically load all our custom indicators located in our
 designated indicators directory like this:
 
->>> import_dir(my_dir)
+>>> import_dir(ta_dir)
 
 If your custom indicator(s) loaded succesfully then it should behave exactly
 like all other native indicators in pandas_ta, including help functions.
 """
 
 
-def load_indicator_module(module_name):
+def load_indicator_module(name):
     """
      Helper function to (re)load an indicator module.
 
@@ -215,9 +216,9 @@ def load_indicator_module(module_name):
     """
     # load module
     try:
-        module = importlib.import_module(module_name)
+        module = importlib.import_module(name)
     except Exception as ex:
-        print(f"[X] An error occurred when attempting to load module {module_name}: {ex}")
+        print(f"[X] An error occurred when attempting to load module {name}: {ex}")
         sys.exit(1)
 
     # reload to refresh previously loaded module
