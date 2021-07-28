@@ -4,7 +4,7 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, offset=None, **kwargs):
+def natr(high, low, close, length=None, scalar=None, mamode=None, talib=None, drift=None, offset=None, **kwargs):
     """Indicator: Normalized Average True Range (NATR)"""
     # Validate arguments
     length = int(length) if length and length > 0 else 14
@@ -15,13 +15,14 @@ def natr(high, low, close, length=None, mamode=None, scalar=None, drift=None, of
     close = verify_series(close, length)
     drift = get_drift(drift)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if high is None or low is None or close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import NATR
-        natr = NATR(high, low, close)
+        natr = NATR(high, low, close, length)
     else:
         natr = scalar / close
         natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)
@@ -63,6 +64,9 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): The short period. Default: 20
     scalar (float): How much to magnify. Default: 100
+    mamode (str): See ```help(ta.ma)```. Default: 'ema'
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

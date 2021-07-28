@@ -4,18 +4,19 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def wma(close, length=None, asc=None, offset=None, **kwargs):
+def wma(close, length=None, asc=None, talib=None, offset=None, **kwargs):
     """Indicator: Weighted Moving Average (WMA)"""
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
     asc = asc if asc else True
     close = verify_series(close, length)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import WMA
         wma = WMA(close, length)
     else:
@@ -78,6 +79,8 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 10
     asc (bool): Recent values weigh more. Default: True
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

@@ -87,7 +87,14 @@ def yf(ticker: str, **kwargs):
 
         # Ticker Info & Chart History
         yfd = yfra.Ticker(ticker)
-        df = yfd.history(period=period, interval=interval, proxy=proxy, **kwargs)
+
+        try:
+            df = yfd.history(period=period, interval=interval, proxy=proxy, **kwargs)
+        except:
+            if yfra.__version__ == "0.1.60":
+                print(f"[!] If history is not downloading, see yfinance Issue #760 by user djl0.")
+                print(f"[!] https://github.com/ranaroussi/yfinance/issues/760#issuecomment-877355832")
+                return
 
         if df.empty: return
         df.name = ticker

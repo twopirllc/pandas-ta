@@ -4,6 +4,7 @@ from multiprocessing import cpu_count, Pool
 from pathlib import Path
 from time import perf_counter
 from typing import List, Tuple
+from warnings import simplefilter
 
 import pandas as pd
 from numpy import log10 as npLog10
@@ -250,15 +251,15 @@ class AnalysisIndicators(BasePandasObject):
     _time_range = "years"
     _last_run = get_time(_exchange, to_string=True)
 
-    # def __init__(self, pandas_obj):
-    #     # self._validate(pandas_obj)
-    #     self._df = pandas_obj
-    #     self._last_run = get_time(self._exchange, to_string=True)
+    def __init__(self, pandas_obj):
+        self._validate(pandas_obj)
+        self._df = pandas_obj
+        self._last_run = get_time(self._exchange, to_string=True)
 
-    # @staticmethod
-    # def _validate(df: Tuple[pd.DataFrame, pd.Series]):
-    #     if isinstance(df, pd.Series) or isinstance(df, pd.DataFrame):
-    #         raise AttributeError("[X] Must be either a Pandas Series or DataFrame.")
+    @staticmethod
+    def _validate(obj: Tuple[pd.DataFrame, pd.Series]):
+        if not isinstance(obj, pd.DataFrame) and not isinstance(obj, pd.Series):
+            raise AttributeError("[X] Must be either a Pandas Series or DataFrame.")
 
     # DataFrame Behavioral Methods
     def __call__(
@@ -400,8 +401,9 @@ class AnalysisIndicators(BasePandasObject):
             df = self._df
             if df is None or result is None: return
             else:
+                simplefilter(action="ignore", category=pd.errors.PerformanceWarning)
                 if "col_names" in kwargs and not isinstance(kwargs["col_names"], tuple):
-                    kwargs["col_names"] = (kwargs["col_names"],)
+                    kwargs["col_names"] = (kwargs["col_names"],) # Note: tuple(kwargs["col_names"]) doesn't work
 
                 if isinstance(result, pd.DataFrame):
                     # If specified in kwargs, rename the columns.
@@ -761,10 +763,10 @@ class AnalysisIndicators(BasePandasObject):
         else:
             # Without multiprocessing:
             if verbose:
+                _col_msg = f"[i] No mulitproccessing (cores = 0)."
                 if has_col_names:
-                    print(f"[i] No mulitproccessing support for 'col_names' option.")
-                else:
-                    print(f"[i] No mulitproccessing (cores = 0).")
+                    _col_msg = f"[i] No mulitproccessing support for 'col_names' option."
+                print(_col_msg)
 
             if mode["custom"]:
                 if Imports["tqdm"] and verbose:
@@ -784,6 +786,7 @@ class AnalysisIndicators(BasePandasObject):
                 else:
                     for ind in ta:
                         getattr(self, ind)(*tuple(), **kwargs)
+                self._last_run = get_time(self.exchange, to_string=True)
 
         # Apply prefixes/suffixes and appends indicator results to the  DataFrame
         [self._post_process(r, **kwargs) for r in results]
@@ -900,9 +903,9 @@ class AnalysisIndicators(BasePandasObject):
         result = ao(high=high, low=low, fast=fast, slow=slow, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def apo(self, fast=None, slow=None, offset=None, **kwargs):
+    def apo(self, fast=None, slow=None, mamode=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = apo(close=close, fast=fast, slow=slow, offset=offset, **kwargs)
+        result = apo(close=close, fast=fast, slow=slow, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def bias(self, length=None, mamode=None, offset=None, **kwargs):
@@ -958,10 +961,10 @@ class AnalysisIndicators(BasePandasObject):
         result = cti(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def dm(self, drift=None, offset=None, **kwargs):
+    def dm(self, drift=None, offset=None, mamode=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
-        result = dm(high=high, low=low, drift=drift, offset=offset, **kwargs)
+        result = dm(high=high, low=low, drift=drift, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def er(self, length=None, drift=None, offset=None, **kwargs):
@@ -1078,18 +1081,18 @@ class AnalysisIndicators(BasePandasObject):
         result = smi(close=close, fast=fast, slow=slow, signal=signal, scalar=scalar, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def squeeze(self, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, offset=None, **kwargs):
+    def squeeze(self, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, mamode=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = squeeze(high=high, low=low, close=close, bb_length=bb_length, bb_std=bb_std, kc_length=kc_length, kc_scalar=kc_scalar, mom_length=mom_length, mom_smooth=mom_smooth, use_tr=use_tr, offset=offset, **kwargs)
+        result = squeeze(high=high, low=low, close=close, bb_length=bb_length, bb_std=bb_std, kc_length=kc_length, kc_scalar=kc_scalar, mom_length=mom_length, mom_smooth=mom_smooth, use_tr=use_tr, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def squeeze_pro(self, bb_length=None, bb_std=None, kc_length=None, kc_scalar_wide=None, kc_scalar_normal=None, kc_scalar_narrow=None, mom_length=None, mom_smooth=None, use_tr=None, offset=None, **kwargs):
+    def squeeze_pro(self, bb_length=None, bb_std=None, kc_length=None, kc_scalar_wide=None, kc_scalar_normal=None, kc_scalar_narrow=None, mom_length=None, mom_smooth=None, use_tr=None, mamode=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = squeeze_pro(high=high, low=low, close=close, bb_length=bb_length, bb_std=bb_std, kc_length=kc_length, kc_scalar_wide=kc_scalar_wide, kc_scalar_normal=kc_scalar_normal, kc_scalar_narrow=kc_scalar_narrow, mom_length=mom_length, mom_smooth=mom_smooth, use_tr=use_tr, offset=offset, **kwargs)
+        result = squeeze_pro(high=high, low=low, close=close, bb_length=bb_length, bb_std=bb_std, kc_length=kc_length, kc_scalar_wide=kc_scalar_wide, kc_scalar_normal=kc_scalar_normal, kc_scalar_narrow=kc_scalar_narrow, mom_length=mom_length, mom_smooth=mom_smooth, use_tr=use_tr, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def stc(self, ma1=None, ma2=None, osc=None, tclength=None, fast=None, slow=None, factor=None, offset=None, **kwargs):
@@ -1097,18 +1100,18 @@ class AnalysisIndicators(BasePandasObject):
         result = stc(close=close, ma1=ma1, ma2=ma2, osc=osc, tclength=tclength, fast=fast, slow=slow, factor=factor, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def stoch(self, fast_k=None, slow_k=None, slow_d=None, offset=None, **kwargs):
+    def stoch(self, fast_k=None, slow_k=None, slow_d=None, mamode=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = stoch(high=high, low=low, close=close, fast_k=fast_k, slow_k=slow_k, slow_d=slow_d, offset=offset, **kwargs)
+        result = stoch(high=high, low=low, close=close, fast_k=fast_k, slow_k=slow_k, slow_d=slow_d, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def stochrsi(self, length=None, rsi_length=None, k=None, d=None, offset=None, **kwargs):
+    def stochrsi(self, length=None, rsi_length=None, k=None, d=None, mamode=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = stochrsi(high=high, low=low, close=close, length=length, rsi_length=rsi_length, k=k, d=d, offset=offset, **kwargs)
+        result = stochrsi(high=high, low=low, close=close, length=length, rsi_length=rsi_length, k=k, d=d, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def td_seq(self, asint=None, offset=None, show_all=None, **kwargs):
@@ -1121,9 +1124,9 @@ class AnalysisIndicators(BasePandasObject):
         result = trix(close=close, length=length, signal=signal, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def tsi(self, fast=None, slow=None, drift=None, offset=None, **kwargs):
+    def tsi(self, fast=None, slow=None, drift=None, mamode=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = tsi(close=close, fast=fast, slow=slow, drift=drift, offset=offset, **kwargs)
+        result = tsi(close=close, fast=fast, slow=slow, drift=drift, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def uo(self, fast=None, medium=None, slow=None, fast_w=None, medium_w=None, slow_w=None, drift=None, offset=None, **kwargs):
@@ -1191,16 +1194,21 @@ class AnalysisIndicators(BasePandasObject):
         result = hwma(close=close, na=na, nb=nb, nc=nc, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def jma(self, length=None, phase=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = jma(close=close, length=length, phase=phase, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def kama(self, length=None, fast=None, slow=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = kama(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def ichimoku(self, tenkan=None, kijun=None, senkou=None, offset=None, **kwargs):
+    def ichimoku(self, tenkan=None, kijun=None, senkou=None, include_chikou=True, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, offset=offset, **kwargs)
+        result, span = ichimoku(high=high, low=low, close=close, tenkan=tenkan, kijun=kijun, senkou=senkou, include_chikou=include_chikou, offset=offset, **kwargs)
         self._add_prefix_suffix(result, **kwargs)
         self._add_prefix_suffix(span, **kwargs)
         self._append(result, **kwargs)
@@ -1416,11 +1424,11 @@ class AnalysisIndicators(BasePandasObject):
         result = chop(high=high, low=low, close=close, length=length, atr_length=atr_length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def cksp(self, p=None, x=None, q=None, offset=None, **kwargs):
+    def cksp(self, p=None, x=None, q=None, mamode=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = cksp(high=high, low=low, close=close, p=p, x=x, q=q, offset=offset, **kwargs)
+        result = cksp(high=high, low=low, close=close, p=p, x=x, q=q, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def decay(self, length=None, mode=None, offset=None, **kwargs):

@@ -131,7 +131,6 @@ AlphaVantageAPI/
 
 # Data & NB Exclusions
 *.csv
-jnb/*.ipynb
 data/datas.csv
 data/f500.csv
 data/GLD_D_tv.csv
@@ -143,3 +142,5 @@ data/SPY_D_TV3.csv
 data/TV_5min.csv
 data/tulip.csv
 examples/*.csv
+jnb/*.ipynb
+jnb/*.txt

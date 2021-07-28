@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
-from pandas_ta.overlap import sma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.overlap import ma
+from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
-def apo(close, fast=None, slow=None, offset=None, **kwargs):
+def apo(close, fast=None, slow=None, mamode=None, talib=None, offset=None, **kwargs):
     """Indicator: Absolute Price Oscillator (APO)"""
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 12
@@ -12,17 +12,19 @@ def apo(close, fast=None, slow=None, offset=None, **kwargs):
     if slow < fast:
         fast, slow = slow, fast
     close = verify_series(close, max(fast, slow))
+    mamode = mamode if isinstance(mamode, str) else "sma"
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import APO
-        apo = APO(close, fast, slow)
+        apo = APO(close, fast, slow, tal_ma(mamode))
     else:
-        fastma = sma(close, length=fast)
-        slowma = sma(close, length=slow)
+        fastma = ma(mamode, close, length=fast)
+        slowma = ma(mamode, close, length=slow)
         apo = fastma - slowma
 
     # Offset
@@ -62,6 +64,9 @@ Args:
     close (pd.Series): Series of 'close's
     fast (int): The short period. Default: 12
     slow (int): The long period. Default: 26
+    mamode (str): See ```help(ta.ma)```. Default: 'sma'
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

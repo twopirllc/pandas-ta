@@ -6,6 +6,7 @@ from sys import float_info as sflt
 from numpy import argmax, argmin
 from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
+from pandas_ta import Imports
 
 
 def _camelCase2Title(x: str):
@@ -80,6 +81,23 @@ def signed_series(series: Series, initial: int = None) -> Series:
     sign[sign < 0] = -1
     sign.iloc[0] = initial
     return sign
+
+
+def tal_ma(name: str) -> int:
+    """Helper Function that returns the Enum value for TA Lib's MA Type"""
+    if Imports["talib"] and isinstance(name, str) and len(name) > 1:
+        from talib import MA_Type
+        name = name.lower()
+        if   name == "sma":   return MA_Type.SMA   # 0
+        elif name == "ema":   return MA_Type.EMA   # 1
+        elif name == "wma":   return MA_Type.WMA   # 2
+        elif name == "dema":  return MA_Type.DEMA  # 3
+        elif name == "tema":  return MA_Type.TEMA  # 4
+        elif name == "trima": return MA_Type.TRIMA # 5
+        elif name == "kama":  return MA_Type.KAMA  # 6
+        elif name == "mama":  return MA_Type.MAMA  # 7
+        elif name == "t3":    return MA_Type.T3    # 8
+    return 0 # Default: SMA -> 0
 
 
 def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Series:

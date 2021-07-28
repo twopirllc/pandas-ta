@@ -3,7 +3,7 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def midprice(high, low, length=None, offset=None, **kwargs):
+def midprice(high, low, length=None, talib=None, offset=None, **kwargs):
     """Indicator: Midprice"""
     # Validate arguments
     length = int(length) if length and length > 0 else 2
@@ -12,11 +12,12 @@ def midprice(high, low, length=None, offset=None, **kwargs):
     high = verify_series(high, _length)
     low = verify_series(low, _length)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if high is None or low is None: return
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import MIDPRICE
         midprice = MIDPRICE(high, low, length)
     else:

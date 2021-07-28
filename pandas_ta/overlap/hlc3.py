@@ -3,16 +3,17 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def hlc3(high, low, close, offset=None, **kwargs):
+def hlc3(high, low, close, talib=None, offset=None, **kwargs):
     """Indicator: HLC3"""
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import TYPPRICE
         hlc3 = TYPPRICE(high, low, close)
     else:

@@ -1,7 +1,7 @@
 from .config import sample_data
 from .context import pandas_ta
 
-from unittest import TestCase
+from unittest import TestCase, skip
 from pandas import DataFrame
 
 
@@ -16,7 +16,6 @@ class TestCandleExtension(TestCase):
 
     def setUp(self): pass
     def tearDown(self): pass
-
 
     def test_cdl_doji_ext(self):
         self.data.ta.cdl_pattern("doji", append=True)

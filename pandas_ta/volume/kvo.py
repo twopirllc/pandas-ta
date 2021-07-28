@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
-from numpy import where as npWhere
 from pandas import DataFrame
 from pandas_ta.overlap import hlc3, ma
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.utils import get_drift, get_offset, signed_series, verify_series
 
 
-def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, mamode=None, drift=None, offset=None, **kwargs):
+def kvo(high, low, close, volume, fast=None, slow=None, signal=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Klinger Volume Oscillator (KVO)"""
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 34
     slow = int(slow) if slow and slow > 0 else 55
-    length_sig = int(length_sig) if length_sig and length_sig > 0 else 13
+    signal = int(signal) if signal and signal > 0 else 13
     mamode = mamode.lower() if mamode and isinstance(mamode, str) else "ema"
-    _length = max(fast, slow, length_sig)
+    _length = max(fast, slow, signal)
     high = verify_series(high, _length)
     low = verify_series(low, _length)
     close = verify_series(close, _length)
@@ -23,19 +22,10 @@ def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, mamode=
     if high is None or low is None or close is None or volume is None: return
 
     # Calculate Result
-    mom = hlc3(high, low, close).diff(drift)
-    trend = npWhere(mom > 0, 1, 0) + npWhere(mom < 0, -1, 0)
-    dm = non_zero_range(high, low)
-
-    m = high.size
-    cm = [0] * m
-    for i in range(1, m):
-        cm[i] = (cm[i - 1] + dm[i]) if trend[i] == trend[i - 1] else (dm[i - 1] + dm[i])
-
-    vf = 100 * volume * trend * abs(2 * dm / cm - 1)
-
-    kvo = ma(mamode, vf, length=fast) - ma(mamode, vf, length=slow)
-    kvo_signal = ma(mamode, kvo, length=length_sig)
+    signed_volume = volume * signed_series(hlc3(high, low, close), 1)
+    sv = signed_volume.loc[signed_volume.first_valid_index():,]
+    kvo = ma(mamode, sv, length=fast) - ma(mamode, sv, length=slow)
+    kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():,], length=signal)
 
     # Offset
     if offset != 0:
@@ -51,17 +41,18 @@ def kvo(high, low, close, volume, fast=None, slow=None, length_sig=None, mamode=
         kvo_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Categorize it
-    kvo.name = f"KVO_{fast}_{slow}"
-    kvo_signal.name = f"KVOSig_{length_sig}"
+    _props = f"_{fast}_{slow}_{signal}"
+    kvo.name = f"KVO{_props}"
+    kvo_signal.name = f"KVOs{_props}"
     kvo.category = kvo_signal.category = "volume"
 
     # Prepare DataFrame to return
     data = {kvo.name: kvo, kvo_signal.name: kvo_signal}
-    kvoandsig = DataFrame(data)
-    kvoandsig.name = f"KVO_{fast}_{slow}_{length_sig}"
-    kvoandsig.category = kvo.category
+    df = DataFrame(data)
+    df.name = f"KVO{_props}"
+    df.category = kvo.category
 
-    return kvoandsig
+    return df
 
 
 kvo.__doc__ = \
@@ -71,23 +62,17 @@ This indicator was developed by Stephen J. Klinger. It is designed to predict
 price reversals in a market by comparing volume to price.
 
 Sources:
-    https://www.tradingview.com/script/Qnn7ymRK-Klinger-Volume-Oscillator/
+    https://www.investopedia.com/terms/k/klingeroscillator.asp
     https://www.daytrading.com/klinger-volume-oscillator
 
 Calculation:
     Default Inputs:
-        fast=34, slow=55, length_sig=13, drift=1
-    MOM = HLC3.diff(drift)
-    NEG_TREND = -1 if MOM < 0 else 0
-    POS_TREND =  1 if MOM > 0 else 0
-    TREND = POS_TREND + NEG_TREND
-    DM = high - low
-    CM = [CMt-1 + DMt if TRENDt == TRENDt-1 else DMt-1 + DMt]
+        fast=34, slow=55, signal=13, drift=1
+    EMA = Exponential Moving Average
 
-    vf = 100 * volume * TREND * abs(2 * dm / cm - 1)
-    kvo = ema(vf, fast) - ema(vf, slow)
-    kvo_signal = ema(kvo, length_sig)
-
+    SV = volume * signed_series(HLC3, 1)
+    KVO = EMA(SV, fast) - EMA(SV, slow)
+    Signal = EMA(KVO, signal)
 
 Args:
     high (pd.Series): Series of 'high's
@@ -97,7 +82,7 @@ Args:
     fast (int): The fast period. Default: 34
     long (int): The long period. Default: 55
     length_sig (int): The signal period. Default: 13
-    mamode (str): "sma", "ema", "wma" or "rma". Default: "ema"
+    mamode (str): See ```help(ta.ma)```. Default: 'ema'
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
@@ -105,5 +90,5 @@ Kwargs:
     fill_method (value, optional): Type of fill method
 
 Returns:
-    pd.DataFrame: kvo and kvo_signal columns.
+    pd.DataFrame: KVO and Signal columns.
 """

@@ -112,8 +112,8 @@ Args:
     long(int): The buy factor
     short(float): The sell factor
     length (int): The  period. Default: 20
+    mamode (str): See ```help(ta.ma)```. Default: 'ema'
     drift (int): The diff period. Default: 1
-    mamode (str): Three options: "ema", "sma", or "hma". Default: "ema"
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

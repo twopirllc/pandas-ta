@@ -5,7 +5,7 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def true_range(high, low, close, drift=None, offset=None, **kwargs):
+def true_range(high, low, close, talib=None, drift=None, offset=None, **kwargs):
     """Indicator: True Range"""
     # Validate arguments
     high = verify_series(high)
@@ -13,9 +13,10 @@ def true_range(high, low, close, drift=None, offset=None, **kwargs):
     close = verify_series(close)
     drift = get_drift(drift)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import TRANGE
         true_range = TRANGE(high, low, close)
     else:
@@ -63,6 +64,8 @@ Args:
     high (pd.Series): Series of 'high's
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     drift (int): The shift period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

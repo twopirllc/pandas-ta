@@ -58,7 +58,7 @@ class TestCandle(TestCase):
         try:
             expected = tal.CDLDOJI(self.open, self.high, self.low, self.close)
             pdt.assert_series_equal(result, expected, check_names=False)
-        except AssertionError as ae:
+        except AssertionError:
             try:
                 corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
                 self.assertGreater(corr, CORRELATION_THRESHOLD)

@@ -9,6 +9,7 @@ from .hlc3 import hlc3
 from .hma import hma
 from .hwma import hwma
 from .ichimoku import ichimoku
+from .jma import jma
 from .kama import kama
 from .linreg import linreg
 from .ma import ma

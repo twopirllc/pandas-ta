@@ -3,7 +3,7 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def bop(open_, high, low, close, scalar=None, offset=None, **kwargs):
+def bop(open_, high, low, close, scalar=None, talib=None, offset=None, **kwargs):
     """Indicator: Balance of Power (BOP)"""
     # Validate Arguments
     open_ = verify_series(open_)
@@ -12,9 +12,10 @@ def bop(open_, high, low, close, scalar=None, offset=None, **kwargs):
     close = verify_series(close)
     scalar = float(scalar) if scalar else 1
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import BOP
         bop = BOP(open_, high, low, close)
     else:
@@ -56,6 +57,8 @@ Args:
     low (pd.Series): Series of 'low's
     close (pd.Series): Series of 'close's
     scalar (float): How much to magnify. Default: 1
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

@@ -6,7 +6,7 @@ from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def amat(close=None, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
+def amat(close=None, fast=None, slow=None, lookback=None, mamode=None, offset=None, **kwargs):
     """Indicator: Archer Moving Averages Trends (AMAT)"""
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 8

@@ -85,25 +85,25 @@ def hwc(close, na=None, nb=None, nc=None, nd=None, scalar=None, channel_eval=Non
 
     # Name and Categorize it
     # suffix = f'{str(na).replace(".", "")}-{str(nb).replace(".", "")}-{str(nc).replace(".", "")}'
-    hwc.name = 'HW-MID'
-    hwc_upper.name = "HW-UPPER"
-    hwc_lower.name = "HW-LOWER"
+    hwc.name = "HWM"
+    hwc_upper.name = "HWU"
+    hwc_lower.name = "HWL"
     hwc.category = hwc_upper.category = hwc_lower.category = "volatility"
     if channel_eval:
-        hwc_width.name = 'HW-WIDTH'
-        hwc_pctwidth.name = 'HW-PCTW'
+        hwc_width.name = "HWW"
+        hwc_pctwidth.name = "HWPCT"
 
     # Prepare DataFrame to return
     if channel_eval:
         data = {hwc.name: hwc, hwc_upper.name: hwc_upper, hwc_lower.name: hwc_lower,
                 hwc_width.name: hwc_width, hwc_pctwidth.name: hwc_pctwidth}
         df = DataFrame(data)
-        df.name = "hwc"
+        df.name = "HWC"
         df.category = hwc.category
     else:
         data = {hwc.name: hwc, hwc_upper.name: hwc_upper, hwc_lower.name: hwc_lower}
         df = DataFrame(data)
-        df.name = "hwc"
+        df.name = "HWC"
         df.category = hwc.category
 
     return df
@@ -149,5 +149,5 @@ Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 Returns:
-    pd.DataFrame: HW-MID, HW-UPPER, HW-LOWER columns.
+    pd.DataFrame: HWM (Mid), HWU (Upper), HWL (Lower) columns.
 """

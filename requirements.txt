@@ -1,2 +1,5 @@
-numpy>=1.20.2
-pandas>=1.2.4
+numpy==1.19.5
+pandas==1.2.0
+python-dateutil==2.8.1
+pytz==2021.1
+six==1.16.0

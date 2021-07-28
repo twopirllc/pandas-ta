@@ -93,7 +93,7 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): It's period. Default: 10
     c (int): Multiplier. Default: 4
-    mamode (str): Two options: None or 'ema'. Default: 'ema'
+    mamode (str): See ```help(ta.ma)```. Default: 'sma'
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

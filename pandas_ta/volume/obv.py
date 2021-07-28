@@ -3,15 +3,16 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
-def obv(close, volume, offset=None, **kwargs):
+def obv(close, volume, talib=None, offset=None, **kwargs):
     """Indicator: On Balance Volume (OBV)"""
     # Validate arguments
     close = verify_series(close)
     volume = verify_series(volume)
     offset = get_offset(offset)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     # Calculate Result
-    if Imports["talib"]:
+    if Imports["talib"] and mode_tal:
         from talib import OBV
         obv = OBV(close, volume)
     else:
@@ -53,6 +54,8 @@ Calculation:
 Args:
     close (pd.Series): Series of 'close's
     volume (pd.Series): Series of 'volume's
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

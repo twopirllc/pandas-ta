@@ -143,8 +143,7 @@ Args:
     length (int): RSI period. Default: 14
     smooth (int): RSI smoothing period. Default: 5
     factor (float): QQE Factor. Default: 4.236
-    mamode (str): Smoothing MA type: "ema", "hma", "rma", "sma" or "wma".
-        Default: "ema"
+    mamode (str): See ```help(ta.ma)```. Default: 'sma'
     drift (int): The difference period. Default: 1
     offset (int): How many periods to offset the result. Default: 0
 

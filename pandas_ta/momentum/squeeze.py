@@ -9,7 +9,7 @@ from pandas_ta.utils import get_offset
 from pandas_ta.utils import unsigned_differences, verify_series
 
 
-def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, offset=None, **kwargs):
+def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, mamode=None, offset=None, **kwargs):
     """Indicator: Squeeze Momentum (SQZ)"""
     # Validate arguments
     bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
@@ -30,7 +30,7 @@ def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_sc
     asint = kwargs.pop("asint", True)
     detailed = kwargs.pop("detailed", False)
     lazybear = kwargs.pop("lazybear", False)
-    mamode = kwargs.pop("mamode", "sma").lower()
+    mamode = mamode if isinstance(mamode, str) else "sma"
 
     def simplify_columns(df, n=3):
         df.columns = df.columns.str.lower()

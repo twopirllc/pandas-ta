@@ -101,10 +101,10 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): The short period. Default: 14
     scalar (float): A positive float to scale the bands. Default: 100
-    mamode (str): Options: 'sma' or 'ema'. Default: 'sma'
     refined (bool): Use 'refined' calculation which is the average of
         RVI(high) and RVI(low) instead of RVI(close). Default: False
     thirds (bool): Average of high, low and close. Default: False
+    mamode (str): See ```help(ta.ma)```. Default: 'ema'
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

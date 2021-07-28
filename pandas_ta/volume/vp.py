@@ -16,10 +16,10 @@ def vp(close, volume, width=None, **kwargs):
     if close is None or volume is None: return
 
     # Setup
-    signed_price = signed_series(close, initial=1)
-    pos_volume = signed_price[signed_price > 0] * volume
+    signed_price = signed_series(close, 1)
+    pos_volume = volume * signed_price[signed_price > 0]
     pos_volume.name = volume.name
-    neg_volume = signed_price[signed_price < 0] * -volume
+    neg_volume = -volume * signed_price[signed_price < 0]
     neg_volume.name = volume.name
     vp = concat([close, pos_volume, neg_volume], axis=1)
 

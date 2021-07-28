@@ -9,7 +9,7 @@ from pandas_ta.utils import get_offset
 from pandas_ta.utils import unsigned_differences, verify_series
 
 
-def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar_wide=None, kc_scalar_normal=None, kc_scalar_narrow=None, mom_length=None, mom_smooth=None, use_tr=None, offset=None, **kwargs):
+def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar_wide=None, kc_scalar_normal=None, kc_scalar_narrow=None, mom_length=None, mom_smooth=None, use_tr=None, mamode=None, offset=None, **kwargs):
     """Indicator: Squeeze Momentum (SQZ) PRO"""
     # Validate arguments
     bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
@@ -35,7 +35,7 @@ def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, k
     use_tr = kwargs.setdefault("tr", True)
     asint = kwargs.pop("asint", True)
     detailed = kwargs.pop("detailed", False)
-    mamode = kwargs.pop("mamode", "sma").lower()
+    mamode = mamode if isinstance(mamode, str) else "sma"
 
     def simplify_columns(df, n=3):
         df.columns = df.columns.str.lower()

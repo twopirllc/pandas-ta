@@ -100,7 +100,7 @@ Args:
     close (pd.Series): Series of 'close's
     length (int): The short period.  Default: 20
     scalar (float): A positive float to scale the bands. Default: 2
-    mamode (str): Two options: "sma" or "ema". Default: "ema"
+    mamode (str): See ```help(ta.ma)```. Default: 'ema'
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
