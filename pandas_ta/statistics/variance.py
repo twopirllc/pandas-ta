@@ -54,9 +54,10 @@ Args:
     length (int): It's period. Default: 30
     ddof (int): Delta Degrees of Freedom.
                 The divisor used in calculations is N - ddof,
-                where N represents the number of elements. Default: 0
+                where N represents the number of elements. The 'talib' argument
+                must be false for 'ddof' to work. Default: 1
     talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
+        version. TA Lib does not have a 'ddof' argument. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:

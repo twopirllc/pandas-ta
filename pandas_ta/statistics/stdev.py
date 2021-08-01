@@ -21,7 +21,7 @@ def stdev(close, length=None, ddof=None, talib=None, offset=None, **kwargs):
         from talib import STDDEV
         stdev = STDDEV(close, length)
     else:
-        stdev = variance(close=close, length=length, ddof=ddof).apply(npsqrt)
+        stdev = variance(close=close, length=length, ddof=ddof, talib=False).apply(npsqrt)
 
     # Offset
     if offset != 0:
@@ -56,9 +56,10 @@ Args:
     length (int): It's period. Default: 30
     ddof (int): Delta Degrees of Freedom.
                 The divisor used in calculations is N - ddof,
-                where N represents the number of elements. Default: 1
+                where N represents the number of elements. The 'talib' argument
+                must be false for 'ddof' to work. Default: 1
     talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
+        version. TA Lib does not have a 'ddof' argument. Default: True
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
