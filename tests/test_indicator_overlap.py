@@ -327,6 +327,11 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SMA_10")
 
+    def test_smma(self):
+        result = pandas_ta.smma(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "SMMA_7")
+
     def test_ssf(self):
         result = pandas_ta.ssf(self.close, poles=2)
         self.assertIsInstance(result, Series)

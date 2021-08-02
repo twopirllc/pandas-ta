@@ -21,6 +21,7 @@ from .pwma import pwma
 from .rma import rma
 from .sinwma import sinwma
 from .sma import sma
+from .smma import smma
 from .ssf import ssf
 from .supertrend import supertrend
 from .swma import swma

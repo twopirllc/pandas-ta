@@ -123,6 +123,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "SMA_10")
 
+    def test_smma_ext(self):
+        self.data.ta.smma(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "SMMA_7")
+
     def test_ssf_ext(self):
         self.data.ta.ssf(append=True, poles=2)
         self.assertIsInstance(self.data, DataFrame)

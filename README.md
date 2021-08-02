@@ -56,7 +56,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Candles](#candles-64)
     * [Cycles](#cycles-1)
     * [Momentum](#momentum-41)
-    * [Overlap](#overlap-33)
+    * [Overlap](#overlap-34)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
     * [Trend](#trend-18)
@@ -113,7 +113,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.15b*
+Best choice! Version: *0.3.16b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -723,7 +723,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Overlap** (33)
+### **Overlap** (34)
 
 * _Arnaud Legoux Moving Average_: **alma**
 * _Double Exponential Moving Average_: **dema**
@@ -749,6 +749,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _WildeR's Moving Average_: **rma**
 * _Sine Weighted Moving Average_: **sinwma**
 * _Simple Moving Average_: **sma**
+* _Smoothed Moving Average_: **smma**
 * _Ehler's Super Smoother Filter_: **ssf**
 * _Supertrend_: **supertrend**
 * _Symmetric Weighted Moving Average_: **swma**
@@ -969,15 +970,16 @@ trading account, or fund. See ```help(ta.drawdown)```
 * _Cross Signals_ (**xsignals**) was created by Kevin Johnson. It is a wrapper of Trade Signals that returns Trends, Trades, Entries and Exits. Cross Signals are commonly used for **bbands**, **rsi**, **zscore** crossing some value either above or below two values at different times. See ```help(ta.xsignals)```
 * _Directional Movement_ (**dm**) developed by J. Welles Wilder in 1978 attempts to determine which direction the price of an asset is moving. See ```help(ta.dm)```
 * _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
-* _Jurik Moving Average_ (**jma**) attempts to eliminate noise to see the "true" underlying activity.. See: ```help(ta.jma)```
-* _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price.. See ```help(ta.kvo)```
+* _Jurik Moving Average_ (**jma**) attempts to eliminate noise to see the "true" underlying activity. See: ```help(ta.jma)```
+* _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price. See ```help(ta.kvo)```
+* _Smoothed Moving Average_ (**smma**) can be used to confirm trends and define areas of support and resistance. See: ```help(ta.smma)```
 * _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two cascaded stochastic calculations with additional smoothing. See ```help(ta.stc)```
 * _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
 * _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which
 returns the standard deviation of data for the entire plot or for the interval
 of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
-* _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets.. See ```help(ta.vhf)```
+* _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets. See ```help(ta.vhf)```
 
 <br/>
 
