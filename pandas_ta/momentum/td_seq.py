@@ -67,7 +67,8 @@ def td_seq(close, asint=None, offset=None, **kwargs):
 
     # Prepare Dataframe to return
     data = {up_seq.name: up_seq, down_seq.name: down_seq}
-    df = DataFrame(data, index=close.index)
+    df = DataFrame(data)
+    df.index = close.index # Only works here for some reason?
     df.name = "TD_SEQ"
     df.category = up_seq.category
 
