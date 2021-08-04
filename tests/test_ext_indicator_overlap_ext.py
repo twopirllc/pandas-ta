@@ -18,6 +18,11 @@ class TestOverlapExtension(TestCase):
     def tearDown(self): pass
 
 
+    def test_alligator_ext(self):
+        self.data.ta.alligator(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-3:]), ["AGj_13_8_5", "AGt_13_8_5", "AGl_13_8_5"])
+
     def test_alma_ext(self):
         self.data.ta.alma(append=True)
         self.assertIsInstance(self.data, DataFrame)

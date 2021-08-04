@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import nan as npNaN
-from pandas_ta.overlap import ma
+from pandas_ta.overlap.ma import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -52,7 +52,7 @@ are never removed from the calculation, but they have only a minimal impact on
 the Moving Average due to a low assigned weight. By reducing the noise it
 removes fluctuations and plots the prevailing trend. The SMMA can be used to
 confirm trends and define areas of support and resistance. A core component of
-Bill William's Alligator indicator.
+Bill Williams Alligator indicator.
 
 Sources:
     https://www.tradingview.com/scripts/smma/
@@ -75,8 +75,6 @@ Args:
     offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
-    adjust (bool): Default: True
-    presma (bool, optional): If True, uses SMA for initial value.
     fillna (value, optional): pd.DataFrame.fillna(value)
     fill_method (value, optional): Type of fill method
 

@@ -71,7 +71,7 @@ def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, include_chi
     if include_chikou:
         data[chikou_span.name] = chikou_span
 
-    ichimokudf = DataFrame(data)
+    ichimokudf = DataFrame(data, index=close.index)
     ichimokudf.name = f"ICHIMOKU_{tenkan}_{kijun}_{senkou}"
     ichimokudf.category = "overlap"
 

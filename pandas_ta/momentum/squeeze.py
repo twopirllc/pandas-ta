@@ -47,7 +47,7 @@ def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_sc
     if lazybear:
         highest_high = high.rolling(kc_length).max()
         lowest_low = low.rolling(kc_length).min()
-        avg_ = 0.25 * (highest_high + lowest_low) + 0.5 * kch.b
+        avg_ = 0.5 * (0.5 * (highest_high + lowest_low) + kch.b)
 
         squeeze = linreg(close - avg_, length=kc_length)
 

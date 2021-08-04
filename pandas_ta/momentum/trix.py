@@ -43,7 +43,8 @@ def trix(close, length=None, signal=None, scalar=None, drift=None, offset=None, 
     trix.category = trix_signal.category = "momentum"
 
     # Prepare DataFrame to return
-    df = DataFrame({trix.name: trix, trix_signal.name: trix_signal})
+    data = {trix.name: trix, trix_signal.name: trix_signal}
+    df = DataFrame(data, index=close.index)
     df.name = f"TRIX_{length}_{signal}"
     df.category = "momentum"
 

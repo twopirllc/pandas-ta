@@ -17,7 +17,6 @@ from .tema import tema
 from .trima import trima
 from .vidya import vidya
 from .wma import wma
-from .zlma import zlma
 
 
 def ma(name:str = None, source:Series = None, **kwargs) -> Series:
@@ -25,7 +24,7 @@ def ma(name:str = None, source:Series = None, **kwargs) -> Series:
 
     Available MAs:
         dema, ema, fwma, hma, linreg, midpoint, pwma, rma,
-        sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma
+        sinwma, sma, swma, t3, tema, trima, vidya, wma
 
     Examples:
         ema8 = ta.ma("ema", df.close, length=8)
@@ -45,7 +44,7 @@ def ma(name:str = None, source:Series = None, **kwargs) -> Series:
 
     _mas = [
         "dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
-        "sinwma", "sma", "swma", "t3", "tema", "trima", "vidya", "wma", "zlma"
+        "sinwma", "sma", "swma", "t3", "tema", "trima", "vidya", "wma"
     ]
     if name is None and source is None:
         return _mas
@@ -69,5 +68,4 @@ def ma(name:str = None, source:Series = None, **kwargs) -> Series:
     elif name == "trima": return trima(source, **kwargs)
     elif name == "vidya": return vidya(source, **kwargs)
     elif name == "wma": return wma(source, **kwargs)
-    elif name == "zlma": return zlma(source, **kwargs)
     else: return ema(source, **kwargs)

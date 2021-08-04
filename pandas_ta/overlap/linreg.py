@@ -5,10 +5,11 @@ from numpy import nan as npNaN
 from numpy import pi as npPi
 from numpy.version import version as npVersion
 from pandas import Series
+from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def linreg(close, length=None, offset=None, **kwargs):
+def linreg(close, length=None, talib=None, offset=None, **kwargs):
     """Indicator: Linear Regression"""
     # Validate arguments
     length = int(length) if length and length > 0 else 14
@@ -20,54 +21,68 @@ def linreg(close, length=None, offset=None, **kwargs):
     r = kwargs.pop("r", False)
     slope = kwargs.pop("slope", False)
     tsf = kwargs.pop("tsf", False)
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if close is None: return
 
     # Calculate Result
-    x = range(1, length + 1)  # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
-    x_sum = 0.5 * length * (length + 1)
-    x2_sum = x_sum * (2 * length + 1) / 3
-    divisor = length * x2_sum - x_sum * x_sum
-
-    def linear_regression(series):
-        y_sum = series.sum()
-        xy_sum = (x * series).sum()
-
-        m = (length * xy_sum - x_sum * y_sum) / divisor
-        if slope:
-            return m
-        b = (y_sum * x2_sum - x_sum * xy_sum) / divisor
-        if intercept:
-            return b
-
-        if angle:
-            theta = npAtan(m)
-            if degrees:
-                theta *= 180 / npPi
-            return theta
-
-        if r:
-            y2_sum = (series * series).sum()
-            rn = length * xy_sum - x_sum * y_sum
-            rd = (divisor * (length * y2_sum - y_sum * y_sum)) ** 0.5
-            return rn / rd
-
-        return m * length + b if tsf else m * (length - 1) + b
-
-    def rolling_window(array, length):
-        """https://github.com/twopirllc/pandas-ta/issues/285"""
-        strides = array.strides + (array.strides[-1],)
-        shape = array.shape[:-1] + (array.shape[-1] - length + 1, length)
-        return as_strided(array, shape=shape, strides=strides)
-
-    if npVersion >= "1.20.0":
-        from numpy.lib.stride_tricks import sliding_window_view
-        linreg_ = [linear_regression(_) for _ in sliding_window_view(npArray(close), length)]
+    if Imports["talib"] and mode_tal:
+        from talib import LINEARREG, LINEARREG_ANGLE, LINEARREG_INTERCEPT, LINEARREG_SLOPE, TSF
+        if tsf:
+            linreg = TSF(close, timeperiod=length)
+        elif slope:
+            linreg = LINEARREG_SLOPE(close, timeperiod=length)
+        elif intercept:
+            linreg = LINEARREG_INTERCEPT(close, timeperiod=length)
+        elif angle:
+            linreg = LINEARREG_ANGLE(close, timeperiod=length)
+        else:
+            linreg = LINEARREG(close, timeperiod=length)
     else:
-        from numpy.lib.stride_tricks import as_strided
-        linreg_ = [linear_regression(_) for _ in rolling_window(npArray(close), length)]
+        x = range(1, length + 1)  # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
+        x_sum = 0.5 * length * (length + 1)
+        x2_sum = x_sum * (2 * length + 1) / 3
+        divisor = length * x2_sum - x_sum * x_sum
 
-    linreg = Series([npNaN] * (length - 1) + linreg_, index=close.index)
+        def linear_regression(series):
+            y_sum = series.sum()
+            xy_sum = (x * series).sum()
+
+            m = (length * xy_sum - x_sum * y_sum) / divisor
+            if slope:
+                return m
+            b = (y_sum * x2_sum - x_sum * xy_sum) / divisor
+            if intercept:
+                return b
+
+            if angle:
+                theta = npAtan(m)
+                if degrees:
+                    theta *= 180 / npPi
+                return theta
+
+            if r:
+                y2_sum = (series * series).sum()
+                rn = length * xy_sum - x_sum * y_sum
+                rd = (divisor * (length * y2_sum - y_sum * y_sum)) ** 0.5
+                return rn / rd
+
+            return m * length + b if not tsf else m * (length - 1) + b
+
+        def rolling_window(array, length):
+            """https://github.com/twopirllc/pandas-ta/issues/285"""
+            strides = array.strides + (array.strides[-1],)
+            shape = array.shape[:-1] + (array.shape[-1] - length + 1, length)
+            return as_strided(array, shape=shape, strides=strides)
+
+        if npVersion >= "1.20.0":
+            from numpy.lib.stride_tricks import sliding_window_view
+            linreg_ = [linear_regression(_) for _ in sliding_window_view(npArray(close), length)]
+        else:
+            from numpy.lib.stride_tricks import as_strided
+            linreg_ = [linear_regression(_) for _ in rolling_window(npArray(close), length)]
+
+        linreg = Series([npNaN] * (length - 1) + linreg_, index=close.index)
 
     # Offset
     if offset != 0:
@@ -122,8 +137,10 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 10
-    offset (int): How many periods to offset the result.  Default: 0
+    length (int): It's period. Default: 10
+    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+        version. Default: True
+    offset (int): How many periods to offset the result. Default: 0
 
 Kwargs:
     angle (bool, optional): If True, returns the angle of the slope in radians.

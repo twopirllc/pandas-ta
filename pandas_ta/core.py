@@ -602,13 +602,18 @@ class AnalysisIndicators(BasePandasObject):
         if as_list:
             return ta_indicators
 
-        total_indicators = len(ta_indicators)
+        indicator_count = len(ta_indicators)
         header = f"Pandas TA - Technical Analysis Indicators - v{self.version}"
-        s = f"{header}\nTotal Indicators & Utilities: {total_indicators + len(ALL_PATTERNS)}\n"
-        if total_indicators > 0:
-            print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}\n\nCandle Patterns:\n    {', '.join(ALL_PATTERNS)}")
-        else:
-            print(s)
+
+        s, _count = f"{header}\n", 0
+        if indicator_count > 0:
+            s += f"\nIndicators and Utilities [{indicator_count}]:\n    {', '.join(ta_indicators)}\n"
+            _count += indicator_count
+            if Imports["talib"]:
+                s += f"\nCandle Patterns [{len(ALL_PATTERNS)}]:\n    {', '.join(ALL_PATTERNS)}\n"
+                _count += len(ALL_PATTERNS)
+        s += f"\nTotal Candles, Indicators and Utilities: {_count}"
+        print(s)
 
     def strategy(self, *args, **kwargs):
         """Strategy Method
@@ -1144,6 +1149,11 @@ class AnalysisIndicators(BasePandasObject):
         return self._post_process(result, **kwargs)
 
     # Overlap
+    def alligator(self, jaw=None, teeth=None, lips=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = alligator(close=close, jaw=jaw, teeth=teeth, lips=lips, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def alma(self, length=None, sigma=None, distribution_offset=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = alma(close=close, length=length, sigma=sigma, distribution_offset=distribution_offset, offset=offset, **kwargs)

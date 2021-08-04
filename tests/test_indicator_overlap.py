@@ -34,6 +34,11 @@ class TestOverlap(TestCase):
     def tearDown(self): pass
 
 
+    def test_alligator(self):
+        result = pandas_ta.alligator(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "AG_13_8_5")
+
     def test_alma(self):
         result = pandas_ta.alma(self.close)# , length=None, sigma=None, distribution_offset=)
         self.assertIsInstance(result, Series)

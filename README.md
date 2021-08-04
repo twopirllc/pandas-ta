@@ -25,7 +25,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 ![Example Chart](/images/TA_Chart.png)
 
 
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas package with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas package with more than 140 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
 
 
 **Note:** _TA Lib_ must be installed to use **all** the Candlestick Patterns. ```pip install TA-Lib```. If _TA Lib_ is not installed, then only the builtin Candlestick Patterns will be available.
@@ -56,7 +56,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Candles](#candles-64)
     * [Cycles](#cycles-1)
     * [Momentum](#momentum-41)
-    * [Overlap](#overlap-34)
+    * [Overlap](#overlap-35)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
     * [Trend](#trend-18)
@@ -113,7 +113,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.16b*
+Best choice! Version: *0.3.17b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -723,8 +723,9 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Overlap** (34)
+### **Overlap** (35)
 
+* _Bill Williams Alligator_: **alligator**
 * _Arnaud Legoux Moving Average_: **alma**
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -958,56 +959,31 @@ print(pf.returns_stats())
 
 ## **Breaking / Depreciated Indicators**
 * _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See ```help(ta.tsignals)```
+* _Zero Lag Moving Average_ (**zlma**) now using available Moving Averages from ```ta.ma```. See ```help(ta.zlma)``` and ```help(ta.ma)```.
 
 <br/>
 
 ## **New Indicators**
-* _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
-trading account, or fund. See ```help(ta.drawdown)```
-* _Candle Patterns_ (**cdl_pattern**) If TA Lib is installed, then all those Candle Patterns are available. See the list and examples above on how to call the patterns. See ```help(ta.cdl_pattern)```
-* _Candle Z Score_ (**cdl_z**) normalizes OHLC Candles with a rolling Z Score. See ```help(ta.cdl_z)```
-* _Correlation Trend Indicator_ (**cti**) is an oscillator created by John Ehler in 2020. See ```help(ta.cti)```
+* _Bill Williams Alligator_ (**alligator**) attempts to identify if an asset is trending. See ```help(ta.alligator)```
 * _Cross Signals_ (**xsignals**) was created by Kevin Johnson. It is a wrapper of Trade Signals that returns Trends, Trades, Entries and Exits. Cross Signals are commonly used for **bbands**, **rsi**, **zscore** crossing some value either above or below two values at different times. See ```help(ta.xsignals)```
 * _Directional Movement_ (**dm**) developed by J. Welles Wilder in 1978 attempts to determine which direction the price of an asset is moving. See ```help(ta.dm)```
-* _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
 * _Jurik Moving Average_ (**jma**) attempts to eliminate noise to see the "true" underlying activity. See: ```help(ta.jma)```
-* _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price. See ```help(ta.kvo)```
 * _Smoothed Moving Average_ (**smma**) can be used to confirm trends and define areas of support and resistance. See: ```help(ta.smma)```
-* _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two cascaded stochastic calculations with additional smoothing. See ```help(ta.stc)```
 * _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
-* _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which
-returns the standard deviation of data for the entire plot or for the interval
-of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
-* _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets. See ```help(ta.vhf)```
+* _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which returns the standard deviation of data for the entire plot or for the interval of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
 
 <br/>
 
 ## **Updated Indicators**
 
-* _Acceleration Bands_ (**accbands**) Argument ```mamode``` renamed to ```mode```. See ```help(ta.accbands)```.
-* _ADX_ (**adx**): Added ```mamode``` with default "**RMA**" and with the same ```mamode``` options as TradingView. New argument ```lensig``` so it behaves like TradingView's builtin ADX indicator. See ```help(ta.adx)```.
-* _Archer Moving Averages Trends_ (**amat**): Added ```drift``` argument and more descriptive column names.
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
-* _Bollinger Bands_ (**bbands**): New argument ```ddoff``` to control the Degrees of Freedom. Also included BB Percent (BBP) as the final column. Default is 0. See ```help(ta.bbands)```.
-* _Choppiness Index_ (**chop**): New argument ```ln``` to use Natural Logarithm (True) instead of the Standard Logarithm (False). Default is False.  See ```help(ta.chop)```.
-* _Chande Kroll Stop_ (**cksp**): Added ```tvmode``` with default ```True```. When ```tvmode=False```, **cksp** implements “The New Technical Trader” with default values. See ```help(ta.cksp)```.
-* _Chande Momentum Oscillator_ (**cmo**): New argument ```talib``` will use TA Lib's version and if TA Lib is installed. Default is True. See ```help(ta.cmo)```.
-* _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.decreasing)```.
-* _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.increasing)```.
-* _Klinger Volume Oscillator_ (**kvo**): Implements TradingView's Klinger Volume Oscillator version. See ```help(ta.kvo)```.
 * _Linear Regression_ (**linreg**): Checks **numpy**'s version to determine whether to utilize the ```as_strided``` method or the newer ```sliding_window_view``` method. This should resolve Issues with Google Colab and it's delayed dependency updates as well as TensorFlow's dependencies as discussed in Issues [#285](https://github.com/twopirllc/pandas-ta/issues/285) and [#329](https://github.com/twopirllc/pandas-ta/issues/329).
 * _Moving Average Convergence Divergence_ (**macd**): New argument ```asmode``` enables AS version of MACD. Default is False.  See ```help(ta.macd)```.
-* _Parabolic Stop and Reverse_ (**psar**): Bug fix and adjustment to match TradingView's ```sar```. New argument ```af0``` to initialize the Acceleration Factor. See ```help(ta.psar)```.
-* _Percentage Price Oscillator_ (**ppo**): Included new argument ```mamode``` as an option. Default is **sma** to match TA Lib. See ```help(ta.ppo)```.
 * _Standard Deviation_ (**stdev**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **variance**. See ```help(ta.stdev)```.
-* _True Strength Index_ (**tsi**): Added ```signal``` with default ```13``` and Signal MA Mode ```mamode``` with default **ema** as arguments. See ```help(ta.tsi)```.
 * _Variance_ (**variance**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **stdev**. See ```help(ta.variance)```.
 * _Volume Profile_ (**vp**): Calculation improvements. See [Pull Request #320](https://github.com/twopirllc/pandas-ta/pull/320) See ```help(ta.vp)```.
-* _Volume Weighted Moving Average_ (**vwma**): Fixed bug in DataFrame Extension call. See ```help(ta.vwma)```.
-* _Volume Weighted Average Price_ (**vwap**): Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex. See ```help(ta.vwap)```.
-* _Volume Weighted Moving Average_ (**vwma**): Fixed bug in DataFrame Extension call. See ```help(ta.vwma)```.
-* _Z Score_ (**zscore**): Changed return column name from ```Z_length``` to ```ZS_length```. See ```help(ta.zscore)```.
+
 
 <br />
 

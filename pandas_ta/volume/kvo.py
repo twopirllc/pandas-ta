@@ -48,7 +48,7 @@ def kvo(high, low, close, volume, fast=None, slow=None, signal=None, mamode=None
 
     # Prepare DataFrame to return
     data = {kvo.name: kvo, kvo_signal.name: kvo_signal}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"KVO{_props}"
     df.category = kvo.category
 

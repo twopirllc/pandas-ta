@@ -66,7 +66,8 @@ def td_seq(close, asint=None, offset=None, **kwargs):
     up_seq.category = down_seq.category = "momentum"
 
     # Prepare Dataframe to return
-    df = DataFrame({up_seq.name: up_seq, down_seq.name: down_seq})
+    data = {up_seq.name: up_seq, down_seq.name: down_seq}
+    df = DataFrame(data, index=close.index)
     df.name = "TD_SEQ"
     df.category = up_seq.category
 

@@ -51,7 +51,7 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=N
 
     # Prepare DataFrame to return
     data = {stoch_k.name: stoch_k, stoch_d.name: stoch_d}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"
     df.category = stoch_k.category
     return df
