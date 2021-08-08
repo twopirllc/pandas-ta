@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import cos as npCos
 from numpy import exp as npExp
+from numpy import nan as npNaN
 from numpy import pi as npPi
 from numpy import sqrt as npSqrt
 from pandas_ta.utils import get_offset, verify_series
@@ -34,6 +35,8 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
         for i in range(0, m):
             ssf.iloc[i] = c1 * close.iloc[i] + c2 * ssf.iloc[i - 1] + c3 * ssf.iloc[i - 2] + c4 * ssf.iloc[i - 3]
 
+        ssf.iloc[:3] = npNaN
+
     else: # poles == 2
         x = npPi * npSqrt(2) / length # x = PI * 2^(.5) / n
         a0 = npExp(-x) # e^(-x)
@@ -43,6 +46,8 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
 
         for i in range(0, m):
             ssf.iloc[i] = c1 * close.iloc[i] + b1 * ssf.iloc[i - 1] + a1 * ssf.iloc[i - 2]
+
+        ssf.iloc[:2] = npNaN
 
     # Offset
     if offset != 0:
