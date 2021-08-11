@@ -43,7 +43,7 @@ Category = {
         "cdl_pattern", "cdl_z", "ha"
     ],
     # Cycles
-    "cycles": ["ebsw"],
+    "cycles": ["ebsw", "reflex"],
     # Momentum
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
@@ -69,7 +69,7 @@ Category = {
     # Trend
     "trend": [
         "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
-        "increasing", "long_run", "psar", "qstick", "short_run", "tsignals",
+        "increasing", "long_run", "psar", "qstick", "short_run", "trendflex", "tsignals",
         "ttm_trend", "vhf", "vortex", "xsignals"
     ],
     # Volatility

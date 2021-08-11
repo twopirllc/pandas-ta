@@ -895,6 +895,11 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
         result = ebsw(close=close, length=length, bars=bars, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
+        
+    def reflex(self, close=None, length=None, smooth_bars=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = reflex(close=close, length=length, smooth_bars=bars, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
 
     # Momentum
     def ao(self, fast=None, slow=None, offset=None, **kwargs):
@@ -1484,7 +1489,12 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
         result = supertrend(high=high, low=low, close=close, period=period, multiplier=multiplier, mamode=mamode, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
-
+        
+    def trendflex(self, close=None, length=None, smooth_bars=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = trendflex(close=close, length=length, smooth_bars=bars, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+        
     def tsignals(self, trend=None, asbool=None, trend_reset=None, trend_offset=None, offset=None, **kwargs):
         if trend is None:
             return self._df
