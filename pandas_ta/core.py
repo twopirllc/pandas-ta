@@ -743,12 +743,12 @@ class AnalysisIndicators(BasePandasObject):
                     default_ta = [(ind, tuple(), kwargs) for ind in ta]
                     # All and Categorical multiprocessing pool.
                     if all_ordered:
-                        if Imports["tqdm"]:
+                        if Imports["tqdm"] and verbose:
                             results = tqdm(pool.imap(self._mp_worker, default_ta, _chunksize)) # Order over Speed
                         else:
                             results = pool.imap(self._mp_worker, default_ta, _chunksize) # Order over Speed
                     else:
-                        if Imports["tqdm"]:
+                        if Imports["tqdm"] and verbose:
                             results = tqdm(pool.imap_unordered(self._mp_worker, default_ta, _chunksize)) # Speed over Order
                         else:
                             results = pool.imap_unordered(self._mp_worker, default_ta, _chunksize) # Speed over Order
