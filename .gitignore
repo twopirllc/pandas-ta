@@ -144,3 +144,6 @@ data/tulip.csv
 examples/*.csv
 jnb/*.ipynb
 jnb/*.txt
+
+*.txt
+reza_ohlcv

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from math import floor
 from numpy import exp as npExp
 from numpy import nan as npNaN
 from pandas import Series
@@ -8,8 +9,8 @@ from pandas_ta.utils import get_offset, verify_series
 def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, **kwargs):
     """Indicator: Arnaud Legoux Moving Average (ALMA)"""
     # Validate Arguments
-    length = int(length) if length and length > 0 else 10
-    sigma = float(sigma) if sigma and sigma > 0 else 6.0
+    length = int(length) if isinstance(length, int) and length > 0 else 9
+    sigma = float(sigma) if isinstance(sigma, float) and sigma > 0 else 6.0
     distribution_offset = float(distribution_offset) if distribution_offset and distribution_offset > 0 else 0.85
     close = verify_series(close, length)
     offset = get_offset(offset)
@@ -67,6 +68,7 @@ in conjunction with smoothing to reduce noise.
 Implemented for Pandas TA by rengel8 based on the source provided below.
 
 Sources:
+    https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=475&Name=Moving_Average_-_Arnaud_Legoux
     https://www.prorealcode.com/prorealtime-indicators/alma-arnaud-legoux-moving-average/
 
 Calculation:
@@ -74,7 +76,7 @@ Calculation:
 
 Args:
     close (pd.Series): Series of 'close's
-    length (int): It's period, window size. Default: 10
+    length (int): It's period, window size. Default: 9
     sigma (float): Smoothing value. Default 6.0
     distribution_offset (float): Value to offset the distribution min 0
         (smoother), max 1 (more responsive). Default 0.85

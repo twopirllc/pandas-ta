@@ -26,7 +26,7 @@ class TestOverlapExtension(TestCase):
     def test_alma_ext(self):
         self.data.ta.alma(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "ALMA_10_6.0_0.85")
+        self.assertEqual(self.data.columns[-1], "ALMA_9_6.0_0.85")
 
     def test_dema_ext(self):
         self.data.ta.dema(append=True)

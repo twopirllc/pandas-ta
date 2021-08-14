@@ -10,8 +10,8 @@ from pandas_ta.utils import get_offset, verify_series
 def ssf(close, length=None, poles=None, offset=None, **kwargs):
     """Indicator: Ehler's Super Smoother Filter (SSF)"""
     # Validate Arguments
-    length = int(length) if length and length > 0 else 10
-    poles = int(poles) if poles in [2, 3] else 2
+    length = int(length) if isinstance(length, int) and length > 0 else 10
+    poles = int(poles) if isinstance(poles, int) and poles in [2, 3] else 2
     close = verify_series(close, length)
     offset = get_offset(offset)
 
@@ -32,10 +32,8 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
         c2 = c0 + b0 # e^(-2x) + 2e^(-x)*cos(3^(.5) * x)
         c1 = 1 - c2 - c3 - c4
 
-        for i in range(0, m):
+        for i in range(poles, m):
             ssf.iloc[i] = c1 * close.iloc[i] + c2 * ssf.iloc[i - 1] + c3 * ssf.iloc[i - 2] + c4 * ssf.iloc[i - 3]
-
-        ssf.iloc[:3] = npNaN
 
     else: # poles == 2
         x = npPi * npSqrt(2) / length # x = PI * 2^(.5) / n
@@ -44,10 +42,10 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
         b1 = 2 * a0 * npCos(x) # 2e^(-x)*cos(x)
         c1 = 1 - a1 - b1 # e^(-2x) - 2e^(-x)*cos(x) + 1
 
-        for i in range(0, m):
+        for i in range(poles, m):
             ssf.iloc[i] = c1 * close.iloc[i] + b1 * ssf.iloc[i - 1] + a1 * ssf.iloc[i - 2]
 
-        ssf.iloc[:2] = npNaN
+    ssf.iloc[:length] = npNaN
 
     # Offset
     if offset != 0:

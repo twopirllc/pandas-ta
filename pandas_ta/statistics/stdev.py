@@ -8,7 +8,7 @@ from pandas_ta.utils import get_offset, verify_series
 def stdev(close, length=None, ddof=None, talib=None, offset=None, **kwargs):
     """Indicator: Standard Deviation"""
     # Validate Arguments
-    length = int(length) if length and length > 0 else 30
+    length = int(length) if isinstance(length, int) and length > 0 else 30
     ddof = int(ddof) if isinstance(ddof, int) and ddof >= 0 and ddof < length else 1
     close = verify_series(close, length)
     offset = get_offset(offset)
