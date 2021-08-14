@@ -14,16 +14,16 @@ Pandas TA - A Technical Analysis Library in Python 3
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta?style=flat)](https://pypistats.org/packages/pandas_ta)
 [![Stars](https://img.shields.io/github/stars/twopirllc/pandas-ta?style=flat)](#stars)
 [![Forks](https://img.shields.io/github/forks/twopirllc/pandas-ta?style=flat)](#forks)
-[![Used By](https://img.shields.io/badge/used_by-170-orange.svg?style=flat)](#usedby)
+[![Used By](https://img.shields.io/badge/used_by-184-orange.svg?style=flat)](#usedby)
 [![Contributors](https://img.shields.io/github/contributors/twopirllc/pandas-ta?style=flat)](#contributors)
 [![Issues](https://img.shields.io/github/issues-raw/twopirllc/pandas-ta?style=flat)](#issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/twopirllc/pandas-ta?style=flat)](#closed-issues)
 [![Buy Me a Coffee](https://img.shields.io/badge/buy_me_a_coffee-orange.svg?style=flat)](https://www.buymeacoffee.com/twopirllc)
 
 
+<br/>
 
 ![Example Chart](/images/TA_Chart.png)
-
 
 _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas package with more than 140 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
 
