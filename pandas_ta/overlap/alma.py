@@ -2,6 +2,7 @@
 from math import floor
 from numpy import exp as npExp
 from numpy import nan as npNaN
+from math import floor
 from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
@@ -18,7 +19,7 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
     if close is None: return
 
     # Pre-Calculations
-    m = distribution_offset * (length - 1)
+    m = floor(distribution_offset * (length - 1))
     s = length / sigma
     wtd = list(range(length))
     for i in range(0, length):
