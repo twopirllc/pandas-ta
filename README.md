@@ -113,7 +113,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.22b*
+Best choice! Version: *0.3.23b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -958,7 +958,7 @@ print(pf.returns_stats())
 <br />
 
 ## **Breaking / Depreciated Indicators**
-* _Arnaud Legoux Moving Average_ (**alma**) New default ```length=9```. See ```help(ta.alma)```.
+* _Arnaud Legoux Moving Average_ (**alma**) Updated accuracy and speed with new default ```length=9``` and argument ```distribution_offset``` renamed to ```dist_offset```. See ```help(ta.alma)```.
 * _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See ```help(ta.tsignals)```
 * _Zero Lag Moving Average_ (**zlma**) now using available Moving Averages from ```ta.ma```. See ```help(ta.zlma)``` and ```help(ta.ma)```.
 

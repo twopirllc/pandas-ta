@@ -146,4 +146,4 @@ jnb/*.ipynb
 jnb/*.txt
 
 *.txt
-reza_ohlcv
+df_file

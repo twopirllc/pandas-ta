@@ -6,7 +6,7 @@ from numpy import pi as npPi
 from numpy.version import version as npVersion
 from pandas import Series
 from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
 def linreg(close, length=None, talib=None, offset=None, **kwargs):
@@ -69,18 +69,11 @@ def linreg(close, length=None, talib=None, offset=None, **kwargs):
 
             return m * length + b if not tsf else m * (length - 1) + b
 
-        def rolling_window(array, length):
-            """https://github.com/twopirllc/pandas-ta/issues/285"""
-            strides = array.strides + (array.strides[-1],)
-            shape = array.shape[:-1] + (array.shape[-1] - length + 1, length)
-            return as_strided(array, shape=shape, strides=strides)
-
         if npVersion >= "1.20.0":
             from numpy.lib.stride_tricks import sliding_window_view
             linreg_ = [linear_regression(_) for _ in sliding_window_view(npArray(close), length)]
         else:
-            from numpy.lib.stride_tricks import as_strided
-            linreg_ = [linear_regression(_) for _ in rolling_window(npArray(close), length)]
+            linreg_ = [linear_regression(_) for _ in strided_window(npArray(close), length)]
 
         linreg = Series([npNaN] * (length - 1) + linreg_, index=close.index)
 

@@ -12,9 +12,9 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, offset=None, **kwargs):
     """Indicator: Quantitative Qualitative Estimation (QQE)"""
     # Validate arguments
-    length = int(length) if length and length > 0 else 14
-    smooth = int(smooth) if smooth and smooth > 0 else 5
-    factor = float(factor) if factor else 4.236
+    length = int(length) if isinstance(length, int) and length > 0 else 14
+    smooth = int(smooth) if isinstance(smooth, int) and smooth > 0 else 5
+    factor = float(factor) if isinstance(factor, float) and factor else 4.236
     wilders_length = 2 * length - 1
     mamode = mamode if isinstance(mamode, str) else "ema"
     close = verify_series(close, max(length, smooth, wilders_length))

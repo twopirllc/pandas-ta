@@ -163,6 +163,19 @@ def pascals_triangle(n: int = None, **kwargs: dict) -> npNdArray:
     return triangle
 
 
+def strided_window(array, length):
+    """as_strided
+    creates a view into the array given the exact strides and shape.
+    * Recommended to avoid when possible.
+    Source: https://numpy.org/devdocs/reference/generated/numpy.lib.stride_tricks.as_strided.html
+    Pandas TA Issue: https://github.com/twopirllc/pandas-ta/issues/285
+    """
+    from numpy.lib.stride_tricks import as_strided
+    strides = array.strides + (array.strides[-1],)
+    shape = array.shape[:-1] + (array.shape[-1] - length + 1, length)
+    return as_strided(array, shape=shape, strides=strides, writeable=False)
+
+
 def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:
     """Symmetric Triangle with n >= 2
 
