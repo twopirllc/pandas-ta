@@ -12,6 +12,7 @@ from .long_run import long_run
 from .psar import psar
 from .qstick import qstick
 from .short_run import short_run
+from .trendflex import trendflex
 from .tsignals import tsignals
 from .ttm_trend import ttm_trend
 from .vhf import vhf

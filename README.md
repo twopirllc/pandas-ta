@@ -667,6 +667,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 ### **Cycles** (1)
 * _Even Better Sinewave_: **ebsw**
+* _Reflex_ (companion of trendflex): **reflex**
 
 <br/>
 
@@ -820,6 +821,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Parabolic Stop and Reverse_: **psar**
 * _Q Stick_: **qstick**
 * _Short Run_: **short_run**
+* _Trendflex_ (companion of reflex): **trendflex**
 * _Trend Signals_: **tsignals**
 * _TTM Trend_: **ttm_trend**
 * _Vertical Horizontal Filter_: **vhf**
