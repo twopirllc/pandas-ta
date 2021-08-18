@@ -185,6 +185,11 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SR_2")
 
+    def test_trendflex(self):
+        result = pandas_ta.trendflex(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "TRENDFLEX_20_20")
+
     def test_ttm_trend(self):
         result = pandas_ta.ttm_trend(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)

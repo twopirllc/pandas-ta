@@ -16,11 +16,11 @@ def mcgd(close, length=None, offset=None, c=None, **kwargs):
     close = close.copy()
 
     def mcg_(series):
-        denom = (c * length * (series.iloc[1] / series.iloc[0]) ** 4)
-        series.iloc[1] = (series.iloc[0] + ((series.iloc[1] - series.iloc[0]) / denom))
-        return series.iloc[1]
+        denom = (c * length * (series[1] / series[0]) ** 4)
+        series[1] = (series[0] + ((series[1] - series[0]) / denom))
+        return series[1]
 
-    mcg_cell = close[0:].rolling(2, min_periods=2).apply(mcg_, raw=False)
+    mcg_cell = close[0:].rolling(2, min_periods=2).apply(mcg_, raw=True)
     mcg_ds = close[:1].append(mcg_cell[1:])
 
     # Offset

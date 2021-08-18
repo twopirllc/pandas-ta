@@ -54,12 +54,12 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [DataFrame Methods](#dataframe-methods)
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-64)
-    * [Cycles](#cycles-1)
+    * [Cycles](#cycles-2)
     * [Momentum](#momentum-41)
     * [Overlap](#overlap-35)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
-    * [Trend](#trend-18)
+    * [Trend](#trend-19)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
     * [Volume](#volume-15)
@@ -113,7 +113,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.23b*
+Best choice! Version: *0.3.24b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -665,9 +665,10 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 <br/>
 
 
-### **Cycles** (1)
+### **Cycles** (2)
 * _Even Better Sinewave_: **ebsw**
-* _Reflex_ (companion of trendflex): **reflex**
+* _Reflex_: **reflex**
+    * **trendflex** companion
 
 <br/>
 
@@ -803,7 +804,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | ![Example Z Score](/images/SPY_ZScore.png) |
 <br/>
 
-### **Trend** (18)
+### **Trend** (19)
 
 * _Average Directional Movement Index_: **adx**
     * Also includes **dmp** and **dmn** in the resultant DataFrame.
@@ -821,7 +822,8 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Parabolic Stop and Reverse_: **psar**
 * _Q Stick_: **qstick**
 * _Short Run_: **short_run**
-* _Trendflex_ (companion of reflex): **trendflex**
+* _Trendflex_: **trendflex**
+    * **reflex** companion
 * _Trend Signals_: **tsignals**
 * _TTM Trend_: **ttm_trend**
 * _Vertical Horizontal Filter_: **vhf**

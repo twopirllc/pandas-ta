@@ -17,7 +17,6 @@ strategy_timed = False
 timed = True
 verbose = False
 
-
 class TestStrategyMethods(TestCase):
 
     @classmethod
@@ -115,9 +114,8 @@ class TestStrategyMethods(TestCase):
 
     # @skip
     def test_custom_a(self):
+        """Does not find column 'CUMLOGRET_1' with mp."""
         self.category = "Custom A"
-        print()
-        print(self.category)
 
         momo_bands_sma_ta = [
             {"kind": "cdl_pattern", "name": "tristar"},  # 1
@@ -136,7 +134,33 @@ class TestStrategyMethods(TestCase):
             "Common indicators with specific lengths and a chained indicator",  # description
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
-        self.assertEqual(len(self.data.columns), 15)
+        self.assertEqual(len(self.data.columns), 18)
+
+    # @skipUnless(verbose, "verbose mode only")
+    def test_custom_a_no_multiprocessing(self):
+        self.category = "Custom A with No Multiprocessing"
+
+        cores = self.data.ta.cores
+        self.data.ta.cores = 0
+
+        momo_bands_sma_ta = [
+            {"kind": "rsi"},  # 1
+            {"kind": "macd"},  # 3
+            {"kind": "sma", "length": 50},  # 1
+            {"kind": "sma", "length": 100, "col_names": "sma100"},  # 1
+            {"kind": "sma", "length": 200 },  # 1
+            {"kind": "bbands", "length": 20},  # 3
+            {"kind": "log_return", "cumulative": True},  # 1
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
+        ]
+
+        custom = pandas_ta.Strategy(
+            "Commons with Cumulative Log Return EMA Chain",  # name
+            momo_bands_sma_ta,  # ta
+            "Common indicators with specific lengths and a chained indicator",  # description
+        )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        self.data.ta.cores = cores
 
     # @skip
     def test_custom_args_tuple(self):
@@ -180,7 +204,7 @@ class TestStrategyMethods(TestCase):
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 
     # @skip
-    def test_custom_a(self):
+    def test_custom_e(self):
         self.category = "Custom E"
 
         amat_logret_ta = [
@@ -240,30 +264,4 @@ class TestStrategyMethods(TestCase):
         cores = self.data.ta.cores
         self.data.ta.cores = 0
         self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
-        self.data.ta.cores = cores
-
-    # @skipUnless(verbose, "verbose mode only")
-    def test_custom_no_multiprocessing(self):
-        self.category = "Custom A with No Multiprocessing"
-
-        cores = self.data.ta.cores
-        self.data.ta.cores = 0
-
-        momo_bands_sma_ta = [
-            {"kind": "rsi"},  # 1
-            {"kind": "macd"},  # 3
-            {"kind": "sma", "length": 50},  # 1
-            {"kind": "sma", "length": 100, "col_names": "sma100"},  # 1
-            {"kind": "sma", "length": 200 },  # 1
-            {"kind": "bbands", "length": 20},  # 3
-            {"kind": "log_return", "cumulative": True},  # 1
-            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
-        ]
-
-        custom = pandas_ta.Strategy(
-            "Commons with Cumulative Log Return EMA Chain",  # name
-            momo_bands_sma_ta,  # ta
-            "Common indicators with specific lengths and a chained indicator",  # description
-        )
-        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
         self.data.ta.cores = cores
