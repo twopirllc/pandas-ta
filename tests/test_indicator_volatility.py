@@ -70,7 +70,7 @@ class TestVolatility(TestCase):
 
         try:
             expected = tal.BBANDS(self.close)
-            expecteddf = DataFrame({"BBU_5_2.0": expected[0], "BBM_5_2.0": expected[1], "BBL_5_2.0": expected[2]})
+            expecteddf = DataFrame({"BBL_5_2.0": expected[2], "BBM_5_2.0": expected[1], "BBU_5_2.0": expected[0]})
             pdt.assert_frame_equal(result, expecteddf)
         except AssertionError:
             try:
