@@ -109,6 +109,15 @@ def geometric_mean(series: Series) -> float:
     return 0
 
 
+def horner_poly(a: list, x: Tuple[int, float]) ->  float:
+    """Horner Calculation for Polynomial Evaluations"""
+    m, y = len(a), a[0]
+
+    for i in range(1, m):
+        y = a[i] + x * y
+    return y
+
+
 def linear_regression(x: Series, y: Series) -> dict:
     """Classic Linear Regression in Numpy or Scikit-Learn"""
     x, y = verify_series(x), verify_series(y)
