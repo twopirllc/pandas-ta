@@ -95,6 +95,9 @@ Calculation:
     exits = (trades < 0).abs().astype(int)
 
 Args:
+    signal (pd.Series): The Signal to compare from. Commonly the 'close'.
+    xa (pd.Series): The Series the Signal crosses above if 'above=True'.
+    xb (pd.Series): The Series the Signal crosses below if 'above=True'.
     above (bool): When the signal crosses above 'xa' first and then 'xb'. When
         False, then when the signal crosses below 'xa' first and then 'xb'.
         Default: True
