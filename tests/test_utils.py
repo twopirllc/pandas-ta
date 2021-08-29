@@ -223,6 +223,18 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.hpoly([1, 0, 1], 1), 2)
         self.assertEqual(self.utils.hpoly([1, 1, 1], 1), 3)
 
+    def test_inv_norm(self):
+        np.testing.assert_equal(self.utils.inv_norm(-0.01), np.nan)
+        self.assertEqual(self.utils.inv_norm(0), -np.infty)
+        self.assertEqual(self.utils.inv_norm(1 - 0.96), -1.7506860712521692)
+        self.assertAlmostEqual(self.utils.inv_norm(1 - 0.8646), -1.101222112591979)
+        self.assertEqual(self.utils.inv_norm(0.5), 0)
+        self.assertAlmostEqual(self.utils.inv_norm(0.8646), 1.101222112591979)
+        self.assertEqual(self.utils.inv_norm(0.96), 1.7506860712521692)
+        self.assertEqual(self.utils.inv_norm(1), np.infty)
+        np.testing.assert_equal(self.utils.inv_norm(1.01), np.nan)
+
+
     def test_linear_regression(self):
         x = Series([1, 2, 3, 4, 5])
         y = Series([1.8, 2.1, 2.7, 3.2, 4])

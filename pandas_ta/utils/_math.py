@@ -110,7 +110,7 @@ def geometric_mean(series: Series) -> float:
 
 
 def hpoly(array: npArray, x: Tuple[int, float]) ->  float:
-    """Horner Calculation for Polynomial Evaluation
+    """Horner Calculation for Polynomial Evaluation (hpoly)
 
     array: np.array of polynomial coefficients
         * Convert list or Series to np.array prior to calling the method for
@@ -194,6 +194,7 @@ def strided_window(array, length):
     """as_strided
     creates a view into the array given the exact strides and shape.
     * Recommended to avoid when possible.
+
     Source: https://numpy.org/devdocs/reference/generated/numpy.lib.stride_tricks.as_strided.html
     Pandas TA Issue: https://github.com/twopirllc/pandas-ta/issues/285
     """

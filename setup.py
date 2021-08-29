@@ -19,7 +19,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "3", "27b")),
+    version=".".join(("0", "3", "28b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
