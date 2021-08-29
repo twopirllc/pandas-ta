@@ -109,12 +109,30 @@ def geometric_mean(series: Series) -> float:
     return 0
 
 
-def horner_poly(a: list, x: Tuple[int, float]) ->  float:
-    """Horner Calculation for Polynomial Evaluations"""
-    m, y = len(a), a[0]
+def hpoly(array: npArray, x: Tuple[int, float]) ->  float:
+    """Horner Calculation for Polynomial Evaluation
+
+    array: np.array of polynomial coefficients
+        * Convert list or Series to np.array prior to calling the method for
+        best performance
+    x: value to evaluate
+
+    Example:
+    coeffs_0 = [4, -3, 0, 1] # 4x^3 - 3x^2 + 0x + 1
+    coeffs_1 = np.array(coeffs_0) # Faster
+    coeffs_2 = pd.Series(coeffs_0).values
+    x = -6.5
+
+    hpoly(coeffs_0, x) => -1224.25
+    hpoly(coeffs_1, x) or hpoly(coeffs_2, x) => -1224.25 # Faster
+    """
+    if not isinstance(array, npNdArray):
+        array = npArray(array)
+
+    m, y = array.size, array[0]
 
     for i in range(1, m):
-        y = a[i] + x * y
+        y = array[i] + x * y
     return y
 
 

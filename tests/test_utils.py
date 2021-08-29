@@ -216,12 +216,12 @@ class TestUtilities(TestCase):
         self.assertIsInstance(result, str)
         self.assertTrue("SSE" in result)
 
-    def test_horner_poly(self):
-        self.assertEqual(self.utils.horner_poly([1], 1), 1)
-        self.assertEqual(self.utils.horner_poly([1, 1], 1), 2)
-        self.assertEqual(self.utils.horner_poly([1, 0, -1], 1), 0)
-        self.assertEqual(self.utils.horner_poly([1, 0, 1], 1), 2)
-        self.assertEqual(self.utils.horner_poly([1, 1, 1], 1), 3)
+    def test_hpoly(self):
+        self.assertEqual(self.utils.hpoly([1], 1), 1)
+        self.assertEqual(self.utils.hpoly([1, 1], 1), 2)
+        self.assertEqual(self.utils.hpoly([1, 0, -1], 1), 0)
+        self.assertEqual(self.utils.hpoly([1, 0, 1], 1), 2)
+        self.assertEqual(self.utils.hpoly([1, 1, 1], 1), 3)
 
     def test_linear_regression(self):
         x = Series([1, 2, 3, 4, 5])
