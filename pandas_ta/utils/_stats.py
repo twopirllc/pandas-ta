@@ -12,23 +12,10 @@ from pandas_ta import Imports
 from ._math import hpoly
 
 
+def _gaussian_poly_coefficients():
+    """Three pairs of Polynomial Approximation Coefficients
+    for the Gaussian Normal CDF"""
 
-def inv_norm(x0: Tuple[float, int]) -> Tuple[float, None]:
-    """Inverse Normal (inv_norm)
-    Calculates the 'x' in which the area under the Gaussian PDF is equal to x0.
-
-    If the user has package "statsmodels" installed, the method will call and
-    return norm().ppf(x0)
-
-
-    Source: https://github.com/scipy/scipy/blob/701ffcc8a6f04509d115aac5e5681c538b5265a2/scipy/special/cephes/ndtri.c
-    """
-
-    if Imports["statsmodels"]:
-        from scipy.stats import norm
-        return norm().ppf(x0)
-
-    # Polynomial Coefficients
     p0 = npArray([
         -5.99633501014107895267E1, 9.80010754185999661536E1,
         -5.66762857469070293439E1, 1.39312609387279679503E1,
@@ -72,41 +59,61 @@ def inv_norm(x0: Tuple[float, int]) -> Tuple[float, None]:
         6.79019408009981274425E-9
     ])
 
-    if x0 == 0.0: return -npInfty
-    if x0 == 1.0: return npInfty
-    if x0 < 0.0 or x0 > 1.0: return npNaN
+    return p0, q0, p1, q1, p2, q2
+
+
+def inv_norm(value: Tuple[float, int]) -> Tuple[float, None]:
+    """Inverse Normal (inv_norm)
+    Calculates the 'x' in which the area under the Gaussian PDF is
+    equal to value.
+
+    If the user has package "statsmodels" installed, the method will call and
+    return norm().ppf(value)
+
+
+    Source: https://github.com/scipy/scipy/blob/701ffcc8a6f04509d115aac5e5681c538b5265a2/scipy/special/cephes/ndtri.c
+    """
+
+    if Imports["statsmodels"]:
+        from scipy.stats import norm
+        return norm().ppf(value)
 
     negate = True
-    x = x0
+    v = value
+
+    if v == 0.0: return -npInfty
+    if v == 1.0: return npInfty
+    if v < 0.0 or value > 1.0: return npNaN
+
+    p0, q0, p1, q1, p2, q2 = _gaussian_poly_coefficients()
 
     sqrt2pi = npSqrt(2 * npPi)
     threshold = 0.13533528323661269189
-    if x > 1.0 - threshold:
-        x, negate = 1.0 - x, False
+    if v > 1.0 - threshold:
+        v, negate = 1.0 - v, False
 
-    # 0 <= |x - 0.5| <= 3/8
-    if x > threshold:
-        x -= 0.5
-        x2 = x * x
-        y = x + x * (x2 * hpoly(p0, x2) / hpoly(q0, x2))
+    # 0 <= |x0 - 0.5| <= 3/8
+    if v > threshold:
+        v -= 0.5
+        v2 = v * v
+        y = v + v * (v2 * hpoly(p0, v2) / hpoly(q0, v2))
         y *= sqrt2pi
         return y
 
-    y = npSqrt(-2.0 * npLog(x))
+    y = npSqrt(-2.0 * npLog(v))
     y0 = y - npLog(y) / y
 
     z = 1.0 / y
     if y < 8.0:
-        # Approximation for interval z = sqrt(-2 log x ) between 2 and 8
+        # Approximation for interval z = sqrt(-2 log y ) between 2 and 8
         #  i.e., x between exp(-2) = .135 and exp(-32) = 1.27e-14.
         y1 = z * hpoly(p1, z) / hpoly(q1, z)
     else:
-        # Approximation for interval z = sqrt(-2 log x ) between 8 and 64
+        # Approximation for interval z = sqrt(-2 log y ) between 8 and 64
         # i.e., x between exp(-32) = 1.27e-14 and exp(-2048) = 3.67e-890.
         y1 = z * hpoly(p2, z) / hpoly(q2, z)
 
     y = y0 - y1
-
     if negate: y = -y
 
     return y
