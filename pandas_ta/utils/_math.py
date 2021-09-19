@@ -44,7 +44,7 @@ def combination(**kwargs: dict) -> int:
     return numerator // denominator
 
 
-def erf(x):
+def erf(x: Tuple[int, float]):
     """Error Function erf(x)
     The algorithm comes from Handbook of Mathematical Functions, formula 7.1.26.
     Source: https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python

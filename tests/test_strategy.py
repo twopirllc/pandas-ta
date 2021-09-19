@@ -9,6 +9,7 @@ from .context import pandas_ta
 from unittest import skip, skipUnless, TestCase
 from pandas import DataFrame
 
+
 # Strategy Testing Parameters
 cores = cpu_count()
 cumulative = False
@@ -63,7 +64,6 @@ class TestStrategyMethods(TestCase):
         if timed:
             self.time_diff = perf_counter() - self.stime
         self.added_cols = len(self.data.columns) - self.init_cols
-        self.assertGreaterEqual(self.added_cols, 1)
 
         self.result = self.data[self.data.columns[-self.added_cols:]]
         self.assertIsInstance(self.result, DataFrame)
@@ -76,6 +76,23 @@ class TestStrategyMethods(TestCase):
         self.category = "All"
         self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
 
+    # @skipUnless(verbose, "verbose mode only")
+    def test_all_multiparams_strategy(self):
+        self.category = "All"
+        self.data.ta.strategy(self.category, length=10, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, length=50, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, fast=5, slow=10, verbose=verbose, timed=strategy_timed)
+        self.category = "All Multiruns with diff Args" # Rename for Speed Table
+
+    @skipUnless(verbose, "verbose mode only")
+    def test_all_name_strategy(self):
+        self.category = "All"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+
+    # def test_all_no_append(self):
+    #     self.category = "All"
+    #     self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
+
     def test_all_ordered(self):
         self.category = "All"
         self.data.ta.strategy(ordered=True, verbose=verbose, timed=strategy_timed)
@@ -84,19 +101,6 @@ class TestStrategyMethods(TestCase):
     @skipUnless(verbose, "verbose mode only")
     def test_all_strategy(self):
         self.data.ta.strategy(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
-
-    @skipUnless(verbose, "verbose mode only")
-    def test_all_name_strategy(self):
-        self.category = "All"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
-
-    # @skipUnless(verbose, "verbose mode only")
-    def test_all_multiparams_strategy(self):
-        self.category = "All"
-        self.data.ta.strategy(self.category, length=10, verbose=verbose, timed=strategy_timed)
-        self.data.ta.strategy(self.category, length=50, verbose=verbose, timed=strategy_timed)
-        self.data.ta.strategy(self.category, fast=5, slow=10, verbose=verbose, timed=strategy_timed)
-        self.category = "All Multiruns with diff Args" # Rename for Speed Table
 
     # @skip
     def test_candles_category(self):

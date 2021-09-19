@@ -1,8 +1,8 @@
+
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
 from pandas_ta import Imports, RATE, version
-# from .._core import _camelCase2Title
-# from .._time import ytd_df
+
 
 def av(ticker: str, **kwargs):
     print(f"[!] kwargs: {kwargs}")

@@ -121,6 +121,7 @@ setup.cfg
 doc.py
 pandas_pips
 reqs.txt
+az.py
 driver.py
 qd.py
 tdseq.py

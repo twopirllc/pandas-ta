@@ -622,7 +622,6 @@ class AnalysisIndicators(BasePandasObject):
         Future implementations will allow more specific indicator generation
         with possibly as json, yaml config file or an sqlite3 table.
 
-
         Kwargs:
             chunksize (bool): Adjust the chunksize for the Multiprocessing Pool.
                 Default: Number of cores of the OS

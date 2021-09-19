@@ -337,6 +337,31 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.get_offset(-1.1), 0)
         self.assertEqual(self.utils.get_offset(1), 1)
 
+    def test_sample_processes(self):
+        s0 = 0.01
+        tmp = pandas_ta.sample(length=2)
+        processes, noises = tmp.processes, tmp.noises
+
+        pn = [{"process": p, "noise": n} for p in processes for n in noises]
+        for p in pn:
+            result = pandas_ta.sample(s0=s0, **p)
+            self.assertIsInstance(result.np, np.ndarray)
+            self.assertEqual(result.np.size, 252)
+            self.assertIsInstance(result.df, DataFrame)
+            self.assertEqual(result.df.size, 252)
+
+            nn = result.nonnegative(result.np)
+            self.assertIsInstance(nn, np.ndarray)
+            self.assertEqual(nn.size, 252)
+            self.assertGreaterEqual(all(nn), 0)
+
+            result = pandas_ta.sample(s0=s0, length=20, **p)
+            self.assertIsInstance(result.np, np.ndarray)
+            self.assertEqual(result.np.size, 20)
+            self.assertIsInstance(result.df, DataFrame)
+            self.assertEqual(result.df.size, 20)
+
+
     def test_to_utc(self):
         result = self.utils.to_utc(self.data.copy())
         self.assertTrue(is_datetime64_ns_dtype(result.index))
