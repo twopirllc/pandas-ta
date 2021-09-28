@@ -13,7 +13,7 @@ def macd(close, fast=None, slow=None, signal=None, talib=None, offset=None, **kw
     signal = int(signal) if signal and signal > 0 else 9
     if slow < fast:
         fast, slow = slow, fast
-    close = verify_series(close, max(fast, slow, signal))
+    close = verify_series(close, slow + signal)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
