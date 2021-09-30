@@ -143,8 +143,7 @@ data/SPY_D_TV3.csv
 data/TV_5min.csv
 data/tulip.csv
 examples/*.csv
-jnb/*.ipynb
-jnb/*.txt
+jnb/*
 
 *.txt
 df_file
