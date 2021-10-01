@@ -4,7 +4,42 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def efi(close, volume, length=None, mamode=None, drift=None, offset=None, **kwargs):
-    """Indicator: Elder's Force Index (EFI)"""
+    """Elder's Force Index (EFI)
+
+    Elder's Force Index measures the power behind a price movement using price
+    and volume as well as potential reversals and price corrections.
+
+    Sources:
+        https://www.tradingview.com/wiki/Elder%27s_Force_Index_(EFI)
+        https://www.motivewave.com/studies/elders_force_index.htm
+
+    Calculation:
+        Default Inputs:
+            length=20, drift=1, mamode=None
+        EMA = Exponential Moving Average
+        SMA = Simple Moving Average
+
+        pv_diff = close.diff(drift) * volume
+        if mamode == 'sma':
+            EFI = SMA(pv_diff, length)
+        else:
+            EFI = EMA(pv_diff, length)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        volume (pd.Series): Series of 'volume's
+        length (int): The short period. Default: 13
+        drift (int): The diff period. Default: 1
+        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 13
     mamode = mamode if isinstance(mamode, str) else "ema"
@@ -34,42 +69,3 @@ def efi(close, volume, length=None, mamode=None, drift=None, offset=None, **kwar
     efi.category = "volume"
 
     return efi
-
-
-efi.__doc__ = \
-"""Elder's Force Index (EFI)
-
-Elder's Force Index measures the power behind a price movement using price
-and volume as well as potential reversals and price corrections.
-
-Sources:
-    https://www.tradingview.com/wiki/Elder%27s_Force_Index_(EFI)
-    https://www.motivewave.com/studies/elders_force_index.htm
-
-Calculation:
-    Default Inputs:
-        length=20, drift=1, mamode=None
-    EMA = Exponential Moving Average
-    SMA = Simple Moving Average
-
-    pv_diff = close.diff(drift) * volume
-    if mamode == 'sma':
-        EFI = SMA(pv_diff, length)
-    else:
-        EFI = EMA(pv_diff, length)
-
-Args:
-    close (pd.Series): Series of 'close's
-    volume (pd.Series): Series of 'volume's
-    length (int): The short period. Default: 13
-    drift (int): The diff period. Default: 1
-    mamode (str): See ```help(ta.ma)```. Default: 'ema'
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

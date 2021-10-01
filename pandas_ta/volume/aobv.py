@@ -7,7 +7,52 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def aobv(close, volume, fast=None, slow=None, max_lookback=None, min_lookback=None, mamode=None, offset=None, **kwargs):
-    """Indicator: Archer On Balance Volume (AOBV)"""
+    """Archer On Balance Volume (AOBV)
+
+    Archer On Balance Volume (AOBV) developed by Kevin Johnson provides
+    additional indicator analysis on OBV. It calculates moving averages, default
+    'ema', of OBV as well as the moving average Long and Short Run Trends, see
+    ```help(ta.long_run)```. Lastly, the indicator also calculates the rolling
+    Maximum and Minimum OBV.
+
+    Sources:
+        https://www.tradingview.com/script/Co1ksara-Trade-Archer-On-balance-Volume-Moving-Averages-v1/
+
+    Calculation:
+        Default Inputs:
+            fast=4, slow=12, max_lookback=2, min_lookback=2, mamode="ema",
+            run_length=2
+        OBV = On Balance Volume
+        LR = Long Run Trend
+        SR = Short Run Trend
+
+        OBV_FMA = ma(OBV, mamode, fast)
+        OBV_SMA = ma(OBV, mamode, slow)
+
+        OBV_LR = LR(OBV_FMA, OBV_SMA, run_length)
+        OBV_SR = SR(OBV_FMA, OBV_SMA, run_length)
+
+        OBV_MAX = OBV.rolling(max_lookback).max()
+        OBV_MIN = OBV.rolling(min_lookback).min()
+
+    Args:
+        close (pd.Series): Series of 'close's
+        volume (pd.Series): Series of 'volume's
+        fast (int): The period of the fast moving average. Default: 4
+        slow (int): The period of the slow moving average. Default: 12
+        max_lookback (int): Maximum OBV bars back. Default: 2
+        min_lookback (int): Minimum OBV bars back. Default: 2
+        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        run_length (int): Trend length for OBV long and short runs. Default: 2
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: OBV_MIN, OBV_MAX, OBV_FMA, OBV_SMA, OBV_LR, OBV_SR columns.
+    """
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 4
     slow = int(slow) if slow and slow > 0 else 12
