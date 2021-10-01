@@ -5,7 +5,39 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def cdl_z(open_, high, low, close, length=None, full=None, ddof=None, offset=None, **kwargs):
-    """Candle Type: Z Score"""
+    """Candle Type: Z
+
+    Normalizes OHLC Candles with a rolling Z Score.
+
+    Source: Kevin Johnson
+
+    Calculation:
+        Default values:
+            length=30, full=False, ddof=1
+        Z = ZSCORE
+
+        open  = Z( open, length, ddof)
+        high  = Z( high, length, ddof)
+        low   = Z(  low, length, ddof)
+        close = Z(close, length, ddof)
+
+    Args:
+        open_ (pd.Series): Series of 'open's
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): The period. Default: 10
+
+    Kwargs:
+        naive (bool, optional): If True, prefills potential Doji less than
+            the length if less than a percentage of it's high-low range.
+            Default: False
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: CDL_DOJI column.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 30
     ddof = int(ddof) if ddof and ddof >= 0 and ddof < length else 1
@@ -54,39 +86,3 @@ def cdl_z(open_, high, low, close, length=None, full=None, ddof=None, offset=Non
     df.category = "candles"
 
     return df
-
-
-cdl_z.__doc__ = \
-"""Candle Type: Z
-
-Normalizes OHLC Candles with a rolling Z Score.
-
-Source: Kevin Johnson
-
-Calculation:
-    Default values:
-        length=30, full=False, ddof=1
-    Z = ZSCORE
-
-    open  = Z( open, length, ddof)
-    high  = Z( high, length, ddof)
-    low   = Z(  low, length, ddof)
-    close = Z(close, length, ddof)
-
-Args:
-    open_ (pd.Series): Series of 'open's
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): The period. Default: 10
-
-Kwargs:
-    naive (bool, optional): If True, prefills potential Doji less than
-        the length if less than a percentage of it's high-low range.
-        Default: False
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: CDL_DOJI column.
-"""
