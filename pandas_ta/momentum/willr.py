@@ -4,7 +4,38 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def willr(high, low, close, length=None, talib=None, offset=None, **kwargs):
-    """Indicator: William's Percent R (WILLR)"""
+    """William's Percent R (WILLR)
+
+    William's Percent R is a momentum oscillator similar to the RSI that
+    attempts to identify overbought and oversold conditions.
+
+    Sources:
+        https://www.tradingview.com/wiki/Williams_%25R_(%25R)
+
+    Calculation:
+        Default Inputs:
+            length=20
+        LL = low.rolling(length).min()
+        HH = high.rolling(length).max()
+
+        WILLR = 100 * ((close - LL) / (HH - LL) - 1)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 14
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 14
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
@@ -42,38 +73,3 @@ def willr(high, low, close, length=None, talib=None, offset=None, **kwargs):
     willr.category = "momentum"
 
     return willr
-
-
-willr.__doc__ = \
-"""William's Percent R (WILLR)
-
-William's Percent R is a momentum oscillator similar to the RSI that
-attempts to identify overbought and oversold conditions.
-
-Sources:
-    https://www.tradingview.com/wiki/Williams_%25R_(%25R)
-
-Calculation:
-    Default Inputs:
-        length=20
-    LL = low.rolling(length).min()
-    HH = high.rolling(length).max()
-
-    WILLR = 100 * ((close - LL) / (HH - LL) - 1)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 14
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

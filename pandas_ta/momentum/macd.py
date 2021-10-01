@@ -6,7 +6,48 @@ from pandas_ta.utils import get_offset, verify_series, signals
 
 
 def macd(close, fast=None, slow=None, signal=None, talib=None, offset=None, **kwargs):
-    """Indicator: Moving Average, Convergence/Divergence (MACD)"""
+    """Moving Average Convergence Divergence (MACD)
+
+    The MACD is a popular indicator to that is used to identify a security's trend.
+    While APO and MACD are the same calculation, MACD also returns two more series
+    called Signal and Histogram. The Signal is an EMA of MACD and the Histogram is
+    the difference of MACD and Signal.
+
+    Sources:
+        https://www.tradingview.com/wiki/MACD_(Moving_Average_Convergence/Divergence)
+        AS Mode: https://tr.tradingview.com/script/YFlKXHnP/
+
+    Calculation:
+        Default Inputs:
+            fast=12, slow=26, signal=9
+        EMA = Exponential Moving Average
+        MACD = EMA(close, fast) - EMA(close, slow)
+        Signal = EMA(MACD, signal)
+        Histogram = MACD - Signal
+
+        if asmode:
+            MACD = MACD - Signal
+            Signal = EMA(MACD, signal)
+            Histogram = MACD - Signal
+
+    Args:
+        close (pd.Series): Series of 'close's
+        fast (int): The short period. Default: 12
+        slow (int): The long period. Default: 26
+        signal (int): The signal period. Default: 9
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        asmode (value, optional): When True, enables AS version of MACD.
+            Default: False
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: macd, histogram, signal columns.
+    """
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
@@ -102,48 +143,3 @@ def macd(close, fast=None, slow=None, signal=None, talib=None, offset=None, **kw
         return signalsdf
     else:
         return df
-
-
-macd.__doc__ = \
-"""Moving Average Convergence Divergence (MACD)
-
-The MACD is a popular indicator to that is used to identify a security's trend.
-While APO and MACD are the same calculation, MACD also returns two more series
-called Signal and Histogram. The Signal is an EMA of MACD and the Histogram is
-the difference of MACD and Signal.
-
-Sources:
-    https://www.tradingview.com/wiki/MACD_(Moving_Average_Convergence/Divergence)
-    AS Mode: https://tr.tradingview.com/script/YFlKXHnP/
-
-Calculation:
-    Default Inputs:
-        fast=12, slow=26, signal=9
-    EMA = Exponential Moving Average
-    MACD = EMA(close, fast) - EMA(close, slow)
-    Signal = EMA(MACD, signal)
-    Histogram = MACD - Signal
-
-    if asmode:
-        MACD = MACD - Signal
-        Signal = EMA(MACD, signal)
-        Histogram = MACD - Signal
-
-Args:
-    close (pd.Series): Series of 'close's
-    fast (int): The short period. Default: 12
-    slow (int): The long period. Default: 26
-    signal (int): The signal period. Default: 9
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    asmode (value, optional): When True, enables AS version of MACD.
-        Default: False
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: macd, histogram, signal columns.
-"""

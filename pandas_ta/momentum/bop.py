@@ -4,7 +4,33 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def bop(open_, high, low, close, scalar=None, talib=None, offset=None, **kwargs):
-    """Indicator: Balance of Power (BOP)"""
+    """Balance of Power (BOP)
+
+    Balance of Power measure the market strength of buyers against sellers.
+
+    Sources:
+        http://www.worden.com/TeleChartHelp/Content/Indicators/Balance_of_Power.htm
+
+    Calculation:
+        BOP = scalar * (close - open) / (high - low)
+
+    Args:
+        open (pd.Series): Series of 'open's
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        scalar (float): How much to magnify. Default: 1
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     open_ = verify_series(open_)
     high = verify_series(high)
@@ -38,33 +64,3 @@ def bop(open_, high, low, close, scalar=None, talib=None, offset=None, **kwargs)
     bop.category = "momentum"
 
     return bop
-
-
-bop.__doc__ = \
-"""Balance of Power (BOP)
-
-Balance of Power measure the market strength of buyers against sellers.
-
-Sources:
-    http://www.worden.com/TeleChartHelp/Content/Indicators/Balance_of_Power.htm
-
-Calculation:
-    BOP = scalar * (close - open) / (high - low)
-
-Args:
-    open (pd.Series): Series of 'open's
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    scalar (float): How much to magnify. Default: 1
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

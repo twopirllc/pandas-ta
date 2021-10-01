@@ -6,7 +6,31 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def td_seq(close, asint=None, offset=None, **kwargs):
-    """Indicator: Tom Demark Sequential (TD_SEQ)"""
+    """TD Sequential (TD_SEQ)
+
+    Tom DeMark's Sequential indicator attempts to identify a price point where an
+    uptrend or a downtrend exhausts itself and reverses.
+
+    Sources:
+        https://tradetrekker.wordpress.com/tdsequential/
+
+    Calculation:
+        Compare current close price with 4 days ago price, up to 13 days. For the
+        consecutive ascending or descending price sequence, display 6th to 9th day
+        value.
+
+    Args:
+        close (pd.Series): Series of 'close's
+        asint (bool): If True, fillnas with 0 and change type to int. Default: False
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        show_all (bool): Show 1 - 13. If set to False, show 6 - 9. Default: True
+        fillna (value, optional): pd.DataFrame.fillna(value)
+
+    Returns:
+        pd.DataFrame: New feature generated.
+    """
     # Validate arguments
     close = verify_series(close)
     offset = get_offset(offset)
@@ -73,31 +97,3 @@ def td_seq(close, asint=None, offset=None, **kwargs):
     df.category = up_seq.category
 
     return df
-
-
-td_seq.__doc__ = \
-"""TD Sequential (TD_SEQ)
-
-Tom DeMark's Sequential indicator attempts to identify a price point where an
-uptrend or a downtrend exhausts itself and reverses.
-
-Sources:
-    https://tradetrekker.wordpress.com/tdsequential/
-
-Calculation:
-    Compare current close price with 4 days ago price, up to 13 days. For the
-    consecutive ascending or descending price sequence, display 6th to 9th day
-    value.
-
-Args:
-    close (pd.Series): Series of 'close's
-    asint (bool): If True, fillnas with 0 and change type to int. Default: False
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    show_all (bool): Show 1 - 13. If set to False, show 6 - 9. Default: True
-    fillna (value, optional): pd.DataFrame.fillna(value)
-
-Returns:
-    pd.DataFrame: New feature generated.
-"""

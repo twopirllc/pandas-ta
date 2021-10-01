@@ -6,7 +6,50 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, offset=None, **kwargs):
-    """Indicator: Stochastic RSI Oscillator (STOCHRSI)"""
+    """Stochastic (STOCHRSI)
+
+    "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll and published in Stock & Commodities V.11:5 (189-199)
+
+    It is a range-bound oscillator with two lines moving between 0 and 100.
+    The first line (%K) displays the current RSI in relation to the period's
+    high/low range. The second line (%D) is a Simple Moving Average of the %K line.
+    The most common choices are a 14 period %K and a 3 period SMA for %D.
+
+    Sources:
+        https://www.tradingview.com/wiki/Stochastic_(STOCH)
+
+    Calculation:
+        Default Inputs:
+            length=14, rsi_length=14, k=3, d=3
+        RSI = Relative Strength Index
+        SMA = Simple Moving Average
+
+        RSI = RSI(high, low, close, rsi_length)
+        LL  = lowest RSI for last rsi_length periods
+        HH  = highest RSI for last rsi_length periods
+
+        STOCHRSI  = 100 * (RSI - LL) / (HH - LL)
+        STOCHRSIk = SMA(STOCHRSI, k)
+        STOCHRSId = SMA(STOCHRSIk, d)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): The STOCHRSI period. Default: 14
+        rsi_length (int): RSI period. Default: 14
+        k (int): The Fast %K period. Default: 3
+        d (int): The Slow %K period. Default: 3
+        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: RSI %K, RSI %D columns.
+    """
     # Validate arguments
     length = length if length and length > 0 else 14
     rsi_length = rsi_length if rsi_length and rsi_length > 0 else 14
@@ -56,50 +99,3 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, o
     df.category = stochrsi_k.category
 
     return df
-
-
-stochrsi.__doc__ = \
-"""Stochastic (STOCHRSI)
-
-"Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll and published in Stock & Commodities V.11:5 (189-199)
-
-It is a range-bound oscillator with two lines moving between 0 and 100.
-The first line (%K) displays the current RSI in relation to the period's
-high/low range. The second line (%D) is a Simple Moving Average of the %K line.
-The most common choices are a 14 period %K and a 3 period SMA for %D.
-
-Sources:
-    https://www.tradingview.com/wiki/Stochastic_(STOCH)
-
-Calculation:
-    Default Inputs:
-        length=14, rsi_length=14, k=3, d=3
-    RSI = Relative Strength Index
-    SMA = Simple Moving Average
-
-    RSI = RSI(high, low, close, rsi_length)
-    LL  = lowest RSI for last rsi_length periods
-    HH  = highest RSI for last rsi_length periods
-
-    STOCHRSI  = 100 * (RSI - LL) / (HH - LL)
-    STOCHRSIk = SMA(STOCHRSI, k)
-    STOCHRSId = SMA(STOCHRSIk, d)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): The STOCHRSI period. Default: 14
-    rsi_length (int): RSI period. Default: 14
-    k (int): The Fast %K period. Default: 3
-    d (int): The Slow %K period. Default: 3
-    mamode (str): See ```help(ta.ma)```. Default: 'sma'
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: RSI %K, RSI %D columns.
-"""

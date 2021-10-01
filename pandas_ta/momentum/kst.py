@@ -5,7 +5,49 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None, sma3=None, sma4=None, signal=None, drift=None, offset=None, **kwargs):
-    """Indicator: 'Know Sure Thing' (KST)"""
+    """'Know Sure Thing' (KST)
+
+    The 'Know Sure Thing' is a momentum based oscillator and based on ROC.
+
+    Sources:
+        https://www.tradingview.com/wiki/Know_Sure_Thing_(KST)
+        https://www.incrediblecharts.com/indicators/kst.php
+
+    Calculation:
+        Default Inputs:
+            roc1=10, roc2=15, roc3=20, roc4=30,
+            sma1=10, sma2=10, sma3=10, sma4=15, signal=9, drift=1
+        ROC = Rate of Change
+        SMA = Simple Moving Average
+        rocsma1 = SMA(ROC(close, roc1), sma1)
+        rocsma2 = SMA(ROC(close, roc2), sma2)
+        rocsma3 = SMA(ROC(close, roc3), sma3)
+        rocsma4 = SMA(ROC(close, roc4), sma4)
+
+        KST = 100 * (rocsma1 + 2 * rocsma2 + 3 * rocsma3 + 4 * rocsma4)
+        KST_Signal = SMA(KST, signal)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        roc1 (int): ROC 1 period. Default: 10
+        roc2 (int): ROC 2 period. Default: 15
+        roc3 (int): ROC 3 period. Default: 20
+        roc4 (int): ROC 4 period. Default: 30
+        sma1 (int): SMA 1 period. Default: 10
+        sma2 (int): SMA 2 period. Default: 10
+        sma3 (int): SMA 3 period. Default: 10
+        sma4 (int): SMA 4 period. Default: 15
+        signal (int): It's period. Default: 9
+        drift (int): The difference period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: kst and kst_signal columns
+    """
     # Validate arguments
     roc1 = int(roc1) if roc1 and roc1 > 0 else 10
     roc2 = int(roc2) if roc2 and roc2 > 0 else 15
@@ -59,49 +101,3 @@ def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None,
     kstdf.category = "momentum"
 
     return kstdf
-
-
-kst.__doc__ = \
-"""'Know Sure Thing' (KST)
-
-The 'Know Sure Thing' is a momentum based oscillator and based on ROC.
-
-Sources:
-    https://www.tradingview.com/wiki/Know_Sure_Thing_(KST)
-    https://www.incrediblecharts.com/indicators/kst.php
-
-Calculation:
-    Default Inputs:
-        roc1=10, roc2=15, roc3=20, roc4=30,
-        sma1=10, sma2=10, sma3=10, sma4=15, signal=9, drift=1
-    ROC = Rate of Change
-    SMA = Simple Moving Average
-    rocsma1 = SMA(ROC(close, roc1), sma1)
-    rocsma2 = SMA(ROC(close, roc2), sma2)
-    rocsma3 = SMA(ROC(close, roc3), sma3)
-    rocsma4 = SMA(ROC(close, roc4), sma4)
-
-    KST = 100 * (rocsma1 + 2 * rocsma2 + 3 * rocsma3 + 4 * rocsma4)
-    KST_Signal = SMA(KST, signal)
-
-Args:
-    close (pd.Series): Series of 'close's
-    roc1 (int): ROC 1 period. Default: 10
-    roc2 (int): ROC 2 period. Default: 15
-    roc3 (int): ROC 3 period. Default: 20
-    roc4 (int): ROC 4 period. Default: 30
-    sma1 (int): SMA 1 period. Default: 10
-    sma2 (int): SMA 2 period. Default: 10
-    sma3 (int): SMA 3 period. Default: 10
-    sma4 (int): SMA 4 period. Default: 15
-    signal (int): It's period. Default: 9
-    drift (int): The difference period. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: kst and kst_signal columns
-"""

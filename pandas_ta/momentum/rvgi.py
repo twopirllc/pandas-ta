@@ -5,7 +5,40 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **kwargs):
-    """Indicator: Relative Vigor Index (RVGI)"""
+    """Relative Vigor Index (RVGI)
+
+    The Relative Vigor Index attempts to measure the strength of a trend relative to
+    its closing price to its trading range.  It is based on the belief that it tends
+    to close higher than they open in uptrends or close lower than they open in
+    downtrends.
+
+    Sources:
+        https://www.investopedia.com/terms/r/relative_vigor_index.asp
+
+    Calculation:
+        Default Inputs:
+            length=14, swma_length=4
+        SWMA = Symmetrically Weighted Moving Average
+        numerator = SUM(SWMA(close - open, swma_length), length)
+        denominator = SUM(SWMA(high - low, swma_length), length)
+        RVGI = numerator / denominator
+
+    Args:
+        open_ (pd.Series): Series of 'open's
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 14
+        swma_length (int): It's period. Default: 4
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     high_low_range = non_zero_range(high, low)
     close_open_range = non_zero_range(close, open_)
@@ -51,40 +84,3 @@ def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **
     df.category = rvgi.category
 
     return df
-
-
-rvgi.__doc__ = \
-"""Relative Vigor Index (RVGI)
-
-The Relative Vigor Index attempts to measure the strength of a trend relative to
-its closing price to its trading range.  It is based on the belief that it tends
-to close higher than they open in uptrends or close lower than they open in
-downtrends.
-
-Sources:
-    https://www.investopedia.com/terms/r/relative_vigor_index.asp
-
-Calculation:
-    Default Inputs:
-        length=14, swma_length=4
-    SWMA = Symmetrically Weighted Moving Average
-    numerator = SUM(SWMA(close - open, swma_length), length)
-    denominator = SUM(SWMA(high - low, swma_length), length)
-    RVGI = numerator / denominator
-
-Args:
-    open_ (pd.Series): Series of 'open's
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 14
-    swma_length (int): It's period. Default: 4
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

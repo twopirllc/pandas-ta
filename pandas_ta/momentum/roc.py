@@ -5,7 +5,36 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def roc(close, length=None, scalar=None, talib=None, offset=None, **kwargs):
-    """Indicator: Rate of Change (ROC)"""
+    """Rate of Change (ROC)
+
+    Rate of Change is an indicator is also referred to as Momentum (yeah, confusingly).
+    It is a pure momentum oscillator that measures the percent change in price with the
+    previous price 'n' (or length) periods ago.
+
+    Sources:
+        https://www.tradingview.com/wiki/Rate_of_Change_(ROC)
+
+    Calculation:
+        Default Inputs:
+            length=1
+        MOM = Momentum
+        ROC = 100 * MOM(close, length) / close.shift(length)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 1
+        scalar (float): How much to magnify. Default: 100
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
     scalar = float(scalar) if scalar and scalar > 0 else 100
@@ -37,36 +66,3 @@ def roc(close, length=None, scalar=None, talib=None, offset=None, **kwargs):
     roc.category = "momentum"
 
     return roc
-
-
-roc.__doc__ = \
-"""Rate of Change (ROC)
-
-Rate of Change is an indicator is also referred to as Momentum (yeah, confusingly).
-It is a pure momentum oscillator that measures the percent change in price with the
-previous price 'n' (or length) periods ago.
-
-Sources:
-    https://www.tradingview.com/wiki/Rate_of_Change_(ROC)
-
-Calculation:
-    Default Inputs:
-        length=1
-    MOM = Momentum
-    ROC = 100 * MOM(close, length) / close.shift(length)
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 1
-    scalar (float): How much to magnify. Default: 100
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

@@ -4,7 +4,45 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def brar(open_, high, low, close, length=None, scalar=None, drift=None, offset=None, **kwargs):
-    """Indicator: BRAR (BRAR)"""
+    """BRAR (BRAR)
+
+    BR and AR
+
+    Sources:
+        No internet resources on definitive definition.
+        Request by Github user homily, issue #46
+
+    Calculation:
+        Default Inputs:
+            length=26, scalar=100
+        SUM = Sum
+
+        HO_Diff = high - open
+        OL_Diff = open - low
+        HCY = high - close[-1]
+        CYL = close[-1] - low
+        HCY[HCY < 0] = 0
+        CYL[CYL < 0] = 0
+        AR = scalar * SUM(HO, length) / SUM(OL, length)
+        BR = scalar * SUM(HCY, length) / SUM(CYL, length)
+
+    Args:
+        open_ (pd.Series): Series of 'open's
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): The period. Default: 26
+        scalar (float): How much to magnify. Default: 100
+        drift (int): The difference period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: ar, br columns.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 26
     scalar = float(scalar) if scalar else 100
@@ -57,45 +95,3 @@ def brar(open_, high, low, close, length=None, scalar=None, drift=None, offset=N
     brardf.category = "momentum"
 
     return brardf
-
-
-brar.__doc__ = \
-"""BRAR (BRAR)
-
-BR and AR
-
-Sources:
-    No internet resources on definitive definition.
-    Request by Github user homily, issue #46
-
-Calculation:
-    Default Inputs:
-        length=26, scalar=100
-    SUM = Sum
-
-    HO_Diff = high - open
-    OL_Diff = open - low
-    HCY = high - close[-1]
-    CYL = close[-1] - low
-    HCY[HCY < 0] = 0
-    CYL[CYL < 0] = 0
-    AR = scalar * SUM(HO, length) / SUM(OL, length)
-    BR = scalar * SUM(HCY, length) / SUM(CYL, length)
-
-Args:
-    open_ (pd.Series): Series of 'open's
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): The period. Default: 26
-    scalar (float): How much to magnify. Default: 100
-    drift (int): The difference period. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: ar, br columns.
-"""

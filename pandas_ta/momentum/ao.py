@@ -4,7 +4,36 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
-    """Indicator: Awesome Oscillator (AO)"""
+    """Awesome Oscillator (AO)
+
+    The Awesome Oscillator is an indicator used to measure a security's momentum.
+    AO is generally used to affirm trends or to anticipate possible reversals.
+
+    Sources:
+        https://www.tradingview.com/wiki/Awesome_Oscillator_(AO)
+        https://www.ifcm.co.uk/ntx-indicators/awesome-oscillator
+
+    Calculation:
+        Default Inputs:
+            fast=5, slow=34
+        SMA = Simple Moving Average
+        median = (high + low) / 2
+        AO = SMA(median, fast) - SMA(median, slow)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        fast (int): The short period. Default: 5
+        slow (int): The long period. Default: 34
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     fast = int(fast) if fast and fast > 0 else 5
     slow = int(slow) if slow and slow > 0 else 34
@@ -38,36 +67,3 @@ def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
     ao.category = "momentum"
 
     return ao
-
-
-ao.__doc__ = \
-"""Awesome Oscillator (AO)
-
-The Awesome Oscillator is an indicator used to measure a security's momentum.
-AO is generally used to affirm trends or to anticipate possible reversals.
-
-Sources:
-    https://www.tradingview.com/wiki/Awesome_Oscillator_(AO)
-    https://www.ifcm.co.uk/ntx-indicators/awesome-oscillator
-
-Calculation:
-    Default Inputs:
-        fast=5, slow=34
-    SMA = Simple Moving Average
-    median = (high + low) / 2
-    AO = SMA(median, fast) - SMA(median, slow)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    fast (int): The short period. Default: 5
-    slow (int): The long period. Default: 34
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

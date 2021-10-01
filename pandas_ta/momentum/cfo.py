@@ -4,7 +4,35 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def cfo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
-    """Indicator: Chande Forcast Oscillator (CFO)"""
+    """Chande Forcast Oscillator (CFO)
+
+    The Forecast Oscillator calculates the percentage difference between the actual
+    price and the Time Series Forecast (the endpoint of a linear regression line).
+
+    Sources:
+        https://www.fmlabs.com/reference/default.htm?url=ForecastOscillator.htm
+
+    Calculation:
+        Default Inputs:
+            length=9, drift=1, scalar=100
+        LINREG = Linear Regression
+
+        CFO = scalar * (close - LINERREG(length, tdf=True)) / close
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): The period. Default: 9
+        scalar (float): How much to magnify. Default: 100
+        drift (int): The short period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 9
     scalar = float(scalar) if scalar else 100
@@ -33,35 +61,3 @@ def cfo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     cfo.category = "momentum"
 
     return cfo
-
-
-cfo.__doc__ = \
-"""Chande Forcast Oscillator (CFO)
-
-The Forecast Oscillator calculates the percentage difference between the actual
-price and the Time Series Forecast (the endpoint of a linear regression line).
-
-Sources:
-    https://www.fmlabs.com/reference/default.htm?url=ForecastOscillator.htm
-
-Calculation:
-    Default Inputs:
-        length=9, drift=1, scalar=100
-    LINREG = Linear Regression
-
-    CFO = scalar * (close - LINERREG(length, tdf=True)) / close
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): The period. Default: 9
-    scalar (float): How much to magnify. Default: 100
-    drift (int): The short period. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

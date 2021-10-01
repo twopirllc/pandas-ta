@@ -10,7 +10,78 @@ from pandas_ta.utils import unsigned_differences, verify_series
 
 
 def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar_wide=None, kc_scalar_normal=None, kc_scalar_narrow=None, mom_length=None, mom_smooth=None, use_tr=None, mamode=None, offset=None, **kwargs):
-    """Indicator: Squeeze Momentum (SQZ) PRO"""
+    """Squeeze PRO(SQZPRO)
+
+    This indicator is an extended version of "TTM Squeeze" from John Carter.
+    The default is based on John Carter's "TTM Squeeze" indicator, as discussed
+    in his book "Mastering the Trade" (chapter 11). The Squeeze indicator attempts
+    to capture the relationship between two studies: Bollinger Bands® and Keltner's
+    Channels. When the volatility increases, so does the distance between the bands,
+    conversely, when the volatility declines, the distance also decreases. It finds
+    sections of the Bollinger Bands® study which fall inside the Keltner's Channels.
+
+    Sources:
+        https://usethinkscript.com/threads/john-carters-squeeze-pro-indicator-for-thinkorswim-free.4021/
+        https://www.tradingview.com/script/TAAt6eRX-Squeeze-PRO-Indicator-Makit0/
+
+    Calculation:
+        Default Inputs:
+            bb_length=20, bb_std=2, kc_length=20, kc_scalar_wide=2,
+            kc_scalar_normal=1.5, kc_scalar_narrow=1, mom_length=12,
+            mom_smooth=6, tr=True,
+        BB = Bollinger Bands
+        KC = Keltner Channels
+        MOM = Momentum
+        SMA = Simple Moving Average
+        EMA = Exponential Moving Average
+        TR = True Range
+
+        RANGE = TR(high, low, close) if using_tr else high - low
+        BB_LOW, BB_MID, BB_HIGH = BB(close, bb_length, std=bb_std)
+        KC_LOW_WIDE, KC_MID_WIDE, KC_HIGH_WIDE = KC(high, low, close, kc_length, kc_scalar_wide, TR)
+        KC_LOW_NORMAL, KC_MID_NORMAL, KC_HIGH_NORMAL = KC(high, low, close, kc_length, kc_scalar_normal, TR)
+        KC_LOW_NARROW, KC_MID_NARROW, KC_HIGH_NARROW = KC(high, low, close, kc_length, kc_scalar_narrow, TR)
+
+        MOMO = MOM(close, mom_length)
+        if mamode == "ema":
+            SQZPRO = EMA(MOMO, mom_smooth)
+        else:
+            SQZPRO = EMA(momo, mom_smooth)
+
+        SQZPRO_ON_WIDE  = (BB_LOW > KC_LOW_WIDE) and (BB_HIGH < KC_HIGH_WIDE)
+        SQZPRO_ON_NORMAL  = (BB_LOW > KC_LOW_NORMAL) and (BB_HIGH < KC_HIGH_NORMAL)
+        SQZPRO_ON_NARROW  = (BB_LOW > KC_LOW_NARROW) and (BB_HIGH < KC_HIGH_NARROW)
+        SQZPRO_OFF_WIDE = (BB_LOW < KC_LOW_WIDE) and (BB_HIGH > KC_HIGH_WIDE)
+        SQZPRO_NO = !SQZ_ON_WIDE and !SQZ_OFF_WIDE
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        bb_length (int): Bollinger Bands period. Default: 20
+        bb_std (float): Bollinger Bands Std. Dev. Default: 2
+        kc_length (int): Keltner Channel period. Default: 20
+        kc_scalar_wide (float): Keltner Channel scalar for wider channel. Default: 2
+        kc_scalar_normal (float): Keltner Channel scalar for normal channel. Default: 1.5
+        kc_scalar_narrow (float): Keltner Channel scalar for narrow channel. Default: 1
+        mom_length (int): Momentum Period. Default: 12
+        mom_smooth (int): Smoothing Period of Momentum. Default: 6
+        mamode (str): Only "ema" or "sma". Default: "sma"
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        tr (value, optional): Use True Range for Keltner Channels. Default: True
+        asint (value, optional): Use integers instead of bool. Default: True
+        mamode (value, optional): Which MA to use. Default: "sma"
+        detailed (value, optional): Return additional variations of SQZ for
+            visualization. Default: False
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: SQZPRO, SQZPRO_ON_WIDE, SQZPRO_ON_NORMAL, SQZPRO_ON_NARROW, SQZPRO_OFF_WIDE, SQZPRO_NO columns by default. More
+            detailed columns if 'detailed' kwarg is True.
+    """
     # Validate arguments
     bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
     bb_std = float(bb_std) if bb_std and bb_std > 0 else 2.0
@@ -155,78 +226,3 @@ def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, k
         df[f"SQZPRO_NINC"] = neg_inc
 
     return df
-
-
-squeeze_pro.__doc__ = \
-"""Squeeze PRO(SQZPRO)
-
-This indicator is an extended version of "TTM Squeeze" from John Carter.
-The default is based on John Carter's "TTM Squeeze" indicator, as discussed
-in his book "Mastering the Trade" (chapter 11). The Squeeze indicator attempts
-to capture the relationship between two studies: Bollinger Bands® and Keltner's
-Channels. When the volatility increases, so does the distance between the bands,
-conversely, when the volatility declines, the distance also decreases. It finds
-sections of the Bollinger Bands® study which fall inside the Keltner's Channels.
-
-Sources:
-    https://usethinkscript.com/threads/john-carters-squeeze-pro-indicator-for-thinkorswim-free.4021/
-    https://www.tradingview.com/script/TAAt6eRX-Squeeze-PRO-Indicator-Makit0/
-
-Calculation:
-    Default Inputs:
-        bb_length=20, bb_std=2, kc_length=20, kc_scalar_wide=2,
-        kc_scalar_normal=1.5, kc_scalar_narrow=1, mom_length=12,
-        mom_smooth=6, tr=True,
-    BB = Bollinger Bands
-    KC = Keltner Channels
-    MOM = Momentum
-    SMA = Simple Moving Average
-    EMA = Exponential Moving Average
-    TR = True Range
-
-    RANGE = TR(high, low, close) if using_tr else high - low
-    BB_LOW, BB_MID, BB_HIGH = BB(close, bb_length, std=bb_std)
-    KC_LOW_WIDE, KC_MID_WIDE, KC_HIGH_WIDE = KC(high, low, close, kc_length, kc_scalar_wide, TR)
-    KC_LOW_NORMAL, KC_MID_NORMAL, KC_HIGH_NORMAL = KC(high, low, close, kc_length, kc_scalar_normal, TR)
-    KC_LOW_NARROW, KC_MID_NARROW, KC_HIGH_NARROW = KC(high, low, close, kc_length, kc_scalar_narrow, TR)
-
-    MOMO = MOM(close, mom_length)
-    if mamode == "ema":
-        SQZPRO = EMA(MOMO, mom_smooth)
-    else:
-        SQZPRO = EMA(momo, mom_smooth)
-
-    SQZPRO_ON_WIDE  = (BB_LOW > KC_LOW_WIDE) and (BB_HIGH < KC_HIGH_WIDE)
-    SQZPRO_ON_NORMAL  = (BB_LOW > KC_LOW_NORMAL) and (BB_HIGH < KC_HIGH_NORMAL)
-    SQZPRO_ON_NARROW  = (BB_LOW > KC_LOW_NARROW) and (BB_HIGH < KC_HIGH_NARROW)
-    SQZPRO_OFF_WIDE = (BB_LOW < KC_LOW_WIDE) and (BB_HIGH > KC_HIGH_WIDE)
-    SQZPRO_NO = !SQZ_ON_WIDE and !SQZ_OFF_WIDE
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    bb_length (int): Bollinger Bands period. Default: 20
-    bb_std (float): Bollinger Bands Std. Dev. Default: 2
-    kc_length (int): Keltner Channel period. Default: 20
-    kc_scalar_wide (float): Keltner Channel scalar for wider channel. Default: 2
-    kc_scalar_normal (float): Keltner Channel scalar for normal channel. Default: 1.5
-    kc_scalar_narrow (float): Keltner Channel scalar for narrow channel. Default: 1
-    mom_length (int): Momentum Period. Default: 12
-    mom_smooth (int): Smoothing Period of Momentum. Default: 6
-    mamode (str): Only "ema" or "sma". Default: "sma"
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    tr (value, optional): Use True Range for Keltner Channels. Default: True
-    asint (value, optional): Use integers instead of bool. Default: True
-    mamode (value, optional): Which MA to use. Default: "sma"
-    detailed (value, optional): Return additional variations of SQZ for
-        visualization. Default: False
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: SQZPRO, SQZPRO_ON_WIDE, SQZPRO_ON_NORMAL, SQZPRO_ON_NARROW, SQZPRO_OFF_WIDE, SQZPRO_NO columns by default. More
-        detailed columns if 'detailed' kwarg is True.
-"""

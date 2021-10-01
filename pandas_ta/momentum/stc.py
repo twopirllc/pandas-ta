@@ -5,7 +5,56 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def stc(close, tclength=None, fast=None, slow=None, factor=None, offset=None, **kwargs):
-    """Indicator: Schaff Trend Cycle (STC)"""
+    """Schaff Trend Cycle (STC)
+
+    The Schaff Trend Cycle is an evolution of the popular MACD incorportating two
+    cascaded stochastic calculations with additional smoothing.
+
+    The STC returns also the beginning MACD result as well as the result after the
+    first stochastic including its smoothing. This implementation has been extended
+    for Pandas TA to also allow for separatly feeding any other two moving Averages
+    (as ma1 and ma2) or to skip this to feed an oscillator (osc), based on which the
+    Schaff Trend Cycle should be calculated.
+
+    Feed external moving averages:
+    Internally calculation..
+        stc = ta.stc(close=df["close"], tclen=stc_tclen, fast=ma1_interval, slow=ma2_interval, factor=stc_factor)
+    becomes..
+        extMa1 = df.ta.zlma(close=df["close"], length=ma1_interval, append=True)
+        extMa2 = df.ta.ema(close=df["close"], length=ma2_interval, append=True)
+        stc = ta.stc(close=df["close"], tclen=stc_tclen, ma1=extMa1, ma2=extMa2, factor=stc_factor)
+
+    The same goes for osc=, which allows the input of an externally calculated oscillator, overriding ma1 & ma2.
+
+
+    Sources:
+        Implemented by rengel8 based on work found here:
+        https://www.prorealcode.com/prorealtime-indicators/schaff-trend-cycle2/
+
+    Calculation:
+        STCmacd = Moving Average Convergance/Divergance or Oscillator
+        STCstoch = Intermediate Stochastic of MACD/Osc.
+        2nd Stochastic including filtering with results in the
+        STC = Schaff Trend Cycle
+
+    Args:
+        close (pd.Series): Series of 'close's, used for indexing Series, mandatory
+        tclen (int): SchaffTC Signal-Line length.  Default: 10 (adjust to the half of cycle)
+        fast (int): The short period.   Default: 12
+        slow (int): The long period.   Default: 26
+        factor (float): smoothing factor for last stoch. calculation.   Default: 0.5
+        offset (int): How many periods to offset the result.  Default: 0
+
+    Kwargs:
+        ma1: 1st moving average provided externally (mandatory in conjuction with ma2)
+        ma2: 2nd moving average provided externally (mandatory in conjuction with ma1)
+        osc: an externally feeded osillator
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: stc, macd, stoch
+    """
     # Validate arguments
     tclength = int(tclength) if tclength and tclength > 0 else 10
     fast = int(fast) if fast and fast > 0 else 12
@@ -90,59 +139,6 @@ def stc(close, tclength=None, fast=None, slow=None, factor=None, offset=None, **
     df.category = stc.category
 
     return df
-
-
-stc.__doc__ = \
-"""Schaff Trend Cycle (STC)
-
-The Schaff Trend Cycle is an evolution of the popular MACD incorportating two
-cascaded stochastic calculations with additional smoothing.
-
-The STC returns also the beginning MACD result as well as the result after the
-first stochastic including its smoothing. This implementation has been extended
-for Pandas TA to also allow for separatly feeding any other two moving Averages
-(as ma1 and ma2) or to skip this to feed an oscillator (osc), based on which the
-Schaff Trend Cycle should be calculated.
-
-Feed external moving averages:
-Internally calculation..
-    stc = ta.stc(close=df["close"], tclen=stc_tclen, fast=ma1_interval, slow=ma2_interval, factor=stc_factor)
-becomes..
-    extMa1 = df.ta.zlma(close=df["close"], length=ma1_interval, append=True)
-    extMa2 = df.ta.ema(close=df["close"], length=ma2_interval, append=True)
-    stc = ta.stc(close=df["close"], tclen=stc_tclen, ma1=extMa1, ma2=extMa2, factor=stc_factor)
-
-The same goes for osc=, which allows the input of an externally calculated oscillator, overriding ma1 & ma2.
-
-
-Sources:
-    Implemented by rengel8 based on work found here:
-    https://www.prorealcode.com/prorealtime-indicators/schaff-trend-cycle2/
-
-Calculation:
-    STCmacd = Moving Average Convergance/Divergance or Oscillator
-    STCstoch = Intermediate Stochastic of MACD/Osc.
-    2nd Stochastic including filtering with results in the
-    STC = Schaff Trend Cycle
-
-Args:
-    close (pd.Series): Series of 'close's, used for indexing Series, mandatory
-    tclen (int): SchaffTC Signal-Line length.  Default: 10 (adjust to the half of cycle)
-    fast (int): The short period.   Default: 12
-    slow (int): The long period.   Default: 26
-    factor (float): smoothing factor for last stoch. calculation.   Default: 0.5
-    offset (int): How many periods to offset the result.  Default: 0
-
-Kwargs:
-    ma1: 1st moving average provided externally (mandatory in conjuction with ma2)
-    ma2: 2nd moving average provided externally (mandatory in conjuction with ma1)
-    osc: an externally feeded osillator
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: stc, macd, stoch
-"""
 
 
 def schaff_tc(close, xmacd, tclength, factor):

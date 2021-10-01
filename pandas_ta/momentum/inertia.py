@@ -5,7 +5,43 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
-    """Indicator: Inertia (INERTIA)"""
+    """Inertia (INERTIA)
+
+    Inertia was developed by Donald Dorsey and was introduced his article
+    in September, 1995. It is the Relative Vigor Index smoothed by the Least
+    Squares Moving Average. Postive Inertia when values are greater than 50,
+    Negative Inertia otherwise.
+
+    Sources:
+        https://www.investopedia.com/terms/r/relative_vigor_index.asp
+
+    Calculation:
+        Default Inputs:
+            length=14, ma_length=20
+        LSQRMA = Least Squares Moving Average
+
+        INERTIA = LSQRMA(RVI(length), ma_length)
+
+    Args:
+        open_ (pd.Series): Series of 'open's
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 20
+        rvi_length (int): RVI period. Default: 14
+        refined (bool): Use 'refined' calculation. Default: False
+        thirds (bool): Use 'thirds' calculation. Default: False
+        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        drift (int): The difference period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 20
     rvi_length = int(rvi_length) if rvi_length and rvi_length > 0 else 14
@@ -51,43 +87,3 @@ def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scala
     inertia.category = "momentum"
 
     return inertia
-
-
-inertia.__doc__ = \
-"""Inertia (INERTIA)
-
-Inertia was developed by Donald Dorsey and was introduced his article
-in September, 1995. It is the Relative Vigor Index smoothed by the Least
-Squares Moving Average. Postive Inertia when values are greater than 50,
-Negative Inertia otherwise.
-
-Sources:
-    https://www.investopedia.com/terms/r/relative_vigor_index.asp
-
-Calculation:
-    Default Inputs:
-        length=14, ma_length=20
-    LSQRMA = Least Squares Moving Average
-
-    INERTIA = LSQRMA(RVI(length), ma_length)
-
-Args:
-    open_ (pd.Series): Series of 'open's
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 20
-    rvi_length (int): RVI period. Default: 14
-    refined (bool): Use 'refined' calculation. Default: False
-    thirds (bool): Use 'thirds' calculation. Default: False
-    mamode (str): See ```help(ta.ma)```. Default: 'ema'
-    drift (int): The difference period. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""
