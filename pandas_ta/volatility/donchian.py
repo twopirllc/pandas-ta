@@ -4,7 +4,35 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def donchian(high, low, lower_length=None, upper_length=None, offset=None, **kwargs):
-    """Indicator: Donchian Channels (DC)"""
+    """Donchian Channels (DC)
+
+    Donchian Channels are used to measure volatility, similar to
+    Bollinger Bands and Keltner Channels.
+
+    Sources:
+        https://www.tradingview.com/wiki/Donchian_Channels_(DC)
+
+    Calculation:
+        Default Inputs:
+            lower_length=upper_length=20
+        LOWER = low.rolling(lower_length).min()
+        UPPER = high.rolling(upper_length).max()
+        MID = 0.5 * (LOWER + UPPER)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        lower_length (int): The short period. Default: 20
+        upper_length (int): The short period. Default: 20
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: lower, mid, upper columns.
+    """
     # Validate arguments
     lower_length = int(lower_length) if lower_length and lower_length > 0 else 20
     upper_length = int(upper_length) if upper_length and upper_length > 0 else 20
@@ -51,35 +79,3 @@ def donchian(high, low, lower_length=None, upper_length=None, offset=None, **kwa
     dcdf.category = mid.category
 
     return dcdf
-
-
-donchian.__doc__ = \
-"""Donchian Channels (DC)
-
-Donchian Channels are used to measure volatility, similar to
-Bollinger Bands and Keltner Channels.
-
-Sources:
-    https://www.tradingview.com/wiki/Donchian_Channels_(DC)
-
-Calculation:
-    Default Inputs:
-        lower_length=upper_length=20
-    LOWER = low.rolling(lower_length).min()
-    UPPER = high.rolling(upper_length).max()
-    MID = 0.5 * (LOWER + UPPER)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    lower_length (int): The short period. Default: 20
-    upper_length (int): The short period. Default: 20
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: lower, mid, upper columns.
-"""

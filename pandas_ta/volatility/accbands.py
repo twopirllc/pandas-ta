@@ -5,7 +5,49 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, offset=None, **kwargs):
-    """Indicator: Acceleration Bands (ACCBANDS)"""
+    """Acceleration Bands (ACCBANDS)
+
+    Acceleration Bands created by Price Headley plots upper and lower envelope
+    bands around a simple moving average.
+
+    Sources:
+        https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/acceleration-bands-abands/
+
+    Calculation:
+        Default Inputs:
+            length=10, c=4
+        EMA = Exponential Moving Average
+        SMA = Simple Moving Average
+        HL_RATIO = c * (high - low) / (high + low)
+        LOW = low * (1 - HL_RATIO)
+        HIGH = high * (1 + HL_RATIO)
+
+        if 'ema':
+            LOWER = EMA(LOW, length)
+            MID = EMA(close, length)
+            UPPER = EMA(HIGH, length)
+        else:
+            LOWER = SMA(LOW, length)
+            MID = SMA(close, length)
+            UPPER = SMA(HIGH, length)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 10
+        c (int): Multiplier. Default: 4
+        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        drift (int): The difference period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: lower, mid, upper columns.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 20
     c = float(c) if c and c > 0 else 4
@@ -58,49 +100,3 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
     accbandsdf.category = mid.category
 
     return accbandsdf
-
-
-accbands.__doc__ = \
-"""Acceleration Bands (ACCBANDS)
-
-Acceleration Bands created by Price Headley plots upper and lower envelope
-bands around a simple moving average.
-
-Sources:
-    https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/acceleration-bands-abands/
-
-Calculation:
-    Default Inputs:
-        length=10, c=4
-    EMA = Exponential Moving Average
-    SMA = Simple Moving Average
-    HL_RATIO = c * (high - low) / (high + low)
-    LOW = low * (1 - HL_RATIO)
-    HIGH = high * (1 + HL_RATIO)
-
-    if 'ema':
-        LOWER = EMA(LOW, length)
-        MID = EMA(close, length)
-        UPPER = EMA(HIGH, length)
-    else:
-        LOWER = SMA(LOW, length)
-        MID = SMA(close, length)
-        UPPER = SMA(HIGH, length)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 10
-    c (int): Multiplier. Default: 4
-    mamode (str): See ```help(ta.ma)```. Default: 'sma'
-    drift (int): The difference period. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: lower, mid, upper columns.
-"""

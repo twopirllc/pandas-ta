@@ -5,7 +5,46 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def hwc(close, na=None, nb=None, nc=None, nd=None, scalar=None, channel_eval=None, offset=None, **kwargs):
-    """Indicator: Holt-Winter Channel"""
+    """HWC (Holt-Winter Channel)
+
+    Channel indicator HWC (Holt-Winters Channel) based on HWMA - a three-parameter
+    moving average calculated by the method of Holt-Winters.
+
+    This version has been implemented for Pandas TA by rengel8 based on a
+    publication for MetaTrader 5 extended by width and percentage price position
+    against width of channel.
+
+    Sources:
+        https://www.mql5.com/en/code/20857
+
+    Calculation:
+        HWMA[i] = F[i] + V[i] + 0.5 * A[i]
+        where..
+        F[i] = (1-na) * (F[i-1] + V[i-1] + 0.5 * A[i-1]) + na * Price[i]
+        V[i] = (1-nb) * (V[i-1] + A[i-1]) + nb * (F[i] - F[i-1])
+        A[i] = (1-nc) * A[i-1] + nc * (V[i] - V[i-1])
+
+        Top = HWMA + Multiplier * StDt
+        Bottom = HWMA - Multiplier * StDt
+        where..
+        StDt[i] = Sqrt(Var[i-1])
+        Var[i] = (1-d) * Var[i-1] + nD * (Price[i-1] - HWMA[i-1]) * (Price[i-1] - HWMA[i-1])
+
+    Args:
+        na - parameter of the equation that describes a smoothed series (from 0 to 1)
+        nb - parameter of the equation to assess the trend (from 0 to 1)
+        nc - parameter of the equation to assess seasonality (from 0 to 1)
+        nd - parameter of the channel equation (from 0 to 1)
+        scaler - multiplier for the width of the channel calculated
+        channel_eval - boolean to return width and percentage price position against price
+        close (pd.Series): Series of 'close's
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+    Returns:
+        pd.DataFrame: HWM (Mid), HWU (Upper), HWL (Lower) columns.
+    """
     # Validate Arguments
     na = float(na) if na and na > 0 else 0.2
     nb = float(nb) if nb and nb > 0 else 0.1
@@ -107,47 +146,3 @@ def hwc(close, na=None, nb=None, nc=None, nd=None, scalar=None, channel_eval=Non
         df.category = hwc.category
 
     return df
-
-
-
-hwc.__doc__ = \
-"""HWC (Holt-Winter Channel)
-
-Channel indicator HWC (Holt-Winters Channel) based on HWMA - a three-parameter
-moving average calculated by the method of Holt-Winters.
-
-This version has been implemented for Pandas TA by rengel8 based on a
-publication for MetaTrader 5 extended by width and percentage price position
-against width of channel.
-
-Sources:
-    https://www.mql5.com/en/code/20857
-
-Calculation:
-    HWMA[i] = F[i] + V[i] + 0.5 * A[i]
-    where..
-    F[i] = (1-na) * (F[i-1] + V[i-1] + 0.5 * A[i-1]) + na * Price[i]
-    V[i] = (1-nb) * (V[i-1] + A[i-1]) + nb * (F[i] - F[i-1])
-    A[i] = (1-nc) * A[i-1] + nc * (V[i] - V[i-1])
-
-    Top = HWMA + Multiplier * StDt
-    Bottom = HWMA - Multiplier * StDt
-    where..
-    StDt[i] = Sqrt(Var[i-1])
-    Var[i] = (1-d) * Var[i-1] + nD * (Price[i-1] - HWMA[i-1]) * (Price[i-1] - HWMA[i-1])
-
-Args:
-    na - parameter of the equation that describes a smoothed series (from 0 to 1)
-    nb - parameter of the equation to assess the trend (from 0 to 1)
-    nc - parameter of the equation to assess seasonality (from 0 to 1)
-    nd - parameter of the channel equation (from 0 to 1)
-    scaler - multiplier for the width of the channel calculated
-    channel_eval - boolean to return width and percentage price position against price
-    close (pd.Series): Series of 'close's
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-Returns:
-    pd.DataFrame: HWM (Mid), HWU (Upper), HWL (Lower) columns.
-"""

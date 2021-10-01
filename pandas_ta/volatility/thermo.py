@@ -5,7 +5,47 @@ from pandas_ta.utils import get_offset, verify_series, get_drift
 
 
 def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=None, offset=None, **kwargs):
-    """Indicator: Elders Thermometer (THERMO)"""
+    """Elders Thermometer (THERMO)
+
+    Elder's Thermometer measures price volatility.
+
+    Sources:
+        https://www.motivewave.com/studies/elders_thermometer.htm
+        https://www.tradingview.com/script/HqvTuEMW-Elder-s-Market-Thermometer-LazyBear/
+
+    Calculation:
+        Default Inputs:
+        length=20, drift=1, mamode=EMA, long=2, short=0.5
+        EMA = Exponential Moving Average
+
+        thermoL = (low.shift(drift) - low).abs()
+        thermoH = (high - high.shift(drift)).abs()
+
+        thermo = np.where(thermoH > thermoL, thermoH, thermoL)
+        thermo_ma = ema(thermo, length)
+
+        thermo_long = thermo < (thermo_ma * long)
+        thermo_short = thermo > (thermo_ma * short)
+        thermo_long = thermo_long.astype(int)
+        thermo_short = thermo_short.astype(int)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        long(int): The buy factor
+        short(float): The sell factor
+        length (int): The  period. Default: 20
+        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        drift (int): The diff period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: thermo, thermo_ma, thermo_long, thermo_short columns.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 20
     long = float(long) if long and long > 0 else 2
@@ -78,48 +118,3 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
     df.category = thermo.category
 
     return df
-
-
-
-thermo.__doc__ = \
-"""Elders Thermometer (THERMO)
-
-Elder's Thermometer measures price volatility.
-
-Sources:
-    https://www.motivewave.com/studies/elders_thermometer.htm
-    https://www.tradingview.com/script/HqvTuEMW-Elder-s-Market-Thermometer-LazyBear/
-
-Calculation:
-    Default Inputs:
-    length=20, drift=1, mamode=EMA, long=2, short=0.5
-    EMA = Exponential Moving Average
-
-    thermoL = (low.shift(drift) - low).abs()
-    thermoH = (high - high.shift(drift)).abs()
-
-    thermo = np.where(thermoH > thermoL, thermoH, thermoL)
-    thermo_ma = ema(thermo, length)
-
-    thermo_long = thermo < (thermo_ma * long)
-    thermo_short = thermo > (thermo_ma * short)
-    thermo_long = thermo_long.astype(int)
-    thermo_short = thermo_short.astype(int)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    long(int): The buy factor
-    short(float): The sell factor
-    length (int): The  period. Default: 20
-    mamode (str): See ```help(ta.ma)```. Default: 'ema'
-    drift (int): The diff period. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: thermo, thermo_ma, thermo_long, thermo_short columns.
-"""
