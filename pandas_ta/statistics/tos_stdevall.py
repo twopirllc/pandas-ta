@@ -8,8 +8,45 @@ from .stdev import stdev as stdev
 from pandas_ta.utils import get_offset, verify_series
 
 def tos_stdevall(close, length=None, stds=None, ddof=None, offset=None, **kwargs):
-    """Indicator: TD Ameritrade's Think or Swim Standard Deviation All"""
-    # Validate Arguments
+    """TD Ameritrade's Think or Swim Standard Deviation All (TOS_STDEV)
+
+    A port of TD Ameritrade's Think or Swim Standard Deviation All indicator which
+    returns the standard deviation of data for the entire plot or for the interval
+    of the last bars defined by the length parameter.
+
+    Sources:
+        https://tlc.thinkorswim.com/center/reference/thinkScript/Functions/Statistical/StDevAll
+
+    Calculation:
+        Default Inputs:
+            length=None (All), stds=[1, 2, 3], ddof=1
+        LR = Linear Regression
+        STDEV = Standard Deviation
+
+        LR = LR(close, length)
+        STDEV = STDEV(close, length, ddof)
+        for level in stds:
+            LOWER = LR - level * STDEV
+            UPPER = LR + level * STDEV
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): Bars from current bar. Default: None
+        stds (list): List of Standard Deviations in increasing order from the
+                    central Linear Regression line. Default: [1,2,3]
+        ddof (int): Delta Degrees of Freedom.
+                    The divisor used in calculations is N - ddof,
+                    where N represents the number of elements. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: Central LR, Pairs of Lower and Upper LR Lines based on
+            mulitples of the standard deviation. Default: returns 7 columns.
+    """    # Validate Arguments
     stds = stds if isinstance(stds, list) and len(stds) > 0 else [1, 2, 3]
     if min(stds) <= 0: return
     if not all(i < j for i, j in zip(stds, stds[1:])):
@@ -62,45 +99,3 @@ def tos_stdevall(close, length=None, stds=None, ddof=None, offset=None, **kwargs
     df.category = "statistics"
 
     return df
-
-
-tos_stdevall.__doc__ = \
-"""TD Ameritrade's Think or Swim Standard Deviation All (TOS_STDEV)
-
-A port of TD Ameritrade's Think or Swim Standard Deviation All indicator which
-returns the standard deviation of data for the entire plot or for the interval
-of the last bars defined by the length parameter.
-
-Sources:
-    https://tlc.thinkorswim.com/center/reference/thinkScript/Functions/Statistical/StDevAll
-
-Calculation:
-    Default Inputs:
-        length=None (All), stds=[1, 2, 3], ddof=1
-    LR = Linear Regression
-    STDEV = Standard Deviation
-
-    LR = LR(close, length)
-    STDEV = STDEV(close, length, ddof)
-    for level in stds:
-        LOWER = LR - level * STDEV
-        UPPER = LR + level * STDEV
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): Bars from current bar. Default: None
-    stds (list): List of Standard Deviations in increasing order from the
-                 central Linear Regression line. Default: [1,2,3]
-    ddof (int): Delta Degrees of Freedom.
-                The divisor used in calculations is N - ddof,
-                where N represents the number of elements. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: Central LR, Pairs of Lower and Upper LR Lines based on
-        mulitples of the standard deviation. Default: returns 7 columns.
-"""

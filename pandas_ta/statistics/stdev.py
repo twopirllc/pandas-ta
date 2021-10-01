@@ -6,7 +6,34 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def stdev(close, length=None, ddof=None, talib=None, offset=None, **kwargs):
-    """Indicator: Standard Deviation"""
+    """Rolling Standard Deviation
+
+    Calculates the Standard Deviation over a rolling period.
+
+    Calculation:
+        Default Inputs:
+            length=30
+        VAR = Variance
+        STDEV = variance(close, length).apply(np.sqrt)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 30
+        ddof (int): Delta Degrees of Freedom.
+                    The divisor used in calculations is N - ddof,
+                    where N represents the number of elements. The 'talib' argument
+                    must be false for 'ddof' to work. Default: 1
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. TA Lib does not have a 'ddof' argument. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if isinstance(length, int) and length > 0 else 30
     ddof = int(ddof) if isinstance(ddof, int) and ddof >= 0 and ddof < length else 1
@@ -38,34 +65,3 @@ def stdev(close, length=None, ddof=None, talib=None, offset=None, **kwargs):
     stdev.category = "statistics"
 
     return stdev
-
-
-stdev.__doc__ = \
-"""Rolling Standard Deviation
-
-Sources:
-
-Calculation:
-    Default Inputs:
-        length=30
-    VAR = Variance
-    STDEV = variance(close, length).apply(np.sqrt)
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 30
-    ddof (int): Delta Degrees of Freedom.
-                The divisor used in calculations is N - ddof,
-                where N represents the number of elements. The 'talib' argument
-                must be false for 'ddof' to work. Default: 1
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. TA Lib does not have a 'ddof' argument. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""
