@@ -5,7 +5,42 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def vidya(close, length=None, drift=None, offset=None, **kwargs):
-    """Indicator: Variable Index Dynamic Average (VIDYA)"""
+    """Variable Index Dynamic Average (VIDYA)
+
+    Variable Index Dynamic Average (VIDYA) was developed by Tushar Chande. It is
+    similar to an Exponential Moving Average but it has a dynamically adjusted
+    lookback period dependent on relative price volatility as measured by Chande
+    Momentum Oscillator (CMO). When volatility is high, VIDYA reacts faster to
+    price changes. It is often used as moving average or trend identifier.
+
+    Sources:
+        https://www.tradingview.com/script/hdrf0fXV-Variable-Index-Dynamic-Average-VIDYA/
+        https://www.perfecttrendsystem.com/blog_mt4_2/en/vidya-indicator-for-mt4
+
+    Calculation:
+        Default Inputs:
+            length=10, adjust=False, sma=True
+        if sma:
+            sma_nth = close[0:length].sum() / length
+            close[:length - 1] = np.NaN
+            close.iloc[length - 1] = sma_nth
+        EMA = close.ewm(span=length, adjust=adjust).mean()
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 14
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        adjust (bool, optional): Use adjust option for EMA calculation. Default: False
+        sma (bool, optional): If True, uses SMA for initial value for EMA calculation. Default: True
+        talib (bool): If True, uses TA-Libs implementation for CMO. Otherwise uses EMA version. Default: True
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 14
     close = verify_series(close, length)
@@ -52,42 +87,3 @@ def vidya(close, length=None, drift=None, offset=None, **kwargs):
     vidya.category = "overlap"
 
     return vidya
-
-
-vidya.__doc__ = \
-"""Variable Index Dynamic Average (VIDYA)
-
-Variable Index Dynamic Average (VIDYA) was developed by Tushar Chande. It is
-similar to an Exponential Moving Average but it has a dynamically adjusted
-lookback period dependent on relative price volatility as measured by Chande
-Momentum Oscillator (CMO). When volatility is high, VIDYA reacts faster to
-price changes. It is often used as moving average or trend identifier.
-
-Sources:
-    https://www.tradingview.com/script/hdrf0fXV-Variable-Index-Dynamic-Average-VIDYA/
-    https://www.perfecttrendsystem.com/blog_mt4_2/en/vidya-indicator-for-mt4
-
-Calculation:
-    Default Inputs:
-        length=10, adjust=False, sma=True
-    if sma:
-        sma_nth = close[0:length].sum() / length
-        close[:length - 1] = np.NaN
-        close.iloc[length - 1] = sma_nth
-    EMA = close.ewm(span=length, adjust=adjust).mean()
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 14
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    adjust (bool, optional): Use adjust option for EMA calculation. Default: False
-    sma (bool, optional): If True, uses SMA for initial value for EMA calculation. Default: True
-    talib (bool): If True, uses TA-Libs implementation for CMO. Otherwise uses EMA version. Default: True
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

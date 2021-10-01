@@ -4,7 +4,32 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def wcp(high, low, close, talib=None, offset=None, **kwargs):
-    """Indicator: Weighted Closing Price (WCP)"""
+    """Weighted Closing Price (WCP)
+
+    Weighted Closing Price is the weighted price given: high, low
+    and double the close.
+
+    Sources:
+        https://www.fmlabs.com/reference/default.htm?url=WeightedCloses.htm
+
+    Calculation:
+        WCP = (2 * close + high + low) / 4
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)
@@ -34,32 +59,3 @@ def wcp(high, low, close, talib=None, offset=None, **kwargs):
     wcp.category = "overlap"
 
     return wcp
-
-
-wcp.__doc__ = \
-"""Weighted Closing Price (WCP)
-
-Weighted Closing Price is the weighted price given: high, low
-and double the close.
-
-Sources:
-    https://www.fmlabs.com/reference/default.htm?url=WeightedCloses.htm
-
-Calculation:
-    WCP = (2 * close + high + low) / 4
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

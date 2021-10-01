@@ -59,4 +59,3 @@ def zscore(close, length=None, std=None, offset=None, **kwargs):
     zscore.category = "statistics"
 
     return zscore
-

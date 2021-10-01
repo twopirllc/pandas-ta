@@ -10,7 +10,57 @@ from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
 def linreg(close, length=None, talib=None, offset=None, **kwargs):
-    """Indicator: Linear Regression"""
+    """Linear Regression Moving Average (linreg)
+
+    Linear Regression Moving Average (LINREG). This is a simplified version of a
+    Standard Linear Regression. LINREG is a rolling regression of one variable. A
+    Standard Linear Regression is between two or more variables.
+
+    Source: TA Lib
+
+    Calculation:
+        Default Inputs:
+            length=14
+        x = [1, 2, ..., n]
+        x_sum = 0.5 * length * (length + 1)
+        x2_sum = length * (length + 1) * (2 * length + 1) / 6
+        divisor = length * x2_sum - x_sum * x_sum
+
+        lr(series):
+            y_sum = series.sum()
+            y2_sum = (series* series).sum()
+            xy_sum = (x * series).sum()
+
+            m = (length * xy_sum - x_sum * y_sum) / divisor
+            b = (y_sum * x2_sum - x_sum * xy_sum) / divisor
+            return m * (length - 1) + b
+
+        linreg = close.rolling(length).apply(lr)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 10
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        angle (bool, optional): If True, returns the angle of the slope in radians.
+            Default: False.
+        degrees (bool, optional): If True, returns the angle of the slope in
+            degrees. Default: False.
+        intercept (bool, optional): If True, returns the angle of the slope in
+            radians. Default: False.
+        r (bool, optional): If True, returns it's correlation 'r'. Default: False.
+        slope (bool, optional): If True, returns the slope. Default: False.
+        tsf (bool, optional): If True, returns the Time Series Forecast value.
+            Default: False.
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 14
     close = verify_series(close, length)
@@ -98,57 +148,3 @@ def linreg(close, length=None, talib=None, offset=None, **kwargs):
     linreg.category = "overlap"
 
     return linreg
-
-
-linreg.__doc__ = \
-"""Linear Regression Moving Average (linreg)
-
-Linear Regression Moving Average (LINREG). This is a simplified version of a
-Standard Linear Regression. LINREG is a rolling regression of one variable. A
-Standard Linear Regression is between two or more variables.
-
-Source: TA Lib
-
-Calculation:
-    Default Inputs:
-        length=14
-    x = [1, 2, ..., n]
-    x_sum = 0.5 * length * (length + 1)
-    x2_sum = length * (length + 1) * (2 * length + 1) / 6
-    divisor = length * x2_sum - x_sum * x_sum
-
-    lr(series):
-        y_sum = series.sum()
-        y2_sum = (series* series).sum()
-        xy_sum = (x * series).sum()
-
-        m = (length * xy_sum - x_sum * y_sum) / divisor
-        b = (y_sum * x2_sum - x_sum * xy_sum) / divisor
-        return m * (length - 1) + b
-
-    linreg = close.rolling(length).apply(lr)
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 10
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    angle (bool, optional): If True, returns the angle of the slope in radians.
-        Default: False.
-    degrees (bool, optional): If True, returns the angle of the slope in
-        degrees. Default: False.
-    intercept (bool, optional): If True, returns the angle of the slope in
-        radians. Default: False.
-    r (bool, optional): If True, returns it's correlation 'r'. Default: False.
-    slope (bool, optional): If True, returns the slope. Default: False.
-    tsf (bool, optional): If True, returns the Time Series Forecast value.
-        Default: False.
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

@@ -10,7 +10,33 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def jma(close, length=None, phase=None, offset=None, **kwargs):
-    """Indicator: Jurik Moving Average (JMA)"""
+    """Jurik Moving Average Average (JMA)
+
+    Mark Jurik's Moving Average (JMA) attempts to eliminate noise to see the "true"
+    underlying activity. It has extremely low lag, is very smooth and is responsive
+    to market gaps.
+
+    Sources:
+        https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
+        https://www.prorealcode.com/prorealtime-indicators/jurik-volatility-bands/
+
+    Calculation:
+        Default Inputs:
+            length=7, phase=0
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): Period of calculation. Default: 7
+        phase (float): How heavy/light the average is [-100, 100]. Default: 0
+        offset (int): How many lengths to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     _length = int(length) if length and length > 0 else 7
     phase = float(phase) if phase and phase != 0 else 0
@@ -91,33 +117,3 @@ def jma(close, length=None, phase=None, offset=None, **kwargs):
     jma.category = "overlap"
 
     return jma
-
-
-jma.__doc__ = \
-"""Jurik Moving Average Average (JMA)
-
-Mark Jurik's Moving Average (JMA) attempts to eliminate noise to see the "true"
-underlying activity. It has extremely low lag, is very smooth and is responsive
-to market gaps.
-
-Sources:
-    https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
-    https://www.prorealcode.com/prorealtime-indicators/jurik-volatility-bands/
-
-Calculation:
-    Default Inputs:
-        length=7, phase=0
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): Period of calculation. Default: 7
-    phase (float): How heavy/light the average is [-100, 100]. Default: 0
-    offset (int): How many lengths to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

@@ -12,7 +12,41 @@ from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
 def alma(close, length=None, sigma=None, dist_offset=None, offset=None, **kwargs):
-    """Indicator: Arnaud Legoux Moving Average (ALMA)"""
+    """Arnaud Legoux Moving Average (ALMA)
+
+    The ALMA moving average uses the curve of the Normal (Gauss) distribution, which
+    can be shifted from 0 to 1. This allows regulating the smoothness and high
+    sensitivity of the indicator. Sigma is another parameter that is responsible for
+    the shape of the curve coefficients. This moving average reduces lag of the data
+    in conjunction with smoothing to reduce noise.
+
+    Sources:
+        https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=475&Name=Moving_Average_-_Arnaud_Legoux
+        https://www.prorealcode.com/prorealtime-indicators/alma-arnaud-legoux-moving-average/
+
+    Calculation:
+        length=9, sigma=6.0, dist_offset=0.85
+
+        X = [0, 1, ..., length - 1]
+        WEIGHTS = e^(-0.5 * (X - FLOOR(dist_offset(length - 1)))^2 / (length / sigma)^2)
+
+        ALMA = close.rolling(length).apply(WEIGHTS)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period, window size. Default: 9
+        sigma (float): Smoothing value. Default 6.0
+        dist_offset (float): Value to offset the distribution where min 0 (smoother),
+            max 1 (more responsive). Default 0.85
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if isinstance(length, int) and length > 0 else 9
     sigma = float(sigma) if isinstance(sigma, float) and sigma > 0 else 6.0
@@ -54,41 +88,3 @@ def alma(close, length=None, sigma=None, dist_offset=None, offset=None, **kwargs
     alma.category = "overlap"
 
     return alma
-
-
-alma.__doc__ = \
-"""Arnaud Legoux Moving Average (ALMA)
-
-The ALMA moving average uses the curve of the Normal (Gauss) distribution, which
-can be shifted from 0 to 1. This allows regulating the smoothness and high
-sensitivity of the indicator. Sigma is another parameter that is responsible for
-the shape of the curve coefficients. This moving average reduces lag of the data
-in conjunction with smoothing to reduce noise.
-
-Sources:
-    https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=475&Name=Moving_Average_-_Arnaud_Legoux
-    https://www.prorealcode.com/prorealtime-indicators/alma-arnaud-legoux-moving-average/
-
-Calculation:
-    length=9, sigma=6.0, dist_offset=0.85
-
-    X = [0, 1, ..., length - 1]
-    WEIGHTS = e^(-0.5 * (X - FLOOR(dist_offset(length - 1)))^2 / (length / sigma)^2)
-
-    ALMA = close.rolling(length).apply(WEIGHTS)
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period, window size. Default: 9
-    sigma (float): Smoothing value. Default 6.0
-    dist_offset (float): Value to offset the distribution where min 0 (smoother),
-        max 1 (more responsive). Default 0.85
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

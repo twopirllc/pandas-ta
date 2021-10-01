@@ -4,7 +4,19 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def hlc3(high, low, close, talib=None, offset=None, **kwargs):
-    """Indicator: HLC3"""
+    """HLC3
+
+    Calculation:
+        HLC3 = (high + low + close) / 3.0
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)

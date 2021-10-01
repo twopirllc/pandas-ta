@@ -3,7 +3,18 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def hl2(high, low, offset=None, **kwargs):
-    """Indicator: HL2 """
+    """HL2
+
+    Calculation:
+        HL2 = 0.5 * (high + low)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     high = verify_series(high)
     low = verify_series(low)
