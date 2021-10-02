@@ -6,7 +6,44 @@ from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 
 
 def aroon(high, low, length=None, scalar=None, talib=None, offset=None, **kwargs):
-    """Indicator: Aroon & Aroon Oscillator"""
+    """Aroon & Aroon Oscillator (AROON)
+
+    Aroon attempts to identify if a security is trending and how strong.
+
+    Sources:
+        https://www.tradingview.com/wiki/Aroon
+        https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/aroon-ar/
+
+    Calculation:
+        Default Inputs:
+            length=1, scalar=100
+
+        recent_maximum_index(x): return int(np.argmax(x[::-1]))
+        recent_minimum_index(x): return int(np.argmin(x[::-1]))
+
+        periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index, raw=True)
+        AROON_UP = scalar * (1 - (periods_from_hh / length))
+
+        periods_from_ll = low.rolling(length + 1).apply(recent_minimum_index, raw=True)
+        AROON_DN = scalar * (1 - (periods_from_ll / length))
+
+        AROON_OSC = AROON_UP - AROON_DN
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 14
+        scalar (float): How much to magnify. Default: 100
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: aroon_up, aroon_down, aroon_osc columns.
+    """
     # Validate Arguments
     length = length if length and length > 0 else 14
     scalar = float(scalar) if scalar else 100
@@ -65,44 +102,3 @@ def aroon(high, low, length=None, scalar=None, talib=None, offset=None, **kwargs
     aroondf.category = aroon_down.category
 
     return aroondf
-
-
-aroon.__doc__ = \
-"""Aroon & Aroon Oscillator (AROON)
-
-Aroon attempts to identify if a security is trending and how strong.
-
-Sources:
-    https://www.tradingview.com/wiki/Aroon
-    https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/aroon-ar/
-
-Calculation:
-    Default Inputs:
-        length=1, scalar=100
-
-    recent_maximum_index(x): return int(np.argmax(x[::-1]))
-    recent_minimum_index(x): return int(np.argmin(x[::-1]))
-
-    periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index, raw=True)
-    AROON_UP = scalar * (1 - (periods_from_hh / length))
-
-    periods_from_ll = low.rolling(length + 1).apply(recent_minimum_index, raw=True)
-    AROON_DN = scalar * (1 - (periods_from_ll / length))
-
-    AROON_OSC = AROON_UP - AROON_DN
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 14
-    scalar (float): How much to magnify. Default: 100
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: aroon_up, aroon_down, aroon_osc columns.
-"""

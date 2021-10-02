@@ -11,7 +11,37 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def trendflex(close, length=None, smooth=None, alpha=None, offset=None, **kwargs):
-    """Indicator: Reflex"""
+    """Trendflex (trendflex)
+
+    John F. Ehlers introduced two indicators within the article "Reflex: A New
+    Zero-Lag Indicator” in February 2020, TASC magazine. One of which is the
+    Trendflex, a lag reduced trend indicator. Both indicators (Reflex/Trendflex) are
+    oscillators and complement each other with the focus for cycle and trend.
+
+    Written for Pandas TA by rengel8 (2021-08-11) based on the implementation on
+    ProRealCode (see Sources). Beyond the mentioned source, this implementation has
+    a separate control parameter for the internal applied SuperSmoother.
+
+    Sources:
+        https://www.prorealcode.com/prorealtime-indicators/reflex-and-trendflex-indicators-john-f-ehlers/
+
+    Calculation:
+        Refer to provided source or the code above.
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period.  Default: 20
+        smooth (int): Period of internal SuperSmoother Default: 20
+        alpha (float: Alpha weight of Difference Sums. Default: 0.04
+        offset (int): How many periods to offset the result.  Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate arguments
     length = int(length) if isinstance(length, int) and length > 0 else 20
     smooth = int(smooth) if isinstance(smooth, int) and smooth > 0 else 20
@@ -69,36 +99,3 @@ def trendflex(close, length=None, smooth=None, alpha=None, offset=None, **kwargs
     result.category = "trend"
 
     return result
-
-trendflex.__doc__ = \
-"""Trendflex (trendflex)
-
-John F. Ehlers introduced two indicators within the article "Reflex: A New
-Zero-Lag Indicator” in February 2020, TASC magazine. One of which is the
-Trendflex, a lag reduced trend indicator. Both indicators (Reflex/Trendflex) are
-oscillators and complement each other with the focus for cycle and trend.
-
-Written for Pandas TA by rengel8 (2021-08-11) based on the implementation on
-ProRealCode (see Sources). Beyond the mentioned source, this implementation has
-a separate control parameter for the internal applied SuperSmoother.
-
-Sources:
-    https://www.prorealcode.com/prorealtime-indicators/reflex-and-trendflex-indicators-john-f-ehlers/
-
-Calculation:
-    Refer to provided source or the code above.
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period.  Default: 20
-    smooth (int): Period of internal SuperSmoother Default: 20
-    alpha (float: Alpha weight of Difference Sums. Default: 0.04
-    offset (int): How many periods to offset the result.  Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

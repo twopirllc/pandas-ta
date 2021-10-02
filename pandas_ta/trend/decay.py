@@ -5,7 +5,36 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
-    """Indicator: Decay"""
+    """Decay
+
+    Creates a decay moving forward from prior signals like crosses. The default is
+    "linear". Exponential is optional as "exponential" or "exp".
+
+    Sources:
+        https://tulipindicators.org/decay
+
+    Calculation:
+        Default Inputs:
+            length=5, mode=None
+
+        if mode == "exponential" or mode == "exp":
+            max(close, close[-1] - exp(-length), 0)
+        else:
+            max(close, close[-1] - (1 / length), 0)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 1
+        mode (str): If 'exp' then "exponential" decay. Default: 'linear'
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 5
     mode = mode.lower() if isinstance(mode, str) else "linear"
@@ -40,36 +69,3 @@ def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
     ld.category = "trend"
 
     return ld
-
-
-decay.__doc__ = \
-"""Decay
-
-Creates a decay moving forward from prior signals like crosses. The default is
-"linear". Exponential is optional as "exponential" or "exp".
-
-Sources:
-    https://tulipindicators.org/decay
-
-Calculation:
-    Default Inputs:
-        length=5, mode=None
-
-    if mode == "exponential" or mode == "exp":
-        max(close, close[-1] - exp(-length), 0)
-    else:
-        max(close, close[-1] - (1 / length), 0)
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 1
-    mode (str): If 'exp' then "exponential" decay. Default: 'linear'
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""
