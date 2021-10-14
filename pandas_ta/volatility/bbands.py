@@ -42,7 +42,7 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
         mid = mid.shift(offset)
         upper = upper.shift(offset)
         bandwidth = bandwidth.shift(offset)
-        percent = bandwidth.shift(offset)
+        percent = percent.shift(offset)
 
     # Handle fills
     if "fillna" in kwargs:
