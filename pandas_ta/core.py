@@ -53,7 +53,7 @@ class Strategy:
     name: str  # = None # Required.
     ta: List = field(default_factory=list)  # Required.
     # Helpful. More descriptive version or notes or w/e.
-    description: str = "TA Description"
+    description: str = ""
     # Optional. Gets Exchange Time and Local Time execution time
     created: str = get_time(to_string=True)
 

@@ -23,7 +23,16 @@ ALL_PATTERNS = [
 ]
 
 
-def cdl_pattern(open_, high, low, close, name: Union[str, Sequence[str]]="all", scalar=None, offset=None, **kwargs) -> DataFrame:
+def cdl_pattern(
+    open_,
+    high,
+    low,
+    close,
+    name: Union[str, Sequence[str]]="all",
+    scalar=None,
+    offset=None,
+    **kwargs
+    ) -> DataFrame:
     """TA Lib Candle Patterns
 
     A wrapper around all TA Lib's candle patterns.

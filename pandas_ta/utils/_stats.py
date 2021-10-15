@@ -70,7 +70,6 @@ def inv_norm(value: Tuple[float, int]) -> Tuple[float, None]:
     If the user has package "statsmodels" installed, the method will call and
     return norm().ppf(value)
 
-
     Source: https://github.com/scipy/scipy/blob/701ffcc8a6f04509d115aac5e5681c538b5265a2/scipy/special/cephes/ndtri.c
     """
 

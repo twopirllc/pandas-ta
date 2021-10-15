@@ -97,8 +97,8 @@ def total_time(df: DataFrame, tf: str = "years") -> float:
 
 
 def to_utc(df: DataFrame) -> DataFrame:
-    """Either localizes the DataFrame Index to UTC or it applies
-    tz_convert to set the Index to UTC.
+    """Either localizes the DataFrame Index to UTC or it applies tz_convert to
+    set the Index to UTC.
     """
     if not df.empty:
         try:

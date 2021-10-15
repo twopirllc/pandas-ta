@@ -1,0 +1,13 @@
+{
+    "name": "Sample JSON Strategy",
+    "description": "Sample JSON Strategy",
+    "ta": [
+        {"kind": "ema", "length": 8, "sma": true},
+        {"kind": "ema", "length": 21, "talib": true},
+        {"kind": "sma", "length": 50, "talib": true},
+        {"kind": "sma", "length": 200, "talib": true},
+        {"kind": "sma", "close": "volume", "length": 20, "talib": true},
+        {"kind": "rsi", "talib": true},
+        {"kind": "obv"}
+    ]
+}

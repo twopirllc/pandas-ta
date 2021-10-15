@@ -36,8 +36,8 @@ class sample(object):
     This is a Numpy and stochastics package wrapper Class that easily creates
     stochastic process realization with or without stochastic noise.
 
-    To get the most out of sample(), install the _stochastic_
-        package: pip install stochastic.
+    To get the most out of sample(), install the 'stochastic' package:
+        $ pip install stochastic
 
     The following stochastic package noise and processes have been implemented:
     * Noise[9]: Blue "b", Brownian "br, Fractal Gaussian "fg", Gaussian "g",
