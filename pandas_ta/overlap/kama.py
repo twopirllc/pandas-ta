@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from numpy import nan as npNaN
 from pandas import Series
+from pandas_ta.overlap.ma import ma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kwargs):
+def kama(close, length=None, fast=None, slow=None, mamode=None, drift=None, offset=None, **kwargs):
     """Kaufman's Adaptive Moving Average (KAMA)
 
     Developed by Perry Kaufman, Kaufman's Adaptive Moving Average (KAMA) is a moving average
@@ -26,6 +27,9 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
         length (int): It's period. Default: 10
         fast (int): Fast MA period. Default: 2
         slow (int): Slow MA period. Default: 30
+        mamode (str): See ```help(ta.ma)```. Valid MAs that support initialize
+            the first value: 'ema', 'fwma', 'linreg', 'midpoint', 'pwma', 'rma',
+            'sinwma', 'sma', 'swma', 'trima', 'wma'. Default: 'sma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -41,6 +45,14 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     fast = int(fast) if fast and fast > 0 else 2
     slow = int(slow) if slow and slow > 0 else 30
     close = verify_series(close, max(fast, slow, length))
+    valid_ma = [
+        "ema", "fwma", "linreg", "midpoint", "pwma", "rma",
+        "sinwma", "sma", "swma", "trima", "wma"
+    ]
+    if isinstance(mamode, str) and mamode.lower() in valid_ma:
+        mamode = mamode.lower()
+    else:
+        mamode = "sma"
     drift = get_drift(drift)
     offset = get_offset(offset)
 
@@ -61,7 +73,8 @@ def kama(close, length=None, fast=None, slow=None, drift=None, offset=None, **kw
     sc = x * x
 
     m = close.size
-    result = [npNaN for _ in range(0, length - 1)] + [0]
+    ma0 = ma(mamode, close.iloc[:length], length=length, **kwargs).iloc[-1]
+    result = [npNaN for _ in range(0, length - 1)] + [ma0]
     for i in range(length, m):
         result.append(sc.iloc[i] * close.iloc[i] + (1 - sc.iloc[i]) * result[i - 1])
 

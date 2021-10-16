@@ -578,6 +578,7 @@ class AnalysisIndicators(BasePandasObject):
             "exchange",
             "last_run",
             "reverse",
+            "sample",
             "ticker",
             "time_range",
             "to_utc",
@@ -614,6 +615,14 @@ class AnalysisIndicators(BasePandasObject):
                 _count += len(ALL_PATTERNS)
         s += f"\nTotal Candles, Indicators and Utilities: {_count}"
         print(s)
+
+
+    def sample(self, **kwargs):
+        """sample
+        See help(ta.sample) for parameters.
+        """
+        return sample(**kwargs)
+
 
     def strategy(self, *args, **kwargs):
         """Strategy Method
