@@ -467,6 +467,33 @@ class TestMomentum(TestCase):
             except Exception as ex:
                 error_analysis(result.iloc[:, 1], CORRELATION, ex, newline=False)
 
+    def test_stochf(self):
+        # TV Correlation
+        result = pandas_ta.stochf(self.high, self.low, self.close, talib=False)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "STOCHF_14_3")
+
+        try:
+            expected = tal.STOCHF(self.high, self.low, self.close, 14, 3, 0)
+            expecteddf = DataFrame({"STOCHFk_14_3_0": expected[0], "STOCHFd_14_3_0": expected[1]})
+            pdt.assert_frame_equal(result, expecteddf)
+        except AssertionError:
+            try:
+                stochk_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 0], expecteddf.iloc[:, 0], col=CORRELATION)
+                self.assertGreater(stochk_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result.iloc[:, 0], CORRELATION, ex)
+
+            try:
+                stochd_corr = pandas_ta.utils.df_error_analysis(result.iloc[:, 1], expecteddf.iloc[:, 1], col=CORRELATION)
+                self.assertGreater(stochd_corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result.iloc[:, 1], CORRELATION, ex, newline=False)
+
+        result = pandas_ta.stochf(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "STOCHF_14_3")
+
     def test_stochrsi(self):
         # TV Correlation
         result = pandas_ta.stochrsi(self.close)

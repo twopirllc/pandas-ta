@@ -55,7 +55,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-64)
     * [Cycles](#cycles-2)
-    * [Momentum](#momentum-41)
+    * [Momentum](#momentum-42)
     * [Overlap](#overlap-35)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
@@ -113,7 +113,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.34b*
+Best choice! Version: *0.3.35b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -675,7 +675,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Momentum** (41)
+### **Momentum** (42)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Bias_: **bias**
@@ -713,6 +713,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
     * Default is John Carter's. Enable Lazybear's with ```lazybear=True```
 * _Squeeze Pro_: **squeeze_pro**
 * _Stochastic Oscillator_: **stoch**
+* _Fast Stochastic Oscillator_: **stochf**
 * _Stochastic RSI_: **stochrsi**
 * _TD Sequential_: **td_seq**
     * Excluded from ```df.ta.strategy()```.
@@ -978,6 +979,7 @@ print(pf.returns_stats())
 * _Directional Movement_ (**dm**) developed by J. Welles Wilder in 1978 attempts to determine which direction the price of an asset is moving. See ```help(ta.dm)```
 * _Jurik Moving Average_ (**jma**) attempts to eliminate noise to see the "true" underlying activity. See: ```help(ta.jma)```
 * _Smoothed Moving Average_ (**smma**) can be used to confirm trends and define areas of support and resistance. See: ```help(ta.smma)```
+* _Fast Stochastic Oscillator_ (**stochf**) is related to **stoch** but is less rarely used since it is more volatile. See: ```help(ta.stochf)```
 * _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
 * _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which returns the standard deviation of data for the entire plot or for the interval of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
@@ -987,6 +989,7 @@ print(pf.returns_stats())
 ## **Updated Indicators**
 
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
+* _Kaufman Adaptive Moving Average_ (**kama**): An ```mamode``` as been added with default "**SMA**" to properly boostrap **kama**. _Note_: Not all MAs are usable. See ```help(ta.kama)```.
 * _Linear Regression_ (**linreg**): Checks **numpy**'s version to determine whether to utilize the ```as_strided``` method or the newer ```sliding_window_view``` method. This should resolve Issues with Google Colab and it's delayed dependency updates as well as TensorFlow's dependencies as discussed in Issues [#285](https://github.com/twopirllc/pandas-ta/issues/285) and [#329](https://github.com/twopirllc/pandas-ta/issues/329).
 * _Moving Average Convergence Divergence_ (**macd**): New argument ```asmode``` enables AS version of MACD. Default is False.  See ```help(ta.macd)```.
 * _Standard Deviation_ (**stdev**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **variance**. See ```help(ta.stdev)```.

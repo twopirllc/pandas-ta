@@ -223,6 +223,11 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-2:]), ["STOCHk_14_3_3", "STOCHd_14_3_3"])
 
+    def test_stochf_ext(self):
+        self.data.ta.stochf(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-2:]), ["STOCHFk_14_3", "STOCHFd_14_3"])
+
     def test_stochrsi_ext(self):
         self.data.ta.stochrsi(append=True)
         self.assertIsInstance(self.data, DataFrame)
