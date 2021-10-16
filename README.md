@@ -87,7 +87,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
 * Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free! __Conditions permitting__.
 * Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
-* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/main/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandaTA_Strategy_Examples.ipynb)
+* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/main/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Strategy_Examples.ipynb)
 * Potential Data Leaks: **dpo** and **ichimoku**. See indicator list below for details. Set ```lookahead=False``` to disable.
 
 <br/>
