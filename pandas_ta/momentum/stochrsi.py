@@ -12,7 +12,7 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, o
     rsi_length = rsi_length if rsi_length and rsi_length > 0 else 14
     k = k if k and k > 0 else 3
     d = d if d and d > 0 else 3
-    close = verify_series(close, max(length, rsi_length, k, d))
+    close = verify_series(close, length + rsi_length + k + d)
     offset = get_offset(offset)
     mamode = mamode if isinstance(mamode, str) else "sma"
 
