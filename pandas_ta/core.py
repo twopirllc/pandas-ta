@@ -1111,7 +1111,7 @@ class AnalysisIndicators(BasePandasObject):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = stochf(high=high, low=low, close=close, fast_k=fast_k, slow_d=fast_d, mamode=mamode, offset=offset, **kwargs)
+        result = stochf(high=high, low=low, close=close, fast_k=fast_k, fast_d=fast_d, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def stochrsi(self, length=None, rsi_length=None, k=None, d=None, mamode=None, offset=None, **kwargs):
