@@ -77,6 +77,8 @@ def cross(series_a: Series, series_b: Series, above: bool = True, asint: bool = 
     previous = series_a.shift(1) < series_b.shift(1)  # previous is below
     # above if both are true, below if both are false
     cross = current & previous if above else ~current & ~previous
+    # ensure there is no cross on the first entry
+    cross[0] = False
 
     if asint:
         cross = cross.astype(int)
