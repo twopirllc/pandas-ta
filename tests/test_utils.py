@@ -2,7 +2,6 @@ from .config import sample_data
 from .context import pandas_ta
 
 from unittest import skip, TestCase
-from unittest.mock import patch
 
 import numpy as np
 import numpy.testing as npt
@@ -139,6 +138,9 @@ class TestUtilities(TestCase):
         self.assertIsInstance(result, Series)
         npt.assert_array_equal(result, self.crosseddf["crossed"])
 
+        result = self.utils.cross(self.crosseddf["a"], self.crosseddf["b"], above=False)
+        self.assertFalse(result[0])
+
     def test_df_dates(self):
         result = self.utils.df_dates(self.data)
         self.assertEqual(None, result)
@@ -180,7 +182,6 @@ class TestUtilities(TestCase):
 
         npt.assert_allclose(self.utils.fibonacci(n=5, zero=True, weighted=True), np.array([0, 1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
         npt.assert_allclose(self.utils.fibonacci(n=5, zero=False, weighted=True), np.array([1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
-
 
     def test_geometric_mean(self):
         returns = pandas_ta.percent_return(self.data.close)
