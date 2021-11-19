@@ -5,7 +5,37 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def dema(close, length=None, talib=None, offset=None, **kwargs):
-    """Indicator: Double Exponential Moving Average (DEMA)"""
+    """Double Exponential Moving Average (DEMA)
+
+    The Double Exponential Moving Average attempts to a smoother average with less
+    lag than the normal Exponential Moving Average (EMA).
+
+    Sources:
+        https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/double-exponential-moving-average-dema/
+
+    Calculation:
+        Default Inputs:
+            length=10
+        EMA = Exponential Moving Average
+        ema1 = EMA(close, length)
+        ema2 = EMA(ema1, length)
+
+        DEMA = 2 * ema1 - ema2
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 10
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
     close = verify_series(close, length)
@@ -38,37 +68,3 @@ def dema(close, length=None, talib=None, offset=None, **kwargs):
     dema.category = "overlap"
 
     return dema
-
-
-dema.__doc__ = \
-"""Double Exponential Moving Average (DEMA)
-
-The Double Exponential Moving Average attempts to a smoother average with less
-lag than the normal Exponential Moving Average (EMA).
-
-Sources:
-    https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/double-exponential-moving-average-dema/
-
-Calculation:
-    Default Inputs:
-        length=10
-    EMA = Exponential Moving Average
-    ema1 = EMA(close, length)
-    ema2 = EMA(ema1, length)
-
-    DEMA = 2 * ema1 - ema2
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 10
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

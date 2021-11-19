@@ -5,7 +5,42 @@ from pandas_ta.utils import get_drift, get_offset, signed_series, verify_series
 
 
 def kvo(high, low, close, volume, fast=None, slow=None, signal=None, mamode=None, drift=None, offset=None, **kwargs):
-    """Indicator: Klinger Volume Oscillator (KVO)"""
+    """Klinger Volume Oscillator (KVO)
+
+    This indicator was developed by Stephen J. Klinger. It is designed to predict
+    price reversals in a market by comparing volume to price.
+
+    Sources:
+        https://www.investopedia.com/terms/k/klingeroscillator.asp
+        https://www.daytrading.com/klinger-volume-oscillator
+
+    Calculation:
+        Default Inputs:
+            fast=34, slow=55, signal=13, drift=1
+        EMA = Exponential Moving Average
+
+        SV = volume * signed_series(HLC3, 1)
+        KVO = EMA(SV, fast) - EMA(SV, slow)
+        Signal = EMA(KVO, signal)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        volume (pd.Series): Series of 'volume's
+        fast (int): The fast period. Default: 34
+        long (int): The long period. Default: 55
+        length_sig (int): The signal period. Default: 13
+        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: KVO and Signal columns.
+    """
     # Validate arguments
     fast = int(fast) if fast and fast > 0 else 34
     slow = int(slow) if slow and slow > 0 else 55
@@ -48,47 +83,8 @@ def kvo(high, low, close, volume, fast=None, slow=None, signal=None, mamode=None
 
     # Prepare DataFrame to return
     data = {kvo.name: kvo, kvo_signal.name: kvo_signal}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"KVO{_props}"
     df.category = kvo.category
 
     return df
-
-
-kvo.__doc__ = \
-"""Klinger Volume Oscillator (KVO)
-
-This indicator was developed by Stephen J. Klinger. It is designed to predict
-price reversals in a market by comparing volume to price.
-
-Sources:
-    https://www.investopedia.com/terms/k/klingeroscillator.asp
-    https://www.daytrading.com/klinger-volume-oscillator
-
-Calculation:
-    Default Inputs:
-        fast=34, slow=55, signal=13, drift=1
-    EMA = Exponential Moving Average
-
-    SV = volume * signed_series(HLC3, 1)
-    KVO = EMA(SV, fast) - EMA(SV, slow)
-    Signal = EMA(KVO, signal)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    volume (pd.Series): Series of 'volume's
-    fast (int): The fast period. Default: 34
-    long (int): The long period. Default: 55
-    length_sig (int): The signal period. Default: 13
-    mamode (str): See ```help(ta.ma)```. Default: 'ema'
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: KVO and Signal columns.
-"""

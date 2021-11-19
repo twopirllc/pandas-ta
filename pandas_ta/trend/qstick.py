@@ -4,7 +4,34 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def qstick(open_, close, length=None, offset=None, **kwargs):
-    """Indicator: Q Stick"""
+    """Q Stick
+
+    The Q Stick indicator, developed by Tushar Chande, attempts to quantify and
+    identify trends in candlestick charts.
+
+    Sources:
+        https://library.tradingtechnologies.com/trade/chrt-ti-qstick.html
+
+    Calculation:
+        Default Inputs:
+            length=10
+        xMA is one of: sma (default), dema, ema, hma, rma
+        qstick = xMA(close - open, length)
+
+    Args:
+        open (pd.Series): Series of 'open's
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 1
+        ma (str): The type of moving average to use. Default: None, which is 'sma'
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
     ma = kwargs.pop("ma", "sma")
@@ -43,34 +70,3 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
     qstick.category = "trend"
 
     return qstick
-
-
-qstick.__doc__ = \
-"""Q Stick
-
-The Q Stick indicator, developed by Tushar Chande, attempts to quantify and
-identify trends in candlestick charts.
-
-Sources:
-    https://library.tradingtechnologies.com/trade/chrt-ti-qstick.html
-
-Calculation:
-    Default Inputs:
-        length=10
-    xMA is one of: sma (default), dema, ema, hma, rma
-    qstick = xMA(close - open, length)
-
-Args:
-    open (pd.Series): Series of 'open's
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 1
-    ma (str): The type of moving average to use. Default: None, which is 'sma'
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

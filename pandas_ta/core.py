@@ -53,7 +53,7 @@ class Strategy:
     name: str  # = None # Required.
     ta: List = field(default_factory=list)  # Required.
     # Helpful. More descriptive version or notes or w/e.
-    description: str = "TA Description"
+    description: str = ""
     # Optional. Gets Exchange Time and Local Time execution time
     created: str = get_time(to_string=True)
 
@@ -578,6 +578,7 @@ class AnalysisIndicators(BasePandasObject):
             "exchange",
             "last_run",
             "reverse",
+            "sample",
             "ticker",
             "time_range",
             "to_utc",
@@ -602,13 +603,26 @@ class AnalysisIndicators(BasePandasObject):
         if as_list:
             return ta_indicators
 
-        total_indicators = len(ta_indicators)
+        indicator_count = len(ta_indicators)
         header = f"Pandas TA - Technical Analysis Indicators - v{self.version}"
-        s = f"{header}\nTotal Indicators & Utilities: {total_indicators + len(ALL_PATTERNS)}\n"
-        if total_indicators > 0:
-            print(f"{s}Abbreviations:\n    {', '.join(ta_indicators)}\n\nCandle Patterns:\n    {', '.join(ALL_PATTERNS)}")
-        else:
-            print(s)
+
+        s, _count = f"{header}\n", 0
+        if indicator_count > 0:
+            s += f"\nIndicators and Utilities [{indicator_count}]:\n    {', '.join(ta_indicators)}\n"
+            _count += indicator_count
+            if Imports["talib"]:
+                s += f"\nCandle Patterns [{len(ALL_PATTERNS)}]:\n    {', '.join(ALL_PATTERNS)}\n"
+                _count += len(ALL_PATTERNS)
+        s += f"\nTotal Candles, Indicators and Utilities: {_count}"
+        print(s)
+
+
+    def sample(self, **kwargs):
+        """sample
+        See help(ta.sample) for parameters.
+        """
+        return sample(**kwargs)
+
 
     def strategy(self, *args, **kwargs):
         """Strategy Method
@@ -616,7 +630,6 @@ class AnalysisIndicators(BasePandasObject):
         An experimental method that by default runs all applicable indicators.
         Future implementations will allow more specific indicator generation
         with possibly as json, yaml config file or an sqlite3 table.
-
 
         Kwargs:
             chunksize (bool): Adjust the chunksize for the Multiprocessing Pool.
@@ -738,17 +751,20 @@ class AnalysisIndicators(BasePandasObject):
                     ) for ind in ta]
                     # Custom multiprocessing pool. Must be ordered for Chained Strategies
                     # May fix this to cpus if Chaining/Composition if it remains
-                    results = pool.imap(self._mp_worker, custom_ta, _chunksize)
+                    if Imports["tqdm"] and verbose:
+                        results = tqdm(pool.map(self._mp_worker, custom_ta, _chunksize))
+                    else:
+                        results = pool.map(self._mp_worker, custom_ta, _chunksize)
                 else:
                     default_ta = [(ind, tuple(), kwargs) for ind in ta]
                     # All and Categorical multiprocessing pool.
                     if all_ordered:
-                        if Imports["tqdm"]:
+                        if Imports["tqdm"] and verbose:
                             results = tqdm(pool.imap(self._mp_worker, default_ta, _chunksize)) # Order over Speed
                         else:
                             results = pool.imap(self._mp_worker, default_ta, _chunksize) # Order over Speed
                     else:
-                        if Imports["tqdm"]:
+                        if Imports["tqdm"] and verbose:
                             results = tqdm(pool.imap_unordered(self._mp_worker, default_ta, _chunksize)) # Speed over Order
                         else:
                             results = pool.imap_unordered(self._mp_worker, default_ta, _chunksize) # Speed over Order
@@ -894,6 +910,11 @@ class AnalysisIndicators(BasePandasObject):
     def ebsw(self, close=None, length=None, bars=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = ebsw(close=close, length=length, bars=bars, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def reflex(self, close=None, length=None, smooth=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = reflex(close=close, length=length, smooth=smooth, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     # Momentum
@@ -1100,11 +1121,18 @@ class AnalysisIndicators(BasePandasObject):
         result = stc(close=close, ma1=ma1, ma2=ma2, osc=osc, tclength=tclength, fast=fast, slow=slow, factor=factor, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def stoch(self, fast_k=None, slow_k=None, slow_d=None, mamode=None, offset=None, **kwargs):
+    def stoch(self, k=None, d=None, smooth_k=None, mamode=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = stoch(high=high, low=low, close=close, fast_k=fast_k, slow_k=slow_k, slow_d=slow_d, mamode=mamode, offset=offset, **kwargs)
+        result = stoch(high=high, low=low, close=close, k=k, d=d, smooth_k=smooth_k, mamode=mamode, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def stochf(self, k=None, d=None, mamode=None, offset=None, **kwargs):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = stochf(high=high, low=low, close=close, k=k, d=d, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def stochrsi(self, length=None, rsi_length=None, k=None, d=None, mamode=None, offset=None, **kwargs):
@@ -1144,6 +1172,11 @@ class AnalysisIndicators(BasePandasObject):
         return self._post_process(result, **kwargs)
 
     # Overlap
+    def alligator(self, jaw=None, teeth=None, lips=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = alligator(close=close, jaw=jaw, teeth=teeth, lips=lips, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def alma(self, length=None, sigma=None, distribution_offset=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = alma(close=close, length=length, sigma=sigma, distribution_offset=distribution_offset, offset=offset, **kwargs)
@@ -1262,6 +1295,11 @@ class AnalysisIndicators(BasePandasObject):
     def sma(self, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = sma(close=close, length=length, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def smma(self, length=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = smma(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def ssf(self, length=None, poles=None, offset=None, **kwargs):
@@ -1483,6 +1521,11 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
         result = supertrend(high=high, low=low, close=close, period=period, multiplier=multiplier, mamode=mamode, drift=drift, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def trendflex(self, close=None, length=None, smooth=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = trendflex(close=close, length=length, smooth=smooth, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def tsignals(self, trend=None, asbool=None, trend_reset=None, trend_offset=None, offset=None, **kwargs):

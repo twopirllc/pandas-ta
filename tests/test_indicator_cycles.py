@@ -38,3 +38,9 @@ class TestCycles(TestCase):
         result = pandas_ta.ebsw(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "EBSW_40_10")
+
+
+    def test_reflext(self):
+        result = pandas_ta.reflex(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "REFLEX_20_20_0.04")

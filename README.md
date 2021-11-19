@@ -14,18 +14,18 @@ Pandas TA - A Technical Analysis Library in Python 3
 [![Downloads](https://img.shields.io/pypi/dm/pandas_ta?style=flat)](https://pypistats.org/packages/pandas_ta)
 [![Stars](https://img.shields.io/github/stars/twopirllc/pandas-ta?style=flat)](#stars)
 [![Forks](https://img.shields.io/github/forks/twopirllc/pandas-ta?style=flat)](#forks)
-[![Used By](https://img.shields.io/badge/used_by-170-orange.svg?style=flat)](#usedby)
+[![Used By](https://img.shields.io/badge/used_by-258-orange.svg?style=flat)](#usedby)
 [![Contributors](https://img.shields.io/github/contributors/twopirllc/pandas-ta?style=flat)](#contributors)
 [![Issues](https://img.shields.io/github/issues-raw/twopirllc/pandas-ta?style=flat)](#issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/twopirllc/pandas-ta?style=flat)](#closed-issues)
 [![Buy Me a Coffee](https://img.shields.io/badge/buy_me_a_coffee-orange.svg?style=flat)](https://www.buymeacoffee.com/twopirllc)
 
 
+<br/>
 
 ![Example Chart](/images/TA_Chart.png)
 
-
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas package with more than 130 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas package with more than 140 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_(**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
 
 
 **Note:** _TA Lib_ must be installed to use **all** the Candlestick Patterns. ```pip install TA-Lib```. If _TA Lib_ is not installed, then only the builtin Candlestick Patterns will be available.
@@ -54,12 +54,12 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [DataFrame Methods](#dataframe-methods)
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-64)
-    * [Cycles](#cycles-1)
-    * [Momentum](#momentum-41)
-    * [Overlap](#overlap-33)
+    * [Cycles](#cycles-2)
+    * [Momentum](#momentum-42)
+    * [Overlap](#overlap-35)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
-    * [Trend](#trend-18)
+    * [Trend](#trend-19)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
     * [Volume](#volume-15)
@@ -113,7 +113,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.14b*
+Best choice! Version: *0.3.35b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -214,7 +214,7 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_
 
-<a href="https://github.com/AbyssAlora"><img src="https://avatars.githubusercontent.com/u/32155747?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/abmyii"><img src="https://avatars.githubusercontent.com/u/52673001?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/alexonab"><img src="https://avatars.githubusercontent.com/u/16689258?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/allahyarzadeh"><img src="https://avatars.githubusercontent.com/u/11909557?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/bizso09"><img src="https://avatars.githubusercontent.com/u/1904536?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/CMobley7"><img src="https://avatars.githubusercontent.com/u/10121829?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/codesutras"><img src="https://avatars.githubusercontent.com/u/56551122?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DannyMartens"><img src="https://avatars.githubusercontent.com/u/37220423?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DrPaprikaa"><img src="https://avatars.githubusercontent.com/u/64958936?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/daikts"><img src="https://avatars.githubusercontent.com/u/64799229?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/danlim-wz"><img src="https://avatars.githubusercontent.com/u/52344837?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/delicateear"><img src="https://avatars.githubusercontent.com/u/167213?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/dorren"><img src="https://avatars.githubusercontent.com/u/27552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/edwardwang1"><img src="https://avatars.githubusercontent.com/u/15675816?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/FGU1"><img src="https://avatars.githubusercontent.com/u/56175843?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ffhirata"><img src="https://avatars.githubusercontent.com/u/44292530?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/floatinghotpot"><img src="https://avatars.githubusercontent.com/u/2339512?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/GSlinger"><img src="https://avatars.githubusercontent.com/u/24567123?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/JoeSchr"><img src="https://avatars.githubusercontent.com/u/8218910?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lluissalord"><img src="https://avatars.githubusercontent.com/u/7021552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/locupleto"><img src="https://avatars.githubusercontent.com/u/3994906?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/luisbarrancos"><img src="https://avatars.githubusercontent.com/u/387352?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/M6stafa"><img src="https://avatars.githubusercontent.com/u/7975309?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/maxdignan"><img src="https://avatars.githubusercontent.com/u/8184722?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mchant"><img src="https://avatars.githubusercontent.com/u/8502845?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mihakralj"><img src="https://avatars.githubusercontent.com/u/31756078?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/moritzgun"><img src="https://avatars.githubusercontent.com/u/68067719?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/NkosenhleDuma"><img src="https://avatars.githubusercontent.com/u/51145741?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/nicoloridulfo"><img src="https://avatars.githubusercontent.com/u/49532161?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/olafos"><img src="https://avatars.githubusercontent.com/u/2526551?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pbrumblay"><img src="https://avatars.githubusercontent.com/u/2146159?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/RajeshDhalange"><img src="https://avatars.githubusercontent.com/u/32175897?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rengel8"><img src="https://avatars.githubusercontent.com/u/34138513?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rluong003"><img src="https://avatars.githubusercontent.com/u/42408939?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/SoftDevDanial"><img src="https://avatars.githubusercontent.com/u/64815604?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/schwaa"><img src="https://avatars.githubusercontent.com/u/2640598?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/tg12"><img src="https://avatars.githubusercontent.com/u/12201893?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/twrobel"><img src="https://avatars.githubusercontent.com/u/394724?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/WellMaybeItIs"><img src="https://avatars.githubusercontent.com/u/84646494?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/whubsch"><img src="https://avatars.githubusercontent.com/u/24275736?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/witokondoria"><img src="https://avatars.githubusercontent.com/u/5685669?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/wouldayajustlookatit"><img src="https://avatars.githubusercontent.com/u/44936661?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/YuvalWein"><img src="https://avatars.githubusercontent.com/u/65113623?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/zlpatel"><img src="https://avatars.githubusercontent.com/u/3293739?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a>
+<a href="https://github.com/AbyssAlora"><img src="https://avatars.githubusercontent.com/u/32155747?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/abmyii"><img src="https://avatars.githubusercontent.com/u/52673001?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/alexonab"><img src="https://avatars.githubusercontent.com/u/16689258?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/allahyarzadeh"><img src="https://avatars.githubusercontent.com/u/11909557?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/anthotsang"><img src="https://avatars.githubusercontent.com/u/929793?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/bizso09"><img src="https://avatars.githubusercontent.com/u/1904536?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/CMobley7"><img src="https://avatars.githubusercontent.com/u/10121829?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/codesutras"><img src="https://avatars.githubusercontent.com/u/56551122?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DannyMartens"><img src="https://avatars.githubusercontent.com/u/37220423?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DrPaprikaa"><img src="https://avatars.githubusercontent.com/u/64958936?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/daikts"><img src="https://avatars.githubusercontent.com/u/64799229?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/danlim-wz"><img src="https://avatars.githubusercontent.com/u/52344837?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/delicateear"><img src="https://avatars.githubusercontent.com/u/167213?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/dorren"><img src="https://avatars.githubusercontent.com/u/27552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/edwardwang1"><img src="https://avatars.githubusercontent.com/u/15675816?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/FGU1"><img src="https://avatars.githubusercontent.com/u/56175843?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ffhirata"><img src="https://avatars.githubusercontent.com/u/44292530?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/floatinghotpot"><img src="https://avatars.githubusercontent.com/u/2339512?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/GSlinger"><img src="https://avatars.githubusercontent.com/u/24567123?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/jhleong"><img src="https://avatars.githubusercontent.com/u/1499913?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/JoeSchr"><img src="https://avatars.githubusercontent.com/u/8218910?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/Larry-u"><img src="https://avatars.githubusercontent.com/u/18108119?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lluissalord"><img src="https://avatars.githubusercontent.com/u/7021552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/locupleto"><img src="https://avatars.githubusercontent.com/u/3994906?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/luisbarrancos"><img src="https://avatars.githubusercontent.com/u/387352?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/M6stafa"><img src="https://avatars.githubusercontent.com/u/7975309?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/maxdignan"><img src="https://avatars.githubusercontent.com/u/8184722?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mchant"><img src="https://avatars.githubusercontent.com/u/8502845?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mihakralj"><img src="https://avatars.githubusercontent.com/u/31756078?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/moritzgun"><img src="https://avatars.githubusercontent.com/u/68067719?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/NkosenhleDuma"><img src="https://avatars.githubusercontent.com/u/51145741?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/nicoloridulfo"><img src="https://avatars.githubusercontent.com/u/49532161?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/olafos"><img src="https://avatars.githubusercontent.com/u/2526551?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pbrumblay"><img src="https://avatars.githubusercontent.com/u/2146159?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/RajeshDhalange"><img src="https://avatars.githubusercontent.com/u/32175897?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rengel8"><img src="https://avatars.githubusercontent.com/u/34138513?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rluong003"><img src="https://avatars.githubusercontent.com/u/42408939?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/SoftDevDanial"><img src="https://avatars.githubusercontent.com/u/64815604?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/schwaa"><img src="https://avatars.githubusercontent.com/u/2640598?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/tg12"><img src="https://avatars.githubusercontent.com/u/12201893?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/twrobel"><img src="https://avatars.githubusercontent.com/u/394724?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/UncleVasya"><img src="https://avatars.githubusercontent.com/u/1286157?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/WellMaybeItIs"><img src="https://avatars.githubusercontent.com/u/84646494?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/whubsch"><img src="https://avatars.githubusercontent.com/u/24275736?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/witokondoria"><img src="https://avatars.githubusercontent.com/u/5685669?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/wouldayajustlookatit"><img src="https://avatars.githubusercontent.com/u/44936661?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/YuvalWein"><img src="https://avatars.githubusercontent.com/u/65113623?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/zlpatel"><img src="https://avatars.githubusercontent.com/u/3293739?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a>
 
 <br/>
 
@@ -652,8 +652,11 @@ Patterns that are **not bold**, require TA-Lib to be installed: ```pip install T
 * xsidegap3methods
 * _Heikin-Ashi_: **ha**
 * _Z Score_: **cdl_z**
+
+<br/>
+
 ```python
-# Get all candle patterns (This is the default behaviour)
+# Get all candle patterns (Default)
 df = df.ta.cdl_pattern(name="all")
 
 # Get only one pattern
@@ -662,15 +665,17 @@ df = df.ta.cdl_pattern(name="doji")
 # Get some patterns
 df = df.ta.cdl_pattern(name=["doji", "inside"])
 ```
+
 <br/>
 
-
-### **Cycles** (1)
+### **Cycles** (2)
 * _Even Better Sinewave_: **ebsw**
+* _Reflex_: **reflex**
+    * **trendflex** companion
 
 <br/>
 
-### **Momentum** (41)
+### **Momentum** (42)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Bias_: **bias**
@@ -708,6 +713,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
     * Default is John Carter's. Enable Lazybear's with ```lazybear=True```
 * _Squeeze Pro_: **squeeze_pro**
 * _Stochastic Oscillator_: **stoch**
+* _Fast Stochastic Oscillator_: **stochf**
 * _Stochastic RSI_: **stochrsi**
 * _TD Sequential_: **td_seq**
     * Excluded from ```df.ta.strategy()```.
@@ -723,8 +729,9 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Overlap** (33)
+### **Overlap** (35)
 
+* _Bill Williams Alligator_: **alligator**
 * _Arnaud Legoux Moving Average_: **alma**
 * _Double Exponential Moving Average_: **dema**
 * _Exponential Moving Average_: **ema**
@@ -749,6 +756,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _WildeR's Moving Average_: **rma**
 * _Sine Weighted Moving Average_: **sinwma**
 * _Simple Moving Average_: **sma**
+* _Smoothed Moving Average_: **smma**
 * _Ehler's Super Smoother Filter_: **ssf**
 * _Supertrend_: **supertrend**
 * _Symmetric Weighted Moving Average_: **swma**
@@ -780,6 +788,7 @@ Use parameter: cumulative=**True** for cumulative results.
 | _Percent Return_ (Cumulative) with _Simple Moving Average_ (SMA) |
 |:--------:|
 | ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
+
 <br/>
 
 ### **Statistics** (11)
@@ -798,9 +807,10 @@ Use parameter: cumulative=**True** for cumulative results.
 | _Z Score_ |
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
+
 <br/>
 
-### **Trend** (18)
+### **Trend** (19)
 
 * _Average Directional Movement Index_: **adx**
     * Also includes **dmp** and **dmn** in the resultant DataFrame.
@@ -818,6 +828,8 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Parabolic Stop and Reverse_: **psar**
 * _Q Stick_: **qstick**
 * _Short Run_: **short_run**
+* _Trendflex_: **trendflex**
+    * **reflex** companion
 * _Trend Signals_: **tsignals**
 * _TTM Trend_: **ttm_trend**
 * _Vertical Horizontal Filter_: **vhf**
@@ -940,7 +952,6 @@ print(pf.stats())
 print(pf.returns_stats())
 ```
 
-
 <br/><br/>
 
 # **Changes**
@@ -956,54 +967,35 @@ print(pf.returns_stats())
 <br />
 
 ## **Breaking / Depreciated Indicators**
+* _Arnaud Legoux Moving Average_ (**alma**) Updated accuracy and speed with new default ```length=9``` and argument ```distribution_offset``` renamed to ```dist_offset```. See ```help(ta.alma)```.
 * _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See ```help(ta.tsignals)```
+* _Zero Lag Moving Average_ (**zlma**) now using available Moving Averages from ```ta.ma```. See ```help(ta.zlma)``` and ```help(ta.ma)```.
 
 <br/>
 
 ## **New Indicators**
-* _Arnaud Legoux Moving Average_ (**alma**) uses the curve of the Normal (Gauss) distribution to allow regulating the smoothness and high sensitivity of the indicator. See: ```help(ta.alma)```
-trading account, or fund. See ```help(ta.drawdown)```
-* _Candle Patterns_ (**cdl_pattern**) If TA Lib is installed, then all those Candle Patterns are available. See the list and examples above on how to call the patterns. See ```help(ta.cdl_pattern)```
-* _Candle Z Score_ (**cdl_z**) normalizes OHLC Candles with a rolling Z Score. See ```help(ta.cdl_z)```
-* _Correlation Trend Indicator_ (**cti**) is an oscillator created by John Ehler in 2020. See ```help(ta.cti)```
+* _Bill Williams Alligator_ (**alligator**) attempts to identify if an asset is trending. See ```help(ta.alligator)```
 * _Cross Signals_ (**xsignals**) was created by Kevin Johnson. It is a wrapper of Trade Signals that returns Trends, Trades, Entries and Exits. Cross Signals are commonly used for **bbands**, **rsi**, **zscore** crossing some value either above or below two values at different times. See ```help(ta.xsignals)```
 * _Directional Movement_ (**dm**) developed by J. Welles Wilder in 1978 attempts to determine which direction the price of an asset is moving. See ```help(ta.dm)```
-* _Even Better Sinewave_ (**ebsw**) measures market cycles and uses a low pass filter to remove noise. See: ```help(ta.ebsw)```
-* _Jurik Moving Average_ (**jma**) attempts to eliminate noise to see the "true" underlying activity.. See: ```help(ta.jma)```
-* _Klinger Volume Oscillator_ (**kvo**) was developed by Stephen J. Klinger. It is designed to predict price reversals in a market by comparing volume to price.. See ```help(ta.kvo)```
-* _Schaff Trend Cycle_ (**stc**) is an evolution of the popular MACD incorportating two cascaded stochastic calculations with additional smoothing. See ```help(ta.stc)```
+* _Jurik Moving Average_ (**jma**) attempts to eliminate noise to see the "true" underlying activity. See: ```help(ta.jma)```
+* _Smoothed Moving Average_ (**smma**) can be used to confirm trends and define areas of support and resistance. See: ```help(ta.smma)```
+* _Fast Stochastic Oscillator_ (**stochf**) is related to **stoch** but is less rarely used since it is more volatile. See: ```help(ta.stochf)```
 * _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
-* _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which
-returns the standard deviation of data for the entire plot or for the interval
-of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
-* _Vertical Horizontal Filter_ (**vhf**) was created by Adam White to identify trending and ranging markets.. See ```help(ta.vhf)```
+* _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which returns the standard deviation of data for the entire plot or for the interval of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
 
 <br/>
 
 ## **Updated Indicators**
 
-* _Acceleration Bands_ (**accbands**) Argument ```mamode``` renamed to ```mode```. See ```help(ta.accbands)```.
-* _ADX_ (**adx**): Added ```mamode``` with default "**RMA**" and with the same ```mamode``` options as TradingView. New argument ```lensig``` so it behaves like TradingView's builtin ADX indicator. See ```help(ta.adx)```.
-* _Archer Moving Averages Trends_ (**amat**): Added ```drift``` argument and more descriptive column names.
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
-* _Bollinger Bands_ (**bbands**): New argument ```ddoff``` to control the Degrees of Freedom. Also included BB Percent (BBP) as the final column. Default is 0. See ```help(ta.bbands)```.
-* _Choppiness Index_ (**chop**): New argument ```ln``` to use Natural Logarithm (True) instead of the Standard Logarithm (False). Default is False.  See ```help(ta.chop)```.
-* _Chande Kroll Stop_ (**cksp**): Added ```tvmode``` with default ```True```. When ```tvmode=False```, **cksp** implements “The New Technical Trader” with default values. See ```help(ta.cksp)```.
-* _Chande Momentum Oscillator_ (**cmo**): New argument ```talib``` will use TA Lib's version and if TA Lib is installed. Default is True. See ```help(ta.cmo)```.
-* _Decreasing_ (**decreasing**): New argument ```strict``` checks if the series is continuously decreasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.decreasing)```.
-* _Increasing_ (**increasing**): New argument ```strict``` checks if the series is continuously increasing over period ```length``` with a faster calculation. Default: ```False```. The ```percent``` argument has also been added with default None. See ```help(ta.increasing)```.
-* _Klinger Volume Oscillator_ (**kvo**): Implements TradingView's Klinger Volume Oscillator version. See ```help(ta.kvo)```.
+* _Kaufman Adaptive Moving Average_ (**kama**): An ```mamode``` as been added with default "**SMA**" to properly boostrap **kama**. _Note_: Not all MAs are usable. See ```help(ta.kama)```.
 * _Linear Regression_ (**linreg**): Checks **numpy**'s version to determine whether to utilize the ```as_strided``` method or the newer ```sliding_window_view``` method. This should resolve Issues with Google Colab and it's delayed dependency updates as well as TensorFlow's dependencies as discussed in Issues [#285](https://github.com/twopirllc/pandas-ta/issues/285) and [#329](https://github.com/twopirllc/pandas-ta/issues/329).
 * _Moving Average Convergence Divergence_ (**macd**): New argument ```asmode``` enables AS version of MACD. Default is False.  See ```help(ta.macd)```.
-* _Parabolic Stop and Reverse_ (**psar**): Bug fix and adjustment to match TradingView's ```sar```. New argument ```af0``` to initialize the Acceleration Factor. See ```help(ta.psar)```.
-* _Percentage Price Oscillator_ (**ppo**): Included new argument ```mamode``` as an option. Default is **sma** to match TA Lib. See ```help(ta.ppo)```.
-* _True Strength Index_ (**tsi**): Added ```signal``` with default ```13``` and Signal MA Mode ```mamode``` with default **ema** as arguments. See ```help(ta.tsi)```.
+* _Standard Deviation_ (**stdev**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **variance**. See ```help(ta.stdev)```.
+* _Variance_ (**variance**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **stdev**. See ```help(ta.variance)```.
 * _Volume Profile_ (**vp**): Calculation improvements. See [Pull Request #320](https://github.com/twopirllc/pandas-ta/pull/320) See ```help(ta.vp)```.
-* _Volume Weighted Moving Average_ (**vwma**): Fixed bug in DataFrame Extension call. See ```help(ta.vwma)```.
-* _Volume Weighted Average Price_ (**vwap**): Added a new parameter called ```anchor```. Default: "D" for "Daily". See [Timeseries Offset Aliases](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases) for additional options. **Requires** the DataFrame index to be a DatetimeIndex. See ```help(ta.vwap)```.
-* _Volume Weighted Moving Average_ (**vwma**): Fixed bug in DataFrame Extension call. See ```help(ta.vwma)```.
-* _Z Score_ (**zscore**): Changed return column name from ```Z_length``` to ```ZS_length```. See ```help(ta.zscore)```.
+
 
 <br />
 

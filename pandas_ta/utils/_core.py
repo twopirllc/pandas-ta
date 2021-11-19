@@ -67,7 +67,7 @@ def recent_minimum_index(x):
     return int(argmin(x[::-1]))
 
 
-def signed_series(series: Series, initial: int = None) -> Series:
+def signed_series(series: Series, initial: int, lag: int = None) -> Series:
     """Returns a Signed Series with or without an initial value
 
     Default Example:
@@ -75,8 +75,10 @@ def signed_series(series: Series, initial: int = None) -> Series:
     and returns:
     sign = Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0])
     """
+    initial = initial if initial is not None and not isinstance(lag, str) else None
+    lag = int(lag) if lag is not None and isinstance(lag, int) else 1
     series = verify_series(series)
-    sign = series.diff(1)
+    sign = series.diff(lag)
     sign[sign > 0] = 1
     sign[sign < 0] = -1
     sign.iloc[0] = initial

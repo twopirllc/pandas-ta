@@ -4,7 +4,33 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def mom(close, length=None, talib=None, offset=None, **kwargs):
-    """Indicator: Momentum (MOM)"""
+    """Momentum (MOM)
+
+    Momentum is an indicator used to measure a security's speed (or strength) of
+    movement.  Or simply the change in price.
+
+    Sources:
+        http://www.onlinetradingconcepts.com/TechnicalAnalysis/Momentum.html
+
+    Calculation:
+        Default Inputs:
+            length=1
+        MOM = close.diff(length)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 1
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
     close = verify_series(close, length)
@@ -35,33 +61,3 @@ def mom(close, length=None, talib=None, offset=None, **kwargs):
     mom.category = "momentum"
 
     return mom
-
-
-mom.__doc__ = \
-"""Momentum (MOM)
-
-Momentum is an indicator used to measure a security's speed (or strength) of
-movement.  Or simply the change in price.
-
-Sources:
-    http://www.onlinetradingconcepts.com/TechnicalAnalysis/Momentum.html
-
-Calculation:
-    Default Inputs:
-        length=1
-    MOM = close.diff(length)
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 1
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

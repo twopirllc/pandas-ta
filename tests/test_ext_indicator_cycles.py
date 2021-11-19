@@ -23,3 +23,8 @@ class TestCylesExtension(TestCase):
         self.data.ta.ebsw(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "EBSW_40_10")
+
+    def test_reflex_ext(self):
+        self.data.ta.reflex(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "REFLEX_20_20_0.04")

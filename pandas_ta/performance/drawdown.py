@@ -6,7 +6,32 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def drawdown(close, offset=None, **kwargs) -> DataFrame:
-    """Indicator: Drawdown (DD)"""
+    """Drawdown (DD)
+
+    Drawdown is a peak-to-trough decline during a specific period for an investment,
+    trading account, or fund. It is usually quoted as the percentage between the
+    peak and the subsequent trough.
+
+    Sources:
+        https://www.investopedia.com/terms/d/drawdown.asp
+
+    Calculation:
+        PEAKDD = close.cummax()
+        DD = PEAKDD - close
+        DD% = 1 - (close / PEAKDD)
+        DDlog = log(PEAKDD / close)
+
+    Args:
+        close (pd.Series): Series of 'close's.
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: drawdown, drawdown percent, drawdown log columns
+    """
     # Validate Arguments
     close = verify_series(close)
     offset = get_offset(offset)
@@ -50,33 +75,3 @@ def drawdown(close, offset=None, **kwargs) -> DataFrame:
     df.category = dd.category
 
     return df
-
-
-
-drawdown.__doc__ = \
-"""Drawdown (DD)
-
-Drawdown is a peak-to-trough decline during a specific period for an investment,
-trading account, or fund. It is usually quoted as the percentage between the
-peak and the subsequent trough.
-
-Sources:
-    https://www.investopedia.com/terms/d/drawdown.asp
-
-Calculation:
-    PEAKDD = close.cummax()
-    DD = PEAKDD - close
-    DD% = 1 - (close / PEAKDD)
-    DDlog = log(PEAKDD / close)
-
-Args:
-    close (pd.Series): Series of 'close's.
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: drawdown, drawdown percent, drawdown log columns
-"""

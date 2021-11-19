@@ -121,6 +121,7 @@ setup.cfg
 doc.py
 pandas_pips
 reqs.txt
+az.py
 driver.py
 qd.py
 tdseq.py
@@ -142,5 +143,7 @@ data/SPY_D_TV3.csv
 data/TV_5min.csv
 data/tulip.csv
 examples/*.csv
-jnb/*.ipynb
-jnb/*.txt
+jnb/*
+
+*.txt
+df_file

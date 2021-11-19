@@ -18,10 +18,15 @@ class TestOverlapExtension(TestCase):
     def tearDown(self): pass
 
 
+    def test_alligator_ext(self):
+        self.data.ta.alligator(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-3:]), ["AGj_13_8_5", "AGt_13_8_5", "AGl_13_8_5"])
+
     def test_alma_ext(self):
         self.data.ta.alma(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "ALMA_10_6.0_0.85")
+        self.assertEqual(self.data.columns[-1], "ALMA_9_6.0_0.85")
 
     def test_dema_ext(self):
         self.data.ta.dema(append=True)
@@ -122,6 +127,11 @@ class TestOverlapExtension(TestCase):
         self.data.ta.sma(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "SMA_10")
+
+    def test_smma_ext(self):
+        self.data.ta.smma(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "SMMA_7")
 
     def test_ssf_ext(self):
         self.data.ta.ssf(append=True, poles=2)

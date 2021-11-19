@@ -10,7 +10,79 @@ from pandas_ta.utils import unsigned_differences, verify_series
 
 
 def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, mamode=None, offset=None, **kwargs):
-    """Indicator: Squeeze Momentum (SQZ)"""
+    """Squeeze (SQZ)
+
+    The default is based on John Carter's "TTM Squeeze" indicator, as discussed
+    in his book "Mastering the Trade" (chapter 11). The Squeeze indicator attempts
+    to capture the relationship between two studies: Bollinger Bands® and Keltner's
+    Channels. When the volatility increases, so does the distance between the bands,
+    conversely, when the volatility declines, the distance also decreases. It finds
+    sections of the Bollinger Bands® study which fall inside the Keltner's Channels.
+
+    Sources:
+        https://tradestation.tradingappstore.com/products/TTMSqueeze
+        https://www.tradingview.com/scripts/lazybear/
+        https://tlc.thinkorswim.com/center/reference/Tech-Indicators/studies-library/T-U/TTM-Squeeze
+
+    Calculation:
+        Default Inputs:
+            bb_length=20, bb_std=2, kc_length=20, kc_scalar=1.5, mom_length=12,
+            mom_smooth=12, tr=True, lazybear=False,
+        BB = Bollinger Bands
+        KC = Keltner Channels
+        MOM = Momentum
+        SMA = Simple Moving Average
+        EMA = Exponential Moving Average
+        TR = True Range
+
+        RANGE = TR(high, low, close) if using_tr else high - low
+        BB_LOW, BB_MID, BB_HIGH = BB(close, bb_length, std=bb_std)
+        KC_LOW, KC_MID, KC_HIGH = KC(high, low, close, kc_length, kc_scalar, TR)
+
+        if lazybear:
+            HH = high.rolling(kc_length).max()
+            LL = low.rolling(kc_length).min()
+            AVG  = 0.25 * (HH + LL) + 0.5 * KC_MID
+            SQZ = linreg(close - AVG, kc_length)
+        else:
+            MOMO = MOM(close, mom_length)
+            if mamode == "ema":
+                SQZ = EMA(MOMO, mom_smooth)
+            else:
+                SQZ = EMA(momo, mom_smooth)
+
+        SQZ_ON  = (BB_LOW > KC_LOW) and (BB_HIGH < KC_HIGH)
+        SQZ_OFF = (BB_LOW < KC_LOW) and (BB_HIGH > KC_HIGH)
+        NO_SQZ = !SQZ_ON and !SQZ_OFF
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        bb_length (int): Bollinger Bands period. Default: 20
+        bb_std (float): Bollinger Bands Std. Dev. Default: 2
+        kc_length (int): Keltner Channel period. Default: 20
+        kc_scalar (float): Keltner Channel scalar. Default: 1.5
+        mom_length (int): Momentum Period. Default: 12
+        mom_smooth (int): Smoothing Period of Momentum. Default: 6
+        mamode (str): Only "ema" or "sma". Default: "sma"
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        tr (value, optional): Use True Range for Keltner Channels. Default: True
+        asint (value, optional): Use integers instead of bool. Default: True
+        mamode (value, optional): Which MA to use. Default: "sma"
+        lazybear (value, optional): Use LazyBear's TradingView implementation.
+            Default: False
+        detailed (value, optional): Return additional variations of SQZ for
+            visualization. Default: False
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: SQZ, SQZ_ON, SQZ_OFF, NO_SQZ columns by default. More
+            detailed columns if 'detailed' kwarg is True.
+    """
     # Validate arguments
     bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
     bb_std = float(bb_std) if bb_std and bb_std > 0 else 2.0
@@ -47,7 +119,7 @@ def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_sc
     if lazybear:
         highest_high = high.rolling(kc_length).max()
         lowest_low = low.rolling(kc_length).min()
-        avg_ = 0.25 * (highest_high + lowest_low) + 0.5 * kch.b
+        avg_ = 0.5 * (0.5 * (highest_high + lowest_low) + kch.b)
 
         squeeze = linreg(close - avg_, length=kc_length)
 
@@ -145,79 +217,3 @@ def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_sc
         df[f"SQZ_NINC"] = neg_inc
 
     return df
-
-
-squeeze.__doc__ = \
-"""Squeeze (SQZ)
-
-The default is based on John Carter's "TTM Squeeze" indicator, as discussed
-in his book "Mastering the Trade" (chapter 11). The Squeeze indicator attempts
-to capture the relationship between two studies: Bollinger Bands® and Keltner's
-Channels. When the volatility increases, so does the distance between the bands,
-conversely, when the volatility declines, the distance also decreases. It finds
-sections of the Bollinger Bands® study which fall inside the Keltner's Channels.
-
-Sources:
-    https://tradestation.tradingappstore.com/products/TTMSqueeze
-    https://www.tradingview.com/scripts/lazybear/
-    https://tlc.thinkorswim.com/center/reference/Tech-Indicators/studies-library/T-U/TTM-Squeeze
-
-Calculation:
-    Default Inputs:
-        bb_length=20, bb_std=2, kc_length=20, kc_scalar=1.5, mom_length=12,
-        mom_smooth=12, tr=True, lazybear=False,
-    BB = Bollinger Bands
-    KC = Keltner Channels
-    MOM = Momentum
-    SMA = Simple Moving Average
-    EMA = Exponential Moving Average
-    TR = True Range
-
-    RANGE = TR(high, low, close) if using_tr else high - low
-    BB_LOW, BB_MID, BB_HIGH = BB(close, bb_length, std=bb_std)
-    KC_LOW, KC_MID, KC_HIGH = KC(high, low, close, kc_length, kc_scalar, TR)
-
-    if lazybear:
-        HH = high.rolling(kc_length).max()
-        LL = low.rolling(kc_length).min()
-        AVG  = 0.25 * (HH + LL) + 0.5 * KC_MID
-        SQZ = linreg(close - AVG, kc_length)
-    else:
-        MOMO = MOM(close, mom_length)
-        if mamode == "ema":
-            SQZ = EMA(MOMO, mom_smooth)
-        else:
-            SQZ = EMA(momo, mom_smooth)
-
-    SQZ_ON  = (BB_LOW > KC_LOW) and (BB_HIGH < KC_HIGH)
-    SQZ_OFF = (BB_LOW < KC_LOW) and (BB_HIGH > KC_HIGH)
-    NO_SQZ = !SQZ_ON and !SQZ_OFF
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    bb_length (int): Bollinger Bands period. Default: 20
-    bb_std (float): Bollinger Bands Std. Dev. Default: 2
-    kc_length (int): Keltner Channel period. Default: 20
-    kc_scalar (float): Keltner Channel scalar. Default: 1.5
-    mom_length (int): Momentum Period. Default: 12
-    mom_smooth (int): Smoothing Period of Momentum. Default: 6
-    mamode (str): Only "ema" or "sma". Default: "sma"
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    tr (value, optional): Use True Range for Keltner Channels. Default: True
-    asint (value, optional): Use integers instead of bool. Default: True
-    mamode (value, optional): Which MA to use. Default: "sma"
-    lazybear (value, optional): Use LazyBear's TradingView implementation.
-        Default: False
-    detailed (value, optional): Return additional variations of SQZ for
-        visualization. Default: False
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: SQZ, SQZ_ON, SQZ_OFF, NO_SQZ columns by default. More
-        detailed columns if 'detailed' kwarg is True.
-"""

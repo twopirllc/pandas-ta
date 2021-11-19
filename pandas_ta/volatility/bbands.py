@@ -7,12 +7,57 @@ from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
 def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset=None, **kwargs):
-    """Indicator: Bollinger Bands (BBANDS)"""
+    """Bollinger Bands (BBANDS)
+
+    A popular volatility indicator by John Bollinger.
+
+    Sources:
+        https://www.tradingview.com/wiki/Bollinger_Bands_(BB)
+
+    Calculation:
+        Default Inputs:
+            length=5, std=2, mamode="sma", ddof=0
+        EMA = Exponential Moving Average
+        SMA = Simple Moving Average
+        STDEV = Standard Deviation
+        stdev = STDEV(close, length, ddof)
+        if "ema":
+            MID = EMA(close, length)
+        else:
+            MID = SMA(close, length)
+
+        LOWER = MID - std * stdev
+        UPPER = MID + std * stdev
+
+        BANDWIDTH = 100 * (UPPER - LOWER) / MID
+        PERCENT = (close - LOWER) / (UPPER - LOWER)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): The short period. Default: 5
+        std (int): The long period. Default: 2
+        ddof (int): Degrees of Freedom to use. Default: 0
+        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        ddof (int): Delta Degrees of Freedom.
+                    The divisor used in calculations is N - ddof,
+                    where N represents the number of elements. The 'talib' argument
+                    must be false for 'ddof' to work. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: lower, mid, upper, bandwidth, and percent columns.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 5
     std = float(std) if std and std > 0 else 2.0
     mamode = mamode if isinstance(mamode, str) else "sma"
-    ddof = int(ddof) if ddof >= 0 and ddof < length else 1
+    ddof = int(ddof) if isinstance(ddof, int) and ddof >= 0 and ddof < length else 1
     close = verify_series(close, length)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
@@ -42,7 +87,7 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
         mid = mid.shift(offset)
         upper = upper.shift(offset)
         bandwidth = bandwidth.shift(offset)
-        percent = bandwidth.shift(offset)
+        percent = percent.shift(offset)
 
     # Handle fills
     if "fillna" in kwargs:
@@ -77,48 +122,3 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
     bbandsdf.category = mid.category
 
     return bbandsdf
-
-
-bbands.__doc__ = \
-"""Bollinger Bands (BBANDS)
-
-A popular volatility indicator by John Bollinger.
-
-Sources:
-    https://www.tradingview.com/wiki/Bollinger_Bands_(BB)
-
-Calculation:
-    Default Inputs:
-        length=5, std=2, mamode="sma", ddof=0
-    EMA = Exponential Moving Average
-    SMA = Simple Moving Average
-    STDEV = Standard Deviation
-    stdev = STDEV(close, length, ddof)
-    if "ema":
-        MID = EMA(close, length)
-    else:
-        MID = SMA(close, length)
-
-    LOWER = MID - std * stdev
-    UPPER = MID + std * stdev
-
-    BANDWIDTH = 100 * (UPPER - LOWER) / MID
-    PERCENT = (close - LOWER) / (UPPER - LOWER)
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): The short period. Default: 5
-    std (int): The long period. Default: 2
-    ddof (int): Degrees of Freedom to use. Default: 0
-    mamode (str): See ```help(ta.ma)```. Default: 'sma'
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: lower, mid, upper, bandwidth, and percent columns.
-"""

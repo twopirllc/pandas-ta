@@ -10,11 +10,41 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, offset=None, **kwargs):
-    """Indicator: Quantitative Qualitative Estimation (QQE)"""
+    """Quantitative Qualitative Estimation (QQE)
+
+    The Quantitative Qualitative Estimation (QQE) is similar to SuperTrend but uses a Smoothed RSI with an upper and lower bands. The band width is a combination of a one period True Range of the Smoothed RSI which is double smoothed using Wilder's smoothing length (2 * rsiLength - 1) and multiplied by the default factor of 4.236. A Long trend is determined when the Smoothed RSI crosses the previous upperband and a Short trend when the Smoothed RSI crosses the previous lowerband.
+
+    Based on QQE.mq5 by EarnForex Copyright © 2010, based on version by Tim Hyder (2008), based on version by Roman Ignatov (2006)
+
+    Sources:
+        https://www.tradingview.com/script/IYfA9R2k-QQE-MT4/
+        https://www.tradingpedia.com/forex-trading-indicators/quantitative-qualitative-estimation
+        https://www.prorealcode.com/prorealtime-indicators/qqe-quantitative-qualitative-estimation/
+
+    Calculation:
+        Default Inputs:
+            length=14, smooth=5, factor=4.236, mamode="ema", drift=1
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): RSI period. Default: 14
+        smooth (int): RSI smoothing period. Default: 5
+        factor (float): QQE Factor. Default: 4.236
+        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        drift (int): The difference period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: QQE, RSI_MA (basis), QQEl (long), and QQEs (short) columns.
+    """
     # Validate arguments
-    length = int(length) if length and length > 0 else 14
-    smooth = int(smooth) if smooth and smooth > 0 else 5
-    factor = float(factor) if factor else 4.236
+    length = int(length) if isinstance(length, int) and length > 0 else 14
+    smooth = int(smooth) if isinstance(smooth, int) and smooth > 0 else 5
+    factor = float(factor) if isinstance(factor, float) and factor else 4.236
     wilders_length = 2 * length - 1
     mamode = mamode if isinstance(mamode, str) else "ema"
     close = verify_series(close, max(length, smooth, wilders_length))
@@ -120,37 +150,3 @@ def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, o
     df.category = qqe.category
 
     return df
-
-
-qqe.__doc__ = \
-"""Quantitative Qualitative Estimation (QQE)
-
-The Quantitative Qualitative Estimation (QQE) is similar to SuperTrend but uses a Smoothed RSI with an upper and lower bands. The band width is a combination of a one period True Range of the Smoothed RSI which is double smoothed using Wilder's smoothing length (2 * rsiLength - 1) and multiplied by the default factor of 4.236. A Long trend is determined when the Smoothed RSI crosses the previous upperband and a Short trend when the Smoothed RSI crosses the previous lowerband.
-
-Based on QQE.mq5 by EarnForex Copyright © 2010, based on version by Tim Hyder (2008), based on version by Roman Ignatov (2006)
-
-Sources:
-    https://www.tradingview.com/script/IYfA9R2k-QQE-MT4/
-    https://www.tradingpedia.com/forex-trading-indicators/quantitative-qualitative-estimation
-    https://www.prorealcode.com/prorealtime-indicators/qqe-quantitative-qualitative-estimation/
-
-Calculation:
-    Default Inputs:
-        length=14, smooth=5, factor=4.236, mamode="ema", drift=1
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): RSI period. Default: 14
-    smooth (int): RSI smoothing period. Default: 5
-    factor (float): QQE Factor. Default: 4.236
-    mamode (str): See ```help(ta.ma)```. Default: 'sma'
-    drift (int): The difference period. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: QQE, RSI_MA (basis), QQEl (long), and QQEs (short) columns.
-"""

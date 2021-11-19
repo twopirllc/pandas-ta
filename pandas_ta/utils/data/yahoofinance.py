@@ -88,6 +88,7 @@ def yf(ticker: str, **kwargs):
         # Ticker Info & Chart History
         yfd = yfra.Ticker(ticker)
 
+        df = DataFrame()
         try:
             df = yfd.history(period=period, interval=interval, proxy=proxy, **kwargs)
         except:

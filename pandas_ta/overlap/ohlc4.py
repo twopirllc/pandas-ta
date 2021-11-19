@@ -3,7 +3,20 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def ohlc4(open_, high, low, close, offset=None, **kwargs):
-    """Indicator: OHLC4"""
+    """OHLC4
+
+    Calculation:
+        OHLC4 = 0.25 * (open + high + low + close)
+
+    Args:
+        open_ (pd.Series): Series of 'open's
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     open_ = verify_series(open_)
     high = verify_series(high)

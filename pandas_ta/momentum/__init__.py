@@ -34,6 +34,7 @@ from .squeeze import squeeze
 from .squeeze_pro import squeeze_pro
 from .stc import stc
 from .stoch import stoch
+from .stochf import stochf
 from .stochrsi import stochrsi
 from .td_seq import td_seq
 from .trix import trix

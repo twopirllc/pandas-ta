@@ -6,7 +6,48 @@ from pandas_ta.utils import unsigned_differences, verify_series
 
 
 def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
-    """Indicator: Relative Volatility Index (RVI)"""
+    """Relative Volatility Index (RVI)
+
+    The Relative Volatility Index (RVI) was created in 1993 and revised in 1995.
+    Instead of adding up price changes like RSI based on price direction, the RVI
+    adds up standard deviations based on price direction.
+
+    Sources:
+        https://www.tradingview.com/wiki/Keltner_Channels_(KC)
+
+    Calculation:
+        Default Inputs:
+            length=14, scalar=100, refined=None, thirds=None
+        EMA = Exponential Moving Average
+        STDEV = Standard Deviation
+
+        UP = STDEV(src, length) IF src.diff() > 0 ELSE 0
+        DOWN = STDEV(src, length) IF src.diff() <= 0 ELSE 0
+
+        UPSUM = EMA(UP, length)
+        DOWNSUM = EMA(DOWN, length
+
+        RVI = scalar * (UPSUM / (UPSUM + DOWNSUM))
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): The short period. Default: 14
+        scalar (float): A positive float to scale the bands. Default: 100
+        refined (bool): Use 'refined' calculation which is the average of
+            RVI(high) and RVI(low) instead of RVI(close). Default: False
+        thirds (bool): Average of high, low and close. Default: False
+        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: lower, basis, upper columns.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar and scalar > 0 else 100
@@ -69,48 +110,3 @@ def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thir
     rvi.category = "volatility"
 
     return rvi
-
-
-rvi.__doc__ = \
-"""Relative Volatility Index (RVI)
-
-The Relative Volatility Index (RVI) was created in 1993 and revised in 1995.
-Instead of adding up price changes like RSI based on price direction, the RVI
-adds up standard deviations based on price direction.
-
-Sources:
-    https://www.tradingview.com/wiki/Keltner_Channels_(KC)
-
-Calculation:
-    Default Inputs:
-        length=14, scalar=100, refined=None, thirds=None
-    EMA = Exponential Moving Average
-    STDEV = Standard Deviation
-
-    UP = STDEV(src, length) IF src.diff() > 0 ELSE 0
-    DOWN = STDEV(src, length) IF src.diff() <= 0 ELSE 0
-
-    UPSUM = EMA(UP, length)
-    DOWNSUM = EMA(DOWN, length
-
-    RVI = scalar * (UPSUM / (UPSUM + DOWNSUM))
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): The short period. Default: 14
-    scalar (float): A positive float to scale the bands. Default: 100
-    refined (bool): Use 'refined' calculation which is the average of
-        RVI(high) and RVI(low) instead of RVI(close). Default: False
-    thirds (bool): Average of high, low and close. Default: False
-    mamode (str): See ```help(ta.ma)```. Default: 'ema'
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: lower, basis, upper columns.
-"""

@@ -7,7 +7,41 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def aberration(high, low, close, length=None, atr_length=None, offset=None, **kwargs):
-    """Indicator: Aberration (ABER)"""
+    """Aberration (ABER)
+
+    A volatility indicator similar to Keltner Channels.
+
+    Sources:
+        Few internet resources on definitive definition.
+        Request by Github user homily, issue #46
+
+    Calculation:
+        Default Inputs:
+            length=5, atr_length=15
+        ATR = Average True Range
+        SMA = Simple Moving Average
+
+        ATR = ATR(length=atr_length)
+        JG = TP = HLC3(high, low, close)
+        ZG = SMA(JG, length)
+        SG = ZG + ATR
+        XG = ZG - ATR
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int): The short period. Default: 5
+        atr_length (int): The short period. Default: 15
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: zg, sg, xg, atr columns.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 5
     atr_length = int(atr_length) if atr_length and atr_length > 0 else 15
@@ -62,41 +96,3 @@ def aberration(high, low, close, length=None, atr_length=None, offset=None, **kw
     aberdf.category = zg.category
 
     return aberdf
-
-
-aberration.__doc__ = \
-"""Aberration
-
-A volatility indicator similar to Keltner Channels.
-
-Sources:
-    Few internet resources on definitive definition.
-    Request by Github user homily, issue #46
-
-Calculation:
-    Default Inputs:
-        length=5, atr_length=15
-    ATR = Average True Range
-    SMA = Simple Moving Average
-
-    ATR = ATR(length=atr_length)
-    JG = TP = HLC3(high, low, close)
-    ZG = SMA(JG, length)
-    SG = ZG + ATR
-    XG = ZG - ATR
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int): The short period. Default: 5
-    atr_length (int): The short period. Default: 15
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: zg, sg, xg, atr columns.
-"""

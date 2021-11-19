@@ -6,7 +6,44 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def mfi(high, low, close, volume, length=None, talib=None, drift=None, offset=None, **kwargs):
-    """Indicator: Money Flow Index (MFI)"""
+    """Money Flow Index (MFI)
+
+    Money Flow Index is an oscillator indicator that is used to measure buying and
+    selling pressure by utilizing both price and volume.
+
+    Sources:
+        https://www.tradingview.com/wiki/Money_Flow_(MFI)
+
+    Calculation:
+        Default Inputs:
+            length=14, drift=1
+        tp = typical_price = hlc3 = (high + low + close) / 3
+        rmf = raw_money_flow = tp * volume
+
+        pmf = pos_money_flow = SUM(rmf, length) if tp.diff(drift) > 0 else 0
+        nmf = neg_money_flow = SUM(rmf, length) if tp.diff(drift) < 0 else 0
+
+        MFR = money_flow_ratio = pmf / nmf
+        MFI = money_flow_index = 100 * pmf / (pmf + nmf)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        volume (pd.Series): Series of 'volume's
+        length (int): The sum period. Default: 14
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
+        drift (int): The difference period. Default: 1
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate arguments
     length = int(length) if length and length > 0 else 14
     high = verify_series(high, length)
@@ -56,44 +93,3 @@ def mfi(high, low, close, volume, length=None, talib=None, drift=None, offset=No
     mfi.category = "volume"
 
     return mfi
-
-
-mfi.__doc__ = \
-"""Money Flow Index (MFI)
-
-Money Flow Index is an oscillator indicator that is used to measure buying and
-selling pressure by utilizing both price and volume.
-
-Sources:
-    https://www.tradingview.com/wiki/Money_Flow_(MFI)
-
-Calculation:
-    Default Inputs:
-        length=14, drift=1
-    tp = typical_price = hlc3 = (high + low + close) / 3
-    rmf = raw_money_flow = tp * volume
-
-    pmf = pos_money_flow = SUM(rmf, length) if tp.diff(drift) > 0 else 0
-    nmf = neg_money_flow = SUM(rmf, length) if tp.diff(drift) < 0 else 0
-
-    MFR = money_flow_ratio = pmf / nmf
-    MFI = money_flow_index = 100 * pmf / (pmf + nmf)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    volume (pd.Series): Series of 'volume's
-    length (int): The sum period. Default: 14
-    talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-        version. Default: True
-    drift (int): The difference period. Default: 1
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

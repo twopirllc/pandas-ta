@@ -23,8 +23,47 @@ ALL_PATTERNS = [
 ]
 
 
-def cdl_pattern(open_, high, low, close, name: Union[str, Sequence[str]]="all", scalar=None, offset=None, **kwargs) -> DataFrame:
-    """Candle Pattern"""
+def cdl_pattern(
+    open_,
+    high,
+    low,
+    close,
+    name: Union[str, Sequence[str]]="all",
+    scalar=None,
+    offset=None,
+    **kwargs
+    ) -> DataFrame:
+    """TA Lib Candle Patterns
+
+    A wrapper around all TA Lib's candle patterns.
+
+    Examples:
+
+    Get all candle patterns (This is the default behaviour)
+    >>> df = df.ta.cdl_pattern(name="all")
+
+    Get only one pattern
+    >>> df = df.ta.cdl_pattern(name="doji")
+
+    Get some patterns
+    >>> df = df.ta.cdl_pattern(name=["doji", "inside"])
+
+    Args:
+        open_ (pd.Series): Series of 'open's
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        name: (Union[str, Sequence[str]]): name of the patterns
+        scalar (float): How much to magnify. Default: 100
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: one column for each pattern.
+    """
     # Validate Arguments
     open_ = verify_series(open_)
     high = verify_series(high)
@@ -34,9 +73,7 @@ def cdl_pattern(open_, high, low, close, name: Union[str, Sequence[str]]="all", 
     scalar = float(scalar) if scalar else 100
 
     # Patterns that implemented in pandas-ta
-    pta_patterns = {
-        "doji": cdl_doji, "inside": cdl_inside,
-    }
+    pta_patterns = {"doji": cdl_doji, "inside": cdl_inside}
 
     if name == "all":
         name = ALL_PATTERNS
@@ -84,44 +121,4 @@ def cdl_pattern(open_, high, low, close, name: Union[str, Sequence[str]]="all", 
     df.category = "candles"
     return df
 
-
-cdl_pattern.__doc__ = \
-"""Candle Pattern
-
-A wrapper around all candle patterns.
-
-Examples:
-
-Get all candle patterns (This is the default behaviour)
->>> df = df.ta.cdl_pattern(name="all")
-Or
->>> df.ta.cdl("all", append=True) # = df.ta.cdl_pattern("all", append=True)
-
-Get only one pattern
->>> df = df.ta.cdl_pattern(name="doji")
-Or
->>> df.ta.cdl("doji", append=True)
-
-Get some patterns
->>> df = df.ta.cdl_pattern(name=["doji", "inside"])
-Or
->>> df.ta.cdl(["doji", "inside"], append=True)
-
-Args:
-    open_ (pd.Series): Series of 'open's
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    name: (Union[str, Sequence[str]]): name of the patterns
-    scalar (float): How much to magnify. Default: 100
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: one column for each pattern.
-"""
-
-cdl = cdl_pattern
+cdl = cdl_pattern # Alias

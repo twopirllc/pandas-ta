@@ -5,7 +5,47 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, include_chikou=True, offset=None, **kwargs):
-    """Indicator: Ichimoku Kinkō Hyō (Ichimoku)"""
+    """Ichimoku Kinkō Hyō (ichimoku)
+
+    Developed Pre WWII as a forecasting model for financial markets.
+
+    Sources:
+        https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/ichimoku-ich/
+
+    Calculation:
+        Default Inputs:
+            tenkan=9, kijun=26, senkou=52
+        MIDPRICE = Midprice
+        TENKAN_SEN = MIDPRICE(high, low, close, length=tenkan)
+        KIJUN_SEN = MIDPRICE(high, low, close, length=kijun)
+        CHIKOU_SPAN = close.shift(-kijun)
+
+        SPAN_A = 0.5 * (TENKAN_SEN + KIJUN_SEN)
+        SPAN_A = SPAN_A.shift(kijun)
+
+        SPAN_B = MIDPRICE(high, low, close, length=senkou)
+        SPAN_B = SPAN_B.shift(kijun)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        tenkan (int): Tenkan period. Default: 9
+        kijun (int): Kijun period. Default: 26
+        senkou (int): Senkou period. Default: 52
+        include_chikou (bool): Whether to include chikou component. Default: True
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: Two DataFrames.
+            For the visible period: spanA, spanB, tenkan_sen, kijun_sen,
+                and chikou_span columns
+            For the forward looking period: spanA and spanB columns
+    """
     tenkan = int(tenkan) if tenkan and tenkan > 0 else 9
     kijun = int(kijun) if kijun and kijun > 0 else 26
     senkou = int(senkou) if senkou and senkou > 0 else 52
@@ -71,7 +111,7 @@ def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, include_chi
     if include_chikou:
         data[chikou_span.name] = chikou_span
 
-    ichimokudf = DataFrame(data)
+    ichimokudf = DataFrame(data, index=close.index)
     ichimokudf.name = f"ICHIMOKU_{tenkan}_{kijun}_{senkou}"
     ichimokudf.category = "overlap"
 
@@ -94,47 +134,3 @@ def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, include_chi
     spandf.category = "overlap"
 
     return ichimokudf, spandf
-
-
-ichimoku.__doc__ = \
-"""Ichimoku Kinkō Hyō (ichimoku)
-
-Developed Pre WWII as a forecasting model for financial markets.
-
-Sources:
-    https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/ichimoku-ich/
-
-Calculation:
-    Default Inputs:
-        tenkan=9, kijun=26, senkou=52
-    MIDPRICE = Midprice
-    TENKAN_SEN = MIDPRICE(high, low, close, length=tenkan)
-    KIJUN_SEN = MIDPRICE(high, low, close, length=kijun)
-    CHIKOU_SPAN = close.shift(-kijun)
-
-    SPAN_A = 0.5 * (TENKAN_SEN + KIJUN_SEN)
-    SPAN_A = SPAN_A.shift(kijun)
-
-    SPAN_B = MIDPRICE(high, low, close, length=senkou)
-    SPAN_B = SPAN_B.shift(kijun)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    tenkan (int): Tenkan period. Default: 9
-    kijun (int): Kijun period. Default: 26
-    senkou (int): Senkou period. Default: 52
-    include_chikou (bool): Whether to include chikou component. Default: True
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: Two DataFrames.
-        For the visible period: spanA, spanB, tenkan_sen, kijun_sen,
-            and chikou_span columns
-        For the forward looking period: spanA and spanB columns
-"""

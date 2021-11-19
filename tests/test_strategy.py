@@ -9,6 +9,7 @@ from .context import pandas_ta
 from unittest import skip, skipUnless, TestCase
 from pandas import DataFrame
 
+
 # Strategy Testing Parameters
 cores = cpu_count()
 cumulative = False
@@ -16,7 +17,6 @@ speed_table = False
 strategy_timed = False
 timed = True
 verbose = False
-
 
 class TestStrategyMethods(TestCase):
 
@@ -64,7 +64,6 @@ class TestStrategyMethods(TestCase):
         if timed:
             self.time_diff = perf_counter() - self.stime
         self.added_cols = len(self.data.columns) - self.init_cols
-        self.assertGreaterEqual(self.added_cols, 1)
 
         self.result = self.data[self.data.columns[-self.added_cols:]]
         self.assertIsInstance(self.result, DataFrame)
@@ -77,6 +76,23 @@ class TestStrategyMethods(TestCase):
         self.category = "All"
         self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
 
+    # @skipUnless(verbose, "verbose mode only")
+    def test_all_multiparams_strategy(self):
+        self.category = "All"
+        self.data.ta.strategy(self.category, length=10, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, length=50, verbose=verbose, timed=strategy_timed)
+        self.data.ta.strategy(self.category, fast=5, slow=10, verbose=verbose, timed=strategy_timed)
+        self.category = "All Multiruns with diff Args" # Rename for Speed Table
+
+    @skipUnless(verbose, "verbose mode only")
+    def test_all_name_strategy(self):
+        self.category = "All"
+        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+
+    # def test_all_no_append(self):
+    #     self.category = "All"
+    #     self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
+
     def test_all_ordered(self):
         self.category = "All"
         self.data.ta.strategy(ordered=True, verbose=verbose, timed=strategy_timed)
@@ -85,19 +101,6 @@ class TestStrategyMethods(TestCase):
     @skipUnless(verbose, "verbose mode only")
     def test_all_strategy(self):
         self.data.ta.strategy(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
-
-    @skipUnless(verbose, "verbose mode only")
-    def test_all_name_strategy(self):
-        self.category = "All"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
-
-    # @skipUnless(verbose, "verbose mode only")
-    def test_all_multiparams_strategy(self):
-        self.category = "All"
-        self.data.ta.strategy(self.category, length=10, verbose=verbose, timed=strategy_timed)
-        self.data.ta.strategy(self.category, length=50, verbose=verbose, timed=strategy_timed)
-        self.data.ta.strategy(self.category, fast=5, slow=10, verbose=verbose, timed=strategy_timed)
-        self.category = "All Multiruns with diff Args" # Rename for Speed Table
 
     # @skip
     def test_candles_category(self):
@@ -115,9 +118,8 @@ class TestStrategyMethods(TestCase):
 
     # @skip
     def test_custom_a(self):
+        """Does not find column 'CUMLOGRET_1' with mp."""
         self.category = "Custom A"
-        print()
-        print(self.category)
 
         momo_bands_sma_ta = [
             {"kind": "cdl_pattern", "name": "tristar"},  # 1
@@ -136,7 +138,33 @@ class TestStrategyMethods(TestCase):
             "Common indicators with specific lengths and a chained indicator",  # description
         )
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
-        self.assertEqual(len(self.data.columns), 15)
+        self.assertEqual(len(self.data.columns), 18)
+
+    # @skipUnless(verbose, "verbose mode only")
+    def test_custom_a_no_multiprocessing(self):
+        self.category = "Custom A with No Multiprocessing"
+
+        cores = self.data.ta.cores
+        self.data.ta.cores = 0
+
+        momo_bands_sma_ta = [
+            {"kind": "rsi"},  # 1
+            {"kind": "macd"},  # 3
+            {"kind": "sma", "length": 50},  # 1
+            {"kind": "sma", "length": 100, "col_names": "sma100"},  # 1
+            {"kind": "sma", "length": 200 },  # 1
+            {"kind": "bbands", "length": 20},  # 3
+            {"kind": "log_return", "cumulative": True},  # 1
+            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
+        ]
+
+        custom = pandas_ta.Strategy(
+            "Commons with Cumulative Log Return EMA Chain",  # name
+            momo_bands_sma_ta,  # ta
+            "Common indicators with specific lengths and a chained indicator",  # description
+        )
+        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        self.data.ta.cores = cores
 
     # @skip
     def test_custom_args_tuple(self):
@@ -180,7 +208,7 @@ class TestStrategyMethods(TestCase):
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
 
     # @skip
-    def test_custom_a(self):
+    def test_custom_e(self):
         self.category = "Custom E"
 
         amat_logret_ta = [
@@ -240,30 +268,4 @@ class TestStrategyMethods(TestCase):
         cores = self.data.ta.cores
         self.data.ta.cores = 0
         self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
-        self.data.ta.cores = cores
-
-    # @skipUnless(verbose, "verbose mode only")
-    def test_custom_no_multiprocessing(self):
-        self.category = "Custom A with No Multiprocessing"
-
-        cores = self.data.ta.cores
-        self.data.ta.cores = 0
-
-        momo_bands_sma_ta = [
-            {"kind": "rsi"},  # 1
-            {"kind": "macd"},  # 3
-            {"kind": "sma", "length": 50},  # 1
-            {"kind": "sma", "length": 100, "col_names": "sma100"},  # 1
-            {"kind": "sma", "length": 200 },  # 1
-            {"kind": "bbands", "length": 20},  # 3
-            {"kind": "log_return", "cumulative": True},  # 1
-            {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
-        ]
-
-        custom = pandas_ta.Strategy(
-            "Commons with Cumulative Log Return EMA Chain",  # name
-            momo_bands_sma_ta,  # ta
-            "Common indicators with specific lengths and a chained indicator",  # description
-        )
-        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
         self.data.ta.cores = cores

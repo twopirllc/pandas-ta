@@ -7,7 +7,56 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kwargs):
-    """Indicator: Supertrend"""
+    """Supertrend (supertrend)
+
+    Supertrend is an overlap indicator. It is used to help identify trend
+    direction, setting stop loss, identify support and resistance, and/or
+    generate buy & sell signals.
+
+    Sources:
+        http://www.freebsensetips.com/blog/detail/7/What-is-supertrend-indicator-its-calculation
+
+    Calculation:
+        Default Inputs:
+            length=7, multiplier=3.0
+        Default Direction:
+        Set to +1 or bullish trend at start
+
+        MID = multiplier * ATR
+        LOWERBAND = HL2 - MID
+        UPPERBAND = HL2 + MID
+
+        if UPPERBAND[i] < FINAL_UPPERBAND[i-1] and close[i-1] > FINAL_UPPERBAND[i-1]:
+            FINAL_UPPERBAND[i] = UPPERBAND[i]
+        else:
+            FINAL_UPPERBAND[i] = FINAL_UPPERBAND[i-1])
+
+        if LOWERBAND[i] > FINAL_LOWERBAND[i-1] and close[i-1] < FINAL_LOWERBAND[i-1]:
+            FINAL_LOWERBAND[i] = LOWERBAND[i]
+        else:
+            FINAL_LOWERBAND[i] = FINAL_LOWERBAND[i-1])
+
+        if close[i] <= FINAL_UPPERBAND[i]:
+            SUPERTREND[i] = FINAL_UPPERBAND[i]
+        else:
+            SUPERTREND[i] = FINAL_LOWERBAND[i]
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        length (int) : length for ATR calculation. Default: 7
+        multiplier (float): Coefficient for upper and lower band distance to
+            midrange. Default: 3.0
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: SUPERT (trend), SUPERTd (direction), SUPERTl (long), SUPERTs (short) columns.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 7
     multiplier = float(multiplier) if multiplier and multiplier > 0 else 3.0
@@ -69,56 +118,3 @@ def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kw
         df.fillna(method=kwargs["fill_method"], inplace=True)
 
     return df
-
-
-supertrend.__doc__ = \
-"""Supertrend (supertrend)
-
-Supertrend is an overlap indicator. It is used to help identify trend
-direction, setting stop loss, identify support and resistance, and/or
-generate buy & sell signals.
-
-Sources:
-    http://www.freebsensetips.com/blog/detail/7/What-is-supertrend-indicator-its-calculation
-
-Calculation:
-    Default Inputs:
-        length=7, multiplier=3.0
-    Default Direction:
-	Set to +1 or bullish trend at start
-
-    MID = multiplier * ATR
-    LOWERBAND = HL2 - MID
-    UPPERBAND = HL2 + MID
-
-    if UPPERBAND[i] < FINAL_UPPERBAND[i-1] and close[i-1] > FINAL_UPPERBAND[i-1]:
-        FINAL_UPPERBAND[i] = UPPERBAND[i]
-    else:
-        FINAL_UPPERBAND[i] = FINAL_UPPERBAND[i-1])
-
-    if LOWERBAND[i] > FINAL_LOWERBAND[i-1] and close[i-1] < FINAL_LOWERBAND[i-1]:
-        FINAL_LOWERBAND[i] = LOWERBAND[i]
-    else:
-        FINAL_LOWERBAND[i] = FINAL_LOWERBAND[i-1])
-
-    if close[i] <= FINAL_UPPERBAND[i]:
-        SUPERTREND[i] = FINAL_UPPERBAND[i]
-    else:
-        SUPERTREND[i] = FINAL_LOWERBAND[i]
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    length (int) : length for ATR calculation. Default: 7
-    multiplier (float): Coefficient for upper and lower band distance to
-        midrange. Default: 3.0
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.DataFrame: SUPERT (trend), SUPERTd (direction), SUPERTl (long), SUPERTs (short) columns.
-"""

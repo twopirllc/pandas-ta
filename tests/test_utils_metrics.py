@@ -67,7 +67,6 @@ class TestUtilityMetrics(TestCase):
     def test_log_max_drawdown(self):
         result = pandas_ta.log_max_drawdown(self.close)
         self.assertIsInstance(result, float)
-        self.assertGreaterEqual(result, 0)
 
     def test_max_drawdown(self):
         result = pandas_ta.max_drawdown(self.close)

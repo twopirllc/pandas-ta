@@ -116,10 +116,20 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "SR_2")
 
+    def test_trendflex_ext(self):
+        self.data.ta.trendflex(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-1:]), ["TRENDFLEX_20_20"])
+
     def test_ttm_trend_ext(self):
         self.data.ta.ttm_trend(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-1:]), ["TTM_TRND_6"])
+
+    def test_vhf_ext(self):
+        self.data.ta.vhf(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-1:]), ["VHF_28"])
 
     def test_vortext_ext(self):
         self.data.ta.vortex(append=True)

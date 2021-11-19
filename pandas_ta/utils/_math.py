@@ -44,7 +44,7 @@ def combination(**kwargs: dict) -> int:
     return numerator // denominator
 
 
-def erf(x):
+def erf(x: Tuple[int, float]):
     """Error Function erf(x)
     The algorithm comes from Handbook of Mathematical Functions, formula 7.1.26.
     Source: https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python
@@ -109,6 +109,33 @@ def geometric_mean(series: Series) -> float:
     return 0
 
 
+def hpoly(array: npArray, x: Tuple[int, float]) ->  float:
+    """Horner Calculation for Polynomial Evaluation (hpoly)
+
+    array: np.array of polynomial coefficients
+        * Convert list or Series to np.array prior to calling the method for
+        best performance
+    x: value to evaluate
+
+    Example:
+    coeffs_0 = [4, -3, 0, 1] # 4x^3 - 3x^2 + 0x + 1
+    coeffs_1 = np.array(coeffs_0) # Faster
+    coeffs_2 = pd.Series(coeffs_0).values
+    x = -6.5
+
+    hpoly(coeffs_0, x) => -1224.25
+    hpoly(coeffs_1, x) or hpoly(coeffs_2, x) => -1224.25 # Faster
+    """
+    if not isinstance(array, npNdArray):
+        array = npArray(array)
+
+    m, y = array.size, array[0]
+
+    for i in range(1, m):
+        y = array[i] + x * y
+    return y
+
+
 def linear_regression(x: Series, y: Series) -> dict:
     """Classic Linear Regression in Numpy or Scikit-Learn"""
     x, y = verify_series(x), verify_series(y)
@@ -161,6 +188,20 @@ def pascals_triangle(n: int = None, **kwargs: dict) -> npNdArray:
         return None
 
     return triangle
+
+
+def strided_window(array, length):
+    """as_strided
+    creates a view into the array given the exact strides and shape.
+    * Recommended to avoid when possible.
+
+    Source: https://numpy.org/devdocs/reference/generated/numpy.lib.stride_tricks.as_strided.html
+    Pandas TA Issue: https://github.com/twopirllc/pandas-ta/issues/285
+    """
+    from numpy.lib.stride_tricks import as_strided
+    strides = array.strides + (array.strides[-1],)
+    shape = array.shape[:-1] + (array.shape[-1] - length + 1, length)
+    return as_strided(array, shape=shape, strides=strides, writeable=False)
 
 
 def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:

@@ -43,21 +43,22 @@ Category = {
         "cdl_pattern", "cdl_z", "ha"
     ],
     # Cycles
-    "cycles": ["ebsw"],
+    "cycles": ["ebsw", "reflex"],
     # Momentum
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
         "coppock", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd",
         "mom", "pgo", "ppo", "psl", "pvo", "qqe", "roc", "rsi", "rsx", "rvgi",
-        "slope", "smi", "squeeze", "squeeze_pro", "stc", "stoch", "stochrsi", "td_seq", "trix",
-        "tsi", "uo", "willr"
+        "slope", "smi", "squeeze", "squeeze_pro", "stc", "stoch", "stochf",
+        "stochrsi", "td_seq", "trix", "tsi", "uo", "willr"
     ],
     # Overlap
     "overlap": [
-        "alma", "dema", "ema", "fwma", "hilo", "hl2", "hlc3", "hma", "ichimoku",
-        "jma", "kama", "linreg", "mcgd", "midpoint", "midprice", "ohlc4",
-        "pwma", "rma", "sinwma", "sma", "ssf", "supertrend", "swma", "t3",
-        "tema", "trima", "vidya", "vwap", "vwma", "wcp", "wma", "zlma"
+        "alligator", "alma", "dema", "ema", "fwma", "hilo", "hl2", "hlc3",
+        "hma", "ichimoku", "jma", "kama", "linreg", "mcgd", "midpoint",
+        "midprice", "ohlc4", "pwma", "rma", "sinwma", "sma", "smma", "ssf",
+        "supertrend", "swma", "t3", "tema", "trima", "vidya", "vwap", "vwma",
+        "wcp", "wma", "zlma"
     ],
     # Performance
     "performance": ["log_return", "percent_return"],
@@ -69,7 +70,7 @@ Category = {
     # Trend
     "trend": [
         "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
-        "increasing", "long_run", "psar", "qstick", "short_run", "tsignals",
+        "increasing", "long_run", "psar", "qstick", "short_run", "trendflex", "tsignals",
         "ttm_trend", "vhf", "vortex", "xsignals"
     ],
     # Volatility
@@ -99,7 +100,8 @@ EXCHANGE_TZ = {
     "TSE": 9, "HKE": 8, "SSE": 8, "SGX": 8,
     "NSE": 5.5, "DIFX": 4, "RTS": 3,
     "JSE": 2, "FWB": 1, "LSE": 1,
-    "BMF": -2, "NYSE": -4, "TSX": -4
+    "BMF": -2, "NYSE": -4, "TSX": -4,
+    "GENR": 0 # Generated Data
 }
 
 RATE = {

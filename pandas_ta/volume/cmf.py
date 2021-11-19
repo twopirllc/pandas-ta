@@ -3,7 +3,43 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs):
-    """Indicator: Chaikin Money Flow (CMF)"""
+    """Chaikin Money Flow (CMF)
+
+    Chailin Money Flow measures the amount of money flow volume over a specific
+    period in conjunction with Accumulation/Distribution.
+
+    Sources:
+        https://www.tradingview.com/wiki/Chaikin_Money_Flow_(CMF)
+        https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_money_flow_cmf
+
+    Calculation:
+        Default Inputs:
+            length=20
+        if 'open':
+            ad = close - open
+        else:
+            ad = 2 * close - high - low
+
+        hl_range = high - low
+        ad = ad * volume / hl_range
+        CMF = SUM(ad, length) / SUM(volume, length)
+
+    Args:
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        volume (pd.Series): Series of 'volume's
+        open_ (pd.Series): Series of 'open's. Default: None
+        length (int): The short period. Default: 20
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """
     # Validate Arguments
     length = int(length) if length and length > 0 else 20
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
@@ -42,43 +78,3 @@ def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs
     cmf.category = "volume"
 
     return cmf
-
-
-cmf.__doc__ = \
-"""Chaikin Money Flow (CMF)
-
-Chailin Money Flow measures the amount of money flow volume over a specific
-period in conjunction with Accumulation/Distribution.
-
-Sources:
-    https://www.tradingview.com/wiki/Chaikin_Money_Flow_(CMF)
-    https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_money_flow_cmf
-
-Calculation:
-    Default Inputs:
-        length=20
-    if 'open':
-        ad = close - open
-    else:
-        ad = 2 * close - high - low
-
-    hl_range = high - low
-    ad = ad * volume / hl_range
-    CMF = SUM(ad, length) / SUM(volume, length)
-
-Args:
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    volume (pd.Series): Series of 'volume's
-    open_ (pd.Series): Series of 'open's. Default: None
-    length (int): The short period. Default: 20
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""

@@ -34,10 +34,15 @@ class TestOverlap(TestCase):
     def tearDown(self): pass
 
 
+    def test_alligator(self):
+        result = pandas_ta.alligator(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "AG_13_8_5")
+
     def test_alma(self):
         result = pandas_ta.alma(self.close)# , length=None, sigma=None, distribution_offset=)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "ALMA_10_6.0_0.85")
+        self.assertEqual(result.name, "ALMA_9_6.0_0.85")
 
     def test_dema(self):
         result = pandas_ta.dema(self.close, talib=False)
@@ -326,6 +331,11 @@ class TestOverlap(TestCase):
         result = pandas_ta.sma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SMA_10")
+
+    def test_smma(self):
+        result = pandas_ta.smma(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "SMMA_7")
 
     def test_ssf(self):
         result = pandas_ta.ssf(self.close, poles=2)
