@@ -6,14 +6,17 @@ import pandas as pd
 from typing import Union
 
 
-def polygon_api(ticker: str, api_key: str, **kwargs):
+def polygon_api(ticker: str, **kwargs):
     print(f"[!] kwargs: {kwargs}")
     verbose = kwargs.pop("verbose", True)
     kind = kwargs.pop("kind", "history")
     kind = kind.lower()
     show = kwargs.pop("show", None)
     df = DataFrame()
-    # api_key = kwargs.pop('api_key', None)
+    api_key = kwargs.pop('api_key', None)
+
+    if api_key is None:
+        raise ValueError('Please make sure you pass your polygon api key through kwarg api_key')
 
     ticker = ticker.upper() if ticker is not None and isinstance(ticker, str) else None
 
