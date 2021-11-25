@@ -10,12 +10,16 @@ LOGGER = logging.getLogger(__name__)
 
 
 def polygon_api(ticker: str, **kwargs):
-    """
+    r"""
     polygon_api - polygon.io API helper function.
 
     It returns OCHLV data from polygon (requires a valid subscription of course). To install the
     `polygon library <https://github.com/pssolanki111/polygon>`__ , use
     ``pip install polygon``.
+    You can customize the range of data using kwargs ``from_date``, ``to_date````timespan`` and ``multiplier``. For a
+    description of these arguments, see
+    `Here <https://polygon.readthedocs.io/en/latest/Stocks.html#get-aggregate-bars-candles>`__
+
     To view additional information about the ticker symbols, you can use the **kwarg** ``kind``, defaulting to
     ``None`` which doesn't pull/display any additional info.
 
@@ -27,6 +31,24 @@ def polygon_api(ticker: str, **kwargs):
     * ``all``: Everything below is displayed
     * ``company``: Company information
     * ````: pass
+
+    :param ticker: The ticker symbols of the stock.
+    :param \**kwargs:
+        Described Below
+
+    :Keyword Arguments:
+        * ``verbose`` - Prints Company Information "info" and a Chart History
+                        header to the screen. Default: False
+        * ``show`` - How many last rows of Chart History to show. Default: None
+        * ``api_key`` - REQUIRED. Your polygon API key. Visit your dashboard to get this key.
+        * ``kind`` - options described above. Defaults to None
+        * ``start_date`` - start date of time range to get data for. Defaults to roughly a year back. Can be supplied
+                           as a ``datetime`` or ``date`` object or string ``YYYY-MM-DD``
+        * ``to_date`` - end date of time range to get data for. Defaults to up to most recent data available. Can be
+                        supplied as a ``datetime`` or ``date`` object or string ``YYYY-MM-DD``
+        * ``limit`` - max number of base candles to aggregate from. Defaults to 50000 (also the maximum value).
+        * ``timespan`` - Type of candles' granularity. Defaults to ``day`` which returns day candles.
+        *  ``multiplier`` - multiplier of granularity. defaults to 1. so defaults candles are of `1Day` granularity.
     """
     LOGGER.info(f"[!] kwargs: {kwargs}")
     verbose = kwargs.pop("verbose", True)
@@ -65,7 +87,7 @@ def polygon_api(ticker: str, **kwargs):
         resp = polygon_client.get_aggregate_bars(ticker, start_date, end_date, limit=limit,
                                                  multiplier=multiplier, timespan=timespan)
 
-    if 'results' in resp:
+    if 'results' in resp.keys():
         df = pd.DataFrame.from_dict(resp['results'])
         if len(df) > 0:
             index = 't'
@@ -75,10 +97,13 @@ def polygon_api(ticker: str, **kwargs):
 
         df.name = ticker
     else:
-        return None
+        return df  # no data received. empty dataframe returned
 
     if show is not None and isinstance(show, int) and show > 0:
         print(f"\n{df.name}\n{df.tail(show)}\n")
+
+    if kind in ['nothing', None]:  # no additional data requested
+        return df
 
     return df
 
