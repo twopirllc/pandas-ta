@@ -54,7 +54,7 @@ def polygon_api(ticker: str, **kwargs):
         * ``contract_limit`` - max number of contracts to display from option chains information. Defaults to 10
     """
     LOGGER.info(f"[!] kwargs: {kwargs}")
-    verbose = kwargs.pop("verbose", True)
+    verbose = kwargs.pop("verbose", False)
     kind = kwargs.pop("kind", "nothing").lower()
     show = kwargs.pop("show", None)
     desc = kwargs.pop('desc', False)
@@ -83,7 +83,7 @@ def polygon_api(ticker: str, **kwargs):
     _all, div = ["all"], "=" * 53  # Max div width is 80
 
     if verbose:
-        print("\n====  Chart History       " + div + f"\n[*] Pandas TA v{version} & polygon-api")
+        print("\n====  Chart History       " + div + f"\n[*] Pandas TA v{version} & polygon API")
         print(f"[+] Downloading {ticker}[from {start_date} to {end_date}] from polygon ("
               f"https://www.polygon.io/)")
 
@@ -113,10 +113,10 @@ def polygon_api(ticker: str, **kwargs):
     ref_client, stock_client = polygon.ReferenceClient(api_key), polygon.StocksClient(api_key)
 
     # ALL THE INFORMATION
-    if kind in ['all'] or verbose:
+    if kind in ['all', 'info'] or verbose:
         print("\n====  Company Information  " + div)
         details = ref_client.get_ticker_details(ticker)
-        details_vx = ref_client.get_ticker_details_vx(ticker)
+        details_vx = ref_client.get_ticker_details_vx(ticker)['results']
 
         print(f'{details["name"]} [{details["symbol"]}]\n')
 
@@ -127,9 +127,9 @@ def polygon_api(ticker: str, **kwargs):
         #  include here lol. I wrote the ones i felt were important. Feel free to suggest more.
 
         # Common details + Market info
-        print(f'{details["hq_address"]}\n{details["hq_country"]}\nPhone: {details_vx["phone_number"]}\n'
-              f'Website: {details["url"]} || Employees: {details_vx["employees"]}\nSector: {details["sector"]} ||'
-              f'Industry: {details["industry"]}\n====  Company Information {div}\n'
+        print(f'{details["hq_address"]}. {details["hq_country"]}\nPhone: {details_vx["phone_number"]}\n'
+              f'Website: {details["url"]} || Employees: {details["employees"]}\nSector: {details["sector"]} || '
+              f'Industry: {details["industry"]}\n\n====  Market Information {div}\n'
               f'Market: {details_vx["market"].upper()} || locale: {details_vx["locale"].upper()} || '
               f'Exchange: {details["exchange"]} || Symbol: {details["symbol"]}\nMarket Shares: '
               f'{details_vx["market_cap"]} || Outstanding Shares: {details_vx["outstanding_shares"]}\n')
@@ -137,14 +137,19 @@ def polygon_api(ticker: str, **kwargs):
         # Price Info
         print(f"\n====  Price Information {div}")
         snap_res = stock_client.get_snapshot(ticker)
-        snap = snap_res['ticker']
 
-        print(f'\nCurrent Price: {snap["lastTrade"]["p"]} || Today\'s Change: ${snap_res["todaysChange"]} - '
-              f'{snap_res["todaysChangePerc"]}%\nBid: {snap["lastQuote"]["p"]} x {snap["lastQuote"]["s"]} || Ask: '
-              f'{snap["lastQuote"]["P"]} x {snap["lastQuote"]["S"]} || Spread: '
-              f'{round(snap["lastQuote"]["P"] - snap["lastQuote"]["p"], 4)}\nOpen: {snap["day"]["o"]} || High: '
-              f'{snap["day"]["h"]} || Low: {snap["day"]["l"]} || Close: {snap["day"]["c"]} || Volume: '
-              f'{snap["day"]["v"]} || VWA: {snap["day"]["vw"]}')
+        try:
+            snap = snap_res['ticker']
+
+            print(f'\nCurrent Price: {snap["lastTrade"]["p"]} || Today\'s Change: ${snap_res["todaysChange"]} - '
+                  f'{snap_res["todaysChangePerc"]}%\nBid: {snap["lastQuote"]["p"]} x {snap["lastQuote"]["s"]} || Ask: '
+                  f'{snap["lastQuote"]["P"]} x {snap["lastQuote"]["S"]} || Spread: '
+                  f'{round(snap["lastQuote"]["P"] - snap["lastQuote"]["p"], 4)}\nOpen: {snap["day"]["o"]} || High: '
+                  f'{snap["day"]["h"]} || Low: {snap["day"]["l"]} || Close: {snap["day"]["c"]} || Volume: '
+                  f'{snap["day"]["v"]} || VWA: {snap["day"]["vw"]}')
+        except KeyError:
+            print(f'Snapshot not found for {ticker}. Can Not print price information. Snapshot will be be back '
+                  f'available after pre market session opens\n')
 
         # Splits and Dividends
         divs, splits = ref_client.get_stock_dividends(ticker), ref_client.get_stock_splits(ticker)
@@ -162,9 +167,9 @@ def polygon_api(ticker: str, **kwargs):
                                                  contract_type=None if contract_type == 'all' else contract_type)
 
         if len(chains['results']) > 0:
+            print(f'\n====  Option chains {div}\n\n')
             for contract in chains['results']:
-                print(f'\n====  Option chains {div}\n\nSymbol: {contract["ticker"]} || Type:'
-                      f' {contract["contract_type"]}'
+                print(f'Symbol: {contract["ticker"]} || Type: {contract["contract_type"]}'
                       f' || Expiry: {contract["expiration_date"]} || Strike Price: ${contract["strike_price"]}'
                       f' || Shares Per Contract: {contract["shares_per_contract"]}\n')
         else:
