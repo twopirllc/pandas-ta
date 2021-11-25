@@ -42,6 +42,7 @@ def polygon_api(ticker: str, **kwargs):
         * ``show`` - How many last rows of Chart History to show. Default: None
         * ``api_key`` - REQUIRED. Your polygon API key. Visit your dashboard to get this key.
         * ``kind`` - options described above. Defaults to None
+        * ``desc`` - whether to print the description of company or not. Defaults to False.
         * ``start_date`` - start date of time range to get data for. Defaults to roughly a year back. Can be supplied
                            as a ``datetime`` or ``date`` object or string ``YYYY-MM-DD``
         * ``to_date`` - end date of time range to get data for. Defaults to up to most recent data available. Can be
@@ -54,6 +55,7 @@ def polygon_api(ticker: str, **kwargs):
     verbose = kwargs.pop("verbose", True)
     kind = kwargs.pop("kind", "nothing").lower()
     show = kwargs.pop("show", None)
+    desc = kwargs.pop('desc', False)
     df = DataFrame()
     api_key = kwargs.pop('api_key', None)
 
@@ -104,6 +106,45 @@ def polygon_api(ticker: str, **kwargs):
 
     if kind in ['nothing', None]:  # no additional data requested
         return df
+
+    # ADDITIONAL DATA FLOW
+    ref_client, stock_client = polygon.ReferenceClient(api_key), polygon.StocksClient(api_key)
+
+    # ALL THE INFORMATION
+    if kind in ['all'] or verbose:
+        print("\n====  Company Information  " + div)
+        details = ref_client.get_ticker_details(ticker)
+        details_vx = ref_client.get_ticker_details_vx(ticker)
+
+        print(f'{details["name"]} [{details["symbol"]}]\n')
+
+        if desc:  # company description
+            print(f'{details["description"]}\n')
+
+        # TODO: polygon returns hell lotta data for market info across a few endpoints. I don't know which ones to
+        #  include here lol. I wrote the ones i felt were important. Feel free to suggest more.
+
+        # Common details + Market info
+        print(f'{details["hq_address"]}\n{details["hq_country"]}\nPhone: {details_vx["phone_number"]}\n'
+              f'Website: {details["url"]} || Employees: {details_vx["employees"]}\nSector: {details["sector"]} ||'
+              f'Industry: {details["industry"]}\n====  Company Information {div}\n'
+              f'Market: {details_vx["market"].upper()} || locale: {details_vx["locale"].upper()} || '
+              f'Exchange: {details["exchange"]} || Symbol: {details["symbol"]}\nMarket Shares: '
+              f'{details_vx["market_cap"]} || Outstanding Shares: {details_vx["outstanding_shares"]}\n')
+
+        # Price Info
+        print(f"\n====  Price Information {div}")
+        snap_res = stock_client.get_snapshot(ticker)
+        snap = snap_res['ticker']
+
+        print(f'\nCurrent Price: {snap["lastTrade"]["p"]} || Today\'s Change: ${snap_res["todaysChange"]} - '
+              f'{snap_res["todaysChangePerc"]}%\nBid: {snap["lastQuote"]["p"]} x {snap["lastQuote"]["s"]} || Ask: '
+              f'{snap["lastQuote"]["P"]} x {snap["lastQuote"]["S"]} || Spread: '
+              f'{round(snap["lastQuote"]["P"] - snap["lastQuote"]["p"], 4)}\nOpen: {snap["day"]["o"]} || High: '
+              f'{snap["day"]["h"]} || Low: {snap["day"]["l"]} || Close: {snap["day"]["c"]} || Volume: '
+              f'{snap["day"]["v"]} || VWA: {snap["day"]["vw"]}')
+
+        # Splits and Dividends
 
     return df
 
