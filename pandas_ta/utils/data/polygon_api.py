@@ -28,9 +28,8 @@ def polygon_api(ticker: str, **kwargs):
 
     Other options for kwarg ``kind`` are as described (in format: ``value_to_supply: description of that info type``):
 
-    * ``all``: Everything below is displayed
-    * ``company``: Company information
-    * ````: pass
+    * ``all`` OR ``info``: Everything below is displayed
+    * ``option_chains`` OR ``oc``: Option chains information
 
     :param ticker: The ticker symbols of the stock.
     :param \**kwargs:
@@ -49,7 +48,10 @@ def polygon_api(ticker: str, **kwargs):
                         supplied as a ``datetime`` or ``date`` object or string ``YYYY-MM-DD``
         * ``limit`` - max number of base candles to aggregate from. Defaults to 50000 (also the maximum value).
         * ``timespan`` - Type of candles' granularity. Defaults to ``day`` which returns day candles.
-        *  ``multiplier`` - multiplier of granularity. defaults to 1. so defaults candles are of `1Day` granularity.
+        * ``multiplier`` - multiplier of granularity. defaults to 1. so defaults candles are of `1Day` granularity.
+        * ``contract_type`` - default to all contract types. Can be changed to ``call`` OR ``put``. Only applicable
+                              when displaying option chains data
+        * ``contract_limit`` - max number of contracts to display from option chains information. Defaults to 10
     """
     LOGGER.info(f"[!] kwargs: {kwargs}")
     verbose = kwargs.pop("verbose", True)
@@ -145,6 +147,28 @@ def polygon_api(ticker: str, **kwargs):
               f'{snap["day"]["v"]} || VWA: {snap["day"]["vw"]}')
 
         # Splits and Dividends
+        divs, splits = ref_client.get_stock_dividends(ticker), ref_client.get_stock_splits(ticker)
+        # TODO: spits and dividends endpoints from polygon return a huge list. not sure if that entire list is useful
+        print(f'\nNumber of dividends: {divs["count"]} || Number of splits: {splits["count"]}\n')
+
+        # TODO: financials endpoint on polygon returns a huge response. I doubt if that's useful to be displayed.
+
+    # Option Chains
+    if kind in ['option_chains', 'oc']:
+        contract_type = kwargs.pop('contract_type', 'all')
+        contract_limit = kwargs.pop('contract_limit', 10)
+
+        chains = ref_client.get_option_contracts(ticker, limit=contract_limit,
+                                                 contract_type=None if contract_type == 'all' else contract_type)
+
+        if len(chains['results']) > 0:
+            for contract in chains['results']:
+                print(f'\n====  Option chains {div}\n\nSymbol: {contract["ticker"]} || Type:'
+                      f' {contract["contract_type"]}'
+                      f' || Expiry: {contract["expiration_date"]} || Strike Price: ${contract["strike_price"]}'
+                      f' || Shares Per Contract: {contract["shares_per_contract"]}\n')
+        else:
+            print(f'\nNo option chains data found for {ticker}.')
 
     return df
 
