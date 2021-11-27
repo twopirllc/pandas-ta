@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from pandas_ta.overlap import rma
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import get_offset, non_zero_range, rma_pandas, verify_series
 
 
 def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, **kwargs):
@@ -61,8 +60,8 @@ def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, 
 
     fastk = 100 * (close - lowest_low) / non_zero_range(highest_high, lowest_low)
 
-    k = rma(fastk, length=signal)
-    d = rma(k, length=signal)
+    k = rma_pandas(fastk, length=signal)
+    d = rma_pandas(k, length=signal)
     j = 3 * k - 2 * d
 
     # Offset

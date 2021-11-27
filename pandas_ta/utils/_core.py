@@ -67,6 +67,13 @@ def recent_minimum_index(x):
     return int(argmin(x[::-1]))
 
 
+def rma_pandas(series, length):
+    series = verify_series(series)
+    alpha = (1.0 / length) if length > 0 else 0.5
+    return series.ewm(alpha=alpha, min_periods=length).mean()
+
+
+
 def signed_series(series: Series, initial: int, lag: int = None) -> Series:
     """Returns a Signed Series with or without an initial value
 
