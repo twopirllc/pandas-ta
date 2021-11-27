@@ -52,7 +52,7 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=N
     k = k if k and k > 0 else 14
     d = d if d and d > 0 else 3
     smooth_k = smooth_k if smooth_k and smooth_k > 0 else 3
-    _length = max(k, d, smooth_k)
+    _length = k + d + smooth_k
     high = verify_series(high, _length)
     low = verify_series(low, _length)
     close = verify_series(close, _length)
