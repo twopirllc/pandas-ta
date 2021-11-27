@@ -13,6 +13,11 @@ import pandas_ta as ta
 print(ta.version)
 ```
 
+**Do you have _TA Lib_ also installed in your environment?**
+```sh
+$ pip list
+```
+
 **Upgrade.**
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
