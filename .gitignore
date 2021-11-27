@@ -147,3 +147,4 @@ jnb/*
 
 *.txt
 df_file
+/.vs/slnx.sqlite
