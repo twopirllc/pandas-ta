@@ -18,7 +18,8 @@ sample_data = read_csv(
 )
 sample_data.set_index(DatetimeIndex(sample_data["date"]), inplace=True, drop=True)
 sample_data.drop("date", axis=1, inplace=True)
-sample_data = sample_data[:200]
+sample_data = sample_data[:200]       # First 200
+# sample_data = sample_data[100:300]  # Decreasing Segment
 
 
 def error_analysis(df, kind, msg, icon=INFO, newline=True):

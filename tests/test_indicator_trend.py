@@ -2,6 +2,8 @@ from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESH
 from .context import pandas_ta
 
 from unittest import TestCase, skip
+
+from numpy import NaN as npNaN
 import pandas.testing as pdt
 from pandas import DataFrame, Series
 
@@ -163,10 +165,12 @@ class TestTrend(TestCase):
         # Combine Long and Short SAR"s into one SAR value
         psar = result[result.columns[:2]].fillna(0)
         psar = psar[psar.columns[0]] + psar[psar.columns[1]]
+        psar.iloc[0] = npNaN
         psar.name = result.name
 
         try:
             expected = tal.SAR(self.high, self.low)
+            psar_corr = pandas_ta.utils.df_error_analysis(psar, expected, col=CORRELATION)
             pdt.assert_series_equal(psar, expected)
         except AssertionError:
             try:
