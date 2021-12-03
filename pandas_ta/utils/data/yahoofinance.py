@@ -93,8 +93,9 @@ def yf(ticker: str, **kwargs):
             df = yfd.history(period=period, interval=interval, proxy=proxy, **kwargs)
         except:
             if yfra.__version__ == "0.1.60":
-                print(f"[!] If history is not downloading, see yfinance Issue #760 by user djl0.")
-                print(f"[!] https://github.com/ranaroussi/yfinance/issues/760#issuecomment-877355832")
+                _yfv1_60 = f"[!] If history is not downloading, see yfinance Issue #760 by user djl0.\n" + \
+                    f"[!] https://github.com/ranaroussi/yfinance/issues/760#issuecomment-877355832"
+                print(_yfv1_60)
                 return
 
         if df.empty: return

@@ -193,7 +193,6 @@ class sample(object):
         self._generate() # Run it
 
 
-
     def _bernoulli_mask(self, array, percent:float = None, p:float = None):
         """Bernoulli Mask - Positive or Negative"""
         if array.size > 0:

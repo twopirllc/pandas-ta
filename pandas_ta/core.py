@@ -636,7 +636,7 @@ class AnalysisIndicators(BasePandasObject):
                 Default: Number of cores of the OS
             exclude (list): List of indicator names to exclude. Some are
                 excluded by default for various reasons; they require additional
-                sources, performance (td_seq), not a ohlcv chart (vp) etc.
+                sources, performance (td_seq), not a time series chart (vp) etc.
             name (str): Select all indicators or indicators by
                 Category such as: "candles", "cycles", "momentum", "overlap",
                 "performance", "statistics", "trend", "volatility", "volume", or
@@ -817,17 +817,21 @@ class AnalysisIndicators(BasePandasObject):
         if returns: return self._df
 
 
-    def ticker(self, ticker: str, **kwargs):
+    def ticker(self, ticker: str, ds: str = None, **kwargs):
         """ticker
 
-        This method downloads Historical Data if the package yfinance is installed.
-        Additionally it can run a ta.Strategy; Builtin or Custom. It returns a
-        DataFrame if there the DataFrame is not empty, otherwise it exits. For
-        additional yfinance arguments, use help(ta.yf).
+        This method downloads Historical Data if the package yfinance is
+        installed. Additionally it can run a ta.Strategy; Builtin or Custom. It
+        returns a DataFrame if there the DataFrame is not empty, otherwise it
+        exits. For additional yfinance arguments, use help(ta.yf).
+        Alternatively, if you have a Polygon API Key, you can use it as well;
+        use help(ta.polygon_api) for more information.
 
         Historical Data
         >>> df = df.ta.ticker("aapl")
-        More specifically
+        If polygon API installed, include api_key argument
+        >>> df = df.ta.ticker("aapl", ds="polygon", api_key="your API KEY")
+        More specifically (for Yahoo Finance)
         >>> df = df.ta.ticker("aapl", period="max", interval="1d", kind=None)
 
         Changing the period of Historical Data
@@ -846,9 +850,9 @@ class AnalysisIndicators(BasePandasObject):
         Args:
             ticker (str): Any string for a ticker you would use with yfinance.
                 Default: "SPY"
+            ds (str): Options: "polygon" and "yahoo". Default: "yahoo"
         Kwargs:
             kind (str): Options see above. Default: "history"
-            ds (str): Data Source to use. Default: "yahoo"
             strategy (str | ta.Strategy): Which strategy to apply after
                 downloading chart history. Default: None
 
@@ -858,13 +862,16 @@ class AnalysisIndicators(BasePandasObject):
             Exits if the DataFrame is empty or None
             Otherwise it returns a DataFrame
         """
-        ds = kwargs.pop("ds", "yahoo")
+        # ds = kwargs.pop("ds", "yahoo")
+        ds = f"{ds.lower()}" if ds is not None and isinstance(ds, str) else "yahoo"
         strategy = kwargs.pop("strategy", None)
 
         # Fetch the Data
-        ds = ds.lower() is not None and isinstance(ds, str)
-        # df = av(ticker, **kwargs) if ds and ds == "av" else yf(ticker, **kwargs)
-        df = yf(ticker, **kwargs)
+        if ds == "polygon":
+            df = polygon_api(ticker, **kwargs)
+        elif ds == "yahoo":
+            df = yf(ticker, **kwargs)
+        else: return
 
         if df is None: return
         elif df.empty:
