@@ -1,0 +1,10 @@
+{
+    "name": "Sample JSON Strategy 2",
+    "description": "Sample JSON Strategy Test 2",
+    "ta": [
+        {"kind": "ema", "length": 10, "sma": false},
+        {"kind": "sma", "length": 50, "talib": false},
+        {"kind": "kc", "mamode": "hma"},
+        {"kind": "adx", "length": 10}
+    ]
+}

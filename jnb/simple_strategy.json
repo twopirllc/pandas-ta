@@ -1,0 +1,12 @@
+{
+    "name": "Simple Strategy",
+    "description": "Sample JSON Strategy Test 2",
+    "ta": [
+        {"kind": "ema", "length": 8, "sma": true},
+        {"kind": "ema", "length": 21, "talib": true},
+        {"kind": "sma", "length": 50, "talib": true},
+        {"kind": "sma", "length": 200, "talib": true},
+        {"kind": "rsi", "talib": true},
+        {"kind": "obv"}
+    ]
+}
