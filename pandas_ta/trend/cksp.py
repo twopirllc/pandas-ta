@@ -16,20 +16,13 @@ def cksp(high, low, close, p=None, x=None, q=None, tvmode=None, offset=None, **k
     view implementation uses the Welles Wilder moving average, the book uses a
     simple moving average.
 
+    Defaults:
+    Book:         p=10, x=3, q=20
+    Trading View: p=10, x=1, q=9
+
     Sources:
         https://www.multicharts.com/discussion/viewtopic.php?t=48914
         "The New Technical Trader", Wikey 1st ed. ISBN 9780471597803, page 95
-
-    Calculation:
-        Default Inputs:
-            p=10, x=1, q=9, tvmode=True
-        ATR = Average True Range
-
-        LS0 = high.rolling(p).max() - x * ATR(length=p)
-        LS = LS0.rolling(q).max()
-
-        SS0 = high.rolling(p).min() + x * ATR(length=p)
-        SS = SS0.rolling(q).min()
 
     Args:
         close (pd.Series): Series of 'close's
@@ -47,7 +40,6 @@ def cksp(high, low, close, p=None, x=None, q=None, tvmode=None, offset=None, **k
         pd.DataFrame: long and short columns.
     """
     # Validate Arguments
-    # TV defaults=(10,1,9), book defaults = (10,3,20)
     p = int(p) if p and p > 0 else 10
     x = float(x) if x and x > 0 else 1 if tvmode is True else 3
     q = int(q) if q and q > 0 else 9 if tvmode is True else 20

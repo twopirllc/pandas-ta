@@ -13,18 +13,6 @@ def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
     Sources:
         https://www.investopedia.com/terms/p/pvi.asp
 
-    Calculation:
-        Default Inputs:
-            length=1, initial=1000
-        ROC = Rate of Change
-
-        roc = ROC(close, length)
-        signed_volume = signed_series(volume, initial=1)
-        pvi = signed_volume[signed_volume > 0].abs() * roc_
-        pvi.fillna(0, inplace=True)
-        pvi.iloc[0]= initial
-        pvi = pvi.cumsum()
-
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's

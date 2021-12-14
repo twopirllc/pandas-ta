@@ -11,9 +11,6 @@ def bop(open_, high, low, close, scalar=None, talib=None, offset=None, **kwargs)
     Sources:
         http://www.worden.com/TeleChartHelp/Content/Indicators/Balance_of_Power.htm
 
-    Calculation:
-        BOP = scalar * (close - open) / (high - low)
-
     Args:
         open (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's

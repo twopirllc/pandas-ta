@@ -12,13 +12,6 @@ def pvt(close, volume, drift=None, offset=None, **kwargs):
     Sources:
         https://www.tradingview.com/wiki/Price_Volume_Trend_(PVT)
 
-    Calculation:
-        Default Inputs:
-            drift=1
-        ROC = Rate of Change
-        pv = ROC(close, drift) * volume
-        PVT = pv.cumsum()
-
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's

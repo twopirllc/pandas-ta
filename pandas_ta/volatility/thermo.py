@@ -13,22 +13,6 @@ def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=Non
         https://www.motivewave.com/studies/elders_thermometer.htm
         https://www.tradingview.com/script/HqvTuEMW-Elder-s-Market-Thermometer-LazyBear/
 
-    Calculation:
-        Default Inputs:
-        length=20, drift=1, mamode=EMA, long=2, short=0.5
-        EMA = Exponential Moving Average
-
-        thermoL = (low.shift(drift) - low).abs()
-        thermoH = (high - high.shift(drift)).abs()
-
-        thermo = np.where(thermoH > thermoL, thermoH, thermoL)
-        thermo_ma = ema(thermo, length)
-
-        thermo_long = thermo < (thermo_ma * long)
-        thermo_short = thermo > (thermo_ma * short)
-        thermo_long = thermo_long.astype(int)
-        thermo_short = thermo_short.astype(int)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

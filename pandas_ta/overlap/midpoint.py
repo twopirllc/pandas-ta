@@ -8,15 +8,6 @@ def midpoint(close, length=None, talib=None, offset=None, **kwargs):
 
     The Midpoint is the average of the rolling high and low of period length.
 
-    Sources:
-
-    Calculation:
-        Default Inputs:
-            length=2
-        HC = close.rolling(length).max()
-        LC = close.rolling(length).min()
-        MID = 0.5 * (HC + LC)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 2

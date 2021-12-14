@@ -12,9 +12,6 @@ def wcp(high, low, close, talib=None, offset=None, **kwargs):
     Sources:
         https://www.fmlabs.com/reference/default.htm?url=WeightedCloses.htm
 
-    Calculation:
-        WCP = (2 * close + high + low) / 4
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

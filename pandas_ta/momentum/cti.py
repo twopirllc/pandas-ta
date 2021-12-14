@@ -17,6 +17,10 @@ def cti(close, length=None, offset=None, **kwargs) -> Series:
         length (int): It's period. Default: 12
         offset (int): How many periods to offset the result. Default: 0
 
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
     Returns:
         pd.Series: Series of the CTI values for the given period.
     """

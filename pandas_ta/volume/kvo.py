@@ -14,15 +14,6 @@ def kvo(high, low, close, volume, fast=None, slow=None, signal=None, mamode=None
         https://www.investopedia.com/terms/k/klingeroscillator.asp
         https://www.daytrading.com/klinger-volume-oscillator
 
-    Calculation:
-        Default Inputs:
-            fast=34, slow=55, signal=13, drift=1
-        EMA = Exponential Moving Average
-
-        SV = volume * signed_series(HLC3, 1)
-        KVO = EMA(SV, fast) - EMA(SV, slow)
-        Signal = EMA(KVO, signal)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

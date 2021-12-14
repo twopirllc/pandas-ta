@@ -7,11 +7,6 @@ def skew(close, length=None, offset=None, **kwargs):
 
     Calculates the Skew over a rolling period.
 
-    Calculation:
-        Default Inputs:
-            length=30
-        SKEW = close.rolling(length).skew()
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30

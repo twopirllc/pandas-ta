@@ -174,3 +174,8 @@ class TestVolume(TestCase):
         result = pandas_ta.vp(self.close, self.volume_)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "VP_10")
+
+    def test_wb_tsv(self):
+        result = pandas_ta.wb_tsv(self.close, self.volume_)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "TSV_18_10")

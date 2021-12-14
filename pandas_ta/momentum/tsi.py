@@ -14,21 +14,6 @@ def tsi(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, drif
     Sources:
         https://www.investopedia.com/terms/t/tsi.asp
 
-    Calculation:
-        Default Inputs:
-            fast=13, slow=25, signal=13, scalar=100, drift=1
-        EMA = Exponential Moving Average
-        diff = close.diff(drift)
-
-        slow_ema = EMA(diff, slow)
-        fast_slow_ema = EMA(slow_ema, slow)
-
-        abs_diff_slow_ema = absolute_diff_ema = EMA(ABS(diff), slow)
-        abema = abs_diff_fast_slow_ema = EMA(abs_diff_slow_ema, fast)
-
-        TSI = scalar * fast_slow_ema / abema
-        Signal = EMA(TSI, signal)
-
     Args:
         close (pd.Series): Series of 'close's
         fast (int): The short period. Default: 13

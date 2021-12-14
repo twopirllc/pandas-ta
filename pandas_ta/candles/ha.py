@@ -19,25 +19,6 @@ def ha(open_, high, low, close, offset=None, **kwargs):
     Sources:
         https://www.investopedia.com/terms/h/heikinashi.asp
 
-    Calculation:
-        HA_OPEN[0] = (open[0] + close[0]) / 2
-        HA_CLOSE = (open[0] + high[0] + low[0] + close[0]) / 4
-
-        for i > 1 in df.index:
-            HA_OPEN = (HA_OPEN[i−1] + HA_CLOSE[i−1]) / 2
-
-        HA_HIGH = MAX(HA_OPEN, HA_HIGH, HA_CLOSE)
-        HA_LOW = MIN(HA_OPEN, HA_LOW, HA_CLOSE)
-
-        How to Calculate Heikin-Ashi
-
-        Use one period to create the first Heikin-Ashi (HA) candle, using
-        the formulas. For example use the high, low, open, and close to
-        create the first HA close price. Use the open and close to create
-        the first HA open. The high of the period will be the first HA high,
-        and the low will be the first HA low. With the first HA calculated,
-        it is now possible to continue computing the HA candles per the formulas.
-    ​​
     Args:
         open_ (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's

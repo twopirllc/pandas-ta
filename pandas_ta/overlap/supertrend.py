@@ -16,31 +16,6 @@ def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kw
     Sources:
         http://www.freebsensetips.com/blog/detail/7/What-is-supertrend-indicator-its-calculation
 
-    Calculation:
-        Default Inputs:
-            length=7, multiplier=3.0
-        Default Direction:
-        Set to +1 or bullish trend at start
-
-        MID = multiplier * ATR
-        LOWERBAND = HL2 - MID
-        UPPERBAND = HL2 + MID
-
-        if UPPERBAND[i] < FINAL_UPPERBAND[i-1] and close[i-1] > FINAL_UPPERBAND[i-1]:
-            FINAL_UPPERBAND[i] = UPPERBAND[i]
-        else:
-            FINAL_UPPERBAND[i] = FINAL_UPPERBAND[i-1])
-
-        if LOWERBAND[i] > FINAL_LOWERBAND[i-1] and close[i-1] < FINAL_LOWERBAND[i-1]:
-            FINAL_LOWERBAND[i] = LOWERBAND[i]
-        else:
-            FINAL_LOWERBAND[i] = FINAL_LOWERBAND[i-1])
-
-        if close[i] <= FINAL_UPPERBAND[i]:
-            SUPERTREND[i] = FINAL_UPPERBAND[i]
-        else:
-            SUPERTREND[i] = FINAL_LOWERBAND[i]
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

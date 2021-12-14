@@ -16,16 +16,6 @@ def stochf(high, low, close, k=None, d=None, mamode=None, talib=None, offset=Non
         https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=333&Name=KD_-_Fast
         https://corporatefinanceinstitute.com/resources/knowledge/trading-investing/fast-stochastic-indicator/
 
-    Calculation:
-        Default Inputs:
-            k=14, d=3, mamode="sma",
-        SMA = Simple Moving Average
-        LL  = low for last k periods
-        HH  = high for last k periods
-
-        STOCHFk = 100 * (close - LL) / (HH - LL)
-        STOCHFd = MA(SMA, STOCH, d)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

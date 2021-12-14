@@ -18,20 +18,6 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, o
     Sources:
         https://www.tradingview.com/wiki/Stochastic_(STOCH)
 
-    Calculation:
-        Default Inputs:
-            length=14, rsi_length=14, k=3, d=3
-        RSI = Relative Strength Index
-        SMA = Simple Moving Average
-
-        RSI = RSI(high, low, close, rsi_length)
-        LL  = lowest RSI for last rsi_length periods
-        HH  = highest RSI for last rsi_length periods
-
-        STOCHRSI  = 100 * (RSI - LL) / (HH - LL)
-        STOCHRSIk = SMA(STOCHRSI, k)
-        STOCHRSId = SMA(STOCHRSIk, d)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

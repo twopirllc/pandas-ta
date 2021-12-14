@@ -12,13 +12,6 @@ def bias(close, length=None, mamode=None, offset=None, **kwargs):
         Few internet resources on definitive definition.
         Request by Github user homily, issue #46
 
-    Calculation:
-        Default Inputs:
-            length=26, MA='sma'
-
-        BIAS = (close - MA(close, length)) / MA(close, length)
-            = (close / MA(close, length)) - 1
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): The period. Default: 26

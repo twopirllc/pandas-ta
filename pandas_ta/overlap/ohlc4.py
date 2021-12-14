@@ -5,14 +5,14 @@ from pandas_ta.utils import get_offset, verify_series
 def ohlc4(open_, high, low, close, offset=None, **kwargs):
     """OHLC4
 
-    Calculation:
-        OHLC4 = 0.25 * (open + high + low + close)
+    OHLC4 is the average of open, high, low and close.
 
     Args:
         open_ (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
+        offset (int): How many periods to offset the result. Default: 0
 
     Returns:
         pd.Series: New feature generated.

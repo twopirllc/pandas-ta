@@ -13,24 +13,6 @@ def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, off
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/acceleration-bands-abands/
 
-    Calculation:
-        Default Inputs:
-            length=10, c=4
-        EMA = Exponential Moving Average
-        SMA = Simple Moving Average
-        HL_RATIO = c * (high - low) / (high + low)
-        LOW = low * (1 - HL_RATIO)
-        HIGH = high * (1 + HL_RATIO)
-
-        if 'ema':
-            LOWER = EMA(LOW, length)
-            MID = EMA(close, length)
-            UPPER = EMA(HIGH, length)
-        else:
-            LOWER = SMA(LOW, length)
-            MID = SMA(close, length)
-            UPPER = SMA(HIGH, length)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

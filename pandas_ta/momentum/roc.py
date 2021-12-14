@@ -14,12 +14,6 @@ def roc(close, length=None, scalar=None, talib=None, offset=None, **kwargs):
     Sources:
         https://www.tradingview.com/wiki/Rate_of_Change_(ROC)
 
-    Calculation:
-        Default Inputs:
-            length=1
-        MOM = Momentum
-        ROC = 100 * MOM(close, length) / close.shift(length)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1

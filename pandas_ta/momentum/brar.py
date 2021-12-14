@@ -12,20 +12,6 @@ def brar(open_, high, low, close, length=None, scalar=None, drift=None, offset=N
         No internet resources on definitive definition.
         Request by Github user homily, issue #46
 
-    Calculation:
-        Default Inputs:
-            length=26, scalar=100
-        SUM = Sum
-
-        HO_Diff = high - open
-        OL_Diff = open - low
-        HCY = high - close[-1]
-        CYL = close[-1] - low
-        HCY[HCY < 0] = 0
-        CYL[CYL < 0] = 0
-        AR = scalar * SUM(HO, length) / SUM(OL, length)
-        BR = scalar * SUM(HCY, length) / SUM(CYL, length)
-
     Args:
         open_ (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's

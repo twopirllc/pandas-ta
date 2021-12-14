@@ -13,17 +13,6 @@ def cdl_doji(open_, high, low, close, length=None, factor=None, scalar=None, asi
     Sources:
         TA-Lib: 96.56% Correlation
 
-    Calculation:
-        Default values:
-            length=10, percent=10 (0.1), scalar=100
-        ABS = Absolute Value
-        SMA = Simple Moving Average
-
-        BODY = ABS(close - open)
-        HL_RANGE = ABS(high - low)
-
-        DOJI = scalar IF BODY < 0.01 * percent * SMA(HL_RANGE, length) ELSE 0
-
     Args:
         open_ (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's

@@ -62,7 +62,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Trend](#trend-19)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
-    * [Volume](#volume-15)
+    * [Volume](#volume-16)
 * [Misc](#misc)
     * [Backtesting](#backtesting)
     * [Performance Metrics](#performance-metrics)
@@ -118,7 +118,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.39b*
+Best choice! Version: *0.3.40b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -898,7 +898,7 @@ Use parameter: cumulative=**True** for cumulative results.
 
 <br/>
 
-### **Volume** (15)
+### **Volume** (16)
 
 * _Accumulation/Distribution Index_: **ad**
 * _Accumulation/Distribution Oscillator_: **adosc**
@@ -915,6 +915,7 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Price Volume Rank_: **pvr**
 * _Price Volume Trend_: **pvt**
 * _Volume Profile_: **vp**
+* _Worden Brothers Time Segmented Value_: **wb_tsv**
 
 | _On-Balance Volume_ (OBV) |
 |:--------:|
@@ -1025,6 +1026,7 @@ help(ta.sample)
 ## **Breaking / Depreciated Indicators**
 * _Arnaud Legoux Moving Average_ (**alma**) Updated accuracy and speed with new default ```length=9``` and argument ```distribution_offset``` renamed to ```dist_offset```. See ```help(ta.alma)```.
 * _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See ```help(ta.tsignals)```
+* _Volume Profile_ (**vp**) is no longer part of the DataFrame Extension since it does not return a Time Series.
 * _Zero Lag Moving Average_ (**zlma**) now using available Moving Averages from ```ta.ma```. See ```help(ta.zlma)``` and ```help(ta.ma)```.
 
 <br/>
@@ -1039,6 +1041,7 @@ help(ta.sample)
 * _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
 * _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
 * _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which returns the standard deviation of data for the entire plot or for the interval of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
+* _Worden Brothers Time Segmented Value_ (**wb_tsv**) is an oscillator indicator that attempts to indentify money flow in a stock, similar to On Balance Volume (**obv**). See ```help(ta.wb_tsv)```
 
 <br/>
 

@@ -18,19 +18,6 @@ def amat(close=None, fast=None, slow=None, lookback=None, mamode=None, offset=No
     Sources:
         https://www.tradingview.com/script/Z2mq63fE-Trade-Archer-Moving-Averages-v1-4F/
 
-    Calculation:
-        Default Inputs:
-            fast=8, slow=21, mamode="ema", lookback=2
-        OBV = On Balance Volume
-        LR = Long Run Trend
-        SR = Short Run Trend
-
-        FMA = ma(close, mamode, fast)
-        SMA = ma(close, mamode, slow)
-
-        AMAT_LR = LR(FMA, SMA, lookback)
-        AMAT_SR = SR(FMA, SMA, lookback)
-
     Args:
         close (pd.Series): Series of 'close's
         fast (int): The period of the fast moving average. Default: 8

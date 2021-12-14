@@ -669,7 +669,6 @@ class AnalysisIndicators(BasePandasObject):
             "short_run",
             "td_seq", # Performance exclusion
             "tsignals",
-            "vp",
             "xsignals",
         ]
 
@@ -1804,8 +1803,8 @@ class AnalysisIndicators(BasePandasObject):
         result = pvt(close=close, volume=volume, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def vp(self, width=None, percent=None, **kwargs):
+    def wb_tsv(self, length=None, signal=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
-        result = vp(close=close, volume=volume, width=width, percent=percent, **kwargs)
+        result = wb_tsv(close=close, volume=volume, signal=signal, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)

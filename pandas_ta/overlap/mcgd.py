@@ -16,24 +16,11 @@ def mcgd(close, length=None, offset=None, c=None, **kwargs):
     Sources:
         https://www.investopedia.com/articles/forex/09/mcginley-dynamic-indicator.asp
 
-    Calculation:
-        Default Inputs:
-            length=10
-            offset=0
-            c=1
-
-        def mcg_(series):
-            denom = (constant * length * (series.iloc[1] / series.iloc[0]) ** 4)
-            series.iloc[1] = (series.iloc[0] + ((series.iloc[1] - series.iloc[0]) / denom))
-            return series.iloc[1]
-        mcg_cell = close[0:].rolling(2, min_periods=2).apply(mcg_, raw=False)
-        mcg_ds = close[:1].append(mcg_cell[1:])
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): Indicator's period. Default: 10
-        offset (int): Number of periods to offset the result. Default: 0
         c (float): Multiplier for the denominator, sometimes set to 0.6. Default: 1
+        offset (int): Number of periods to offset the result. Default: 0
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)

@@ -14,28 +14,6 @@ def kc(high, low, close, length=None, scalar=None, mamode=None, offset=None, **k
     Sources:
         https://www.tradingview.com/wiki/Keltner_Channels_(KC)
 
-    Calculation:
-        Default Inputs:
-            length=20, scalar=2, mamode=None, tr=True
-        TR = True Range
-        SMA = Simple Moving Average
-        EMA = Exponential Moving Average
-
-        if tr:
-            RANGE = TR(high, low, close)
-        else:
-            RANGE = high - low
-
-        if mamode == "ema":
-            BASIS = sma(close, length)
-            BAND = sma(RANGE, length)
-        elif mamode == "sma":
-            BASIS = sma(close, length)
-            BAND = sma(RANGE, length)
-
-        LOWER = BASIS - scalar * BAND
-        UPPER = BASIS + scalar * BAND
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

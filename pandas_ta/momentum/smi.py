@@ -21,16 +21,6 @@ def smi(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kw
         https://www.tradingview.com/script/Xh5Q0une-SMI-Ergodic-Oscillator/
         https://www.tradingview.com/script/cwrgy4fw-SMIIO/
 
-    Calculation:
-        Default Inputs:
-            fast=5, slow=20, signal=5
-        TSI = True Strength Index
-        EMA = Exponential Moving Average
-
-        ERG = TSI(close, fast, slow)
-        Signal = EMA(ERG, signal)
-        OSC = ERG - Signal
-
     Args:
         close (pd.Series): Series of 'close's
         fast (int): The short period. Default: 5

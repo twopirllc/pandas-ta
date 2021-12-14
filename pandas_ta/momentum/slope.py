@@ -24,12 +24,12 @@ def slope( close, length=None, as_angle=None, to_degrees=None, vertical=None, of
 
     Args:
         close (pd.Series): Series of 'close's
-        length (int): It's period.  Default: 1
+        length (int): It's period. Default: 1
+        as_angle (value, optional): Converts slope to an angle. Default: False
+        to_degrees (value, optional): Converts slope angle to degrees. Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        as_angle (value, optional): Converts slope to an angle. Default: False
-        to_degrees (value, optional): Converts slope angle to degrees. Default: False
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 

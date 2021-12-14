@@ -14,13 +14,6 @@ def cmo(close, length=None, scalar=None, talib=None, drift=None, offset=None, **
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/chande-momentum-oscillator-cmo/
         https://www.tradingview.com/script/hdrf0fXV-Variable-Index-Dynamic-Average-VIDYA/
 
-    Calculation:
-        Default Inputs:
-            drift=1, scalar=100
-
-        # Same Calculation as RSI except for this step
-        CMO = scalar * (PSUM - NSUM) / (PSUM + NSUM)
-
     Args:
         close (pd.Series): Series of 'close's
         scalar (float): How much to magnify. Default: 100

@@ -15,14 +15,6 @@ def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **
     Sources:
         https://www.investopedia.com/terms/r/relative_vigor_index.asp
 
-    Calculation:
-        Default Inputs:
-            length=14, swma_length=4
-        SWMA = Symmetrically Weighted Moving Average
-        numerator = SUM(SWMA(close - open, swma_length), length)
-        denominator = SUM(SWMA(high - low, swma_length), length)
-        RVGI = numerator / denominator
-
     Args:
         open_ (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's

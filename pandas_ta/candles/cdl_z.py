@@ -11,16 +11,6 @@ def cdl_z(open_, high, low, close, length=None, full=None, ddof=None, offset=Non
 
     Source: Kevin Johnson
 
-    Calculation:
-        Default values:
-            length=30, full=False, ddof=1
-        Z = ZSCORE
-
-        open  = Z( open, length, ddof)
-        high  = Z( high, length, ddof)
-        low   = Z(  low, length, ddof)
-        close = Z(close, length, ddof)
-
     Args:
         open_ (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's

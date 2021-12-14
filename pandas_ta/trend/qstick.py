@@ -12,12 +12,6 @@ def qstick(open_, close, length=None, offset=None, **kwargs):
     Sources:
         https://library.tradingtechnologies.com/trade/chrt-ti-qstick.html
 
-    Calculation:
-        Default Inputs:
-            length=10
-        xMA is one of: sma (default), dema, ema, hma, rma
-        qstick = xMA(close - open, length)
-
     Args:
         open (pd.Series): Series of 'open's
         close (pd.Series): Series of 'close's

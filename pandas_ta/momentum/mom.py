@@ -12,11 +12,6 @@ def mom(close, length=None, talib=None, offset=None, **kwargs):
     Sources:
         http://www.onlinetradingconcepts.com/TechnicalAnalysis/Momentum.html
 
-    Calculation:
-        Default Inputs:
-            length=1
-        MOM = close.diff(length)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1

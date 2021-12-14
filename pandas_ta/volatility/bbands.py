@@ -14,24 +14,6 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
     Sources:
         https://www.tradingview.com/wiki/Bollinger_Bands_(BB)
 
-    Calculation:
-        Default Inputs:
-            length=5, std=2, mamode="sma", ddof=0
-        EMA = Exponential Moving Average
-        SMA = Simple Moving Average
-        STDEV = Standard Deviation
-        stdev = STDEV(close, length, ddof)
-        if "ema":
-            MID = EMA(close, length)
-        else:
-            MID = SMA(close, length)
-
-        LOWER = MID - std * stdev
-        UPPER = MID + std * stdev
-
-        BANDWIDTH = 100 * (UPPER - LOWER) / MID
-        PERCENT = (close - LOWER) / (UPPER - LOWER)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): The short period. Default: 5

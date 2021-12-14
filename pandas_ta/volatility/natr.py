@@ -12,12 +12,6 @@ def natr(high, low, close, length=None, scalar=None, mamode=None, talib=None, dr
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/normalized-average-true-range-natr/
 
-    Calculation:
-        Default Inputs:
-            length=20
-        ATR = Average True Range
-        NATR = (100 / close) * ATR(high, low, close)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

@@ -8,11 +8,6 @@ def mad(close, length=None, offset=None, **kwargs):
 
     Calculates the Mean Absolute Deviation over a rolling period.
 
-    Calculation:
-        Default Inputs:
-            length=30
-        mad = close.rolling(length).mad()
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30

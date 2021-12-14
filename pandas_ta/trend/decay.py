@@ -13,15 +13,6 @@ def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
     Sources:
         https://tulipindicators.org/decay
 
-    Calculation:
-        Default Inputs:
-            length=5, mode=None
-
-        if mode == "exponential" or mode == "exp":
-            max(close, close[-1] - exp(-length), 0)
-        else:
-            max(close, close[-1] - (1 / length), 0)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1

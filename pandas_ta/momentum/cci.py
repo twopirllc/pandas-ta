@@ -14,16 +14,6 @@ def cci(high, low, close, length=None, c=None, talib=None, offset=None, **kwargs
     Sources:
         https://www.tradingview.com/wiki/Commodity_Channel_Index_(CCI)
 
-    Calculation:
-        Default Inputs:
-            length=14, c=0.015
-        SMA = Simple Moving Average
-        MAD = Mean Absolute Deviation
-        tp = typical_price = hlc3 = (high + low + close) / 3
-        mean_tp = SMA(tp, length)
-        mad_tp = MAD(tp, length)
-        CCI = (tp - mean_tp) / (c * mad_tp)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

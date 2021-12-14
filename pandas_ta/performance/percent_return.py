@@ -11,12 +11,6 @@ def percent_return(close, length=None, cumulative=None, offset=None, **kwargs):
     Sources:
         https://stackoverflow.com/questions/31287552/logarithmic-returns-in-pandas-dataframe
 
-    Calculation:
-        Default Inputs:
-            length=1, cumulative=False
-        PCTRET = close.pct_change(length)
-        CUMPCTRET = PCTRET.cumsum() if cumulative
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 20

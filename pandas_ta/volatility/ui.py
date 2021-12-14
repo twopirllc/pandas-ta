@@ -15,19 +15,6 @@ def ui(close, length=None, scalar=None, offset=None, **kwargs):
         https://en.wikipedia.org/wiki/Ulcer_index
         http://www.tangotools.com/ui/ui.htm
 
-    Calculation:
-        Default Inputs:
-            length=14, scalar=100
-        HC = Highest Close
-        SMA = Simple Moving Average
-
-        HCN = HC(close, length)
-        DOWNSIDE = scalar * (close - HCN) / HCN
-        if kwargs["everget"]:
-            UI = SQRT(SMA(DOWNSIDE^2, length) / length)
-        else:
-            UI = SQRT(SUM(DOWNSIDE^2, length) / length)
-
     Args:
         high (pd.Series): Series of 'high's
         close (pd.Series): Series of 'close's

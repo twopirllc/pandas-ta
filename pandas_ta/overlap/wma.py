@@ -13,20 +13,6 @@ def wma(close, length=None, asc=None, talib=None, offset=None, **kwargs):
     Sources:
         https://en.wikipedia.org/wiki/Moving_average#Weighted_moving_average
 
-    Calculation:
-        Default Inputs:
-            length=10, asc=True
-        total_weight = 0.5 * length * (length + 1)
-        weights_ = [1, 2, ..., length + 1]  # Ascending
-        weights = weights if asc else weights[::-1]
-
-        def linear_weights(w):
-            def _compute(x):
-                return (w * x).sum() / total_weight
-            return _compute
-
-        WMA = close.rolling(length)_.apply(linear_weights(weights), raw=True)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

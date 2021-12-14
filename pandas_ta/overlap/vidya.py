@@ -17,15 +17,6 @@ def vidya(close, length=None, drift=None, offset=None, **kwargs):
         https://www.tradingview.com/script/hdrf0fXV-Variable-Index-Dynamic-Average-VIDYA/
         https://www.perfecttrendsystem.com/blog_mt4_2/en/vidya-indicator-for-mt4
 
-    Calculation:
-        Default Inputs:
-            length=10, adjust=False, sma=True
-        if sma:
-            sma_nth = close[0:length].sum() / length
-            close[:length - 1] = np.NaN
-            close.iloc[length - 1] = sma_nth
-        EMA = close.ewm(span=length, adjust=adjust).mean()
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14

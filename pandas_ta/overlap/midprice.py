@@ -8,15 +8,6 @@ def midprice(high, low, length=None, talib=None, offset=None, **kwargs):
 
     The Midprice is the average of the rolling high and low of period length.
 
-    Sources:
-
-    Calculation:
-        Default Inputs:
-            length=2
-        HH = high.rolling(length).max()
-        LL = low.rolling(length).min()
-        MID = 0.5 * (HH + LL)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

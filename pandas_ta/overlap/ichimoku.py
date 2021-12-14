@@ -12,20 +12,6 @@ def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, include_chi
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/ichimoku-ich/
 
-    Calculation:
-        Default Inputs:
-            tenkan=9, kijun=26, senkou=52
-        MIDPRICE = Midprice
-        TENKAN_SEN = MIDPRICE(high, low, close, length=tenkan)
-        KIJUN_SEN = MIDPRICE(high, low, close, length=kijun)
-        CHIKOU_SPAN = close.shift(-kijun)
-
-        SPAN_A = 0.5 * (TENKAN_SEN + KIJUN_SEN)
-        SPAN_A = SPAN_A.shift(kijun)
-
-        SPAN_B = MIDPRICE(high, low, close, length=senkou)
-        SPAN_B = SPAN_B.shift(kijun)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

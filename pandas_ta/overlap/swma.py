@@ -13,18 +13,6 @@ def swma(close, length=None, asc=None, offset=None, **kwargs):
     Source:
         https://www.tradingview.com/study-script-reference/#fun_swma
 
-    Calculation:
-        Default Inputs:
-            length=10
-
-        def weights(w):
-            def _compute(x):
-                return np.dot(w * x)
-            return _compute
-
-        triangle = utils.symmetric_triangle(length - 1)
-        SWMA = close.rolling(length)_.apply(weights(triangle), raw=True)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

@@ -13,18 +13,6 @@ def efi(close, volume, length=None, mamode=None, drift=None, offset=None, **kwar
         https://www.tradingview.com/wiki/Elder%27s_Force_Index_(EFI)
         https://www.motivewave.com/studies/elders_force_index.htm
 
-    Calculation:
-        Default Inputs:
-            length=20, drift=1, mamode=None
-        EMA = Exponential Moving Average
-        SMA = Simple Moving Average
-
-        pv_diff = close.diff(drift) * volume
-        if mamode == 'sma':
-            EFI = SMA(pv_diff, length)
-        else:
-            EFI = EMA(pv_diff, length)
-
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's

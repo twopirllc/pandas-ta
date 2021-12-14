@@ -12,15 +12,6 @@ def tema(close, length=None, talib=None, offset=None, **kwargs):
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/triple-exponential-moving-average-tema/
 
-    Calculation:
-        Default Inputs:
-            length=10
-        EMA = Exponential Moving Average
-        ema1 = EMA(close, length)
-        ema2 = EMA(ema1, length)
-        ema3 = EMA(ema2, length)
-        TEMA = 3 * (ema1 - ema2) + ema3
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

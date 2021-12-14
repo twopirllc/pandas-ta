@@ -24,14 +24,6 @@ def alma(close, length=None, sigma=None, dist_offset=None, offset=None, **kwargs
         https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=475&Name=Moving_Average_-_Arnaud_Legoux
         https://www.prorealcode.com/prorealtime-indicators/alma-arnaud-legoux-moving-average/
 
-    Calculation:
-        length=9, sigma=6.0, dist_offset=0.85
-
-        X = [0, 1, ..., length - 1]
-        WEIGHTS = e^(-0.5 * (X - FLOOR(dist_offset(length - 1)))^2 / (length / sigma)^2)
-
-        ALMA = close.rolling(length).apply(WEIGHTS)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period, window size. Default: 9

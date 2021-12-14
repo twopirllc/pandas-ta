@@ -17,19 +17,6 @@ def macd(close, fast=None, slow=None, signal=None, talib=None, offset=None, **kw
         https://www.tradingview.com/wiki/MACD_(Moving_Average_Convergence/Divergence)
         AS Mode: https://tr.tradingview.com/script/YFlKXHnP/
 
-    Calculation:
-        Default Inputs:
-            fast=12, slow=26, signal=9
-        EMA = Exponential Moving Average
-        MACD = EMA(close, fast) - EMA(close, slow)
-        Signal = EMA(MACD, signal)
-        Histogram = MACD - Signal
-
-        if asmode:
-            MACD = MACD - Signal
-            Signal = EMA(MACD, signal)
-            Histogram = MACD - Signal
-
     Args:
         close (pd.Series): Series of 'close's
         fast (int): The short period. Default: 12

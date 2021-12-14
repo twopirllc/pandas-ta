@@ -20,10 +20,6 @@ def jma(close, length=None, phase=None, offset=None, **kwargs):
         https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
         https://www.prorealcode.com/prorealtime-indicators/jurik-volatility-bands/
 
-    Calculation:
-        Default Inputs:
-            length=7, phase=0
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): Period of calculation. Default: 7

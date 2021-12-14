@@ -11,13 +11,6 @@ def vwma(close, volume, length=None, offset=None, **kwargs):
     Sources:
         https://www.motivewave.com/studies/volume_weighted_moving_average.htm
 
-    Calculation:
-        Default Inputs:
-            length=10
-        SMA = Simple Moving Average
-        pv = close * volume
-        VWMA = SMA(pv, length) / SMA(volume, length)
-
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's

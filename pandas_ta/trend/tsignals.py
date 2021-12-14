@@ -20,14 +20,6 @@ def tsignals(trend, asbool=None, trend_reset=0, trade_offset=None, drift=None, o
 
     Source: Kevin Johnson
 
-    Calculation:
-        Default Inputs:
-            asbool=False, trend_reset=0, trade_offset=0, drift=1
-
-        trades = trends.diff().shift(trade_offset).fillna(0).astype(int)
-        entries = (trades > 0).astype(int)
-        exits = (trades < 0).abs().astype(int)
-
     Args:
         trend (pd.Series): Series of 'trend's. The trend can be either a boolean or
             integer series of '0's and '1's

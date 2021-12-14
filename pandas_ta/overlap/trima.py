@@ -15,14 +15,6 @@ def trima(close, length=None, talib=None, offset=None, **kwargs):
         tma = sma(sma(src, ceil(length / 2)), floor(length / 2) + 1)  # Tradingview
         trima = sma(sma(x, n), n)  # Tradingview
 
-    Calculation:
-        Default Inputs:
-            length=10
-        SMA = Simple Moving Average
-        half_length = round(0.5 * (length + 1))
-        SMA1 = SMA(close, half_length)
-        TRIMA = SMA(SMA1, half_length)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

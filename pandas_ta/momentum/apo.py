@@ -14,12 +14,6 @@ def apo(close, fast=None, slow=None, mamode=None, talib=None, offset=None, **kwa
     Sources:
         https://www.tradingtechnologies.com/xtrader-help/x-study/technical-indicator-definitions/absolute-price-oscillator-apo/
 
-    Calculation:
-        Default Inputs:
-            fast=12, slow=26
-        SMA = Simple Moving Average
-        APO = SMA(close, fast) - SMA(close, slow)
-
     Args:
         close (pd.Series): Series of 'close's
         fast (int): The short period. Default: 12

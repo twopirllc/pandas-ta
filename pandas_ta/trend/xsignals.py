@@ -34,14 +34,6 @@ def xsignals(signal, xa, xb, above:bool=True, long:bool=True, asbool:bool=None, 
 
     Source: Kevin Johnson
 
-    Calculation:
-        Default Inputs:
-            asbool=False, trend_reset=0, trade_offset=0, drift=1
-
-        trades = trends.diff().shift(trade_offset).fillna(0).astype(int)
-        entries = (trades > 0).astype(int)
-        exits = (trades < 0).abs().astype(int)
-
     Args:
         signal (pd.Series): The Signal to compare from. Commonly the 'close'.
         xa (pd.Series): The Series the Signal crosses above if 'above=True'.

@@ -11,14 +11,6 @@ def vhf(close, length=None, drift=None, offset=None, **kwargs):
     Sources:
         https://www.incrediblecharts.com/indicators/vertical_horizontal_filter.php
 
-    Calculation:
-        Default Inputs:
-            length = 28
-        HCP = Highest Close Price in Period
-        LCP = Lowest Close Price in Period
-        Change = abs(Ct - Ct-1)
-        VHF = (HCP - LCP) / RollingSum[length] of Change
-
     Args:
         source (pd.Series): Series of prices (usually close).
         length (int): The period length. Default: 28

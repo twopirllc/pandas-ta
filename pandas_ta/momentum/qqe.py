@@ -21,10 +21,6 @@ def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, o
         https://www.tradingpedia.com/forex-trading-indicators/quantitative-qualitative-estimation
         https://www.prorealcode.com/prorealtime-indicators/qqe-quantitative-qualitative-estimation/
 
-    Calculation:
-        Default Inputs:
-            length=14, smooth=5, factor=4.236, mamode="ema", drift=1
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): RSI period. Default: 14

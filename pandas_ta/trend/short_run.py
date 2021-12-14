@@ -21,18 +21,6 @@ def short_run(fast, slow, length=None, offset=None, **kwargs):
     It is part of the Converging and Diverging Conditional logic in:
         https://www.tradingview.com/script/Z2mq63fE-Trade-Archer-Moving-Averages-v1-4F/
 
-    Calculation:
-        Default Inputs:
-            length=2
-        INC = increasing
-        DEC = decreasing
-        BDEC = Both decreasing
-        PTOP = Potential Top
-
-        BDEC = DEC(fast, length) & DEC(slow, length)
-        PTOP = DEC(fast, length) & INC(slow, length)
-        SR = BDEC | PTOP
-
     Args:
         fast (pd.Series): Series of 'fast' values.
         slow (pd.Series): Series of 'slow' values.

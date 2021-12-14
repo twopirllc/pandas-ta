@@ -15,26 +15,17 @@ def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
     Sources:
         https://www.prorealcode.com/prorealtime-indicators/ttm-trend-price/
 
-    Calculation:
-        Default Inputs:
-            length=6
-        averageprice = (((high[5]+low[5])/2)+((high[4]+low[4])/2)+((high[3]+low[3])/2)+((high[2]+low[2])/2)+((high[1]+low[1])/2)+((high[6]+low[6])/2)) / 6
-
-        if close > averageprice:
-            drawcandle(open,high,low,close) coloured(0,255,0)
-
-        if close < averageprice:
-            drawcandle(open,high,low,close) coloured(255,0,0)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 6
         offset (int): How many periods to offset the result. Default: 0
+
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
+
     Returns:
         pd.DataFrame: ttm_trend.
     """

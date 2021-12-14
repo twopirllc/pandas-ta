@@ -12,14 +12,6 @@ def willr(high, low, close, length=None, talib=None, offset=None, **kwargs):
     Sources:
         https://www.tradingview.com/wiki/Williams_%25R_(%25R)
 
-    Calculation:
-        Default Inputs:
-            length=20
-        LL = low.rolling(length).min()
-        HH = high.rolling(length).max()
-
-        WILLR = 100 * ((close - LL) / (HH - LL) - 1)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

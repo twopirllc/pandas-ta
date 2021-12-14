@@ -14,16 +14,6 @@ def dpo(close, length=None, centered=True, offset=None, **kwargs):
         https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/dpo
         http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:detrended_price_osci
 
-    Calculation:
-        Default Inputs:
-            length=20, centered=True
-        SMA = Simple Moving Average
-        t = int(0.5 * length) + 1
-
-        DPO = close.shift(t) - SMA(close, length)
-        if centered:
-            DPO = DPO.shift(-t)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1

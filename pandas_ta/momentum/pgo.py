@@ -14,15 +14,6 @@ def pgo(high, low, close, length=None, offset=None, **kwargs):
     Sources:
         https://library.tradingtechnologies.com/trade/chrt-ti-pretty-good-oscillator.html
 
-    Calculation:
-        Default Inputs:
-            length=14
-        ATR = Average True Range
-        SMA = Simple Moving Average
-        EMA = Exponential Moving Average
-
-        PGO = (close - SMA(close, length)) / EMA(ATR(high, low, close, length), length)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

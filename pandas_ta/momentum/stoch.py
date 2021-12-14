@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
+from pandas_ta import Imports
 from pandas_ta.overlap import ma
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
-def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=None, **kwargs):
+def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, talib=None, offset=None, **kwargs):
     """Stochastic (STOCH)
 
     The Stochastic Oscillator (STOCH) was developed by George Lane in the 1950's.
@@ -20,17 +21,6 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=N
         https://www.tradingview.com/wiki/Stochastic_(STOCH)
         https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=332&Name=KD_-_Slow
 
-    Calculation:
-        Default Inputs:
-            k=14, d=3, smooth_k=3
-        SMA = Simple Moving Average
-        LL  = low for last k periods
-        HH  = high for last k periods
-
-        STOCH = 100 * (close - LL) / (HH - LL)
-        STOCHk = SMA(STOCH, smooth_k)
-        STOCHd = SMA(FASTK, d)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
@@ -39,6 +29,8 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=N
         d (int): The Slow %D period. Default: 3
         smooth_k (int): The Slow %K period. Default: 3
         mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
+            version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -58,18 +50,24 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=N
     close = verify_series(close, _length)
     offset = get_offset(offset)
     mamode = mamode if isinstance(mamode, str) else "sma"
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
 
     if high is None or low is None or close is None: return
 
     # Calculate Result
-    lowest_low = low.rolling(k).min()
-    highest_high = high.rolling(k).max()
+    if Imports["talib"] and mode_tal:
+        from talib import STOCH
+        stoch_ = STOCH(high, low, close, k, d, tal_ma(mamode), d, tal_ma(mamode))
+        stoch_k, stoch_d = stoch_[0], stoch_[1]
+    else:
+        lowest_low = low.rolling(k).min()
+        highest_high = high.rolling(k).max()
 
-    stoch = 100 * (close - lowest_low)
-    stoch /= non_zero_range(highest_high, lowest_low)
+        stoch = 100 * (close - lowest_low)
+        stoch /= non_zero_range(highest_high, lowest_low)
 
-    stoch_k = ma(mamode, stoch.loc[stoch.first_valid_index():,], length=smooth_k)
-    stoch_d = ma(mamode, stoch_k.loc[stoch_k.first_valid_index():,], length=d)
+        stoch_k = ma(mamode, stoch.loc[stoch.first_valid_index():,], length=smooth_k)
+        stoch_d = ma(mamode, stoch_k.loc[stoch_k.first_valid_index():,], length=d)
 
     # Offset
     if offset != 0:

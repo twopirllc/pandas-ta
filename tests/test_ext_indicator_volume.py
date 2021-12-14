@@ -1,3 +1,4 @@
+from unittest.case import skip
 from .config import sample_data
 from .context import pandas_ta
 
@@ -100,7 +101,13 @@ class TestVolumeExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "PVT")
 
+    @skip("\nVP does not return a Time Series")
     def test_vp_ext(self):
         result = self.data.ta.vp()
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "VP_10")
+
+    def test_wb_tsv_ext(self):
+        self.data.ta.wb_tsv(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-3:]), ["TSV_18_10", "TSVs_18_10", "TSVr_18_10"])

@@ -15,14 +15,6 @@ def cdl_inside(open_, high, low, close, asbool=False, offset=None, **kwargs):
     Sources:
         https://www.tradingview.com/script/IyIGN1WO-Inside-Bar/
 
-    Calculation:
-        Default Inputs:
-            asbool=False
-        inside = (high.diff() < 0) & (low.diff() > 0)
-
-        if not asbool:
-            inside *= candle_color(open_, close)
-
     Args:
         open_ (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's

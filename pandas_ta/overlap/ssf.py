@@ -24,12 +24,6 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
         https://www.mql5.com/en/code/588
         https://www.mql5.com/en/code/589
 
-    Calculation:
-        Default Inputs:
-            length=10, poles=[2, 3]
-
-        See the source code or Sources listed above.
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

@@ -18,23 +18,6 @@ def aobv(close, volume, fast=None, slow=None, max_lookback=None, min_lookback=No
     Sources:
         https://www.tradingview.com/script/Co1ksara-Trade-Archer-On-balance-Volume-Moving-Averages-v1/
 
-    Calculation:
-        Default Inputs:
-            fast=4, slow=12, max_lookback=2, min_lookback=2, mamode="ema",
-            run_length=2
-        OBV = On Balance Volume
-        LR = Long Run Trend
-        SR = Short Run Trend
-
-        OBV_FMA = ma(OBV, mamode, fast)
-        OBV_SMA = ma(OBV, mamode, slow)
-
-        OBV_LR = LR(OBV_FMA, OBV_SMA, run_length)
-        OBV_SR = SR(OBV_FMA, OBV_SMA, run_length)
-
-        OBV_MAX = OBV.rolling(max_lookback).max()
-        OBV_MIN = OBV.rolling(min_lookback).min()
-
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's

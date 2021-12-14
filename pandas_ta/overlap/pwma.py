@@ -10,18 +10,6 @@ def pwma(close, length=None, asc=None, offset=None, **kwargs):
 
     Source: Kevin Johnson
 
-    Calculation:
-        Default Inputs:
-            length=10
-
-        def weights(w):
-            def _compute(x):
-                return np.dot(w * x)
-            return _compute
-
-        triangle = utils.pascals_triangle(length + 1)
-        PWMA = close.rolling(length)_.apply(weights(triangle), raw=True)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period.  Default: 10

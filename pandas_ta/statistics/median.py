@@ -10,11 +10,6 @@ def median(close, length=None, offset=None, **kwargs):
     Sources:
         https://www.incrediblecharts.com/indicators/median_price.php
 
-    Calculation:
-        Default Inputs:
-            length=30
-        MEDIAN = close.rolling(length).median()
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30

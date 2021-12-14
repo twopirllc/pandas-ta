@@ -20,15 +20,6 @@ def alligator(close, jaw=None, teeth=None, lips=None, talib=None, offset=None, *
         https://www.tradingview.com/scripts/alligator/
         https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=175&Name=Bill_Williams_Alligator
 
-    Calculation:
-        Default Inputs:
-            jaw=13, teeth=8, lips=5, mamode="sma"
-        SMMA = SMoothed Moving Average
-
-        JAW = SMMA(close, jaw)
-        TEETH = SMMA(close, teeth)
-        LIPS = SMMA(close, lips)
-
     Args:
         close (pd.Series): Series of 'close's
         jaw (int): The Jaw period. Default: 13

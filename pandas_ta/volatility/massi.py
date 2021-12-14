@@ -11,17 +11,6 @@ def massi(high, low, fast=None, slow=None, offset=None, **kwargs):
 
     Sources:
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:mass_index
-        mi = sum(ema(high - low, 9) / ema(ema(high - low, 9), 9), length)
-
-    Calculation:
-        Default Inputs:
-            fast: 9, slow: 25
-        EMA = Exponential Moving Average
-        hl = high - low
-        hl_ema1 = EMA(hl, fast)
-        hl_ema2 = EMA(hl_ema1, fast)
-        hl_ratio = hl_ema1 / hl_ema2
-        MASSI = SUM(hl_ratio, slow)
 
     Args:
         high (pd.Series): Series of 'high's

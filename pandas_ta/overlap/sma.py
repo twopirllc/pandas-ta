@@ -12,11 +12,6 @@ def sma(close, length=None, talib=None, offset=None, **kwargs):
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/simple-moving-average-sma/
 
-    Calculation:
-        Default Inputs:
-            length=10
-        SMA = SUM(close, length) / length
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

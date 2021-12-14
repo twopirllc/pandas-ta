@@ -12,13 +12,6 @@ def donchian(high, low, lower_length=None, upper_length=None, offset=None, **kwa
     Sources:
         https://www.tradingview.com/wiki/Donchian_Channels_(DC)
 
-    Calculation:
-        Default Inputs:
-            lower_length=upper_length=20
-        LOWER = low.rolling(lower_length).min()
-        UPPER = high.rolling(upper_length).max()
-        MID = 0.5 * (LOWER + UPPER)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
