@@ -48,7 +48,7 @@ def stdev(close, length=None, ddof=None, talib=None, offset=None, **kwargs):
         from talib import STDDEV
         stdev = STDDEV(close, length)
     else:
-        stdev = variance(close=close, length=length, ddof=ddof, talib=False).apply(npsqrt)
+        stdev = variance(close=close, length=length, ddof=ddof, talib=mode_tal).apply(npsqrt)
 
     # Offset
     if offset != 0:

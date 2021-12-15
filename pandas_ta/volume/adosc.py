@@ -62,9 +62,9 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, talib=None
         from talib import ADOSC
         adosc = ADOSC(high, low, close, volume, fast, slow)
     else:
-        ad_ = ad(high=high, low=low, close=close, volume=volume, open_=open_)
-        fast_ad = ema(close=ad_, length=fast, **kwargs)
-        slow_ad = ema(close=ad_, length=slow, **kwargs)
+        ad_ = ad(high=high, low=low, close=close, volume=volume, open_=open_, talib=mode_tal)
+        fast_ad = ema(close=ad_, length=fast, **kwargs, talib=mode_tal)
+        slow_ad = ema(close=ad_, length=slow, **kwargs, talib=mode_tal)
         adosc = fast_ad - slow_ad
 
     # Offset
