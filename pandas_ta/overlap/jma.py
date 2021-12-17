@@ -95,8 +95,8 @@ def jma(close, length=None, phase=None, offset=None, **kwargs):
         jma[i] = jma[i-1] + det1
 
     # Remove initial lookback data and convert to pandas frame
-    jma[0:_length - 1] = npNaN
     jma = Series(jma, index=close.index)
+    jma.iloc[0:_length - 1] = npNaN
 
     # Offset
     if offset != 0:
