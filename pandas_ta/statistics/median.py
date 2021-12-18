@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def median(close, length=None, offset=None, **kwargs):
+def median(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Rolling Median
 
     Calculates the Median over a rolling period. Sibling of a Simple Moving Average.

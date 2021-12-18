@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import fabs as npfabs
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def mad(close, length=None, offset=None, **kwargs):
+def mad(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Rolling Mean Absolute Deviation
 
     Calculates the Mean Absolute Deviation over a rolling period.

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import log as nplog
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def log_return(close, length=None, cumulative=None, offset=None, **kwargs):
+def log_return(close: Series, length: int = None, cumulative: bool = None, offset: int = None, **kwargs) -> Series:
     """Log Return
 
     Calculates the logarithmic return of a Series.

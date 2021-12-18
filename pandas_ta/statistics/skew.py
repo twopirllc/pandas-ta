@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def skew(close, length=None, offset=None, **kwargs):
+def skew(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Rolling Skew
 
     Calculates the Skew over a rolling period.

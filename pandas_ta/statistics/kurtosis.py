@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def kurtosis(close, length=None, offset=None, **kwargs):
+def kurtosis(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Rolling Kurtosis
 
     Calculates the Kurtosis over a rolling period.

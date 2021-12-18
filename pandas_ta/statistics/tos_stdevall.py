@@ -7,7 +7,9 @@ from pandas import DataFrame, DatetimeIndex, Series
 from .stdev import stdev as stdev
 from pandas_ta.utils import get_offset, verify_series
 
-def tos_stdevall(close, length=None, stds=None, ddof=None, offset=None, **kwargs):
+
+def tos_stdevall(close: Series, length: int = None, stds: list = None, ddof: int = None, offset: int = None,
+                 **kwargs) -> DataFrame:
     """TD Ameritrade's Think or Swim Standard Deviation All (TOS_STDEV)
 
     A port of TD Ameritrade's Think or Swim Standard Deviation All indicator which
