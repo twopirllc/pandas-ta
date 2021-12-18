@@ -6,7 +6,8 @@ from pandas_ta.overlap import hl2
 from pandas_ta.utils import get_offset, high_low_range, verify_series
 
 
-def fisher(high, low, length=None, signal=None, offset=None, **kwargs):
+def fisher(high: Series, low: Series, length: int = None, signal: int = None, offset: int = None,
+           **kwargs) -> Series:
     """Fisher Transform (FISHT)
 
     Attempts to identify significant price reversals by normalizing prices over a

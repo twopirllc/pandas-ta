@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, non_zero_range, rma_pandas, verify_series
 
 
-def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, **kwargs):
+def kdj(high: Series, low: Series, close: Series, length: int = None, signal: int = None, offset: int = None,
+        **kwargs) -> Series:
     """KDJ (KDJ)
 
     The KDJ indicator is actually a derived form of the Slow

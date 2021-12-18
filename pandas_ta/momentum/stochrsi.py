@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from .rsi import rsi
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, offset=None, **kwargs):
+def stochrsi(close: Series, length: int = None, rsi_length: int = None, k: int = None, d: int = None,
+             mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
     """Stochastic (STOCHRSI)
 
     "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll and published in Stock & Commodities V.11:5 (189-199)

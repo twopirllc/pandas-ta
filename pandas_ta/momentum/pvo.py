@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
 
-def pvo(volume, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
+def pvo(volume: Series, fast: int = None, slow: int = None, signal: int = None, scalar: float = None,
+        offset: int = None, **kwargs) -> DataFrame:
     """Percentage Volume Oscillator (PVO)
 
     Percentage Volume Oscillator is a Momentum Oscillator for Volume.

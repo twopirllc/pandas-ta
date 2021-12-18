@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import linreg
 from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas import Series
 
 
-def cfo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
+def cfo(close: Series, length: int = None, scalar: float = None, drift: int = None, offset: int = None,
+        **kwargs) -> Series:
     """Chande Forcast Oscillator (CFO)
 
     The Forecast Oscillator calculates the percentage difference between the actual

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta import Imports
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
-def stochf(high, low, close, k=None, d=None, mamode=None, talib=None, offset=None, **kwargs):
+def stochf(high: Series, low: Series, close: Series, k: int = None, d: int = None, mamode: str = None,
+           talib: bool = None, offset: int = None, **kwargs) -> DataFrame:
     """Fast Stochastic (STOCHF)
 
     The Fast Stochastic Oscillator (STOCHF) was developed by George Lane in the

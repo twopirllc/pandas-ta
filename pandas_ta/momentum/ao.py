@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
+def ao(high: Series, low: Series, fast: int = None, slow: int = None, offset: int = None, **kwargs) -> Series:
     """Awesome Oscillator (AO)
 
     The Awesome Oscillator is an indicator used to measure a security's momentum.

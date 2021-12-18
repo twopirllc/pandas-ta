@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap.ema import ema
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def trix(close, length=None, signal=None, scalar=None, drift=None, offset=None, **kwargs):
+def trix(close: Series, length: int = None, signal: int = None, scalar: float = None, drift: int = None,
+         offset: int = None, **kwargs) -> Series:
     """Trix (TRIX)
 
     TRIX is a momentum oscillator to identify divergences.

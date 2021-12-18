@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_w=None, slow_w=None, talib=None, drift=None, offset=None, **kwargs):
+def uo(high: Series, low: Series, close: Series, fast: int = None, medium: int = None, slow: int = None,
+       fast_w: float = None, medium_w: float = None, slow_w: float = None, talib: bool = None, drift: int = None,
+       offset: int = None, **kwargs) -> Series:
     """Ultimate Oscillator (UO)
 
     The Ultimate Oscillator is a momentum indicator over three different

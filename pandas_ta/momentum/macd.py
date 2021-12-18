@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import concat, DataFrame
+from pandas import concat, DataFrame, Series
 from pandas_ta import Imports
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series, signals
 
 
-def macd(close, fast=None, slow=None, signal=None, talib=None, offset=None, **kwargs):
+def macd(close: Series, fast: int = None, slow: int = None, signal: int = None, talib: bool = None,
+         offset: int = None, **kwargs) -> DataFrame:
     """Moving Average Convergence Divergence (MACD)
 
     The MACD is a popular indicator to that is used to identify a security's trend.

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
 
-def eri(high, low, close, length=None, offset=None, **kwargs):
+def eri(high: Series, low: Series, close: Series, length: int = None, offset: int = None, **kwargs) -> DataFrame:
     """Elder Ray Index (ERI)
 
     Elder's Bulls Ray Index contains his Bull and Bear Powers. Which are useful ways

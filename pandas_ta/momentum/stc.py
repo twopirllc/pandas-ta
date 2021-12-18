@@ -4,7 +4,8 @@ from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def stc(close, tclength=None, fast=None, slow=None, factor=None, offset=None, **kwargs):
+def stc(close: Series, tclength: int = None, fast: int = None, slow: int = None, factor: float = None,
+        offset: int = None, **kwargs) -> DataFrame:
     """Schaff Trend Cycle (STC)
 
     The Schaff Trend Cycle is an evolution of the popular MACD incorportating two

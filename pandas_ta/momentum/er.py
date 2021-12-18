@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame, concat
+from pandas import DataFrame, concat, Series
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
-def er(close, length=None, drift=None, offset=None, **kwargs):
+def er(close: Series, length: int = None, drift: int = None, offset: int = None, **kwargs) -> Series:
     """Efficiency Ratio (ER)
 
     The Efficiency Ratio was invented by Perry J. Kaufman and presented in his book "New Trading Systems and Methods". It is designed to account for market noise or volatility.
