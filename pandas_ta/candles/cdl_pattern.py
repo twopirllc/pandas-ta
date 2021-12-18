@@ -24,13 +24,13 @@ ALL_PATTERNS = [
 
 
 def cdl_pattern(
-    open_,
-    high,
-    low,
-    close,
-    name: Union[str, Sequence[str]]="all",
-    scalar=None,
-    offset=None,
+    open_: Series,
+    high: Series,
+    low: Series,
+    close: Series,
+    name: Union[str, Sequence[str]] = "all",
+    scalar: float = None,
+    offset: int = None,
     **kwargs
     ) -> DataFrame:
     """TA Lib Candle Patterns
@@ -121,4 +121,5 @@ def cdl_pattern(
     df.category = "candles"
     return df
 
-cdl = cdl_pattern # Alias
+
+cdl = cdl_pattern  # Alias

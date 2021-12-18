@@ -2,9 +2,11 @@
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, high_low_range, is_percent
 from pandas_ta.utils import real_body, verify_series
+from pandas import Series
 
 
-def cdl_doji(open_, high, low, close, length=None, factor=None, scalar=None, asint=True, offset=None, **kwargs):
+def cdl_doji(open_: Series, high: Series, low: Series, close: Series, length: int = None, factor: float = None,
+             scalar: float = None, asint: bool = True, offset: int = None, **kwargs) -> Series:
     """Candle Type: Doji
 
     A candle body is Doji, when it's shorter than 10% of the

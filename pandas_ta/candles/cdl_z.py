@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.statistics import zscore
 from pandas_ta.utils import get_offset, verify_series
 
 
-def cdl_z(open_, high, low, close, length=None, full=None, ddof=None, offset=None, **kwargs):
+def cdl_z(open_: Series, high: Series, low: Series, close: Series, length: int = None, full: bool = None,
+          ddof=None, offset: int = None, **kwargs) -> DataFrame:
     """Candle Type: Z
 
     Normalizes OHLC Candles with a rolling Z Score.
