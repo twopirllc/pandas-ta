@@ -12,7 +12,8 @@ from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ebsw(close, length=None, bars=None, offset=None, initial_version=False, **kwargs):
+def ebsw(close: Series, length: int = None, bars: int = None, offset: int = None, initial_version: bool = False,
+         **kwargs) -> Series:
     """Even Better SineWave (EBSW)
 
     This indicator measures market cycles and uses a low pass filter to remove noise.

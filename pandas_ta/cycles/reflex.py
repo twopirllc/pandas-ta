@@ -9,7 +9,8 @@ from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def reflex(close, length=None, smooth=None, alpha=None, offset=None, **kwargs):
+def reflex(close: Series, length: int = None, smooth: int = None, alpha: float = None, offset: int = None,
+           **kwargs) -> Series:
     """Reflex (reflex)
 
     John F. Ehlers introduced two indicators within the article
