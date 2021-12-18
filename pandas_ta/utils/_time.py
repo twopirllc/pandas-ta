@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from time import localtime, perf_counter
-from typing import Tuple
+from typing import Union
 
 from pandas import DataFrame, Timestamp
 
 from pandas_ta import EXCHANGE_TZ, RATE
 
 
-def df_dates(df: DataFrame, dates: Tuple[str, list] = None) -> DataFrame:
+def df_dates(df: DataFrame, dates: Union[str, list] = None) -> DataFrame:
     """Yields the DataFrame with the given dates"""
     if dates is None: return None
     if not isinstance(dates, list):
@@ -47,7 +47,7 @@ def final_time(stime: float) -> str:
     return f"{time_diff * 1000:2.4f} ms ({time_diff:2.4f} s)"
 
 
-def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -> Tuple[None, str]:
+def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -> Union[None, str]:
     """Returns Current Time, Day of the Year and Percentage, and the current
     time of the selected Exchange."""
     tz = EXCHANGE_TZ["NYSE"] # Default is NYSE (Eastern Time Zone)
@@ -59,7 +59,7 @@ def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -
     today = Timestamp.now()
     date = f"{today.day_name()} {today.month_name()} {today.day}, {today.year}"
 
-    _today = today.timetuple()
+    _today = today.timeUnion()
     exchange_time = f"{(_today.tm_hour + tz) % 24}:{_today.tm_min:02d}:{_today.tm_sec:02d}"
 
     if full:
