@@ -12,12 +12,6 @@ def log_return(close, length=None, cumulative=None, offset=None, **kwargs):
     Sources:
         https://stackoverflow.com/questions/31287552/logarithmic-returns-in-pandas-dataframe
 
-    Calculation:
-        Default Inputs:
-            length=1, cumulative=False
-        LOGRET = log( close.diff(periods=length) )
-        CUMLOGRET = LOGRET.cumsum() if cumulative
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 20

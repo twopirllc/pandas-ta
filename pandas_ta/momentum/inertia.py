@@ -15,13 +15,6 @@ def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scala
     Sources:
         https://www.investopedia.com/terms/r/relative_vigor_index.asp
 
-    Calculation:
-        Default Inputs:
-            length=14, ma_length=20
-        LSQRMA = Least Squares Moving Average
-
-        INERTIA = LSQRMA(RVI(length), ma_length)
-
     Args:
         open_ (pd.Series): Series of 'open's
         high (pd.Series): Series of 'high's

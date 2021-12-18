@@ -16,19 +16,12 @@ def hwma(close, na=None, nb=None, nc=None, offset=None, **kwargs):
     Sources:
         https://www.mql5.com/en/code/20856
 
-    Calculation:
-        HWMA[i] = F[i] + V[i] + 0.5 * A[i]
-        where..
-        F[i] = (1-na) * (F[i-1] + V[i-1] + 0.5 * A[i-1]) + na * Price[i]
-        V[i] = (1-nb) * (V[i-1] + A[i-1]) + nb * (F[i] - F[i-1])
-        A[i] = (1-nc) * A[i-1] + nc * (V[i] - V[i-1])
-
     Args:
         close (pd.Series): Series of 'close's
         na (float): Smoothed series parameter (from 0 to 1). Default: 0.2
         nb (float): Trend parameter (from 0 to 1). Default: 0.1
         nc (float): Seasonality parameter (from 0 to 1). Default: 0.1
-        close (pd.Series): Series of 'close's
+        offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)

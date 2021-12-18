@@ -11,10 +11,6 @@ def cg(close, length=None, offset=None, **kwargs):
     Sources:
         http://www.mesasoftware.com/papers/TheCGOscillator.pdf
 
-    Calculation:
-        Default Inputs:
-            length=10
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): The length of the period. Default: 10

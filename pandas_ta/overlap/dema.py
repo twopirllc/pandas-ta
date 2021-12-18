@@ -13,15 +13,6 @@ def dema(close, length=None, talib=None, offset=None, **kwargs):
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/double-exponential-moving-average-dema/
 
-    Calculation:
-        Default Inputs:
-            length=10
-        EMA = Exponential Moving Average
-        ema1 = EMA(close, length)
-        ema2 = EMA(ema1, length)
-
-        DEMA = 2 * ema1 - ema2
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

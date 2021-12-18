@@ -15,15 +15,6 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, talib=None
     Sources:
         https://www.investopedia.com/articles/active-trading/031914/understanding-chaikin-oscillator.asp
 
-    Calculation:
-        Default Inputs:
-            fast=12, slow=26
-        AD = Accum/Dist
-        ad = AD(high, low, close, open)
-        fast_ad = EMA(ad, fast)
-        slow_ad = EMA(ad, slow)
-        ADOSC = fast_ad - slow_ad
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

@@ -10,12 +10,6 @@ def pdist(open_, high, low, close, drift=None, offset=None, **kwargs):
     Sources:
         https://www.prorealcode.com/prorealtime-indicators/pricedistance/
 
-    Calculation:
-        Default Inputs:
-            drift=1
-
-        PDIST = 2(high - low) - ABS(close - open) + ABS(open - close[drift])
-
     Args:
         open_ (pd.Series): Series of 'opens's
         high (pd.Series): Series of 'high's

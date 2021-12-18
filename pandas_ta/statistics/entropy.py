@@ -13,13 +13,6 @@ def entropy(close, length=None, base=None, offset=None, **kwargs):
     Sources:
         https://en.wikipedia.org/wiki/Entropy_(information_theory)
 
-    Calculation:
-        Default Inputs:
-            length=10, base=2
-
-        P = close / SUM(close, length)
-        E = SUM(-P * npLog(P) / npLog(base), length)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

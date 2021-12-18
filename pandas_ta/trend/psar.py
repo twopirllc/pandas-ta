@@ -21,12 +21,6 @@ def psar(high, low, close=None, af0=None, af=None, max_af=None, offset=None, **k
         https://www.tradingview.com/pine-script-reference/#fun_sar
         https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=66&Name=Parabolic
 
-    Calculation:
-        Default Inputs:
-            af0=0.02, af=0.02, max_af=0.2
-
-        See Source links
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

@@ -14,20 +14,6 @@ def psl(close, open_=None, length=None, scalar=None, drift=None, offset=None, **
     Sources:
         https://www.quantshare.com/item-851-psychological-line
 
-    Calculation:
-        Default Inputs:
-            length=12, scalar=100, drift=1
-
-        IF NOT open:
-            DIFF = SIGN(close - close[drift])
-        ELSE:
-            DIFF = SIGN(close - open)
-
-        DIFF.fillna(0)
-        DIFF[DIFF <= 0] = 0
-
-        PSL = scalar * SUM(DIFF, length) / length
-
     Args:
         close (pd.Series): Series of 'close's
         open_ (pd.Series, optional): Series of 'open's

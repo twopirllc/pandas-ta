@@ -16,16 +16,6 @@ def coppock(close, length=None, fast=None, slow=None, offset=None, **kwargs):
     Sources:
         https://en.wikipedia.org/wiki/Coppock_curve
 
-    Calculation:
-        Default Inputs:
-            length=10, fast=11, slow=14
-        SMA = Simple Moving Average
-        MAD = Mean Absolute Deviation
-        tp = typical_price = hlc3 = (high + low + close) / 3
-        mean_tp = SMA(tp, length)
-        mad_tp = MAD(tp, length)
-        CCI = (tp - mean_tp) / (c * mad_tp)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): WMA period. Default: 10

@@ -25,9 +25,6 @@ def trendflex(close, length=None, smooth=None, alpha=None, offset=None, **kwargs
     Sources:
         https://www.prorealcode.com/prorealtime-indicators/reflex-and-trendflex-indicators-john-f-ehlers/
 
-    Calculation:
-        Refer to provided source or the code above.
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period.  Default: 20

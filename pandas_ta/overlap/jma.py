@@ -20,10 +20,6 @@ def jma(close, length=None, phase=None, offset=None, **kwargs):
         https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
         https://www.prorealcode.com/prorealtime-indicators/jurik-volatility-bands/
 
-    Calculation:
-        Default Inputs:
-            length=7, phase=0
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): Period of calculation. Default: 7
@@ -99,8 +95,8 @@ def jma(close, length=None, phase=None, offset=None, **kwargs):
         jma[i] = jma[i-1] + det1
 
     # Remove initial lookback data and convert to pandas frame
-    jma[0:_length - 1] = npNaN
     jma = Series(jma, index=close.index)
+    jma.iloc[0:_length - 1] = npNaN
 
     # Offset
     if offset != 0:

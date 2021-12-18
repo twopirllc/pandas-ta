@@ -15,19 +15,6 @@ def sinwma(close, length=None, offset=None, **kwargs):
         https://www.tradingview.com/script/6MWFvnPO-Sine-Weighted-Moving-Average/
         Author: Everget (https://www.tradingview.com/u/everget/)
 
-    Calculation:
-        Default Inputs:
-            length=10
-
-        def weights(w):
-            def _compute(x):
-                return np.dot(w * x)
-            return _compute
-
-        sines = Series([sin((i + 1) * pi / (length + 1)) for i in range(0, length)])
-        w = sines / sines.sum()
-        SINWMA = close.rolling(length, min_periods=length).apply(weights(w), raw=True)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

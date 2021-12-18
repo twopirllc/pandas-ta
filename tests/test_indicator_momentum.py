@@ -446,7 +446,7 @@ class TestMomentum(TestCase):
 
     def test_stoch(self):
         # TV Correlation
-        result = pandas_ta.stoch(self.high, self.low, self.close)
+        result = pandas_ta.stoch(self.high, self.low, self.close, talib=False)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "STOCH_14_3_3")
 
@@ -466,6 +466,10 @@ class TestMomentum(TestCase):
                 self.assertGreater(stochd_corr, CORRELATION_THRESHOLD)
             except Exception as ex:
                 error_analysis(result.iloc[:, 1], CORRELATION, ex, newline=False)
+
+        result = pandas_ta.stoch(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "STOCH_14_3_3")
 
     def test_stochf(self):
         # TV Correlation

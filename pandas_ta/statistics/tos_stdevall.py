@@ -17,18 +17,6 @@ def tos_stdevall(close, length=None, stds=None, ddof=None, offset=None, **kwargs
     Sources:
         https://tlc.thinkorswim.com/center/reference/thinkScript/Functions/Statistical/StDevAll
 
-    Calculation:
-        Default Inputs:
-            length=None (All), stds=[1, 2, 3], ddof=1
-        LR = Linear Regression
-        STDEV = Standard Deviation
-
-        LR = LR(close, length)
-        STDEV = STDEV(close, length, ddof)
-        for level in stds:
-            LOWER = LR - level * STDEV
-            UPPER = LR + level * STDEV
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): Bars from current bar. Default: None

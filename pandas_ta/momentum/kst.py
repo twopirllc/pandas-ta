@@ -13,20 +13,6 @@ def kst(close, roc1=None, roc2=None, roc3=None, roc4=None, sma1=None, sma2=None,
         https://www.tradingview.com/wiki/Know_Sure_Thing_(KST)
         https://www.incrediblecharts.com/indicators/kst.php
 
-    Calculation:
-        Default Inputs:
-            roc1=10, roc2=15, roc3=20, roc4=30,
-            sma1=10, sma2=10, sma3=10, sma4=15, signal=9, drift=1
-        ROC = Rate of Change
-        SMA = Simple Moving Average
-        rocsma1 = SMA(ROC(close, roc1), sma1)
-        rocsma2 = SMA(ROC(close, roc2), sma2)
-        rocsma3 = SMA(ROC(close, roc3), sma3)
-        rocsma4 = SMA(ROC(close, roc4), sma4)
-
-        KST = 100 * (rocsma1 + 2 * rocsma2 + 3 * rocsma3 + 4 * rocsma4)
-        KST_Signal = SMA(KST, signal)
-
     Args:
         close (pd.Series): Series of 'close's
         roc1 (int): ROC 1 period. Default: 10

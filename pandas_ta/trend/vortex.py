@@ -12,20 +12,6 @@ def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
     Sources:
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:vortex_indicator
 
-    Calculation:
-        Default Inputs:
-            length=14, drift=1
-        TR = True Range
-        SMA = Simple Moving Average
-        tr = TR(high, low, close)
-        tr_sum = tr.rolling(length).sum()
-
-        vmp = (high - low.shift(drift)).abs()
-        vmn = (low - high.shift(drift)).abs()
-
-        VIP = vmp.rolling(length).sum() / tr_sum
-        VIM = vmn.rolling(length).sum() / tr_sum
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

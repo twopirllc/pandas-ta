@@ -6,13 +6,13 @@ from pandas_ta.utils import get_offset, verify_series
 def hlc3(high, low, close, talib=None, offset=None, **kwargs):
     """HLC3
 
-    Calculation:
-        HLC3 = (high + low + close) / 3.0
+    HLC3 is the average of high, low and close.
 
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
+        offset (int): How many periods to offset the result. Default: 0
 
     Returns:
         pd.Series: New feature generated.

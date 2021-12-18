@@ -18,16 +18,6 @@ def chop(high, low, close, length=None, atr_length=None, ln=None, scalar=None, d
         https://www.tradingview.com/scripts/choppinessindex/
         https://www.motivewave.com/studies/choppiness_index.htm
 
-    Calculation:
-        Default Inputs:
-            length=14, scalar=100, drift=1
-        HH = high.rolling(length).max()
-        LL = low.rolling(length).min()
-
-        ATR_SUM = SUM(ATR(drift), length)
-        CHOP = scalar * (LOG10(ATR_SUM) - LOG10(HH - LL))
-        CHOP /= LOG10(length)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

@@ -14,13 +14,6 @@ def true_range(high, low, close, talib=None, drift=None, offset=None, **kwargs):
     Sources:
         https://www.macroption.com/true-range/
 
-    Calculation:
-        Default Inputs:
-            drift=1
-        ABS = Absolute Value
-        prev_close = close.shift(drift)
-        TRUE_RANGE = ABS([high - low, high - prev_close, low - prev_close])
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

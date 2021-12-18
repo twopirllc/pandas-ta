@@ -12,13 +12,6 @@ def rma(close, length=None, offset=None, **kwargs):
         https://tlc.thinkorswim.com/center/reference/Tech-Indicators/studies-library/V-Z/WildersSmoothing
         https://www.incrediblecharts.com/indicators/wilder_moving_average.php
 
-    Calculation:
-        Default Inputs:
-            length=10
-        EMA = Exponential Moving Average
-        alpha = 1 / length
-        RMA = EMA(close, alpha=alpha)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

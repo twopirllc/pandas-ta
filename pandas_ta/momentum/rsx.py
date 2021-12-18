@@ -17,9 +17,6 @@ def rsx(close, length=None, drift=None, offset=None, **kwargs):
         http://www.jurikres.com/catalog1/ms_rsx.htm
         https://www.prorealcode.com/prorealtime-indicators/jurik-rsx/
 
-    Calculation:
-        Refer to the sources above for information as well as code example.
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14

@@ -14,21 +14,6 @@ def rsi(close, length=None, scalar=None, talib=None, drift=None, offset=None, **
     Sources:
         https://www.tradingview.com/wiki/Relative_Strength_Index_(RSI)
 
-    Calculation:
-        Default Inputs:
-            length=14, scalar=100, drift=1
-        ABS = Absolute Value
-        RMA = Rolling Moving Average
-
-        diff = close.diff(drift)
-        positive = diff if diff > 0 else 0
-        negative = diff if diff < 0 else 0
-
-        pos_avg = RMA(positive, length)
-        neg_avg = ABS(RMA(negative, length))
-
-        RSI = scalar * pos_avg / (pos_avg + neg_avg)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14

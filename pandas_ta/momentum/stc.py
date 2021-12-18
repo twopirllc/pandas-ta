@@ -26,16 +26,9 @@ def stc(close, tclength=None, fast=None, slow=None, factor=None, offset=None, **
 
     The same goes for osc=, which allows the input of an externally calculated oscillator, overriding ma1 & ma2.
 
-
     Sources:
         Implemented by rengel8 based on work found here:
         https://www.prorealcode.com/prorealtime-indicators/schaff-trend-cycle2/
-
-    Calculation:
-        STCmacd = Moving Average Convergance/Divergance or Oscillator
-        STCstoch = Intermediate Stochastic of MACD/Osc.
-        2nd Stochastic including filtering with results in the
-        STC = Schaff Trend Cycle
 
     Args:
         close (pd.Series): Series of 'close's, used for indexing Series, mandatory

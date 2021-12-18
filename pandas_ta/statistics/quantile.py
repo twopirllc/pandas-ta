@@ -7,11 +7,6 @@ def quantile(close, length=None, q=None, offset=None, **kwargs):
 
     Calculates the Quantile over a rolling period.
 
-    Calculation:
-        Default Inputs:
-            length=30, q=0.5
-        QUANTILE = close.rolling(length).quantile(q)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30

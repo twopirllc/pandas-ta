@@ -12,18 +12,6 @@ def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs
         https://www.tradingview.com/wiki/Chaikin_Money_Flow_(CMF)
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_money_flow_cmf
 
-    Calculation:
-        Default Inputs:
-            length=20
-        if 'open':
-            ad = close - open
-        else:
-            ad = 2 * close - high - low
-
-        hl_range = high - low
-        ad = ad * volume / hl_range
-        CMF = SUM(ad, length) / SUM(volume, length)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

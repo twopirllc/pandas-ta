@@ -12,15 +12,6 @@ def pvo(volume, fast=None, slow=None, signal=None, scalar=None, offset=None, **k
     Sources:
         https://www.fmlabs.com/reference/default.htm?url=PVO.htm
 
-    Calculation:
-        Default Inputs:
-            fast=12, slow=26, signal=9
-        EMA = Exponential Moving Average
-
-        PVO = (EMA(volume, fast) - EMA(volume, slow)) / EMA(volume, slow)
-        Signal = EMA(PVO, signal)
-        Histogram = PVO - Signal
-
     Args:
         volume (pd.Series): Series of 'volume's
         fast (int): The short period. Default: 12

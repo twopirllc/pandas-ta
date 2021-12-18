@@ -13,24 +13,6 @@ def uo(high, low, close, fast=None, medium=None, slow=None, fast_w=None, medium_
     Sources:
         https://www.tradingview.com/wiki/Ultimate_Oscillator_(UO)
 
-    Calculation:
-        Default Inputs:
-            fast=7, medium=14, slow=28,
-            fast_w=4.0, medium_w=2.0, slow_w=1.0, drift=1
-        min_low_or_pc  = close.shift(drift).combine(low, min)
-        max_high_or_pc = close.shift(drift).combine(high, max)
-
-        bp = buying pressure = close - min_low_or_pc
-        tr = true range = max_high_or_pc - min_low_or_pc
-
-        fast_avg = SUM(bp, fast) / SUM(tr, fast)
-        medium_avg = SUM(bp, medium) / SUM(tr, medium)
-        slow_avg = SUM(bp, slow) / SUM(tr, slow)
-
-        total_weight = fast_w + medium_w + slow_w
-        weights = (fast_w * fast_avg) + (medium_w * medium_avg) + (slow_w * slow_avg)
-        UO = 100 * weights / total_weight
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

@@ -5,12 +5,12 @@ from pandas_ta.utils import get_offset, verify_series
 def hl2(high, low, offset=None, **kwargs):
     """HL2
 
-    Calculation:
-        HL2 = 0.5 * (high + low)
+    HL2 is the midpoint/average of high and low.
 
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
+        offset (int): How many periods to offset the result. Default: 0
 
     Returns:
         pd.Series: New feature generated.

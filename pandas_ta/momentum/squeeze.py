@@ -24,37 +24,6 @@ def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_sc
         https://www.tradingview.com/scripts/lazybear/
         https://tlc.thinkorswim.com/center/reference/Tech-Indicators/studies-library/T-U/TTM-Squeeze
 
-    Calculation:
-        Default Inputs:
-            bb_length=20, bb_std=2, kc_length=20, kc_scalar=1.5, mom_length=12,
-            mom_smooth=12, tr=True, lazybear=False,
-        BB = Bollinger Bands
-        KC = Keltner Channels
-        MOM = Momentum
-        SMA = Simple Moving Average
-        EMA = Exponential Moving Average
-        TR = True Range
-
-        RANGE = TR(high, low, close) if using_tr else high - low
-        BB_LOW, BB_MID, BB_HIGH = BB(close, bb_length, std=bb_std)
-        KC_LOW, KC_MID, KC_HIGH = KC(high, low, close, kc_length, kc_scalar, TR)
-
-        if lazybear:
-            HH = high.rolling(kc_length).max()
-            LL = low.rolling(kc_length).min()
-            AVG  = 0.25 * (HH + LL) + 0.5 * KC_MID
-            SQZ = linreg(close - AVG, kc_length)
-        else:
-            MOMO = MOM(close, mom_length)
-            if mamode == "ema":
-                SQZ = EMA(MOMO, mom_smooth)
-            else:
-                SQZ = EMA(momo, mom_smooth)
-
-        SQZ_ON  = (BB_LOW > KC_LOW) and (BB_HIGH < KC_HIGH)
-        SQZ_OFF = (BB_LOW < KC_LOW) and (BB_HIGH > KC_HIGH)
-        NO_SQZ = !SQZ_ON and !SQZ_OFF
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

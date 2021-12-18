@@ -10,18 +10,6 @@ def fwma(close, length=None, asc=None, offset=None, **kwargs):
 
     Source: Kevin Johnson
 
-    Calculation:
-        Default Inputs:
-            length=10,
-
-        def weights(w):
-            def _compute(x):
-                return np.dot(w * x)
-            return _compute
-
-        fibs = utils.fibonacci(length - 1)
-        FWMA = close.rolling(length)_.apply(weights(fibs), raw=True)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

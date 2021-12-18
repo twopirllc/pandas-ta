@@ -17,20 +17,6 @@ def vp(close, volume, width=None, **kwargs):
         http://www.ranchodinero.com/volume-tpo-essentials/
         https://www.tradingtechnologies.com/blog/2013/05/15/volume-at-price/
 
-    Calculation:
-        Default Inputs:
-            width=10
-
-        vp = pd.concat([close, pos_volume, neg_volume], axis=1)
-        if sort_close:
-            vp_ranges = cut(vp[close_col], width)
-            result = ({range_left, mean_close, range_right, pos_volume, neg_volume} foreach range in vp_ranges
-        else:
-            vp_ranges = np.array_split(vp, width)
-            result = ({low_close, mean_close, high_close, pos_volume, neg_volume} foreach range in vp_ranges
-        vpdf = pd.DataFrame(result)
-        vpdf['total_volume'] = vpdf['pos_volume'] + vpdf['neg_volume']
-
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's

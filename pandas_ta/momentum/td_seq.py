@@ -14,11 +14,6 @@ def td_seq(close, asint=None, offset=None, **kwargs):
     Sources:
         https://tradetrekker.wordpress.com/tdsequential/
 
-    Calculation:
-        Compare current close price with 4 days ago price, up to 13 days. For the
-        consecutive ascending or descending price sequence, display 6th to 9th day
-        value.
-
     Args:
         close (pd.Series): Series of 'close's
         asint (bool): If True, fillnas with 0 and change type to int. Default: False

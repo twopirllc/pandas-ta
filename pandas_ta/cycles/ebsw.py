@@ -36,9 +36,6 @@ def ebsw(close, length=None, bars=None, offset=None, initial_version=False, **kw
         - https://www.prorealcode.com/prorealtime-indicators/even-better-sinewave/
         - J.F.Ehlers 'Cycle Analytics for Traders', 2014
 
-    Calculation:
-        refer to 'sources' or implementation
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's max cycle/trend period. Values between 40-48 work like

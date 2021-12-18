@@ -13,13 +13,6 @@ def ao(high, low, fast=None, slow=None, offset=None, **kwargs):
         https://www.tradingview.com/wiki/Awesome_Oscillator_(AO)
         https://www.ifcm.co.uk/ntx-indicators/awesome-oscillator
 
-    Calculation:
-        Default Inputs:
-            fast=5, slow=34
-        SMA = Simple Moving Average
-        median = (high + low) / 2
-        AO = SMA(median, fast) - SMA(median, slow)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

@@ -20,14 +20,6 @@ def smma(close, length=None, mamode=None, talib=None, offset=None, **kwargs):
         https://www.tradingview.com/scripts/smma/
         https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=173&Name=Moving_Average_-_Smoothed
 
-    Calculation:
-        Default Inputs:
-            length=10, mamode="sma"
-        MA = Moving Average
-
-        SMMA[0:length] = MA(mamode, close, length)
-        SMMA[:length] = ((length - 1) * SMMA[i] + close[i]) / length
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
@@ -57,7 +49,7 @@ def smma(close, length=None, mamode=None, talib=None, offset=None, **kwargs):
     m = close.size
     smma = close.copy()
     smma[:length - 1] = npNaN
-    smma.iloc[length - 1] = ma(mamode, close[0:length], length=length, talib=mode_tal)[-1]
+    smma.iloc[length - 1] = ma(mamode, close[0:length], length=length, talib=mode_tal).iloc[-1]
 
     for i in range(length, m):
         smma.iloc[i] = ((length - 1) * smma.iloc[i - 1] + smma.iloc[i]) / length

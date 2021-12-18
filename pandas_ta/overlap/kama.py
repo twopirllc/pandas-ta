@@ -18,10 +18,6 @@ def kama(close, length=None, fast=None, slow=None, mamode=None, drift=None, offs
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:kaufman_s_adaptive_moving_average
         https://www.tradingview.com/script/wZGOIz9r-REPOST-Indicators-3-Different-Adaptive-Moving-Averages/
 
-    Calculation:
-        Default Inputs:
-            length=10
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

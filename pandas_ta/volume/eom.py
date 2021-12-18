@@ -14,16 +14,6 @@ def eom(high, low, close, volume, length=None, divisor=None, drift=None, offset=
         https://www.motivewave.com/studies/ease_of_movement.htm
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ease_of_movement_emv
 
-    Calculation:
-        Default Inputs:
-            length=14, divisor=100000000, drift=1
-        SMA = Simple Moving Average
-        hl_range = high - low
-        distance = 0.5 * (high - high.shift(drift) + low - low.shift(drift))
-        box_ratio = (volume / divisor) / hl_range
-        eom = distance / box_ratio
-        EOM = SMA(eom, length)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

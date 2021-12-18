@@ -13,16 +13,6 @@ def er(close, length=None, drift=None, offset=None, **kwargs):
     Sources:
         https://help.tc2000.com/m/69404/l/749623-kaufman-efficiency-ratio
 
-    Calculation:
-        Default Inputs:
-            length=10
-        ABS = Absolute Value
-        EMA = Exponential Moving Average
-
-        abs_diff = ABS(close.diff(length))
-        volatility = ABS(close.diff(1))
-        ER = abs_diff / SUM(volatility, length)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1

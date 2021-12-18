@@ -12,16 +12,6 @@ def trix(close, length=None, signal=None, scalar=None, drift=None, offset=None, 
     Sources:
         https://www.tradingview.com/wiki/TRIX
 
-    Calculation:
-        Default Inputs:
-            length=18, drift=1
-        EMA = Exponential Moving Average
-        ROC = Rate of Change
-        ema1 = EMA(close, length)
-        ema2 = EMA(ema1, length)
-        ema3 = EMA(ema2, length)
-        TRIX = 100 * ROC(ema3, drift)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 18

@@ -9,15 +9,6 @@ def zscore(close, length=None, std=None, offset=None, **kwargs):
 
     Calculates the Z Score over a rolling period.
 
-    Calculation:
-        Default Inputs:
-            length=30, std=1
-        SMA = Simple Moving Average
-        STDEV = Standard Deviation
-        std = std * STDEV(close, length)
-        mean = SMA(close, length)
-        ZSCORE = (close - mean) / std
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30

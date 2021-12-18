@@ -14,21 +14,6 @@ def aroon(high, low, length=None, scalar=None, talib=None, offset=None, **kwargs
         https://www.tradingview.com/wiki/Aroon
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/aroon-ar/
 
-    Calculation:
-        Default Inputs:
-            length=1, scalar=100
-
-        recent_maximum_index(x): return int(np.argmax(x[::-1]))
-        recent_minimum_index(x): return int(np.argmin(x[::-1]))
-
-        periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index, raw=True)
-        AROON_UP = scalar * (1 - (periods_from_hh / length))
-
-        periods_from_ll = low.rolling(length + 1).apply(recent_minimum_index, raw=True)
-        AROON_DN = scalar * (1 - (periods_from_ll / length))
-
-        AROON_OSC = AROON_UP - AROON_DN
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14

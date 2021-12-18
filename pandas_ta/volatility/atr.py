@@ -14,28 +14,6 @@ def atr(high, low, close, length=None, mamode=None, talib=None, drift=None, offs
     Sources:
         https://www.tradingview.com/wiki/Average_True_Range_(ATR)
 
-    Calculation:
-        Default Inputs:
-            length=14, drift=1, percent=False
-        EMA = Exponential Moving Average
-        SMA = Simple Moving Average
-        WMA = Weighted Moving Average
-        RMA = WildeR's Moving Average
-        TR = True Range
-
-        tr = TR(high, low, close, drift)
-        if 'ema':
-            ATR = EMA(tr, length)
-        elif 'sma':
-            ATR = SMA(tr, length)
-        elif 'wma':
-            ATR = WMA(tr, length)
-        else:
-            ATR = RMA(tr, length)
-
-        if percent:
-            ATR *= 100 / close
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

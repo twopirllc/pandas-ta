@@ -14,18 +14,6 @@ def mfi(high, low, close, volume, length=None, talib=None, drift=None, offset=No
     Sources:
         https://www.tradingview.com/wiki/Money_Flow_(MFI)
 
-    Calculation:
-        Default Inputs:
-            length=14, drift=1
-        tp = typical_price = hlc3 = (high + low + close) / 3
-        rmf = raw_money_flow = tp * volume
-
-        pmf = pos_money_flow = SUM(rmf, length) if tp.diff(drift) > 0 else 0
-        nmf = neg_money_flow = SUM(rmf, length) if tp.diff(drift) < 0 else 0
-
-        MFR = money_flow_ratio = pmf / nmf
-        MFI = money_flow_index = 100 * pmf / (pmf + nmf)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

@@ -80,10 +80,11 @@ Category = {
         "natr", "pdist", "rvi", "thermo", "true_range", "ui"
     ],
 
-    # Volume, "vp" or "Volume Profile" is unique
+    # Volume.
+    # Note: "vp" or "Volume Profile" is excluded since it does not return a Time Series
     "volume": [
         "ad", "adosc", "aobv", "cmf", "efi", "eom", "kvo", "mfi", "nvi", "obv",
-        "pvi", "pvol", "pvr", "pvt"
+        "pvi", "pvol", "pvr", "pvt", "wb_tsv"
     ],
 }
 

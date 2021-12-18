@@ -7,11 +7,6 @@ def kurtosis(close, length=None, offset=None, **kwargs):
 
     Calculates the Kurtosis over a rolling period.
 
-    Calculation:
-        Default Inputs:
-            length=30
-        KURTOSIS = close.rolling(length).kurt()
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30

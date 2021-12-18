@@ -14,11 +14,6 @@ def vwap(high, low, close, volume, anchor=None, offset=None, **kwargs):
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/volume-weighted-average-price-vwap/
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:vwap_intraday
 
-    Calculation:
-        tp = typical_price = hlc3(high, low, close)
-        tpv = tp * volume
-        VWAP = tpv.cumsum() / volume.cumsum()
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

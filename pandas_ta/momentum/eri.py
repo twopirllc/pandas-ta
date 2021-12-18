@@ -20,14 +20,6 @@ def eri(high, low, close, length=None, offset=None, **kwargs):
     Sources:
         https://admiralmarkets.com/education/articles/forex-indicators/bears-and-bulls-power-indicator
 
-    Calculation:
-        Default Inputs:
-            length=13
-        EMA = Exponential Moving Average
-
-        BULLPOWER = high - EMA(close, length)
-        BEARPOWER = low - EMA(close, length)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

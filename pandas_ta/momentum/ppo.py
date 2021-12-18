@@ -14,17 +14,6 @@ def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, tali
     Sources:
         https://www.tradingview.com/wiki/MACD_(Moving_Average_Convergence/Divergence)
 
-    Calculation:
-        Default Inputs:
-            fast=12, slow=26
-        SMA = Simple Moving Average
-        EMA = Exponential Moving Average
-        fast_sma = SMA(close, fast)
-        slow_sma = SMA(close, slow)
-        PPO = 100 * (fast_sma - slow_sma) / slow_sma
-        Signal = EMA(PPO, signal)
-        Histogram = PPO - Signal
-
     Args:
         close(pandas.Series): Series of 'close's
         fast(int): The short period. Default: 12

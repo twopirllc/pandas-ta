@@ -14,10 +14,6 @@ def obv(close, volume, talib=None, offset=None, **kwargs):
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/on-balance-volume-obv/
         https://www.motivewave.com/studies/on_balance_volume.htm
 
-    Calculation:
-        signed_volume = signed_series(close, initial=1) * volume
-        obv = signed_volume.cumsum()
-
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's

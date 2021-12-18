@@ -13,17 +13,6 @@ def hma(close, length=None, offset=None, **kwargs):
     Sources:
         https://alanhull.com/hull-moving-average
 
-    Calculation:
-        Default Inputs:
-            length=10
-        WMA = Weighted Moving Average
-        half_length = int(0.5 * length)
-        sqrt_length = int(sqrt(length))
-
-        wmaf = WMA(close, half_length)
-        wmas = WMA(close, length)
-        HMA = WMA(2 * wmaf - wmas, sqrt_length)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

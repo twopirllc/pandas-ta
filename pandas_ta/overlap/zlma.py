@@ -15,15 +15,6 @@ def zlma(close, length=None, mamode=None, offset=None, **kwargs):
     Sources:
         https://en.wikipedia.org/wiki/Zero_lag_exponential_moving_average
 
-    Calculation:
-        Default Inputs:
-            length=10, mamode=EMA
-        EMA = Exponential Moving Average
-        lag = int(0.5 * (length - 1))
-
-        SOURCE = 2 * close - close.shift(lag)
-        ZLMA = MA(kind=mamode, SOURCE, length)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

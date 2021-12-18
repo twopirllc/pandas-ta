@@ -7,12 +7,6 @@ def pvol(close, volume, offset=None, **kwargs):
 
     Returns a series of the product of price and volume.
 
-    Calculation:
-        if signed:
-            pvol = signed_series(close, 1) * close * volume
-        else:
-            pvol = close * volume
-
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's

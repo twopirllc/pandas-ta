@@ -16,18 +16,6 @@ def kdj(high=None, low=None, close=None, length=None, signal=None, offset=None, 
         https://www.prorealcode.com/prorealtime-indicators/kdj/
         https://docs.anychart.com/Stock_Charts/Technical_Indicators/Mathematical_Description#kdj
 
-    Calculation:
-        Default Inputs:
-            length=9, signal=3
-        LL = low for last 9 periods
-        HH = high for last 9 periods
-
-        FAST_K = 100 * (close - LL) / (HH - LL)
-
-        K = RMA(FAST_K, signal)
-        D = RMA(K, signal)
-        J = 3K - 2D
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

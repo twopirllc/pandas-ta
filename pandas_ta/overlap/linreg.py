@@ -18,25 +18,6 @@ def linreg(close, length=None, talib=None, offset=None, **kwargs):
 
     Source: TA Lib
 
-    Calculation:
-        Default Inputs:
-            length=14
-        x = [1, 2, ..., n]
-        x_sum = 0.5 * length * (length + 1)
-        x2_sum = length * (length + 1) * (2 * length + 1) / 6
-        divisor = length * x2_sum - x_sum * x_sum
-
-        lr(series):
-            y_sum = series.sum()
-            y2_sum = (series* series).sum()
-            xy_sum = (x * series).sum()
-
-            m = (length * xy_sum - x_sum * y_sum) / divisor
-            b = (y_sum * x2_sum - x_sum * xy_sum) / divisor
-            return m * (length - 1) + b
-
-        linreg = close.rolling(length).apply(lr)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10

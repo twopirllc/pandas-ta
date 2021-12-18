@@ -10,12 +10,6 @@ def stdev(close, length=None, ddof=None, talib=None, offset=None, **kwargs):
 
     Calculates the Standard Deviation over a rolling period.
 
-    Calculation:
-        Default Inputs:
-            length=30
-        VAR = Variance
-        STDEV = variance(close, length).apply(np.sqrt)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30

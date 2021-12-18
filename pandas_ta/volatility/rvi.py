@@ -15,20 +15,6 @@ def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thir
     Sources:
         https://www.tradingview.com/wiki/Keltner_Channels_(KC)
 
-    Calculation:
-        Default Inputs:
-            length=14, scalar=100, refined=None, thirds=None
-        EMA = Exponential Moving Average
-        STDEV = Standard Deviation
-
-        UP = STDEV(src, length) IF src.diff() > 0 ELSE 0
-        DOWN = STDEV(src, length) IF src.diff() <= 0 ELSE 0
-
-        UPSUM = EMA(UP, length)
-        DOWNSUM = EMA(DOWN, length
-
-        RVI = scalar * (UPSUM / (UPSUM + DOWNSUM))
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

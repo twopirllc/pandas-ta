@@ -12,17 +12,6 @@ def ad(high, low, close, volume, open_=None, talib=None, offset=None, **kwargs):
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/accumulationdistribution-ad/
 
-    Calculation:
-        CUM = Cumulative Sum
-        if 'open':
-            AD = close - open
-        else:
-            AD = 2 * close - high - low
-
-        hl_range = high - low
-        AD = AD * volume / hl_range
-        AD = CUM(AD)
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

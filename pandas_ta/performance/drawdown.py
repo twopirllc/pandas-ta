@@ -15,12 +15,6 @@ def drawdown(close, offset=None, **kwargs) -> DataFrame:
     Sources:
         https://www.investopedia.com/terms/d/drawdown.asp
 
-    Calculation:
-        PEAKDD = close.cummax()
-        DD = PEAKDD - close
-        DD% = 1 - (close / PEAKDD)
-        DDlog = log(PEAKDD / close)
-
     Args:
         close (pd.Series): Series of 'close's.
         offset (int): How many periods to offset the result. Default: 0

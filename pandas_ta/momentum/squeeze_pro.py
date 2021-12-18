@@ -24,36 +24,6 @@ def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, k
         https://usethinkscript.com/threads/john-carters-squeeze-pro-indicator-for-thinkorswim-free.4021/
         https://www.tradingview.com/script/TAAt6eRX-Squeeze-PRO-Indicator-Makit0/
 
-    Calculation:
-        Default Inputs:
-            bb_length=20, bb_std=2, kc_length=20, kc_scalar_wide=2,
-            kc_scalar_normal=1.5, kc_scalar_narrow=1, mom_length=12,
-            mom_smooth=6, tr=True,
-        BB = Bollinger Bands
-        KC = Keltner Channels
-        MOM = Momentum
-        SMA = Simple Moving Average
-        EMA = Exponential Moving Average
-        TR = True Range
-
-        RANGE = TR(high, low, close) if using_tr else high - low
-        BB_LOW, BB_MID, BB_HIGH = BB(close, bb_length, std=bb_std)
-        KC_LOW_WIDE, KC_MID_WIDE, KC_HIGH_WIDE = KC(high, low, close, kc_length, kc_scalar_wide, TR)
-        KC_LOW_NORMAL, KC_MID_NORMAL, KC_HIGH_NORMAL = KC(high, low, close, kc_length, kc_scalar_normal, TR)
-        KC_LOW_NARROW, KC_MID_NARROW, KC_HIGH_NARROW = KC(high, low, close, kc_length, kc_scalar_narrow, TR)
-
-        MOMO = MOM(close, mom_length)
-        if mamode == "ema":
-            SQZPRO = EMA(MOMO, mom_smooth)
-        else:
-            SQZPRO = EMA(momo, mom_smooth)
-
-        SQZPRO_ON_WIDE  = (BB_LOW > KC_LOW_WIDE) and (BB_HIGH < KC_HIGH_WIDE)
-        SQZPRO_ON_NORMAL  = (BB_LOW > KC_LOW_NORMAL) and (BB_HIGH < KC_HIGH_NORMAL)
-        SQZPRO_ON_NARROW  = (BB_LOW > KC_LOW_NARROW) and (BB_HIGH < KC_HIGH_NARROW)
-        SQZPRO_OFF_WIDE = (BB_LOW < KC_LOW_WIDE) and (BB_HIGH > KC_HIGH_WIDE)
-        SQZPRO_NO = !SQZ_ON_WIDE and !SQZ_OFF_WIDE
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

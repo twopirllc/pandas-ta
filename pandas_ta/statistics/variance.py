@@ -8,11 +8,6 @@ def variance(close, length=None, ddof=None, talib=None, offset=None, **kwargs):
 
     Calculates the Variance over a rolling period.
 
-    Calculation:
-        Default Inputs:
-            length=30
-        VARIANCE = close.rolling(length).var()
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30

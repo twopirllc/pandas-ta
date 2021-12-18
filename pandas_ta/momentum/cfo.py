@@ -12,13 +12,6 @@ def cfo(close, length=None, scalar=None, drift=None, offset=None, **kwargs):
     Sources:
         https://www.fmlabs.com/reference/default.htm?url=ForecastOscillator.htm
 
-    Calculation:
-        Default Inputs:
-            length=9, drift=1, scalar=100
-        LINREG = Linear Regression
-
-        CFO = scalar * (close - LINERREG(length, tdf=True)) / close
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): The period. Default: 9

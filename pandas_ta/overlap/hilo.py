@@ -23,33 +23,6 @@ def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offse
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/simple-moving-average-sma/
         https://www.tradingview.com/script/XNQSLIYb-Gann-High-Low/
 
-    Calculation:
-        Default Inputs:
-            high_length=13, low_length=21, mamode="sma"
-        EMA = Exponential Moving Average
-        HMA = Hull Moving Average
-        SMA = Simple Moving Average # Default
-
-        if "ema":
-            high_ma = EMA(high, high_length)
-            low_ma = EMA(low, low_length)
-        elif "hma":
-            high_ma = HMA(high, high_length)
-            low_ma = HMA(low, low_length)
-        else: # "sma"
-            high_ma = SMA(high, high_length)
-            low_ma = SMA(low, low_length)
-
-        # Similar to Supertrend MA selection
-        hilo = Series(npNaN, index=close.index)
-        for i in range(1, m):
-            if close.iloc[i] > high_ma.iloc[i - 1]:
-                hilo.iloc[i] = low_ma.iloc[i]
-            elif close.iloc[i] < low_ma.iloc[i - 1]:
-                hilo.iloc[i] = high_ma.iloc[i]
-            else:
-                hilo.iloc[i] = hilo.iloc[i - 1]
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's

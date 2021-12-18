@@ -9,15 +9,6 @@ def increasing(close, length=None, strict=None, asint=None, percent=None, drift=
     over the period. When using the kwarg 'asint', then it returns 1 for True
     or 0 for False.
 
-    Calculation:
-        if strict:
-            increasing = all(i < j for i, j in zip(close[-length:], close[1:]))
-        else:
-            increasing = close.diff(length) > 0
-
-        if asint:
-            increasing = increasing.astype(int)
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1

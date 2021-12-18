@@ -17,15 +17,6 @@ def ema(close, length=None, talib=None, offset=None, **kwargs):
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
         https://www.investopedia.com/ask/answers/122314/what-exponential-moving-average-ema-formula-and-how-ema-calculated.asp
 
-    Calculation:
-        Default Inputs:
-            length=10, adjust=False, sma=True
-        if sma:
-            sma_nth = close[0:length].sum() / length
-            close[:length - 1] = np.NaN
-            close.iloc[length - 1] = sma_nth
-        EMA = close.ewm(span=length, adjust=adjust).mean()
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
