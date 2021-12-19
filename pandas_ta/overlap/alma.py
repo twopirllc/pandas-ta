@@ -11,7 +11,8 @@ from pandas import Series
 from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
-def alma(close, length=None, sigma=None, dist_offset=None, offset=None, **kwargs):
+def alma(close: Series, length: int = None, sigma: float = None, dist_offset: float = None, offset: int = None,
+         **kwargs) -> Series:
     """Arnaud Legoux Moving Average (ALMA)
 
     The ALMA moving average uses the curve of the Normal (Gauss) distribution, which

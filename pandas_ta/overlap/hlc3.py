@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def hlc3(high, low, close, talib=None, offset=None, **kwargs):
+def hlc3(high: Series, low: Series, close: Series, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """HLC3
 
     HLC3 is the average of high, low and close.

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from numpy import nan as npNaN
 from pandas_ta.overlap.ma import ma
+from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def smma(close, length=None, mamode=None, talib=None, offset=None, **kwargs):
+def smma(close: Series, length: int = None, mamode: str = None, talib: bool = None, offset: int = None,
+         **kwargs) -> Series:
     """SMoothed Moving Average (SMMA)
 
     The SMoothed Moving Average (SMMA) is bootstrapped by default with a Simple

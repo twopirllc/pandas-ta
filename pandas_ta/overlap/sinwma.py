@@ -5,7 +5,7 @@ from pandas import Series
 from pandas_ta.utils import get_offset, verify_series, weights
 
 
-def sinwma(close, length=None, offset=None, **kwargs):
+def sinwma(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Sine Weighted Moving Average (SWMA)
 
     A weighted average using sine cycles. The middle term(s) of the average have the

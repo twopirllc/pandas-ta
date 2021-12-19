@@ -4,7 +4,7 @@ from pandas import Series
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def vidya(close, length=None, drift=None, offset=None, **kwargs):
+def vidya(close: Series, length: int = None, drift: int = None, offset: int = None, **kwargs) -> Series:
     """Variable Index Dynamic Average (VIDYA)
 
     Variable Index Dynamic Average (VIDYA) was developed by Tushar Chande. It is

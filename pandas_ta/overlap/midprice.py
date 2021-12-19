@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def midprice(high, low, length=None, talib=None, offset=None, **kwargs):
+def midprice(high: Series, low: Series, length: int = None, talib: bool = None, offset: int = None,
+             **kwargs) -> Series:
     """Midprice
 
     The Midprice is the average of the rolling high and low of period length.

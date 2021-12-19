@@ -19,7 +19,7 @@ from .vidya import vidya
 from .wma import wma
 
 
-def ma(name:str = None, source:Series = None, **kwargs) -> Series:
+def ma(name: str = None, source: Series = None, **kwargs) -> Series:
     """Simple MA Utility for easier MA selection
 
     Available MAs:
@@ -50,7 +50,7 @@ def ma(name:str = None, source:Series = None, **kwargs) -> Series:
         return _mas
     elif isinstance(name, str) and name.lower() in _mas:
         name = name.lower()
-    else: # "ema"
+    else:  # "ema"
         name = _mas[1]
 
     if   name == "dema": return dema(source, **kwargs)

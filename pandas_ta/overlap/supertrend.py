@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import nan as npNaN
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import hl2
 from pandas_ta.volatility import atr
 from pandas_ta.utils import get_offset, verify_series
 
 
-def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kwargs):
+def supertrend(high: Series, low: Series, close: Series, length: int = None, multiplier: float = None,
+               offset: int = None, **kwargs) -> DataFrame:
     """Supertrend (supertrend)
 
     Supertrend is an overlap indicator. It is used to help identify trend

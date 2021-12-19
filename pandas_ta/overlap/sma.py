@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def sma(close, length=None, talib=None, offset=None, **kwargs):
+def sma(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Simple Moving Average (SMA)
 
     The Simple Moving Average is the classic moving average that is the equally

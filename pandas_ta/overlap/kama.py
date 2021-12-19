@@ -5,7 +5,8 @@ from pandas_ta.overlap.ma import ma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def kama(close, length=None, fast=None, slow=None, mamode=None, drift=None, offset=None, **kwargs):
+def kama(close: Series, length: int = None, fast: int = None, slow: int = None, mamode: str = None,
+         drift: int = None, offset: int = None, **kwargs) -> Series:
     """Kaufman's Adaptive Moving Average (KAMA)
 
     Developed by Perry Kaufman, Kaufman's Adaptive Moving Average (KAMA) is a moving average

@@ -2,9 +2,10 @@
 from numpy import nan as npNaN
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def ema(close, length=None, talib=None, offset=None, **kwargs):
+def ema(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Exponential Moving Average (EMA)
 
     The Exponential Moving Average is more responsive moving average compared to the

@@ -4,7 +4,8 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def wma(close, length=None, asc=None, talib=None, offset=None, **kwargs):
+def wma(close: Series, length: int = None, asc: bool = None, talib: bool = None, offset: int = None,
+        **kwargs) -> Series:
     """Weighted Moving Average (WMA)
 
     The Weighted Moving Average where the weights are linearly increasing and

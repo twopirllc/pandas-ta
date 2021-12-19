@@ -2,9 +2,10 @@
 from .ema import ema
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def dema(close, length=None, talib=None, offset=None, **kwargs):
+def dema(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Double Exponential Moving Average (DEMA)
 
     The Double Exponential Moving Average attempts to a smoother average with less

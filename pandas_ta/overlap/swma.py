@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, symmetric_triangle, verify_series, weights
+from pandas import Series
 
 
-def swma(close, length=None, asc=None, offset=None, **kwargs):
+def swma(close: Series, length: int = None, asc: bool = None, offset: int = None, **kwargs) -> Series:
     """Symmetric Weighted Moving Average (SWMA)
 
     Symmetric Weighted Moving Average where weights are based on a symmetric

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def mcgd(close, length=None, offset=None, c=None, **kwargs):
+def mcgd(close: Series, length: int = None, offset: int = None, c: float = None, **kwargs) -> Series:
     """McGinley Dynamic Indicator
 
     The McGinley Dynamic looks like a moving average line, yet it is actually a

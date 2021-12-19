@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # from numpy import nan as npNaN
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from .smma import smma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def alligator(close, jaw=None, teeth=None, lips=None, talib=None, offset=None, **kwargs):
+def alligator(close: Series, jaw: int = None, teeth: int = None, lips: int = None, talib: bool = None,
+              offset: int = None, **kwargs) -> DataFrame:
     """Bill Williams Alligator (ALLIGATOR)
 
     The Alligator Indicator was developed by Bill Williams and combines moving

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, pascals_triangle, verify_series, weights
+from pandas import Series
 
 
-def pwma(close, length=None, asc=None, offset=None, **kwargs):
+def pwma(close: Series, length: int = None, asc: bool = None, offset: bool = None, **kwargs) -> Series:
     """Pascal's Weighted Moving Average (PWMA)
 
     Pascal's Weighted Moving Average is similar to a symmetric triangular window

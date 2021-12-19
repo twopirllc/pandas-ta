@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import fibonacci, get_offset, verify_series, weights
+from pandas import Series
 
 
-def fwma(close, length=None, asc=None, offset=None, **kwargs):
+def fwma(close: Series, length: int = None, asc: bool = None, offset: int = None, **kwargs) -> Series:
     """Fibonacci's Weighted Moving Average (FWMA)
 
     Fibonacci's Weighted Moving Average is similar to a Weighted Moving Average

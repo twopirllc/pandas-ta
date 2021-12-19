@@ -5,9 +5,10 @@ from numpy import nan as npNaN
 from numpy import pi as npPi
 from numpy import sqrt as npSqrt
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def ssf(close, length=None, poles=None, offset=None, **kwargs):
+def ssf(close: Series, length: int = None, poles: int = None, offset: int = None, **kwargs) -> Series:
     """Ehler's Super Smoother Filter (SSF) © 2013
 
     John F. Ehlers's solution to reduce lag and remove aliasing noise with his
