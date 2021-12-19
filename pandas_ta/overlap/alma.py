@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import exp as npExp
 from numpy import nan as npNaN
+from numpy import power as npPow
+from numpy import dot as npDot
+from numpy import empty as npEmpty
+from numpy import array as npArray
 from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
@@ -14,31 +18,25 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
-    # Pre-Calculations
+    # Compute filter weights
     m = distribution_offset * (length - 1)
     s = length / sigma
-    wtd = list(range(length))
-    for i in range(0, length):
-        wtd[i] = npExp(-1 * ((i - m) * (i - m)) / (2 * s * s))
+    filter_index = npArray(range(length))
+    weights = npExp(-npPow(filter_index - m, 2) / (2 * npPow(s, 2)))
+    norm = weights.sum()
 
-    # Calculate Result
-    result = [npNaN for _ in range(0, length - 1)] + [0]
-    for i in range(length, close.size):
-        window_sum = 0
-        cum_sum = 0
-        for j in range(0, length):
-            # wtd = math.exp(-1 * ((j - m) * (j - m)) / (2 * s * s))        # moved to pre-calc for efficiency
-            window_sum = window_sum + wtd[j] * close.iloc[i - j]
-            cum_sum = cum_sum + wtd[j]
-
-        almean = window_sum / cum_sum
-        result.append(npNaN) if i == length else result.append(almean)
-
+    result = npEmpty(close.shape)
+    result[:] = npNaN
+    valid_rng = range(length - 1, close.size)
+    for j in valid_rng:
+        subset = close[j - length + 1:j + 1]
+        result[j] = npDot(subset, weights) / norm
     alma = Series(result, index=close.index)
 
-    # Offset
+    # Apply offset
     if offset != 0:
         alma = alma.shift(offset)
 
@@ -56,7 +54,7 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
 
 
 alma.__doc__ = \
-"""Arnaud Legoux Moving Average (ALMA)
+    """Arnaud Legoux Moving Average (ALMA)
 
 The ALMA moving average uses the curve of the Normal (Gauss) distribution, which
 can be shifted from 0 to 1. This allows regulating the smoothness and high
