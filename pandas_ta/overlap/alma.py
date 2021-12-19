@@ -54,7 +54,7 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
 
 
 alma.__doc__ = \
-    """Arnaud Legoux Moving Average (ALMA)
+"""Arnaud Legoux Moving Average (ALMA)
 
 The ALMA moving average uses the curve of the Normal (Gauss) distribution, which
 can be shifted from 0 to 1. This allows regulating the smoothness and high
