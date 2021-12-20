@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Tuple
+from typing import Union
 
 from numpy import array as npArray
 from numpy import infty as npInfty
@@ -12,7 +12,7 @@ from pandas_ta import Imports
 from ._math import hpoly
 
 
-def _gaussian_poly_coefficients():
+def _gaussian_poly_coefficients() -> [npArray]:
     """Three pairs of Polynomial Approximation Coefficients
     for the Gaussian Normal CDF"""
 
@@ -59,10 +59,10 @@ def _gaussian_poly_coefficients():
         6.79019408009981274425E-9
     ])
 
-    return p0, q0, p1, q1, p2, q2
+    return [p0, q0, p1, q1, p2, q2]
 
 
-def inv_norm(value: Tuple[float, int]) -> Tuple[float, None]:
+def inv_norm(value: Union[float, int]) -> Union[float, None]:
     """Inverse Normal (inv_norm)
     Calculates the 'x' in which the area under the Gaussian PDF is
     equal to value.

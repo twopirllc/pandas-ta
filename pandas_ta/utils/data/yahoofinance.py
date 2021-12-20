@@ -5,7 +5,7 @@ from .._core import _camelCase2Title
 from .._time import ytd
 
 
-def yf(ticker: str, **kwargs):
+def yf(ticker: str, **kwargs) -> DataFrame:
     """yf - yfinance wrapper
 
     It retrieves market data (ohlcv) from Yahoo Finance using yfinance.

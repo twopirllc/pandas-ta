@@ -4,7 +4,7 @@ from pandas import DataFrame
 from pandas_ta import Imports, RATE, version
 
 
-def av(ticker: str, **kwargs):
+def av(ticker: str, **kwargs) -> DataFrame:
     print(f"[!] kwargs: {kwargs}")
     verbose = kwargs.pop("verbose", False)
     kind = kwargs.pop("kind", "history")

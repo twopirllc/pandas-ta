@@ -27,7 +27,6 @@ from pandas import DataFrame, date_range
 from pandas_ta import Imports, RATE
 
 
-
 class sample(object):
     """Sample Data [sample] BETA (Only core features so far)
 
@@ -192,7 +191,6 @@ class sample(object):
 
         self._generate() # Run it
 
-
     def _bernoulli_mask(self, array, percent:float = None, p:float = None):
         """Bernoulli Mask - Positive or Negative"""
         if array.size > 0:
@@ -201,11 +199,9 @@ class sample(object):
             return array * self.noise_percent * self._bernoulli_process()
         return array
 
-
     def _bernoulli_process(self):
         """Bernoulli Process"""
         return npRandInt(2, size=self.length)
-
 
     def _generate(self):
         """A method to generate stochastic process realizations.
@@ -245,14 +241,12 @@ class sample(object):
         self._dfname = f"{_npns} | {_s0n} | {_msmm}"
         if self._verbose: print(self._dfname)
 
-
     def nonnegative(self, array: npNdArray = None):
         """Vertical Translation the 'array' where the resultant 'array' has
         non-negative values."""
         if isinstance(array, npNdArray):
             return self._nonnegative(array)
         return array
-
 
     def _nonnegative(self, array):
         """Translates the array up by the minimum of the 'array' if any values
@@ -261,7 +255,6 @@ class sample(object):
             array += -1 * array.min()
             self._s0 = array[0]
         return array
-
 
     def _normal_mask(self, array):
         """A method to add some additional randomness to the realized
@@ -272,14 +265,12 @@ class sample(object):
             return array * self.noise_percent * norm
         return array
 
-
     def orientation(self, array, mode:str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
         if isinstance(array, npNdArray):
             return self._orientation(array, mode=mode)
         return array
-
 
     def _orientation(self, array, mode:str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
@@ -305,13 +296,11 @@ class sample(object):
 
         return result
 
-
     def scale(self, array, mode:str):
         """Mean, Normal or Standard scaling of the 'array'."""
         if isinstance(array, npNdArray):
             return self._scaler(array, mode=mode)
         return array
-
 
     def _scaler(self, array, mode:str):
         """Scaling: mean, normal, standard"""
@@ -334,7 +323,6 @@ class sample(object):
 
         return result
 
-
     def _simple_random_walk(self, up:float = None, down:float = None) -> npArray:
         """Simple Random Walk
 
@@ -348,7 +336,6 @@ class sample(object):
         x = npConcat(([0.0], npWhere(npRandInt(0, 2, size=self.length - 1) == 0, down, up)))
         return npCumsum(x).astype(float)
 
-
     def _stoch_noise(self):
         """Method to apply noise from the stochastic package if installed.
         Otherwise, it returns 0 noise.
@@ -360,7 +347,6 @@ class sample(object):
             from stochastic import random as st_random
             st_random.use_generator()
             st_random.seed(self.random_number)
-
 
             if self._noise in ["blue", "b"]:
                 from stochastic.processes.noise import BlueNoise
@@ -406,7 +392,6 @@ class sample(object):
         if result is not None and npAny(result) and self._verbose: print(_desc)
 
         return result
-
 
     def _stoch_process(self):
         """Method to return some realizations from the stochastic package.
@@ -466,8 +451,6 @@ class sample(object):
         if result is not None and self._verbose: print(_desc)
 
         return result
-
-
 
     @property
     def b(self):

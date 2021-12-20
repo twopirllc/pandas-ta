@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Tuple
+from typing import Union
 
 from numpy import log as npLog
 from numpy import nan as npNaN
@@ -103,7 +103,7 @@ def log_max_drawdown(close: Series) -> float:
     return log_return - max_drawdown(close, method="log")
 
 
-def max_drawdown(close: Series, method:str = None, all:bool = False) -> float:
+def max_drawdown(close: Series, method: str = None, all: bool = False) -> float:
     """Maximum Drawdown from close. Default: 'dollar'.
 
     Args:
@@ -130,11 +130,9 @@ def max_drawdown(close: Series, method:str = None, all:bool = False) -> float:
     return max_dd_["dollar"]
 
 
-def optimal_leverage(
-        close: Series, benchmark_rate: float = 0.0,
-        period: Tuple[float, int] = RATE["TRADING_DAYS_PER_YEAR"],
-        log: bool = False, capital: float = 1., **kwargs
-    ) -> float:
+def optimal_leverage(close: Series, benchmark_rate: float = 0.0,
+                     period: Union[float, int] = RATE["TRADING_DAYS_PER_YEAR"],
+                     log: bool = False, capital: float = 1., **kwargs) -> float:
     """Optimal Leverage of a series. NOTE: Incomplete. Do NOT use.
 
     Args:
@@ -165,7 +163,7 @@ def optimal_leverage(
     return amount
 
 
-def pure_profit_score(close: Series) -> Tuple[float, int]:
+def pure_profit_score(close: Series) -> Union[float, int]:
     """Pure Profit Score of a series.
 
     Args:
@@ -182,7 +180,8 @@ def pure_profit_score(close: Series) -> Tuple[float, int]:
     return 0
 
 
-def sharpe_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False, use_cagr: bool = False, period: int = RATE["TRADING_DAYS_PER_YEAR"]) -> float:
+def sharpe_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False, use_cagr: bool = False,
+                 period: int = RATE["TRADING_DAYS_PER_YEAR"]) -> float:
     """Sharpe Ratio of a series.
 
     Args:

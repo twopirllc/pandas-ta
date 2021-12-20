@@ -9,7 +9,7 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 
-def polygon_api(ticker: str, **kwargs):
+def polygon_api(ticker: str, **kwargs) -> DataFrame:
     r"""
     polygon_api - polygon.io API helper function.
 

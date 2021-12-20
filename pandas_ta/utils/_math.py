@@ -3,7 +3,7 @@ from functools import reduce
 from math import floor as mfloor
 from operator import mul
 from sys import float_info as sflt
-from typing import List, Optional, Tuple
+from typing import List, Optional, Union
 
 from numpy import ones, triu
 from numpy import all as npAll
@@ -26,7 +26,7 @@ from pandas_ta import Imports
 from ._core import verify_series
 
 
-def combination(**kwargs: dict) -> int:
+def combination(**kwargs) -> int:
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""
     n = int(npFabs(kwargs.pop("n", 1)))
     r = int(npFabs(kwargs.pop("r", 0)))
@@ -44,7 +44,7 @@ def combination(**kwargs: dict) -> int:
     return numerator // denominator
 
 
-def erf(x: Tuple[int, float]):
+def erf(x: Union[int, float]):
     """Error Function erf(x)
     The algorithm comes from Handbook of Mathematical Functions, formula 7.1.26.
     Source: https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python
@@ -64,10 +64,10 @@ def erf(x: Tuple[int, float]):
     # A&S formula 7.1.26
     t = 1.0 / (1.0 + p * x)
     y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * npExp(-x * x)
-    return sign * y # erf(-x) = -erf(x)
+    return sign * y  # erf(-x) = -erf(x)
 
 
-def fibonacci(n: int = 2, **kwargs: dict) -> npNdArray:
+def fibonacci(n: int = 2, **kwargs) -> npNdArray:
     """Fibonacci Sequence as a numpy array"""
     n = int(npFabs(n)) if n >= 0 else 2
 
@@ -109,7 +109,7 @@ def geometric_mean(series: Series) -> float:
     return 0
 
 
-def hpoly(array: npArray, x: Tuple[int, float]) ->  float:
+def hpoly(array: npArray, x: Union[int, float]) -> float:
     """Horner Calculation for Polynomial Evaluation (hpoly)
 
     array: np.array of polynomial coefficients
@@ -162,7 +162,7 @@ def log_geometric_mean(series: Series) -> float:
         return 0
 
 
-def pascals_triangle(n: int = None, **kwargs: dict) -> npNdArray:
+def pascals_triangle(n: int = None, **kwargs) -> npNdArray:
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -190,7 +190,7 @@ def pascals_triangle(n: int = None, **kwargs: dict) -> npNdArray:
     return triangle
 
 
-def strided_window(array, length):
+def strided_window(array, length: int):
     """as_strided
     creates a view into the array given the exact strides and shape.
     * Recommended to avoid when possible.
@@ -242,7 +242,7 @@ def weights(w: npNdArray):
     return _dot
 
 
-def zero(x: Tuple[int, float]) -> Tuple[int, float]:
+def zero(x: Union[int, float]) -> Union[int, float]:
     """If the value is close to zero, then return zero. Otherwise return itself."""
     return 0 if abs(x) < sflt.epsilon else x
 
@@ -250,7 +250,7 @@ def zero(x: Tuple[int, float]) -> Tuple[int, float]:
 # TESTING
 
 
-def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs: dict) -> DataFrame:
+def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
     """DataFrame Correlation Analysis helper"""
     corr_method = kwargs.pop("corr_method", "pearson")
 
@@ -297,6 +297,7 @@ def _linear_regression_np(x: Series, y: Series) -> dict:
         seterr(divide=_np_err["divide"], invalid=_np_err["invalid"])
 
     return result
+
 
 def _linear_regression_sklearn(x: Series, y: Series) -> dict:
     """Simple Linear Regression in Scikit Learn for two 1d arrays for

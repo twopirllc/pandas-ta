@@ -8,6 +8,8 @@ from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
 from pandas_ta import Imports
 
+from typing import Union
+
 
 def _camelCase2Title(x: str):
     """https://stackoverflow.com/questions/5020906/python-convert-camel-case-to-space-delimited-using-regex-and-taking-acronyms-in"""
@@ -34,7 +36,7 @@ def get_offset(x: int) -> int:
     return int(x) if isinstance(x, int) else 0
 
 
-def is_datetime_ordered(df: DataFrame or Series) -> bool:
+def is_datetime_ordered(df: Union[DataFrame, Series]) -> bool:
     """Returns True if the index is a datetime and ordered."""
     index_is_datetime = is_datetime64_any_dtype(df.index)
     try:
@@ -47,7 +49,7 @@ def is_datetime_ordered(df: DataFrame or Series) -> bool:
 
 def is_percent(x: int or float) -> bool:
     if isinstance(x, (int, float)):
-        return x is not None and x >= 0 and x <= 100
+        return x is not None and 0 <= x <= 100
     return False
 
 
@@ -59,19 +61,18 @@ def non_zero_range(high: Series, low: Series) -> Series:
     return diff
 
 
-def recent_maximum_index(x):
+def recent_maximum_index(x) -> int:
     return int(argmax(x[::-1]))
 
 
-def recent_minimum_index(x):
+def recent_minimum_index(x) -> int:
     return int(argmin(x[::-1]))
 
 
-def rma_pandas(series, length):
+def rma_pandas(series: Series, length: int):
     series = verify_series(series)
     alpha = (1.0 / length) if length > 0 else 0.5
     return series.ewm(alpha=alpha, min_periods=length).mean()
-
 
 
 def signed_series(series: Series, initial: int, lag: int = None) -> Series:
@@ -106,10 +107,10 @@ def tal_ma(name: str) -> int:
         elif name == "kama":  return MA_Type.KAMA  # 6
         elif name == "mama":  return MA_Type.MAMA  # 7
         elif name == "t3":    return MA_Type.T3    # 8
-    return 0 # Default: SMA -> 0
+    return 0  # Default: SMA -> 0
 
 
-def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Series:
+def unsigned_differences(series: Series, amount: int = None, **kwargs) -> (Series, Series):
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
     on the differences of the original series. The positive series are only the
