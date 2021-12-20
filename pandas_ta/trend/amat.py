@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from .long_run import long_run
 from .short_run import short_run
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def amat(close=None, fast=None, slow=None, lookback=None, mamode=None, offset=None, **kwargs):
+def amat(close: Series, fast: int = None, slow: int = None, lookback: int = None, mamode: str = None,
+         offset: int = None, **kwargs) -> DataFrame:
     """Archer Moving Averages Trends (AMAT)
 
     Archer Moving Averages Trends (AMAT) developed by Kevin Johnson provides

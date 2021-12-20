@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.volatility import true_range
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def vortex(high, low, close, length=None, drift=None, offset=None, **kwargs):
+def vortex(high: Series, low: Series, close: Series, length: int = None, drift: int = None, offset: int = None,
+           **kwargs) -> DataFrame:
     """Vortex
 
     Two oscillators that capture positive and negative trend movement.

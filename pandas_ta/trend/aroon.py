@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
 from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 
 
-def aroon(high, low, length=None, scalar=None, talib=None, offset=None, **kwargs):
+def aroon(high: Series, low: Series, length: int = None, scalar: float = None, talib: bool = None, offset: int = None,
+          **kwargs) -> DataFrame:
     """Aroon & Aroon Oscillator (AROON)
 
     Aroon attempts to identify if a security is trending and how strong.

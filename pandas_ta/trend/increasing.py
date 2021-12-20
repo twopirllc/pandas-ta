@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_drift, get_offset, is_percent, verify_series
+from pandas import Series
 
-def increasing(close, length=None, strict=None, asint=None, percent=None, drift=None, offset=None, **kwargs):
+
+def increasing(close: Series, length: int = None, strict: bool = None, asint: bool = None, percent: float = None,
+               drift: int = None, offset: int = None, **kwargs) -> Series:
     """Increasing
 
     Returns True if the series is increasing over a period, False otherwise.

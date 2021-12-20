@@ -3,9 +3,11 @@ from numpy import log10 as npLog10
 from numpy import log as npLn
 from pandas_ta.volatility import atr
 from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas import Series
 
 
-def chop(high, low, close, length=None, atr_length=None, ln=None, scalar=None, drift=None, offset=None, **kwargs):
+def chop(high: Series, low: Series, close: Series, length: int = None, atr_length: int = None, ln: bool = None,
+         scalar: float = None, drift: int = None, offset: int = None, **kwargs) -> Series:
     """Choppiness Index (CHOP)
 
     The Choppiness Index was created by Australian commodity trader

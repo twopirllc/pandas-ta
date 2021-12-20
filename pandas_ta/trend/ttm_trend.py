@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import hl2
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ttm_trend(high, low, close, length=None, offset=None, **kwargs):
+def ttm_trend(high: Series, low: Series, close: Series, length: int = None, offset: int = None, **kwargs) -> DataFrame:
     """TTM Trend (TTM_TRND)
 
     This indicator is from John Carters book “Mastering the Trade” and plots the

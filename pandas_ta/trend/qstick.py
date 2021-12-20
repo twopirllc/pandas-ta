@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import dema, ema, hma, rma, sma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas import Series
 
 
-def qstick(open_, close, length=None, offset=None, **kwargs):
+def qstick(open_: Series, close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Q Stick
 
     The Q Stick indicator, developed by Tushar Chande, attempts to quantify and

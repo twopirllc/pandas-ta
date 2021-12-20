@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import exp as npExp
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def decay(close, kind=None, length=None, mode=None, offset=None, **kwargs):
+def decay(close: Series, kind=None, length: int = None, mode: str = None, offset: int = None, **kwargs) -> Series:
     """Decay
 
     Creates a decay moving forward from prior signals like crosses. The default is

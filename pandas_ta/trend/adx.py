@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import ma
 from pandas_ta.volatility import atr
 from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 
 
-def adx(high, low, close, length=None, lensig=None, scalar=None, mamode=None, drift=None, offset=None, **kwargs):
+def adx(high: Series, low: Series, close: Series, length: int = None, lensig: int = None, scalar: float = None,
+        mamode: str = None, drift: int = None, offset: int = None, **kwargs) -> DataFrame:
     """Average Directional Movement (ADX)
 
     Average Directional Movement is meant to quantify trend strength by measuring

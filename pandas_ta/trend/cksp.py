@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.volatility import atr
 from pandas_ta.utils import get_offset, verify_series
 
 
-def cksp(high, low, close, p=None, x=None, q=None, tvmode=None, offset=None, **kwargs):
+def cksp(high: Series, low: Series, close: Series, p: int = None, x: float = None, q: int = None, tvmode: bool = None,
+         offset: int = None, **kwargs) -> DataFrame:
     """Chande Kroll Stop (CKSP)
 
     The Tushar Chande and Stanley Kroll in their book
