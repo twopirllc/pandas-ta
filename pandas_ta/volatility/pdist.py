@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas import Series
 
 
-def pdist(open_, high, low, close, drift=None, offset=None, **kwargs):
+def pdist(open_: Series, high: Series, low: Series, close: Series, drift: int = None, offset: int = None,
+          **kwargs) -> Series:
     """Price Distance (PDIST)
 
     Measures the "distance" covered by price movements.

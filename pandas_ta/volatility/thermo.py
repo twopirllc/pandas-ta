@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series, get_drift
 
 
-def thermo(high, low, length=None, long=None, short=None, mamode=None, drift=None, offset=None, **kwargs):
+def thermo(high: Series, low: Series, length: int = None, long: int = None, short: int = None, mamode: str = None,
+           drift: int = None, offset: int = None, **kwargs) -> DataFrame:
     """Elders Thermometer (THERMO)
 
     Elder's Thermometer measures price volatility.

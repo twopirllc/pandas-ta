@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def accbands(high, low, close, length=None, c=None, drift=None, mamode=None, offset=None, **kwargs):
+def accbands(high: Series, low: Series, close: Series, length: int = None, c: int = None, drift: int = None,
+             mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
     """Acceleration Bands (ACCBANDS)
 
     Acceleration Bands created by Price Headley plots upper and lower envelope

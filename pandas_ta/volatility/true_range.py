@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from numpy import nan as npNaN
-from pandas import concat
+from pandas import concat, Series
 from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def true_range(high, low, close, talib=None, drift=None, offset=None, **kwargs):
+def true_range(high: Series, low: Series, close: Series, talib: bool = None, drift: int = None, offset: int = None,
+               **kwargs) -> Series:
     """True Range
 
     An method to expand a classical range (high minus low) to include

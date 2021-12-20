@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def donchian(high, low, lower_length=None, upper_length=None, offset=None, **kwargs):
+def donchian(high: Series, low: Series, lower_length: int = None, upper_length: int = None, offset: int = None,
+             **kwargs) -> DataFrame:
     """Donchian Channels (DC)
 
     Donchian Channels are used to measure volatility, similar to

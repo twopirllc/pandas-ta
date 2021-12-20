@@ -4,7 +4,8 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def hwc(close, na=None, nb=None, nc=None, nd=None, scalar=None, channel_eval=None, offset=None, **kwargs):
+def hwc(close: Series, na: float = None, nb: float = None, nc: float = None, nd: float = None, scalar: float = None,
+        channel_eval: bool = None, offset: int = None, **kwargs) -> DataFrame:
     """HWC (Holt-Winter Channel)
 
     Channel indicator HWC (Holt-Winters Channel) based on HWMA - a three-parameter

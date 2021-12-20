@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 # from numpy import sqrt as npsqrt
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from .atr import atr
 from pandas_ta.overlap import hlc3, sma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def aberration(high, low, close, length=None, atr_length=None, offset=None, **kwargs):
+def aberration(high: Series, low: Series, close: Series, length: int = None, atr_length: int = None,
+               offset: int = None, **kwargs) -> DataFrame:
     """Aberration (ABER)
 
     A volatility indicator similar to Keltner Channels.

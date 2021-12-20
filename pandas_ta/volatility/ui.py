@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from numpy import sqrt as npsqrt
 from pandas_ta.overlap import sma
+from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ui(close, length=None, scalar=None, offset=None, **kwargs):
+def ui(close: Series, length: int = None, scalar: int = None, offset: int = None, **kwargs) -> Series:
     """Ulcer Index (UI)
 
     The Ulcer Index by Peter Martin measures the downside volatility with the use of
