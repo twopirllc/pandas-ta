@@ -3,9 +3,11 @@ from .ad import ad
 from pandas_ta import Imports
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def adosc(high, low, close, volume, open_=None, fast=None, slow=None, talib=None, offset=None, **kwargs):
+def adosc(high: Series, low: Series, close: Series, volume: Series, open_: Series = None, fast: int = None,
+          slow: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Accumulation/Distribution Oscillator or Chaikin Oscillator
 
     Accumulation/Distribution Oscillator indicator utilizes
@@ -19,7 +21,7 @@ def adosc(high, low, close, volume, open_=None, fast=None, slow=None, talib=None
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
-        open (pd.Series): Series of 'open's
+        open_ (pd.Series): Series of 'open's
         volume (pd.Series): Series of 'volume's
         fast (int): The short period. Default: 12
         slow (int): The long period. Default: 26

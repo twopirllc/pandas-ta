@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas import Series
 
 
-def ad(high, low, close, volume, open_=None, talib=None, offset=None, **kwargs):
+def ad(high: Series, low: Series, close: Series, volume: Series, open_: Series = None, talib: bool = None,
+       offset: int = None, **kwargs) -> Series:
     """Accumulation/Distribution (AD)
 
     Accumulation/Distribution indicator utilizes the relative position
@@ -17,7 +19,7 @@ def ad(high, low, close, volume, open_=None, talib=None, offset=None, **kwargs):
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's
-        open (pd.Series): Series of 'open's
+        open_ (pd.Series): Series of 'open's
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         offset (int): How many periods to offset the result. Default: 0

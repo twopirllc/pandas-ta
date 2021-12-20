@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, signed_series, verify_series
+from pandas import Series
 
 
-def pvol(close, volume, offset=None, **kwargs):
+def pvol(close: Series, volume: Series, offset: int = None, **kwargs) -> Series:
     """Price-Volume (PVOL)
 
     Returns a series of the product of price and volume.

@@ -4,7 +4,8 @@ from pandas_ta.overlap import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signed_series, zero
 
 
-def wb_tsv(close=None, volume=None, length=None, signal=None, mamode=None, drift=None, offset=None, **kwargs):
+def wb_tsv(close: Series, volume: Series, length: int = None, signal: int = None, mamode: str = None,
+           drift: int = None, offset: int = None, **kwargs) -> DataFrame:
     """Time Segmented Value (TSV)
 
     TSV is a proprietary technical indicator developed by Worden Brothers Inc.,
@@ -44,7 +45,7 @@ def wb_tsv(close=None, volume=None, length=None, signal=None, mamode=None, drift
 
     # Calculate Result
     signed_volume = volume * signed_series(close, 1)     # > 0
-    signed_volume[signed_volume < 0 ] = -signed_volume   # < 0
+    signed_volume[signed_volume < 0] = -signed_volume   # < 0
     signed_volume.apply(zero)                            # ~ 0
     cvd = signed_volume * close.diff(drift)
 

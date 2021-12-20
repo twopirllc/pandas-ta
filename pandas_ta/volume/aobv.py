@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from .obv import obv
 from pandas_ta.overlap import ma
 from pandas_ta.trend import long_run, short_run
 from pandas_ta.utils import get_offset, verify_series
 
 
-def aobv(close, volume, fast=None, slow=None, max_lookback=None, min_lookback=None, mamode=None, offset=None, **kwargs):
+def aobv(close: Series, volume: Series, fast: int = None, slow: int = None, max_lookback: int = None,
+         min_lookback: int = None, mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
     """Archer On Balance Volume (AOBV)
 
     Archer On Balance Volume (AOBV) developed by Kevin Johnson provides

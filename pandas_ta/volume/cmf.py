@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas import Series
 
 
-def cmf(high, low, close, volume, open_=None, length=None, offset=None, **kwargs):
+def cmf(high: Series, low: Series, close: Series, volume: Series, open_: Series = None, length: int = None,
+        offset: int = None, **kwargs) -> Series:
     """Chaikin Money Flow (CMF)
 
     Chailin Money Flow measures the amount of money flow volume over a specific
