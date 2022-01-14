@@ -33,7 +33,7 @@ Imports = {
     "tqdm": find_spec("tqdm") is not None,
     "vectorbt": find_spec("vectorbt") is not None,
     "yfinance": find_spec("yfinance") is not None,
-    'polygon': find_spec('polygon') is not None,
+    "polygon": find_spec("polygon") is not None,
 }
 
 # Not ideal and not dynamic but it works.
@@ -58,8 +58,8 @@ Category = {
         "alligator", "alma", "dema", "ema", "fwma", "hilo", "hl2", "hlc3",
         "hma", "hwma", "ichimoku", "jma", "kama", "linreg", "mcgd", "midpoint",
         "midprice", "ohlc4", "pwma", "rma", "sinwma", "sma", "smma", "ssf",
-        "supertrend", "swma", "t3", "tema", "trima", "vidya", "vwap", "vwma",
-        "wcp", "wma", "zlma"
+        "ssf3", "supertrend", "swma", "t3", "tema", "trima", "vidya", "vwap",
+        "vwma", "wcp", "wma", "zlma"
     ],
     # Performance
     "performance": ["log_return", "percent_return"],
@@ -117,4 +117,6 @@ RATE = {
     "YEARLY": 1,
 }
 
+import numpy as np
+import pandas as pd
 from pandas_ta.core import *

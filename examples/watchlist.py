@@ -2,7 +2,6 @@
 import datetime as dt
 
 from pathlib import Path
-from random import random
 from typing import Tuple
 
 import pandas as pd  # pip install pandas
@@ -19,7 +18,10 @@ import alphaVantageAPI as AV # pip install alphaVantage-api
 import pandas_ta as ta # pip install pandas_ta
 
 
-def colors(colors: str = None, default: str = "GrRd"):
+def colors(colors: str = None, default: str = "GrRd") -> dict:
+    """A Helper Function to that returns a dict of 'common' color groups.
+    - Modify per use case or preferred theme
+    """
     aliases = {
         # Pairs
         "BkGy": ["black", "gray"],

@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 from unittest.case import skip
 from .config import sample_data
-from .context import pandas_ta
 
 from unittest import TestCase
 from pandas import DataFrame

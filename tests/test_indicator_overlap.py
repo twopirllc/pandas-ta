@@ -1,4 +1,4 @@
-from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis, sample_data, VERBOSE
+from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis, sample_data
 from .context import pandas_ta
 
 from unittest import TestCase, skip
@@ -65,7 +65,8 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "DEMA_10")
 
     def test_ema(self):
-        result = pandas_ta.ema(self.close, presma=False)
+        # For TA Lib comparison
+        result = pandas_ta.ema(self.close, talib=False, presma=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "EMA_10")
 
@@ -79,20 +80,19 @@ class TestOverlap(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
-        result = pandas_ta.ema(self.close, talib=False)
+        result = pandas_ta.ema(self.close, talib=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "EMA_10")
 
-        try:
-            pdt.assert_series_equal(result, expected, check_names=False)
-        except AssertionError:
-            try:
-                corr = pandas_ta.utils.df_error_analysis(result, expected, col=CORRELATION)
-                self.assertGreater(corr, CORRELATION_THRESHOLD)
-            except Exception as ex:
-                error_analysis(result, CORRELATION, ex)
+        result = pandas_ta.ema(self.close, talib=False, presma=False, adjust=False)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "EMA_10")
 
-        result = pandas_ta.ema(self.close)
+        result = pandas_ta.ema(self.close, talib=False, presma=False, adjust=True)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "EMA_10")
+
+        result = pandas_ta.ema(self.close, talib=False, presma=True, adjust=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "EMA_10")
 
@@ -329,7 +329,7 @@ class TestOverlap(TestCase):
             except Exception as ex:
                 error_analysis(result, CORRELATION, ex)
 
-        result = pandas_ta.sma(self.close)
+        result = pandas_ta.sma(self.close, talib=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SMA_10")
 
@@ -339,13 +339,18 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "SMMA_7")
 
     def test_ssf(self):
-        result = pandas_ta.ssf(self.close, poles=2)
+        result = pandas_ta.ssf(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "SSF_10_2")
+        self.assertEqual(result.name, "SSF_20")
 
-        result = pandas_ta.ssf(self.close, poles=3)
+        result = pandas_ta.ssf(self.close, pi=pandas_ta.np.pi, sqrt2=pandas_ta.np.sqrt(2), everget=True)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "SSF_10_3")
+        self.assertEqual(result.name, "SSFe_20")
+
+    def test_ssf3(self):
+        result = pandas_ta.ssf3(self.close)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "SSF3_20")
 
     def test_swma(self):
         result = pandas_ta.swma(self.close)

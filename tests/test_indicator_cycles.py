@@ -1,11 +1,10 @@
-from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
+# -*- coding: utf-8 -*-
+from .config import sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
 
 from unittest import TestCase, skip
 import pandas.testing as pdt
-from pandas import DataFrame, Series
-
-import talib as tal
+from pandas import Series
 
 
 class TestCycles(TestCase):
@@ -40,7 +39,7 @@ class TestCycles(TestCase):
         self.assertEqual(result.name, "EBSW_40_10")
 
 
-    def test_reflext(self):
+    def test_reflex(self):
         result = pandas_ta.reflex(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "REFLEX_20_20_0.04")

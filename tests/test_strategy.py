@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Must run seperately from the rest of the tests
 # in order to successfully run
 from multiprocessing import cpu_count
@@ -11,7 +12,7 @@ from pandas import DataFrame
 
 
 # Strategy Testing Parameters
-cores = cpu_count()
+cores = cpu_count() - 1
 cumulative = False
 speed_table = False
 strategy_timed = False

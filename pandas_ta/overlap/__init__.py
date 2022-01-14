@@ -24,6 +24,7 @@ from .sinwma import sinwma
 from .sma import sma
 from .smma import smma
 from .ssf import ssf
+from .ssf3 import ssf3
 from .supertrend import supertrend
 from .swma import swma
 from .t3 import t3

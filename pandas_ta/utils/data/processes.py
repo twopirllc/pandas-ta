@@ -2,30 +2,8 @@
 # -*- coding: utf-8 -*-
 import datetime as dt
 from random import choice as rChoice
-
-from numpy import absolute as npAbsolute
-from numpy import any as npAny
-from numpy import array as npArray
-from numpy import concatenate as npConcat
-from numpy import cumsum as npCumsum
-from numpy import flip as npFlip
-from numpy import mean as npMean
-from numpy import max as npMax
-from numpy import min as npMin
-from numpy import ndarray as npNdArray
-from numpy import std as npStd
-from numpy import where as npWhere
-from numpy import zeros as npZeros
-
-from numpy.random import normal as npNormal
-from numpy.random import randint as npRandInt
-from numpy.random.mtrand import randint as npRandInt
-from numpy.random import choice as npChoice
-
-
 from pandas import DataFrame, date_range
-from pandas_ta import Imports, RATE
-
+from pandas_ta import Imports, RATE, np
 
 
 class sample(object):
@@ -154,7 +132,7 @@ class sample(object):
         _generate() method to build a sample realization with the given
         arguments.
         """
-        _random_symbol = ''.join([rChoice("ABCDEFGHIJKLMNOPQRSTUVWXYZ") for _ in range(npRandInt(3, 6))])
+        _random_symbol = ''.join([rChoice("ABCDEFGHIJKLMNOPQRSTUVWXYZ") for _ in range(np.random.randint(3, 6))])
         self._name = str(name) if name is not None and isinstance(name, str) else _random_symbol
         self._process = str(process).lower() if process is not None and isinstance(process, str) and process in self._processes else None
         self._noise = str(noise).lower() if noise is not None and isinstance(noise, str) and noise in self._noises else None
@@ -185,15 +163,15 @@ class sample(object):
         self._verbose = verbose if verbose is not None and isinstance(verbose, bool) else False
 
         if self._process == "rand":
-            self._process = npChoice(self._processes[:-2])
+            self._process = np.random.choice(self._processes[:-2])
 
         if self._noise == "rand":
-            self._noise = npChoice(self._noises[:-1])
+            self._noise = np.random.choice(self._noises[:-1])
 
         self._generate() # Run it
 
 
-    def _bernoulli_mask(self, array, percent:float = None, p:float = None):
+    def _bernoulli_mask(self, array: np.ndarray, percent:float = None, p:float = None):
         """Bernoulli Mask - Positive or Negative"""
         if array.size > 0:
             percent = float(percent) if percent is not None and isinstance(percent, float) else self.noise_percent
@@ -204,7 +182,7 @@ class sample(object):
 
     def _bernoulli_process(self):
         """Bernoulli Process"""
-        return npRandInt(2, size=self.length)
+        return np.random.randint(2, size=self.length)
 
 
     def _generate(self):
@@ -241,20 +219,20 @@ class sample(object):
 
         _npns = f"{self.name} | {self.process} {self.noise+' ' if self.noise is not None else ''}{self.np.size}"
         _s0n = f"s0: {round(self.np[0], self._precision)}, sN: {round(self.np[-1], self._precision)}"
-        _msmm = f"mu: {round(npMean(self.np), self._precision)}, sigma: {round(npStd(self.np), self._precision)}"
+        _msmm = f"mu: {round(np.mean(self.np), self._precision)}, sigma: {round(np.std(self.np), self._precision)}"
         self._dfname = f"{_npns} | {_s0n} | {_msmm}"
         if self._verbose: print(self._dfname)
 
 
-    def nonnegative(self, array: npNdArray = None):
+    def nonnegative(self, array: np.ndarray = None):
         """Vertical Translation the 'array' where the resultant 'array' has
         non-negative values."""
-        if isinstance(array, npNdArray):
+        if isinstance(array, np.ndarray):
             return self._nonnegative(array)
         return array
 
 
-    def _nonnegative(self, array):
+    def _nonnegative(self, array: np.ndarray):
         """Translates the array up by the minimum of the 'array' if any values
         are negative."""
         if array.size > 0 and any(array < 0):
@@ -263,25 +241,25 @@ class sample(object):
         return array
 
 
-    def _normal_mask(self, array):
+    def _normal_mask(self, array: np.ndarray):
         """A method to add some additional randomness to the realized
         process. Applies a mask based on the Normal Distribution and the 'array's
         mean and standard deviation."""
         if array.size > 0:
-            norm = npNormal(npMean(array), npStd(array), size=self.length)
+            norm = np.random.normal(np.mean(array), np.std(array), size=self.length)
             return array * self.noise_percent * norm
         return array
 
 
-    def orientation(self, array, mode:str = None):
+    def orientation(self, array: np.ndarray, mode: str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
-        if isinstance(array, npNdArray):
+        if isinstance(array, np.ndarray):
             return self._orientation(array, mode=mode)
         return array
 
 
-    def _orientation(self, array, mode:str = None):
+    def _orientation(self, array: np.ndarray, mode: str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
         _modes = ["i", "r", "ir", "ri", None, "rand"]
@@ -289,16 +267,16 @@ class sample(object):
 
         result = array
         if mode is None:    return result
-        if mode == "rand":  mode = npChoice(_modes[3:])
+        if mode == "rand":  mode = np.random.choice(_modes[3:])
 
         if mode == "i":
-            mid = 0.5 * (npMin(array) + npMax(array))
+            mid = 0.5 * (np.min(array) + np.max(array))
             inv = mid - array
             diff = inv - inv[0]
             result = array[0] + diff if array[0] > 0 else diff - array[0]
 
         if mode == "r":
-            result = npFlip(array) - (array[-1] - array[0])
+            result = np.flip(array) - (array[-1] - array[0])
 
         if mode in ["ir", "ri"]:
             result = self._orientation(self._orientation(array, "i"), "r")
@@ -306,22 +284,22 @@ class sample(object):
         return result
 
 
-    def scale(self, array, mode:str):
+    def scale(self, array: np.ndarray, mode: str):
         """Mean, Normal or Standard scaling of the 'array'."""
-        if isinstance(array, npNdArray):
+        if isinstance(array, np.ndarray):
             return self._scaler(array, mode=mode)
         return array
 
 
-    def _scaler(self, array, mode:str):
+    def _scaler(self, array: np.ndarray, mode: str):
         """Scaling: mean, normal, standard"""
         result = array
         if mode is None:    return result
-        if mode == "rand":  mode = npChoice(self._scales[3:])
+        if mode == "rand":  mode = np.random.choice(self._scales[3:])
 
-        min_, max_ = npMin(array), npMax(array)
-        range_ = npAbsolute(max_ - min_)
-        mu_, std_ = npMean(array), npStd(array)
+        min_, max_ = np.min(array), np.max(array)
+        range_ = np.absolute(max_ - min_)
+        mu_, std_ = np.mean(array), np.std(array)
 
         if mode == "m" and range_ > 0: # "mean"
             result = ((array - mu_) / range_)
@@ -335,7 +313,7 @@ class sample(object):
         return result
 
 
-    def _simple_random_walk(self, up:float = None, down:float = None) -> npArray:
+    def _simple_random_walk(self, up:float = None, down:float = None) -> np.array:
         """Simple Random Walk
 
         Sources:
@@ -345,8 +323,8 @@ class sample(object):
         down = float(down) if down is not None and isinstance(down, (int, float)) else -1.0
         if up < down: down, up = up, down
 
-        x = npConcat(([0.0], npWhere(npRandInt(0, 2, size=self.length - 1) == 0, down, up)))
-        return npCumsum(x).astype(float)
+        x = np.concatenate(([0.0], np.where(np.random.randint(0, 2, size=self.length - 1) == 0, down, up)))
+        return np.cumsum(x).astype(float)
 
 
     def _stoch_noise(self):
@@ -354,7 +332,7 @@ class sample(object):
         Otherwise, it returns 0 noise.
         """
         _desc = f"[+] "
-        result = npZeros(self.length, dtype=float)
+        result = np.zeros(self.length, dtype=float)
 
         if self._noise is not None and Imports["stochastic"]:
             from stochastic import random as st_random
@@ -403,7 +381,7 @@ class sample(object):
         # Initial Value (s0) adjustment
         result = result + result[0] if result[0] > self.s0 else result - result[0]
 
-        if result is not None and npAny(result) and self._verbose: print(_desc)
+        if result is not None and np.any(result) and self._verbose: print(_desc)
 
         return result
 

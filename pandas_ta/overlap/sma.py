@@ -1,6 +1,32 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta import Imports, np, pd
+from pandas_ta.utils import get_offset, np_prepend, verify_series
+
+try:
+    from numba import njit
+except ImportError:
+    njit = lambda _: _
+
+
+@njit
+def np_sma(x: np.ndarray, n: int):
+    """https://github.com/numba/numba/issues/4119"""
+    result = np.convolve(np.ones(n) / n, x)[n - 1:1 - n]
+    return np_prepend(result, n - 1)
+
+## SMA: Alternative Implementations
+# @njit
+# def np_sma(x: np.ndarray, n: int):
+#     result = np.convolve(x, np.ones(n), mode="valid") / n
+#     return np_prepend(result, n - 1)
+
+
+# @njit
+# def np_sma(x: np.ndarray, n: int):
+#     csum = np.cumsum(x, dtype=float)
+#     csum[n:] = csum[n:] - csum[:-n]
+#     result = csum[n - 1:] / n
+#     return np_prepend(result, n - 1)
 
 
 def sma(close, length=None, talib=None, offset=None, **kwargs):
@@ -42,7 +68,9 @@ def sma(close, length=None, talib=None, offset=None, **kwargs):
         from talib import SMA
         sma = SMA(close, length)
     else:
-        sma = close.rolling(length, min_periods=min_periods).mean()
+        np_close = close.values
+        sma = np_sma(np_close, length)
+        sma = pd.Series(sma, index=close.index)
 
     # Offset
     if offset != 0:

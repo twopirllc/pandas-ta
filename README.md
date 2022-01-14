@@ -56,7 +56,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Candles](#candles-64)
     * [Cycles](#cycles-2)
     * [Momentum](#momentum-42)
-    * [Overlap](#overlap-35)
+    * [Overlap](#overlap-36)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
     * [Trend](#trend-19)
@@ -118,7 +118,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.41b*
+Best choice! Version: *0.3.42b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -752,7 +752,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 
 <br/>
 
-### **Overlap** (35)
+### **Overlap** (36)
 
 * _Bill Williams Alligator_: **alligator**
 * _Arnaud Legoux Moving Average_: **alma**
@@ -781,6 +781,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _Simple Moving Average_: **sma**
 * _Smoothed Moving Average_: **smma**
 * _Ehler's Super Smoother Filter_: **ssf**
+* _Ehler's Super Smoother Filter (3 Poles)_: **ssf3**
 * _Supertrend_: **supertrend**
 * _Symmetric Weighted Moving Average_: **swma**
 * _T3 Moving Average_: **t3**
@@ -1048,9 +1049,11 @@ help(ta.sample)
 ## **Updated Indicators**
 
 * _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
+* _Exponential Moving Average_ (**ema**): The argument ```sma``` has been renamed ```presma`` to avoid potential name collision. When ```presma=True```, then the Pandas TA version will bootstrap **ema** like TA Lib. See ```help(ta.ema)```.
 * _Kaufman Adaptive Moving Average_ (**kama**): An ```mamode``` as been added with default "**SMA**" to properly boostrap **kama**. _Note_: Not all MAs are usable. See ```help(ta.kama)```.
 * _Linear Regression_ (**linreg**): Checks **numpy**'s version to determine whether to utilize the ```as_strided``` method or the newer ```sliding_window_view``` method. This should resolve Issues with Google Colab and it's delayed dependency updates as well as TensorFlow's dependencies as discussed in Issues [#285](https://github.com/twopirllc/pandas-ta/issues/285) and [#329](https://github.com/twopirllc/pandas-ta/issues/329).
-* _Moving Average Convergence Divergence_ (**macd**): New argument ```asmode``` enables AS version of MACD. Default is False.  See ```help(ta.macd)```.
+* _Ehler's Super Smoother Filter_ (**ssf**): Some new arguments (```pi```, ```sqrt2```) were added to control the precision of the calculation since it varies by author and user. Additionally, the ```poles``` argument has been removed. For 3 Poles, see ```help(ta.ssf3)```. See ```help(ta.ssf)```.
+* _Ehler's Super Smoother Filter (3 Poles)_ (**ssf3**): Was split from ```ta.ssf``` and also has addtional arguments arguments (```pi```, ```sqrt3```).  See ```help(ta.ssf3)```.
 * _Standard Deviation_ (**stdev**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **variance**. See ```help(ta.stdev)```.
 * _Variance_ (**variance**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **stdev**. See ```help(ta.variance)```.
 * _Volume Profile_ (**vp**): Calculation improvements. See [Pull Request #320](https://github.com/twopirllc/pandas-ta/pull/320) See ```help(ta.vp)```.

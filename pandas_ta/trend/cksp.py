@@ -40,6 +40,7 @@ def cksp(high, low, close, p=None, x=None, q=None, tvmode=None, offset=None, **k
         pd.DataFrame: long and short columns.
     """
     # Validate Arguments
+    tvmode = tvmode if isinstance(tvmode, bool) else True
     p = int(p) if p and p > 0 else 10
     x = float(x) if x and x > 0 else 1 if tvmode is True else 3
     q = int(q) if q and q > 0 else 9 if tvmode is True else 20
@@ -51,7 +52,6 @@ def cksp(high, low, close, p=None, x=None, q=None, tvmode=None, offset=None, **k
     if high is None or low is None or close is None: return
 
     offset = get_offset(offset)
-    tvmode = tvmode if isinstance(tvmode, bool) else True
     mamode = "rma" if tvmode is True else "sma"
 
     # Calculate Result

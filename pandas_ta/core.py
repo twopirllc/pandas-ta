@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 from dataclasses import dataclass, field
 from multiprocessing import cpu_count, Pool
-from pathlib import Path
 from time import perf_counter
 from typing import List, Tuple
 from warnings import simplefilter
 
-import pandas as pd
-from numpy import log10 as npLog10
-from numpy import ndarray as npNdarray
 from pandas.core.base import PandasObject
 
-from pandas_ta import Category, Imports, version
+from pandas_ta import Category, Imports, np, pd, version
 from pandas_ta.candles.cdl_pattern import ALL_PATTERNS
 from pandas_ta.candles import *
 from pandas_ta.cycles import *
@@ -452,7 +448,7 @@ class AnalysisIndicators(BasePandasObject):
                 match = [i for i, x in enumerate(matches) if x]
                 # If found, awesome.  Return it or return the 'series'.
                 cols = ", ".join(list(df.columns))
-                NOT_FOUND = f"[X] Ooops!!! It's {series not in df.columns}, the series '{series}' was not found in {cols}"
+                NOT_FOUND = f"[X] Ooops!!! It's {series not in df.columns}, the column named '{series}' was not found in {cols}"
                 return df.iloc[:, match[0]] if len(match) else print(NOT_FOUND)
 
     def _indicators_by_category(self, name: str) -> list:
@@ -545,7 +541,7 @@ class AnalysisIndicators(BasePandasObject):
             Returns nothing to the user.  Either adds or removes constant ranges
             from the working DataFrame.
         """
-        if isinstance(values, npNdarray) or isinstance(values, list):
+        if isinstance(values, np.ndarray) or isinstance(values, list):
             if append:
                 for x in values:
                     self._df[f"{x}"] = x
@@ -736,7 +732,7 @@ class AnalysisIndicators(BasePandasObject):
             _total_ta = len(ta)
             with Pool(self.cores) as pool:
                 # Some magic to optimize chunksize for speed based on total ta indicators
-                _chunksize = mp_chunksize - 1 if mp_chunksize > _total_ta else int(npLog10(_total_ta)) + 1
+                _chunksize = mp_chunksize - 1 if mp_chunksize > _total_ta else int(np.log10(_total_ta)) + 1
                 if verbose:
                     print(f"[i] Multiprocessing {_total_ta} indicators with {_chunksize} chunks and {self.cores}/{cpu_count()} cpus.")
 
@@ -861,9 +857,13 @@ class AnalysisIndicators(BasePandasObject):
             Exits if the DataFrame is empty or None
             Otherwise it returns a DataFrame
         """
-        # ds = kwargs.pop("ds", "yahoo")
-        ds = f"{ds.lower()}" if ds is not None and isinstance(ds, str) else "yahoo"
+        # _frequencies = ["1s", "5s", "15s", "30s", "1m", "5m", "15m", "30m", "45m", "1h", "2h", "4h", "D", "W", "M"]
+        _ds = "yahoo"
+        ds = f"{ds.lower()}" if ds is not None and isinstance(ds, str) else _ds
+
         strategy = kwargs.pop("strategy", None)
+        if isinstance(ticker, str):
+            tickers = [ticker]
 
         # Fetch the Data
         if ds == "polygon":
@@ -882,7 +882,8 @@ class AnalysisIndicators(BasePandasObject):
                 df.columns = df.columns.str.lower()
             self._df = df
 
-        if strategy is not None: self.strategy(strategy, **kwargs)
+        # if strategy is not None: self.strategy(strategy, **kwargs)
+        if strategy is not None: return self.strategy(strategy, returns=True, **kwargs)
         return df
 
 
@@ -918,9 +919,9 @@ class AnalysisIndicators(BasePandasObject):
         result = ebsw(close=close, length=length, bars=bars, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def reflex(self, close=None, length=None, smooth=None, offset=None, **kwargs):
+    def reflex(self, close=None, length=None, smooth=None, alpha=None, pi=None, sqrt2=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = reflex(close=close, length=length, smooth=smooth, offset=offset, **kwargs)
+        result = reflex(close=close, length=length, smooth=smooth, alpha=alpha, pi=pi, sqrt2=sqrt2, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     # Momentum
@@ -1315,9 +1316,14 @@ class AnalysisIndicators(BasePandasObject):
         result = smma(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def ssf(self, length=None, poles=None, offset=None, **kwargs):
+    def ssf(self, length=None, everget=None, pi=None, sqrt2=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = ssf(close=close, length=length, poles=poles, offset=offset, **kwargs)
+        result = ssf(close=close, length=length, everget=everget, pi=pi, sqrt2=sqrt2, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def ssf3(self, length=None, pi=None, sqrt3=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = ssf3(close=close, length=length, pi=pi, sqrt3=sqrt3, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def supertrend(self, length=None, multiplier=None, offset=None, **kwargs):
@@ -1536,9 +1542,9 @@ class AnalysisIndicators(BasePandasObject):
         result = supertrend(high=high, low=low, close=close, period=period, multiplier=multiplier, mamode=mamode, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def trendflex(self, close=None, length=None, smooth=None, offset=None, **kwargs):
+    def trendflex(self, close=None, length=None, smooth=None, alpha=None, pi=None, sqrt2=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = trendflex(close=close, length=length, smooth=smooth, offset=offset, **kwargs)
+        result = trendflex(close=close, length=length, smooth=smooth, alpha=alpha, pi=pi, sqrt2=sqrt2, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def tsignals(self, trend=None, asbool=None, trend_reset=None, trend_offset=None, offset=None, **kwargs):
@@ -1605,7 +1611,6 @@ class AnalysisIndicators(BasePandasObject):
 
     def cross_value(self, value=None, above=True, asint=True, offset=None, **kwargs):
         a = self._get_column(kwargs.pop("close", "a"))
-        # a = self._get_column(a, f"{a}")
         result = cross_value(series_a=a, value=value, above=above, asint=asint, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 

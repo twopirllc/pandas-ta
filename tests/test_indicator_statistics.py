@@ -1,4 +1,5 @@
-from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
+# -*- coding: utf-8 -*-
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD
 from .context import pandas_ta
 
 from unittest import skip, TestCase

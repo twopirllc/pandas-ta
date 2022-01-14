@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 from typing import Tuple
 
-from numpy import log as npLog
-from numpy import nan as npNaN
-from numpy import sqrt as npSqrt
 from pandas import Series, Timedelta
 
 from ._core import verify_series
-from ._time import total_time
 from ._math import linear_regression, log_geometric_mean
-from pandas_ta import RATE
+from ._time import total_time
+from pandas_ta import RATE, np
 from pandas_ta.performance import drawdown, log_return, percent_return
 
 
@@ -70,8 +67,8 @@ def downside_deviation(returns: Series, benchmark_rate: float = 0.0, tf: str = "
 
     downside = adjusted_benchmark_rate - returns
     downside_sum_of_squares = (downside[downside > 0] ** 2).sum()
-    downside_deviation = npSqrt(downside_sum_of_squares / (returns.shape[0] - 1))
-    return downside_deviation * npSqrt(days_per_year)
+    downside_deviation = np.sqrt(downside_sum_of_squares / (returns.shape[0] - 1))
+    return downside_deviation * np.sqrt(days_per_year)
 
 
 def jensens_alpha(returns: Series, benchmark_returns: Series) -> float:
@@ -99,7 +96,7 @@ def log_max_drawdown(close: Series) -> float:
     >>> result = ta.log_max_drawdown(close)
     """
     close = verify_series(close)
-    log_return = npLog(close.iloc[-1]) - npLog(close.iloc[0])
+    log_return = np.log(close.iloc[-1]) - np.log(close.iloc[0])
     return log_return - max_drawdown(close, method="log")
 
 
@@ -155,7 +152,7 @@ def optimal_leverage(
     # sharpe = sharpe_ratio(close, benchmark_rate=benchmark_rate, log=log, use_cagr=use_cagr, period=period)
 
     period_mu = period * returns.mean()
-    period_std = npSqrt(period) * returns.std()
+    period_std = np.sqrt(period) * returns.std()
 
     mean_excess_return = period_mu - benchmark_rate
     # sharpe = mean_excess_return / period_std
@@ -177,7 +174,7 @@ def pure_profit_score(close: Series) -> Tuple[float, int]:
     close_index = Series(0, index=close.reset_index().index)
 
     r = linear_regression(close_index, close)["r"]
-    if r is not npNaN:
+    if r is not np.nan:
         return r * cagr(close)
     return 0
 
@@ -204,7 +201,7 @@ def sharpe_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False, 
         return cagr(close) / volatility(close, returns, log=log)
     else:
         period_mu = period * returns.mean()
-        period_std = npSqrt(period) * returns.std()
+        period_std = np.sqrt(period) * returns.std()
         return (period_mu - benchmark_rate) / period_std
 
 
@@ -253,5 +250,5 @@ def volatility(close: Series, tf: str = "years", returns: bool = False, log: boo
     # factor = returns.shape[0] / total_time(returns, tf)
     # if kwargs.pop("nearest_day", False) and tf.lower() == "years":
         # factor = int(factor + 1)
-    # return npSqrt(factor) * returns.std()
+    # return np.sqrt(factor) * returns.std()
     return returns

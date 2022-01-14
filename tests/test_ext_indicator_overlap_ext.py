@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 from .config import sample_data
-from .context import pandas_ta
 
 from unittest import skip, TestCase
 from pandas import DataFrame
@@ -134,13 +134,14 @@ class TestOverlapExtension(TestCase):
         self.assertEqual(self.data.columns[-1], "SMMA_7")
 
     def test_ssf_ext(self):
-        self.data.ta.ssf(append=True, poles=2)
+        self.data.ta.ssf(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "SSF_10_2")
+        self.assertEqual(self.data.columns[-1], "SSF_20")
 
-        self.data.ta.ssf(append=True, poles=3)
+    def test_ssf3_ext(self):
+        self.data.ta.ssf3(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "SSF_10_3")
+        self.assertEqual(self.data.columns[-1], "SSF3_20")
 
     def test_swma_ext(self):
         self.data.ta.swma(append=True)

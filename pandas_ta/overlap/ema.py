@@ -1,10 +1,27 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
-from pandas_ta import Imports
+from pandas_ta import Imports, np
 from pandas_ta.utils import get_offset, verify_series
 
+try:
+    from numba import njit
+except ImportError:
+    njit = lambda _: _
 
-def ema(close, length=None, talib=None, offset=None, **kwargs):
+
+# Almost there
+# @njit
+# def np_ema(x: np.ndarray, n: int):
+#     m = x.size
+#     result = np.zeros(m)
+#     a = 1 / (n + 1)
+#     for i in range(1, m):
+#         result[i] = a * x[i - 1] + (1 - a) * x[i]
+#     result[0] = np.nan
+#     return result
+#     # return np_prepend(result, n - 1)
+
+
+def ema(close, length=None, talib=None, presma=None, offset=None, **kwargs):
     """Exponential Moving Average (EMA)
 
     The Exponential Moving Average is more responsive moving average compared to the
@@ -20,13 +37,14 @@ def ema(close, length=None, talib=None, offset=None, **kwargs):
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib=True, it returns the
+            TA Lib values. Default: True
+        presma (bool, optional): If True, uses SMA for initial value like TA Lib.
+            Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
         adjust (bool, optional): Default: False
-        sma (bool, optional): If True, uses SMA for initial value. Default: True
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 
@@ -35,11 +53,11 @@ def ema(close, length=None, talib=None, offset=None, **kwargs):
     """
     # Validate Arguments
     length = int(length) if length and length > 0 else 10
-    adjust = kwargs.pop("adjust", False)
-    sma = kwargs.pop("sma", True)
+    presma = bool(presma) if isinstance(presma, bool) else True
+    mode_tal = bool(talib) if isinstance(talib, bool) else True
     close = verify_series(close, length)
     offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    adjust = kwargs.pop("adjust", False)
 
     if close is None: return
 
@@ -48,10 +66,10 @@ def ema(close, length=None, talib=None, offset=None, **kwargs):
         from talib import EMA
         ema = EMA(close, length)
     else:
-        if sma:
+        if presma: # TA Lib implementation
             close = close.copy()
             sma_nth = close[0:length].mean()
-            close[:length - 1] = npNaN
+            close[:length - 1] = np.nan
             close.iloc[length - 1] = sma_nth
         ema = close.ewm(span=length, adjust=adjust).mean()
 

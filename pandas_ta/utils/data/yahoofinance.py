@@ -180,11 +180,11 @@ def yf(ticker: str, **kwargs):
                 print(f"Insiders % | Institution %".ljust(39), f"{100 * ticker_info['heldPercentInsiders']:.4f}% | {100 * ticker_info['heldPercentInstitutions']:.4f}%".rjust(40))
 
             print()
-            if "bookValue" in ticker_info and ticker_info['bookValue'] is not None or "priceToBook" in ticker_info and ticker_info['priceToBook'] is not None or "pegRatio" in ticker_info and ticker_info['pegRatio'] is not None:
+            if "bookValue" in ticker_info and ticker_info['bookValue'] is not None and "priceToBook" in ticker_info and ticker_info['priceToBook'] is not None and "pegRatio" in ticker_info and ticker_info['pegRatio'] is not None:
                 print(f"Book Value | Price to Book | Peg Ratio".ljust(39), f"{ticker_info['priceToBook']} | {ticker_info['priceToBook']} | {ticker_info['pegRatio']}".rjust(40))
             if "forwardPE" in ticker_info and ticker_info['forwardPE'] is not None:
                 print(f"Forward PE".ljust(39), f"{ticker_info['forwardPE']}".rjust(40))
-            if "forwardEps" in ticker_info and ticker_info['forwardEps'] is not None or "trailingEps" in ticker_info and ticker_info['trailingEps'] is not None:
+            if "forwardEps" in ticker_info and ticker_info['forwardEps'] is not None and "trailingEps" in ticker_info and ticker_info['trailingEps'] is not None:
                 print(f"Forward EPS | Trailing EPS".ljust(39), f"{ticker_info['forwardEps']} | {ticker_info['trailingEps']}".rjust(40))
             if "enterpriseValue" in ticker_info and ticker_info['enterpriseValue'] is not None:
                 print(f"Enterprise Value".ljust(39), f"{ticker_info['enterpriseValue']:,}".rjust(40))

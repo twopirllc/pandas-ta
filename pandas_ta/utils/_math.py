@@ -5,31 +5,16 @@ from operator import mul
 from sys import float_info as sflt
 from typing import List, Optional, Tuple
 
-from numpy import ones, triu
-from numpy import all as npAll
-from numpy import append as npAppend
-from numpy import array as npArray
-from numpy import corrcoef as npCorrcoef
-from numpy import dot as npDot
-from numpy import fabs as npFabs
-from numpy import exp as npExp
-from numpy import log as npLog
-from numpy import nan as npNaN
-from numpy import ndarray as npNdArray
-from numpy import seterr
-from numpy import sqrt as npSqrt
-from numpy import sum as npSum
-
 from pandas import DataFrame, Series
 
-from pandas_ta import Imports
+from pandas_ta import Imports, np
 from ._core import verify_series
 
 
 def combination(**kwargs: dict) -> int:
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""
-    n = int(npFabs(kwargs.pop("n", 1)))
-    r = int(npFabs(kwargs.pop("r", 0)))
+    n = int(np.fabs(kwargs.pop("n", 1)))
+    r = int(np.fabs(kwargs.pop("r", 0)))
 
     if kwargs.pop("repetition", False) or kwargs.pop("multichoose", False):
         n = n + r - 1
@@ -67,9 +52,9 @@ def erf(x: Tuple[int, float]):
     return sign * y # erf(-x) = -erf(x)
 
 
-def fibonacci(n: int = 2, **kwargs: dict) -> npNdArray:
+def fibonacci(n: int = 2, **kwargs: dict) -> np.ndarray:
     """Fibonacci Sequence as a numpy array"""
-    n = int(npFabs(n)) if n >= 0 else 2
+    n = int(np.fabs(n)) if n >= 0 else 2
 
     zero = kwargs.pop("zero", False)
     if zero:
@@ -78,14 +63,14 @@ def fibonacci(n: int = 2, **kwargs: dict) -> npNdArray:
         n -= 1
         a, b = 1, 1
 
-    result = npArray([a])
+    result = np.array([a])
     for _ in range(0, n):
         a, b = b, a + b
-        result = npAppend(result, a)
+        result = np.append(result, a)
 
     weighted = kwargs.pop("weighted", False)
     if weighted:
-        fib_sum = npSum(result)
+        fib_sum = np.sum(result)
         if fib_sum > 0:
             return result / fib_sum
         else:
@@ -103,13 +88,13 @@ def geometric_mean(series: Series) -> float:
     has_zeros = 0 in series.values
     if has_zeros:
         series = series.fillna(0) + 1
-    if npAll(series > 0):
+    if np.all(series > 0):
         mean = series.prod() ** (1 / n)
         return mean if not has_zeros else mean - 1
     return 0
 
 
-def hpoly(array: npArray, x: Tuple[int, float]) ->  float:
+def hpoly(array: np.array, x: Tuple[int, float]) -> float:
     """Horner Calculation for Polynomial Evaluation (hpoly)
 
     array: np.array of polynomial coefficients
@@ -126,8 +111,8 @@ def hpoly(array: npArray, x: Tuple[int, float]) ->  float:
     hpoly(coeffs_0, x) => -1224.25
     hpoly(coeffs_1, x) or hpoly(coeffs_2, x) => -1224.25 # Faster
     """
-    if not isinstance(array, npNdArray):
-        array = npArray(array)
+    if not isinstance(array, np.ndarray):
+        array = np.array(array)
 
     m, y = array.size, array[0]
 
@@ -157,12 +142,12 @@ def log_geometric_mean(series: Series) -> float:
     if n < 2: return 0
     else:
         series = series.fillna(0) + 1
-        if npAll(series > 0):
-            return npExp(npLog(series).sum() / n) - 1
+        if np.all(series > 0):
+            return np.exp(np.log(series).sum() / n) - 1
         return 0
 
 
-def pascals_triangle(n: int = None, **kwargs: dict) -> npNdArray:
+def pascals_triangle(n: int = None, **kwargs: dict) -> np.ndarray:
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -170,11 +155,11 @@ def pascals_triangle(n: int = None, **kwargs: dict) -> npNdArray:
          => weighted: [0.0625, 0.25, 0.375, 0.25, 0.0625]
          => inverse weighted: [0.9375, 0.75, 0.625, 0.75, 0.9375]
     """
-    n = int(npFabs(n)) if n is not None else 0
+    n = int(np.fabs(n)) if n is not None else 0
 
     # Calculation
-    triangle = npArray([combination(n=n, r=i) for i in range(0, n + 1)])
-    triangle_sum = npSum(triangle)
+    triangle = np.array([combination(n=n, r=i) for i in range(0, n + 1)])
+    triangle_sum = np.sum(triangle)
     triangle_weights = triangle / triangle_sum
     inverse_weights = 1 - triangle_weights
 
@@ -211,7 +196,7 @@ def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:
     n=4  => triangle: [1, 2, 2, 1]
          => weighted: [0.16666667 0.33333333 0.33333333 0.16666667]
     """
-    n = int(npFabs(n)) if n is not None else 2
+    n = int(np.fabs(n)) if n is not None else 2
 
     triangle = None
     if n == 2:
@@ -228,17 +213,17 @@ def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:
             triangle += front[::-1]
 
     if kwargs.pop("weighted", False) and isinstance(triangle, list):
-        triangle_sum = npSum(triangle)
+        triangle_sum = np.sum(triangle)
         triangle_weights = triangle / triangle_sum
         return triangle_weights
 
     return triangle
 
 
-def weights(w: npNdArray):
+def weights(w: np.ndarray):
     """Calculates the dot product of weights with values x"""
     def _dot(x):
-        return npDot(w, x)
+        return np.dot(w, x)
     return _dot
 
 
@@ -265,7 +250,7 @@ def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs: dict) -> DataFra
             diff.plot(kind="kde")
 
     if kwargs.pop("triangular", False):
-        return corr.where(triu(ones(corr.shape)).astype(bool))
+        return corr.where(np.triu(np.ones(corr.shape)).astype(bool))
 
     return corr
 
@@ -273,13 +258,13 @@ def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs: dict) -> DataFra
 # PRIVATE
 def _linear_regression_np(x: Series, y: Series) -> dict:
     """Simple Linear Regression in Numpy for two 1d arrays for environments without the sklearn package."""
-    result = {"a": npNaN, "b": npNaN, "r": npNaN, "t": npNaN, "line": npNaN}
+    result = {"a": np.nan, "b": np.nan, "r": np.nan, "t": np.nan, "line": np.nan}
     x_sum = x.sum()
     y_sum = y.sum()
 
     if int(x_sum) != 0:
         # 1st row, 2nd col value corr(x, y)
-        r = npCorrcoef(x, y)[0, 1]
+        r = np.corrcoef(x, y)[0, 1]
 
         m = x.size
         r_mix = m * (x * y).sum() - x_sum * y_sum
@@ -287,14 +272,14 @@ def _linear_regression_np(x: Series, y: Series) -> dict:
         a = y.mean() - b * x.mean()
         line = a + b * x
 
-        _np_err = seterr()
-        seterr(divide="ignore", invalid="ignore")
+        _np_err = np.seterr()
+        np.seterr(divide="ignore", invalid="ignore")
         result = {
             "a": a, "b": b, "r": r,
-            "t": r / npSqrt((1 - r * r) / (m - 2)),
+            "t": r / np.sqrt((1 - r * r) / (m - 2)),
             "line": line,
         }
-        seterr(divide=_np_err["divide"], invalid=_np_err["invalid"])
+        np.seterr(divide=_np_err["divide"], invalid=_np_err["invalid"])
 
     return result
 
@@ -310,7 +295,7 @@ def _linear_regression_sklearn(x: Series, y: Series) -> dict:
 
     result = {
         "a": a, "b": b, "r": r,
-        "t": r / npSqrt((1 - r * r) / (x.size - 2)),
+        "t": r / np.sqrt((1 - r * r) / (x.size - 2)),
         "line": a + b * x
     }
     return result

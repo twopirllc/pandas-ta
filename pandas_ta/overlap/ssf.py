@@ -1,33 +1,73 @@
 # -*- coding: utf-8 -*-
-from numpy import cos as npCos
-from numpy import exp as npExp
-from numpy import nan as npNaN
-from numpy import pi as npPi
-from numpy import sqrt as npSqrt
+from pandas_ta import np, pd
 from pandas_ta.utils import get_offset, verify_series
 
+try:
+    from numba import njit
+except ImportError:
+    njit = lambda _: _
 
-def ssf(close, length=None, poles=None, offset=None, **kwargs):
+
+@njit
+def np_ssf(x: np.ndarray, n: int, pi: float, sqrt2: float):
+    """Ehler's Super Smoother Filter
+    http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
+    """
+    m, ratio, result = x.size, sqrt2 / n, np.copy(x)
+    a = np.exp(-pi * ratio)
+    b = 2 * a * np.cos(180 * ratio)
+    c = a * a - b + 1
+
+    for i in range(2, m):
+        result[i] = 0.5 * c * (x[i] + x[i - 1]) + b * result[i - 1] \
+            - a * a * result[i - 2]
+
+    return result
+
+
+@njit
+def np_ssf_everget(x: np.ndarray, n: int, pi: float, sqrt2: float):
+    """John F. Ehler's Super Smoother Filter by Everget (2 poles), Tradingview
+    https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
+    """
+    m, arg, result = x.size, pi * sqrt2 / n, np.copy(x)
+    a = np.exp(-arg)
+    b = 2 * a * np.cos(arg)
+
+    for i in range(2, m):
+        result[i] = 0.5 * (a * a - b + 1) * (x[i] + x[i - 1]) \
+            + b * result[i - 1] - a * a * result[i - 2]
+
+    return result
+
+
+def ssf(close, length=None, everget=None, pi=None, sqrt2=None, offset=None, **kwargs):
     """Ehler's Super Smoother Filter (SSF) © 2013
 
     John F. Ehlers's solution to reduce lag and remove aliasing noise with his
-    research in aerospace analog filter design. This indicator comes with two
-    versions determined by the keyword poles. By default, it uses two poles but
-    there is an option for three poles. Since SSF is a (Resursive) Digital Filter,
-    the number of poles determine how many prior recursive SSF bars to include in
-    the design of the filter. So two poles uses two prior SSF bars and three poles
-    uses three prior SSF bars for their filter calculations.
+    research in aerospace analog filter design. This implementation had two
+    poles. Since SSF is a (Resursive) Digital Filter, the number of poles
+    determine how many prior recursive SSF bars to include in the filter design.
+
+    For Everget's calculation on TradingView, set arguments:
+        pi = np.pi, sqrt2 = np.sqrt(2)
 
     Sources:
-        http://www.stockspotter.com/files/PredictiveIndicators.pdf
+        http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
         https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
         https://www.mql5.com/en/code/588
-        https://www.mql5.com/en/code/589
 
     Args:
         close (pd.Series): Series of 'close's
-        length (int): It's period. Default: 10
-        poles (int): The number of poles to use, either 2 or 3. Default: 2
+        length (int): It's period. Default: 20
+        everget (bool): Everget's implementation of ssf that uses pi instead of
+            180 for the b factor of ssf. Default: False
+        pi (float): The value of PI to use. The default is Ehler's
+            truncated value 3.14159. Adjust the value for more precision.
+            Default: 3.14159
+        sqrt2 (float): The value of sqrt(2) to use. The default is Ehler's
+            truncated value 1.414. Adjust the value for more precision.
+            Default: 1.414
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -38,42 +78,22 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
         pd.Series: New feature generated.
     """
     # Validate Arguments
-    length = int(length) if isinstance(length, int) and length > 0 else 10
-    poles = int(poles) if isinstance(poles, int) and poles in [2, 3] else 2
+    length = int(length) if isinstance(length, int) and length > 0 else 20
+    everget = bool(everget) if isinstance(everget, bool) else False
+    pi = float(pi) if isinstance(pi, float) and pi > 0 else 3.14159
+    sqrt2 = float(sqrt2) if isinstance(sqrt2, float) and sqrt2 > 0 else 1.414
     close = verify_series(close, length)
     offset = get_offset(offset)
 
     if close is None: return
 
     # Calculate Result
-    m = close.size
-    ssf = close.copy()
-
-    if poles == 3:
-        x = npPi / length # x = PI / n
-        a0 = npExp(-x) # e^(-x)
-        b0 = 2 * a0 * npCos(npSqrt(3) * x) # 2e^(-x)*cos(3^(.5) * x)
-        c0 = a0 * a0 # e^(-2x)
-
-        c4 = c0 * c0 # e^(-4x)
-        c3 = -c0 * (1 + b0) # -e^(-2x) * (1 + 2e^(-x)*cos(3^(.5) * x))
-        c2 = c0 + b0 # e^(-2x) + 2e^(-x)*cos(3^(.5) * x)
-        c1 = 1 - c2 - c3 - c4
-
-        for i in range(poles, m):
-            ssf.iloc[i] = c1 * close.iloc[i] + c2 * ssf.iloc[i - 1] + c3 * ssf.iloc[i - 2] + c4 * ssf.iloc[i - 3]
-
-    else: # poles == 2
-        x = npPi * npSqrt(2) / length # x = PI * 2^(.5) / n
-        a0 = npExp(-x) # e^(-x)
-        a1 = -a0 * a0 # -e^(-2x)
-        b1 = 2 * a0 * npCos(x) # 2e^(-x)*cos(x)
-        c1 = 1 - a1 - b1 # e^(-2x) - 2e^(-x)*cos(x) + 1
-
-        for i in range(poles, m):
-            ssf.iloc[i] = c1 * close.iloc[i] + b1 * ssf.iloc[i - 1] + a1 * ssf.iloc[i - 2]
-
-    ssf.iloc[:length] = npNaN
+    np_close = close.values
+    if everget:
+        ssf = np_ssf_everget(np_close, length, pi, sqrt2)
+    else:
+        ssf = np_ssf(np_close, length, pi, sqrt2)
+    ssf = pd.Series(ssf, index=close.index)
 
     # Offset
     if offset != 0:
@@ -86,7 +106,7 @@ def ssf(close, length=None, poles=None, offset=None, **kwargs):
         ssf.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name & Category
-    ssf.name = f"SSF_{length}_{poles}"
+    ssf.name = f"SSF{'e' if everget else ''}_{length}"
     ssf.category = "overlap"
 
     return ssf

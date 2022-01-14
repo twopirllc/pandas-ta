@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
 from .context import pandas_ta
 
@@ -97,6 +98,7 @@ class TestVolume(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "EOM_14_100000000")
 
+    # @skip
     def test_kvo(self):
         result = pandas_ta.kvo(self.high, self.low, self.close, self.volume_)
         self.assertIsInstance(result, DataFrame)

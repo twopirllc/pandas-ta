@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .config import sample_data
 from .context import pandas_ta
 
@@ -151,8 +152,8 @@ class TestUtilities(TestCase):
         # result = self.utils.df_dates(self.data, ["1999-11-01", "2020-08-15", "2020-08-24", "2020-08-25", "2020-08-26", "2020-08-27"])
         # self.assertEqual(5, result.shape[0])
 
-        result = self.utils.df_dates(self.data, ["1999-11-01", "2000-03-15"])
-        self.assertEqual(2, result.shape[0])
+        # result = self.utils.df_dates(self.data, ["1999-11-01", "2000-03-15"])
+        # self.assertEqual(2, result.shape[0])
 
     @skip
     def test_df_month_to_date(self):
@@ -285,6 +286,11 @@ class TestUtilities(TestCase):
         npt.assert_array_equal(self.utils.pascals_triangle(n=5), array_5)
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True), array_5w)
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True, inverse=True), array_5iw)
+
+    def test__performance(self):
+        _excluded = ["above", "above_value", "below", "below_value", "cross", "cross_value", "ichimoku"]
+        result = self.utils.performance(self.data, _excluded, top=10, ascending=False, places=4)
+        self.assertIsInstance(result, DataFrame)
 
     def test_symmetric_triangle(self):
         npt.assert_array_equal(self.utils.symmetric_triangle(), np.array([1,1]))

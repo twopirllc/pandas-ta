@@ -1,9 +1,9 @@
-from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD
 from .context import pandas_ta
 
 from unittest import TestCase, skip
 
-from numpy import NaN as npNaN
+import numpy as np
 import pandas.testing as pdt
 from pandas import DataFrame, Series
 
@@ -165,7 +165,7 @@ class TestTrend(TestCase):
         # Combine Long and Short SAR"s into one SAR value
         psar = result[result.columns[:2]].fillna(0)
         psar = psar[psar.columns[0]] + psar[psar.columns[1]]
-        psar.iloc[0] = npNaN
+        psar.iloc[0] = np.nan
         psar.name = result.name
 
         try:
@@ -192,7 +192,7 @@ class TestTrend(TestCase):
     def test_trendflex(self):
         result = pandas_ta.trendflex(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "TRENDFLEX_20_20")
+        self.assertEqual(result.name, "TRENDFLEX_20_20_0.04")
 
     def test_ttm_trend(self):
         result = pandas_ta.ttm_trend(self.high, self.low, self.close)

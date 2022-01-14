@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import NaN as npNaN
-from pandas import DataFrame
+from pandas_ta import np, pd
 from pandas_ta.momentum import mom
 from pandas_ta.overlap import ema, sma
 from pandas_ta.trend import decreasing, increasing
@@ -145,7 +144,7 @@ def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, k
         f"SQZPRO_OFF": squeeze_off_wide.astype(int) if asint else squeeze_off_wide,
         f"SQZPRO_NO": no_squeeze.astype(int) if asint else no_squeeze,
     }
-    df = DataFrame(data)
+    df = pd.DataFrame(data)
     df.name = squeeze.name
     df.category = squeeze.category = "momentum"
 
@@ -162,15 +161,15 @@ def squeeze_pro(high, low, close, bb_length=None, bb_std=None, kc_length=None, k
         neg_dec *= squeeze
         neg_inc *= squeeze
 
-        pos_inc.replace(0, npNaN, inplace=True)
-        pos_dec.replace(0, npNaN, inplace=True)
-        neg_dec.replace(0, npNaN, inplace=True)
-        neg_inc.replace(0, npNaN, inplace=True)
+        pos_inc.replace(0, np.nan, inplace=True)
+        pos_dec.replace(0, np.nan, inplace=True)
+        neg_dec.replace(0, np.nan, inplace=True)
+        neg_inc.replace(0, np.nan, inplace=True)
 
         sqz_inc = squeeze * increasing(squeeze)
         sqz_dec = squeeze * decreasing(squeeze)
-        sqz_inc.replace(0, npNaN, inplace=True)
-        sqz_dec.replace(0, npNaN, inplace=True)
+        sqz_inc.replace(0, np.nan, inplace=True)
+        sqz_dec.replace(0, np.nan, inplace=True)
 
         # Handle fills
         if "fillna" in kwargs:

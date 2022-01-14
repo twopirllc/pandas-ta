@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 from .config import sample_data
-from .context import pandas_ta
 
 from unittest import skip, TestCase
 from pandas import DataFrame
@@ -119,7 +119,7 @@ class TestTrendExtension(TestCase):
     def test_trendflex_ext(self):
         self.data.ta.trendflex(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-1:]), ["TRENDFLEX_20_20"])
+        self.assertEqual(list(self.data.columns[-1:]), ["TRENDFLEX_20_20_0.04"])
 
     def test_ttm_trend_ext(self):
         self.data.ta.ttm_trend(append=True)

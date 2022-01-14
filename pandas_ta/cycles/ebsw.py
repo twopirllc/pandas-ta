@@ -1,14 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import cos as npCos
-from numpy import exp as npExp
-from numpy import nan as npNaN
-from numpy import pi as npPi
-from numpy import sin as npSin
-from numpy import sqrt as npSqrt
-from numpy import zeros as npZeros
-from numpy import roll as npRoll
-from numpy import mean as npMean
-from pandas import Series
+from pandas_ta import np, pd
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -72,15 +63,15 @@ def ebsw(close, length=None, bars=None, offset=None, initial_version=False, **kw
 
         # Calculate Result
         m = close.size
-        result = [npNaN for _ in range(0, length - 1)] + [0]
+        result = [np.nan for _ in range(0, length - 1)] + [0]
         for i in range(length, m):
             # HighPass filter cyclic components whose periods are shorter than Duration input
-            alpha1 = (1 - npSin(360 / length)) / npCos(360 / length)
+            alpha1 = (1 - np.sin(360 / length)) / np.cos(360 / length)
             hp = 0.5 * (1 + alpha1) * (close[i] - lastClose) + alpha1 * lastHP
 
             # Smooth with a Super Smoother Filter from equation 3-3
-            a1 = npExp(-npSqrt(2) * npPi / bars)
-            b1 = 2 * a1 * npCos(npSqrt(2) * 180 / bars)
+            a1 = np.exp(-np.sqrt(2) * np.pi / bars)
+            b1 = 2 * a1 * np.cos(np.sqrt(2) * 180 / bars)
             c2 = b1
             c3 = -1 * a1 * a1
             c1 = 1 - c2 - c3
@@ -92,7 +83,7 @@ def ebsw(close, length=None, bars=None, offset=None, initial_version=False, **kw
             power_ = (filter_ * filter_ + filtHist[1] * filtHist[1] + filtHist[0] * filtHist[0]) / 3
 
             # Normalize the Average Wave to Square Root of the Average Power
-            wave = wave / npSqrt(power_)
+            wave = wave / np.sqrt(power_)
 
             # update storage, result
             filtHist.append(filter_)  # append new filter_ value
@@ -104,15 +95,15 @@ def ebsw(close, length=None, bars=None, offset=None, initial_version=False, **kw
     else:                                       # this version is the default version
         # Instance Variables
         lastHP = lastClose = 0
-        filtHist = npZeros(3)
-        result = [npNaN] * (length - 1) + [0]
+        filtHist = np.zeros(3)
+        result = [np.nan] * (length - 1) + [0]
 
         # Calculate constants
-        angle = 2 * npPi / length
-        alpha1 = (1 - npSin(angle)) / npCos(angle)
-        ang = 2 ** .5 * npPi / bars
-        a1 = npExp(-ang)
-        c2 = 2 * a1 * npCos(ang)
+        angle = 2 * np.pi / length
+        alpha1 = (1 - np.sin(angle)) / np.cos(angle)
+        ang = 2 ** .5 * np.pi / bars
+        a1 = np.exp(-ang)
+        c2 = 2 * a1 * np.cos(ang)
         c3 = -a1 ** 2
         c1 = 1 - c2 - c3
 
@@ -120,12 +111,12 @@ def ebsw(close, length=None, bars=None, offset=None, initial_version=False, **kw
             hp = 0.5 * (1 + alpha1) * (close[i] - lastClose) + alpha1 * lastHP
 
             # Rotate filters to overwrite oldest value
-            filtHist = npRoll(filtHist, -1)
+            filtHist = np.roll(filtHist, -1)
             filtHist[-1] = 0.5 * c1 * (hp + lastHP) + c2 * filtHist[1] + c3 * filtHist[0]
 
             # Wave calculation
-            wave = npMean(filtHist)
-            rms = npSqrt(npMean(filtHist ** 2))
+            wave = np.mean(filtHist)
+            rms = np.sqrt(np.mean(filtHist ** 2))
             wave = wave / rms
 
             # Update past values
@@ -133,7 +124,7 @@ def ebsw(close, length=None, bars=None, offset=None, initial_version=False, **kw
             lastClose = close[i]
             result.append(wave)
 
-    ebsw = Series(result, index=close.index)
+    ebsw = pd.Series(result, index=close.index)
 
     # Offset
     if offset != 0:

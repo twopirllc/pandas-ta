@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import Tuple
 
-from numpy import array as npArray
-from numpy import infty as npInfty
-from numpy import log as npLog
-from numpy import nan as npNaN
-from numpy import pi as npPi
-from numpy import sqrt as npSqrt
-
-from pandas_ta import Imports
+from pandas_ta import Imports, np
 from ._math import hpoly
 
 
@@ -16,12 +9,12 @@ def _gaussian_poly_coefficients():
     """Three pairs of Polynomial Approximation Coefficients
     for the Gaussian Normal CDF"""
 
-    p0 = npArray([
+    p0 = np.array([
         -5.99633501014107895267E1, 9.80010754185999661536E1,
         -5.66762857469070293439E1, 1.39312609387279679503E1,
         -1.23916583867381258016E0
     ])
-    q0 = npArray([
+    q0 = np.array([
         1.00000000000000000000E0, 1.95448858338141759834E0,
         4.67627912898881538453E0, 8.63602421390890590575E1,
         -2.25462687854119370527E2, 2.00260212380060660359E2,
@@ -29,14 +22,14 @@ def _gaussian_poly_coefficients():
         -1.18331621121330003142E0
     ])
 
-    p1 = npArray([
+    p1 = np.array([
         4.05544892305962419923E0, 3.15251094599893866154E1,
         5.71628192246421288162E1, 4.40805073893200834700E1,
         1.46849561928858024014E1, 2.18663306850790267539E0,
         -1.40256079171354495875E-1, -3.50424626827848203418E-2,
         -8.57456785154685413611E-4
     ])
-    q1 = npArray([
+    q1 = np.array([
         1.00000000000000000000E0, 1.57799883256466749731E1,
         4.53907635128879210584E1, 4.13172038254672030440E1,
         1.50425385692907503408E1, 2.50464946208309415979E0,
@@ -44,14 +37,14 @@ def _gaussian_poly_coefficients():
         -9.33259480895457427372E-4
     ])
 
-    p2 = npArray([
+    p2 = np.array([
         3.23774891776946035970E0, 6.91522889068984211695E0,
         3.93881025292474443415E0, 1.33303460815807542389E0,
         2.01485389549179081538E-1, 1.23716634817820021358E-2,
         3.01581553508235416007E-4, 2.65806974686737550832E-6,
         6.23974539184983293730E-9
     ])
-    q2 = npArray([
+    q2 = np.array([
         1.00000000000000000000E0, 6.02427039364742014255E0,
         3.67983563856160859403E0, 1.37702099489081330271E0,
         2.16236993594496635890E-1, 1.34204006088543189037E-2,
@@ -80,13 +73,14 @@ def inv_norm(value: Tuple[float, int]) -> Tuple[float, None]:
     negate = True
     v = value
 
-    if v == 0.0: return -npInfty
-    if v == 1.0: return npInfty
-    if v < 0.0 or value > 1.0: return npNaN
+    # if v == 0.0: return -npInfty
+    if v == 0.0: return -np.infty
+    if v == 1.0: return np.infty
+    if v < 0.0 or value > 1.0: return np.nan
 
     p0, q0, p1, q1, p2, q2 = _gaussian_poly_coefficients()
 
-    sqrt2pi = npSqrt(2 * npPi)
+    sqrt2pi = np.sqrt(2 * np.pi)
     threshold = 0.13533528323661269189
     if v > 1.0 - threshold:
         v, negate = 1.0 - v, False
@@ -99,8 +93,8 @@ def inv_norm(value: Tuple[float, int]) -> Tuple[float, None]:
         y *= sqrt2pi
         return y
 
-    y = npSqrt(-2.0 * npLog(v))
-    y0 = y - npLog(y) / y
+    y = np.sqrt(-2.0 * np.log(v))
+    y0 = y - np.log(y) / y
 
     z = 1.0 / y
     if y < 8.0:
