@@ -40,7 +40,7 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, talib=No
     Returns:
         pd.DataFrame: %K, %D columns.
     """
-    # Validate arguments
+    # Validate
     k = k if k and k > 0 else 14
     d = d if d and d > 0 else 3
     smooth_k = smooth_k if smooth_k and smooth_k > 0 else 3
@@ -54,7 +54,7 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, talib=No
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import STOCH
         stoch_ = STOCH(high, low, close, k, d, tal_ma(mamode), d, tal_ma(mamode))
@@ -74,7 +74,7 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, talib=No
         stoch_k = stoch_k.shift(offset)
         stoch_d = stoch_d.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         stoch_k.fillna(kwargs["fillna"], inplace=True)
         stoch_d.fillna(kwargs["fillna"], inplace=True)
@@ -82,14 +82,14 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, talib=No
         stoch_k.fillna(method=kwargs["fill_method"], inplace=True)
         stoch_d.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _name = "STOCH"
     _props = f"_{k}_{d}_{smooth_k}"
     stoch_k.name = f"{_name}k{_props}"
     stoch_d.name = f"{_name}d{_props}"
     stoch_k.category = stoch_d.category = "momentum"
 
-    # Prepare DataFrame to return
+    # Return DataFrame
     data = {stoch_k.name: stoch_k, stoch_d.name: stoch_d}
     df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"

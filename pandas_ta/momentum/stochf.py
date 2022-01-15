@@ -34,7 +34,7 @@ def stochf(high, low, close, k=None, d=None, mamode=None, talib=None, offset=Non
     Returns:
         pd.DataFrame: Fast %K, %D columns.
     """
-    # Validate arguments
+    # Validate
     k = k if k and k > 0 else 14
     d = d if d and d > 0 else 3
     _length = max(k, d)
@@ -47,7 +47,7 @@ def stochf(high, low, close, k=None, d=None, mamode=None, talib=None, offset=Non
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import STOCHF
         stochf_ = STOCHF(high, low, close, k, d, tal_ma(mamode))
@@ -65,7 +65,7 @@ def stochf(high, low, close, k=None, d=None, mamode=None, talib=None, offset=Non
         stochf_k = stochf_k.shift(offset)
         stochf_d = stochf_d.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         stochf_k.fillna(kwargs["fillna"], inplace=True)
         stochf_d.fillna(kwargs["fillna"], inplace=True)
@@ -73,14 +73,14 @@ def stochf(high, low, close, k=None, d=None, mamode=None, talib=None, offset=Non
         stochf_k.fillna(method=kwargs["fill_method"], inplace=True)
         stochf_d.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _name = "STOCHF"
     _props = f"_{k}_{d}"
     stochf_k.name = f"{_name}k{_props}"
     stochf_d.name = f"{_name}d{_props}"
     stochf_k.category = stochf_d.category = "momentum"
 
-    # Prepare DataFrame to return
+    # Return DataFrame
     data = {stochf_k.name: stochf_k, stochf_d.name: stochf_d}
     df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"

@@ -36,7 +36,7 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, o
     Returns:
         pd.DataFrame: RSI %K, RSI %D columns.
     """
-    # Validate arguments
+    # Validate
     length = length if length and length > 0 else 14
     rsi_length = rsi_length if rsi_length and rsi_length > 0 else 14
     k = k if k and k > 0 else 3
@@ -47,7 +47,7 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, o
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     rsi_ = rsi(close, length=rsi_length)
     lowest_rsi = rsi_.rolling(length).min()
     highest_rsi = rsi_.rolling(length).max()
@@ -63,7 +63,7 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, o
         stochrsi_k = stochrsi_k.shift(offset)
         stochrsi_d = stochrsi_d.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         stochrsi_k.fillna(kwargs["fillna"], inplace=True)
         stochrsi_d.fillna(kwargs["fillna"], inplace=True)
@@ -71,14 +71,14 @@ def stochrsi(close, length=None, rsi_length=None, k=None, d=None, mamode=None, o
         stochrsi_k.fillna(method=kwargs["fill_method"], inplace=True)
         stochrsi_d.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Categorize
     _name = "STOCHRSI"
     _props = f"_{length}_{rsi_length}_{k}_{d}"
     stochrsi_k.name = f"{_name}k{_props}"
     stochrsi_d.name = f"{_name}d{_props}"
     stochrsi_k.category = stochrsi_d.category = "momentum"
 
-    # Prepare DataFrame to return
+    # Return DataFrame
     data = {stochrsi_k.name: stochrsi_k, stochrsi_d.name: stochrsi_d}
     df = DataFrame(data)
     df.name = f"{_name}{_props}"
