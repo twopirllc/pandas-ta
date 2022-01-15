@@ -33,7 +33,7 @@ def atr(high, low, close, length=None, mamode=None, talib=None, drift=None, offs
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     mamode = mamode.lower() if mamode and isinstance(mamode, str) else "rma"
     high = verify_series(high, length)
@@ -45,7 +45,7 @@ def atr(high, low, close, length=None, mamode=None, talib=None, drift=None, offs
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import ATR
         atr = ATR(high, low, close, length)
@@ -61,13 +61,13 @@ def atr(high, low, close, length=None, mamode=None, talib=None, drift=None, offs
     if offset != 0:
         atr = atr.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         atr.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         atr.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     atr.name = f"ATR{mamode[0]}_{length}{'p' if percentage else ''}"
     atr.category = "volatility"
 

@@ -35,7 +35,7 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
     Returns:
         pd.DataFrame: lower, mid, upper, bandwidth, and percent columns.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 5
     std = float(std) if std and std > 0 else 2.0
     mamode = mamode if isinstance(mamode, str) else "sma"
@@ -46,7 +46,7 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import BBANDS
         upper, mid, lower = BBANDS(close, length, std, std, tal_ma(mamode))
@@ -71,7 +71,7 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
         bandwidth = bandwidth.shift(offset)
         percent = percent.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         lower.fillna(kwargs["fillna"], inplace=True)
         mid.fillna(kwargs["fillna"], inplace=True)
@@ -85,7 +85,7 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
         bandwidth.fillna(method=kwargs["fill_method"], inplace=True)
         percent.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     lower.name = f"BBL_{length}_{std}"
     mid.name = f"BBM_{length}_{std}"
     upper.name = f"BBU_{length}_{std}"
@@ -94,7 +94,7 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
     upper.category = lower.category = "volatility"
     mid.category = bandwidth.category = upper.category
 
-    # Prepare DataFrame to return
+    # Return DataFrame
     data = {
         lower.name: lower, mid.name: mid, upper.name: upper,
         bandwidth.name: bandwidth, percent.name: percent

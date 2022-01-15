@@ -1133,7 +1133,6 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
         result = stoch(high=high, low=low, close=close, k=k, d=d, smooth_k=smooth_k, mamode=mamode, talib=talib, offset=offset, **kwargs)
-        # result = stoch(high=high, low=low, close=close, k=k, d=d, smooth_k=smooth_k, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def stochf(self, k=None, d=None, mamode=None, talib=None, offset=None, **kwargs):
