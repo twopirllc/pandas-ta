@@ -41,9 +41,9 @@ def tema(close, length=None, talib=None, offset=None, **kwargs):
         from talib import TEMA
         tema = TEMA(close, length)
     else:
-        ema1 = ema(close=close, length=length, **kwargs)
-        ema2 = ema(close=ema1, length=length, **kwargs)
-        ema3 = ema(close=ema2, length=length, **kwargs)
+        ema1 = ema(close=close, length=length, talib=mode_tal, **kwargs)
+        ema2 = ema(close=ema1, length=length, talib=mode_tal, **kwargs)
+        ema3 = ema(close=ema2, length=length, talib=mode_tal, **kwargs)
         tema = 3 * (ema1 - ema2) + ema3
 
     # Offset

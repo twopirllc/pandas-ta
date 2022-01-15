@@ -47,8 +47,8 @@ def cci(high, low, close, length=None, c=None, talib=None, offset=None, **kwargs
         from talib import CCI
         cci = CCI(high, low, close, length)
     else:
-        typical_price = hlc3(high=high, low=low, close=close)
-        mean_typical_price = sma(typical_price, length=length)
+        typical_price = hlc3(high=high, low=low, close=close, talib=mode_tal)
+        mean_typical_price = sma(typical_price, length=length, talib=mode_tal)
         mad_typical_price = mad(typical_price, length=length)
 
         cci = typical_price - mean_typical_price

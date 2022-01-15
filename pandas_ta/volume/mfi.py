@@ -49,7 +49,7 @@ def mfi(high, low, close, volume, length=None, talib=None, drift=None, offset=No
         from talib import MFI
         mfi = MFI(high, low, close, volume, length)
     else:
-        typical_price = hlc3(high=high, low=low, close=close)
+        typical_price = hlc3(high=high, low=low, close=close, talib=mode_tal)
         raw_money_flow = typical_price * volume
 
         tdf = DataFrame({"diff": 0, "rmf": raw_money_flow, "+mf": 0, "-mf": 0})

@@ -44,8 +44,8 @@ def trima(close, length=None, talib=None, offset=None, **kwargs):
         trima = TRIMA(close, length)
     else:
         half_length = round(0.5 * (length + 1))
-        sma1 = sma(close, length=half_length)
-        trima = sma(sma1, length=half_length)
+        sma1 = sma(close, length=half_length, talib=mode_tal)
+        trima = sma(sma1, length=half_length, talib=mode_tal)
 
     # Offset
     if offset != 0:
