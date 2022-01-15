@@ -54,16 +54,16 @@ def macd(close, fast=None, slow=None, signal=None, talib=None, offset=None, **kw
         from talib import MACD
         macd, signalma, histogram = MACD(close, fast, slow, signal)
     else:
-        fastma = ema(close, length=fast)
-        slowma = ema(close, length=slow)
+        fastma = ema(close, length=fast, talib=mode_tal)
+        slowma = ema(close, length=slow, talib=mode_tal)
 
         macd = fastma - slowma
-        signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal)
+        signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal, talib=mode_tal)
         histogram = macd - signalma
 
     if as_mode:
         macd = macd - signalma
-        signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal)
+        signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal, talib=mode_tal)
         histogram = macd - signalma
 
     # Offset

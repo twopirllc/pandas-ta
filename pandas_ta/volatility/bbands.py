@@ -51,11 +51,11 @@ def bbands(close, length=None, std=None, ddof=0, mamode=None, talib=None, offset
         from talib import BBANDS
         upper, mid, lower = BBANDS(close, length, std, std, tal_ma(mamode))
     else:
-        standard_deviation = stdev(close=close, length=length, ddof=ddof)
+        standard_deviation = stdev(close=close, length=length, ddof=ddof, talib=mode_tal)
         deviations = std * standard_deviation
         # deviations = std * standard_deviation.loc[standard_deviation.first_valid_index():,]
 
-        mid = ma(mamode, close, length=length, **kwargs)
+        mid = ma(mamode, close, length=length, talib=mode_tal, **kwargs)
         lower = mid - deviations
         upper = mid + deviations
 

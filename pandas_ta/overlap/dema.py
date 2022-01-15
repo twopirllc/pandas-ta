@@ -40,8 +40,8 @@ def dema(close, length=None, talib=None, offset=None, **kwargs):
         from talib import DEMA
         dema = DEMA(close, length)
     else:
-        ema1 = ema(close=close, length=length)
-        ema2 = ema(close=ema1, length=length)
+        ema1 = ema(close=close, length=length, talib=mode_tal)
+        ema2 = ema(close=ema1, length=length, talib=mode_tal)
         dema = 2 * ema1 - ema2
 
     # Offset

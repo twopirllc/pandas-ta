@@ -49,7 +49,7 @@ def natr(high, low, close, length=None, scalar=None, mamode=None, talib=None, dr
         natr = NATR(high, low, close, length)
     else:
         natr = scalar / close
-        natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, **kwargs)
+        natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, talib=mode_tal, **kwargs)
 
     # Offset
     if offset != 0:

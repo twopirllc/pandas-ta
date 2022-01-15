@@ -59,8 +59,8 @@ def dm(high, low, length=None, mamode=None, talib=None, drift=None, offset=None,
         neg_ = neg_.apply(zero)
 
         # Not the same values as TA Lib's -+DM (Good First Issue)
-        pos = ma(mamode, pos_, length=length)
-        neg = ma(mamode, neg_, length=length)
+        pos = ma(mamode, pos_, length=length, talib=mode_tal)
+        neg = ma(mamode, neg_, length=length, talib=mode_tal)
 
     # Offset
     if offset != 0:

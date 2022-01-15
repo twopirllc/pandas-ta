@@ -51,12 +51,12 @@ def ppo(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, tali
         from talib import PPO
         ppo = PPO(close, fast, slow, tal_ma(mamode))
     else:
-        fastma = ma(mamode, close, length=fast)
-        slowma = ma(mamode, close, length=slow)
+        fastma = ma(mamode, close, length=fast, talib=mode_tal)
+        slowma = ma(mamode, close, length=slow, talib=mode_tal)
         ppo = scalar * (fastma - slowma)
         ppo /= slowma
 
-    signalma = ma("ema", ppo, length=signal)
+    signalma = ma("ema", ppo, length=signal, talib=mode_tal)
     histogram = ppo - signalma
 
     # Offset

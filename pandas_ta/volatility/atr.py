@@ -50,8 +50,8 @@ def atr(high, low, close, length=None, mamode=None, talib=None, drift=None, offs
         from talib import ATR
         atr = ATR(high, low, close, length)
     else:
-        tr = true_range(high=high, low=low, close=close, drift=drift)
-        atr = ma(mamode, tr, length=length)
+        tr = true_range(high=high, low=low, close=close, drift=drift, talib=mode_tal)
+        atr = ma(mamode, tr, length=length, talib=mode_tal)
 
     percentage = kwargs.pop("percent", False)
     if percentage:
