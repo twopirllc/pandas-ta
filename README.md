@@ -46,9 +46,9 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * [Programming Conventions](#programming-conventions)
     * [Standard](#standard)
     * [Pandas TA DataFrame Extension](#pandas-ta-dataframe-extension)
-    * [Pandas TA Strategy](#pandas-ta-strategy)
-* [Pandas TA Strategies](#pandas-ta-strategies)
-    * [Types of Strategies](#types-of-strategies)
+    * [Pandas TA Study](#pandas-ta-study)
+* [Pandas TA Studies](#pandas-ta-studies)
+    * [Types of Studies](#types-of-studies)
     * [Multiprocessing](#multiprocessing)
 * [DataFrame Properties](#dataframe-properties)
 * [DataFrame Methods](#dataframe-methods)
@@ -81,25 +81,25 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 # **Features**
 
-* Has 140+ indicators and utility functions.
-    * **BETA**: Pandas TA will run most of TA Lib's indicators, this includes TA Lib's 63 Chart Patterns.
-* Indicators in Python are tightly correlated with the _de facto_ [TA Lib](https://github.com/mrjbq7/ta-lib) if they share common indicators.
-* If TA Lib is also installed, TA Lib computations are **enabled** by default but can be disabled disabled per indicator by using the argument ```talib=False```.
-    * For example to disable TA Lib calculation for **stdev**: ```ta.stdev(df["close"], length=30, talib=False)```.
-* **NEW** Include External Custom Indicators independent of the builtin Pandas TA indicators. For more information, see ```import_dir``` documentation under ```/pandas_ta/custom.py```.
-* **NEW** Generate Sample Realizations if the [stochastic](https://github.com/crflynn/stochastic) package is installed.  ```pip install stochastic```. See the [Stochastic Samples](#stochastic-samples) section below.
-* Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
-* Have the need for speed? By using the DataFrame _strategy_ method, you get **multiprocessing** for free! __Conditions permitting__.
-* Easily add _prefixes_ or _suffixes_ or _both_ to columns names. Useful for Custom Chained Strategies.
-* Example Jupyter Notebooks under the [examples](https://github.com/twopirllc/pandas-ta/tree/main/examples) directory, including how to create Custom Strategies using the new [__Strategy__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandasTA_Strategy_Examples.ipynb)
-* Potential Data Leaks: **dpo** and **ichimoku**. See indicator list below for details. Set ```lookahead=False``` to disable.
+* Over 140 indicators and utility functions.
+* **TA Lib** indicators (```pip install ta-lib```).
+    * TA Lib's 63 Chart Patterns
+    * Python Indicators are tightly correlated with the _de facto_ [TA Lib](https://github.com/mrjbq7/ta-lib).
+    * TA Lib computations are by default **enabled**. They can be disabled disabled per indicator by using the argument ```talib=False```.
+        * For example to disable TA Lib calculation for **stdev**: ```ta.stdev(df["close"], length=30, talib=False)```.
+* **Stochastic Sample Realizations** with the [stochastic](https://github.com/crflynn/stochastic) package (```pip install stochastic```). See the [Stochastic Samples](#stochastic-samples) section below.
+* **External Custom Indicators Directory** independent of the builtin Pandas TA indicators. For more information, see ```import_dir``` documentation under ```/pandas_ta/custom.py```.
+* **Example Jupyter Notebooks** with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
+* **Multiprocessing** Support for Sets of Indicators called ```Study``` (formerly ```Strategy```) when using the DataFrame Extension method ```df.ta.study()```.
+    * Have the need for speed? By using the DataFrame _study_ method, you get **multiprocessing** for free! __Conditions permitting__.
+* **Study Customizations** like applying _prefixes_ or _suffixes_ or _both_ to column/indicators names. Useful for Custom Chained Studies.
+* **Example Jupyter Notebooks** under the [examples](https://github.com/twopirllc/pandas-ta/tree/main/examples) directory, including how to create Custom Studies using the new [__Study__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandasTA_Study_Examples.ipynb)
 
 <br/>
 
 **Under Development**
 ===================
-**Pandas TA** can also leverage other common or popular trading packages you may have installed in your environment. Current packages include: [**TA Lib**](https://mrjbq7.github.io/ta-lib/), [**Vector BT**](https://github.com/polakowo/vectorbt), [**YFinance**](https://github.com/ranaroussi/yfinance), [**Polygon API**](https://github.com/pssolanki111/polygon), [**Stochastic**](https://github.com//stochastic). Much of which is _experimental_ and likely to break until it stabilizes more.
-* If **TA Lib** installed, existing indicators will _eventually_ get a **TA Lib** version.
+**Pandas TA** can also leverage other common or popular trading packages you may have installed in your environment. Current packages include: [**TA Lib**](https://mrjbq7.github.io/ta-lib/), [**Vector BT**](https://github.com/polakowo/vectorbt), [**YFinance**](https://github.com/ranaroussi/yfinance), [**Polygon API**](https://github.com/pssolanki111/polygon), and [**Stochastic**](https://github.com//stochastic). Much is _experimental_.
 * Easily download _ohlcv_ data from [yfinance](https://github.com/ranaroussi/yfinance) or [Polygon API](https://github.com/pssolanki111/polygon).
     * See ```help(ta.ticker)```, ```help(ta.yf)```, ```help(ta.polygon_api)``` and examples below.
 * Some Common Performance Metrics
@@ -118,7 +118,7 @@ $ pip install pandas_ta
 
 Latest Version
 --------------
-Best choice! Version: *0.3.44b*
+Best choice! Version: *0.3.45b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -198,7 +198,7 @@ Thanks for using **Pandas TA**!
         * Did they help?
         * What is missing?
         * Could you help improve them?
-    * Did you know you can easily build _Custom Strategies_ with the **[Strategy](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Strategy_Examples.ipynb) Class**?
+    * Did you know you can easily build _Custom Strategies_ with the **[Study](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Study_Examples.ipynb) Class**?
     * Documentation could _always_ be improved. Can you help contribute?
 
 * ### [Bugs, Indicators or Feature Requests](https://github.com/twopirllc/pandas-ta/issues)
@@ -226,7 +226,7 @@ _Thank you for your contributions!_
 **Programming Conventions**
 ===========================
 
-**Pandas TA** has three primary "styles" of processing Technical Indicators for your use case and/or requirements. They are: _Standard_, _DataFrame Extension_, and the _Pandas TA Strategy_. Each with increasing levels of abstraction for ease of use. As you become more familiar with **Pandas TA**, the simplicity and speed of using a _Pandas TA Strategy_ may become more apparent. Furthermore, you can create your own indicators through Chaining or Composition. Lastly, each indicator either returns a _Series_ or a _DataFrame_ in Uppercase Underscore format regardless of style.
+**Pandas TA** has three primary "styles" of processing Technical Indicators for your use case and/or requirements. They are: _Standard_, _DataFrame Extension_, and the _Pandas TA Study_. Each with increasing levels of abstraction for ease of use. As you become more familiar with **Pandas TA**, the simplicity and speed of using a _Pandas TA Study_ may become more apparent. Furthermore, you can create your own indicators through Chaining or Composition. Lastly, each indicator either returns a _Series_ or a _DataFrame_ in Uppercase Underscore format regardless of style.
 
 <br/>
 
@@ -266,17 +266,17 @@ Same as the last three examples, but appending the results directly to the DataF
 
 <br/>
 
-_Pandas TA Strategy_
+_Pandas TA Study_
 ====================
 
-A **Pandas TA** Strategy is a named group of indicators to be run by the _strategy_ method. All Strategies use **mulitprocessing** _except_ when using the ```col_names``` parameter (see [below](#multiprocessing)). There are different types of _Strategies_ listed in the following section.
+A **Pandas TA** Study is a named group of indicators to be run by the _study_ method. All Studies use **mulitprocessing** _except_ when using the ```col_names``` parameter (see [below](#multiprocessing)). There are different types of _Studies_ listed in the following section.
 
 <br/>
 
-### Here are the previous _Styles_ implemented using a Strategy Class:
+### Here are the previous _Styles_ implemented using a Study Class:
 ```python
-# (1) Create the Strategy
-MyStrategy = ta.Strategy(
+# (1) Create the Study
+MyStudy = ta.Study(
     name="DCSMA10",
     ta=[
         {"kind": "ohlc4"},
@@ -286,47 +286,51 @@ MyStrategy = ta.Strategy(
     ]
 )
 
-# (2) Run the Strategy
-df.ta.strategy(MyStrategy, **kwargs)
+# (2) Run the Study
+df.ta.study(MyStudy, **kwargs)
 ```
 
 <br/><br/>
 
-# **Pandas TA** _Strategies_
+# **Pandas TA** _Studies_
 
-The _Strategy_ Class is a simple way to name and group your favorite TA Indicators by using a _Data Class_. **Pandas TA** comes with two prebuilt basic Strategies to help you get started: __AllStrategy__ and __CommonStrategy__. A _Strategy_ can be as simple as the __CommonStrategy__ or as complex as needed using Composition/Chaining.
+* :stop_sign: **The Study Class and corresponding method have replaced the Strategy Class and method.**
 
-* When using the _strategy_ method, **all** indicators will be automatically appended to the DataFrame ```df```.
-* You are using a Chained Strategy when you have the output of one indicator as input into one or more indicators in the same _Strategy_.
+<br/>
+
+The _Study_ Class is a simple way to name and group your favorite TA Indicators by using a _Data Class_. **Pandas TA** comes with two prebuilt basic Strategies to help you get started: __AllStudy__ and __CommonStudy__. A _Study_ can be as simple as the __CommonStudy__ or as complex as needed using Composition/Chaining. 
+
+* When using the _study_ method, **all** indicators will be automatically appended to the DataFrame ```df```.
+* You are using a Chained Study when you have the output of one indicator as input into one or more indicators in the same _Study_.
 * **Note:** Use the 'prefix' and/or 'suffix' keywords to distinguish the composed indicator from it's default Series.
 
-See the [Pandas TA Strategy Examples Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Strategy_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
+See the [Pandas TA Study Examples Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Study_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
 
-Strategy Requirements
+Study Requirements
 ---------------------
 - _name_: Some short memorable string.  _Note_: Case-insensitive "All" is reserved.
 - _ta_: A list of dicts containing keyword arguments to identify the indicator and the indicator's arguments
-- **Note:** A Strategy will fail when consumed by Pandas TA if there is no ```{"kind": "indicator name"}``` attribute. _Remember_ to check your spelling.
+- **Note:** A Study will fail when consumed by Pandas TA if there is no ```{"kind": "indicator name"}``` attribute. _Remember_ to check your spelling.
 
 Optional Parameters
 -------------------
-- _description_: A more detailed description of what the Strategy tries to capture. Default: None
+- _description_: A more detailed description of what the Study tries to capture. Default: None
 - _created_: At datetime string of when it was created. Default: Automatically generated.
 
 <br/>
 
-Types of Strategies
+Types of Studies
 =======================
 
 ## _Builtin_
 ```python
-# Running the Builtin CommonStrategy as mentioned above
-df.ta.strategy(ta.CommonStrategy)
+# Running the Builtin CommonStudy as mentioned above
+df.ta.study(ta.CommonStudy)
 
-# The Default Strategy is the ta.AllStrategy. The following are equivalent:
-df.ta.strategy()
-df.ta.strategy("All")
-df.ta.strategy(ta.AllStrategy)
+# The Default Study is the ta.AllStudy. The following are equivalent:
+df.ta.study()
+df.ta.study("All")
+df.ta.study(ta.AllStudy)
 ```
 
 ## _Categorical_
@@ -334,15 +338,15 @@ df.ta.strategy(ta.AllStrategy)
 # List of indicator categories
 df.ta.categories
 
-# Running a Categorical Strategy only requires the Category name
-df.ta.strategy("Momentum") # Default values for all Momentum indicators
-df.ta.strategy("overlap", length=42) # Override all Overlap 'length' attributes
+# Running a Categorical Study only requires the Category name
+df.ta.study("Momentum") # Default values for all Momentum indicators
+df.ta.study("overlap", length=42) # Override all Overlap 'length' attributes
 ```
 
 ## _Custom_
 ```python
-# Create your own Custom Strategy
-CustomStrategy = ta.Strategy(
+# Create your own Custom Study
+CustomStudy = ta.Study(
     name="Momo and Volatility",
     description="SMA 50,200, BBANDS, RSI, MACD and Volume SMA 20",
     ta=[
@@ -354,8 +358,8 @@ CustomStrategy = ta.Strategy(
         {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
     ]
 )
-# To run your "Custom Strategy"
-df.ta.strategy(CustomStrategy)
+# To run your "Custom Study"
+df.ta.study(CustomStudy)
 ```
 
 <br/>
@@ -363,7 +367,7 @@ df.ta.strategy(CustomStrategy)
 **Multiprocessing**
 =======================
 
-The **Pandas TA** _strategy_ method utilizes **multiprocessing** for bulk indicator processing of all Strategy types with **ONE EXCEPTION!** When using the ```col_names``` parameter to rename resultant column(s), the indicators in ```ta``` array will be ran in order.
+The **Pandas TA** _study_ method utilizes **multiprocessing** for bulk indicator processing of all Study types with **ONE EXCEPTION!** When using the ```col_names``` parameter to rename resultant column(s), the indicators in ```ta``` array will be ran in order.
 
 ```python
 # VWAP requires the DataFrame index to be a DatetimeIndex.
@@ -372,17 +376,17 @@ df.set_index(pd.DatetimeIndex(df["datetime"]), inplace=True)
 
 # Runs and appends all indicators to the current DataFrame by default
 # The resultant DataFrame will be large.
-df.ta.strategy()
+df.ta.study()
 # Or the string "all"
-df.ta.strategy("all")
-# Or the ta.AllStrategy
-df.ta.strategy(ta.AllStrategy)
+df.ta.study("all")
+# Or the ta.AllStudy
+df.ta.study(ta.AllStudy)
 
 # Use verbose if you want to make sure it is running.
-df.ta.strategy(verbose=True)
+df.ta.study(verbose=True)
 
 # Use timed if you want to see how long it takes to run.
-df.ta.strategy(timed=True)
+df.ta.study(timed=True)
 
 # Choose the number of cores to use. Default is all available cores.
 # For no multiprocessing, set this value to 0.
@@ -390,12 +394,12 @@ df.ta.cores = 4
 
 # Maybe you do not want certain indicators.
 # Just exclude (a list of) them.
-df.ta.strategy(exclude=["bop", "mom", "percent_return", "wcp", "pvi"], verbose=True)
+df.ta.study(exclude=["bop", "mom", "percent_return", "wcp", "pvi"], verbose=True)
 
 # Perhaps you want to use different values for indicators.
 # This will run ALL indicators that have fast or slow as parameters.
 # Check your results and exclude as necessary.
-df.ta.strategy(fast=10, slow=50, verbose=True)
+df.ta.study(fast=10, slow=50, verbose=True)
 
 # Sanity check. Make sure all the columns are there
 df.columns
@@ -403,12 +407,12 @@ df.columns
 
 <br/>
 
-## Custom Strategy without Multiprocessing
+## Custom Study without Multiprocessing
 **Remember** These will not be utilizing **multiprocessing**
 ```python
-NonMPStrategy = ta.Strategy(
+NonMPStudy = ta.Study(
     name="EMAs, BBs, and MACD",
-    description="Non Multiprocessing Strategy by rename Columns",
+    description="Non Multiprocessing Study by rename Columns",
     ta=[
         {"kind": "ema", "length": 8},
         {"kind": "ema", "length": 21},
@@ -417,7 +421,7 @@ NonMPStrategy = ta.Strategy(
     ]
 )
 # Run it
-df.ta.strategy(NonMPStrategy)
+df.ta.study(NonMPStudy)
 ```
 
 <br/><br/>
@@ -446,7 +450,7 @@ df.ta.categories
 ## **cores**
 
 ```python
-# Set the number of cores to use for strategy multiprocessing
+# Set the number of cores to use for Study multiprocessing
 # Defaults to the number of cpus you have.
 df.ta.cores = 4
 
@@ -466,13 +470,24 @@ df.ta.cores
 df.ta.datetime_ordered
 ```
 
+## **ds**
+
+```python
+# Gets the Data Source (ds). Default: "yf"
+df.ta.ds
+
+# Set the Data Source (ds) so that df.ta.ticker() can download ohlcv data.
+# Available Data Sources: "yf", "polgon"
+df.ta.ds = "yf"
+```
+
 ## **exchange**
 
 ```python
 # Sets the Exchange to use when calculating the last_run property. Default: "NYSE"
 df.ta.exchange
 
-# Set the Exchange to use.
+# Set the Exchange.
 # Available Exchanges: "ASX", "BMF", "DIFX", "FWB", "HKE", "JSE", "LSE", "NSE", "NYSE", "NZSX", "RTS", "SGX", "SSE", "TSE", "TSX"
 df.ta.exchange = "LSE"
 ```
@@ -589,6 +604,13 @@ df = df.ta.ticker("aapl", period="1y") # Gets this past year
 # Default: "1d"
 df = df.ta.ticker("aapl", period="1y", interval="1wk") # Gets this past year in weeks
 df = df.ta.ticker("aapl", period="1mo", interval="1h") # Gets this past month in hours
+
+# A Ticker & DataFrame Dictionary with a Study applied
+tickers = ["SPY", "AAPL", "SQ"]
+s = ta.CommonStudy
+asset = {f"{t}_D": ta.df.ta.ticker(t, cores=0, study=s, ds="yf") for t in tickers}
+print(asset.keys())
+spydf = asset["SPY_D]
 
 # BUT WAIT!! THERE'S MORE!!
 help(ta.yf)
@@ -739,7 +761,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _Fast Stochastic Oscillator_: **stochf**
 * _Stochastic RSI_: **stochrsi**
 * _TD Sequential_: **td_seq**
-    * Excluded from ```df.ta.strategy()```.
+    * Excluded from ```df.ta.study()```.
 * _Trix_: **trix**
 * _True strength index_: **tsi**
 * _Ultimate Oscillator_: **uo**
@@ -1014,11 +1036,11 @@ help(ta.sample)
 
 # **Changes**
 ## **General**
-* A __Strategy__ Class to help name and group your favorite indicators.
+* A __Study__ Class to help name and group your favorite indicators.
 * If a **TA Lib** is already installed, Pandas TA will run TA Lib's version. (**BETA**)
 * Some indicators have had their ```mamode``` _kwarg_ updated with more _moving average_ choices with the **Moving Average Utility** function ```ta.ma()```. For simplicity, all _choices_ are single source _moving averages_. This is primarily an internal utility used by indicators that have a ```mamode``` _kwarg_. This includes indicators: _accbands_, _amat_, _aobv_, _atr_, _bbands_, _bias_, _efi_, _hilo_, _kc_, _natr_, _qqe_, _rvi_, and _thermo_; the default ```mamode``` parameters have not changed. However, ```ta.ma()``` can be used by the user as well if needed. For more information: ```help(ta.ma)```
     * **Moving Average Choices**: dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma.
-* An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/main/examples/watchlist.py) Directory that can be used in conjunction with the new __Strategy__ Class.
+* An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/main/examples/watchlist.py) Directory that can be used in conjunction with the new __Study__ Class.
 * _Linear Regression_ (**linear_regression**) is a new utility method for Simple Linear Regression using _Numpy_ or _Scikit Learn_'s implementation.
 * Added utility/convience function, ```to_utc```, to convert the DataFrame index to UTC. See: ```help(ta.to_utc)``` **Now** as a Pandas TA DataFrame Property to easily convert the DataFrame index to UTC.
 
@@ -1040,7 +1062,7 @@ help(ta.sample)
 * _Smoothed Moving Average_ (**smma**) can be used to confirm trends and define areas of support and resistance. See: ```help(ta.smma)```
 * _Fast Stochastic Oscillator_ (**stochf**) is related to **stoch** but is less rarely used since it is more volatile. See: ```help(ta.stochf)```
 * _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
-* _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.strategy()``` for performance reasons. See ```help(ta.td_seq)```
+* _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.study()``` for performance reasons. See ```help(ta.td_seq)```
 * _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which returns the standard deviation of data for the entire plot or for the interval of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
 * _Worden Brothers Time Segmented Value_ (**wb_tsv**) is an oscillator indicator that attempts to indentify money flow in a stock, similar to On Balance Volume (**obv**). See ```help(ta.wb_tsv)```
 

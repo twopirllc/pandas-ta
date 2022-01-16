@@ -1,6 +1,6 @@
 {
-    "name": "Sample JSON Strategy",
-    "description": "Sample JSON Strategy",
+    "name": "Sample JSON Study",
+    "description": "Sample JSON Study",
     "ta": [
         {"kind": "ema", "length": 8, "sma": true},
         {"kind": "ema", "length": 21, "talib": true},

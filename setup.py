@@ -19,7 +19,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "3", "44b")),
+    version=".".join(("0", "3", "45b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -28,7 +28,12 @@ setup(
     maintainer="Kevin Johnson",
     maintainer_email="appliedmathkj@gmail.com",
     download_url="https://github.com/twopirllc/pandas-ta.git",
-    keywords=["technical analysis", "trading", "python3", "pandas"],
+    keywords=[
+        "technical analysis", "trading", "backtest", "trading bot",
+        "features",
+        "pandas", "numpy", "vectorbt", "yfinance",
+        "python3"
+    ],
     license="The MIT License (MIT)",
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -56,9 +61,9 @@ setup(
     # $ pip install -e .[dev,test]
     extras_require={
         "dev": [
-            "alphaVantage-api", "matplotlib", "mplfinance", "scipy",
-            "sklearn", "statsmodels", "stochastic",
-            "talib", "tqdm", "vectorbt", "yfinance",
+            "alphaVantage-api", "matplotlib", "mplfinance", "polygon"
+            "scipy", "sklearn", "statsmodels", "stochastic", "ta-lib", "tqdm",
+            "vectorbt", "yfinance",
         ],
         "test": ["ta-lib"],
     },

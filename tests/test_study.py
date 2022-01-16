@@ -11,7 +11,7 @@ from unittest import skip, skipUnless, TestCase
 from pandas import DataFrame
 
 
-# Strategy Testing Parameters
+# Testing Parameters
 cores = cpu_count() - 1
 cumulative = False
 speed_table = False
@@ -19,7 +19,7 @@ strategy_timed = False
 timed = True
 verbose = False
 
-class TestStrategyMethods(TestCase):
+class TestStudyMethods(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -75,47 +75,47 @@ class TestStrategyMethods(TestCase):
     # @skip
     def test_all(self):
         self.category = "All"
-        self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(verbose=verbose, timed=strategy_timed)
 
     # @skipUnless(verbose, "verbose mode only")
-    def test_all_multiparams_strategy(self):
+    def test_all_multiparams_study(self):
         self.category = "All"
-        self.data.ta.strategy(self.category, length=10, verbose=verbose, timed=strategy_timed)
-        self.data.ta.strategy(self.category, length=50, verbose=verbose, timed=strategy_timed)
-        self.data.ta.strategy(self.category, fast=5, slow=10, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, length=10, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, length=50, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, fast=5, slow=10, verbose=verbose, timed=strategy_timed)
         self.category = "All Multiruns with diff Args" # Rename for Speed Table
 
     @skipUnless(verbose, "verbose mode only")
-    def test_all_name_strategy(self):
+    def test_all_name_study(self):
         self.category = "All"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # def test_all_no_append(self):
     #     self.category = "All"
-    #     self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
+    #     self.data.ta.study(verbose=verbose, timed=strategy_timed)
 
     def test_all_ordered(self):
         self.category = "All"
-        self.data.ta.strategy(ordered=True, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(ordered=True, verbose=verbose, timed=strategy_timed)
         self.category = "All Ordered" # Rename for Speed Table
 
     @skipUnless(verbose, "verbose mode only")
-    def test_all_strategy(self):
-        self.data.ta.strategy(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
+    def test_all_study(self):
+        self.data.ta.study(pandas_ta.AllStrategy, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_candles_category(self):
         self.category = "Candles"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_common(self):
         self.category = "Common"
-        self.data.ta.strategy(pandas_ta.CommonStrategy, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(pandas_ta.CommonStrategy, verbose=verbose, timed=strategy_timed)
 
     def test_cycles_category(self):
         self.category = "Cycles"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_custom_a(self):
@@ -133,12 +133,12 @@ class TestStrategyMethods(TestCase):
             {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"} # 1
         ]
 
-        custom = pandas_ta.Strategy(
+        custom = pandas_ta.Study(
             "Commons with Cumulative Log Return EMA Chain",  # name
             momo_bands_sma_ta,  # ta
             "Common indicators with specific lengths and a chained indicator",  # description
         )
-        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(custom, verbose=verbose, timed=strategy_timed)
         self.assertEqual(len(self.data.columns), 18)
 
     # @skipUnless(verbose, "verbose mode only")
@@ -159,12 +159,14 @@ class TestStrategyMethods(TestCase):
             {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"}
         ]
 
-        custom = pandas_ta.Strategy(
+        custom = pandas_ta.Study(
             "Commons with Cumulative Log Return EMA Chain",  # name
             momo_bands_sma_ta,  # ta
             "Common indicators with specific lengths and a chained indicator",  # description
         )
+        # Depreciation warning test
         self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        # self.data.ta.study(custom, verbose=verbose, timed=strategy_timed)
         self.data.ta.cores = cores
 
     # @skip
@@ -176,24 +178,24 @@ class TestStrategyMethods(TestCase):
             {"kind": "fisher", "params": (13, 7)}
         ]
 
-        custom = pandas_ta.Strategy(
+        custom = pandas_ta.Study(
             "Custom Args Tuple",
             custom_args_ta,
             "Allow for easy filling in indicator arguments by argument placement."
         )
-        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(custom, verbose=verbose, timed=strategy_timed)
 
     def test_custom_col_names_tuple(self):
         self.category = "Custom C"
 
         custom_args_ta = [{"kind": "bbands", "col_names": ("LB", "MB", "UB", "BW", "BP")}]
 
-        custom = pandas_ta.Strategy(
+        custom = pandas_ta.Study(
             "Custom Col Numbers Tuple",
             custom_args_ta,
             "Allow for easy renaming of resultant columns",
         )
-        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(custom, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_custom_col_numbers_tuple(self):
@@ -201,12 +203,12 @@ class TestStrategyMethods(TestCase):
 
         custom_args_ta = [{"kind": "macd", "col_numbers": (1,)}]
 
-        custom = pandas_ta.Strategy(
+        custom = pandas_ta.Study(
             "Custom Col Numbers Tuple",
             custom_args_ta,
             "Allow for easy selection of resultant columns",
         )
-        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(custom, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_custom_e(self):
@@ -218,49 +220,49 @@ class TestStrategyMethods(TestCase):
             {"kind": "ema", "close": "CUMLOGRET_1", "length": 5} # 1
         ]
 
-        custom = pandas_ta.Strategy(
+        custom = pandas_ta.Study(
             "AMAT Log Returns",  # name
             amat_logret_ta,  # ta
             "AMAT Log Returns",  # description
         )
-        self.data.ta.strategy(custom, verbose=verbose, timed=strategy_timed, ordered=True)
+        self.data.ta.study(custom, verbose=verbose, timed=strategy_timed, ordered=True)
         self.data.ta.tsignals(trend=self.data["AMATe_LR_20_50_2"], append=True)
         self.assertEqual(len(self.data.columns), 13)
 
     # @skip
     def test_momentum_category(self):
         self.category = "Momentum"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_overlap_category(self):
         self.category = "Overlap"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_performance_category(self):
         self.category = "Performance"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_statistics_category(self):
         self.category = "Statistics"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_trend_category(self):
         self.category = "Trend"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_volatility_category(self):
         self.category = "Volatility"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skip
     def test_volume_category(self):
         self.category = "Volume"
-        self.data.ta.strategy(self.category, verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(self.category, verbose=verbose, timed=strategy_timed)
 
     # @skipUnless(verbose, "verbose mode only")
     def test_all_no_multiprocessing(self):
@@ -268,5 +270,5 @@ class TestStrategyMethods(TestCase):
 
         cores = self.data.ta.cores
         self.data.ta.cores = 0
-        self.data.ta.strategy(verbose=verbose, timed=strategy_timed)
+        self.data.ta.study(verbose=verbose, timed=strategy_timed)
         self.data.ta.cores = cores

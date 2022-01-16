@@ -23,16 +23,16 @@ from pandas_ta.utils import *
 
 df = pd.DataFrame()
 
-# Strategy DataClass
+# Study DataClass
 @dataclass
-class Strategy:
-    """Strategy DataClass
-    A way to name and group your favorite indicators
+class Study:
+    """Study DataClass
+    Class to name and group indicators for processing
 
     Args:
         name (str): Some short memorable string.  Note: Case-insensitive "All" is reserved.
         ta (list of dicts): A list of dicts containing keyword arguments where "kind" is the indicator.
-        description (str): A more detailed description of what the Strategy tries to capture. Default: None
+        description (str): A more detailed description of what the Study tries to capture. Default: None
         created (str): At datetime string of when it was created. Default: Automatically generated. *Subject to change*
 
     Example TA:
@@ -45,55 +45,52 @@ class Strategy:
         {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
     ]
     """
-
     name: str  # = None # Required.
     ta: List = field(default_factory=list)  # Required.
-    # Helpful. More descriptive version or notes or w/e.
-    description: str = ""
-    # Optional. Gets Exchange Time and Local Time execution time
-    created: str = get_time(to_string=True)
+    description: str = ""  # Helpful. More descriptive version or notes or w/e.
+    created: str = get_time(to_string=True) # Optional. Gets Exchange Time and Local Time execution time
 
     def __post_init__(self):
-        has_name = True
-        is_ta = False
-        required_args = ["[X] Strategy requires the following argument(s):"]
+        req_args = ["[X] Study requires the following argument(s):"]
 
-        name_is_str = isinstance(self.name, str)
-        ta_is_list = isinstance(self.ta, list)
-
-        if self.name is None or not name_is_str:
-            required_args.append(' - name. Must be a string. Example: "My TA". Note: "all" is reserved.')
-            has_name != has_name
+        if self._is_name():
+            req_args.append(' - name. Must be a string. Example: "My TA". Note: "all" is reserved.')
 
         if self.ta is None:
             self.ta = None
-        elif self.ta is not None and ta_is_list and self.total_ta() > 0:
+        elif not self._is_ta():
+            s = " - ta. Format is a list of dicts. Example: [{'kind': 'sma', 'length': 10}]"
+            s += "\n       Check the indicator for the correct arguments if you receive this error."
+            req_args.append(s)
+
+        if len(req_args) > 1:
+            [print(_) for _ in req_args]
+            return None
+
+    def _is_name(self):
+        return self.name is None or not isinstance(self.name, str)
+
+    def _is_ta(self):
+        if isinstance(self.ta, list) and self.total_ta() > 0:
             # Check that all elements of the list are dicts.
             # Does not check if the dicts values are valid indicator kwargs
             # User must check indicator documentation for all indicators args.
-            is_ta = all([isinstance(_, dict) and len(_.keys()) > 0 for _ in self.ta])
-        else:
-            s = " - ta. Format is a list of dicts. Example: [{'kind': 'sma', 'length': 10}]"
-            s += "\n       Check the indicator for the correct arguments if you receive this error."
-            required_args.append(s)
-
-        if len(required_args) > 1:
-            [print(_) for _ in required_args]
-            return None
+            return all([isinstance(_, dict) and len(_.keys()) > 0 for _ in self.ta])
+        return False
 
     def total_ta(self):
         return len(self.ta) if self.ta is not None else 0
 
 
-# All Default Strategy
-AllStrategy = Strategy(
+# All Study
+AllStudy = Study(
     name="All",
     description="All the indicators with their default settings. Pandas TA default.",
     ta=None,
 )
 
-# Default (Example) Strategy.
-CommonStrategy = Strategy(
+# Default (Example) Study.
+CommonStudy = Study(
     name="Common Price and Volume SMAs",
     description="Common Price SMAs: 10, 20, 50, 200 and Volume SMA: 20.",
     ta=[
@@ -104,6 +101,11 @@ CommonStrategy = Strategy(
         {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOL"}
     ]
 )
+
+# Temporary Strategy DataClass Alias
+Strategy = Study
+AllStrategy = AllStudy
+CommonStrategy = CommonStudy
 
 
 # Base Class for extending a Pandas DataFrame
@@ -119,6 +121,7 @@ class BasePandasObject(PandasObject):
 
     def __init__(self, df, **kwargs):
         if df.empty: return
+        print(f"\n[!] kwargs: {kwargs}\n")
         if len(df.columns) > 0:
             common_names = {
                 "Date": "date",
@@ -168,7 +171,7 @@ class AnalysisIndicators(BasePandasObject):
     though 'ta' is a Pandas DataFrame Extension, you can still call Technical
     Analysis indicators individually if you are more comfortable with that
     approach or it allows you to easily and automatically apply the indicators
-    with the strategy method. See: help(ta.strategy).
+    with the study method. See: help(ta.study).
 
     By default, the 'ta' extension uses lower case column names: open, high,
     low, close, and volume. You can override the defaults by providing the it's
@@ -228,9 +231,9 @@ class AnalysisIndicators(BasePandasObject):
     >>> df.ta.apo()
     4c. DataFrame Extension (kind): Calling APO using 'kind'
     >>> df.ta(kind="apo")
-    4d. Strategy:
-    >>> df.ta.strategy("All") # Default
-    >>> df.ta.strategy(ta.Strategy("My Strat", ta=[{"kind": "apo"}])) # Custom
+    4d. Study:
+    >>> df.ta.study("All") # Default
+    >>> df.ta.study(ta.Study("My Strat", ta=[{"kind": "apo"}])) # Custom
 
     5. Working with kwargs
     5a. Append the result to the working df.
@@ -243,6 +246,7 @@ class AnalysisIndicators(BasePandasObject):
     _adjusted = None
     _cores = cpu_count()
     _df = DataFrame()
+    _ds = "yf"
     _exchange = "NYSE"
     _time_range = "years"
     _last_run = get_time(_exchange, to_string=True)
@@ -313,6 +317,17 @@ class AnalysisIndicators(BasePandasObject):
             self._cores = int(value) if 0 <= value <= cpus else cpus
         else:
             self._cores = cpus
+
+    @property
+    def ds(self) -> str:
+        """Returns the current Data Source. Default: "yf"."""
+        return self._ds
+
+    @ds.setter
+    def ds(self, value: str) -> None:
+        """property: df.ta.ds = "yf" """
+        if isinstance(value, str) and len(value):
+            self._ds = value
 
     @property
     def exchange(self) -> str:
@@ -487,7 +502,7 @@ class AnalysisIndicators(BasePandasObject):
         return result
 
     def _strategy_mode(self, *args) -> tuple:
-        """Helper method to determine the mode and name of the strategy. Returns tuple: (name:str, mode:dict)"""
+        """Helper method to determine the mode and name of the study. Returns tuple: (name:str, mode:dict)"""
         name = "All"
         mode = {"all": False, "category": False, "custom": False}
 
@@ -500,14 +515,14 @@ class AnalysisIndicators(BasePandasObject):
                 if args[0].lower() in self.categories:
                     name, mode["category"] = args[0], True
 
-            if isinstance(args[0], Strategy):
-                strategy_ = args[0]
-                if strategy_.ta is None or strategy_.name.lower() == "all":
+            if isinstance(args[0], Study):
+                study_ = args[0]
+                if study_.ta is None or study_.name.lower() == "all":
                     name, mode["all"] = name, True
-                elif strategy_.name.lower() in self.categories:
-                    name, mode["category"] = strategy_.name, True
+                elif study_.name.lower() in self.categories:
+                    name, mode["category"] = study_.name, True
                 else:
-                    name, mode["custom"] = strategy_.name, True
+                    name, mode["custom"] = study_.name, True
 
         return name, mode
 
@@ -564,13 +579,14 @@ class AnalysisIndicators(BasePandasObject):
         """
         as_list = kwargs.setdefault("as_list", False)
         # Public non-indicator methods
-        helper_methods = ["constants", "indicators", "strategy"]
+        helper_methods = ["constants", "indicators", "strategy", "study"]
         # Public df.ta.properties
         ta_properties = [
             "adjusted",
             "categories",
             "cores",
             "datetime_ordered",
+            "ds",
             "exchange",
             "last_run",
             "reverse",
@@ -638,10 +654,13 @@ class AnalysisIndicators(BasePandasObject):
                 "performance", "statistics", "trend", "volatility", "volume", or
                 "all". Default: "all"
             ordered (bool): Whether to run "all" in order. Default: True
-            timed (bool): Show the process time of the strategy().
+            timed (bool): Show the process time of the study().
                 Default: False
             verbose (bool): Provide some additional insight on the progress of
-                the strategy() execution. Default: False
+                the study() execution. Default: False
+            warning (bool): Disables depreciation message. Automatically
+                disabled when using it's replacement method: df.ta.study().
+                Default: True
         """
         # If True, it returns the resultant DataFrame. Default: False
         returns = kwargs.pop("returns", False)
@@ -650,6 +669,10 @@ class AnalysisIndicators(BasePandasObject):
         kwargs["append"] = True
         all_ordered = kwargs.pop("ordered", True)
         mp_chunksize = kwargs.pop("chunksize", self.cores)
+        _depwarning = kwargs.pop("warning", True)
+
+        if _depwarning:
+            print(f"\n[!] DEPRECIATION WARNING:\n    Use study() instead of strategy().\n")
 
         # Initialize
         initial_column_count = len(self._df.columns)
@@ -668,7 +691,7 @@ class AnalysisIndicators(BasePandasObject):
             "xsignals",
         ]
 
-        # Get the Strategy Name and mode
+        # Get the Study Name and mode
         name, mode = self._strategy_mode(*args)
 
         # If All or a Category, exclude user list if any
@@ -687,7 +710,7 @@ class AnalysisIndicators(BasePandasObject):
         elif mode["all"]:
             ta = self.indicators(as_list=True, exclude=excluded)
         else:
-            print(f"[X] Not an available strategy.")
+            print(f"[X] Not an available study.")
             return None
 
         # Remove Custom indicators with "length" keyword when larger than the DataFrame
@@ -701,7 +724,7 @@ class AnalysisIndicators(BasePandasObject):
 
         verbose = kwargs.pop("verbose", False)
         if verbose:
-            print(f"[+] Strategy: {name}\n[i] Indicator arguments: {kwargs}")
+            print(f"[+] Study: {name}\n[i] Indicator arguments: {kwargs}")
             if mode["all"] or mode["category"]:
                 excluded_str = ", ".join(excluded)
                 print(f"[i] Excluded[{len(excluded)}]: {excluded_str}")
@@ -764,7 +787,7 @@ class AnalysisIndicators(BasePandasObject):
                         else:
                             results = pool.imap_unordered(self._mp_worker, default_ta, _chunksize) # Speed over Order
                 if results is None:
-                    print(f"[X] ta.strategy('{name}') has no results.")
+                    print(f"[X] ta.study('{name}') has no results.")
                     return
 
                 pool.close()
@@ -812,11 +835,36 @@ class AnalysisIndicators(BasePandasObject):
         if returns: return self._df
 
 
+    def study(self, *args, **kwargs):
+        """Study Method
+
+        An experimental method that by default runs all applicable indicators.
+
+        Kwargs:
+            chunksize (bool): Adjust the chunksize for the Multiprocessing Pool.
+                Default: Number of cores of the OS
+            exclude (list): List of indicator names to exclude. Some are
+                excluded by default for various reasons; they require additional
+                sources, performance (td_seq), not a time series chart (vp) etc.
+            name (str): Select all indicators or indicators by
+                Category such as: "candles", "cycles", "momentum", "overlap",
+                "performance", "statistics", "trend", "volatility", "volume", or
+                "all". Default: "all"
+            ordered (bool): Whether to run "all" in order. Default: True
+            timed (bool): Show the process time of the study().
+                Default: False
+            verbose (bool): Provide some additional insight on the progress of
+                the study() execution. Default: False
+        """
+        kwargs.update({"warning": False})
+        return self.strategy(*args, **kwargs)
+
+
     def ticker(self, ticker: str, ds: str = None, **kwargs):
         """ticker
 
         This method downloads Historical Data if the package yfinance is
-        installed. Additionally it can run a ta.Strategy; Builtin or Custom. It
+        installed. Additionally it can run a ta.Study; Builtin or Custom. It
         returns a DataFrame if there the DataFrame is not empty, otherwise it
         exits. For additional yfinance arguments, use help(ta.yf).
         Alternatively, if you have a Polygon API Key, you can use it as well;
@@ -848,27 +896,26 @@ class AnalysisIndicators(BasePandasObject):
             ds (str): Options: "polygon" and "yahoo". Default: "yahoo"
         Kwargs:
             kind (str): Options see above. Default: "history"
-            strategy (str | ta.Strategy): Which strategy to apply after
+            study (str | ta.Study): Which study to apply after
                 downloading chart history. Default: None
 
-            See help(ta.yf) for additional kwargs
+            See help(ta.yf) or help(ta.polygon_api) for additional kwargs
 
         Returns:
             Exits if the DataFrame is empty or None
             Otherwise it returns a DataFrame
         """
         # _frequencies = ["1s", "5s", "15s", "30s", "1m", "5m", "15m", "30m", "45m", "1h", "2h", "4h", "D", "W", "M"]
-        _ds = "yahoo"
-        ds = f"{ds.lower()}" if ds is not None and isinstance(ds, str) else _ds
-
+        ds = ds.lower() if isinstance(ds, str) else self.ds
         strategy = kwargs.pop("strategy", None)
+        study = kwargs.pop("study", strategy)
         if isinstance(ticker, str):
             tickers = [ticker]
 
-        # Fetch the Data
+        # Fetch Data
         if ds == "polygon":
             df = polygon_api(ticker, **kwargs)
-        elif ds == "yahoo":
+        elif ds in ["yahoo", "yf"]:
             df = yf(ticker, **kwargs)
         else: return
 
@@ -882,8 +929,7 @@ class AnalysisIndicators(BasePandasObject):
                 df.columns = df.columns.str.lower()
             self._df = df
 
-        # if strategy is not None: self.strategy(strategy, **kwargs)
-        if strategy is not None: return self.strategy(strategy, returns=True, **kwargs)
+        if study is not None: return self.study(study, returns=True, **kwargs)
         return df
 
 

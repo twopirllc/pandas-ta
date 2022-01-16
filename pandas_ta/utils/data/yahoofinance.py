@@ -15,7 +15,7 @@ def yf(ticker: str, **kwargs):
 
     Other options of 'kind' include:
     * All: "all"
-        - Prints everything below but only returns Chart History to Pandas TA
+        - Prints everything below but only returns Chart History DataFrame
     * Company Information: "info"
     * Institutional Holders: "institutional_holders" or "ih"
     * Major Holders: "major_holders" or "mh"
