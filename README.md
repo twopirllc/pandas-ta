@@ -198,7 +198,7 @@ Thanks for using **Pandas TA**!
         * Did they help?
         * What is missing?
         * Could you help improve them?
-    * Did you know you can easily build _Custom Strategies_ with the **[Study](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Study_Examples.ipynb) Class**?
+    * Did you know you can easily build _Custom Studies_ with the **[Study](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Study_Examples.ipynb) Class**?
     * Documentation could _always_ be improved. Can you help contribute?
 
 * ### [Bugs, Indicators or Feature Requests](https://github.com/twopirllc/pandas-ta/issues)
@@ -298,7 +298,7 @@ df.ta.study(MyStudy, **kwargs)
 
 <br/>
 
-The _Study_ Class is a simple way to name and group your favorite TA Indicators by using a _Data Class_. **Pandas TA** comes with two prebuilt basic Strategies to help you get started: __AllStudy__ and __CommonStudy__. A _Study_ can be as simple as the __CommonStudy__ or as complex as needed using Composition/Chaining. 
+The _Study_ Class is a simple way to name and group your favorite TA Indicators by using a _Data Class_. **Pandas TA** comes with two prebuilt basic Studies to help you get started: __AllStudy__ and __CommonStudy__. A _Study_ can be as simple as the __CommonStudy__ or as complex as needed using Composition/Chaining. 
 
 * When using the _study_ method, **all** indicators will be automatically appended to the DataFrame ```df```.
 * You are using a Chained Study when you have the output of one indicator as input into one or more indicators in the same _Study_.
