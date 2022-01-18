@@ -59,6 +59,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Overlap](#overlap-36)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
+    * [Transform](#transform-3)
     * [Trend](#trend-19)
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
@@ -81,11 +82,11 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 # **Features**
 
-* Over 140 indicators and utility functions.
+* Over 140+ indicators and utility functions.
 * **TA Lib** indicators (```pip install ta-lib```).
     * TA Lib's 63 Chart Patterns
     * Python Indicators are tightly correlated with the _de facto_ [TA Lib](https://github.com/mrjbq7/ta-lib).
-    * TA Lib computations are by default **enabled**. They can be disabled disabled per indicator by using the argument ```talib=False```.
+    * TA Lib computations are by default **enabled**. They can be disabled per indicator by using the argument ```talib=False```.
         * For example to disable TA Lib calculation for **stdev**: ```ta.stdev(df["close"], length=30, talib=False)```.
 * **Stochastic Sample Realizations** with the [stochastic](https://github.com/crflynn/stochastic) package (```pip install stochastic```). See the [Stochastic Samples](#stochastic-samples) section below.
 * **External Custom Indicators Directory** independent of the builtin Pandas TA indicators. For more information, see ```import_dir``` documentation under ```/pandas_ta/custom.py```.
@@ -298,7 +299,7 @@ df.ta.study(MyStudy, **kwargs)
 
 <br/>
 
-The _Study_ Class is a simple way to name and group your favorite TA Indicators by using a _Data Class_. **Pandas TA** comes with two prebuilt basic Studies to help you get started: __AllStudy__ and __CommonStudy__. A _Study_ can be as simple as the __CommonStudy__ or as complex as needed using Composition/Chaining. 
+The _Study_ Class is a simple way to name and group your favorite TA Indicators by using a _Data Class_. **Pandas TA** comes with two prebuilt basic Studies to help you get started: __AllStudy__ and __CommonStudy__. A _Study_ can be as simple as the __CommonStudy__ or as complex as needed using Composition/Chaining.
 
 * When using the _study_ method, **all** indicators will be automatically appended to the DataFrame ```df```.
 * You are using a Chained Study when you have the output of one indicator as input into one or more indicators in the same _Study_.
@@ -856,6 +857,14 @@ Use parameter: cumulative=**True** for cumulative results.
 
 <br/>
 
+### **Transform** (3)
+
+* _Cube Transform_: **cube**
+* _Inverse Fisher Transform_: **ifisher**
+* _ReMap_: **remap**
+
+<br/>
+
 ### **Trend** (19)
 
 * _Average Directional Movement Index_: **adx**
@@ -961,7 +970,7 @@ import vectorbt as vbt
 
 df = pd.DataFrame().ta.ticker("AAPL") # requires 'yfinance' installed
 
-# Create the "Golden Cross" 
+# Create the "Golden Cross"
 df["GC"] = df.ta.sma(50, append=True) > df.ta.sma(200, append=True)
 
 # Create boolean Signals(TS_Entries, TS_Exits) for vectorbt
@@ -1005,7 +1014,7 @@ result = ta.cagr(df.close)
 # **Stochastic Samples** &nbsp; _BETA_
 Pandas TA can utilize the [stochastic](https://github.com/crflynn/stochastic) package (```pip install stochastic```) to Generate Sample Processes. For arguments and features, see ```help(ta.sample)```
 
-In short, when you create a Stochastic Sample, 
+In short, when you create a Stochastic Sample,
 
 ```python
 # Returns a Sample Realization Object
@@ -1091,11 +1100,10 @@ help(ta.sample)
 # **Support**
 
 Feeling generous, like the package or want to see it become more a mature package?
-* Donations help cover data and API costs so platform indicataors (like [TradingView](https://github.com/tradingview/)) are accurate.
+* Donations help cover data and API costs so platform indicators (like [TradingView](https://github.com/tradingview/)) are accurate.
 * I appreciate **ALL** of those that have bought me Coffee/Beer/Wine et al. I greatly appreciate it! 😎
 
 <br/>
 
 ### Consider
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/twopirllc)
-

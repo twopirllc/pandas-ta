@@ -68,6 +68,8 @@ Category = {
         "entropy", "kurtosis", "mad", "median", "quantile", "skew", "stdev",
         "tos_stdevall", "variance", "zscore"
     ],
+    # Transform
+    "transform": ["cube", "ifisher", "remap"],
     # Trend
     "trend": [
         "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",

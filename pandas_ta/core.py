@@ -15,6 +15,7 @@ from pandas_ta.momentum import *
 from pandas_ta.overlap import *
 from pandas_ta.performance import *
 from pandas_ta.statistics import *
+from pandas_ta.transform import *
 from pandas_ta.trend import *
 from pandas_ta.volatility import *
 from pandas_ta.volume import *
@@ -1492,6 +1493,22 @@ class AnalysisIndicators(BasePandasObject):
     def zscore(self, length=None, std=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = zscore(close=close, length=length, std=std, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    # Transform
+    def cube(self, cubing_exponent=None, signal_offset=None, offset=None, **kwargs):
+        close = self._get_column(close, "close")
+        result = cube(close=close, cubing_exponent=cubing_exponent, signal_offset=signal_offset, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def ifisher(self, amplifying_factor=None, signal_offset=None, offset=None, **kwargs):
+        close = self._get_column(close, "close")
+        result = ifisher(close=close, amplifying_factor=amplifying_factor, signal_offset=signal_offset, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+    
+    def remap(self, from_min=None, from_max=None, to_min=None, to_max=None, offset=None, **kwargs):
+        close = self._get_column(close, "close")
+        result = remap(close=close, from_min=from_min, from_max=from_max, to_min=to_min, to_max=to_max, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     # Trend
