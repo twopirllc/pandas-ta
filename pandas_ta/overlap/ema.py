@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports, np
+from numpy import nan
+from pandas import Series
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 try:
     from numba import njit
 except ImportError:
     njit = lambda _: _
-
 
 # Almost there
 # @njit
@@ -21,7 +22,11 @@ except ImportError:
 #     # return np_prepend(result, n - 1)
 
 
-def ema(close, length=None, talib=None, presma=None, offset=None, **kwargs):
+def ema(
+        close: Series, length: int = None,
+        talib: bool = None, presma: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Exponential Moving Average (EMA)
 
     The Exponential Moving Average is more responsive moving average compared to the
@@ -51,7 +56,7 @@ def ema(close, length=None, talib=None, presma=None, offset=None, **kwargs):
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     presma = bool(presma) if isinstance(presma, bool) else True
     mode_tal = bool(talib) if isinstance(talib, bool) else True
@@ -61,7 +66,7 @@ def ema(close, length=None, talib=None, presma=None, offset=None, **kwargs):
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import EMA
         ema = EMA(close, length)
@@ -69,7 +74,7 @@ def ema(close, length=None, talib=None, presma=None, offset=None, **kwargs):
         if presma: # TA Lib implementation
             close = close.copy()
             sma_nth = close[0:length].mean()
-            close[:length - 1] = np.nan
+            close[:length - 1] = nan
             close.iloc[length - 1] = sma_nth
         ema = close.ewm(span=length, adjust=adjust).mean()
 
@@ -77,13 +82,13 @@ def ema(close, length=None, talib=None, presma=None, offset=None, **kwargs):
     if offset != 0:
         ema = ema.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ema.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         ema.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     ema.name = f"EMA_{length}"
     ema.category = "overlap"
 

@@ -9,7 +9,7 @@ from pandas_ta import Imports
 from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
-def linreg(close, length=None, talib=None, offset=None, **kwargs):
+def linreg(close: Series, length: int = None, talib: int = None, offset: int = None, **kwargs) -> Series:
     """Linear Regression Moving Average (linreg)
 
     Linear Regression Moving Average (LINREG). This is a simplified version of a

@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import np, pd
+from numpy import cos, exp, nan, ndarray, sqrt, zeros_like
+from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
+
 
 try:
     from numba import njit
 except ImportError:
     njit = lambda _: _
 
-
 @njit
-def np_reflex(x: np.ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: float):
+def np_reflex(x: ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: float):
     m, ratio = x.size, 2 * sqrt2 / k
-    a = np.exp(-pi * ratio)
-    b = 2 * a * np.cos(180 * ratio)
+    a = exp(-pi * ratio)
+    b = 2 * a * cos(180 * ratio)
     c = a * a - b + 1
 
-    _f = np.zeros_like(x)
-    _ms = np.zeros_like(x)
-    result = np.zeros_like(x)
+    _f = zeros_like(x)
+    _ms = zeros_like(x)
+    result = zeros_like(x)
 
     for i in range(2, m):
         _f[i] =  0.5 * c * (x[i] + x[i - 1]) + b * _f[i - 1] - a * a * _f[i - 2]
@@ -32,12 +33,17 @@ def np_reflex(x: np.ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: flo
 
         _ms[i] = alpha * _sum * _sum + (1 - alpha) * _ms[i - 1]
         if _ms[i] != 0.0:
-            result[i] = _sum / np.sqrt(_ms[i])
+            result[i] = _sum / sqrt(_ms[i])
 
     return result
 
 
-def reflex(close, length=None, smooth=None, alpha=None, pi=None, sqrt2=None, offset=None, **kwargs):
+def reflex(
+        close: Series, length: int = None,
+        smooth: int = None, alpha: float = None,
+        pi: float = None, sqrt2: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Reflex (reflex)
 
     John F. Ehlers introduced two indicators within the article
@@ -73,7 +79,7 @@ def reflex(close, length=None, smooth=None, alpha=None, pi=None, sqrt2=None, off
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 20
     smooth = int(smooth) if isinstance(smooth, int) and smooth > 0 else 20
     alpha = float(alpha) if isinstance(alpha, float) and alpha > 0 else 0.04
@@ -82,23 +88,23 @@ def reflex(close, length=None, smooth=None, alpha=None, pi=None, sqrt2=None, off
     close = verify_series(close, max(length, smooth))
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     np_close = close.values
     result = np_reflex(np_close, length, smooth, alpha, pi, sqrt2)
-    result[:length] = np.nan
-    result = pd.Series(result, index=close.index)
+    result[:length] = nan
+    result = Series(result, index=close.index)
 
     # Offset
     if offset != 0:
         result = result.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         result.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         result.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     result.name = f"REFLEX_{length}_{smooth}_{alpha}"
     result.category = "cycles"
 

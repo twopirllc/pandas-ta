@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import log as npLog
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def entropy(close, length=None, base=None, offset=None, **kwargs):
+def entropy(close: Series, length: int = None, base: float = None, offset: int = None, **kwargs) -> Series:
     """Entropy (ENTP)
 
     Introduced by Claude Shannon in 1948, entropy measures the unpredictability

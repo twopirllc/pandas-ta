@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import date_range, DataFrame, RangeIndex, Timedelta
+from pandas import date_range, DataFrame, RangeIndex, Timedelta, Series
 from .midprice import midprice
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ichimoku(high, low, close, tenkan=None, kijun=None, senkou=None, include_chikou=True, offset=None, **kwargs):
+def ichimoku(high: Series, low: Series, close: Series, tenkan: int = None, kijun: int = None, senkou: int = None,
+             include_chikou: bool = True, offset: int = None, **kwargs) -> DataFrame:
     """Ichimoku Kinkō Hyō (ichimoku)
 
     Developed Pre WWII as a forecasting model for financial markets.

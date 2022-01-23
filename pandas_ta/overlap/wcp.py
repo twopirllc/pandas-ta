@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def wcp(high, low, close, talib=None, offset=None, **kwargs):
+def wcp(high: Series, low: Series, close: Series, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Weighted Closing Price (WCP)
 
     Weighted Closing Price is the weighted price given: high, low

@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.momentum import roc
 from pandas_ta.utils import get_offset, signed_series, verify_series
+from pandas import Series
 
 
-def pvi(close, volume, length=None, initial=None, offset=None, **kwargs):
+def pvi(close: Series, volume: Series, length: int = None, initial: int = None, offset: int = None,
+        **kwargs) -> Series:
     """Positive Volume Index (PVI)
 
     The Positive Volume Index is a cumulative indicator that uses volume change in

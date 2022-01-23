@@ -5,7 +5,7 @@ from pandas_ta import Imports, pd, RATE, version
 from pandas_ta.utils import unix_convert
 
 
-def polygon_api(ticker: str, **kwargs):
+def polygon_api(ticker: str, **kwargs) -> DataFrame:
     r"""
     polygon_api - polygon.io API helper function.
 

@@ -9,7 +9,8 @@ from pandas_ta.overlap import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def qqe(close, length=None, smooth=None, factor=None, mamode=None, drift=None, offset=None, **kwargs):
+def qqe(close: Series, length: int = None, smooth: int = None, factor: float = None, mamode: str = None,
+        drift: int = None, offset: int = None, **kwargs) -> DataFrame:
     """Quantitative Qualitative Estimation (QQE)
 
     The Quantitative Qualitative Estimation (QQE) is similar to SuperTrend but uses a Smoothed RSI with an upper and lower bands. The band width is a combination of a one period True Range of the Smoothed RSI which is double smoothed using Wilder's smoothing length (2 * rsiLength - 1) and multiplied by the default factor of 4.236. A Long trend is determined when the Smoothed RSI crosses the previous upperband and a Short trend when the Smoothed RSI crosses the previous lowerband.

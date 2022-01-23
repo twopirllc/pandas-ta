@@ -3,9 +3,11 @@ from pandas_ta import Imports
 from pandas_ta.overlap import hlc3, sma
 from pandas_ta.statistics.mad import mad
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def cci(high, low, close, length=None, c=None, talib=None, offset=None, **kwargs):
+def cci(high: Series, low: Series, close: Series, length: int = None, c: float = None,
+        talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Commodity Channel Index (CCI)
 
     Commodity Channel Index is a momentum oscillator used to primarily identify

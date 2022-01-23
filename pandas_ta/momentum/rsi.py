@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame, concat
+from pandas import DataFrame, concat, Series
 from pandas_ta import Imports
 from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
-def rsi(close, length=None, scalar=None, talib=None, drift=None, offset=None, **kwargs):
+def rsi(close: Series, length: int = None, scalar: float = None, talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs) -> Series:
     """Relative Strength Index (RSI)
 
     The Relative Strength Index is popular momentum oscillator used to measure the

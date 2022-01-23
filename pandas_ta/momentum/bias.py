@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def bias(close, length=None, mamode=None, offset=None, **kwargs):
+def bias(close: Series, length: int = None, mamode: str = None, offset: int = None, **kwargs) -> Series:
     """Bias (BIAS)
 
     Rate of change between the source and a moving average.

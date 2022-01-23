@@ -3,9 +3,11 @@ from numpy import sqrt as npsqrt
 from .variance import variance
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def stdev(close, length=None, ddof=None, talib=None, offset=None, **kwargs):
+def stdev(close: Series, length: int = None, ddof: int = None, talib: bool = None, offset: int = None,
+          **kwargs) -> Series:
     """Rolling Standard Deviation
 
     Calculates the Standard Deviation over a rolling period.

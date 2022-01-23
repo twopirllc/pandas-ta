@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def hl2(high, low, offset=None, **kwargs):
+def hl2(high: Series, low: Series, offset: int = None, **kwargs) -> Series:
     """HL2
 
     HL2 is the midpoint/average of high and low.

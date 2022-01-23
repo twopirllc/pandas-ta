@@ -2,9 +2,11 @@
 from numpy import arctan as npAtan
 from numpy import pi as npPi
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def slope( close, length=None, as_angle=None, to_degrees=None, vertical=None, offset=None, **kwargs):
+def slope( close: Series, length: int = None, as_angle=None, to_degrees=None, vertical=None,
+           offset: int = None, **kwargs) -> Series:
     """Slope
 
     Returns the slope of a series of length n. Can convert the slope to angle.

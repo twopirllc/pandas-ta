@@ -2,9 +2,11 @@
 from .atr import atr
 from pandas_ta import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas import Series
 
 
-def natr(high, low, close, length=None, scalar=None, mamode=None, talib=None, drift=None, offset=None, **kwargs):
+def natr(high: Series, low: Series, close: Series, length: int = None, scalar: float = None, mamode: str = None,
+         talib: bool = None, drift: int = None, offset: int = None, **kwargs) -> Series:
     """Normalized Average True Range (NATR)
 
     Normalized Average True Range attempt to normalize the average true range.

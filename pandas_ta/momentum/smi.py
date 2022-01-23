@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from .tsi import tsi
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
 
-def smi(close, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs):
+def smi(close: Series, fast: int = None, slow: int = None, signal: int = None, scalar: float = None,
+        offset: int = None, **kwargs) -> DataFrame:
     """SMI Ergodic Indicator (SMI)
 
     The SMI Ergodic Indicator is the same as the True Strength Index (TSI) developed

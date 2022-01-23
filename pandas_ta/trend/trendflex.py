@@ -1,25 +1,26 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import np, pd
+from numpy import cos, exp, nan, ndarray, sqrt, zeros_like
+from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
+
 
 try:
     from numba import njit
 except ImportError:
     njit = lambda _: _
 
-
 @njit
-def np_trendflex(x: np.ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: float):
+def np_trendflex(x: ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: float):
     """Ehler's Trendflex
     http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html"""
     m, ratio = x.size, 2 * sqrt2 / k
-    a = np.exp(-pi * ratio)
-    b = 2 * a * np.cos(180 * ratio)
+    a = exp(-pi * ratio)
+    b = 2 * a * cos(180 * ratio)
     c = a * a - b + 1
 
-    _f = np.zeros_like(x)
-    _ms = np.zeros_like(x)
-    result = np.zeros_like(x)
+    _f = zeros_like(x)
+    _ms = zeros_like(x)
+    result = zeros_like(x)
 
     for i in range(2, m):
         _f[i] =  0.5 * c * (x[i] + x[i - 1]) + b * _f[i - 1] - a * a * _f[i - 2]
@@ -32,12 +33,17 @@ def np_trendflex(x: np.ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: 
 
         _ms[i] = alpha * _sum * _sum + (1 - alpha) * _ms[i - 1]
         if _ms[i] != 0.0:
-            result[i] = _sum / np.sqrt(_ms[i])
+            result[i] = _sum / sqrt(_ms[i])
 
     return result
 
 
-def trendflex(close, length=None, smooth=None, alpha=None, pi=None, sqrt2=None, offset=None, **kwargs):
+def trendflex(
+        close: Series, length: int = None,
+        smooth: int = None, alpha: float = None,
+        pi: float = None, sqrt2: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Trendflex (TRENDFLEX)
 
     John F. Ehlers introduced two indicators within the article "Reflex: A New
@@ -73,7 +79,7 @@ def trendflex(close, length=None, smooth=None, alpha=None, pi=None, sqrt2=None, 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 20
     smooth = int(smooth) if isinstance(smooth, int) and smooth > 0 else 20
     alpha = float(alpha) if isinstance(alpha, float) and alpha > 0 else 0.04
@@ -84,25 +90,23 @@ def trendflex(close, length=None, smooth=None, alpha=None, pi=None, sqrt2=None, 
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     np_close = close.values
     result = np_trendflex(np_close, length, smooth, alpha, pi, sqrt2)
-    # print(f"\nresult:\n{result}\n")
-    result[:length] = np.nan
-    # print(f"result:\n{result}")
-    result = pd.Series(result, index=close.index)
+    result[:length] = nan
+    result = Series(result, index=close.index)
 
     # Offset
     if offset != 0:
         result = result.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         result.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         result.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     result.name = f"TRENDFLEX_{length}_{smooth}_{alpha}"
     result.category = "trend"
 

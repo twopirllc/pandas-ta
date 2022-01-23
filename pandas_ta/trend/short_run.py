@@ -2,9 +2,10 @@
 from .decreasing import decreasing
 from .increasing import increasing
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def short_run(fast, slow, length=None, offset=None, **kwargs):
+def short_run(fast: Series, slow: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Short Run
 
     Short Run was developed by Kevin Johnson that returns a binary Series

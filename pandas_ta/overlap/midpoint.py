@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def midpoint(close, length=None, talib=None, offset=None, **kwargs):
+def midpoint(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Midpoint
 
     The Midpoint is the average of the rolling high and low of period length.

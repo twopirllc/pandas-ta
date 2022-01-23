@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import candle_color, get_offset
 from pandas_ta.utils import verify_series
+from pandas import Series
 
 
-def cdl_inside(open_, high, low, close, asbool=False, offset=None, **kwargs):
+def cdl_inside(open_: Series, high: Series, low: Series, close: Series, asbool: bool = False,
+               offset: int = None, **kwargs) -> Series:
     """Candle Type: Inside Bar
 
     An Inside Bar is a bar that is engulfed by the prior highs and lows of it's

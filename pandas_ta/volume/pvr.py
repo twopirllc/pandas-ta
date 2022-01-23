@@ -4,7 +4,7 @@ from numpy import nan as npNaN
 from pandas import Series
 
 
-def pvr(close, volume):
+def pvr(close: Series, volume: Series) -> Series:
     """Price Volume Rank
 
     The Price Volume Rank was developed by Anthony J. Macek and is described in his

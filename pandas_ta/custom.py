@@ -11,7 +11,7 @@ import pandas_ta
 from pandas_ta import AnalysisIndicators
 
 
-def bind(function_name, function, method):
+def bind(function_name: str, function: types.FunctionType, method: types.MethodType):
     """
     Helper function to bind the function and class method defined in a custom
     indicator module to the active pandas_ta instance.
@@ -25,7 +25,7 @@ def bind(function_name, function, method):
     setattr(AnalysisIndicators, function_name, method)
 
 
-def create_dir(path, create_categories=True, verbose=True):
+def create_dir(path: str, create_categories: bool = True, verbose: bool = True):
     """
     Helper function to setup a suitable folder structure for working with
     custom indicators. You only need to call this once whenever you want to
@@ -57,7 +57,7 @@ def create_dir(path, create_categories=True, verbose=True):
                     print(f"[i] Created an empty sub-directory '{dirname}'.")
 
 
-def get_module_functions(module):
+def get_module_functions(module: types.ModuleType) -> dict:
     """
      Helper function to get the functions of an imported module as a dictionary.
 
@@ -80,7 +80,7 @@ def get_module_functions(module):
     return module_functions
 
 
-def import_dir(path, verbose=True):
+def import_dir(path: str, verbose: bool = True):
     # ensure that the passed directory exists / is readable
     if not exists(path):
         print(f"[X] Unable to read the directory '{path}'.")
@@ -202,7 +202,7 @@ like all other native indicators in pandas_ta, including help functions.
 """
 
 
-def load_indicator_module(name):
+def load_indicator_module(name: str) -> dict:
     """
      Helper function to (re)load an indicator module.
 

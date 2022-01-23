@@ -2,9 +2,12 @@
 from pandas_ta.overlap import linreg
 from pandas_ta.volatility import rvi
 from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas import Series
 
 
-def inertia(close=None, high=None, low=None, length=None, rvi_length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
+def inertia(close: Series, high: Series, low: Series, length: int = None, rvi_length: int = None, scalar: float = None,
+            refined: bool = None, thirds: bool = None, mamode: str = None, drift: int = None, offset: int = None,
+            **kwargs) -> Series:
     """Inertia (INERTIA)
 
     Inertia was developed by Donald Dorsey and was introduced his article

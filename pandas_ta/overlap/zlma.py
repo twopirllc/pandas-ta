@@ -4,9 +4,10 @@
 # )
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def zlma(close, length=None, mamode=None, offset=None, **kwargs):
+def zlma(close: Series, length: int = None, mamode: str = None, offset: int = None, **kwargs) -> Series:
     """Zero Lag Moving Average (ZLMA)
 
     The Zero Lag Moving Average attempts to eliminate the lag associated

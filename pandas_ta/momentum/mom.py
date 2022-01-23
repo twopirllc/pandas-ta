@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def mom(close, length=None, talib=None, offset=None, **kwargs):
+def mom(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Momentum (MOM)
 
     Momentum is an indicator used to measure a security's speed (or strength) of

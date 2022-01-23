@@ -3,9 +3,12 @@ from pandas_ta.overlap import ma
 from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_drift, get_offset
 from pandas_ta.utils import unsigned_differences, verify_series
+from pandas import Series
 
 
-def rvi(close, high=None, low=None, length=None, scalar=None, refined=None, thirds=None, mamode=None, drift=None, offset=None, **kwargs):
+def rvi(close: Series, high: Series = None, low: Series = None, length: int = None, scalar: float = None,
+        refined: bool = None, thirds: bool = None, mamode: str = None, drift: int = None,
+        offset: int = None, **kwargs) -> Series:
     """Relative Volatility Index (RVI)
 
     The Relative Volatility Index (RVI) was created in 1993 and revised in 1995.

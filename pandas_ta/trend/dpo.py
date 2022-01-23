@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def dpo(close, length=None, centered=True, offset=None, **kwargs):
+def dpo(close: Series, length: int = None, centered: bool = True, offset: int = None, **kwargs) -> Series:
     """Detrend Price Oscillator (DPO)
 
     Is an indicator designed to remove trend from price and make it easier to

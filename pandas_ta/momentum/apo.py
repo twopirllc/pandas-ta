@@ -2,9 +2,11 @@
 from pandas_ta import Imports
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_offset, tal_ma, verify_series
+from pandas import Series
 
 
-def apo(close, fast=None, slow=None, mamode=None, talib=None, offset=None, **kwargs):
+def apo(close: Series, fast: int = None, slow: int = None, mamode: str = None, talib: bool = None,
+        offset: int = None, **kwargs) -> Series:
     """Absolute Price Oscillator (APO)
 
     The Absolute Price Oscillator is an indicator used to measure a security's

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def percent_return(close, length=None, cumulative=None, offset=None, **kwargs):
+def percent_return(close: Series, length: int = None, cumulative: bool = None, offset: int = None,
+                   **kwargs) -> Series:
     """Percent Return
 
     Calculates the percent return of a Series.

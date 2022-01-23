@@ -2,9 +2,11 @@
 from .roc import roc
 from pandas_ta.overlap import wma
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def coppock(close, length=None, fast=None, slow=None, offset=None, **kwargs):
+def coppock(close: Series, length: int = None, fast: int = None, slow: int = None, offset: int = None,
+            **kwargs) -> Series:
     """Coppock Curve (COPC)
 
     Coppock Curve (originally called the "Trendex Model") is a momentum indicator

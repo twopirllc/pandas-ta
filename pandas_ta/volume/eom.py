@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import hl2, sma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas import Series
 
 
-def eom(high, low, close, volume, length=None, divisor=None, drift=None, offset=None, **kwargs):
+def eom(high: Series, low: Series, close: Series, volume: Series, length: int = None, divisor=None, drift: int = None,
+        offset: int = None, **kwargs) -> Series:
     """Ease of Movement (EOM)
 
     Ease of Movement is a volume based oscillator that is designed to measure the

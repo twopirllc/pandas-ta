@@ -4,7 +4,8 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series, zero
 
 
-def psar(high, low, close=None, af0=None, af=None, max_af=None, offset=None, **kwargs):
+def psar(high: Series, low: Series, close: Series = None, af0: float = None, af: float = None, max_af: float = None,
+         offset: int = None, **kwargs) -> DataFrame:
     """Parabolic Stop and Reverse (psar)
 
     Parabolic Stop and Reverse (PSAR) was developed by J. Wells Wilder, that is used

@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import hlc3, ma
 from pandas_ta.utils import get_drift, get_offset, signed_series, verify_series
 
 
-def kvo(high, low, close, volume, fast=None, slow=None, signal=None, mamode=None, drift=None, offset=None, **kwargs):
+def kvo(high: Series, low: Series, close: Series, volume: Series, fast: int = None, slow: int = None,
+        signal=None, mamode: str = None, drift: int = None, offset: int = None, **kwargs) -> DataFrame:
     """Klinger Volume Oscillator (KVO)
 
     This indicator was developed by Stephen J. Klinger. It is designed to predict

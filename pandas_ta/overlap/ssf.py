@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import np, pd
+from numpy import copy, cos, exp, ndarray
+from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
+
 
 try:
     from numba import njit
 except ImportError:
     njit = lambda _: _
 
-
 @njit
-def np_ssf(x: np.ndarray, n: int, pi: float, sqrt2: float):
+def np_ssf(x: ndarray, n: int, pi: float, sqrt2: float):
     """Ehler's Super Smoother Filter
     http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
     """
-    m, ratio, result = x.size, sqrt2 / n, np.copy(x)
-    a = np.exp(-pi * ratio)
-    b = 2 * a * np.cos(180 * ratio)
+    m, ratio, result = x.size, sqrt2 / n, copy(x)
+    a = exp(-pi * ratio)
+    b = 2 * a * cos(180 * ratio)
     c = a * a - b + 1
 
     for i in range(2, m):
@@ -24,15 +25,14 @@ def np_ssf(x: np.ndarray, n: int, pi: float, sqrt2: float):
 
     return result
 
-
 @njit
-def np_ssf_everget(x: np.ndarray, n: int, pi: float, sqrt2: float):
+def np_ssf_everget(x: ndarray, n: int, pi: float, sqrt2: float):
     """John F. Ehler's Super Smoother Filter by Everget (2 poles), Tradingview
     https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
     """
-    m, arg, result = x.size, pi * sqrt2 / n, np.copy(x)
-    a = np.exp(-arg)
-    b = 2 * a * np.cos(arg)
+    m, arg, result = x.size, pi * sqrt2 / n, copy(x)
+    a = exp(-arg)
+    b = 2 * a * cos(arg)
 
     for i in range(2, m):
         result[i] = 0.5 * (a * a - b + 1) * (x[i] + x[i - 1]) \
@@ -41,7 +41,11 @@ def np_ssf_everget(x: np.ndarray, n: int, pi: float, sqrt2: float):
     return result
 
 
-def ssf(close, length=None, everget=None, pi=None, sqrt2=None, offset=None, **kwargs):
+def ssf(
+        close: Series, length: int = None,
+        everget: bool = None, pi: float = None, sqrt2: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Ehler's Super Smoother Filter (SSF) © 2013
 
     John F. Ehlers's solution to reduce lag and remove aliasing noise with his
@@ -77,7 +81,7 @@ def ssf(close, length=None, everget=None, pi=None, sqrt2=None, offset=None, **kw
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 20
     everget = bool(everget) if isinstance(everget, bool) else False
     pi = float(pi) if isinstance(pi, float) and pi > 0 else 3.14159
@@ -87,25 +91,25 @@ def ssf(close, length=None, everget=None, pi=None, sqrt2=None, offset=None, **kw
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     np_close = close.values
     if everget:
         ssf = np_ssf_everget(np_close, length, pi, sqrt2)
     else:
         ssf = np_ssf(np_close, length, pi, sqrt2)
-    ssf = pd.Series(ssf, index=close.index)
+    ssf = Series(ssf, index=close.index)
 
     # Offset
     if offset != 0:
         ssf = ssf.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ssf.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         ssf.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     ssf.name = f"SSF{'e' if everget else ''}_{length}"
     ssf.category = "overlap"
 

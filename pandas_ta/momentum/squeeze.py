@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import nan as npNaN
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.momentum import mom
 from pandas_ta.overlap import ema, linreg, sma
 from pandas_ta.trend import decreasing, increasing
@@ -9,7 +9,9 @@ from pandas_ta.utils import get_offset
 from pandas_ta.utils import unsigned_differences, verify_series
 
 
-def squeeze(high, low, close, bb_length=None, bb_std=None, kc_length=None, kc_scalar=None, mom_length=None, mom_smooth=None, use_tr=None, mamode=None, offset=None, **kwargs):
+def squeeze(high: Series, low: Series, close: Series, bb_length: int = None, bb_std: float = None,
+            kc_length: int = None, kc_scalar: float = None, mom_length: int = None, mom_smooth: int = None,
+            use_tr=None, mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
     """Squeeze (SQZ)
 
     The default is based on John Carter's "TTM Squeeze" indicator, as discussed

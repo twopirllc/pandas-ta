@@ -2,9 +2,10 @@
 from pandas_ta.overlap import sma
 from .stdev import stdev
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def zscore(close, length=None, std=None, offset=None, **kwargs):
+def zscore(close: Series, length: int = None, std: float = None, offset: int = None, **kwargs) -> Series:
     """Rolling Z Score
 
     Calculates the Z Score over a rolling period.

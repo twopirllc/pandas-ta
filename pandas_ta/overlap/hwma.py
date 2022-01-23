@@ -3,7 +3,7 @@ from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def hwma(close, na=None, nb=None, nc=None, offset=None, **kwargs):
+def hwma(close: Series, na: float = None, nb: float = None, nc: float = None, offset: int = None, **kwargs) -> Series:
     """HWMA (Holt-Winter Moving Average)
 
     Indicator HWMA (Holt-Winter Moving Average) is a three-parameter moving average

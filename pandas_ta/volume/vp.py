@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from numpy import array_split
 from numpy import mean
-from pandas import cut, concat, DataFrame
+from pandas import cut, concat, DataFrame, Series
 from pandas_ta.utils import signed_series, verify_series
 
 
-def vp(close, volume, width=None, **kwargs):
+def vp(close: Series, volume: Series, width: int = None, **kwargs) -> DataFrame:
     """Volume Profile (VP)
 
     Calculates the Volume Profile by slicing price into ranges.

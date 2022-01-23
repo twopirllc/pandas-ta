@@ -2,9 +2,10 @@
 from .sma import sma
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def trima(close, length=None, talib=None, offset=None, **kwargs):
+def trima(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Triangular Moving Average (TRIMA)
 
     A weighted moving average where the shape of the weights are triangular and the

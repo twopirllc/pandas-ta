@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports, np, pd
+from numpy import convolve, ndarray, ones
+from pandas import Series
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, np_prepend, verify_series
+
 
 try:
     from numba import njit
 except ImportError:
     njit = lambda _: _
 
-
 @njit
-def np_sma(x: np.ndarray, n: int):
+def np_sma(x: ndarray, n: int):
     """https://github.com/numba/numba/issues/4119"""
-    result = np.convolve(np.ones(n) / n, x)[n - 1:1 - n]
+    result = convolve(ones(n) / n, x)[n - 1:1 - n]
     return np_prepend(result, n - 1)
 
 ## SMA: Alternative Implementations
@@ -19,7 +21,6 @@ def np_sma(x: np.ndarray, n: int):
 # def np_sma(x: np.ndarray, n: int):
 #     result = np.convolve(x, np.ones(n), mode="valid") / n
 #     return np_prepend(result, n - 1)
-
 
 # @njit
 # def np_sma(x: np.ndarray, n: int):
@@ -29,7 +30,11 @@ def np_sma(x: np.ndarray, n: int):
 #     return np_prepend(result, n - 1)
 
 
-def sma(close, length=None, talib=None, offset=None, **kwargs):
+def sma(
+        close: Series, length: int = None,
+        talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Simple Moving Average (SMA)
 
     The Simple Moving Average is the classic moving average that is the equally
@@ -54,7 +59,7 @@ def sma(close, length=None, talib=None, offset=None, **kwargs):
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     close = verify_series(close, max(length, min_periods))
@@ -63,26 +68,26 @@ def sma(close, length=None, talib=None, offset=None, **kwargs):
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import SMA
         sma = SMA(close, length)
     else:
         np_close = close.values
         sma = np_sma(np_close, length)
-        sma = pd.Series(sma, index=close.index)
+        sma = Series(sma, index=close.index)
 
     # Offset
     if offset != 0:
         sma = sma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         sma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         sma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     sma.name = f"SMA_{length}"
     sma.category = "overlap"
 

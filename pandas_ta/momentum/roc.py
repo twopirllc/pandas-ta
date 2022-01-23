@@ -2,9 +2,11 @@
 from .mom import mom
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def roc(close, length=None, scalar=None, talib=None, offset=None, **kwargs):
+def roc(close: Series, length: int = None, scalar: float = None, talib: bool = None, offset: int = None,
+        **kwargs) -> Series:
     """Rate of Change (ROC)
 
     Rate of Change is an indicator is also referred to as Momentum (yeah, confusingly).

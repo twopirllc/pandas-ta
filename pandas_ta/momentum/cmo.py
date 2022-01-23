@@ -2,9 +2,11 @@
 from pandas_ta import Imports
 from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas import Series
 
 
-def cmo(close, length=None, scalar=None, talib=None, drift=None, offset=None, **kwargs):
+def cmo(close: Series, length: int = None, scalar: float = None, talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs) -> Series:
     """Chande Momentum Oscillator (CMO)
 
     Attempts to capture the momentum of an asset with overbought at 50 and

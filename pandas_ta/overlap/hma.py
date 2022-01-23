@@ -2,9 +2,10 @@
 from numpy import sqrt as npSqrt
 from .wma import wma
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def hma(close, length=None, offset=None, **kwargs):
+def hma(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Hull Moving Average (HMA)
 
     The Hull Exponential Moving Average attempts to reduce or remove lag in moving

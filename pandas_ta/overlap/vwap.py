@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from .hlc3 import hlc3
 from pandas_ta.utils import get_offset, is_datetime_ordered, verify_series
+from pandas import Series
 
-def vwap(high, low, close, volume, anchor=None, offset=None, **kwargs):
+
+def vwap(high: Series, low: Series, close: Series, volume: Series, anchor: str = None, offset: int = None,
+         **kwargs) -> Series:
     """Volume Weighted Average Price (VWAP)
 
     The Volume Weighted Average Price that measures the average typical price

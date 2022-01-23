@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series, weights
+from pandas import Series
 
 
-def cg(close, length=None, offset=None, **kwargs):
+def cg(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Center of Gravity (CG)
 
     The Center of Gravity Indicator by John Ehlers attempts to identify turning

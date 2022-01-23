@@ -5,7 +5,7 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def td_seq(close, asint=None, offset=None, **kwargs):
+def td_seq(close: Series, asint: bool = None, offset: int = None, **kwargs) -> DataFrame:
     """TD Sequential (TD_SEQ)
 
     Tom DeMark's Sequential indicator attempts to identify a price point where an

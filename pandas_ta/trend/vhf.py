@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import fabs as npFabs
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas import Series
 
 
-def vhf(close, length=None, drift=None, offset=None, **kwargs):
+def vhf(close: Series, length: int = None, drift: int = None, offset: int = None, **kwargs) -> Series:
     """Vertical Horizontal Filter (VHF)
 
     VHF was created by Adam White to identify trending and ranging markets.

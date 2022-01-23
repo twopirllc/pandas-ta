@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import swma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def rvgi(open_, high, low, close, length=None, swma_length=None, offset=None, **kwargs):
+def rvgi(open_: Series, high: Series, low: Series, close: Series, length: int = None, swma_length: int = None,
+         offset: int = None, **kwargs) -> Series:
     """Relative Vigor Index (RVGI)
 
     The Relative Vigor Index attempts to measure the strength of a trend relative to

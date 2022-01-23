@@ -2,8 +2,12 @@
 # -*- coding: utf-8 -*-
 import datetime as dt
 from random import choice as rChoice
+
+from numpy import absolute, any, concatenate, cumsum, flip, max
+from numpy import mean, min, ndarray, std, sum, where, zeros
+from numpy.random import choice, normal, randint
 from pandas import DataFrame, date_range
-from pandas_ta import Imports, RATE, np
+from ...maps import Imports, RATE
 
 
 class sample(object):
@@ -132,7 +136,7 @@ class sample(object):
         _generate() method to build a sample realization with the given
         arguments.
         """
-        _random_symbol = ''.join([rChoice("ABCDEFGHIJKLMNOPQRSTUVWXYZ") for _ in range(np.random.randint(3, 6))])
+        _random_symbol = ''.join([rChoice("ABCDEFGHIJKLMNOPQRSTUVWXYZ") for _ in range(randint(3, 6))])
         self._name = str(name) if name is not None and isinstance(name, str) else _random_symbol
         self._process = str(process).lower() if process is not None and isinstance(process, str) and process in self._processes else None
         self._noise = str(noise).lower() if noise is not None and isinstance(noise, str) and noise in self._noises else None
@@ -163,15 +167,15 @@ class sample(object):
         self._verbose = verbose if verbose is not None and isinstance(verbose, bool) else False
 
         if self._process == "rand":
-            self._process = np.random.choice(self._processes[:-2])
+            self._process = choice(self._processes[:-2])
 
         if self._noise == "rand":
-            self._noise = np.random.choice(self._noises[:-1])
+            self._noise = choice(self._noises[:-1])
 
         self._generate() # Run it
 
 
-    def _bernoulli_mask(self, array: np.ndarray, percent:float = None, p:float = None):
+    def _bernoulli_mask(self, array: ndarray, percent:float = None, p:float = None):
         """Bernoulli Mask - Positive or Negative"""
         if array.size > 0:
             percent = float(percent) if percent is not None and isinstance(percent, float) else self.noise_percent
@@ -179,11 +183,9 @@ class sample(object):
             return array * self.noise_percent * self._bernoulli_process()
         return array
 
-
     def _bernoulli_process(self):
         """Bernoulli Process"""
-        return np.random.randint(2, size=self.length)
-
+        return randint(2, size=self.length)
 
     def _generate(self):
         """A method to generate stochastic process realizations.
@@ -219,20 +221,20 @@ class sample(object):
 
         _npns = f"{self.name} | {self.process} {self.noise+' ' if self.noise is not None else ''}{self.np.size}"
         _s0n = f"s0: {round(self.np[0], self._precision)}, sN: {round(self.np[-1], self._precision)}"
-        _msmm = f"mu: {round(np.mean(self.np), self._precision)}, sigma: {round(np.std(self.np), self._precision)}"
+        _msmm = f"mu: {round(mean(self.np), self._precision)}, sigma: {round(std(self.np), self._precision)}"
         self._dfname = f"{_npns} | {_s0n} | {_msmm}"
         if self._verbose: print(self._dfname)
 
 
-    def nonnegative(self, array: np.ndarray = None):
+    def nonnegative(self, array: ndarray = None):
         """Vertical Translation the 'array' where the resultant 'array' has
         non-negative values."""
-        if isinstance(array, np.ndarray):
+        if isinstance(array, ndarray):
             return self._nonnegative(array)
         return array
 
 
-    def _nonnegative(self, array: np.ndarray):
+    def _nonnegative(self, array: ndarray):
         """Translates the array up by the minimum of the 'array' if any values
         are negative."""
         if array.size > 0 and any(array < 0):
@@ -241,25 +243,25 @@ class sample(object):
         return array
 
 
-    def _normal_mask(self, array: np.ndarray):
+    def _normal_mask(self, array: ndarray):
         """A method to add some additional randomness to the realized
         process. Applies a mask based on the Normal Distribution and the 'array's
         mean and standard deviation."""
         if array.size > 0:
-            norm = np.random.normal(np.mean(array), np.std(array), size=self.length)
+            norm = normal(mean(array), std(array), size=self.length)
             return array * self.noise_percent * norm
         return array
 
 
-    def orientation(self, array: np.ndarray, mode: str = None):
+    def orientation(self, array: ndarray, mode: str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
-        if isinstance(array, np.ndarray):
+        if isinstance(array, ndarray):
             return self._orientation(array, mode=mode)
         return array
 
 
-    def _orientation(self, array: np.ndarray, mode: str = None):
+    def _orientation(self, array: ndarray, mode: str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
         _modes = ["i", "r", "ir", "ri", None, "rand"]
@@ -267,16 +269,16 @@ class sample(object):
 
         result = array
         if mode is None:    return result
-        if mode == "rand":  mode = np.random.choice(_modes[3:])
+        if mode == "rand":  mode = choice(_modes[3:])
 
         if mode == "i":
-            mid = 0.5 * (np.min(array) + np.max(array))
+            mid = 0.5 * (min(array) + max(array))
             inv = mid - array
             diff = inv - inv[0]
             result = array[0] + diff if array[0] > 0 else diff - array[0]
 
         if mode == "r":
-            result = np.flip(array) - (array[-1] - array[0])
+            result = flip(array) - (array[-1] - array[0])
 
         if mode in ["ir", "ri"]:
             result = self._orientation(self._orientation(array, "i"), "r")
@@ -284,22 +286,22 @@ class sample(object):
         return result
 
 
-    def scale(self, array: np.ndarray, mode: str):
+    def scale(self, array: ndarray, mode: str):
         """Mean, Normal or Standard scaling of the 'array'."""
-        if isinstance(array, np.ndarray):
+        if isinstance(array, ndarray):
             return self._scaler(array, mode=mode)
         return array
 
 
-    def _scaler(self, array: np.ndarray, mode: str):
+    def _scaler(self, array: ndarray, mode: str):
         """Scaling: mean, normal, standard"""
         result = array
         if mode is None:    return result
-        if mode == "rand":  mode = np.random.choice(self._scales[3:])
+        if mode == "rand":  mode = choice(self._scales[3:])
 
-        min_, max_ = np.min(array), np.max(array)
-        range_ = np.absolute(max_ - min_)
-        mu_, std_ = np.mean(array), np.std(array)
+        min_, max_ = min(array), max(array)
+        range_ = absolute(max_ - min_)
+        mu_, std_ = mean(array), std(array)
 
         if mode == "m" and range_ > 0: # "mean"
             result = ((array - mu_) / range_)
@@ -313,7 +315,7 @@ class sample(object):
         return result
 
 
-    def _simple_random_walk(self, up:float = None, down:float = None) -> np.array:
+    def _simple_random_walk(self, up:float = None, down:float = None) -> ndarray:
         """Simple Random Walk
 
         Sources:
@@ -323,22 +325,20 @@ class sample(object):
         down = float(down) if down is not None and isinstance(down, (int, float)) else -1.0
         if up < down: down, up = up, down
 
-        x = np.concatenate(([0.0], np.where(np.random.randint(0, 2, size=self.length - 1) == 0, down, up)))
-        return np.cumsum(x).astype(float)
-
+        x = concatenate(([0.0], where(randint(0, 2, size=self.length - 1) == 0, down, up)))
+        return cumsum(x).astype(float)
 
     def _stoch_noise(self):
         """Method to apply noise from the stochastic package if installed.
         Otherwise, it returns 0 noise.
         """
         _desc = f"[+] "
-        result = np.zeros(self.length, dtype=float)
+        result = zeros(self.length, dtype=float)
 
         if self._noise is not None and Imports["stochastic"]:
             from stochastic import random as st_random
             st_random.use_generator()
             st_random.seed(self.random_number)
-
 
             if self._noise in ["blue", "b"]:
                 from stochastic.processes.noise import BlueNoise
@@ -381,10 +381,9 @@ class sample(object):
         # Initial Value (s0) adjustment
         result = result + result[0] if result[0] > self.s0 else result - result[0]
 
-        if result is not None and np.any(result) and self._verbose: print(_desc)
+        if result is not None and any(result) and self._verbose: print(_desc)
 
         return result
-
 
     def _stoch_process(self):
         """Method to return some realizations from the stochastic package.
@@ -444,8 +443,6 @@ class sample(object):
         if result is not None and self._verbose: print(_desc)
 
         return result
-
-
 
     @property
     def b(self):

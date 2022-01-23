@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.overlap import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas import Series
 
 
-def efi(close, volume, length=None, mamode=None, drift=None, offset=None, **kwargs):
+def efi(close: Series, volume: Series, length: int = None, mamode: str = None, drift: int = None, offset: int = None,
+        **kwargs) -> Series:
     """Elder's Force Index (EFI)
 
     Elder's Force Index measures the power behind a price movement using price

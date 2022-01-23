@@ -2,9 +2,10 @@
 from .ema import ema
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def tema(close, length=None, talib=None, offset=None, **kwargs):
+def tema(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Triple Exponential Moving Average (TEMA)
 
     A less laggy Exponential Moving Average.

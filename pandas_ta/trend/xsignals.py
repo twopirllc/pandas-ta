@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import nan as npNaN
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from .tsignals import tsignals
 from pandas_ta.utils._signals import cross_value
 from pandas_ta.utils import get_offset, verify_series
 
 
-def xsignals(signal, xa, xb, above:bool=True, long:bool=True, asbool:bool=None, trend_reset:int=0, trade_offset:int=None, offset:int=None, **kwargs):
+def xsignals(signal: Series, xa: Series, xb: Series, above: bool = True, long: bool = True, asbool: bool = None,
+             trend_reset: int = 0, trade_offset: int = None, offset: int = None, **kwargs) -> DataFrame:
     """Cross Signals (XSIGNALS)
 
     Cross Signals returns Trend Signal (TSIGNALS) results for Signal Crossings. This

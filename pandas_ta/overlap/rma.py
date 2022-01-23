@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def rma(close, length=None, offset=None, **kwargs):
+def rma(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """wildeR's Moving Average (RMA)
 
     The WildeR's Moving Average is simply an Exponential Moving Average (EMA) with

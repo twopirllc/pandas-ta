@@ -2,9 +2,10 @@
 from .ema import ema
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def t3(close, length=None, a=None, talib=None, offset=None, **kwargs):
+def t3(close: Series, length: int = None, a: float = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
     """Tim Tillson's T3 Moving Average (T3)
 
     Tim Tillson's T3 Moving Average is considered a smoother and more responsive

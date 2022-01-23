@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas_ta import Imports
 from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
 
 
-def willr(high, low, close, length=None, talib=None, offset=None, **kwargs):
+def willr(high: Series, low: Series, close: Series, length: int = None, talib: bool = None, offset: int = None,
+          **kwargs) -> Series:
     """William's Percent R (WILLR)
 
     William's Percent R is a momentum oscillator similar to the RSI that

@@ -5,7 +5,8 @@ from .ma import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def hilo(high, low, close, high_length=None, low_length=None, mamode=None, offset=None, **kwargs):
+def hilo(high: Series, low: Series, close: Series, high_length: int = None, low_length: int = None,
+         mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
     """Gann HiLo Activator(HiLo)
 
     The Gann High Low Activator Indicator was created by Robert Krausz in a 1998

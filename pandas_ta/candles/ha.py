@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ha(open_, high, low, close, offset=None, **kwargs):
+def ha(open_: Series, high: Series, low: Series, close: Series, offset: int = None, **kwargs) -> DataFrame:
     """Heikin Ashi Candles (HA)
 
     The Heikin-Ashi technique averages price data to create a Japanese

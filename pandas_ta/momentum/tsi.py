@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from pandas_ta.overlap import ema, ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def tsi(close, fast=None, slow=None, signal=None, scalar=None, mamode=None, drift=None, offset=None, **kwargs):
+def tsi(close: Series, fast: int = None, slow: int = None, signal: int = None, scalar: float = None,
+        mamode: str = None, drift: int = None, offset: int = None, **kwargs) -> DataFrame:
     """True Strength Index (TSI)
 
     The True Strength Index is a momentum indicator used to identify short-term

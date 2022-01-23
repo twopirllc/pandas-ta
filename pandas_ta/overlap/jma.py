@@ -9,7 +9,7 @@ from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def jma(close, length=None, phase=None, offset=None, **kwargs):
+def jma(close: Series, length: int = None, phase: float = None, offset: int = None, **kwargs) -> Series:
     """Jurik Moving Average Average (JMA)
 
     Mark Jurik's Moving Average (JMA) attempts to eliminate noise to see the "true"

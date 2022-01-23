@@ -4,7 +4,7 @@ from pandas_ta.overlap import linreg
 from pandas_ta.utils import get_offset, verify_series
 
 
-def cti(close, length=None, offset=None, **kwargs) -> Series:
+def cti(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
     """Correlation Trend Indicator (CTI)
 
     The Correlation Trend Indicator is an oscillator created by John Ehler in 2020.

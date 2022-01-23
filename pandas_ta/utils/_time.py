@@ -3,11 +3,11 @@ from datetime import datetime
 from time import localtime, perf_counter
 from typing import Tuple, Union
 
-from pandas import Timestamp
-from pandas_ta import EXCHANGE_TZ, pd, RATE
+from pandas import DataFrame, Series, Timestamp, to_datetime
+from pandas_ta.maps import EXCHANGE_TZ, RATE
 
 
-def df_dates(df: pd.DataFrame, dates: Tuple[str, list] = None) -> pd.DataFrame:
+def df_dates(df: DataFrame, dates: Tuple[str, list] = None) -> DataFrame:
     """Yields the DataFrame with the given dates"""
     if dates is None: return None
     if not isinstance(dates, list):
@@ -15,14 +15,14 @@ def df_dates(df: pd.DataFrame, dates: Tuple[str, list] = None) -> pd.DataFrame:
     return df[df.index.isin(dates)]
 
 
-def df_month_to_date(df: pd.DataFrame) -> pd.DataFrame:
+def df_month_to_date(df: DataFrame) -> DataFrame:
     """Yields the Month-to-Date (MTD) DataFrame"""
     in_mtd = df.index >= Timestamp.now().strftime("%Y-%m-01")
     if any(in_mtd): return df[in_mtd]
     return df
 
 
-def df_quarter_to_date(df: pd.DataFrame) -> pd.DataFrame:
+def df_quarter_to_date(df: DataFrame) -> DataFrame:
     """Yields the Quarter-to-Date (QTD) DataFrame"""
     now = Timestamp.now()
     for m in [1, 4, 7, 10]:
@@ -32,7 +32,7 @@ def df_quarter_to_date(df: pd.DataFrame) -> pd.DataFrame:
     return df[df.index >= now.strftime("%Y-%m-01")]
 
 
-def df_year_to_date(df: pd.DataFrame) -> pd.DataFrame:
+def df_year_to_date(df: DataFrame) -> DataFrame:
     """Yields the Year-to-Date (YTD) DataFrame"""
     in_ytd = df.index >= Timestamp.now().strftime("%Y-01-01")
     if any(in_ytd): return df[in_ytd]
@@ -46,10 +46,10 @@ def final_time(stime: float) -> str:
     return f"{time_diff * 1000:2.4f} ms ({time_diff:2.4f} s)"
 
 
-def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -> Tuple[None, str]:
+def get_time(exchange: str = "NYSE", full: bool = True, to_string: bool = False) -> Union[None, str]:
     """Returns Current Time, Day of the Year and Percentage, and the current
     time of the selected Exchange."""
-    tz = EXCHANGE_TZ["NYSE"] # Default is NYSE (Eastern Time Zone)
+    tz = EXCHANGE_TZ["NYSE"]  # Default is NYSE (Eastern Time Zone)
     if isinstance(exchange, str):
         exchange = exchange.upper()
         tz = EXCHANGE_TZ[exchange]
@@ -74,7 +74,7 @@ def get_time(exchange: str = "NYSE", full:bool = True, to_string:bool = False) -
     return s if to_string else print(s)
 
 
-def total_time(df: pd.DataFrame, tf: str = "years") -> float:
+def total_time(df: DataFrame, tf: str = "years") -> float:
     """Calculates the total time of a DataFrame. Difference of the Last and
     First index. Options: 'months', 'weeks', 'days', 'hours', 'minutes'
     and 'seconds'. Default: 'years'.
@@ -95,7 +95,7 @@ def total_time(df: pd.DataFrame, tf: str = "years") -> float:
     return TimeFrame["years"]
 
 
-def to_utc(df: pd.DataFrame) -> pd.DataFrame:
+def to_utc(df: DataFrame) -> DataFrame:
     """Either localizes the DataFrame Index to UTC or it applies tz_convert to
     set the Index to UTC.
     """
@@ -107,14 +107,15 @@ def to_utc(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def unix_convert(ts: Union[int, pd.Series]) -> Union[datetime, str]:
+def unix_convert(ts: Union[int, Series]) -> Union[datetime, str]:
     """
     Converts timestamps from polygon to readable datetime strings.
 
     :param ts: The timestamp(s). An integer posix timestamp or a pd.Series of timestamps
     :return: The converted datetime string
     """
-    return pd.to_datetime(ts, unit="ms")
+    # return pd.to_datetime(ts, unit="ms")
+    return to_datetime(ts, unit="ms")
 
 
 # Aliases
