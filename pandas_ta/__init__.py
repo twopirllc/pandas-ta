@@ -2,6 +2,7 @@ name = "pandas_ta"
 """
 .. moduleauthor:: Kevin Johnson
 """
+
 # Dictionaries and version
 from pandas_ta.maps import EXCHANGE_TZ, RATE, Category, Imports, version
 from pandas_ta.utils import *

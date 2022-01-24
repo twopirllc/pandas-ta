@@ -12,9 +12,8 @@ from pandas.core.base import PandasObject
 from pandas.errors import PerformanceWarning
 from pandas import DataFrame, Series
 
-
 from pandas_ta import *
-from pandas_ta.utils import *
+# from pandas_ta.utils import *
 
 
 # Base Class for extending a Pandas DataFrame
@@ -1426,6 +1425,22 @@ class AnalysisIndicators(BasePandasObject):
     def zscore(self, length=None, std=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = zscore(close=close, length=length, std=std, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    # Transform
+    def cube(self, cubing_exponent=None, signal_offset=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = cube(close=close, cubing_exponent=cubing_exponent, signal_offset=signal_offset, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def ifisher(self, amplifying_factor=None, signal_offset=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = ifisher(close=close, amplifying_factor=amplifying_factor, signal_offset=signal_offset, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def remap(self, from_min=None, from_max=None, to_min=None, to_max=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = remap(close=close, from_min=from_min, from_max=from_max, to_min=to_min, to_max=to_max, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     # Trend
