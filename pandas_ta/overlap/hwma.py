@@ -3,7 +3,10 @@ from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def hwma(close: Series, na: float = None, nb: float = None, nc: float = None, offset: int = None, **kwargs) -> Series:
+def hwma(
+        close: Series, na: float = None, nb: float = None, nc: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """HWMA (Holt-Winter Moving Average)
 
     Indicator HWMA (Holt-Winter Moving Average) is a three-parameter moving average
@@ -30,14 +33,14 @@ def hwma(close: Series, na: float = None, nb: float = None, nc: float = None, of
     Returns:
         pd.Series: hwma
     """
-    # Validate Arguments
+    # Validate
     na = float(na) if na and na > 0 and na < 1 else 0.2
     nb = float(nb) if nb and nb > 0 and nb < 1 else 0.1
     nc = float(nc) if nc and nc > 0 and nc < 1 else 0.1
     close = verify_series(close)
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     last_a = last_v = 0
     last_f = close.iloc[0]
 
@@ -56,13 +59,13 @@ def hwma(close: Series, na: float = None, nb: float = None, nc: float = None, of
     if offset != 0:
         hwma = hwma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         hwma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         hwma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     suffix = f"{na}_{nb}_{nc}"
     hwma.name = f"HWMA_{suffix}"
     hwma.category = "overlap"

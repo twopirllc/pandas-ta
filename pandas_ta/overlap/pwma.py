@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, pascals_triangle, verify_series, weights
 from pandas import Series
+from pandas_ta.utils import get_offset, pascals_triangle, verify_series, weights
 
 
-def pwma(close: Series, length: int = None, asc: bool = None, offset: bool = None, **kwargs) -> Series:
+def pwma(
+        close: Series, length: int = None, asc: bool = None,
+        offset: bool = None, **kwargs
+    ) -> Series:
     """Pascal's Weighted Moving Average (PWMA)
 
     Pascal's Weighted Moving Average is similar to a symmetric triangular window
@@ -24,7 +27,7 @@ def pwma(close: Series, length: int = None, asc: bool = None, offset: bool = Non
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     asc = asc if asc else True
     close = verify_series(close, length)
@@ -32,7 +35,7 @@ def pwma(close: Series, length: int = None, asc: bool = None, offset: bool = Non
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     triangle = pascals_triangle(n=length - 1, weighted=True)
     pwma = close.rolling(length, min_periods=length).apply(weights(triangle), raw=True)
 
@@ -40,13 +43,13 @@ def pwma(close: Series, length: int = None, asc: bool = None, offset: bool = Non
     if offset != 0:
         pwma = pwma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         pwma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         pwma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     pwma.name = f"PWMA_{length}"
     pwma.category = "overlap"
 

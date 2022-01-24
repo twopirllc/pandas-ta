@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import DataFrame, Series
-from pandas_ta.momentum import mom
 from pandas_ta.overlap import ema, linreg, sma
 from pandas_ta.trend import decreasing, increasing
+from pandas_ta.utils import get_offset, unsigned_differences, verify_series
 from pandas_ta.volatility import bbands, kc
-from pandas_ta.utils import get_offset
-from pandas_ta.utils import unsigned_differences, verify_series
+from .mom import mom
 
 
-def squeeze(high: Series, low: Series, close: Series, bb_length: int = None, bb_std: float = None,
-            kc_length: int = None, kc_scalar: float = None, mom_length: int = None, mom_smooth: int = None,
-            use_tr=None, mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
+def squeeze(
+        high: Series, low: Series, close: Series,
+        bb_length: int = None, bb_std: float = None,
+        kc_length: int = None, kc_scalar: float = None,
+        mom_length: int = None, mom_smooth: int = None,
+        use_tr=None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Squeeze (SQZ)
 
     The default is based on John Carter's "TTM Squeeze" indicator, as discussed
@@ -54,7 +58,7 @@ def squeeze(high: Series, low: Series, close: Series, bb_length: int = None, bb_
         pd.DataFrame: SQZ, SQZ_ON, SQZ_OFF, NO_SQZ columns by default. More
             detailed columns if 'detailed' kwarg is True.
     """
-    # Validate arguments
+    # Validate
     bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
     bb_std = float(bb_std) if bb_std and bb_std > 0 else 2.0
     kc_length = int(kc_length) if kc_length and kc_length > 0 else 20
@@ -79,7 +83,7 @@ def squeeze(high: Series, low: Series, close: Series, bb_length: int = None, bb_
         df.columns = df.columns.str.lower()
         return [c.split("_")[0][n - 1:n] for c in df.columns]
 
-    # Calculate Result
+    # Calculate
     bbd = bbands(close, length=bb_length, std=bb_std, mamode=mamode)
     kch = kc(high, low, close, length=kc_length, scalar=kc_scalar, mamode=mamode, tr=use_tr)
 
@@ -113,7 +117,7 @@ def squeeze(high: Series, low: Series, close: Series, bb_length: int = None, bb_
         squeeze_off = squeeze_off.shift(offset)
         no_squeeze = no_squeeze.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         squeeze.fillna(kwargs["fillna"], inplace=True)
         squeeze_on.fillna(kwargs["fillna"], inplace=True)
@@ -125,7 +129,7 @@ def squeeze(high: Series, low: Series, close: Series, bb_length: int = None, bb_
         squeeze_off.fillna(method=kwargs["fill_method"], inplace=True)
         no_squeeze.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = "" if use_tr else "hlr"
     _props += f"_{bb_length}_{bb_std}_{kc_length}_{kc_scalar}"
     _props += "_LB" if lazybear else ""
@@ -141,7 +145,7 @@ def squeeze(high: Series, low: Series, close: Series, bb_length: int = None, bb_
     df.name = squeeze.name
     df.category = squeeze.category = "momentum"
 
-    # Detailed Squeeze Series
+    # More Detail
     if detailed:
         pos_squeeze = squeeze[squeeze >= 0]
         neg_squeeze = squeeze[squeeze < 0]
@@ -154,15 +158,15 @@ def squeeze(high: Series, low: Series, close: Series, bb_length: int = None, bb_
         neg_dec *= squeeze
         neg_inc *= squeeze
 
-        pos_inc.replace(0, npNaN, inplace=True)
-        pos_dec.replace(0, npNaN, inplace=True)
-        neg_dec.replace(0, npNaN, inplace=True)
-        neg_inc.replace(0, npNaN, inplace=True)
+        pos_inc.replace(0, nan, inplace=True)
+        pos_dec.replace(0, nan, inplace=True)
+        neg_dec.replace(0, nan, inplace=True)
+        neg_inc.replace(0, nan, inplace=True)
 
         sqz_inc = squeeze * increasing(squeeze)
         sqz_dec = squeeze * decreasing(squeeze)
-        sqz_inc.replace(0, npNaN, inplace=True)
-        sqz_dec.replace(0, npNaN, inplace=True)
+        sqz_inc.replace(0, nan, inplace=True)
+        sqz_dec.replace(0, nan, inplace=True)
 
         # Handle fills
         if "fillna" in kwargs:

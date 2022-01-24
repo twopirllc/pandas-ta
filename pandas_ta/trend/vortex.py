@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta.volatility import true_range
 from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.volatility import true_range
 
 
-def vortex(high: Series, low: Series, close: Series, length: int = None, drift: int = None, offset: int = None,
-           **kwargs) -> DataFrame:
+def vortex(
+        high: Series, low: Series, close: Series,
+        length: int = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Vortex
 
     Two oscillators that capture positive and negative trend movement.
@@ -28,7 +31,7 @@ def vortex(high: Series, low: Series, close: Series, length: int = None, drift: 
     Returns:
         pd.DataFrame: vip and vim columns
     """
-    # Validate arguments
+    # Validate
     length = length if length and length > 0 else 14
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     _length = max(length, min_periods)
@@ -40,7 +43,7 @@ def vortex(high: Series, low: Series, close: Series, length: int = None, drift: 
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     tr = true_range(high=high, low=low, close=close)
     tr_sum = tr.rolling(length, min_periods=min_periods).sum()
 
@@ -55,7 +58,7 @@ def vortex(high: Series, low: Series, close: Series, length: int = None, drift: 
         vip = vip.shift(offset)
         vim = vim.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         vip.fillna(kwargs["fillna"], inplace=True)
         vim.fillna(kwargs["fillna"], inplace=True)
@@ -63,12 +66,11 @@ def vortex(high: Series, low: Series, close: Series, length: int = None, drift: 
         vip.fillna(method=kwargs["fill_method"], inplace=True)
         vim.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     vip.name = f"VTXP_{length}"
     vim.name = f"VTXM_{length}"
     vip.category = vim.category = "trend"
 
-    # Prepare DataFrame to return
     data = {vip.name: vip, vim.name: vim}
     vtxdf = DataFrame(data)
     vtxdf.name = f"VTX_{length}"

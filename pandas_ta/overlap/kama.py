@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import Series
-from pandas_ta.overlap.ma import ma
+from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def kama(close: Series, length: int = None, fast: int = None, slow: int = None, mamode: str = None,
-         drift: int = None, offset: int = None, **kwargs) -> Series:
+def kama(
+        close: Series, length: int = None, fast: int = None, slow: int = None,
+        mamode: str = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Kaufman's Adaptive Moving Average (KAMA)
 
     Developed by Perry Kaufman, Kaufman's Adaptive Moving Average (KAMA) is a moving average
@@ -37,7 +40,7 @@ def kama(close: Series, length: int = None, fast: int = None, slow: int = None, 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     fast = int(fast) if fast and fast > 0 else 2
     slow = int(slow) if slow and slow > 0 else 30
@@ -55,7 +58,7 @@ def kama(close: Series, length: int = None, fast: int = None, slow: int = None, 
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     def weight(length: int) -> float:
         return 2 / (length + 1)
 
@@ -71,7 +74,7 @@ def kama(close: Series, length: int = None, fast: int = None, slow: int = None, 
 
     m = close.size
     ma0 = ma(mamode, close.iloc[:length], length=length, **kwargs).iloc[-1]
-    result = [npNaN for _ in range(0, length - 1)] + [ma0]
+    result = [nan for _ in range(0, length - 1)] + [ma0]
     for i in range(length, m):
         result.append(sc.iloc[i] * close.iloc[i] + (1 - sc.iloc[i]) * result[i - 1])
 
@@ -81,13 +84,13 @@ def kama(close: Series, length: int = None, fast: int = None, slow: int = None, 
     if offset != 0:
         kama = kama.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         kama.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         kama.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     kama.name = f"KAMA_{length}_{fast}_{slow}"
     kama.category = "overlap"
 

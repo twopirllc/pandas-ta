@@ -1,30 +1,30 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
-
-from .dema import dema
-from .ema import ema
-from .fwma import fwma
-from .hma import hma
-from .linreg import linreg
-from .midpoint import midpoint
-from .pwma import pwma
-from .rma import rma
-from .sinwma import sinwma
-from .sma import sma
-from .swma import swma
-from .t3 import t3
-from .tema import tema
-from .trima import trima
-from .vidya import vidya
-from .wma import wma
+from pandas_ta.overlap.dema import dema
+from pandas_ta.overlap.ema import ema
+from pandas_ta.overlap.fwma import fwma
+from pandas_ta.overlap.hma import hma
+from pandas_ta.overlap.linreg import linreg
+from pandas_ta.overlap.midpoint import midpoint
+from pandas_ta.overlap.pwma import pwma
+from pandas_ta.overlap.rma import rma
+from pandas_ta.overlap.sinwma import sinwma
+from pandas_ta.overlap.sma import sma
+from pandas_ta.overlap.ssf import ssf
+from pandas_ta.overlap.swma import swma
+from pandas_ta.overlap.t3 import t3
+from pandas_ta.overlap.tema import tema
+from pandas_ta.overlap.trima import trima
+from pandas_ta.overlap.vidya import vidya
+from pandas_ta.overlap.wma import wma
 
 
 def ma(name: str = None, source: Series = None, **kwargs) -> Series:
     """Simple MA Utility for easier MA selection
 
     Available MAs:
-        dema, ema, fwma, hma, linreg, midpoint, pwma, rma,
-        sinwma, sma, swma, t3, tema, trima, vidya, wma
+        dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, ssf,
+        swma, t3, tema, trima, vidya, wma
 
     Examples:
         ema8 = ta.ma("ema", df.close, length=8)
@@ -44,7 +44,7 @@ def ma(name: str = None, source: Series = None, **kwargs) -> Series:
 
     _mas = [
         "dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
-        "sinwma", "sma", "swma", "t3", "tema", "trima", "vidya", "wma"
+        "sinwma", "sma", "ssf", "swma", "t3", "tema", "trima", "vidya", "wma"
     ]
     if name is None and source is None:
         return _mas
@@ -62,6 +62,7 @@ def ma(name: str = None, source: Series = None, **kwargs) -> Series:
     elif name == "rma": return rma(source, **kwargs)
     elif name == "sinwma": return sinwma(source, **kwargs)
     elif name == "sma": return sma(source, **kwargs)
+    elif name == "ssf": return ssf(source, **kwargs)
     elif name == "swma": return swma(source, **kwargs)
     elif name == "t3": return t3(source, **kwargs)
     elif name == "tema": return tema(source, **kwargs)

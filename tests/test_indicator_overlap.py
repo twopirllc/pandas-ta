@@ -1,12 +1,13 @@
-from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis, sample_data
-from .context import pandas_ta
-
+# -*- coding: utf-8 -*-
 from unittest import TestCase, skip
-from unittest import TestCase
+import numpy as np
 import pandas.testing as pdt
 from pandas import DataFrame, Series
 
 import talib as tal
+
+from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis, sample_data
+from .context import pandas_ta
 
 
 class TestOverlap(TestCase):
@@ -36,16 +37,19 @@ class TestOverlap(TestCase):
 
 
     def test_alligator(self):
+        """Overlap: Alligator"""
         result = pandas_ta.alligator(self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "AG_13_8_5")
 
     def test_alma(self):
+        """Overlap: ALMA"""
         result = pandas_ta.alma(self.close)# , length=None, sigma=None, distribution_offset=)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "ALMA_9_6.0_0.85")
 
     def test_dema(self):
+        """Overlap: DEMA"""
         result = pandas_ta.dema(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "DEMA_10")
@@ -65,6 +69,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "DEMA_10")
 
     def test_ema(self):
+        """Overlap: EMA"""
         # For TA Lib comparison
         result = pandas_ta.ema(self.close, talib=False, presma=True)
         self.assertIsInstance(result, Series)
@@ -97,21 +102,25 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "EMA_10")
 
     def test_fwma(self):
+        """Overlap: FWMA"""
         result = pandas_ta.fwma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "FWMA_10")
 
     def test_hilo(self):
+        """Overlap: HILO"""
         result = pandas_ta.hilo(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "HILO_13_21")
 
     def test_hl2(self):
+        """Overlap: HL2"""
         result = pandas_ta.hl2(self.high, self.low)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "HL2")
 
     def test_hlc3(self):
+        """Overlap: HLC3"""
         result = pandas_ta.hlc3(self.high, self.low, self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "HLC3")
@@ -131,26 +140,31 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "HLC3")
 
     def test_hma(self):
+        """Overlap: HMA"""
         result = pandas_ta.hma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "HMA_10")
 
     def test_hwma(self):
+        """Overlap: HWMA"""
         result = pandas_ta.hwma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "HWMA_0.2_0.1_0.1")
 
     def test_kama(self):
+        """Overlap: KAMA"""
         result = pandas_ta.kama(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "KAMA_10_2_30")
 
     def test_jma(self):
+        """Overlap: JMA"""
         result = pandas_ta.jma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "JMA_7_0")
 
     def test_ichimoku(self):
+        """Overlap: Ichimoku"""
         ichimoku, span = pandas_ta.ichimoku(self.high, self.low, self.close)
         self.assertIsInstance(ichimoku, DataFrame)
         self.assertIsInstance(span, DataFrame)
@@ -158,6 +172,7 @@ class TestOverlap(TestCase):
         self.assertEqual(span.name, "ICHISPAN_9_26")
 
     def test_linreg(self):
+        """Overlap: LINREG"""
         result = pandas_ta.linreg(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "LR_14")
@@ -177,6 +192,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "LR_14")
 
     def test_linreg_angle(self):
+        """Overlap: LINREG (Angle)"""
         result = pandas_ta.linreg(self.close, angle=True, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "LRa_14")
@@ -196,6 +212,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "LRa_14")
 
     def test_linreg_intercept(self):
+        """Overlap: LINREG (Intercept)"""
         result = pandas_ta.linreg(self.close, intercept=True, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "LRb_14")
@@ -215,11 +232,13 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "LRb_14")
 
     def test_linreg_r(self):
+        """Overlap: LINREG (r)"""
         result = pandas_ta.linreg(self.close, r=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "LRr_14")
 
     def test_linreg_slope(self):
+        """Overlap: LINREG (Slope)"""
         result = pandas_ta.linreg(self.close, slope=True, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "LRm_14")
@@ -239,6 +258,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "LRm_14")
 
     def test_ma(self):
+        """Overlap: General MA"""
         result = pandas_ta.ma()
         self.assertIsInstance(result, list)
         self.assertGreater(len(result), 0)
@@ -252,11 +272,13 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "FWMA_15")
 
     def test_mcgd(self):
+        """Overlap: MCGD"""
         result = pandas_ta.mcgd(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "MCGD_10")
 
     def test_midpoint(self):
+        """Overlap: Midpoint"""
         result = pandas_ta.midpoint(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "MIDPOINT_2")
@@ -276,6 +298,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "MIDPOINT_2")
 
     def test_midprice(self):
+        """Overlap: Midprice"""
         result = pandas_ta.midprice(self.high, self.low, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "MIDPRICE_2")
@@ -295,26 +318,31 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "MIDPRICE_2")
 
     def test_ohlc4(self):
+        """Overlap: OHLC4"""
         result = pandas_ta.ohlc4(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "OHLC4")
 
     def test_pwma(self):
+        """Overlap: PWMA"""
         result = pandas_ta.pwma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "PWMA_10")
 
     def test_rma(self):
+        """Overlap: RMA"""
         result = pandas_ta.rma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "RMA_10")
 
     def test_sinwma(self):
+        """Overlap: SINWMA"""
         result = pandas_ta.sinwma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SINWMA_14")
 
     def test_sma(self):
+        """Overlap: SMA"""
         result = pandas_ta.sma(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SMA_10")
@@ -334,35 +362,41 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "SMA_10")
 
     def test_smma(self):
+        """Overlap: SMMA"""
         result = pandas_ta.smma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SMMA_7")
 
     def test_ssf(self):
+        """Overlap: SSF"""
         result = pandas_ta.ssf(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SSF_20")
 
-        result = pandas_ta.ssf(self.close, pi=pandas_ta.np.pi, sqrt2=pandas_ta.np.sqrt(2), everget=True)
+        result = pandas_ta.ssf(self.close, pi=np.pi, sqrt2=np.sqrt(2), everget=True)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SSFe_20")
 
     def test_ssf3(self):
+        """Overlap: SSF3"""
         result = pandas_ta.ssf3(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SSF3_20")
 
     def test_swma(self):
+        """Overlap: SWMA"""
         result = pandas_ta.swma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "SWMA_10")
 
     def test_supertrend(self):
+        """Overlap: Supertrend"""
         result = pandas_ta.supertrend(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "SUPERT_7_3.0")
 
     def test_t3(self):
+        """Overlap: T3"""
         result = pandas_ta.t3(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "T3_10_0.7")
@@ -382,6 +416,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "T3_10_0.7")
 
     def test_tema(self):
+        """Overlap: TEMA"""
         result = pandas_ta.tema(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "TEMA_10")
@@ -401,6 +436,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "TEMA_10")
 
     def test_trima(self):
+        """Overlap: TRIMA"""
         result = pandas_ta.trima(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "TRIMA_10")
@@ -420,21 +456,25 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "TRIMA_10")
 
     def test_vidya(self):
+        """Overlap: VIDYA"""
         result = pandas_ta.vidya(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "VIDYA_14")
 
     def test_vwap(self):
+        """Overlap: VWAP"""
         result = pandas_ta.vwap(self.high, self.low, self.close, self.volume)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "VWAP_D")
 
     def test_vwma(self):
+        """Overlap: VWMA"""
         result = pandas_ta.vwma(self.close, self.volume)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "VWMA_10")
 
     def test_wcp(self):
+        """Overlap: WCP"""
         result = pandas_ta.wcp(self.high, self.low, self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "WCP")
@@ -454,6 +494,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "WCP")
 
     def test_wma(self):
+        """Overlap: WMA"""
         result = pandas_ta.wma(self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "WMA_10")
@@ -473,6 +514,7 @@ class TestOverlap(TestCase):
         self.assertEqual(result.name, "WMA_10")
 
     def test_zlma(self):
+        """Overlap: ZLMA"""
         result = pandas_ta.zlma(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "ZL_EMA_10")

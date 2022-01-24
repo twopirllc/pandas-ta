@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, high_low_range, is_percent
 from pandas_ta.utils import real_body, verify_series
-from pandas import Series
 
 
-def cdl_doji(open_: Series, high: Series, low: Series, close: Series, length: int = None, factor: float = None,
-             scalar: float = None, asint: bool = True, offset: int = None, **kwargs) -> Series:
+def cdl_doji(
+        open_: Series, high: Series, low: Series, close: Series,
+        length: int = None, factor: float = None, scalar: float = None,
+        asint: bool = True,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Candle Type: Doji
 
     A candle body is Doji, when it's shorter than 10% of the
@@ -35,7 +39,7 @@ def cdl_doji(open_: Series, high: Series, low: Series, close: Series, length: in
     Returns:
         pd.Series: CDL_DOJI column.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     factor = float(factor) if is_percent(factor) else 10
     scalar = float(scalar) if scalar else 100
@@ -48,7 +52,7 @@ def cdl_doji(open_: Series, high: Series, low: Series, close: Series, length: in
 
     if open_ is None or high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     body = real_body(open_, close).abs()
     hl_range = high_low_range(high, low).abs()
     hl_range_avg = sma(hl_range, length)
@@ -63,13 +67,13 @@ def cdl_doji(open_: Series, high: Series, low: Series, close: Series, length: in
     if offset != 0:
         doji = doji.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         doji.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         doji.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     doji.name = f"CDL_DOJI_{length}_{0.01 * factor}"
     doji.category = "candles"
 

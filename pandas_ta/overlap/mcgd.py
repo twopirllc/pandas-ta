@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.utils import get_offset, verify_series
 
 
-def mcgd(close: Series, length: int = None, offset: int = None, c: float = None, **kwargs) -> Series:
+def mcgd(
+        close: Series, length: int = None,  c: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """McGinley Dynamic Indicator
 
     The McGinley Dynamic looks like a moving average line, yet it is actually a
@@ -30,7 +33,7 @@ def mcgd(close: Series, length: int = None, offset: int = None, c: float = None,
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     c = float(c) if c and 0 < c <= 1 else 1
     close = verify_series(close, length)
@@ -38,7 +41,7 @@ def mcgd(close: Series, length: int = None, offset: int = None, c: float = None,
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     close = close.copy()
 
     def mcg_(series):
@@ -53,13 +56,13 @@ def mcgd(close: Series, length: int = None, offset: int = None, c: float = None,
     if offset != 0:
         mcg_ds = mcg_ds.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         mcg_ds.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         mcg_ds.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     mcg_ds.name = f"MCGD_{length}"
     mcg_ds.category = "overlap"
 

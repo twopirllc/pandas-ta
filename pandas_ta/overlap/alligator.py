@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-# from numpy import nan as npNaN
 from pandas import DataFrame, Series
-from .smma import smma
 from pandas_ta.utils import get_offset, verify_series
+from .smma import smma
 
 
-def alligator(close: Series, jaw: int = None, teeth: int = None, lips: int = None, talib: bool = None,
-              offset: int = None, **kwargs) -> DataFrame:
+def alligator(
+        close: Series, jaw: int = None, teeth: int = None, lips: int = None,
+        talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Bill Williams Alligator (ALLIGATOR)
 
     The Alligator Indicator was developed by Bill Williams and combines moving
@@ -37,7 +39,7 @@ def alligator(close: Series, jaw: int = None, teeth: int = None, lips: int = Non
     Returns:
         pd.DataFrame: JAW, TEETH, LIPS columns.
     """
-    # Validate Arguments
+    # Validate
     jaw = int(jaw) if jaw and jaw > 0 else 13
     teeth = int(teeth) if teeth and teeth > 0 else 8
     lips = int(lips) if lips and lips > 0 else 5
@@ -47,7 +49,7 @@ def alligator(close: Series, jaw: int = None, teeth: int = None, lips: int = Non
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     gator_jaw = smma(close, length=jaw, talib=mode_tal)
     gator_teeth = smma(close, length=teeth, talib=mode_tal)
     gator_lips = smma(close, length=lips, talib=mode_tal)
@@ -58,7 +60,7 @@ def alligator(close: Series, jaw: int = None, teeth: int = None, lips: int = Non
         gator_teeth = gator_teeth.shift(offset)
         gator_lips = gator_lips.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         gator_jaw.fillna(kwargs["fillna"], inplace=True)
         gator_teeth.fillna(kwargs["fillna"], inplace=True)
@@ -68,7 +70,7 @@ def alligator(close: Series, jaw: int = None, teeth: int = None, lips: int = Non
         gator_teeth.fillna(method=kwargs["fill_method"], inplace=True)
         gator_lips.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     _props = f"_{jaw}_{teeth}_{lips}"
     data = {
         f"AGj{_props}": gator_jaw,

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta import Imports
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
-def ppo(close: Series, fast: int = None, slow: int = None, signal: int = None, scalar: float = None,
-        mamode: str = None, talib: bool = None, offset: int = None, **kwargs) -> DataFrame:
-
+def ppo(
+        close: Series, fast: int = None, slow: int = None, signal: int = None,
+        scalar: float = None, mamode: str = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Percentage Price Oscillator (PPO)
 
     The Percentage Price Oscillator is similar to MACD in measuring momentum.
@@ -33,7 +35,7 @@ def ppo(close: Series, fast: int = None, slow: int = None, signal: int = None, s
     Returns:
         pd.DataFrame: ppo, histogram, signal columns
     """
-    # Validate Arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     signal = int(signal) if signal and signal > 0 else 9
@@ -47,7 +49,7 @@ def ppo(close: Series, fast: int = None, slow: int = None, signal: int = None, s
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import PPO
         ppo = PPO(close, fast, slow, tal_ma(mamode))
@@ -66,7 +68,7 @@ def ppo(close: Series, fast: int = None, slow: int = None, signal: int = None, s
         histogram = histogram.shift(offset)
         signalma = signalma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ppo.fillna(kwargs["fillna"], inplace=True)
         histogram.fillna(kwargs["fillna"], inplace=True)
@@ -76,14 +78,13 @@ def ppo(close: Series, fast: int = None, slow: int = None, signal: int = None, s
         histogram.fillna(method=kwargs["fill_method"], inplace=True)
         signalma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"_{fast}_{slow}_{signal}"
     ppo.name = f"PPO{_props}"
     histogram.name = f"PPOh{_props}"
     signalma.name = f"PPOs{_props}"
     ppo.category = histogram.category = signalma.category = "momentum"
 
-    # Prepare DataFrame to return
     data = {ppo.name: ppo, histogram.name: histogram, signalma.name: signalma}
     df = DataFrame(data)
     df.name = f"PPO{_props}"

@@ -2,17 +2,16 @@
 import re as re_
 from pathlib import Path
 from sys import float_info as sflt
+from typing import Union
 
 from numpy import argmax, argmin
 from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
-from pandas_ta import Imports
-from pandas_ta import pd
 
-from typing import Union
+from pandas_ta.maps import Imports
 
 
-def _camelCase2Title(x: str):
+def camelCase2Title(x: str):
     """https://stackoverflow.com/questions/5020906/python-convert-camel-case-to-space-delimited-using-regex-and-taking-acronyms-in"""
     return re_.sub("([a-z])([A-Z])","\g<1> \g<2>", x).title()
 
@@ -112,7 +111,7 @@ def tal_ma(name: str) -> int:
     return 0  # Default: SMA -> 0
 
 
-def unsigned_differences(series: Series, amount: int = None, **kwargs) -> (Series, Series):
+def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Union[Series, Series]:
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
     on the differences of the original series. The positive series are only the
@@ -148,43 +147,50 @@ def verify_series(series: Series, min_length: int = None) -> Series:
         return None if has_length and series.size < min_length else series
 
 
-def performance(df:DataFrame,
-        excluded:list = None, other:list = None, top:int = None,
-        sortby:str = "secs", ascending:bool = False,
-        gradient:int = False, places:int = 5
+def performance(df: DataFrame,
+        excluded: list = None, other: list = None, top: int = None,
+        talib: bool = False, ascending: bool = False, sortby: str = "secs",
+        gradient: int = False, places: int = 5
     ) -> DataFrame:
     if df.empty: return
+    talib = bool(talib) if isinstance(talib, int) and talib else False
     top = int(top) if isinstance(top, int) and top > 0 else None
+
+    _ex = ["above", "above_value", "below", "below_value", "cross", "cross_value", "ichimoku"]
+    if isinstance(excluded, list) and len(excluded) > 0:
+        _ex += excluded
+    indicators = df.ta.indicators(as_list=True, exclude=_ex)
+
+    def ms2secs(ms, places):
+        return round(0.001 * ms, places)
 
     data = []
     df = df.copy()
-    if isinstance(excluded, list) and len(excluded) > 0:
-        indicators = df.ta.indicators(as_list=True, exclude=excluded)
-    else:
-        indicators = df.ta.indicators(as_list=True)
-
     _index_name = "Indicator"
     if len(indicators):
+        print()
         for indicator in indicators:
-            result = df.ta(indicator, timed=True)
+            result = df.ta(indicator, talib=talib, timed=True)
             ms = float(result.timed.split(" ")[0].split(" ")[0])
-            data.append({_index_name: indicator, "secs": round(0.001 * ms, places), "ms": ms})
+            # data.append({_index_name: indicator, "secs": round(0.001 * ms, places), "ms": ms})
+            data.append({_index_name: indicator, "secs": ms2secs(ms, places), "ms": ms})
 
     if isinstance(other, list) and len(other) > 0:
         for indicator in other:
-            result = df.ta(indicator, timed=True)
+            result = df.ta(indicator, talib=talib, timed=True)
             ms = float(result.timed.split(" ")[0].split(" ")[0])
-            data.append({_index_name: indicator, "secs": round(0.001 * ms, places), "ms": ms})
+            # data.append({_index_name: indicator, "secs": round(0.001 * ms, places), "ms": ms})
+            data.append({_index_name: indicator, "secs": ms2secs(ms, places), "ms": ms})
 
     tdf = DataFrame.from_dict(data)
     tdf.set_index(_index_name, inplace=True)
     tdf.sort_values(by=sortby, ascending=ascending, inplace=True)
 
-    total_timedf = pd.DataFrame(tdf.describe().loc[['min', '50%', 'mean', 'max']]).T
+    total_timedf = DataFrame(tdf.describe().loc[['min', '50%', 'mean', 'max']]).T
     total_timedf["total"] = tdf.sum(axis=0).T
 
     _div = "=" * 60
-    _observations = f"  Observations: {df.shape[0]}"
+    _observations = f"  Observations: {df.shape[0]} {'[talib]' if talib else ''}"
     _quick_slow = "Quickest" if ascending else "Slowest"
     _title = f"  {_quick_slow} Indicators"
     _perfstats = f"Time Stats:\n{total_timedf.T}"

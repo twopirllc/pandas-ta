@@ -3,8 +3,11 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def brar(open_: Series, high: Series, low: Series, close: Series, length: int = None, scalar: float = None,
-         drift: int = None, offset: int = None, **kwargs) -> DataFrame:
+def brar(
+        open_: Series, high: Series, low: Series, close: Series,
+        length: int = None, scalar: float = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """BRAR (BRAR)
 
     BR and AR
@@ -30,7 +33,7 @@ def brar(open_: Series, high: Series, low: Series, close: Series, length: int = 
     Returns:
         pd.DataFrame: ar, br columns.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 26
     scalar = float(scalar) if scalar else 100
     high_open_range = non_zero_range(high, open_)
@@ -44,7 +47,7 @@ def brar(open_: Series, high: Series, low: Series, close: Series, length: int = 
 
     if open_ is None or high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     hcy = non_zero_range(high, close.shift(drift))
     cyl = non_zero_range(close.shift(drift), low)
 
@@ -62,7 +65,7 @@ def brar(open_: Series, high: Series, low: Series, close: Series, length: int = 
         ar = ar.shift(offset)
         br = ar.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ar.fillna(kwargs["fillna"], inplace=True)
         br.fillna(kwargs["fillna"], inplace=True)
@@ -70,13 +73,12 @@ def brar(open_: Series, high: Series, low: Series, close: Series, length: int = 
         ar.fillna(method=kwargs["fill_method"], inplace=True)
         br.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"_{length}"
     ar.name = f"AR{_props}"
     br.name = f"BR{_props}"
     ar.category = br.category = "momentum"
 
-    # Prepare DataFrame to return
     brardf = DataFrame({ar.name: ar, br.name: br})
     brardf.name = f"BRAR{_props}"
     brardf.category = "momentum"

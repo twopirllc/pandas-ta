@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from typing import Sequence, Union
 from pandas import Series, DataFrame
-
-from . import cdl_doji, cdl_inside
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
-from pandas_ta import Imports
+from pandas_ta.candles import cdl_doji, cdl_inside
 
 
 ALL_PATTERNS = [
@@ -24,14 +23,9 @@ ALL_PATTERNS = [
 
 
 def cdl_pattern(
-    open_: Series,
-    high: Series,
-    low: Series,
-    close: Series,
-    name: Union[str, Sequence[str]] = "all",
-    scalar: float = None,
-    offset: int = None,
-    **kwargs
+        open_: Series, high: Series, low: Series, close: Series,
+        name: Union[str, Sequence[str]] = "all", scalar: float = None,
+        offset: int = None, **kwargs
     ) -> DataFrame:
     """TA Lib Candle Patterns
 
@@ -105,7 +99,7 @@ def cdl_pattern(
             if offset != 0:
                 pattern_result = pattern_result.shift(offset)
 
-            # Handle fills
+            # Fill
             if "fillna" in kwargs:
                 pattern_result.fillna(kwargs["fillna"], inplace=True)
             if "fill_method" in kwargs:
@@ -115,7 +109,7 @@ def cdl_pattern(
 
     if len(result) == 0: return
 
-    # Prepare DataFrame to return
+    # Name and Category
     df = DataFrame(result)
     df.name = "CDL_PATTERN"
     df.category = "candles"

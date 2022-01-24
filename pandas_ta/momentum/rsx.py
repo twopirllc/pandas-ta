@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import concat, DataFrame, Series
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
-def rsx(close: Series, length: int = None, drift: int = None, offset: int = None, **kwargs) -> Series:
+def rsx(
+        close: Series, length: int = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Relative Strength Xtra (rsx)
 
     The Relative Strength Xtra is based on the popular RSI indicator and inspired
@@ -30,7 +33,7 @@ def rsx(close: Series, length: int = None, drift: int = None, offset: int = None
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     close = verify_series(close, length)
     drift = get_drift(drift)
@@ -38,7 +41,8 @@ def rsx(close: Series, length: int = None, drift: int = None, offset: int = None
 
     if close is None: return
 
-    # variables
+    # Calculate
+    m = close.size
     vC, v1C = 0, 0
     v4, v8, v10, v14, v18, v20 = 0, 0, 0, 0, 0, 0
 
@@ -46,9 +50,7 @@ def rsx(close: Series, length: int = None, drift: int = None, offset: int = None
     f40, f48, f50, f58, f60, f68, f70, f78 = 0, 0, 0, 0, 0, 0, 0, 0
     f80, f88, f90 = 0, 0, 0
 
-    # Calculate Result
-    m = close.size
-    result = [npNaN for _ in range(0, length - 1)] + [0]
+    result = [nan for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
         if f90 == 0:
             f90 = 1.0
@@ -107,13 +109,13 @@ def rsx(close: Series, length: int = None, drift: int = None, offset: int = None
     if offset != 0:
         rsx = rsx.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         rsx.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         rsx.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     rsx.name = f"RSX_{length}"
     rsx.category = "momentum"
 

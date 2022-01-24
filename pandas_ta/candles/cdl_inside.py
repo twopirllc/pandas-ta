@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import candle_color, get_offset
-from pandas_ta.utils import verify_series
 from pandas import Series
+from pandas_ta.utils import candle_color, get_offset, verify_series
 
 
-def cdl_inside(open_: Series, high: Series, low: Series, close: Series, asbool: bool = False,
-               offset: int = None, **kwargs) -> Series:
+def cdl_inside(
+        open_: Series, high: Series, low: Series, close: Series,
+        asbool: bool = False,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Candle Type: Inside Bar
 
     An Inside Bar is a bar that is engulfed by the prior highs and lows of it's
-    previous bar. In other words, the current bar is smaller than it's previous bar.
+    previous bar. In other words, the current bar is smaller than it's previous
+    bar.
+
     Set asbool=True if you want to know if it is an Inside Bar. Note by default
     asbool=False so this returns a 0 if it is not an Inside Bar, 1 if it is an
     Inside Bar and close > open, and -1 if it is an Inside Bar but close < open.
@@ -32,14 +36,14 @@ def cdl_inside(open_: Series, high: Series, low: Series, close: Series, asbool: 
     Returns:
         pd.Series: New feature
     """
-    # Validate arguments
+    # Validate
     open_ = verify_series(open_)
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     inside = (high.diff() < 0) & (low.diff() > 0)
 
     if not asbool:
@@ -49,13 +53,13 @@ def cdl_inside(open_: Series, high: Series, low: Series, close: Series, asbool: 
     if offset != 0:
         inside = inside.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         inside.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         inside.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     inside.name = f"CDL_INSIDE"
     inside.category = "candles"
 

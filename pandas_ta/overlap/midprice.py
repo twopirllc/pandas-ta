@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
 
 
-def midprice(high: Series, low: Series, length: int = None, talib: bool = None, offset: int = None,
-             **kwargs) -> Series:
+def midprice(
+        high: Series, low: Series, length: int = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Midprice
 
     The Midprice is the average of the rolling high and low of period length.
@@ -25,7 +27,7 @@ def midprice(high: Series, low: Series, length: int = None, talib: bool = None, 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 2
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     _length = max(length, min_periods)
@@ -36,7 +38,7 @@ def midprice(high: Series, low: Series, length: int = None, talib: bool = None, 
 
     if high is None or low is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import MIDPRICE
         midprice = MIDPRICE(high, low, length)
@@ -49,13 +51,13 @@ def midprice(high: Series, low: Series, length: int = None, talib: bool = None, 
     if offset != 0:
         midprice = midprice.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         midprice.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         midprice.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     midprice.name = f"MIDPRICE_{length}"
     midprice.category = "overlap"
 

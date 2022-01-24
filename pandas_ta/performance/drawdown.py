@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from numpy import log as nplog
-from numpy import seterr
+from numpy import log, seterr
 from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def drawdown(close: Series, offset: int = None, **kwargs) -> DataFrame:
+def drawdown(
+        close: Series, offset: int = None, **kwargs
+    ) -> DataFrame:
     """Drawdown (DD)
 
     Drawdown is a peak-to-trough decline during a specific period for an investment,
@@ -26,18 +27,18 @@ def drawdown(close: Series, offset: int = None, **kwargs) -> DataFrame:
     Returns:
         pd.DataFrame: drawdown, drawdown percent, drawdown log columns
     """
-    # Validate Arguments
+    # Validate
     close = verify_series(close)
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     max_close = close.cummax()
     dd = max_close - close
     dd_pct = 1 - (close / max_close)
 
     _np_err = seterr()
     seterr(divide="ignore", invalid="ignore")
-    dd_log = nplog(max_close) - nplog(close)
+    dd_log = log(max_close) - log(close)
     seterr(divide=_np_err["divide"], invalid=_np_err["invalid"])
 
     # Offset
@@ -46,7 +47,7 @@ def drawdown(close: Series, offset: int = None, **kwargs) -> DataFrame:
         dd_pct = dd_pct.shift(offset)
         dd_log = dd_log.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         dd.fillna(kwargs["fillna"], inplace=True)
         dd_pct.fillna(kwargs["fillna"], inplace=True)
@@ -56,13 +57,12 @@ def drawdown(close: Series, offset: int = None, **kwargs) -> DataFrame:
         dd_pct.fillna(method=kwargs["fill_method"], inplace=True)
         dd_log.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     dd.name = "DD"
     dd_pct.name = f"{dd.name}_PCT"
     dd_log.name = f"{dd.name}_LOG"
     dd.category = dd_pct.category = dd_log.category = "performance"
 
-    # Prepare DataFrame to return
     data = {dd.name: dd, dd_pct.name: dd_pct, dd_log.name: dd_log}
     df = DataFrame(data)
     df.name = dd.name

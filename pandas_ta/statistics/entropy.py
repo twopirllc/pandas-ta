@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from numpy import log as npLog
-from pandas_ta.utils import get_offset, verify_series
+from numpy import log
 from pandas import Series
+from pandas_ta.utils import get_offset, verify_series
 
 
-def entropy(close: Series, length: int = None, base: float = None, offset: int = None, **kwargs) -> Series:
+def entropy(
+        close: Series, length: int = None, base: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Entropy (ENTP)
 
     Introduced by Claude Shannon in 1948, entropy measures the unpredictability
@@ -27,7 +30,7 @@ def entropy(close: Series, length: int = None, base: float = None, offset: int =
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     base = float(base) if base and base > 0 else 2.0
     close = verify_series(close, length)
@@ -35,21 +38,21 @@ def entropy(close: Series, length: int = None, base: float = None, offset: int =
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     p = close / close.rolling(length).sum()
-    entropy = (-p * npLog(p) / npLog(base)).rolling(length).sum()
+    entropy = (-p * log(p) / log(base)).rolling(length).sum()
 
     # Offset
     if offset != 0:
         entropy = entropy.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         entropy.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         entropy.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     entropy.name = f"ENTP_{length}"
     entropy.category = "statistics"
 

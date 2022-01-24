@@ -1,7 +1,7 @@
 import datetime
 
-from pandas import DataFrame
-from pandas_ta import Imports, pd, RATE, version
+from pandas import DataFrame, DatetimeIndex, merge
+from pandas_ta.maps import Imports, RATE, version
 from pandas_ta.utils import unix_convert
 
 
@@ -83,8 +83,8 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
 
         df = DataFrame()
         if "results" in resp.keys():
-            df = pd.DataFrame.from_dict(resp["results"])
-            df = df.set_index(pd.DatetimeIndex(unix_convert(df["t"])))
+            df = DataFrame.from_dict(resp["results"])
+            df = df.set_index(DatetimeIndex(unix_convert(df["t"])))
             df.index.name = "DateTime"
             # reorder then rename
             df = df[["o", "h", "l", "c", "v", "vw", "n"]]
@@ -237,7 +237,7 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
                     print(f"\n{ticker} Puts for {exp_dates[0]}\n{putdf}")
 
             if contract_type is None:
-                alldf = pd.merge(calldf.reset_index(), putdf.reset_index(), on="Strike")
+                alldf = merge(calldf.reset_index(), putdf.reset_index(), on="Strike")
                 alldf.rename(
                     columns={"Contract_x": "Calls", "Contract_y": "Puts", "Exp. Date_x": "Exp. Date"},
                     inplace=True

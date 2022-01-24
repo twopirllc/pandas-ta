@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from .ema import ema
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
+from .ema import ema
 
 
-def t3(close: Series, length: int = None, a: float = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
+def t3(
+        close: Series, length: int = None, a: float = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Tim Tillson's T3 Moving Average (T3)
 
     Tim Tillson's T3 Moving Average is considered a smoother and more responsive
@@ -31,7 +34,7 @@ def t3(close: Series, length: int = None, a: float = None, talib: bool = None, o
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     a = float(a) if a and a > 0 and a < 1 else 0.7
     close = verify_series(close, length)
@@ -40,7 +43,7 @@ def t3(close: Series, length: int = None, a: float = None, talib: bool = None, o
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import T3
         t3 = T3(close, length, a)
@@ -62,13 +65,13 @@ def t3(close: Series, length: int = None, a: float = None, talib: bool = None, o
     if offset != 0:
         t3 = t3.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         t3.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         t3.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     t3.name = f"T3_{length}_{a}"
     t3.category = "overlap"
 

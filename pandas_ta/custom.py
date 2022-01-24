@@ -8,10 +8,9 @@ from os.path import abspath, join, exists, basename, splitext
 from glob import glob
 
 import pandas_ta
-from pandas_ta import AnalysisIndicators
 
 
-def bind(function_name: str, function: types.FunctionType, method: types.MethodType):
+def bind(name: str, f: types.FunctionType):#, method: types.MethodType = None):
     """
     Helper function to bind the function and class method defined in a custom
     indicator module to the active pandas_ta instance.
@@ -21,8 +20,8 @@ def bind(function_name: str, function: types.FunctionType, method: types.MethodT
         function (fcn): The indicator function
         method (fcn): The class method corresponding to the passed function
     """
-    setattr(pandas_ta, function_name, function)
-    setattr(AnalysisIndicators, function_name, method)
+    setattr(pandas_ta, name, f)
+    setattr(pandas_ta.AnalysisIndicators, name, f)
 
 
 def create_dir(path: str, create_categories: bool = True, verbose: bool = True):
@@ -81,6 +80,74 @@ def get_module_functions(module: types.ModuleType) -> dict:
 
 
 def import_dir(path: str, verbose: bool = True):
+    """
+    Import a directory of custom indicators into pandas_ta
+
+    Args:
+        path (str): Full path to your indicator tree
+        verbose (bool): If True verbose output of results
+
+    This method allows you to experiment and develop your own technical analysis
+    indicators in a separate local directory of your choice but use them seamlessly
+    together with the existing pandas_ta functions just like if they were part of
+    pandas_ta.
+
+    If you at some late point would like to push them into the pandas_ta library
+    you can do so very easily by following the step by step instruction here
+    https://github.com/twopirllc/pandas-ta/issues/355.
+
+    A brief example of usage:
+
+    1. Loading the 'ta' module:
+    >>> import pandas as pd
+    >>> import pandas_ta as ta
+
+    2. Create an empty directory on your machine where you want to work with your
+    indicators. Invoke pandas_ta.custom.import_dir once to pre-populate it with
+    sub-folders for all available indicator categories, e.g.:
+
+    >>> import os
+    >>> from os.path import abspath, join, expanduser
+    >>> from pandas_ta.custom import create_dir, import_dir
+    >>> ta_dir = abspath(join(expanduser("~"), "my_indicators"))
+    >>> create_dir(ta_dir)
+
+    3. You can now create your own custom indicator e.g. by copying existing
+    ones from pandas_ta core module and modifying them.
+
+    IMPORTANT: Each custom indicator should have a unique name and have both
+    a) a function named exactly as the module, e.g. 'ni' if the module is ni.py
+    b) a matching method used by AnalysisIndicators named as the module but
+    ending with '_method'. E.g. 'ni_method'
+
+    In essence these modules should look exactly like the standard indicators
+    available in categories under the pandas_ta-folder. The only difference will
+    be an addition of a matching class method.
+
+    For an example of the correct structure, look at the example ni.py in the
+    examples folder.
+
+    The ni.py indicator is a trend indicator so therefore we drop it into the
+    sub-folder named trend. Thus we have a folder structure like this:
+
+    ~/my_indicators/
+    │
+    ├── candles/
+    .
+    .
+    └── trend/
+    .      └── ni.py
+    .
+    └── volume/
+
+    4. We can now dynamically load all our custom indicators located in our
+    designated indicators directory like this:
+
+    >>> import_dir(ta_dir)
+
+    If your custom indicator(s) loaded succesfully then it should behave exactly
+    like all other native indicators in pandas_ta, including help functions.
+    """
     # ensure that the passed directory exists / is readable
     if not exists(path):
         print(f"[X] Unable to read the directory '{path}'.")
@@ -111,13 +178,13 @@ def import_dir(path: str, verbose: bool = True):
             module_functions = load_indicator_module(module_name)
 
             # figure out which of the modules functions to bind to pandas_ta
-            fcn_callable = module_functions.get(module_name, None)
-            fcn_method_callable = module_functions.get(f"{module_name}_method", None)
+            _callable = module_functions.get(module_name, None)
+            _method_callable = module_functions.get(f"{module_name}_method", None)
 
-            if fcn_callable == None:
+            if _callable == None:
                 print(f"[X] Unable to find a function named '{module_name}' in the module '{module_name}.py'.")
                 continue
-            if fcn_method_callable == None:
+            if _method_callable == None:
                 missing_method = f"{module_name}_method"
                 print(f"[X] Unable to find a method function named '{missing_method}' in the module '{module_name}.py'.")
                 continue
@@ -126,80 +193,9 @@ def import_dir(path: str, verbose: bool = True):
             if module_name not in pandas_ta.Category[dirname]:
                 pandas_ta.Category[dirname].append(module_name)
 
-            bind(module_name, fcn_callable, fcn_method_callable)
+            bind(module_name, _callable, _method_callable)
             if verbose:
                 print(f"[i] Successfully imported the custom indicator '{module}' into category '{dirname}'.")
-
-
-import_dir.__doc__ = \
-"""
-Import a directory of custom indicators into pandas_ta
-
-Args:
-    path (str): Full path to your indicator tree
-    verbose (bool): If True verbose output of results
-
-This method allows you to experiment and develop your own technical analysis
-indicators in a separate local directory of your choice but use them seamlessly
-together with the existing pandas_ta functions just like if they were part of
-pandas_ta.
-
-If you at some late point would like to push them into the pandas_ta library
-you can do so very easily by following the step by step instruction here
-https://github.com/twopirllc/pandas-ta/issues/355.
-
-A brief example of usage:
-
-1. Loading the 'ta' module:
->>> import pandas as pd
->>> import pandas_ta as ta
-
-2. Create an empty directory on your machine where you want to work with your
-indicators. Invoke pandas_ta.custom.import_dir once to pre-populate it with
-sub-folders for all available indicator categories, e.g.:
-
->>> import os
->>> from os.path import abspath, join, expanduser
->>> from pandas_ta.custom import create_dir, import_dir
->>> ta_dir = abspath(join(expanduser("~"), "my_indicators"))
->>> create_dir(ta_dir)
-
-3. You can now create your own custom indicator e.g. by copying existing
-ones from pandas_ta core module and modifying them.
-
-IMPORTANT: Each custom indicator should have a unique name and have both
-a) a function named exactly as the module, e.g. 'ni' if the module is ni.py
-b) a matching method used by AnalysisIndicators named as the module but
-   ending with '_method'. E.g. 'ni_method'
-
-In essence these modules should look exactly like the standard indicators
-available in categories under the pandas_ta-folder. The only difference will
-be an addition of a matching class method.
-
-For an example of the correct structure, look at the example ni.py in the
-examples folder.
-
-The ni.py indicator is a trend indicator so therefore we drop it into the
-sub-folder named trend. Thus we have a folder structure like this:
-
-~/my_indicators/
-│
-├── candles/
-.
-.
-└── trend/
-.      └── ni.py
-.
-└── volume/
-
-4. We can now dynamically load all our custom indicators located in our
-designated indicators directory like this:
-
->>> import_dir(ta_dir)
-
-If your custom indicator(s) loaded succesfully then it should behave exactly
-like all other native indicators in pandas_ta, including help functions.
-"""
 
 
 def load_indicator_module(name: str) -> dict:
@@ -214,7 +210,6 @@ def load_indicator_module(name: str) -> dict:
         }
 
     """
-    # load module
     try:
         module = importlib.import_module(name)
     except Exception as ex:

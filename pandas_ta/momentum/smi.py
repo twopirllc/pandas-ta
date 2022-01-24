@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from .tsi import tsi
-from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
+from .tsi import tsi
 
 
-def smi(close: Series, fast: int = None, slow: int = None, signal: int = None, scalar: float = None,
-        offset: int = None, **kwargs) -> DataFrame:
+def smi(
+        close: Series, fast: int = None, slow: int = None, signal: int = None,
+        scalar: float = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """SMI Ergodic Indicator (SMI)
 
     The SMI Ergodic Indicator is the same as the True Strength Index (TSI) developed
@@ -37,7 +39,7 @@ def smi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
     Returns:
         pd.DataFrame: smi, signal, oscillator columns.
     """
-    # Validate arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 5
     slow = int(slow) if slow and slow > 0 else 20
     signal = int(signal) if signal and signal > 0 else 5
@@ -49,7 +51,7 @@ def smi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     tsi_df = tsi(close, fast=fast, slow=slow, signal=signal, scalar=scalar)
     smi = tsi_df.iloc[:, 0]
     signalma = tsi_df.iloc[:, 1]
@@ -61,7 +63,7 @@ def smi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
         signalma = signalma.shift(offset)
         osc = osc.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         smi.fillna(kwargs["fillna"], inplace=True)
         signalma.fillna(kwargs["fillna"], inplace=True)
@@ -71,7 +73,7 @@ def smi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
         signalma.fillna(method=kwargs["fill_method"], inplace=True)
         osc.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _scalar = f"_{scalar}" if scalar != 1 else ""
     _props = f"_{fast}_{slow}_{signal}{_scalar}"
     smi.name = f"SMI{_props}"
@@ -79,7 +81,6 @@ def smi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
     osc.name = f"SMIo{_props}"
     smi.category = signalma.category = osc.category = "momentum"
 
-    # Prepare DataFrame to return
     data = {smi.name: smi, signalma.name: signalma, osc.name: osc}
     df = DataFrame(data)
     df.name = f"SMI{_props}"

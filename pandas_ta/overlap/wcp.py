@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
 
 
-def wcp(high: Series, low: Series, close: Series, talib: bool = None, offset: int = None, **kwargs) -> Series:
+def wcp(
+        high: Series, low: Series, close: Series, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Weighted Closing Price (WCP)
 
     Weighted Closing Price is the weighted price given: high, low
@@ -28,31 +31,31 @@ def wcp(high: Series, low: Series, close: Series, talib: bool = None, offset: in
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import WCLPRICE
         wcp = WCLPRICE(high, low, close)
     else:
-        wcp = (high + low + 2 * close) / 4
+        wcp = Series((high.values + low.values + 2 * close.values), index=close.index)
 
     # Offset
     if offset != 0:
         wcp = wcp.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         wcp.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         wcp.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     wcp.name = "WCP"
     wcp.category = "overlap"
 

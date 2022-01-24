@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import DataFrame, Series
-from .ma import ma
+from pandas_ta.ma import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def hilo(high: Series, low: Series, close: Series, high_length: int = None, low_length: int = None,
-         mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
+def hilo(
+        high: Series, low: Series, close: Series,
+        high_length: int = None, low_length: int = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Gann HiLo Activator(HiLo)
 
     The Gann High Low Activator Indicator was created by Robert Krausz in a 1998
@@ -42,7 +45,7 @@ def hilo(high: Series, low: Series, close: Series, high_length: int = None, low_
     Returns:
         pd.DataFrame: HILO (line), HILOl (long), HILOs (short) columns.
     """
-    # Validate Arguments
+    # Validate
     high_length = int(high_length) if high_length and high_length > 0 else 13
     low_length = int(low_length) if low_length and low_length > 0 else 21
     mamode = mamode.lower() if isinstance(mamode, str) else "sma"
@@ -54,11 +57,11 @@ def hilo(high: Series, low: Series, close: Series, high_length: int = None, low_
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     m = close.size
-    hilo = Series(npNaN, index=close.index)
-    long = Series(npNaN, index=close.index)
-    short = Series(npNaN, index=close.index)
+    hilo = Series(nan, index=close.index)
+    long = Series(nan, index=close.index)
+    short = Series(nan, index=close.index)
 
     high_ma = ma(mamode, high, length=high_length)
     low_ma = ma(mamode, low, length=low_length)
@@ -78,7 +81,7 @@ def hilo(high: Series, low: Series, close: Series, high_length: int = None, low_
         long = long.shift(offset)
         short = short.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         hilo.fillna(kwargs["fillna"], inplace=True)
         long.fillna(kwargs["fillna"], inplace=True)
@@ -88,7 +91,7 @@ def hilo(high: Series, low: Series, close: Series, high_length: int = None, low_
         long.fillna(method=kwargs["fill_method"], inplace=True)
         short.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     _props = f"_{high_length}_{low_length}"
     data = {f"HILO{_props}": hilo, f"HILOl{_props}": long, f"HILOs{_props}": short}
     df = DataFrame(data, index=close.index)

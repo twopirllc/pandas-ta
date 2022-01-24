@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from .roc import roc
 from pandas_ta.utils import get_drift, get_offset, verify_series
+from .roc import roc
 
 
-def kst(close: Series, roc1: int = None, roc2: int = None, roc3: int = None, roc4: int = None, sma1: int = None,
-        sma2: int = None, sma3: int = None, sma4: int = None, signal: int = None, drift: int = None,
-        offset: int = None, **kwargs) -> DataFrame:
+def kst(
+        close: Series, signal: int = None,
+        roc1: int = None, roc2: int = None, roc3: int = None, roc4: int = None,
+        sma1: int = None, sma2: int = None, sma3: int = None, sma4: int = None,
+        drift: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """'Know Sure Thing' (KST)
 
     The 'Know Sure Thing' is a momentum based oscillator and based on ROC.
@@ -36,7 +40,7 @@ def kst(close: Series, roc1: int = None, roc2: int = None, roc3: int = None, roc
     Returns:
         pd.DataFrame: kst and kst_signal columns
     """
-    # Validate arguments
+    # Validate
     roc1 = int(roc1) if roc1 and roc1 > 0 else 10
     roc2 = int(roc2) if roc2 and roc2 > 0 else 15
     roc3 = int(roc3) if roc3 and roc3 > 0 else 20
@@ -55,7 +59,7 @@ def kst(close: Series, roc1: int = None, roc2: int = None, roc3: int = None, roc
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     rocma1 = roc(close, roc1).rolling(sma1).mean()
     rocma2 = roc(close, roc2).rolling(sma2).mean()
     rocma3 = roc(close, roc3).rolling(sma3).mean()
@@ -69,7 +73,7 @@ def kst(close: Series, roc1: int = None, roc2: int = None, roc3: int = None, roc
         kst = kst.shift(offset)
         kst_signal = kst_signal.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         kst.fillna(kwargs["fillna"], inplace=True)
         kst_signal.fillna(kwargs["fillna"], inplace=True)
@@ -77,12 +81,11 @@ def kst(close: Series, roc1: int = None, roc2: int = None, roc3: int = None, roc
         kst.fillna(method=kwargs["fill_method"], inplace=True)
         kst_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     kst.name = f"KST_{roc1}_{roc2}_{roc3}_{roc4}_{sma1}_{sma2}_{sma3}_{sma4}"
     kst_signal.name = f"KSTs_{signal}"
     kst.category = kst_signal.category = "momentum"
 
-    # Prepare DataFrame to return
     data = {kst.name: kst, kst_signal.name: kst_signal}
     kstdf = DataFrame(data)
     kstdf.name = f"KST_{roc1}_{roc2}_{roc3}_{roc4}_{sma1}_{sma2}_{sma3}_{sma4}_{signal}"

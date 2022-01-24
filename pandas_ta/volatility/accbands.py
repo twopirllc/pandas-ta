@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def accbands(high: Series, low: Series, close: Series, length: int = None, c: int = None, drift: int = None,
-             mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
+def accbands(
+        high: Series, low: Series, close: Series, length: int = None,
+        c: int = None, drift: int = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Acceleration Bands (ACCBANDS)
 
     Acceleration Bands created by Price Headley plots upper and lower envelope
@@ -31,7 +34,7 @@ def accbands(high: Series, low: Series, close: Series, length: int = None, c: in
     Returns:
         pd.DataFrame: lower, mid, upper columns.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 20
     c = float(c) if c and c > 0 else 4
     mamode = mamode if isinstance(mamode, str) else "sma"
@@ -43,7 +46,7 @@ def accbands(high: Series, low: Series, close: Series, length: int = None, c: in
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     high_low_range = non_zero_range(high, low)
     hl_ratio = high_low_range / (high + low)
     hl_ratio *= c
@@ -60,7 +63,7 @@ def accbands(high: Series, low: Series, close: Series, length: int = None, c: in
         mid = mid.shift(offset)
         upper = upper.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         lower.fillna(kwargs["fillna"], inplace=True)
         mid.fillna(kwargs["fillna"], inplace=True)
@@ -70,13 +73,12 @@ def accbands(high: Series, low: Series, close: Series, length: int = None, c: in
         mid.fillna(method=kwargs["fill_method"], inplace=True)
         upper.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     lower.name = f"ACCBL_{length}"
     mid.name = f"ACCBM_{length}"
     upper.name = f"ACCBU_{length}"
     mid.category = upper.category = lower.category = "volatility"
 
-    # Prepare DataFrame to return
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
     accbandsdf = DataFrame(data)
     accbandsdf.name = f"ACCBANDS_{length}"

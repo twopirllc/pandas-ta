@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.overlap import ma
-from pandas_ta.utils import get_offset, tal_ma, verify_series
 from pandas import Series
+from pandas_ta.ma import ma
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
-def apo(close: Series, fast: int = None, slow: int = None, mamode: str = None, talib: bool = None,
-        offset: int = None, **kwargs) -> Series:
+def apo(
+        close: Series, fast: int = None, slow: int = None,
+        mamode: str = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Absolute Price Oscillator (APO)
 
     The Absolute Price Oscillator is an indicator used to measure a security's
@@ -32,7 +35,7 @@ def apo(close: Series, fast: int = None, slow: int = None, mamode: str = None, t
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     if slow < fast:
@@ -44,7 +47,7 @@ def apo(close: Series, fast: int = None, slow: int = None, mamode: str = None, t
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import APO
         apo = APO(close, fast, slow, tal_ma(mamode))
@@ -57,13 +60,13 @@ def apo(close: Series, fast: int = None, slow: int = None, mamode: str = None, t
     if offset != 0:
         apo = apo.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         apo.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         apo.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     apo.name = f"APO_{fast}_{slow}"
     apo.category = "momentum"
 

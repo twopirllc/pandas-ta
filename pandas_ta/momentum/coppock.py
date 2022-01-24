@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-from .roc import roc
+from pandas import Series
 from pandas_ta.overlap import wma
 from pandas_ta.utils import get_offset, verify_series
-from pandas import Series
+from .roc import roc
 
 
-def coppock(close: Series, length: int = None, fast: int = None, slow: int = None, offset: int = None,
-            **kwargs) -> Series:
+def coppock(
+        close: Series, length: int = None, fast: int = None, slow: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Coppock Curve (COPC)
 
     Coppock Curve (originally called the "Trendex Model") is a momentum indicator
@@ -32,7 +34,7 @@ def coppock(close: Series, length: int = None, fast: int = None, slow: int = Non
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     fast = int(fast) if fast and fast > 0 else 11
     slow = int(slow) if slow and slow > 0 else 14
@@ -41,7 +43,7 @@ def coppock(close: Series, length: int = None, fast: int = None, slow: int = Non
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     total_roc = roc(close, fast) + roc(close, slow)
     coppock = wma(total_roc, length)
 
@@ -49,13 +51,13 @@ def coppock(close: Series, length: int = None, fast: int = None, slow: int = Non
     if offset != 0:
         coppock = coppock.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         coppock.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         coppock.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     coppock.name = f"COPC_{fast}_{slow}_{length}"
     coppock.category = "momentum"
 

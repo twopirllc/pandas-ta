@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def bop(open_: Series, high: Series, low: Series, close: Series, scalar: float = None, talib: bool = None,
-        offset: int = None, **kwargs) -> Series:
+def bop(
+        open_: Series, high: Series, low: Series, close: Series,
+        scalar: float = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Balance of Power (BOP)
 
     Balance of Power measure the market strength of buyers against sellers.
@@ -30,7 +33,7 @@ def bop(open_: Series, high: Series, low: Series, close: Series, scalar: float =
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     open_ = verify_series(open_)
     high = verify_series(high)
     low = verify_series(low)
@@ -39,7 +42,7 @@ def bop(open_: Series, high: Series, low: Series, close: Series, scalar: float =
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import BOP
         bop = BOP(open_, high, low, close)
@@ -52,13 +55,13 @@ def bop(open_: Series, high: Series, low: Series, close: Series, scalar: float =
     if offset != 0:
         bop = bop.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         bop.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         bop.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     bop.name = f"BOP"
     bop.category = "momentum"
 

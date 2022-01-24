@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import Series
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def vidya(close: Series, length: int = None, drift: int = None, offset: int = None, **kwargs) -> Series:
+def vidya(
+        close: Series, length: int = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Variable Index Dynamic Average (VIDYA)
 
     Variable Index Dynamic Average (VIDYA) was developed by Tushar Chande. It is
@@ -32,7 +35,7 @@ def vidya(close: Series, length: int = None, drift: int = None, offset: int = No
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     close = verify_series(close, length)
     drift = get_drift(drift)
@@ -40,41 +43,42 @@ def vidya(close: Series, length: int = None, drift: int = None, offset: int = No
 
     if close is None: return
 
-    def _cmo(source: Series, n:int , d: int):
-        """Chande Momentum Oscillator (CMO) Patch
-        For some reason: from pandas_ta.momentum import cmo causes
-        pandas_ta.momentum.coppock to not be able to import it's
-        wma like from pandas_ta.overlap import wma?
-        Weird Circular TypeError!?!
-        """
-        mom = source.diff(d)
-        positive = mom.copy().clip(lower=0)
-        negative = mom.copy().clip(upper=0).abs()
-        pos_sum = positive.rolling(n).sum()
-        neg_sum = negative.rolling(n).sum()
-        return (pos_sum - neg_sum) / (pos_sum + neg_sum)
-
-    # Calculate Result
+    # Calculate
     m = close.size
     alpha = 2 / (length + 1)
     abs_cmo = _cmo(close, length, drift).abs()
     vidya = Series(0, index=close.index)
     for i in range(length, m):
         vidya.iloc[i] = alpha * abs_cmo.iloc[i] * close.iloc[i] + vidya.iloc[i - 1] * (1 - alpha * abs_cmo.iloc[i])
-    vidya.replace({0: npNaN}, inplace=True)
+    vidya.replace({0: nan}, inplace=True)
 
     # Offset
     if offset != 0:
         vidya = vidya.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         vidya.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         vidya.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     vidya.name = f"VIDYA_{length}"
     vidya.category = "overlap"
 
     return vidya
+
+
+def _cmo(source: Series, n:int , d: int):
+    """Chande Momentum Oscillator (CMO) Patch
+    For some reason: from pandas_ta.momentum import cmo causes
+    pandas_ta.momentum.coppock to not be able to import it's
+    wma like from pandas_ta.overlap import wma?
+    Weird Circular TypeError!?
+    """
+    mom = source.diff(d)
+    positive = mom.copy().clip(lower=0)
+    negative = mom.copy().clip(upper=0).abs()
+    pos_sum = positive.rolling(n).sum()
+    neg_sum = negative.rolling(n).sum()
+    return (pos_sum - neg_sum) / (pos_sum + neg_sum)

@@ -7,7 +7,7 @@ from numpy import absolute, any, concatenate, cumsum, flip, max
 from numpy import mean, min, ndarray, std, sum, where, zeros
 from numpy.random import choice, normal, randint
 from pandas import DataFrame, date_range
-from ...maps import Imports, RATE
+from pandas_ta.maps import Imports, RATE
 
 
 class sample(object):

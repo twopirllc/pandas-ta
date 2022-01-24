@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import date_range, DataFrame, RangeIndex, Timedelta, Series
-from .midprice import midprice
 from pandas_ta.utils import get_offset, verify_series
+from .midprice import midprice
 
 
-def ichimoku(high: Series, low: Series, close: Series, tenkan: int = None, kijun: int = None, senkou: int = None,
-             include_chikou: bool = True, offset: int = None, **kwargs) -> DataFrame:
+def ichimoku(
+        high: Series, low: Series, close: Series,
+        tenkan: int = None, kijun: int = None, senkou: int = None,
+        include_chikou: bool = True,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Ichimoku Kinkō Hyō (ichimoku)
 
     Developed Pre WWII as a forecasting model for financial markets.
@@ -33,6 +37,7 @@ def ichimoku(high: Series, low: Series, close: Series, tenkan: int = None, kijun
                 and chikou_span columns
             For the forward looking period: spanA and spanB columns
     """
+    # Validate
     tenkan = int(tenkan) if tenkan and tenkan > 0 else 9
     kijun = int(kijun) if kijun and kijun > 0 else 26
     senkou = int(senkou) if senkou and senkou > 0 else 52
@@ -46,7 +51,7 @@ def ichimoku(high: Series, low: Series, close: Series, tenkan: int = None, kijun
 
     if high is None or low is None or close is None: return None, None
 
-    # Calculate Result
+    # Calculate
     tenkan_sen = midprice(high=high, low=low, length=tenkan)
     kijun_sen = midprice(high=high, low=low, length=kijun)
     span_a = 0.5 * (tenkan_sen + kijun_sen)
@@ -68,7 +73,7 @@ def ichimoku(high: Series, low: Series, close: Series, tenkan: int = None, kijun
         span_b = span_b.shift(offset)
         chikou_span = chikou_span.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         span_a.fillna(kwargs["fillna"], inplace=True)
         span_b.fillna(kwargs["fillna"], inplace=True)
@@ -78,7 +83,7 @@ def ichimoku(high: Series, low: Series, close: Series, tenkan: int = None, kijun
         span_b.fillna(method=kwargs["fill_method"], inplace=True)
         chikou_span.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     span_a.name = f"ISA_{tenkan}"
     span_b.name = f"ISB_{kijun}"
     tenkan_sen.name = f"ITS_{tenkan}"

@@ -3,7 +3,10 @@ from pandas import DataFrame, concat, Series
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
-def er(close: Series, length: int = None, drift: int = None, offset: int = None, **kwargs) -> Series:
+def er(
+        close: Series, length: int = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Efficiency Ratio (ER)
 
     The Efficiency Ratio was invented by Perry J. Kaufman and presented in his book "New Trading Systems and Methods". It is designed to account for market noise or volatility.
@@ -25,7 +28,7 @@ def er(close: Series, length: int = None, drift: int = None, offset: int = None,
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     close = verify_series(close, length)
     offset = get_offset(offset)
@@ -33,7 +36,7 @@ def er(close: Series, length: int = None, drift: int = None, offset: int = None,
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     abs_diff = close.diff(length).abs()
     abs_volatility = close.diff(drift).abs()
 
@@ -44,13 +47,13 @@ def er(close: Series, length: int = None, drift: int = None, offset: int = None,
     if offset != 0:
         er = er.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         er.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         er.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     er.name = f"ER_{length}"
     er.category = "momentum"
 

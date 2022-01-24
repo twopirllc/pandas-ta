@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from numpy import log10 as npLog10
-from numpy import log as npLn
-from pandas_ta.volatility import atr
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from numpy import log, log10
 from pandas import Series
+from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.volatility import atr
 
 
-def chop(high: Series, low: Series, close: Series, length: int = None, atr_length: int = None, ln: bool = None,
-         scalar: float = None, drift: int = None, offset: int = None, **kwargs) -> Series:
+def chop(
+        high: Series, low: Series, close: Series,
+        length: int = None, atr_length: int = None,
+        ln: bool = None, scalar: float = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Choppiness Index (CHOP)
 
     The Choppiness Index was created by Australian commodity trader
@@ -38,7 +41,7 @@ def chop(high: Series, low: Series, close: Series, length: int = None, atr_lengt
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     atr_length = int(atr_length) if atr_length is not None and atr_length > 0 else 1
     ln = bool(ln) if isinstance(ln, bool) else False
@@ -51,7 +54,7 @@ def chop(high: Series, low: Series, close: Series, length: int = None, atr_lengt
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     diff = high.rolling(length).max() - low.rolling(length).min()
 
     atr_ = atr(high=high, low=low, close=close, length=atr_length)
@@ -59,21 +62,21 @@ def chop(high: Series, low: Series, close: Series, length: int = None, atr_lengt
 
     chop = scalar
     if ln:
-        chop *= (npLn(atr_sum) - npLn(diff)) / npLn(length)
+        chop *= (log(atr_sum) - log(diff)) / log(length)
     else:
-        chop *= (npLog10(atr_sum) - npLog10(diff)) / npLog10(length)
+        chop *= (log10(atr_sum) - log10(diff)) / log10(length)
 
     # Offset
     if offset != 0:
         chop = chop.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         chop.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         chop.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     chop.name = f"CHOP{'ln' if ln else ''}_{length}_{atr_length}_{scalar}"
     chop.category = "trend"
 

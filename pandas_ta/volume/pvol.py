@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, signed_series, verify_series
 from pandas import Series
+from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
-def pvol(close: Series, volume: Series, offset: int = None, **kwargs) -> Series:
+def pvol(
+        close: Series, volume: Series,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Price-Volume (PVOL)
 
     Returns a series of the product of price and volume.
@@ -21,13 +24,13 @@ def pvol(close: Series, volume: Series, offset: int = None, **kwargs) -> Series:
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     close = verify_series(close)
     volume = verify_series(volume)
     offset = get_offset(offset)
     signed = kwargs.pop("signed", False)
 
-    # Calculate Result
+    # Calculate
     pvol = close * volume
     if signed:
          pvol *= signed_series(close, 1)
@@ -36,13 +39,13 @@ def pvol(close: Series, volume: Series, offset: int = None, **kwargs) -> Series:
     if offset != 0:
         pvol = pvol.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         pvol.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         pvol.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     pvol.name = f"PVOL"
     pvol.category = "volume"
 

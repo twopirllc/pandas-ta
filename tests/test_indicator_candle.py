@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
-from .context import pandas_ta
-
 from unittest import TestCase, skip
-import pandas.testing as pdt
 from pandas import DataFrame, Series
-
+import pandas.testing as pdt
 import talib as tal
+
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD
+from .context import pandas_ta
 
 
 class TestCandle(TestCase):
@@ -35,12 +34,8 @@ class TestCandle(TestCase):
     def tearDown(self): pass
 
 
-    def test_ha(self):
-        result = pandas_ta.ha(self.open, self.high, self.low, self.close)
-        self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "Heikin-Ashi")
-
     def test_cdl_pattern(self):
+        """Candle: TA Lib Candle Patterns"""
         result = pandas_ta.cdl_pattern(self.open, self.high, self.low, self.close, name="all")
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(len(result.columns), len(pandas_ta.CDL_PATTERN_NAMES))
@@ -52,6 +47,7 @@ class TestCandle(TestCase):
         self.assertIsInstance(result, DataFrame)
 
     def test_cdl_doji(self):
+        """Candle: Doji"""
         result = pandas_ta.cdl_doji(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "CDL_DOJI_10_0.1")
@@ -67,6 +63,7 @@ class TestCandle(TestCase):
                 error_analysis(result, CORRELATION, ex)
 
     def test_cdl_inside(self):
+        """Candle: Inside"""
         result = pandas_ta.cdl_inside(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "CDL_INSIDE")
@@ -76,6 +73,13 @@ class TestCandle(TestCase):
         self.assertEqual(result.name, "CDL_INSIDE")
 
     def test_cdl_z(self):
+        """Candle: Z Score"""
         result = pandas_ta.cdl_z(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "CDL_Z_30_1")
+
+    def test_ha(self):
+        """Candle: Heiken Ashi"""
+        result = pandas_ta.ha(self.open, self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "Heikin-Ashi")

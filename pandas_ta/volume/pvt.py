@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.momentum import roc
 from pandas_ta.utils import get_drift, get_offset, verify_series
-from pandas import Series
 
 
-def pvt(close: Series, volume: Series, drift: int = None, offset: int = None, **kwargs) -> Series:
+def pvt(
+        close: Series, volume: Series, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Price-Volume Trend (PVT)
 
     The Price-Volume Trend utilizes the Rate of Change with volume to
@@ -26,13 +29,13 @@ def pvt(close: Series, volume: Series, drift: int = None, offset: int = None, **
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     close = verify_series(close)
     volume = verify_series(volume)
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     pv = roc(close=close, length=drift) * volume
     pvt = pv.cumsum()
 
@@ -40,13 +43,13 @@ def pvt(close: Series, volume: Series, drift: int = None, offset: int = None, **
     if offset != 0:
         pvt = pvt.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         pvt.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         pvt.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     pvt.name = f"PVT"
     pvt.category = "volume"
 

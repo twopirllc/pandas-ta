@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.momentum import roc
 from pandas_ta.utils import get_offset, signed_series, verify_series
-from pandas import Series
 
 
-def pvi(close: Series, volume: Series, length: int = None, initial: int = None, offset: int = None,
-        **kwargs) -> Series:
+def pvi(
+        close: Series, volume: Series, length: int = None, initial: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Positive Volume Index (PVI)
 
     The Positive Volume Index is a cumulative indicator that uses volume change in
@@ -29,9 +31,8 @@ def pvi(close: Series, volume: Series, length: int = None, initial: int = None, 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 1
-    # min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     initial = int(initial) if initial and initial > 0 else 1000
     close = verify_series(close, length)
     volume = verify_series(volume, length)
@@ -39,7 +40,7 @@ def pvi(close: Series, volume: Series, length: int = None, initial: int = None, 
 
     if close is None or volume is None: return
 
-    # Calculate Result
+    # Calculate
     signed_volume = signed_series(volume, 1)
     pvi = roc(close=close, length=length) * signed_volume[signed_volume > 0].abs()
     pvi.fillna(0, inplace=True)
@@ -50,13 +51,13 @@ def pvi(close: Series, volume: Series, length: int = None, initial: int = None, 
     if offset != 0:
         pvi = pvi.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         pvi.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         pvi.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     pvi.name = f"PVI_{length}"
     pvi.category = "volume"
 

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from numpy import sqrt as npsqrt
-from pandas_ta.overlap import sma
+from numpy import sqrt
 from pandas import Series
+from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ui(close: Series, length: int = None, scalar: int = None, offset: int = None, **kwargs) -> Series:
+def ui(
+        close: Series, length: int = None, scalar: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Ulcer Index (UI)
 
     The Ulcer Index by Peter Martin measures the downside volatility with the use of
@@ -32,7 +35,7 @@ def ui(close: Series, length: int = None, scalar: int = None, offset: int = None
     Returns:
         pd.Series: New feature
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar and scalar > 0 else 100
     close = verify_series(close, length)
@@ -40,7 +43,7 @@ def ui(close: Series, length: int = None, scalar: int = None, offset: int = None
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     highest_close = close.rolling(length).max()
     downside = scalar * (close - highest_close)
     downside /= highest_close
@@ -49,21 +52,21 @@ def ui(close: Series, length: int = None, scalar: int = None, offset: int = None
     everget = kwargs.pop("everget", False)
     if everget:
         # Everget uses SMA instead of SUM for calculation
-        ui = (sma(d2, length) / length).apply(npsqrt)
+        ui = (sma(d2, length) / length).apply(sqrt)
     else:
-        ui = (d2.rolling(length).sum() / length).apply(npsqrt)
+        ui = (d2.rolling(length).sum() / length).apply(sqrt)
 
     # Offset
     if offset != 0:
         ui = ui.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ui.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         ui.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     ui.name = f"UI{'' if not everget else 'e'}_{length}"
     ui.category = "volatility"
 

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def ad(high: Series, low: Series, close: Series, volume: Series, open_: Series = None, talib: bool = None,
-       offset: int = None, **kwargs) -> Series:
+def ad(
+        high: Series, low: Series, close: Series, volume: Series,
+        open_: Series = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Accumulation/Distribution (AD)
 
     Accumulation/Distribution indicator utilizes the relative position
@@ -31,7 +34,7 @@ def ad(high: Series, low: Series, close: Series, volume: Series, open_: Series =
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
@@ -39,7 +42,7 @@ def ad(high: Series, low: Series, close: Series, volume: Series, open_: Series =
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import AD
         ad = AD(high, low, close, volume)
@@ -58,13 +61,13 @@ def ad(high: Series, low: Series, close: Series, volume: Series, open_: Series =
     if offset != 0:
         ad = ad.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ad.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         ad.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     ad.name = "AD" if open_ is None else "ADo"
     ad.category = "volume"
 

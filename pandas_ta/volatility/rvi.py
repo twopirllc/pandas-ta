@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import ma
+from pandas import Series
+from pandas_ta.ma import ma
 from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_drift, get_offset
 from pandas_ta.utils import unsigned_differences, verify_series
-from pandas import Series
 
 
-def rvi(close: Series, high: Series = None, low: Series = None, length: int = None, scalar: float = None,
-        refined: bool = None, thirds: bool = None, mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs) -> Series:
+def rvi(
+        close: Series, high: Series = None, low: Series = None,
+        length: int = None, scalar: float = None,
+        refined: bool = None, thirds: bool = None,
+        mamode: str = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Relative Volatility Index (RVI)
 
     The Relative Volatility Index (RVI) was created in 1993 and revised in 1995.
@@ -37,7 +41,7 @@ def rvi(close: Series, high: Series = None, low: Series = None, length: int = No
     Returns:
         pd.DataFrame: lower, basis, upper columns.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar and scalar > 0 else 100
     refined = False if refined is None else refined
@@ -53,7 +57,7 @@ def rvi(close: Series, high: Series = None, low: Series = None, length: int = No
         high = verify_series(high)
         low = verify_series(low)
 
-    # Calculate Result
+    # Calculate
     def _rvi(source, length, scalar, mode, drift):
         """RVI"""
         std = stdev(source, length)
@@ -88,13 +92,13 @@ def rvi(close: Series, high: Series = None, low: Series = None, length: int = No
     if offset != 0:
         rvi = rvi.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         rvi.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         rvi.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     rvi.name = f"RVI{_mode}_{length}"
     rvi.category = "volatility"
 

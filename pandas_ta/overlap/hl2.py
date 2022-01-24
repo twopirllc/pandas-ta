@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.utils import get_offset, verify_series
 
 
-def hl2(high: Series, low: Series, offset: int = None, **kwargs) -> Series:
+def hl2(
+        high: Series, low: Series,
+        offset: int = None, **kwargs
+    ) -> Series:
     """HL2
 
     HL2 is the midpoint/average of high and low.
@@ -16,19 +19,19 @@ def hl2(high: Series, low: Series, offset: int = None, **kwargs) -> Series:
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     high = verify_series(high)
     low = verify_series(low)
     offset = get_offset(offset)
 
-    # Calculate Result
-    hl2 = 0.5 * (high + low)
+    # Calculate
+    hl2 = Series(0.5 * (high.values + low.values), index=high.index)
 
     # Offset
     if offset != 0:
         hl2 = hl2.shift(offset)
 
-    # Name & Category
+    # Name and Category
     hl2.name = "HL2"
     hl2.category = "overlap"
 

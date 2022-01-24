@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.utils import get_offset, verify_series
 
 
-def ohlc4(open_: Series, high: Series, low: Series, close: Series, offset: int = None, **kwargs) -> Series:
+def ohlc4(
+        open_: Series, high: Series, low: Series, close: Series,
+        offset: int = None, **kwargs
+    ) -> Series:
     """OHLC4
 
     OHLC4 is the average of open, high, low and close.
@@ -18,21 +21,24 @@ def ohlc4(open_: Series, high: Series, low: Series, close: Series, offset: int =
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     open_ = verify_series(open_)
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     offset = get_offset(offset)
 
-    # Calculate Result
-    ohlc4 = 0.25 * (open_ + high + low + close)
+    # Calculate
+    ohlc4 = Series(
+            0.25 * (open_.values + high.values + low.values + close.values),
+            index=close.index
+        )
 
     # Offset
     if offset != 0:
         ohlc4 = ohlc4.shift(offset)
 
-    # Name & Category
+    # Name and Category
     ohlc4.name = "OHLC4"
     ohlc4.category = "overlap"
 

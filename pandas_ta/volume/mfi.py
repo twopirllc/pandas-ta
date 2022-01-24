@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta import Imports
+from pandas_ta.maps import Imports
 from pandas_ta.overlap import hlc3
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def mfi(high: Series, low: Series, close: Series, volume: Series, length: int = None, talib: bool = None,
-        drift: int = None, offset: int = None, **kwargs) -> Series:
+def mfi(
+        high: Series, low: Series, close: Series, volume: Series,
+        length: int = None, talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Money Flow Index (MFI)
 
     Money Flow Index is an oscillator indicator that is used to measure buying and
@@ -33,7 +36,7 @@ def mfi(high: Series, low: Series, close: Series, volume: Series, length: int = 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     high = verify_series(high, length)
     low = verify_series(low, length)
@@ -45,7 +48,7 @@ def mfi(high: Series, low: Series, close: Series, volume: Series, length: int = 
 
     if high is None or low is None or close is None or volume is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import MFI
         mfi = MFI(high, low, close, volume, length)
@@ -71,13 +74,13 @@ def mfi(high: Series, low: Series, close: Series, volume: Series, length: int = 
     if offset != 0:
         mfi = mfi.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         mfi.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         mfi.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     mfi.name = f"MFI_{length}"
     mfi.category = "volume"
 

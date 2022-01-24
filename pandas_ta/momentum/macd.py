@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import concat, DataFrame, Series
-from pandas_ta import Imports
+from pandas_ta.maps import Imports
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series, signals
 
 
-def macd(close: Series, fast: int = None, slow: int = None, signal: int = None, talib: bool = None,
-         offset: int = None, **kwargs) -> DataFrame:
+def macd(
+        close: Series, fast: int = None, slow: int = None, signal: int = None,
+        talib: bool = None, offset: int = None, **kwargs
+    ) -> DataFrame:
     """Moving Average Convergence Divergence (MACD)
 
     The MACD is a popular indicator to that is used to identify a security's trend.
@@ -36,7 +38,7 @@ def macd(close: Series, fast: int = None, slow: int = None, signal: int = None, 
     Returns:
         pd.DataFrame: macd, histogram, signal columns.
     """
-    # Validate arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     signal = int(signal) if signal and signal > 0 else 9
@@ -50,7 +52,7 @@ def macd(close: Series, fast: int = None, slow: int = None, signal: int = None, 
 
     as_mode = kwargs.setdefault("asmode", False)
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import MACD
         macd, signalma, histogram = MACD(close, fast, slow, signal)
@@ -73,7 +75,7 @@ def macd(close: Series, fast: int = None, slow: int = None, signal: int = None, 
         histogram = histogram.shift(offset)
         signalma = signalma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         macd.fillna(kwargs["fillna"], inplace=True)
         histogram.fillna(kwargs["fillna"], inplace=True)
@@ -83,7 +85,7 @@ def macd(close: Series, fast: int = None, slow: int = None, signal: int = None, 
         histogram.fillna(method=kwargs["fill_method"], inplace=True)
         signalma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _asmode = "AS" if as_mode else ""
     _props = f"_{fast}_{slow}_{signal}"
     macd.name = f"MACD{_asmode}{_props}"
@@ -91,7 +93,6 @@ def macd(close: Series, fast: int = None, slow: int = None, signal: int = None, 
     signalma.name = f"MACD{_asmode}s{_props}"
     macd.category = histogram.category = signalma.category = "momentum"
 
-    # Prepare DataFrame to return
     data = {macd.name: macd, histogram.name: histogram, signalma.name: signalma}
     df = DataFrame(data)
     df.name = f"MACD{_asmode}{_props}"

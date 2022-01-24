@@ -595,7 +595,6 @@ class AnalysisIndicators(BasePandasObject):
             # "data", # reserved
             "long_run",
             "short_run",
-            "td_seq", # Performance exclusion
             "tsignals",
             "xsignals",
         ]

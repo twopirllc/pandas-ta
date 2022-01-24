@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from .hlc3 import hlc3
-from pandas_ta.utils import get_offset, is_datetime_ordered, verify_series
 from pandas import Series
+from pandas_ta.overlap import hlc3
+from pandas_ta.utils import get_offset, is_datetime_ordered, verify_series
 
 
-def vwap(high: Series, low: Series, close: Series, volume: Series, anchor: str = None, offset: int = None,
-         **kwargs) -> Series:
+def vwap(
+        high: Series, low: Series, close: Series, volume: Series,
+        anchor: str = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Volume Weighted Average Price (VWAP)
 
     The Volume Weighted Average Price that measures the average typical price
@@ -35,7 +38,7 @@ def vwap(high: Series, low: Series, close: Series, volume: Series, anchor: str =
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
@@ -49,7 +52,7 @@ def vwap(high: Series, low: Series, close: Series, volume: Series, anchor: str =
     if not is_datetime_ordered(typical_price):
         print(f"[!] VWAP price series is not datetime ordered. Results may not be as expected.")
 
-    # Calculate Result
+    # Calculate
     wp = typical_price * volume
     vwap  = wp.groupby(wp.index.to_period(anchor)).cumsum()
     vwap /= volume.groupby(volume.index.to_period(anchor)).cumsum()
@@ -58,13 +61,13 @@ def vwap(high: Series, low: Series, close: Series, volume: Series, anchor: str =
     if offset != 0:
         vwap = vwap.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         vwap.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         vwap.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     vwap.name = f"VWAP_{anchor}"
     vwap.category = "overlap"
 

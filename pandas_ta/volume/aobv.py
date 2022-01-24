@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from .obv import obv
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
 from pandas_ta.trend import long_run, short_run
 from pandas_ta.utils import get_offset, verify_series
+from .obv import obv
 
 
-def aobv(close: Series, volume: Series, fast: int = None, slow: int = None, max_lookback: int = None,
-         min_lookback: int = None, mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
+def aobv(
+        close: Series, volume: Series, fast: int = None, slow: int = None,
+        max_lookback: int = None, min_lookback: int = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Archer On Balance Volume (AOBV)
 
     Archer On Balance Volume (AOBV) developed by Kevin Johnson provides
@@ -37,7 +40,7 @@ def aobv(close: Series, volume: Series, fast: int = None, slow: int = None, max_
     Returns:
         pd.DataFrame: OBV_MIN, OBV_MAX, OBV_FMA, OBV_SMA, OBV_LR, OBV_SR columns.
     """
-    # Validate arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 4
     slow = int(slow) if slow and slow > 0 else 12
     max_lookback = int(max_lookback) if max_lookback and max_lookback > 0 else 2
@@ -54,12 +57,11 @@ def aobv(close: Series, volume: Series, fast: int = None, slow: int = None, max_
 
     if close is None or volume is None: return
 
-    # Calculate Result
+    # Calculate
     obv_ = obv(close=close, volume=volume, **kwargs)
     maf = ma(mamode, obv_, length=fast, **kwargs)
     mas = ma(mamode, obv_, length=slow, **kwargs)
 
-    # When MAs are long and short
     obv_long = long_run(maf, mas, length=run_length)
     obv_short = short_run(maf, mas, length=run_length)
 
@@ -71,7 +73,7 @@ def aobv(close: Series, volume: Series, fast: int = None, slow: int = None, max_
         obv_long = obv_long.shift(offset)
         obv_short = obv_short.shift(offset)
 
-    # # Handle fills
+    # Fill
     if "fillna" in kwargs:
         obv_.fillna(kwargs["fillna"], inplace=True)
         maf.fillna(kwargs["fillna"], inplace=True)
@@ -85,7 +87,6 @@ def aobv(close: Series, volume: Series, fast: int = None, slow: int = None, max_
         obv_long.fillna(method=kwargs["fill_method"], inplace=True)
         obv_short.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Prepare DataFrame to return
     _mode = mamode.lower()[0] if len(mamode) else ""
     data = {
         obv_.name: obv_,
@@ -98,7 +99,7 @@ def aobv(close: Series, volume: Series, fast: int = None, slow: int = None, max_
     }
     aobvdf = DataFrame(data)
 
-    # Name and Categorize it
+    # Name and Category
     aobvdf.name = f"AOBV{_mode}_{fast}_{slow}_{min_lookback}_{max_lookback}_{run_length}"
     aobvdf.category = "volume"
 

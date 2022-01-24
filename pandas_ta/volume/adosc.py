@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
-from .ad import ad
-from pandas_ta import Imports
+from pandas import Series
+from pandas_ta.maps import Imports
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
-from pandas import Series
+from pandas_ta.volume import ad
 
 
-def adosc(high: Series, low: Series, close: Series, volume: Series, open_: Series = None, fast: int = None,
-          slow: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
+def adosc(
+        high: Series, low: Series, close: Series, volume: Series,
+        open_: Series = None, fast: int = None, slow: int = None,
+        talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Accumulation/Distribution Oscillator or Chaikin Oscillator
 
     Accumulation/Distribution Oscillator indicator utilizes
@@ -36,7 +40,7 @@ def adosc(high: Series, low: Series, close: Series, volume: Series, open_: Serie
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 3
     slow = int(slow) if slow and slow > 0 else 10
     _length = max(fast, slow)
@@ -50,7 +54,7 @@ def adosc(high: Series, low: Series, close: Series, volume: Series, open_: Serie
 
     if high is None or low is None or close is None or volume is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import ADOSC
         adosc = ADOSC(high, low, close, volume, fast, slow)
@@ -64,13 +68,13 @@ def adosc(high: Series, low: Series, close: Series, volume: Series, open_: Serie
     if offset != 0:
         adosc = adosc.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         adosc.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         adosc.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     adosc.name = f"ADOSC_{fast}_{slow}"
     adosc.category = "volume"
 

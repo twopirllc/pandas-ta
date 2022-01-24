@@ -1,30 +1,40 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import np
-
-# try:
-#     from numba import jit, njit
-# except ImportError as e:
-#     from pandas_ta.utils._shim import jit, njit
+from numpy import append, array, empty_like, nan, ndarray, roll, zeros_like
 
 try:
     from numba import njit
 except ImportError:
-    njit = lambda x: x
+    njit = lambda _: _
 
 
 # Utilities
 @njit
-def np_prepend(x: np.ndarray, n: int, value=np.nan):
+def np_prepend(x: ndarray, n: int, value=nan):
     """Append array x to an array of values, typically nan."""
-    return np.append(np.array([value] * n), x)
+    return append(array([value] * n), x)
+
 
 @njit
-def np_shift(x: np.ndarray, n: int, value=np.nan):
+def np_roll(x: ndarray, n: int, fn = None):
+    """Like Pandas Rolling Window. x.rolling(n).fn()"""
+    m = x.size
+    result = zeros_like(x, dtype=float)
+    if n <= 0: return result  # TODO: Handle negative rolling windows
+
+    for i in range(0,m):
+        result[i] = fn(x[i:n + i])
+    result = roll(result, n - 1)
+    result[:n - 1] = nan
+    return result
+
+
+@njit
+def np_shift(x: ndarray, n: int, value=nan):
     """np shift
     shift5 - preallocate empty array and assign slice by chrisaycock
     https://stackoverflow.com/questions/30399534/shift-elements-in-a-numpy-array
     """
-    result = np.empty_like(x)
+    result = empty_like(x)
     if n > 0:
         result[:n] = value
         result[n:] = x[:-n]

@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import linreg
-from pandas_ta.volatility import rvi
-from pandas_ta.utils import get_drift, get_offset, verify_series
 from pandas import Series
+from pandas_ta.overlap import linreg
+from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.volatility import rvi
 
 
-def inertia(close: Series, high: Series, low: Series, length: int = None, rvi_length: int = None, scalar: float = None,
-            refined: bool = None, thirds: bool = None, mamode: str = None, drift: int = None, offset: int = None,
-            **kwargs) -> Series:
+def inertia(
+        close: Series, high: Series = None, low: Series = None,
+        length: int = None, rvi_length: int = None, scalar: float = None,
+        refined: bool = None, thirds: bool = None,
+        drift: int = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Inertia (INERTIA)
 
     Inertia was developed by Donald Dorsey and was introduced his article
@@ -38,7 +42,7 @@ def inertia(close: Series, high: Series, low: Series, length: int = None, rvi_le
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 20
     rvi_length = int(rvi_length) if rvi_length and rvi_length > 0 else 14
     scalar = float(scalar) if scalar and scalar > 0 else 100
@@ -57,7 +61,7 @@ def inertia(close: Series, high: Series, low: Series, length: int = None, rvi_le
         low = verify_series(low, _length)
         if high is None or low is None: return
 
-    # Calculate Result
+    # Calculate
     if refined:
         _mode, rvi_ = "r", rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, refined=refined, mamode=mamode)
     elif thirds:
@@ -71,13 +75,13 @@ def inertia(close: Series, high: Series, low: Series, length: int = None, rvi_le
     if offset != 0:
         inertia = inertia.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         inertia.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         inertia.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     _props = f"_{length}_{rvi_length}"
     inertia.name = f"INERTIA{_mode}{_props}"
     inertia.category = "momentum"

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.overlap import linreg
 from pandas_ta.utils import get_drift, get_offset, verify_series
-from pandas import Series
 
 
-def cfo(close: Series, length: int = None, scalar: float = None, drift: int = None, offset: int = None,
-        **kwargs) -> Series:
+def cfo(
+        close: Series, length: int = None,
+        scalar: float = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Chande Forcast Oscillator (CFO)
 
     The Forecast Oscillator calculates the percentage difference between the actual
@@ -28,7 +31,7 @@ def cfo(close: Series, length: int = None, scalar: float = None, drift: int = No
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 9
     scalar = float(scalar) if scalar else 100
     close = verify_series(close, length)
@@ -37,6 +40,7 @@ def cfo(close: Series, length: int = None, scalar: float = None, drift: int = No
 
     if close is None: return
 
+    # Calculate
     # Finding linear regression of Series
     cfo = scalar * (close - linreg(close, length=length, tsf=True))
     cfo /= close
@@ -45,13 +49,13 @@ def cfo(close: Series, length: int = None, scalar: float = None, drift: int = No
     if offset != 0:
         cfo = cfo.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         cfo.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         cfo.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     cfo.name = f"CFO_{length}"
     cfo.category = "momentum"
 

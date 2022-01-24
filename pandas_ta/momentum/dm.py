@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta import Imports
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series, get_drift, zero
 
 
-def dm(high: Series, low: Series, length: int = None, mamode: str = None, talib: bool = None, drift: int = None,
-       offset: int = None, **kwargs) -> DataFrame:
+def dm(
+        high: Series, low: Series, length: int = None,
+        mamode: str = None, talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Directional Movement (DM)
 
     The Directional Movement was developed by J. Welles Wilder in 1978 attempts to
@@ -33,7 +36,7 @@ def dm(high: Series, low: Series, length: int = None, mamode: str = None, talib:
     Returns:
         pd.DataFrame: DMP (+DM) and DMN (-DM) columns.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     mamode = mamode.lower() if mamode and isinstance(mamode, str) else "rma"
     high = verify_series(high)
@@ -68,16 +71,20 @@ def dm(high: Series, low: Series, length: int = None, mamode: str = None, talib:
         pos = pos.shift(offset)
         neg = neg.shift(offset)
 
+    # Fill
+    if "fillna" in kwargs:
+        pos.fillna(kwargs["fillna"], inplace=True)
+        neg.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        pos.fillna(method=kwargs["fill_method"], inplace=True)
+        neg.fillna(method=kwargs["fill_method"], inplace=True)
+
+    # Name and Category
     _params = f"_{length}"
-    data = {
-        f"DMP{_params}": pos,
-        f"DMN{_params}": neg,
-    }
+    data = {f"DMP{_params}": pos, f"DMN{_params}": neg,}
 
     dmdf = DataFrame(data)
-    # print(dmdf.head(20))
-    # print()
     dmdf.name = f"DM{_params}"
-    dmdf.category = "trend"
+    dmdf.category = "momentum"
 
     return dmdf

@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta import Imports
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
+from pandas_ta.maps import Imports
 from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
-def bbands(close: Series, length: int = None, std: int = None, ddof: int = 0, mamode: str = None, talib: bool = None,
-           offset: int = None, **kwargs) -> DataFrame:
+def bbands(
+        close: Series, length: int = None, std: int = None, ddof: int = 0,
+        mamode: str = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Bollinger Bands (BBANDS)
 
     A popular volatility indicator by John Bollinger.
@@ -95,7 +98,6 @@ def bbands(close: Series, length: int = None, std: int = None, ddof: int = 0, ma
     upper.category = lower.category = "volatility"
     mid.category = bandwidth.category = upper.category
 
-    # Return DataFrame
     data = {
         lower.name: lower, mid.name: mid, upper.name: upper,
         bandwidth.name: bandwidth, percent.name: percent

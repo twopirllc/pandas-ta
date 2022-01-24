@@ -3,8 +3,11 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, non_zero_range, rma_pandas, verify_series
 
 
-def kdj(high: Series, low: Series, close: Series, length: int = None, signal: int = None, offset: int = None,
-        **kwargs) -> Series:
+def kdj(
+        high: Series, low: Series, close: Series,
+        length: int = None, signal: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """KDJ (KDJ)
 
     The KDJ indicator is actually a derived form of the Slow
@@ -32,7 +35,7 @@ def kdj(high: Series, low: Series, close: Series, length: int = None, signal: in
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 9
     signal = int(signal) if signal and signal > 0 else 3
     _length = max(length, signal)
@@ -43,7 +46,7 @@ def kdj(high: Series, low: Series, close: Series, length: int = None, signal: in
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     highest_high = high.rolling(length).max()
     lowest_low = low.rolling(length).min()
 
@@ -59,7 +62,7 @@ def kdj(high: Series, low: Series, close: Series, length: int = None, signal: in
         d = d.shift(offset)
         j = j.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         k.fillna(kwargs["fillna"], inplace=True)
         d.fillna(kwargs["fillna"], inplace=True)
@@ -69,14 +72,13 @@ def kdj(high: Series, low: Series, close: Series, length: int = None, signal: in
         d.fillna(method=kwargs["fill_method"], inplace=True)
         j.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _params = f"_{length}_{signal}"
     k.name = f"K{_params}"
     d.name = f"D{_params}"
     j.name = f"J{_params}"
     k.category = d.category = j.category = "momentum"
 
-    # Prepare DataFrame to return
     kdjdf = DataFrame({k.name: k, d.name: d, j.name: j})
     kdjdf.name = f"KDJ{_params}"
     kdjdf.category = "momentum"

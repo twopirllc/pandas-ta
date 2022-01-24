@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
-from numpy import array as npArray
-from numpy import arange as npArange
-from numpy import polyfit as npPolyfit
-from numpy import std as npStd
+from numpy import arange, array, polyfit, std
 from pandas import DataFrame, DatetimeIndex, Series
-from .stdev import stdev as stdev
 from pandas_ta.utils import get_offset, verify_series
 
 
-def tos_stdevall(close: Series, length: int = None, stds: list = None, ddof: int = None, offset: int = None,
-                 **kwargs) -> DataFrame:
+def tos_stdevall(
+        close: Series, length: int = None,
+        stds: list = None, ddof: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """TD Ameritrade's Think or Swim Standard Deviation All (TOS_STDEV)
 
     A port of TD Ameritrade's Think or Swim Standard Deviation All indicator which
@@ -36,7 +35,8 @@ def tos_stdevall(close: Series, length: int = None, stds: list = None, ddof: int
     Returns:
         pd.DataFrame: Central LR, Pairs of Lower and Upper LR Lines based on
             mulitples of the standard deviation. Default: returns 7 columns.
-    """    # Validate Arguments
+    """
+    # Validate
     stds = stds if isinstance(stds, list) and len(stds) > 0 else [1, 2, 3]
     if min(stds) <= 0: return
     if not all(i < j for i, j in zip(stds, stds[1:])):
@@ -56,17 +56,17 @@ def tos_stdevall(close: Series, length: int = None, stds: list = None, ddof: int
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     X = src_index = close.index
     if isinstance(close.index, DatetimeIndex):
-        X = npArange(length)
-        close = npArray(close)
+        X = arange(length)
+        close = array(close)
 
-    m, b = npPolyfit(X, close, 1)
+    m, b = polyfit(X, close, 1)
     lr = Series(m * X + b, index=src_index)
-    stdev = npStd(close, ddof=ddof)
+    stdev = std(close, ddof=ddof)
 
-    # Name and Categorize it
+    # Name and Category
     df = DataFrame({f"{_props}_LR": lr}, index=src_index)
     for i in stds:
         df[f"{_props}_L_{i}"] = lr - i * stdev
@@ -78,13 +78,12 @@ def tos_stdevall(close: Series, length: int = None, stds: list = None, ddof: int
     if offset != 0:
         df = df.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         df.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Prepare DataFrame to return
     df.name = f"{_props}"
     df.category = "statistics"
 

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series, zero
 
 
-def psar(high: Series, low: Series, close: Series = None, af0: float = None, af: float = None, max_af: float = None,
-         offset: int = None, **kwargs) -> DataFrame:
+def psar(
+        high: Series, low: Series, close: Series = None,
+        af0: float = None, af: float = None, max_af: float = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Parabolic Stop and Reverse (psar)
 
     Parabolic Stop and Reverse (PSAR) was developed by J. Wells Wilder, that is used
@@ -38,7 +41,7 @@ def psar(high: Series, low: Series, close: Series = None, af0: float = None, af:
     Returns:
         pd.DataFrame: long, short, af, and reversal columns.
     """
-    # Validate Arguments
+    # Validate
     high = verify_series(high)
     low = verify_series(low)
     af = float(af) if af and af > 0 else 0.02
@@ -67,13 +70,13 @@ def psar(high: Series, low: Series, close: Series = None, af0: float = None, af:
         close = verify_series(close)
         sar = close.iloc[0]
 
-    long = Series(npNaN, index=high.index)
+    long = Series(nan, index=high.index)
     short = long.copy()
     reversal = Series(0, index=high.index)
     _af = long.copy()
     _af.iloc[0:2] = af0
 
-    # Calculate Result
+    # Calculate
     m = high.shape[0]
     for row in range(2, m):
         high_ = high.iloc[row]
@@ -122,7 +125,7 @@ def psar(high: Series, low: Series, close: Series = None, af0: float = None, af:
         short = short.shift(offset)
         reversal = reversal.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         _af.fillna(kwargs["fillna"], inplace=True)
         long.fillna(kwargs["fillna"], inplace=True)
@@ -134,7 +137,6 @@ def psar(high: Series, low: Series, close: Series = None, af0: float = None, af:
         short.fillna(method=kwargs["fill_method"], inplace=True)
         reversal.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Prepare DataFrame to return
     _params = f"_{af0}_{max_af}"
     data = {
         f"PSARl{_params}": long,

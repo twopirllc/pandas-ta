@@ -1,11 +1,10 @@
 
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from pandas_ta import Imports, RATE, version
+from pandas_ta.maps import Imports, RATE, version
 
 
 def av(ticker: str, **kwargs) -> DataFrame:
-    print(f"[!] kwargs: {kwargs}")
     verbose = kwargs.pop("verbose", False)
     kind = kwargs.pop("kind", "history")
     kind = kind.lower()

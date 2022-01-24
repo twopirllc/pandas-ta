@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
-from pandas import Series
 
 
-def dpo(close: Series, length: int = None, centered: bool = True, offset: int = None, **kwargs) -> Series:
+def dpo(
+        close: Series, length: int = None, centered: bool = True,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Detrend Price Oscillator (DPO)
 
     Is an indicator designed to remove trend from price and make it easier to
@@ -28,7 +31,7 @@ def dpo(close: Series, length: int = None, centered: bool = True, offset: int = 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 20
     close = verify_series(close, length)
     offset = get_offset(offset)
@@ -37,7 +40,7 @@ def dpo(close: Series, length: int = None, centered: bool = True, offset: int = 
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     t = int(0.5 * length) + 1
     ma = sma(close, length)
 
@@ -49,13 +52,13 @@ def dpo(close: Series, length: int = None, centered: bool = True, offset: int = 
     if offset != 0:
         dpo = dpo.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         dpo.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         dpo.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     dpo.name = f"DPO_{length}"
     dpo.category = "trend"
 

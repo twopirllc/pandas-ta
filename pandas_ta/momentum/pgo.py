@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import ema, sma
-from pandas_ta.volatility import atr
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.overlap import ema, sma
+from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.volatility import atr
 
 
-def pgo(high: Series, low: Series, close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
+def pgo(
+        high: Series, low: Series, close: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Pretty Good Oscillator (PGO)
 
     The Pretty Good Oscillator indicator was created by Mark Johnson to measure the distance of the current close from its N-day Simple Moving Average, expressed in terms of an average true range over a similar period. Johnson's approach was to
@@ -29,7 +32,7 @@ def pgo(high: Series, low: Series, close: Series, length: int = None, offset: in
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     high = verify_series(high, length)
     low = verify_series(low, length)
@@ -38,7 +41,7 @@ def pgo(high: Series, low: Series, close: Series, length: int = None, offset: in
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     pgo = close - sma(close, length)
     pgo /= ema(atr(high, low, close, length), length)
 
@@ -46,13 +49,13 @@ def pgo(high: Series, low: Series, close: Series, length: int = None, offset: in
     if offset != 0:
         pgo = pgo.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         pgo.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         pgo.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     pgo.name = f"PGO_{length}"
     pgo.category = "momentum"
 

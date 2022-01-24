@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+from numpy import arange, dot
 from pandas import Series
-from pandas_ta import Imports
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -29,7 +30,7 @@ def wma(close: Series, length: int = None, asc: bool = None, talib: bool = None,
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     asc = asc if asc else True
     close = verify_series(close, length)
@@ -38,21 +39,18 @@ def wma(close: Series, length: int = None, asc: bool = None, talib: bool = None,
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import WMA
         wma = WMA(close, length)
     else:
-        from numpy import arange as npArange
-        from numpy import dot as npDot
-
         total_weight = 0.5 * length * (length + 1)
-        weights_ = Series(npArange(1, length + 1))
+        weights_ = Series(arange(1, length + 1))
         weights = weights_ if asc else weights_[::-1]
 
         def linear(w):
             def _compute(x):
-                return npDot(x, w) / total_weight
+                return dot(x, w) / total_weight
             return _compute
 
         close_ = close.rolling(length, min_periods=length)
@@ -62,13 +60,13 @@ def wma(close: Series, length: int = None, asc: bool = None, talib: bool = None,
     if offset != 0:
         wma = wma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         wma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         wma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     wma.name = f"WMA_{length}"
     wma.category = "overlap"
 

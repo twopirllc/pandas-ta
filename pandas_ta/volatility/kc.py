@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from .true_range import true_range
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
 from pandas_ta.utils import get_offset, high_low_range, verify_series
+from .true_range import true_range
 
 
-def kc(high: Series, low: Series, close: Series, length: int = None, scalar: float = None, mamode: str = None,
-       offset: int = None, **kwargs) -> DataFrame:
+def kc(
+        high: Series, low: Series, close: Series,
+        length: int = None, scalar: float = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Keltner Channels (KC)
 
     A popular volatility indicator similar to Bollinger Bands and
@@ -33,7 +36,7 @@ def kc(high: Series, low: Series, close: Series, length: int = None, scalar: flo
     Returns:
         pd.DataFrame: lower, basis, upper columns.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 20
     scalar = float(scalar) if scalar and scalar > 0 else 2
     mamode = mamode if isinstance(mamode, str) else "ema"
@@ -44,7 +47,7 @@ def kc(high: Series, low: Series, close: Series, length: int = None, scalar: flo
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     use_tr = kwargs.pop("tr", True)
     if use_tr:
         range_ = true_range(high, low, close)
@@ -63,7 +66,7 @@ def kc(high: Series, low: Series, close: Series, length: int = None, scalar: flo
         basis = basis.shift(offset)
         upper = upper.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         lower.fillna(kwargs["fillna"], inplace=True)
         basis.fillna(kwargs["fillna"], inplace=True)
@@ -73,14 +76,13 @@ def kc(high: Series, low: Series, close: Series, length: int = None, scalar: flo
         basis.fillna(method=kwargs["fill_method"], inplace=True)
         upper.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"{mamode.lower()[0] if len(mamode) else ''}_{length}_{scalar}"
     lower.name = f"KCL{_props}"
     basis.name = f"KCB{_props}"
     upper.name = f"KCU{_props}"
     basis.category = upper.category = lower.category = "volatility"
 
-    # Prepare DataFrame to return
     data = {lower.name: lower, basis.name: basis, upper.name: upper}
     kcdf = DataFrame(data)
     kcdf.name = f"KC{_props}"

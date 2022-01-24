@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 from pandas import Series
+from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def pdist(open_: Series, high: Series, low: Series, close: Series, drift: int = None, offset: int = None,
-          **kwargs) -> Series:
+def pdist(
+        open_: Series, high: Series, low: Series, close: Series,
+        drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Price Distance (PDIST)
 
     Measures the "distance" covered by price movements.
@@ -27,7 +30,7 @@ def pdist(open_: Series, high: Series, low: Series, close: Series, drift: int = 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     open_ = verify_series(open_)
     high = verify_series(high)
     low = verify_series(low)
@@ -35,7 +38,7 @@ def pdist(open_: Series, high: Series, low: Series, close: Series, drift: int = 
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     pdist = 2 * non_zero_range(high, low)
     pdist += non_zero_range(open_, close.shift(drift)).abs()
     pdist -= non_zero_range(close, open_).abs()
@@ -44,13 +47,13 @@ def pdist(open_: Series, high: Series, low: Series, close: Series, drift: int = 
     if offset != 0:
         pdist = pdist.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         pdist.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         pdist.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     pdist.name = "PDIST"
     pdist.category = "volatility"
 

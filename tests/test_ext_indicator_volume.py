@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from unittest.case import skip
-from .config import sample_data
-
-from unittest import TestCase
+from unittest import TestCase, skip
 from pandas import DataFrame
+
+from .config import sample_data
 
 
 class TestVolumeExtension(TestCase):

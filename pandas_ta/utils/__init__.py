@@ -6,5 +6,6 @@ from ._metrics import *
 from ._numba import *
 from ._signals import *
 from ._stats import *
+from ._study import *
 from ._time import *
 from .data import *

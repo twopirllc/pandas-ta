@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta import Imports
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 
 
-def aroon(high: Series, low: Series, length: int = None, scalar: float = None, talib: bool = None, offset: int = None,
-          **kwargs) -> DataFrame:
+def aroon(
+        high: Series, low: Series,
+        length: int = None, scalar: float = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Aroon & Aroon Oscillator (AROON)
 
     Aroon attempts to identify if a security is trending and how strong.
@@ -30,7 +33,7 @@ def aroon(high: Series, low: Series, length: int = None, scalar: float = None, t
     Returns:
         pd.DataFrame: aroon_up, aroon_down, aroon_osc columns.
     """
-    # Validate Arguments
+    # Validate
     length = length if length and length > 0 else 14
     scalar = float(scalar) if scalar else 100
     high = verify_series(high, length)
@@ -40,7 +43,7 @@ def aroon(high: Series, low: Series, length: int = None, scalar: float = None, t
 
     if high is None or low is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import AROON, AROONOSC
         aroon_down, aroon_up = AROON(high, low, length)
@@ -54,7 +57,13 @@ def aroon(high: Series, low: Series, length: int = None, scalar: float = None, t
         aroon_down *= 1 - (periods_from_ll / length)
         aroon_osc = aroon_up - aroon_down
 
-    # Handle fills
+    # Offset
+    if offset != 0:
+        aroon_up = aroon_up.shift(offset)
+        aroon_down = aroon_down.shift(offset)
+        aroon_osc = aroon_osc.shift(offset)
+
+    # Fill
     if "fillna" in kwargs:
         aroon_up.fillna(kwargs["fillna"], inplace=True)
         aroon_down.fillna(kwargs["fillna"], inplace=True)
@@ -64,20 +73,13 @@ def aroon(high: Series, low: Series, length: int = None, scalar: float = None, t
         aroon_down.fillna(method=kwargs["fill_method"], inplace=True)
         aroon_osc.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Offset
-    if offset != 0:
-        aroon_up = aroon_up.shift(offset)
-        aroon_down = aroon_down.shift(offset)
-        aroon_osc = aroon_osc.shift(offset)
-
-    # Name and Categorize it
+    # Name and Category
     aroon_up.name = f"AROONU_{length}"
     aroon_down.name = f"AROOND_{length}"
     aroon_osc.name = f"AROONOSC_{length}"
 
     aroon_down.category = aroon_up.category = aroon_osc.category = "trend"
 
-    # Prepare DataFrame to return
     data = {
         aroon_down.name: aroon_down,
         aroon_up.name: aroon_up,

@@ -4,8 +4,11 @@ from pandas_ta.statistics import zscore
 from pandas_ta.utils import get_offset, verify_series
 
 
-def cdl_z(open_: Series, high: Series, low: Series, close: Series, length: int = None, full: bool = None,
-          ddof=None, offset: int = None, **kwargs) -> DataFrame:
+def cdl_z(
+        open_: Series, high: Series, low: Series, close: Series,
+        length: int = None, full: bool = None, ddof=None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Candle Type: Z
 
     Normalizes OHLC Candles with a rolling Z Score.
@@ -29,7 +32,7 @@ def cdl_z(open_: Series, high: Series, low: Series, close: Series, length: int =
     Returns:
         pd.Series: CDL_DOJI column.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 30
     ddof = int(ddof) if ddof and ddof >= 0 and ddof < length else 1
     open_ = verify_series(open_, length)
@@ -41,7 +44,7 @@ def cdl_z(open_: Series, high: Series, low: Series, close: Series, length: int =
 
     if open_ is None or high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     if full:
         length = close.size
 
@@ -66,13 +69,13 @@ def cdl_z(open_: Series, high: Series, low: Series, close: Series, length: int =
     if offset != 0:
         df = df.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         df.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     df.name = f"CDL_Z{_props}"
     df.category = "candles"
 

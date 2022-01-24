@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
-from pandas_ta.overlap.ma import ma
+from numpy import nan
 from pandas import Series
+from pandas_ta.ma import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
-def smma(close: Series, length: int = None, mamode: str = None, talib: bool = None, offset: int = None,
-         **kwargs) -> Series:
+def smma(
+        close: Series, length: int = None,
+        mamode: str = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """SMoothed Moving Average (SMMA)
 
     The SMoothed Moving Average (SMMA) is bootstrapped by default with a Simple
@@ -37,7 +40,7 @@ def smma(close: Series, length: int = None, mamode: str = None, talib: bool = No
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 7
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     close = verify_series(close, max(length, min_periods))
@@ -47,10 +50,10 @@ def smma(close: Series, length: int = None, mamode: str = None, talib: bool = No
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     m = close.size
     smma = close.copy()
-    smma[:length - 1] = npNaN
+    smma[:length - 1] = nan
     smma.iloc[length - 1] = ma(mamode, close[0:length], length=length, talib=mode_tal).iloc[-1]
 
     for i in range(length, m):
@@ -60,13 +63,13 @@ def smma(close: Series, length: int = None, mamode: str = None, talib: bool = No
     if offset != 0:
         smma = smma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         smma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         smma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     smma.name = f"SMMA_{length}"
     smma.category = "overlap"
 

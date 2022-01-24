@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
 
 
-def hlc3(high: Series, low: Series, close: Series, talib: bool = None, offset: int = None, **kwargs) -> Series:
+def hlc3(
+        high: Series, low: Series, close: Series, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """HLC3
 
     HLC3 is the average of high, low and close.
@@ -18,25 +21,25 @@ def hlc3(high: Series, low: Series, close: Series, talib: bool = None, offset: i
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import TYPPRICE
         hlc3 = TYPPRICE(high, low, close)
     else:
-        hlc3 = (high + low + close) / 3.0
+        hlc3 = Series((high.values + low.values + close.values) / 3.0, index=close.index)
 
     # Offset
     if offset != 0:
         hlc3 = hlc3.shift(offset)
 
-    # Name & Category
+    # Name and Category
     hlc3.name = "HLC3"
     hlc3.category = "overlap"
 

@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import DataFrame, Series
-from .tsignals import tsignals
-from pandas_ta.utils._signals import cross_value
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.trend import tsignals
+from pandas_ta.utils import cross_value, get_offset, verify_series
 
 
-def xsignals(signal: Series, xa: Series, xb: Series, above: bool = True, long: bool = True, asbool: bool = None,
-             trend_reset: int = 0, trade_offset: int = None, offset: int = None, **kwargs) -> DataFrame:
+def xsignals(
+        signal: Series,
+        xa: Series, xb: Series,
+        above: bool = True, long: bool = True, asbool: bool = None,
+        trend_reset: int = 0, trade_offset: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Cross Signals (XSIGNALS)
 
     Cross Signals returns Trend Signal (TSIGNALS) results for Signal Crossings. This
@@ -65,11 +69,11 @@ def xsignals(signal: Series, xa: Series, xb: Series, above: bool = True, long: b
         Trends (trend: 1, no trend: 0), Trades (Enter: 1, Exit: -1, Otherwise: 0),
         Entries (entry: 1, nothing: 0), Exits (exit: 1, nothing: 0)
     """
-    # Validate Arguments
+    # Validate
     signal = verify_series(signal)
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     if above:
         entries = cross_value(signal, xa)
         exits = -cross_value(signal, xb, above=False)
@@ -79,7 +83,7 @@ def xsignals(signal: Series, xa: Series, xb: Series, above: bool = True, long: b
     trades = entries + exits
 
     # Modify trades to fill gaps for trends
-    trades.replace({0: npNaN}, inplace=True)
+    trades.replace({0: nan}, inplace=True)
     trades.interpolate(method="pad", inplace=True)
     trades.fillna(0, inplace=True)
 
@@ -102,13 +106,13 @@ def xsignals(signal: Series, xa: Series, xb: Series, above: bool = True, long: b
     })
 
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         df.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     df.name = f"XS"
     df.category = "trend"
 

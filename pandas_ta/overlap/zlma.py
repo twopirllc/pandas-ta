@@ -1,13 +1,29 @@
 # -*- coding: utf-8 -*-
-# from . import (
-    # dema, ema, hma, linreg, rma, sma, swma, t3, tema, trima, vidya, wma
-# )
-from pandas_ta.overlap import ma
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.utils import get_offset, verify_series
+from .dema import dema
+from .ema import ema
+from .fwma import fwma
+from .hma import hma
+from .linreg import linreg
+from .midpoint import midpoint
+from .pwma import pwma
+from .rma import rma
+from .sinwma import sinwma
+from .sma import sma
+from .ssf import ssf
+from .swma import swma
+from .t3 import t3
+from .tema import tema
+from .trima import trima
+from .vidya import vidya
+from .wma import wma
 
 
-def zlma(close: Series, length: int = None, mamode: str = None, offset: int = None, **kwargs) -> Series:
+def zlma(
+        close: Series, length: int = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Zero Lag Moving Average (ZLMA)
 
     The Zero Lag Moving Average attempts to eliminate the lag associated
@@ -29,7 +45,7 @@ def zlma(close: Series, length: int = None, mamode: str = None, offset: int = No
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     mamode = mamode.lower() if isinstance(mamode, str) else "ema"
     close = verify_series(close, length)
@@ -37,22 +53,47 @@ def zlma(close: Series, length: int = None, mamode: str = None, offset: int = No
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     lag = int(0.5 * (length - 1))
     close_ = 2 * close - close.shift(lag)
-    zlma = ma(mamode, close_, length=length, **kwargs)
+
+    kwargs.update({"close": close_})
+    kwargs.update({"length": length})
+
+    # Not ideal but it works. Submit a PR for a better solution. =)
+    # This design pattern is undesirable
+    def _ma(**kwargs):
+        if   mamode == "dema":      return dema(**kwargs)
+        elif mamode == "fwma":      return fwma(**kwargs)
+        elif mamode == "hma":       return hma(**kwargs)
+        elif mamode == "linreg":    return linreg(**kwargs)
+        elif mamode == "midpoint":  return midpoint(**kwargs)
+        elif mamode == "pwma":      return pwma(**kwargs)
+        elif mamode == "rma":       return rma(**kwargs)
+        elif mamode == "sinwma":    return sinwma(**kwargs)
+        elif mamode == "sma":       return sma(**kwargs)
+        elif mamode == "ssf":       return ssf(**kwargs)
+        elif mamode == "swma":      return swma(**kwargs)
+        elif mamode == "t3":        return t3(**kwargs)
+        elif mamode == "tema":      return tema(**kwargs)
+        elif mamode == "trima":     return trima(**kwargs)
+        elif mamode == "vidya":     return vidya(**kwargs)
+        elif mamode == "wma":       return wma(**kwargs)
+        else:                       return ema(**kwargs)
+
+    zlma = _ma(**kwargs)
 
     # Offset
     if offset != 0:
         zlma = zlma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         zlma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         zlma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     zlma.name = f"ZL_{zlma.name}"
     zlma.category = "overlap"
 

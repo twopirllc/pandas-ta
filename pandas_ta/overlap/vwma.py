@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from .sma import sma
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.overlap import sma
+from pandas_ta.utils import get_offset, verify_series
 
 
-def vwma(close: Series, volume: Series, length: int = None, offset: int = None, **kwargs) -> Series:
+def vwma(
+        close: Series, volume: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Volume Weighted Moving Average (VWMA)
 
     Volume Weighted Moving Average.
@@ -25,7 +28,7 @@ def vwma(close: Series, volume: Series, length: int = None, offset: int = None, 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     close = verify_series(close, length)
     volume = verify_series(volume, length)
@@ -33,7 +36,7 @@ def vwma(close: Series, volume: Series, length: int = None, offset: int = None, 
 
     if close is None or volume is None: return
 
-    # Calculate Result
+    # Calculate
     pv = close * volume
     vwma = sma(close=pv, length=length) / sma(close=volume, length=length)
 
@@ -41,13 +44,13 @@ def vwma(close: Series, volume: Series, length: int = None, offset: int = None, 
     if offset != 0:
         vwma = vwma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         vwma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         vwma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     vwma.name = f"VWMA_{length}"
     vwma.category = "overlap"
 

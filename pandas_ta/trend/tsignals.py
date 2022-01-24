@@ -3,8 +3,11 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def tsignals(trend: Series, asbool: bool = None, trend_reset=0, trade_offset=None, drift: int = None,
-             offset: int = None, **kwargs) -> DataFrame:
+def tsignals(
+        trend: Series, asbool: bool = None,
+        trend_reset=0, trade_offset=None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Trend Signals
 
     Given a Trend, Trend Signals returns the Trend, Trades, Entries and Exits as
@@ -42,7 +45,7 @@ def tsignals(trend: Series, asbool: bool = None, trend_reset=0, trade_offset=Non
         Trends (trend: 1, no trend: 0), Trades (Enter: 1, Exit: -1, Otherwise: 0),
         Entries (entry: 1, nothing: 0), Exits (exit: 1, nothing: 0)
     """
-    # Validate Arguments
+    # Validate
     trend = verify_series(trend)
     asbool = bool(asbool) if isinstance(asbool, bool) else False
     trend_reset = int(trend_reset) if trend_reset and isinstance(trend_reset, int) else 0
@@ -51,7 +54,7 @@ def tsignals(trend: Series, asbool: bool = None, trend_reset=0, trade_offset=Non
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     trends = trend.astype(int)
     trades = trends.diff(drift).shift(trade_offset).fillna(0).astype(int)
     entries = (trades > 0).astype(int)
@@ -74,13 +77,13 @@ def tsignals(trend: Series, asbool: bool = None, trend_reset=0, trade_offset=Non
     if offset != 0:
         df = df.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         df.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     df.name = f"TS"
     df.category = "trend"
 

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
-from pandas import Series
 
 
-def ao(high: Series, low: Series, fast: int = None, slow: int = None, offset: int = None, **kwargs) -> Series:
+def ao(
+        high: Series, low: Series, fast: int = None, slow: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Awesome Oscillator (AO)
 
     The Awesome Oscillator is an indicator used to measure a security's momentum.
@@ -28,7 +31,7 @@ def ao(high: Series, low: Series, fast: int = None, slow: int = None, offset: in
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 5
     slow = int(slow) if slow and slow > 0 else 34
     if slow < fast:
@@ -40,7 +43,7 @@ def ao(high: Series, low: Series, fast: int = None, slow: int = None, offset: in
 
     if high is None or low is None: return
 
-    # Calculate Result
+    # Calculate
     median_price = 0.5 * (high + low)
     fast_sma = sma(median_price, fast)
     slow_sma = sma(median_price, slow)
@@ -50,13 +53,13 @@ def ao(high: Series, low: Series, fast: int = None, slow: int = None, offset: in
     if offset != 0:
         ao = ao.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ao.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         ao.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     ao.name = f"AO_{fast}_{slow}"
     ao.category = "momentum"
 

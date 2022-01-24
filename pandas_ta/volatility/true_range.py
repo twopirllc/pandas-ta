@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import concat, Series
-from pandas_ta import Imports
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
-def true_range(high: Series, low: Series, close: Series, talib: bool = None, drift: int = None, offset: int = None,
-               **kwargs) -> Series:
+def true_range(
+        high: Series, low: Series, close: Series,
+        talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """True Range
 
     An method to expand a classical range (high minus low) to include
@@ -31,7 +34,7 @@ def true_range(high: Series, low: Series, close: Series, talib: bool = None, dri
     Returns:
         pd.Series: New feature
     """
-    # Validate arguments
+    # Validate
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
@@ -39,7 +42,7 @@ def true_range(high: Series, low: Series, close: Series, talib: bool = None, dri
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import TRANGE
         true_range = TRANGE(high, low, close)
@@ -49,19 +52,19 @@ def true_range(high: Series, low: Series, close: Series, talib: bool = None, dri
         ranges = [high_low_range, high - prev_close, prev_close - low]
         true_range = concat(ranges, axis=1)
         true_range = true_range.abs().max(axis=1)
-        true_range.iloc[:drift] = npNaN
+        true_range.iloc[:drift] = nan
 
     # Offset
     if offset != 0:
         true_range = true_range.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         true_range.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         true_range.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     true_range.name = f"TRUERANGE_{drift}"
     true_range.category = "volatility"
 

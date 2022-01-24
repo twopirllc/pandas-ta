@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta import Imports
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def uo(high: Series, low: Series, close: Series, fast: int = None, medium: int = None, slow: int = None,
-       fast_w: float = None, medium_w: float = None, slow_w: float = None, talib: bool = None, drift: int = None,
-       offset: int = None, **kwargs) -> Series:
+def uo(
+        high: Series, low: Series, close: Series,
+        fast: int = None, medium: int = None, slow: int = None,
+        fast_w: float = None, medium_w: float = None, slow_w: float = None,
+        talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Ultimate Oscillator (UO)
 
     The Ultimate Oscillator is a momentum indicator over three different
@@ -37,7 +41,7 @@ def uo(high: Series, low: Series, close: Series, fast: int = None, medium: int =
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 7
     fast_w = float(fast_w) if fast_w and fast_w > 0 else 4.0
     medium = int(medium) if medium and medium > 0 else 14
@@ -54,7 +58,7 @@ def uo(high: Series, low: Series, close: Series, fast: int = None, medium: int =
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import ULTOSC
         uo = ULTOSC(high, low, close, fast, medium, slow)
@@ -83,13 +87,13 @@ def uo(high: Series, low: Series, close: Series, fast: int = None, medium: int =
     if offset != 0:
         uo = uo.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         uo.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         uo.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     uo.name = f"UO_{fast}_{medium}_{slow}"
     uo.category = "momentum"
 

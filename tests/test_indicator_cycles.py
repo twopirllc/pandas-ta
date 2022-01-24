@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from .config import sample_data, CORRELATION, CORRELATION_THRESHOLD, VERBOSE
-from .context import pandas_ta
-
 from unittest import TestCase, skip
-import pandas.testing as pdt
 from pandas import Series
+
+from .config import sample_data
+from .context import pandas_ta
 
 
 class TestCycles(TestCase):
@@ -34,12 +33,14 @@ class TestCycles(TestCase):
 
 
     def test_ebsw(self):
+        """Cycle: EBSW"""
         result = pandas_ta.ebsw(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "EBSW_40_10")
 
 
     def test_reflex(self):
+        """Cycle: Reflex"""
         result = pandas_ta.reflex(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "REFLEX_20_20_0.04")

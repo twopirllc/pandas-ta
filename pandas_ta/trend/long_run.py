@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
+from pandas_ta.utils import get_offset, verify_series
 from .decreasing import decreasing
 from .increasing import increasing
-from pandas_ta.utils import get_offset, verify_series
-from pandas import Series
 
 
-def long_run(fast: Series, slow: Series, length: int = None, offset: int = None, **kwargs) -> Series:
+def long_run(
+        fast: Series, slow: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Long Run
 
     Long Run was developed by Kevin Johnson that returns a binary Series
@@ -35,7 +38,7 @@ def long_run(fast: Series, slow: Series, length: int = None, offset: int = None,
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 2
     fast = verify_series(fast, length)
     slow = verify_series(slow, length)
@@ -43,7 +46,7 @@ def long_run(fast: Series, slow: Series, length: int = None, offset: int = None,
 
     if fast is None or slow is None: return
 
-    # Calculate Result
+    # Calculate
     pb = increasing(fast, length) & decreasing(slow, length)  # potential bottom or bottom
     bi = increasing(fast, length) & increasing(slow, length)  # fast and slow are increasing
     long_run = pb | bi
@@ -52,13 +55,13 @@ def long_run(fast: Series, slow: Series, length: int = None, offset: int = None,
     if offset != 0:
         long_run = long_run.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         long_run.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         long_run.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     long_run.name = f"LR_{length}"
     long_run.category = "trend"
 

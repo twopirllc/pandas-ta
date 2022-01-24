@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from numpy import log as nplog
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from numpy import log, nan, roll
+from pandas_ta.utils import get_offset, verify_series
 
 
-def log_return(close: Series, length: int = None, cumulative: bool = None, offset: int = None, **kwargs) -> Series:
+def log_return(
+        close: Series, length: int = None, cumulative: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Log Return
 
     Calculates the logarithmic return of a Series.
@@ -26,7 +29,7 @@ def log_return(close: Series, length: int = None, cumulative: bool = None, offse
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 1
     cumulative = bool(cumulative) if cumulative is not None and cumulative else False
     close = verify_series(close, length)
@@ -34,24 +37,26 @@ def log_return(close: Series, length: int = None, cumulative: bool = None, offse
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
+    np_close = close.values
     if cumulative:
-        # log_return = nplog(close).diff(length).cumsum()
-        log_return = nplog(close / close.iloc[0])
+        r = np_close / np_close[0]
     else:
-        log_return = nplog(close / close.shift(length)) # nplog(close).diff(length)
+        r = np_close / roll(np_close, length)
+        r[:length] = nan
+    log_return = Series(log(r), index=close.index)
 
     # Offset
     if offset != 0:
         log_return = log_return.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         log_return.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         log_return.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     log_return.name = f"{'CUM' if cumulative else ''}LOGRET_{length}"
     log_return.category = "performance"
 

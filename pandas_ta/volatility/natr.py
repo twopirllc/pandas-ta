@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
-from .atr import atr
-from pandas_ta import Imports
-from pandas_ta.utils import get_drift, get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.volatility import atr
 
 
-def natr(high: Series, low: Series, close: Series, length: int = None, scalar: float = None, mamode: str = None,
-         talib: bool = None, drift: int = None, offset: int = None, **kwargs) -> Series:
+def natr(
+        high: Series, low: Series, close: Series,
+        length: int = None, scalar: float = None, mamode: str = None,
+        talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Normalized Average True Range (NATR)
 
     Normalized Average True Range attempt to normalize the average true range.
@@ -32,7 +36,7 @@ def natr(high: Series, low: Series, close: Series, length: int = None, scalar: f
     Returns:
         pd.Series: New feature
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     mamode = mamode if isinstance(mamode, str) else "ema"
     scalar = float(scalar) if scalar else 100
@@ -45,25 +49,29 @@ def natr(high: Series, low: Series, close: Series, length: int = None, scalar: f
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import NATR
         natr = NATR(high, low, close, length)
     else:
         natr = scalar / close
-        natr *= atr(high=high, low=low, close=close, length=length, mamode=mamode, drift=drift, offset=offset, talib=mode_tal, **kwargs)
+        natr *= atr(
+                high=high, low=low, close=close, length=length,
+                mamode=mamode, drift=drift, talib=mode_tal,
+                offset=offset, **kwargs
+            )
 
     # Offset
     if offset != 0:
         natr = natr.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         natr.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         natr.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     natr.name = f"NATR_{length}"
     natr.category = "volatility"
 

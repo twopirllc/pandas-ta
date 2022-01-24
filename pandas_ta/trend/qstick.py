@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.overlap import dema, ema, hma, rma, sma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
-from pandas import Series
 
 
-def qstick(open_: Series, close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
+def qstick(
+        open_: Series, close: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Q Stick
 
     The Q Stick indicator, developed by Tushar Chande, attempts to quantify and
@@ -27,7 +30,7 @@ def qstick(open_: Series, close: Series, length: int = None, offset: int = None,
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     ma = kwargs.pop("ma", "sma")
     open_ = verify_series(open_, length)
@@ -36,7 +39,7 @@ def qstick(open_: Series, close: Series, length: int = None, offset: int = None,
 
     if open_ is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     diff = non_zero_range(close, open_)
 
     if ma == "dema":
@@ -54,13 +57,13 @@ def qstick(open_: Series, close: Series, length: int = None, offset: int = None,
     if offset != 0:
         qstick = qstick.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         qstick.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         qstick.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     qstick.name = f"QS_{length}"
     qstick.category = "trend"
 

@@ -4,7 +4,10 @@ from pandas_ta.overlap import linreg
 from pandas_ta.utils import get_offset, verify_series
 
 
-def cti(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
+def cti(
+        close: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Correlation Trend Indicator (CTI)
 
     The Correlation Trend Indicator is an oscillator created by John Ehler in 2020.
@@ -24,24 +27,28 @@ def cti(close: Series, length: int = None, offset: int = None, **kwargs) -> Seri
     Returns:
         pd.Series: Series of the CTI values for the given period.
     """
+    # Validate
     length = int(length) if length and length > 0 else 12
     close = verify_series(close, length)
     offset = get_offset(offset)
 
     if close is None: return
 
+    # Calculate
     cti = linreg(close, length=length, r=True)
 
     # Offset
     if offset != 0:
         cti = cti.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         cti.fillna(method=kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         cti.fillna(method=kwargs["fill_method"], inplace=True)
 
+    # Name and Category
     cti.name = f"CTI_{length}"
     cti.category = "momentum"
+
     return cti

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, signed_series, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
-def obv(close: Series, volume: Series, talib: bool = None, offset: int = None, **kwargs) -> Series:
+def obv(
+        close: Series, volume: Series, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """On Balance Volume (OBV)
 
     On Balance Volume is a cumulative indicator to measure buying and selling
@@ -29,13 +32,13 @@ def obv(close: Series, volume: Series, talib: bool = None, offset: int = None, *
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     close = verify_series(close)
     volume = verify_series(volume)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import OBV
         obv = OBV(close, volume)
@@ -47,13 +50,13 @@ def obv(close: Series, volume: Series, talib: bool = None, offset: int = None, *
     if offset != 0:
         obv = obv.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         obv.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         obv.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     obv.name = f"OBV"
     obv.category = "volume"
 

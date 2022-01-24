@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
-from pandas import Series
 
 
-def massi(high: Series, low: Series, fast: int = None, slow: int = None, offset: int = None, **kwargs) -> Series:
+def massi(
+        high: Series, low: Series, fast: int = None, slow: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Mass Index (MASSI)
 
     The Mass Index is a non-directional volatility indicator that utilitizes the
@@ -27,7 +30,7 @@ def massi(high: Series, low: Series, fast: int = None, slow: int = None, offset:
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 9
     slow = int(slow) if slow and slow > 0 else 25
     if slow < fast:
@@ -40,7 +43,7 @@ def massi(high: Series, low: Series, fast: int = None, slow: int = None, offset:
 
     if high is None or low is None: return
 
-    # Calculate Result
+    # Calculate
     high_low_range = non_zero_range(high, low)
     hl_ema1 = ema(close=high_low_range, length=fast, **kwargs)
     hl_ema2 = ema(close=hl_ema1, length=fast, **kwargs)
@@ -52,13 +55,13 @@ def massi(high: Series, low: Series, fast: int = None, slow: int = None, offset:
     if offset != 0:
         massi = massi.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         massi.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         massi.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     massi.name = f"MASSI_{fast}_{slow}"
     massi.category = "volatility"
 

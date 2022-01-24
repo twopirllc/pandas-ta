@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta.overlap import hl2
-from pandas_ta.volatility import atr
 from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.volatility import atr
 
 
-def supertrend(high: Series, low: Series, close: Series, length: int = None, multiplier: float = None,
-               offset: int = None, **kwargs) -> DataFrame:
+def supertrend(
+        high: Series, low: Series, close: Series,
+        length: int = None, multiplier: float = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Supertrend (supertrend)
 
     Supertrend is an overlap indicator. It is used to help identify trend
@@ -33,7 +36,7 @@ def supertrend(high: Series, low: Series, close: Series, length: int = None, mul
     Returns:
         pd.DataFrame: SUPERT (trend), SUPERTd (direction), SUPERTl (long), SUPERTs (short) columns.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 7
     multiplier = float(multiplier) if multiplier and multiplier > 0 else 3.0
     high = verify_series(high, length)
@@ -43,10 +46,10 @@ def supertrend(high: Series, low: Series, close: Series, length: int = None, mul
 
     if high is None or low is None or close is None: return
 
-    # Calculate Results
+    # Calculate
     m = close.size
     dir_, trend = [1] * m, [0] * m
-    long, short = [npNaN] * m, [npNaN] * m
+    long, short = [nan] * m, [nan] * m
 
     hl2_ = hl2(high, low)
     matr = multiplier * atr(high, low, close, length)
@@ -70,7 +73,6 @@ def supertrend(high: Series, low: Series, close: Series, length: int = None, mul
         else:
             trend[i] = short[i] = upperband.iloc[i]
 
-    # Prepare DataFrame to return
     _props = f"_{length}_{multiplier}"
     df = DataFrame({
             f"SUPERT{_props}": trend,
@@ -82,11 +84,11 @@ def supertrend(high: Series, low: Series, close: Series, length: int = None, mul
     df.name = f"SUPERT{_props}"
     df.category = "overlap"
 
-    # Apply offset if needed
+    # Offset
     if offset != 0:
         df = df.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
 

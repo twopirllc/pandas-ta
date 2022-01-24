@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from numpy import sqrt as npsqrt
-from .variance import variance
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
+from numpy import sqrt
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
+from .variance import variance
 
 
-def stdev(close: Series, length: int = None, ddof: int = None, talib: bool = None, offset: int = None,
-          **kwargs) -> Series:
+def stdev(
+        close: Series, length: int = None,
+        ddof: int = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Rolling Standard Deviation
 
     Calculates the Standard Deviation over a rolling period.
@@ -30,7 +33,7 @@ def stdev(close: Series, length: int = None, ddof: int = None, talib: bool = Non
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 30
     ddof = int(ddof) if isinstance(ddof, int) and ddof >= 0 and ddof < length else 1
     close = verify_series(close, length)
@@ -39,24 +42,24 @@ def stdev(close: Series, length: int = None, ddof: int = None, talib: bool = Non
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import STDDEV
         stdev = STDDEV(close, length)
     else:
-        stdev = variance(close=close, length=length, ddof=ddof, talib=mode_tal).apply(npsqrt)
+        stdev = variance(close=close, length=length, ddof=ddof, talib=mode_tal).apply(sqrt)
 
     # Offset
     if offset != 0:
         stdev = stdev.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         stdev.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         stdev.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     stdev.name = f"STDEV_{length}"
     stdev.category = "statistics"
 

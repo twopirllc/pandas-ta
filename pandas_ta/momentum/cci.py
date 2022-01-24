@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.overlap import hlc3, sma
-from pandas_ta.statistics.mad import mad
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.overlap import hlc3, sma
+from pandas_ta.statistics import mad
+from pandas_ta.utils import get_offset, verify_series
 
 
-def cci(high: Series, low: Series, close: Series, length: int = None, c: float = None,
-        talib: bool = None, offset: int = None, **kwargs) -> Series:
+def cci(
+        high: Series, low: Series, close: Series, length: int = None,
+        c: float = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Commodity Channel Index (CCI)
 
     Commodity Channel Index is a momentum oscillator used to primarily identify
@@ -33,7 +36,7 @@ def cci(high: Series, low: Series, close: Series, length: int = None, c: float =
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     c = float(c) if c and c > 0 else 0.015
     high = verify_series(high, length)
@@ -44,7 +47,7 @@ def cci(high: Series, low: Series, close: Series, length: int = None, c: float =
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import CCI
         cci = CCI(high, low, close, length)
@@ -60,13 +63,13 @@ def cci(high: Series, low: Series, close: Series, length: int = None, c: float =
     if offset != 0:
         cci = cci.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         cci.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         cci.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     cci.name = f"CCI_{length}_{c}"
     cci.category = "momentum"
 

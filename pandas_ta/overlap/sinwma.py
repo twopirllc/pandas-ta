@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from numpy import pi as npPi
-from numpy import sin as npSin
+from numpy import pi, sin
 from pandas import Series
 from pandas_ta.utils import get_offset, verify_series, weights
 
 
-def sinwma(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
+def sinwma(
+        close: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Sine Weighted Moving Average (SWMA)
 
     A weighted average using sine cycles. The middle term(s) of the average have the
@@ -27,15 +29,15 @@ def sinwma(close: Series, length: int = None, offset: int = None, **kwargs) -> S
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     close = verify_series(close, length)
     offset = get_offset(offset)
 
     if close is None: return
 
-    # Calculate Result
-    sines = Series([npSin((i + 1) * npPi / (length + 1)) for i in range(0, length)])
+    # Calculate
+    sines = Series([sin((i + 1) * pi / (length + 1)) for i in range(0, length)])
     w = sines / sines.sum()
 
     sinwma = close.rolling(length, min_periods=length).apply(weights(w), raw=True)
@@ -44,13 +46,13 @@ def sinwma(close: Series, length: int = None, offset: int = None, **kwargs) -> S
     if offset != 0:
         sinwma = sinwma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         sinwma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         sinwma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     sinwma.name = f"SINWMA_{length}"
     sinwma.category = "overlap"
 

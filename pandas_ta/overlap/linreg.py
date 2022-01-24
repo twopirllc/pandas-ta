@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import array as npArray
-from numpy import arctan as npAtan
-from numpy import nan as npNaN
-from numpy import pi as npPi
-from numpy.version import version as npVersion
+from numpy import arctan, nan, pi, zeros_like
+from numpy.version import version
 from pandas import Series
-from pandas_ta import Imports
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
-def linreg(close: Series, length: int = None, talib: int = None, offset: int = None, **kwargs) -> Series:
+def linreg(
+        close: Series, length: int = None, talib: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Linear Regression Moving Average (linreg)
 
     Linear Regression Moving Average (LINREG). This is a simplified version of a
@@ -42,7 +42,7 @@ def linreg(close: Series, length: int = None, talib: int = None, offset: int = N
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     close = verify_series(close, length)
     offset = get_offset(offset)
@@ -56,7 +56,9 @@ def linreg(close: Series, length: int = None, talib: int = None, offset: int = N
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
+    np_close = close.values
+
     if Imports["talib"] and mode_tal:
         from talib import LINEARREG, LINEARREG_ANGLE, LINEARREG_INTERCEPT, LINEARREG_SLOPE, TSF
         if tsf:
@@ -70,6 +72,7 @@ def linreg(close: Series, length: int = None, talib: int = None, offset: int = N
         else:
             linreg = LINEARREG(close, timeperiod=length)
     else:
+        linreg_ = zeros_like(np_close)
         x = range(1, length + 1)  # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
         x_sum = 0.5 * length * (length + 1)
         x2_sum = x_sum * (2 * length + 1) / 3
@@ -87,9 +90,9 @@ def linreg(close: Series, length: int = None, talib: int = None, offset: int = N
                 return b
 
             if angle:
-                theta = npAtan(m)
+                theta = arctan(m)
                 if degrees:
-                    theta *= 180 / npPi
+                    theta *= 180 / pi
                 return theta
 
             if r:
@@ -100,25 +103,26 @@ def linreg(close: Series, length: int = None, talib: int = None, offset: int = N
 
             return m * length + b if not tsf else m * (length - 1) + b
 
-        if npVersion >= "1.20.0":
+        if version >= "1.20.0":
             from numpy.lib.stride_tricks import sliding_window_view
-            linreg_ = [linear_regression(_) for _ in sliding_window_view(npArray(close), length)]
-        else:
-            linreg_ = [linear_regression(_) for _ in strided_window(npArray(close), length)]
+            linreg_ = [linear_regression(_) for _ in sliding_window_view(np_close, length)]
 
-        linreg = Series([npNaN] * (length - 1) + linreg_, index=close.index)
+        else:
+            linreg_ = [linear_regression(_) for _ in strided_window(np_close, length)]
+
+        linreg = Series([nan] * (length - 1) + linreg_, index=close.index)
 
     # Offset
     if offset != 0:
         linreg = linreg.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         linreg.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         linreg.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     linreg.name = f"LR"
     if slope: linreg.name += "m"
     if intercept: linreg.name += "b"

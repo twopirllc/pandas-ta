@@ -4,8 +4,11 @@ from pandas_ta.overlap import swma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def rvgi(open_: Series, high: Series, low: Series, close: Series, length: int = None, swma_length: int = None,
-         offset: int = None, **kwargs) -> Series:
+def rvgi(
+        open_: Series, high: Series, low: Series, close: Series,
+        length: int = None, swma_length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Relative Vigor Index (RVGI)
 
     The Relative Vigor Index attempts to measure the strength of a trend relative to
@@ -32,7 +35,7 @@ def rvgi(open_: Series, high: Series, low: Series, close: Series, length: int = 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     high_low_range = non_zero_range(high, low)
     close_open_range = non_zero_range(close, open_)
     length = int(length) if length and length > 0 else 14
@@ -46,7 +49,7 @@ def rvgi(open_: Series, high: Series, low: Series, close: Series, length: int = 
 
     if open_ is None or high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     numerator = swma(close_open_range, length=swma_length).rolling(length).sum()
     denominator = swma(high_low_range, length=swma_length).rolling(length).sum()
 
@@ -58,7 +61,7 @@ def rvgi(open_: Series, high: Series, low: Series, close: Series, length: int = 
         rvgi = rvgi.shift(offset)
         signal = signal.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         rvgi.fillna(kwargs["fillna"], inplace=True)
         signal.fillna(kwargs["fillna"], inplace=True)
@@ -66,12 +69,11 @@ def rvgi(open_: Series, high: Series, low: Series, close: Series, length: int = 
         rvgi.fillna(method=kwargs["fill_method"], inplace=True)
         signal.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     rvgi.name = f"RVGI_{length}_{swma_length}"
     signal.name = f"RVGIs_{length}_{swma_length}"
     rvgi.category = signal.category = "momentum"
 
-    # Prepare DataFrame to return
     df = DataFrame({rvgi.name: rvgi, signal.name: signal})
     df.name = f"RVGI_{length}_{swma_length}"
     df.category = rvgi.category

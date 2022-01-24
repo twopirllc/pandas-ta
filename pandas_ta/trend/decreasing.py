@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_drift, get_offset, is_percent, verify_series
 from pandas import Series
+from pandas_ta.utils import get_drift, get_offset, is_percent, verify_series
 
 
-def decreasing(close: Series, length: int = None, strict: bool = None, asint: bool = None, percent: float = None,
-               drift: int = None, offset: int = None, **kwargs) -> Series:
+def decreasing(
+        close: Series, length: int = None, strict: bool = None,
+        asint: bool = None, percent: float = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Decreasing
 
     Returns True if the series is decreasing over a period, False otherwise.
@@ -28,7 +31,7 @@ def decreasing(close: Series, length: int = None, strict: bool = None, asint: bo
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 1
     strict = strict if isinstance(strict, bool) else False
     asint = asint if isinstance(asint, bool) else True
@@ -39,7 +42,7 @@ def decreasing(close: Series, length: int = None, strict: bool = None, asint: bo
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     close_ = (1 - 0.01 * percent) * close if percent else close
     if strict:
         # Returns value as float64? Have to cast to bool
@@ -59,13 +62,13 @@ def decreasing(close: Series, length: int = None, strict: bool = None, asint: bo
     if offset != 0:
         decreasing = decreasing.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         decreasing.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         decreasing.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _percent = f"_{0.01 * percent}" if percent else ''
     _props = f"{'S' if strict else ''}DEC{'p' if percent else ''}"
     decreasing.name = f"{_props}_{length}{_percent}"

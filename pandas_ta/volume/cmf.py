@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
 from pandas import Series
+from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def cmf(high: Series, low: Series, close: Series, volume: Series, open_: Series = None, length: int = None,
-        offset: int = None, **kwargs) -> Series:
+def cmf(
+        high: Series, low: Series, close: Series, volume: Series,
+        open_: Series = None, length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Chaikin Money Flow (CMF)
 
     Chailin Money Flow measures the amount of money flow volume over a specific
@@ -30,7 +33,7 @@ def cmf(high: Series, low: Series, close: Series, volume: Series, open_: Series 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 20
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     _length = max(length, min_periods)
@@ -42,7 +45,7 @@ def cmf(high: Series, low: Series, close: Series, volume: Series, open_: Series 
 
     if high is None or low is None or close is None or volume is None: return
 
-    # Calculate Result
+    # Calculate
     if open_ is not None:
         open_ = verify_series(open_)
         ad = non_zero_range(close, open_)  # AD with Open
@@ -57,13 +60,13 @@ def cmf(high: Series, low: Series, close: Series, volume: Series, open_: Series 
     if offset != 0:
         cmf = cmf.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         cmf.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         cmf.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     cmf.name = f"CMF_{length}"
     cmf.category = "volume"
 

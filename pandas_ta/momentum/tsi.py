@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta.overlap import ema, ma
+from pandas_ta.ma import ma
+from pandas_ta.overlap import ema
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def tsi(close: Series, fast: int = None, slow: int = None, signal: int = None, scalar: float = None,
-        mamode: str = None, drift: int = None, offset: int = None, **kwargs) -> DataFrame:
+def tsi(
+        close: Series, fast: int = None, slow: int = None, signal: int = None,
+        scalar: float = None, mamode: str = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """True Strength Index (TSI)
 
     The True Strength Index is a momentum indicator used to identify short-term
@@ -33,7 +37,7 @@ def tsi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
     Returns:
         pd.DataFrame: tsi, signal.
     """
-    # Validate Arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 13
     slow = int(slow) if slow and slow > 0 else 25
     signal = int(signal) if signal and signal > 0 else 13
@@ -48,7 +52,7 @@ def tsi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     diff = close.diff(drift)
     slow_ema = ema(close=diff, length=slow, **kwargs)
     fast_slow_ema = ema(close=slow_ema, length=fast, **kwargs)
@@ -65,7 +69,7 @@ def tsi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
         tsi = tsi.shift(offset)
         tsi_signal = tsi_signal.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         tsi.fillna(kwargs["fillna"], inplace=True)
         tsi_signal.fillna(kwargs["fillna"], inplace=True)
@@ -73,12 +77,11 @@ def tsi(close: Series, fast: int = None, slow: int = None, signal: int = None, s
         tsi.fillna(method=kwargs["fill_method"], inplace=True)
         tsi_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     tsi.name = f"TSI_{fast}_{slow}_{signal}"
     tsi_signal.name = f"TSIs_{fast}_{slow}_{signal}"
     tsi.category = tsi_signal.category =  "momentum"
 
-    # Prepare DataFrame to return
     df = DataFrame({tsi.name: tsi, tsi_signal.name: tsi_signal})
     df.name = f"TSI_{fast}_{slow}_{signal}"
     df.category = "momentum"

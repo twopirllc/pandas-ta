@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
 
 
-def willr(high: Series, low: Series, close: Series, length: int = None, talib: bool = None, offset: int = None,
-          **kwargs) -> Series:
+def willr(
+        high: Series, low: Series, close: Series,
+        length: int = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """William's Percent R (WILLR)
 
     William's Percent R is a momentum oscillator similar to the RSI that
@@ -30,7 +33,7 @@ def willr(high: Series, low: Series, close: Series, length: int = None, talib: b
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     _length = max(length, min_periods)
@@ -42,7 +45,7 @@ def willr(high: Series, low: Series, close: Series, length: int = None, talib: b
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import WILLR
         willr = WILLR(high, low, close, length)
@@ -56,13 +59,13 @@ def willr(high: Series, low: Series, close: Series, length: int = None, talib: b
     if offset != 0:
         willr = willr.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         willr.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         willr.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     willr.name = f"WILLR_{length}"
     willr.category = "momentum"
 

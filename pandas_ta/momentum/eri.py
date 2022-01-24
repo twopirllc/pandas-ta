@@ -4,7 +4,10 @@ from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
 
-def eri(high: Series, low: Series, close: Series, length: int = None, offset: int = None, **kwargs) -> DataFrame:
+def eri(
+        high: Series, low: Series, close: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Elder Ray Index (ERI)
 
     Elder's Bulls Ray Index contains his Bull and Bear Powers. Which are useful ways
@@ -34,7 +37,7 @@ def eri(high: Series, low: Series, close: Series, length: int = None, offset: in
     Returns:
         pd.DataFrame: bull power and bear power columns.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 13
     high = verify_series(high, length)
     low = verify_series(low, length)
@@ -43,7 +46,7 @@ def eri(high: Series, low: Series, close: Series, length: int = None, offset: in
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     ema_ = ema(close, length)
     bull = high - ema_
     bear = low - ema_
@@ -53,7 +56,7 @@ def eri(high: Series, low: Series, close: Series, length: int = None, offset: in
         bull = bull.shift(offset)
         bear = bear.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         bull.fillna(kwargs["fillna"], inplace=True)
         bear.fillna(kwargs["fillna"], inplace=True)
@@ -61,12 +64,11 @@ def eri(high: Series, low: Series, close: Series, length: int = None, offset: in
         bull.fillna(method=kwargs["fill_method"], inplace=True)
         bear.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     bull.name = f"BULLP_{length}"
     bear.name = f"BEARP_{length}"
     bull.category = bear.category = "momentum"
 
-    # Prepare DataFrame to return
     data = {bull.name: bull, bear.name: bear}
     df = DataFrame(data)
     df.name = f"ERI_{length}"

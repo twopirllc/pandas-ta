@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import sma
-from .stdev import stdev
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.overlap import sma
+from pandas_ta.statistics import stdev
+from pandas_ta.utils import get_offset, verify_series
 
 
-def zscore(close: Series, length: int = None, std: float = None, offset: int = None, **kwargs) -> Series:
+def zscore(
+        close: Series, length: int = None, std: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Rolling Z Score
 
     Calculates the Z Score over a rolling period.
@@ -23,7 +26,7 @@ def zscore(close: Series, length: int = None, std: float = None, offset: int = N
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 1 else 30
     std = float(std) if std and std > 1 else 1
     close = verify_series(close, length)
@@ -31,7 +34,7 @@ def zscore(close: Series, length: int = None, std: float = None, offset: int = N
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     std *= stdev(close=close, length=length, **kwargs)
     mean = sma(close=close, length=length, **kwargs)
     zscore = (close - mean) / std
@@ -40,13 +43,13 @@ def zscore(close: Series, length: int = None, std: float = None, offset: int = N
     if offset != 0:
         zscore = zscore.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         zscore.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         zscore.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     zscore.name = f"ZS_{length}"
     zscore.category = "statistics"
 

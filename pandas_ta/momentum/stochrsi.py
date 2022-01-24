@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from .rsi import rsi
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
+from pandas_ta.momentum import rsi
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def stochrsi(close: Series, length: int = None, rsi_length: int = None, k: int = None, d: int = None,
-             mamode: str = None, offset: int = None, **kwargs) -> DataFrame:
+def stochrsi(
+        close: Series, length: int = None, rsi_length: int = None,
+        k: int = None, d: int = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Stochastic (STOCHRSI)
 
     "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll and published in Stock & Commodities V.11:5 (189-199)
@@ -72,14 +75,13 @@ def stochrsi(close: Series, length: int = None, rsi_length: int = None, k: int =
         stochrsi_k.fillna(method=kwargs["fill_method"], inplace=True)
         stochrsi_d.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize
+    # Name and Category
     _name = "STOCHRSI"
     _props = f"_{length}_{rsi_length}_{k}_{d}"
     stochrsi_k.name = f"{_name}k{_props}"
     stochrsi_d.name = f"{_name}d{_props}"
     stochrsi_k.category = stochrsi_d.category = "momentum"
 
-    # Return DataFrame
     data = {stochrsi_k.name: stochrsi_k, stochrsi_d.name: stochrsi_d}
     df = DataFrame(data)
     df.name = f"{_name}{_props}"

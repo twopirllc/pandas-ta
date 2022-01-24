@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta.ma import ma
+from pandas_ta.utils import get_offset, verify_series
 from .long_run import long_run
 from .short_run import short_run
-from pandas_ta.overlap import ma
-from pandas_ta.utils import get_offset, verify_series
 
 
-def amat(close: Series, fast: int = None, slow: int = None, lookback: int = None, mamode: str = None,
-         offset: int = None, **kwargs) -> DataFrame:
+def amat(
+        close: Series, fast: int = None, slow: int = None,
+        lookback: int = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Archer Moving Averages Trends (AMAT)
 
     Archer Moving Averages Trends (AMAT) developed by Kevin Johnson provides
@@ -35,7 +38,7 @@ def amat(close: Series, fast: int = None, slow: int = None, lookback: int = None
     Returns:
         pd.DataFrame: AMAT_LR, AMAT_SR columns.
     """
-    # Validate Arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 8
     slow = int(slow) if slow and slow > 0 else 21
     lookback = int(lookback) if lookback and lookback > 0 else 2
@@ -46,7 +49,7 @@ def amat(close: Series, fast: int = None, slow: int = None, lookback: int = None
 
     if close is None: return
 
-    # # Calculate Result
+    # Calculate
     fast_ma = ma(mamode, close, length=fast, **kwargs)
     slow_ma = ma(mamode, close, length=slow, **kwargs)
 
@@ -58,7 +61,7 @@ def amat(close: Series, fast: int = None, slow: int = None, lookback: int = None
         mas_long = mas_long.shift(offset)
         mas_short = mas_short.shift(offset)
 
-    # # Handle fills
+    # Fill
     if "fillna" in kwargs:
         mas_long.fillna(kwargs["fillna"], inplace=True)
         mas_short.fillna(kwargs["fillna"], inplace=True)
@@ -67,13 +70,12 @@ def amat(close: Series, fast: int = None, slow: int = None, lookback: int = None
         mas_long.fillna(method=kwargs["fill_method"], inplace=True)
         mas_short.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Prepare DataFrame to return
     amatdf = DataFrame({
         f"AMAT{mamode[0]}_LR_{fast}_{slow}_{lookback}": mas_long,
         f"AMAT{mamode[0]}_SR_{fast}_{slow}_{lookback}": mas_short
     })
 
-    # Name and Categorize it
+    # Name and Category
     amatdf.name = f"AMAT{mamode[0]}_{fast}_{slow}_{lookback}"
     amatdf.category = "trend"
 

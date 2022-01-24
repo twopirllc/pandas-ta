@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta import Imports
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
-def stochf(high: Series, low: Series, close: Series, k: int = None, d: int = None, mamode: str = None,
-           talib: bool = None, offset: int = None, **kwargs) -> DataFrame:
+def stochf(
+        high: Series, low: Series, close: Series, k: int = None, d: int = None,
+        mamode: str = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Fast Stochastic (STOCHF)
 
     The Fast Stochastic Oscillator (STOCHF) was developed by George Lane in the
@@ -81,9 +84,9 @@ def stochf(high: Series, low: Series, close: Series, k: int = None, d: int = Non
     stochf_d.name = f"{_name}d{_props}"
     stochf_k.category = stochf_d.category = "momentum"
 
-    # Return DataFrame
     data = {stochf_k.name: stochf_k, stochf_d.name: stochf_d}
     df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"
     df.category = stochf_k.category
+
     return df

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import ma
-from pandas_ta.utils import get_drift, get_offset, verify_series
 from pandas import Series
+from pandas_ta.ma import ma
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def efi(close: Series, volume: Series, length: int = None, mamode: str = None, drift: int = None, offset: int = None,
-        **kwargs) -> Series:
+def efi(
+        close: Series, volume: Series, length: int = None,
+        mamode: str = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Elder's Force Index (EFI)
 
     Elder's Force Index measures the power behind a price movement using price
@@ -30,7 +33,7 @@ def efi(close: Series, volume: Series, length: int = None, mamode: str = None, d
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 13
     mamode = mamode if isinstance(mamode, str) else "ema"
     close = verify_series(close, length)
@@ -40,7 +43,7 @@ def efi(close: Series, volume: Series, length: int = None, mamode: str = None, d
 
     if close is None or volume is None: return
 
-    # Calculate Result
+    # Calculate
     pv_diff = close.diff(drift) * volume
     efi = ma(mamode, pv_diff, length=length)
 
@@ -48,13 +51,13 @@ def efi(close: Series, volume: Series, length: int = None, mamode: str = None, d
     if offset != 0:
         efi = efi.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         efi.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         efi.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     efi.name = f"EFI_{length}"
     efi.category = "volume"
 

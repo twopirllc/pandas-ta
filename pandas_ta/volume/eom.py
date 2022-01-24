@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+from pandas import Series
 from pandas_ta.overlap import hl2, sma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
-from pandas import Series
 
 
-def eom(high: Series, low: Series, close: Series, volume: Series, length: int = None, divisor=None, drift: int = None,
-        offset: int = None, **kwargs) -> Series:
+def eom(
+        high: Series, low: Series, close: Series, volume: Series,
+        length: int = None, divisor=None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Ease of Movement (EOM)
 
     Ease of Movement is a volume based oscillator that is designed to measure the
@@ -32,7 +35,7 @@ def eom(high: Series, low: Series, close: Series, volume: Series, length: int = 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     divisor = divisor if divisor and divisor > 0 else 100000000
     high = verify_series(high, length)
@@ -44,7 +47,7 @@ def eom(high: Series, low: Series, close: Series, volume: Series, length: int = 
 
     if high is None or low is None or close is None or volume is None: return
 
-    # Calculate Result
+    # Calculate
     high_low_range = non_zero_range(high, low)
     distance  = hl2(high=high, low=low)
     distance -= hl2(high=high.shift(drift), low=low.shift(drift))
@@ -57,13 +60,13 @@ def eom(high: Series, low: Series, close: Series, volume: Series, length: int = 
     if offset != 0:
         eom = eom.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         eom.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         eom.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     eom.name = f"EOM_{length}_{divisor}"
     eom.category = "volume"
 

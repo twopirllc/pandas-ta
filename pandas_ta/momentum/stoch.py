@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta import Imports
-from pandas_ta.overlap import ma
+from pandas_ta.ma import ma
+from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
-def stoch(high: Series, low: Series, close: Series, k: int = None, d: int = None, smooth_k: int = None,
-          mamode: str = None, talib: bool = None, offset: int = None, **kwargs) -> DataFrame:
+def stoch(
+        high: Series, low: Series, close: Series,
+        k: int = None, d: int = None, smooth_k: int = None,
+        mamode: str = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Stochastic (STOCH)
 
     The Stochastic Oscillator (STOCH) was developed by George Lane in the 1950's.
@@ -90,9 +94,9 @@ def stoch(high: Series, low: Series, close: Series, k: int = None, d: int = None
     stoch_d.name = f"{_name}d{_props}"
     stoch_k.category = stoch_d.category = "momentum"
 
-    # Return DataFrame
     data = {stoch_k.name: stoch_k, stoch_d.name: stoch_d}
     df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"
     df.category = stoch_k.category
+
     return df

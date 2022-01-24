@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import floor as npFloor
-from numpy import append as npAppend
-from numpy import arange as npArange
-from numpy import array as npArray
-from numpy import exp as npExp
-from numpy import nan as npNaN
-from numpy import tensordot as npTensordot
+from numpy import append, arange, array, exp, floor, nan, tensordot
 from numpy.version import version as npVersion
 from pandas import Series
 from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
-def alma(close: Series, length: int = None, sigma: float = None, dist_offset: float = None, offset: int = None,
-         **kwargs) -> Series:
+def alma(
+        close: Series, length: int = None,
+        sigma: float = None, dist_offset: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Arnaud Legoux Moving Average (ALMA)
 
     The ALMA moving average uses the curve of the Normal (Gauss) distribution, which
@@ -40,7 +37,7 @@ def alma(close: Series, length: int = None, sigma: float = None, dist_offset: fl
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 9
     sigma = float(sigma) if isinstance(sigma, float) and sigma > 0 else 6.0
     if isinstance(dist_offset, float) and dist_offset >= 0 and dist_offset <= 1:
@@ -52,31 +49,32 @@ def alma(close: Series, length: int = None, sigma: float = None, dist_offset: fl
 
     if close is None: return
 
-    # Calculate Result
-    x = npArange(length)
-    k = npFloor(offset_ * (length - 1))
-    weights = npExp(-0.5 * ((sigma / length) * (x - k)) ** 2)
+    # Calculate
+    np_close = close.values
+    x = arange(length)
+    k = floor(offset_ * (length - 1))
+    weights = exp(-0.5 * ((sigma / length) * (x - k)) ** 2)
     weights /= weights.sum()
 
     if npVersion >= "1.20.0":
         from numpy.lib.stride_tricks import sliding_window_view
-        window = sliding_window_view(npArray(close), length)
+        window = sliding_window_view(np_close, length)
     else:
-        window = strided_window(npArray(close), length)
-    result = npAppend(npArray([npNaN] * (length - 1)), npTensordot(window, weights, axes=1))
+        window = strided_window(np_close, length)
+    result = append(array([nan] * (length - 1)), tensordot(window, weights, axes=1))
     alma = Series(result, index=close.index)
 
     # Offset
     if offset != 0:
         alma = alma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         alma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         alma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     alma.name = f"ALMA_{length}_{sigma}_{offset_}"
     alma.category = "overlap"
 

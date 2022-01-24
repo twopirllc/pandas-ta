@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
+from pandas import Series
+from pandas_ta.maps import Imports
 from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series
-from pandas import Series
 
 
-def cmo(close: Series, length: int = None, scalar: float = None, talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs) -> Series:
+def cmo(
+        close: Series, length: int = None, scalar: float = None,
+        talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Chande Momentum Oscillator (CMO)
 
     Attempts to capture the momentum of an asset with overbought at 50 and
@@ -33,7 +36,7 @@ def cmo(close: Series, length: int = None, scalar: float = None, talib: bool = N
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar else 100
     close = verify_series(close, length)
@@ -43,7 +46,7 @@ def cmo(close: Series, length: int = None, scalar: float = None, talib: bool = N
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import CMO
         cmo = CMO(close, length)
@@ -65,13 +68,13 @@ def cmo(close: Series, length: int = None, scalar: float = None, talib: bool = N
     if offset != 0:
         cmo = cmo.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         cmo.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         cmo.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     cmo.name = f"CMO_{length}"
     cmo.category = "momentum"
 

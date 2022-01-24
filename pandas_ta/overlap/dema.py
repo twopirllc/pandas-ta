@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from .ema import ema
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
+from .ema import ema
 
 
-def dema(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
+def dema(
+        close: Series, length: int = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Double Exponential Moving Average (DEMA)
 
     The Double Exponential Moving Average attempts to a smoother average with less
@@ -28,7 +31,7 @@ def dema(close: Series, length: int = None, talib: bool = None, offset: int = No
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     close = verify_series(close, length)
     offset = get_offset(offset)
@@ -36,7 +39,7 @@ def dema(close: Series, length: int = None, talib: bool = None, offset: int = No
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import DEMA
         dema = DEMA(close, length)
@@ -49,13 +52,13 @@ def dema(close: Series, length: int = None, talib: bool = None, offset: int = No
     if offset != 0:
         dema = dema.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         dema.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         dema.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     dema.name = f"DEMA_{length}"
     dema.category = "overlap"
 

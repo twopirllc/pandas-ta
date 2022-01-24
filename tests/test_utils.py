@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
-from .config import sample_data
-from .context import pandas_ta
-
-from unittest import skip, TestCase
+from unittest import TestCase, skip
 
 import numpy as np
 import numpy.testing as npt
 from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_ns_dtype, is_datetime64tz_dtype
+
+from pandas_ta.performance import percent_return
+from pandas_ta.utils import sample as pta_sample
+
+from .config import sample_data
+from .context import pandas_ta
 
 
 data = {
@@ -146,8 +149,8 @@ class TestUtilities(TestCase):
         result = self.utils.df_dates(self.data)
         self.assertEqual(None, result)
 
-        result = self.utils.df_dates(self.data, "1999-11-01")
-        self.assertEqual(1, result.shape[0])
+        # result = self.utils.df_dates(self.data, "1999-11-01")
+        # self.assertEqual(1, result.shape[0])
 
         # result = self.utils.df_dates(self.data, ["1999-11-01", "2020-08-15", "2020-08-24", "2020-08-25", "2020-08-26", "2020-08-27"])
         # self.assertEqual(5, result.shape[0])
@@ -188,25 +191,31 @@ class TestUtilities(TestCase):
         npt.assert_allclose(self.utils.fibonacci(n=5, zero=False, weighted=True), np.array([1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
 
     def test_geometric_mean(self):
-        returns = pandas_ta.percent_return(self.data.close)
+        returns = percent_return(self.data.close)
         result = self.utils.geometric_mean(returns)
+        # result = geometric_mean(returns)
         self.assertIsInstance(result, (float, int))
 
         result = self.utils.geometric_mean(Series([12, 14, 11, 8]))
+        # result = geometric_mean(Series([12, 14, 11, 8]))
         self.assertIsInstance(result, float)
 
         result = self.utils.geometric_mean(Series([100, 50, 0, 25, 0, 60]))
+        # result = geometric_mean(Series([100, 50, 0, 25, 0, 60]))
         self.assertIsInstance(result, float)
 
         series = Series([0, 1, 2, 3])
         result = self.utils.geometric_mean(series)
+        # result = geometric_mean(series)
         self.assertIsInstance(result, float)
 
         result = self.utils.geometric_mean(-series)
+        # result = geometric_mean(-series)
         self.assertIsInstance(result, int)
         self.assertAlmostEqual(result, 0)
 
     def test_get_time(self):
+        """Utility[Time]: Get Time"""
         result = self.utils.get_time(to_string=True)
         self.assertIsInstance(result, str)
 
@@ -219,6 +228,7 @@ class TestUtilities(TestCase):
         self.assertTrue("SSE" in result)
 
     def test_hpoly(self):
+        """Utility[Math]: Horners Polynomial"""
         self.assertEqual(self.utils.hpoly([1], 1), 1)
         self.assertEqual(self.utils.hpoly([1, 1], 1), 2)
         self.assertEqual(self.utils.hpoly([1, 0, -1], 1), 0)
@@ -226,6 +236,7 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.hpoly([1, 1, 1], 1), 3)
 
     def test_inv_norm(self):
+        """Utility[Stats]: Inverse Normal"""
         np.testing.assert_equal(self.utils.inv_norm(-0.01), np.nan)
         self.assertEqual(self.utils.inv_norm(0), -np.infty)
         self.assertEqual(self.utils.inv_norm(1 - 0.96), -1.7506860712521692)
@@ -238,6 +249,7 @@ class TestUtilities(TestCase):
 
 
     def test_linear_regression(self):
+        """Utility[Math]: Linear Regression"""
         x = Series([1, 2, 3, 4, 5])
         y = Series([1.8, 2.1, 2.7, 3.2, 4])
 
@@ -250,7 +262,9 @@ class TestUtilities(TestCase):
         self.assertIsInstance(result["line"], Series)
 
     def test_log_geometric_mean(self):
-        returns = pandas_ta.percent_return(self.data.close)
+        """Utility[Math]: Log Geometric Mean"""
+        # returns = pandas_ta.percent_return(self.data.close)
+        returns = percent_return(self.data.close)
         result = self.utils.log_geometric_mean(returns)
         self.assertIsInstance(result, float)
 
@@ -269,6 +283,7 @@ class TestUtilities(TestCase):
         self.assertAlmostEqual(result, 0)
 
     def test_pascals_triangle(self):
+        """Utility[Math]: Pascals Triangle"""
         self.assertIsNone(self.utils.pascals_triangle(inverse=True), None)
 
         array_1 = np.array([1])
@@ -288,11 +303,15 @@ class TestUtilities(TestCase):
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True, inverse=True), array_5iw)
 
     def test__performance(self):
-        _excluded = ["above", "above_value", "below", "below_value", "cross", "cross_value", "ichimoku"]
-        result = self.utils.performance(self.data, _excluded, top=10, ascending=False, places=4)
+        """Utility[Core]: Indicator Performance"""
+        result = self.utils.performance(self.data, top=10, talib=True, ascending=False, places=4)
+        self.assertIsInstance(result, DataFrame)
+
+        result = self.utils.performance(self.data, top=10, ascending=False, places=4)
         self.assertIsInstance(result, DataFrame)
 
     def test_symmetric_triangle(self):
+        """Utility[Math]: Symmetric Triangle"""
         npt.assert_array_equal(self.utils.symmetric_triangle(), np.array([1,1]))
         npt.assert_array_equal(self.utils.symmetric_triangle(weighted=True), np.array([0.5, 0.5]))
 
@@ -346,12 +365,14 @@ class TestUtilities(TestCase):
 
     def test_sample_processes(self):
         s0 = 0.01
-        tmp = pandas_ta.sample(length=2)
+        # tmp = pandas_ta.sample(length=2)
+        tmp = pta_sample(length=2)
         processes, noises = tmp.processes, tmp.noises
 
         pn = [{"process": p, "noise": n} for p in processes for n in noises]
         for p in pn:
-            result = pandas_ta.sample(s0=s0, **p)
+            # result = pandas_ta.sample(s0=s0, **p)
+            result = pta_sample(s0=s0, **p)
             self.assertIsInstance(result.np, np.ndarray)
             self.assertEqual(result.np.size, 252)
             self.assertIsInstance(result.df, DataFrame)
@@ -362,7 +383,8 @@ class TestUtilities(TestCase):
             self.assertEqual(nn.size, 252)
             self.assertGreaterEqual(all(nn), 0)
 
-            result = pandas_ta.sample(s0=s0, length=20, **p)
+            # result = pandas_ta.sample(s0=s0, length=20, **p)
+            result = pta_sample(s0=s0, length=20, **p)
             self.assertIsInstance(result.np, np.ndarray)
             self.assertEqual(result.np.size, 20)
             self.assertIsInstance(result.df, DataFrame)

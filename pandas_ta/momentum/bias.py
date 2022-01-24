@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import ma
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.ma import ma
+from pandas_ta.utils import get_offset, verify_series
 
 
-def bias(close: Series, length: int = None, mamode: str = None, offset: int = None, **kwargs) -> Series:
+def bias(
+        close: Series, length: int = None, mamode: str = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Bias (BIAS)
 
     Rate of change between the source and a moving average.
@@ -17,7 +20,6 @@ def bias(close: Series, length: int = None, mamode: str = None, offset: int = No
         close (pd.Series): Series of 'close's
         length (int): The period. Default: 26
         mamode (str): See ```help(ta.ma)```. Default: 'sma'
-        drift (int): The short period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -27,7 +29,7 @@ def bias(close: Series, length: int = None, mamode: str = None, offset: int = No
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 26
     mamode = mamode if isinstance(mamode, str) else "sma"
     close = verify_series(close, length)
@@ -35,7 +37,7 @@ def bias(close: Series, length: int = None, mamode: str = None, offset: int = No
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     bma = ma(mamode, close, length=length, **kwargs)
     bias = (close / bma) - 1
 
@@ -43,13 +45,13 @@ def bias(close: Series, length: int = None, mamode: str = None, offset: int = No
     if offset != 0:
         bias = bias.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         bias.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         bias.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     bias.name = f"BIAS_{bma.name}"
     bias.category = "momentum"
 

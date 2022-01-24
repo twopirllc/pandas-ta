@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-from .mom import mom
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
+from .mom import mom
 
 
-def roc(close: Series, length: int = None, scalar: float = None, talib: bool = None, offset: int = None,
-        **kwargs) -> Series:
+def roc(
+        close: Series, length: int = None,
+        scalar: float = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Rate of Change (ROC)
 
     Rate of Change is an indicator is also referred to as Momentum (yeah, confusingly).
@@ -31,7 +34,7 @@ def roc(close: Series, length: int = None, scalar: float = None, talib: bool = N
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     scalar = float(scalar) if scalar and scalar > 0 else 100
     close = verify_series(close, length)
@@ -40,7 +43,7 @@ def roc(close: Series, length: int = None, scalar: float = None, talib: bool = N
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import ROC
         roc = ROC(close, length)
@@ -51,13 +54,13 @@ def roc(close: Series, length: int = None, scalar: float = None, talib: bool = N
     if offset != 0:
         roc = roc.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         roc.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         roc.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     roc.name = f"ROC_{length}"
     roc.category = "momentum"
 

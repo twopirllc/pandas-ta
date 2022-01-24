@@ -3,8 +3,11 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def donchian(high: Series, low: Series, lower_length: int = None, upper_length: int = None, offset: int = None,
-             **kwargs) -> DataFrame:
+def donchian(
+        high: Series, low: Series,
+        lower_length: int = None, upper_length: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Donchian Channels (DC)
 
     Donchian Channels are used to measure volatility, similar to
@@ -27,7 +30,7 @@ def donchian(high: Series, low: Series, lower_length: int = None, upper_length: 
     Returns:
         pd.DataFrame: lower, mid, upper columns.
     """
-    # Validate arguments
+    # Validate
     lower_length = int(lower_length) if lower_length and lower_length > 0 else 20
     upper_length = int(upper_length) if upper_length and upper_length > 0 else 20
     lower_min_periods = int(kwargs["lower_min_periods"]) if "lower_min_periods" in kwargs and kwargs["lower_min_periods"] is not None else lower_length
@@ -39,12 +42,12 @@ def donchian(high: Series, low: Series, lower_length: int = None, upper_length: 
 
     if high is None or low is None: return
 
-    # Calculate Result
+    # Calculate
     lower = low.rolling(lower_length, min_periods=lower_min_periods).min()
     upper = high.rolling(upper_length, min_periods=upper_min_periods).max()
     mid = 0.5 * (lower + upper)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         lower.fillna(kwargs["fillna"], inplace=True)
         mid.fillna(kwargs["fillna"], inplace=True)
@@ -60,13 +63,12 @@ def donchian(high: Series, low: Series, lower_length: int = None, upper_length: 
         mid = mid.shift(offset)
         upper = upper.shift(offset)
 
-    # Name and Categorize it
+    # Name and Category
     lower.name = f"DCL_{lower_length}_{upper_length}"
     mid.name = f"DCM_{lower_length}_{upper_length}"
     upper.name = f"DCU_{lower_length}_{upper_length}"
     mid.category = upper.category = lower.category = "volatility"
 
-    # Prepare DataFrame to return
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
     dcdf = DataFrame(data)
     dcdf.name = f"DC_{lower_length}_{upper_length}"

@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta.overlap import ma
-from pandas_ta.volatility import atr
+from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series, zero
+from pandas_ta.volatility import atr
 
 
-def adx(high: Series, low: Series, close: Series, length: int = None, lensig: int = None, scalar: float = None,
-        mamode: str = None, drift: int = None, offset: int = None, **kwargs) -> DataFrame:
+def adx(
+        high: Series, low: Series, close: Series,
+        length: int = None, lensig: int = None, scalar: float = None,
+        mamode: str = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Average Directional Movement (ADX)
 
     Average Directional Movement is meant to quantify trend strength by measuring
@@ -34,7 +38,7 @@ def adx(high: Series, low: Series, close: Series, length: int = None, lensig: in
     Returns:
         pd.DataFrame: adx, dmp, dmn columns.
     """
-    # Validate Arguments
+    # Validate
     length = length if length and length > 0 else 14
     lensig = lensig if lensig and lensig > 0 else length
     mamode = mamode if isinstance(mamode, str) else "rma"
@@ -47,7 +51,7 @@ def adx(high: Series, low: Series, close: Series, length: int = None, lensig: in
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     atr_ = atr(high=high, low=low, close=close, length=length)
 
     up = high - high.shift(drift)  # high.diff(drift)
@@ -72,7 +76,7 @@ def adx(high: Series, low: Series, close: Series, length: int = None, lensig: in
         dmn = dmn.shift(offset)
         adx = adx.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         adx.fillna(kwargs["fillna"], inplace=True)
         dmp.fillna(kwargs["fillna"], inplace=True)
@@ -82,14 +86,12 @@ def adx(high: Series, low: Series, close: Series, length: int = None, lensig: in
         dmp.fillna(method=kwargs["fill_method"], inplace=True)
         dmn.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     adx.name = f"ADX_{lensig}"
     dmp.name = f"DMP_{length}"
     dmn.name = f"DMN_{length}"
-
     adx.category = dmp.category = dmn.category = "trend"
 
-    # Prepare DataFrame to return
     data = {adx.name: adx, dmp.name: dmp, dmn.name: dmn}
     adxdf = DataFrame(data)
     adxdf.name = f"ADX_{lensig}"

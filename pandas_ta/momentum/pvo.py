@@ -4,8 +4,11 @@ from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
 
-def pvo(volume: Series, fast: int = None, slow: int = None, signal: int = None, scalar: float = None,
-        offset: int = None, **kwargs) -> DataFrame:
+def pvo(
+        volume: Series, fast: int = None, slow: int = None, signal: int = None,
+        scalar: float = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Percentage Volume Oscillator (PVO)
 
     Percentage Volume Oscillator is a Momentum Oscillator for Volume.
@@ -28,7 +31,7 @@ def pvo(volume: Series, fast: int = None, slow: int = None, signal: int = None, 
     Returns:
         pd.DataFrame: pvo, histogram, signal columns.
     """
-    # Validate Arguments
+    # Validate
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
     signal = int(signal) if signal and signal > 0 else 9
@@ -40,7 +43,7 @@ def pvo(volume: Series, fast: int = None, slow: int = None, signal: int = None, 
 
     if volume is None: return
 
-    # Calculate Result
+    # Calculate
     fastma = ema(volume, length=fast)
     slowma = ema(volume, length=slow)
     pvo = scalar * (fastma - slowma)
@@ -55,7 +58,7 @@ def pvo(volume: Series, fast: int = None, slow: int = None, signal: int = None, 
         histogram = histogram.shift(offset)
         signalma = signalma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         pvo.fillna(kwargs["fillna"], inplace=True)
         histogram.fillna(kwargs["fillna"], inplace=True)
@@ -65,14 +68,13 @@ def pvo(volume: Series, fast: int = None, slow: int = None, signal: int = None, 
         histogram.fillna(method=kwargs["fill_method"], inplace=True)
         signalma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"_{fast}_{slow}_{signal}"
     pvo.name = f"PVO{_props}"
     histogram.name = f"PVOh{_props}"
     signalma.name = f"PVOs{_props}"
     pvo.category = histogram.category = signalma.category = "momentum"
 
-    #
     data = {pvo.name: pvo, histogram.name: histogram, signalma.name: signalma}
     df = DataFrame(data)
     df.name = pvo.name

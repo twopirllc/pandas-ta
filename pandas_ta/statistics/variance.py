@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
 
 
-def variance(close: Series, length: int = None, ddof: int = None, talib: bool = None, offset: int = None,
-             **kwargs) -> Series:
+def variance(
+        close: Series, length: int = None,
+        ddof: int = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Rolling Variance
 
     Calculates the Variance over a rolling period.
@@ -28,7 +31,7 @@ def variance(close: Series, length: int = None, ddof: int = None, talib: bool = 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if isinstance(length, int) and length > 1 else 30
     ddof = int(ddof) if isinstance(ddof, int) and ddof >= 0 and ddof < length else 1
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
@@ -38,7 +41,7 @@ def variance(close: Series, length: int = None, ddof: int = None, talib: bool = 
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import VAR
         variance = VAR(close, length)
@@ -49,13 +52,13 @@ def variance(close: Series, length: int = None, ddof: int = None, talib: bool = 
     if offset != 0:
         variance = variance.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         variance.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         variance.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     variance.name = f"VAR_{length}"
     variance.category = "statistics"
 

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-# from numpy import sqrt as npsqrt
 from pandas import DataFrame, Series
-from .atr import atr
 from pandas_ta.overlap import hlc3, sma
 from pandas_ta.utils import get_offset, verify_series
+from .atr import atr
 
 
-def aberration(high: Series, low: Series, close: Series, length: int = None, atr_length: int = None,
-               offset: int = None, **kwargs) -> DataFrame:
+def aberration(
+        high: Series, low: Series, close: Series,
+        length: int = None, atr_length: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Aberration (ABER)
 
     A volatility indicator similar to Keltner Channels.
@@ -43,7 +45,7 @@ def aberration(high: Series, low: Series, close: Series, length: int = None, atr
     Returns:
         pd.DataFrame: zg, sg, xg, atr columns.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 5
     atr_length = int(atr_length) if atr_length and atr_length > 0 else 15
     _length = max(atr_length, length)
@@ -54,7 +56,7 @@ def aberration(high: Series, low: Series, close: Series, length: int = None, atr
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     atr_ = atr(high=high, low=low, close=close, length=atr_length)
     jg = hlc3(high=high, low=low, close=close)
 
@@ -69,7 +71,7 @@ def aberration(high: Series, low: Series, close: Series, length: int = None, atr
         xg = xg.shift(offset)
         atr_ = atr_.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         zg.fillna(kwargs["fillna"], inplace=True)
         sg.fillna(kwargs["fillna"], inplace=True)
@@ -81,7 +83,7 @@ def aberration(high: Series, low: Series, close: Series, length: int = None, atr
         xg.fillna(method=kwargs["fill_method"], inplace=True)
         atr_.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"_{length}_{atr_length}"
     zg.name = f"ABER_ZG{_props}"
     sg.name = f"ABER_SG{_props}"
@@ -90,7 +92,6 @@ def aberration(high: Series, low: Series, close: Series, length: int = None, atr
     zg.category = sg.category = "volatility"
     xg.category = atr_.category = zg.category
 
-    # Prepare DataFrame to return
     data = {zg.name: zg, sg.name: sg, xg.name: xg, atr_.name: atr_}
     aberdf = DataFrame(data)
     aberdf.name = f"ABER{_props}"

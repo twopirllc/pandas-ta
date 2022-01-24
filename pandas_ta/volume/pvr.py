@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import verify_series
-from numpy import nan as npNaN
+from numpy import nan
 from pandas import Series
+from pandas_ta.utils import get_drift, verify_series
 
 
-def pvr(close: Series, volume: Series) -> Series:
+def pvr(
+        close: Series, volume: Series, drift: int = None,
+    ) -> Series:
     """Price Volume Rank
 
     The Price Volume Rank was developed by Anthony J. Macek and is described in his
@@ -19,25 +21,29 @@ def pvr(close: Series, volume: Series) -> Series:
     Args:
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's
+        drift (int): The difference period. Default: 1
 
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
-    close = verify_series(close)
-    volume = verify_series(volume)
+    # Validate
+    drift = get_drift(drift)
+    close = verify_series(close, drift)
+    volume = verify_series(volume, drift)
 
-    # Calculate Result
-    close_diff = close.diff().fillna(0)
-    volume_diff = volume.diff().fillna(0)
-    pvr_ = Series(npNaN, index=close.index)
-    pvr_.loc[(close_diff >= 0) & (volume_diff >= 0)] = 1
-    pvr_.loc[(close_diff >= 0) & (volume_diff < 0)]  = 2
-    pvr_.loc[(close_diff < 0) & (volume_diff >= 0)]  = 3
-    pvr_.loc[(close_diff < 0) & (volume_diff < 0)]   = 4
+    # Calculate
+    close_diff = close.diff(drift).fillna(0)
+    volume_diff = volume.diff(drift).fillna(0)
 
-    # Name and Categorize it
-    pvr_.name = f"PVR"
-    pvr_.category = "volume"
+    pvr = Series(nan, index=close.index)
 
-    return pvr_
+    pvr.loc[(close_diff >= 0) & (volume_diff >= 0)] = 1
+    pvr.loc[(close_diff >= 0) & (volume_diff < 0)]  = 2
+    pvr.loc[(close_diff < 0) & (volume_diff >= 0)]  = 3
+    pvr.loc[(close_diff < 0) & (volume_diff < 0)]   = 4
+
+    # Name and Category
+    pvr.name = f"PVR"
+    pvr.category = "volume"
+
+    return pvr

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from .sma import sma
-from pandas_ta import Imports
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import get_offset, verify_series
+from .sma import sma
 
 
-def trima(close: Series, length: int = None, talib: bool = None, offset: int = None, **kwargs) -> Series:
+def trima(
+        close: Series, length: int = None, talib: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Triangular Moving Average (TRIMA)
 
     A weighted moving average where the shape of the weights are triangular and the
@@ -31,7 +34,7 @@ def trima(close: Series, length: int = None, talib: bool = None, offset: int = N
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     close = verify_series(close, length)
     offset = get_offset(offset)
@@ -39,7 +42,7 @@ def trima(close: Series, length: int = None, talib: bool = None, offset: int = N
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import TRIMA
         trima = TRIMA(close, length)
@@ -52,13 +55,13 @@ def trima(close: Series, length: int = None, talib: bool = None, offset: int = N
     if offset != 0:
         trima = trima.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         trima.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         trima.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     trima.name = f"TRIMA_{length}"
     trima.category = "overlap"
 

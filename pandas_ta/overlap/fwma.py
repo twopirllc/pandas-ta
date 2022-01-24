@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import fibonacci, get_offset, verify_series, weights
 from pandas import Series
+from pandas_ta.utils import fibonacci, get_offset, verify_series, weights
 
 
-def fwma(close: Series, length: int = None, asc: bool = None, offset: int = None, **kwargs) -> Series:
+def fwma(
+        close: Series, length: int = None, asc: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Fibonacci's Weighted Moving Average (FWMA)
 
     Fibonacci's Weighted Moving Average is similar to a Weighted Moving Average
@@ -24,7 +27,7 @@ def fwma(close: Series, length: int = None, asc: bool = None, offset: int = None
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     asc = asc if asc else True
     close = verify_series(close, length)
@@ -32,7 +35,7 @@ def fwma(close: Series, length: int = None, asc: bool = None, offset: int = None
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     fibs = fibonacci(n=length, weighted=True)
     fwma = close.rolling(length, min_periods=length).apply(weights(fibs), raw=True)
 
@@ -40,13 +43,13 @@ def fwma(close: Series, length: int = None, asc: bool = None, offset: int = None
     if offset != 0:
         fwma = fwma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         fwma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         fwma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     fwma.name = f"FWMA_{length}"
     fwma.category = "overlap"
 

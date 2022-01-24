@@ -3,7 +3,10 @@ from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ha(open_: Series, high: Series, low: Series, close: Series, offset: int = None, **kwargs) -> DataFrame:
+def ha(
+        open_: Series, high: Series, low: Series, close: Series,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Heikin Ashi Candles (HA)
 
     The Heikin-Ashi technique averages price data to create a Japanese
@@ -32,14 +35,14 @@ def ha(open_: Series, high: Series, low: Series, close: Series, offset: int = No
     Returns:
         pd.DataFrame: ha_open, ha_high,ha_low, ha_close columns.
     """
-    # Validate Arguments
+    # Validate
     open_ = verify_series(open_)
     high = verify_series(high)
     low = verify_series(low)
     close = verify_series(close)
     offset = get_offset(offset)
 
-    # Calculate Result
+    # Calculate
     m = close.size
     df = DataFrame({
         "HA_open": 0.5 * (open_.iloc[0] + close.iloc[0]),
@@ -58,13 +61,13 @@ def ha(open_: Series, high: Series, low: Series, close: Series, offset: int = No
     if offset != 0:
         df = df.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         df.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     df.name = "Heikin-Ashi"
     df.category = "candles"
 

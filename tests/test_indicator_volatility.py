@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD
-from .context import pandas_ta
-
 from unittest import TestCase, skip
 import pandas.testing as pdt
 from pandas import DataFrame, Series
 
 import talib as tal
+
+from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD
+from .context import pandas_ta
 
 
 class TestVolatility(TestCase):
@@ -36,16 +36,19 @@ class TestVolatility(TestCase):
 
 
     def test_aberration(self):
+        """Volatility: Aberration"""
         result = pandas_ta.aberration(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "ABER_5_15")
 
     def test_accbands(self):
+        """Volatility: ACCBANDS"""
         result = pandas_ta.accbands(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "ACCBANDS_20")
 
     def test_atr(self):
+        """Volatility: ATR"""
         result = pandas_ta.atr(self.high, self.low, self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "ATRr_14")
@@ -65,6 +68,7 @@ class TestVolatility(TestCase):
         self.assertEqual(result.name, "ATRr_14")
 
     def test_bbands(self):
+        """Volatility: BBANDS"""
         result = pandas_ta.bbands(self.close, talib=False)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "BBANDS_5_2.0")
@@ -101,6 +105,7 @@ class TestVolatility(TestCase):
         self.assertEqual(result.name, "BBANDS_5_2.0")
 
     def test_donchian(self):
+        """Volatility: Donchian"""
         result = pandas_ta.donchian(self.high, self.low)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "DC_20_20")
@@ -110,6 +115,7 @@ class TestVolatility(TestCase):
         self.assertEqual(result.name, "DC_20_5")
 
     def test_kc(self):
+        """Volatility: KC"""
         result = pandas_ta.kc(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "KCe_20_2")
@@ -119,11 +125,13 @@ class TestVolatility(TestCase):
         self.assertEqual(result.name, "KCs_20_2")
 
     def test_massi(self):
+        """Volatility: MASSI"""
         result = pandas_ta.massi(self.high, self.low)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "MASSI_9_25")
 
     def test_natr(self):
+        """Volatility: NATR"""
         result = pandas_ta.natr(self.high, self.low, self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "NATR_14")
@@ -143,11 +151,13 @@ class TestVolatility(TestCase):
         self.assertEqual(result.name, "NATR_14")
 
     def test_pdist(self):
+        """Volatility: PDIST"""
         result = pandas_ta.pdist(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "PDIST")
 
     def test_rvi(self):
+        """Volatility: RVI"""
         result = pandas_ta.rvi(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "RVI_14")
@@ -161,11 +171,13 @@ class TestVolatility(TestCase):
         self.assertEqual(result.name, "RVIt_14")
 
     def test_thermo(self):
+        """Volatility: THERMO"""
         result = pandas_ta.thermo(self.high, self.low)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "THERMO_20_2_0.5")
 
     def test_true_range(self):
+        """Volatility: True Range"""
         result = pandas_ta.true_range(self.high, self.low, self.close, talib=False)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "TRUERANGE_1")
@@ -185,6 +197,7 @@ class TestVolatility(TestCase):
         self.assertEqual(result.name, "TRUERANGE_1")
 
     def test_ui(self):
+        """Volatility: UI"""
         result = pandas_ta.ui(self.close)
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "UI_14")

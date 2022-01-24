@@ -4,7 +4,10 @@ from pandas_ta.overlap import hl2
 from pandas_ta.utils import get_offset, verify_series
 
 
-def ttm_trend(high: Series, low: Series, close: Series, length: int = None, offset: int = None, **kwargs) -> DataFrame:
+def ttm_trend(
+        high: Series, low: Series, close: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """TTM Trend (TTM_TRND)
 
     This indicator is from John Carters book “Mastering the Trade” and plots the
@@ -29,7 +32,7 @@ def ttm_trend(high: Series, low: Series, close: Series, length: int = None, offs
     Returns:
         pd.DataFrame: ttm_trend.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 6
     high = verify_series(high, length)
     low = verify_series(low, length)
@@ -38,7 +41,7 @@ def ttm_trend(high: Series, low: Series, close: Series, length: int = None, offs
 
     if high is None or low is None or close is None: return
 
-    # Calculate Result
+    # Calculate
     trend_avg = hl2(high, low)
     for i in range(1, length):
         trend_avg = trend_avg + hl2(high.shift(i), low.shift(i))
@@ -52,17 +55,16 @@ def ttm_trend(high: Series, low: Series, close: Series, length: int = None, offs
     if offset != 0:
         tm_trend = tm_trend.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         tm_trend.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         tm_trend.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     tm_trend.name = f"TTM_TRND_{length}"
     tm_trend.category = "momentum"
 
-    # Prepare DataFrame to return
     data = {tm_trend.name: tm_trend}
     df = DataFrame(data)
     df.name = f"TTMTREND_{length}"

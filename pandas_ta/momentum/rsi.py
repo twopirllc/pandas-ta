@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat, Series
-from pandas_ta import Imports
+from pandas_ta.maps import Imports
 from pandas_ta.overlap import rma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
-def rsi(close: Series, length: int = None, scalar: float = None, talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs) -> Series:
+def rsi(
+        close: Series, length: int = None, scalar: float = None,
+        talib: bool = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Relative Strength Index (RSI)
 
     The Relative Strength Index is popular momentum oscillator used to measure the
@@ -31,7 +34,7 @@ def rsi(close: Series, length: int = None, scalar: float = None, talib: bool = N
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate arguments
+    # Validate
     length = int(length) if length and length > 0 else 14
     scalar = float(scalar) if scalar else 100
     close = verify_series(close, length)
@@ -41,7 +44,7 @@ def rsi(close: Series, length: int = None, scalar: float = None, talib: bool = N
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if Imports["talib"] and mode_tal:
         from talib import RSI
         rsi = RSI(close, length)
@@ -61,13 +64,13 @@ def rsi(close: Series, length: int = None, scalar: float = None, talib: bool = N
     if offset != 0:
         rsi = rsi.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         rsi.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         rsi.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     rsi.name = f"RSI_{length}"
     rsi.category = "momentum"
 

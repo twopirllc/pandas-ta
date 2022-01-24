@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.utils import get_offset, verify_series
 
 
-def rma(close: Series, length: int = None, offset: int = None, **kwargs) -> Series:
+def rma(
+        close: Series, length: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """wildeR's Moving Average (RMA)
 
     The WildeR's Moving Average is simply an Exponential Moving Average (EMA) with
@@ -25,7 +28,7 @@ def rma(close: Series, length: int = None, offset: int = None, **kwargs) -> Seri
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
     alpha = (1.0 / length) if length > 0 else 0.5
     close = verify_series(close, length)
@@ -33,20 +36,20 @@ def rma(close: Series, length: int = None, offset: int = None, **kwargs) -> Seri
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     rma = close.ewm(alpha=alpha, min_periods=length).mean()
 
     # Offset
     if offset != 0:
         rma = rma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         rma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         rma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     rma.name = f"RMA_{length}"
     rma.category = "overlap"
 

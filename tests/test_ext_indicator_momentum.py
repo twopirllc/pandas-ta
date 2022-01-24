@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from .config import sample_data
-
-from unittest import skip, TestCase
+from unittest import TestCase, skip
 from pandas import DataFrame
+
+from .config import ALERT, sample_data
+
 
 
 class TestMomentumExtension(TestCase):

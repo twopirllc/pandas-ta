@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, verify_series
 from pandas import Series
+from pandas_ta.utils import get_offset, verify_series
 
 
-def quantile(close: Series, length: int = None, q: float = None, offset: int = None, **kwargs) -> Series:
+def quantile(
+        close: Series, length: int = None, q: float = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Rolling Quantile
 
     Calculates the Quantile over a rolling period.
@@ -21,7 +24,7 @@ def quantile(close: Series, length: int = None, q: float = None, offset: int = N
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 30
     min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     q = float(q) if q and q > 0 and q < 1 else 0.5
@@ -30,20 +33,20 @@ def quantile(close: Series, length: int = None, q: float = None, offset: int = N
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     quantile = close.rolling(length, min_periods=min_periods).quantile(q)
 
     # Offset
     if offset != 0:
         quantile = quantile.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         quantile.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         quantile.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     quantile.name = f"QTL_{length}_{q}"
     quantile.category = "statistics"
 

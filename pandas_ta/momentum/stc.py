@@ -4,8 +4,11 @@ from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
-def stc(close: Series, tclength: int = None, fast: int = None, slow: int = None, factor: float = None,
-        offset: int = None, **kwargs) -> DataFrame:
+def stc(
+        close: Series, tclength: int = None,
+        fast: int = None, slow: int = None, factor: float = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Schaff Trend Cycle (STC)
 
     The Schaff Trend Cycle is an evolution of the popular MACD incorportating two
@@ -49,7 +52,7 @@ def stc(close: Series, tclength: int = None, fast: int = None, slow: int = None,
     Returns:
         pd.DataFrame: stc, macd, stoch
     """
-    # Validate arguments
+    # Validate
     tclength = int(tclength) if tclength and tclength > 0 else 10
     fast = int(fast) if fast and fast > 0 else 12
     slow = int(slow) if slow and slow > 0 else 26
@@ -62,6 +65,7 @@ def stc(close: Series, tclength: int = None, fast: int = None, slow: int = None,
 
     if close is None: return
 
+    # Calculate
     # kwargs allows for three more series (ma1, ma2 and osc) which can be passed
     # here ma1 and ma2 input negate internal ema calculations, osc substitutes
     # both ma's.
@@ -75,30 +79,22 @@ def stc(close: Series, tclength: int = None, fast: int = None, slow: int = None,
         ma2 = verify_series(ma2, _length)
 
         if ma1 is None or ma2 is None: return
-        # Calculate Result based on external feeded series
+        # According to external feeded series
         xmacd = ma1 - ma2
-        # invoke shared calculation
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
-
     elif isinstance(osc, Series):
         osc = verify_series(osc, _length)
         if osc is None: return
-        # Calculate Result based on feeded oscillator
-        # (should be ranging around 0 x-axis)
+        # According to feeded oscillator (should be ranging around 0 x-axis)
         xmacd = osc
-        # invoke shared calculation
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
-
     else:
-        # Calculate Result .. (traditionel/full)
-        # MACD line
+        # MACD (traditional/full)
         fastma = ema(close, length=fast)
         slowma = ema(close, length=slow)
         xmacd = fastma - slowma
-        # invoke shared calculation
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
 
-    # Resulting Series
     stc = Series(pff, index=close.index)
     macd = Series(xmacd, index=close.index)
     stoch = Series(pf, index=close.index)
@@ -109,7 +105,7 @@ def stc(close: Series, tclength: int = None, fast: int = None, slow: int = None,
         macd = macd.shift(offset)
         stoch = stoch.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         stc.fillna(kwargs["fillna"], inplace=True)
         macd.fillna(kwargs["fillna"], inplace=True)
@@ -119,14 +115,13 @@ def stc(close: Series, tclength: int = None, fast: int = None, slow: int = None,
         macd.fillna(method=kwargs["fill_method"], inplace=True)
         stoch.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"_{tclength}_{fast}_{slow}_{factor}"
     stc.name = f"STC{_props}"
     macd.name = f"STCmacd{_props}"
     stoch.name = f"STCstoch{_props}"
     stc.category = macd.category = stoch.category ="momentum"
 
-    # Prepare DataFrame to return
     data = {stc.name: stc, macd.name: macd, stoch.name: stoch}
     df = DataFrame(data)
     df.name = f"STC{_props}"
@@ -170,4 +165,4 @@ def schaff_tc(close, xmacd, tclength, factor):
         # Smoothed Calculation for % Fast D of PF
         pff[i] = round(pff[i - 1] + (factor * (stoch2[i] - pff[i - 1])), 8)
 
-    return [pff, pf]
+    return pff, pf

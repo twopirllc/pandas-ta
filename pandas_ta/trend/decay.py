@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from numpy import exp as npExp
+from numpy import exp
 from pandas import DataFrame, Series
 from pandas_ta.utils import get_offset, verify_series
 
 
-def decay(close: Series, kind=None, length: int = None, mode: str = None, offset: int = None, **kwargs) -> Series:
+def decay(
+        close: Series, kind=None, length: int = None, mode: str = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Decay
 
     Creates a decay moving forward from prior signals like crosses. The default is
@@ -26,7 +29,7 @@ def decay(close: Series, kind=None, length: int = None, mode: str = None, offset
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 5
     mode = mode.lower() if isinstance(mode, str) else "linear"
     close = verify_series(close, length)
@@ -34,11 +37,11 @@ def decay(close: Series, kind=None, length: int = None, mode: str = None, offset
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     _mode = "L"
     if mode == "exp" or kind == "exponential":
         _mode = "EXP"
-        diff = close.shift(1) - npExp(-length)
+        diff = close.shift(1) - exp(-length)
     else:  # "linear"
         diff = close.shift(1) - (1 / length)
     diff[0] = close[0]
@@ -49,13 +52,13 @@ def decay(close: Series, kind=None, length: int = None, mode: str = None, offset
     if offset != 0:
         ld = ld.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ld.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         ld.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     ld.name = f"{_mode}DECAY_{length}"
     ld.category = "trend"
 

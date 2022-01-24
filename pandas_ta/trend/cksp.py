@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta.volatility import atr
 from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.volatility import atr
 
 
-def cksp(high: Series, low: Series, close: Series, p: int = None, x: float = None, q: int = None, tvmode: bool = None,
-         offset: int = None, **kwargs) -> DataFrame:
+def cksp(
+        high: Series, low: Series, close: Series,
+        p: int = None, x: float = None, q: int = None,
+        tvmode: bool = None,
+        offset: int = None, **kwargs
+    ) -> DataFrame:
     """Chande Kroll Stop (CKSP)
 
     The Tushar Chande and Stanley Kroll in their book
@@ -40,7 +44,7 @@ def cksp(high: Series, low: Series, close: Series, p: int = None, x: float = Non
     Returns:
         pd.DataFrame: long and short columns.
     """
-    # Validate Arguments
+    # Validate
     tvmode = tvmode if isinstance(tvmode, bool) else True
     p = int(p) if p and p > 0 else 10
     x = float(x) if x and x > 0 else 1 if tvmode is True else 3
@@ -55,7 +59,7 @@ def cksp(high: Series, low: Series, close: Series, p: int = None, x: float = Non
     offset = get_offset(offset)
     mamode = "rma" if tvmode is True else "sma"
 
-    # Calculate Result
+    # Calculate
     atr_ = atr(high=high, low=low, close=close, length=p, mamode=mamode)
 
     long_stop_ = high.rolling(p).max() - x * atr_
@@ -69,7 +73,7 @@ def cksp(high: Series, low: Series, close: Series, p: int = None, x: float = Non
         long_stop = long_stop.shift(offset)
         short_stop = short_stop.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         long_stop.fillna(kwargs["fillna"], inplace=True)
         short_stop.fillna(kwargs["fillna"], inplace=True)
@@ -77,13 +81,12 @@ def cksp(high: Series, low: Series, close: Series, p: int = None, x: float = Non
         long_stop.fillna(method=kwargs["fill_method"], inplace=True)
         short_stop.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"_{p}_{x}_{q}"
     long_stop.name = f"CKSPl{_props}"
     short_stop.name = f"CKSPs{_props}"
     long_stop.category = short_stop.category = "trend"
 
-    # Prepare DataFrame to return
     ckspdf = DataFrame({long_stop.name: long_stop, short_stop.name: short_stop})
     ckspdf.name = f"CKSP{_props}"
     ckspdf.category = long_stop.category

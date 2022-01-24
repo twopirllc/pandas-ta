@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame
-from pandas_ta import Imports, RATE, version
-from .._core import _camelCase2Title
-from .._time import ytd
+from pandas_ta.maps import Imports, RATE, version
+from pandas_ta.utils import camelCase2Title, ytd
 
 
 def yf(ticker: str, **kwargs) -> DataFrame:
@@ -108,7 +107,6 @@ def yf(ticker: str, **kwargs) -> DataFrame:
             return
 
         filtered = {k: v for k, v in ticker_info.items() if v is not None}
-        # print(f"\n{type(ticker_info)}\n{ticker_info}\n{ticker_info.items()}")
         ticker_info.clear()
         ticker_info.update(filtered)
 
@@ -153,7 +151,6 @@ def yf(ticker: str, **kwargs) -> DataFrame:
             if "companyOfficers" in ticker_info and len(ticker_info['companyOfficers']):
                 print(f"Company Officers: {', '.join(ticker_info['companyOfficers'])}".ljust(40))
             if "sector" in ticker_info and len(ticker_info["sector"]) and "industry" in ticker_info and len(ticker_info["industry"]):
-                # print(f"Sector: {ticker_info['sector']}".ljust(39), f"Industry: {ticker_info['industry']}".rjust(40))
                 print(f"Sector | Industry".ljust(29), f"{ticker_info['sector']} | {ticker_info['industry']}".rjust(50))
 
             print("\n====  Market Information   " + div)
@@ -316,7 +313,7 @@ def yf(ticker: str, **kwargs) -> DataFrame:
                 susdf.replace({None: False}, inplace=True)
                 susdf.columns = ["Score"]
                 susdf.drop(susdf[susdf["Score"] == False].index, inplace=True)
-                susdf.rename(index=_camelCase2Title, errors="ignore", inplace=True)
+                susdf.rename(index=camelCase2Title, errors="ignore", inplace=True)
                 susdf.index.name = "Source"
                 if kind not in _all: print(f"\n{ticker_info['symbol']}")
                 print("\n====  Sustainability/ESG   " + div + f"\n{susdf}")
@@ -392,7 +389,6 @@ def yf(ticker: str, **kwargs) -> DataFrame:
         if show is not None and isinstance(show, int) and show > 0:
             print(f"\n{df.name}\n{df.tail(show)}\n")
         if verbose: print("=" * 80 + "\n")
-        # else: print()
         return df
 
     else:

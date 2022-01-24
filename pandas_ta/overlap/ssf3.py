@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from pandas_ta import np, pd
+from numpy import copy, cos, exp, ndarray
+from pandas import Series
 from pandas_ta.utils import get_offset, verify_series
 
 try:
@@ -9,12 +10,12 @@ except ImportError:
 
 
 @njit
-def np_ssf3(x: np.ndarray, n: int, pi: float, sqrt3: float):
+def np_ssf3(x: ndarray, n: int, pi: float, sqrt3: float):
     """John F. Ehler's Super Smoother Filter by Everget (3 poles), Tradingview
     https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/"""
-    m, result = x.size, np.copy(x)
-    a = np.exp(-pi / n)
-    b = 2 * a * np.cos(-pi * sqrt3 / n)
+    m, result = x.size, copy(x)
+    a = exp(-pi / n)
+    b = 2 * a * cos(-pi * sqrt3 / n)
     c = a * a
 
     d4 = c * c
@@ -29,7 +30,11 @@ def np_ssf3(x: np.ndarray, n: int, pi: float, sqrt3: float):
     return result
 
 
-def ssf3(close, length=None, pi=None, sqrt3=None, offset=None, **kwargs):
+def ssf3(
+        close: Series, length: int = None,
+        pi: float = None, sqrt3: float = None,
+        offset=None, **kwargs
+    ):
     """Ehler's 3 Pole Super Smoother Filter (SSF) © 2013
 
     John F. Ehlers's solution to reduce lag and remove aliasing noise with his
@@ -62,7 +67,7 @@ def ssf3(close, length=None, pi=None, sqrt3=None, offset=None, **kwargs):
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 20
     pi = float(pi) if isinstance(pi, float) and pi > 0 else 3.14159
     sqrt3 = float(sqrt3) if isinstance(sqrt3, float) and sqrt3 > 0 else 1.732
@@ -71,22 +76,22 @@ def ssf3(close, length=None, pi=None, sqrt3=None, offset=None, **kwargs):
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     np_close = close.values
     ssf = np_ssf3(np_close, length, pi, sqrt3)
-    ssf = pd.Series(ssf, index=close.index)
+    ssf = Series(ssf, index=close.index)
 
     # Offset
     if offset != 0:
         ssf = ssf.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         ssf.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         ssf.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     ssf.name = f"SSF3_{length}"
     ssf.category = "overlap"
 

@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
-from numpy import sign as npSign
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from numpy import sign
 from pandas import Series
+from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
-def psl(close: Series, open_: Series = None, length: int = None, scalar: float = None, drift: int = None,
-        offset: int = None, **kwargs) -> Series:
+def psl(
+        close: Series, open_: Series = None,
+        length: int = None, scalar: float = None, drift: int = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Psychological Line (PSL)
 
     The Psychological Line is an oscillator-type indicator that compares the
@@ -31,7 +34,7 @@ def psl(close: Series, open_: Series = None, length: int = None, scalar: float =
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 12
     scalar = float(scalar) if scalar and scalar > 0 else 100
     close = verify_series(close, length)
@@ -40,15 +43,15 @@ def psl(close: Series, open_: Series = None, length: int = None, scalar: float =
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     if open_ is not None:
         open_ = verify_series(open_)
-        diff = npSign(close - open_)
+        diff = sign(close - open_)
     else:
-        diff = npSign(close.diff(drift))
+        diff = sign(close.diff(drift))
 
     diff.fillna(0, inplace=True)
-    diff[diff <= 0] = 0  # Zero negative values
+    diff[diff <= 0] = 0  # Set negative values to zero
 
     psl = scalar * diff.rolling(length).sum()
     psl /= length
@@ -57,13 +60,13 @@ def psl(close: Series, open_: Series = None, length: int = None, scalar: float =
     if offset != 0:
         psl = psl.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         psl.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         psl.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"_{length}"
     psl.name = f"PSL{_props}"
     psl.category = "momentum"

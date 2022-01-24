@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.utils import get_offset, symmetric_triangle, verify_series, weights
 from pandas import Series
+from pandas_ta.utils import get_offset, symmetric_triangle, verify_series, weights
 
 
-def swma(close: Series, length: int = None, asc: bool = None, offset: int = None, **kwargs) -> Series:
+def swma(
+        close: Series, length: int = None, asc: bool = None,
+        offset: int = None, **kwargs
+    ) -> Series:
     """Symmetric Weighted Moving Average (SWMA)
 
     Symmetric Weighted Moving Average where weights are based on a symmetric
@@ -27,31 +30,28 @@ def swma(close: Series, length: int = None, asc: bool = None, offset: int = None
     Returns:
         pd.Series: New feature generated.
     """
-    # Validate Arguments
+    # Validate
     length = int(length) if length and length > 0 else 10
-    # min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
-    asc = asc if asc else True
     close = verify_series(close, length)
     offset = get_offset(offset)
 
     if close is None: return
 
-    # Calculate Result
+    # Calculate
     triangle = symmetric_triangle(length, weighted=True)
     swma = close.rolling(length, min_periods=length).apply(weights(triangle), raw=True)
-    # swma = close.rolling(length).apply(weights(triangle), raw=True)
 
     # Offset
     if offset != 0:
         swma = swma.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         swma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         swma.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name & Category
+    # Name and Category
     swma.name = f"SWMA_{length}"
     swma.category = "overlap"
 
