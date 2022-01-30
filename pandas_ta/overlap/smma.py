@@ -6,10 +6,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def smma(
-        close: Series, length: int = None,
-        mamode: str = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    mamode: str = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """SMoothed Moving Average (SMMA)
 
     The SMoothed Moving Average (SMMA) is bootstrapped by default with a Simple
@@ -42,22 +42,28 @@ def smma(
     """
     # Validate
     length = int(length) if length and length > 0 else 7
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    min_periods = int(
+        kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     close = verify_series(close, max(length, min_periods))
     offset = get_offset(offset)
     mamode = mamode.lower() if isinstance(mamode, str) else "sma"
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     m = close.size
     smma = close.copy()
     smma[:length - 1] = nan
-    smma.iloc[length - 1] = ma(mamode, close[0:length], length=length, talib=mode_tal).iloc[-1]
+    smma.iloc[length - 1] = ma(mamode,
+                               close[0:length],
+                               length=length,
+                               talib=mode_tal).iloc[-1]
 
     for i in range(length, m):
-        smma.iloc[i] = ((length - 1) * smma.iloc[i - 1] + smma.iloc[i]) / length
+        smma.iloc[i] = ((length - 1) * smma.iloc[i - 1] +
+                        smma.iloc[i]) / length
 
     # Offset
     if offset != 0:

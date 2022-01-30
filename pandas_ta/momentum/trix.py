@@ -6,10 +6,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def trix(
-        close: Series, length: int = None, signal: int = None,
-        scalar: float = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, signal: int = None,
+    scalar: float = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Trix (TRIX)
 
     TRIX is a momentum oscillator to identify divergences.
@@ -41,7 +41,8 @@ def trix(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     ema1 = ema(close=close, length=length, **kwargs)

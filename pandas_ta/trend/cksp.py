@@ -5,11 +5,11 @@ from pandas_ta.volatility import atr
 
 
 def cksp(
-        high: Series, low: Series, close: Series,
-        p: int = None, x: float = None, q: int = None,
-        tvmode: bool = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    p: int = None, x: float = None, q: int = None,
+    tvmode: bool = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Chande Kroll Stop (CKSP)
 
     The Tushar Chande and Stanley Kroll in their book
@@ -54,7 +54,8 @@ def cksp(
     high = verify_series(high, _length)
     low = verify_series(low, _length)
     close = verify_series(close, _length)
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     offset = get_offset(offset)
     mamode = "rma" if tvmode is True else "sma"
@@ -87,7 +88,8 @@ def cksp(
     short_stop.name = f"CKSPs{_props}"
     long_stop.category = short_stop.category = "trend"
 
-    ckspdf = DataFrame({long_stop.name: long_stop, short_stop.name: short_stop})
+    ckspdf = DataFrame(
+        {long_stop.name: long_stop, short_stop.name: short_stop})
     ckspdf.name = f"CKSP{_props}"
     ckspdf.category = long_stop.category
 

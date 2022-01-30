@@ -5,10 +5,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def cfo(
-        close: Series, length: int = None,
-        scalar: float = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    scalar: float = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Chande Forcast Oscillator (CFO)
 
     The Forecast Oscillator calculates the percentage difference between the actual
@@ -38,7 +38,8 @@ def cfo(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     # Finding linear regression of Series

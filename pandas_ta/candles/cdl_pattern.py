@@ -23,10 +23,10 @@ ALL_PATTERNS = [
 
 
 def cdl_pattern(
-        open_: Series, high: Series, low: Series, close: Series,
-        name: Union[str, Sequence[str]] = "all", scalar: float = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    open_: Series, high: Series, low: Series, close: Series,
+    name: Union[str, Sequence[str]] = "all", scalar: float = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """TA Lib Candle Patterns
 
     A wrapper around all TA Lib's candle patterns.
@@ -71,7 +71,7 @@ def cdl_pattern(
 
     if name == "all":
         name = ALL_PATTERNS
-    if type(name) is str:
+    if isinstance(name, str):
         name = [name]
 
     if Imports["talib"]:
@@ -84,15 +84,25 @@ def cdl_pattern(
             continue
 
         if n in pta_patterns:
-            pattern_result = pta_patterns[n](open_, high, low, close, offset=offset, scalar=scalar, **kwargs)
+            pattern_result = pta_patterns[n](
+                open_, high, low, close, offset=offset, scalar=scalar, **kwargs)
             result[pattern_result.name] = pattern_result
         else:
             if not Imports["talib"]:
-                print(f"[X] Please install TA-Lib to use {n}. (pip install TA-Lib)")
+                print(
+                    f"[X] Please install TA-Lib to use {n}. (pip install TA-Lib)")
                 continue
 
             pattern_func = tala.Function(f"CDL{n.upper()}")
-            pattern_result = Series(pattern_func(open_, high, low, close, **kwargs) / 100 * scalar)
+            pattern_result = Series(
+                pattern_func(
+                    open_,
+                    high,
+                    low,
+                    close,
+                    **kwargs) /
+                100 *
+                scalar)
             pattern_result.index = close.index
 
             # Offset
@@ -103,11 +113,13 @@ def cdl_pattern(
             if "fillna" in kwargs:
                 pattern_result.fillna(kwargs["fillna"], inplace=True)
             if "fill_method" in kwargs:
-                pattern_result.fillna(method=kwargs["fill_method"], inplace=True)
+                pattern_result.fillna(
+                    method=kwargs["fill_method"], inplace=True)
 
             result[f"CDL_{n.upper()}"] = pattern_result
 
-    if len(result) == 0: return
+    if len(result) == 0:
+        return
 
     # Name and Category
     df = DataFrame(result)

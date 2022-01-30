@@ -7,10 +7,10 @@ from .obv import obv
 
 
 def aobv(
-        close: Series, volume: Series, fast: int = None, slow: int = None,
-        max_lookback: int = None, min_lookback: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, volume: Series, fast: int = None, slow: int = None,
+    max_lookback: int = None, min_lookback: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Archer On Balance Volume (AOBV)
 
     Archer On Balance Volume (AOBV) developed by Kevin Johnson provides
@@ -43,8 +43,10 @@ def aobv(
     # Validate
     fast = int(fast) if fast and fast > 0 else 4
     slow = int(slow) if slow and slow > 0 else 12
-    max_lookback = int(max_lookback) if max_lookback and max_lookback > 0 else 2
-    min_lookback = int(min_lookback) if min_lookback and min_lookback > 0 else 2
+    max_lookback = int(
+        max_lookback) if max_lookback and max_lookback > 0 else 2
+    min_lookback = int(
+        min_lookback) if min_lookback and min_lookback > 0 else 2
     if slow < fast:
         fast, slow = slow, fast
     mamode = mamode if isinstance(mamode, str) else "ema"
@@ -52,10 +54,12 @@ def aobv(
     close = verify_series(close, _length)
     volume = verify_series(volume, _length)
     offset = get_offset(offset)
-    if "length" in kwargs: kwargs.pop("length")
+    if "length" in kwargs:
+        kwargs.pop("length")
     run_length = kwargs.pop("run_length", 2)
 
-    if close is None or volume is None: return
+    if close is None or volume is None:
+        return
 
     # Calculate
     obv_ = obv(close=close, volume=volume, **kwargs)

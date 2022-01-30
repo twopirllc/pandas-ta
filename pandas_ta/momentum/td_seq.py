@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def td_seq(
-        close: Series, asint: bool = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, asint: bool = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """TD Sequential (TD_SEQ)
 
     Tom DeMark's Sequential indicator attempts to identify a price point
@@ -35,7 +35,8 @@ def td_seq(
     asint = asint if isinstance(asint, bool) else False
     show_all = kwargs.setdefault("show_all", True)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     up_seq = calc_td(close, "up", show_all)
@@ -69,7 +70,7 @@ def td_seq(
 
     data = {up_seq.name: up_seq, down_seq.name: down_seq}
     df = DataFrame(data)
-    df.index = close.index # Only works here for some reason?
+    df.index = close.index  # Only works here for some reason?
     df.name = "TD_SEQ"
     df.category = up_seq.category
 
@@ -85,8 +86,9 @@ def sequence_count(series: Series):
         s = series[series.index > index]
         return s.count()
 
+
 def calc_td(series: Series, direction: str, show_all: bool):
-    td_bool = series.diff(4) > 0 if direction=="up" else series.diff(4) < 0
+    td_bool = series.diff(4) > 0 if direction == "up" else series.diff(4) < 0
     td_num = where(
         td_bool, td_bool.rolling(13, min_periods=0).apply(sequence_count), 0
     )
@@ -95,6 +97,6 @@ def calc_td(series: Series, direction: str, show_all: bool):
     if show_all:
         td_num = td_num.mask(td_num == 0)
     else:
-        td_num = td_num.mask(~td_num.between(6,9))
+        td_num = td_num.mask(~td_num.between(6, 9))
 
     return td_num

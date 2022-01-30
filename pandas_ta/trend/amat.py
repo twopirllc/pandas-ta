@@ -7,10 +7,10 @@ from .short_run import short_run
 
 
 def amat(
-        close: Series, fast: int = None, slow: int = None,
-        lookback: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, fast: int = None, slow: int = None,
+    lookback: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Archer Moving Averages Trends (AMAT)
 
     Archer Moving Averages Trends (AMAT) developed by Kevin Johnson provides
@@ -45,9 +45,11 @@ def amat(
     mamode = mamode.lower() if isinstance(mamode, str) else "ema"
     close = verify_series(close, max(fast, slow, lookback))
     offset = get_offset(offset)
-    if "length" in kwargs: kwargs.pop("length")
+    if "length" in kwargs:
+        kwargs.pop("length")
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     fast_ma = ma(mamode, close, length=fast, **kwargs)

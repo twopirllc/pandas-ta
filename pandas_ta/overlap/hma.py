@@ -6,9 +6,9 @@ from .wma import wma
 
 
 def hma(
-        close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Hull Moving Average (HMA)
 
     The Hull Exponential Moving Average attempts to reduce or remove lag in moving
@@ -34,7 +34,8 @@ def hma(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     half_length = int(length / 2)

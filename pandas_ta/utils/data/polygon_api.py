@@ -56,16 +56,23 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
     # desc = kwargs.pop("desc", False)
 
     if api_key is None:
-        raise ValueError("Please make sure you pass your polygon api key through kwarg api_key")
+        raise ValueError(
+            "Please make sure you pass your polygon api key through kwarg api_key")
     if not Imports["polygon"]:
-        raise ValueError("Please install package polygon to use this function (pip install polygon)")
+        raise ValueError(
+            "Please install package polygon to use this function (pip install polygon)")
 
     if ticker is not None and isinstance(ticker, str):
         ticker = ticker.upper()
     else:
-        raise ValueError(f"Ticker symbol name must be a valid name string. Eg: \'AMD\'")
+        raise ValueError(
+            f"Ticker symbol name must be a valid name string. Eg: \'AMD\'")
 
-    start_date = kwargs.pop("start_date", (datetime.date.today() - datetime.timedelta(days=525)))
+    start_date = kwargs.pop(
+        "start_date",
+        (datetime.date.today() -
+         datetime.timedelta(
+            days=525)))
     end_date = kwargs.pop("end_date", datetime.date.today())
     limit = kwargs.pop("limit", 50000)
     multiplier = kwargs.pop("multiplier", 1)
@@ -79,7 +86,7 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
 
         with polyapi.StocksClient(api_key) as polygon_client:
             resp = polygon_client.get_aggregate_bars(ticker, start_date, end_date, limit=limit,
-                                                    multiplier=multiplier, timespan=timespan)
+                                                     multiplier=multiplier, timespan=timespan)
 
         df = DataFrame()
         if "results" in resp.keys():
@@ -100,7 +107,8 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
         df.name = ticker
 
         # ADDITIONAL DATA FLOW
-        ref_client, stock_client = polyapi.ReferenceClient(api_key), polyapi.StocksClient(api_key)
+        ref_client, stock_client = polyapi.ReferenceClient(
+            api_key), polyapi.StocksClient(api_key)
 
         div = "=" * 53  # Max div width is 80
         # ALL THE INFORMATION
@@ -111,7 +119,8 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
 
             has_name = "name" in details_vx and len(details_vx['name'])
             has_ticker = "ticker" in details_vx and len(details_vx['ticker'])
-            if not has_ticker: details_vx['ticker'] = ticker
+            if not has_ticker:
+                details_vx['ticker'] = ticker
             if has_name and has_ticker:
                 print(f"{details_vx['name']} [{details_vx['ticker']}]")
             else:
@@ -128,37 +137,53 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
             #       f"Industry: {details['industry']}\n\n====  Market Information {div}\n"
             #       f"Market: {details_vx['market'].upper()} || locale: {details_vx['locale'].upper()} || "
             #       f"Exchange: {details['exchange']} || Symbol: {details['symbol']}\nMarket Shares: "
-            #       f"{details_vx['market_cap']} || Outstanding Shares: {details_vx['outstanding_shares']}\n")
-            has_hq_address = "hq_address" in details and len(details['hq_address'])
-            has_vx_address = "address" in details_vx and len(details_vx["address"])
+            # f"{details_vx['market_cap']} || Outstanding Shares:
+            # {details_vx['outstanding_shares']}\n")
+            has_hq_address = "hq_address" in details and len(
+                details['hq_address'])
+            has_vx_address = "address" in details_vx and len(
+                details_vx["address"])
             if has_hq_address:
-                print(f"{details['hq_address']}\n{details['hq_state']}, {details['hq_country']}")
+                print(
+                    f"{details['hq_address']}\n{details['hq_state']}, {details['hq_country']}")
             elif has_vx_address:
-                has_vx_address1 = "address1" in details_vx['address'] and len(details_vx['address']['address1'])
-                has_vx_address2 = "address2" in details_vx['address'] and len(details_vx['address']['address2'])
+                has_vx_address1 = "address1" in details_vx['address'] and len(
+                    details_vx['address']['address1'])
+                has_vx_address2 = "address2" in details_vx['address'] and len(
+                    details_vx['address']['address2'])
                 if has_vx_address1 and has_vx_address2:
-                    print(f"{details_vx['address']['address1']}\n{details_vx['address']['address2']}\n{details_vx['address']['city']}, {details_vx['address']['state']} {details_vx['address']['postal_code']}")
+                    print(
+                        f"{details_vx['address']['address1']}\n{details_vx['address']['address2']}\n{details_vx['address']['city']}, {details_vx['address']['state']} {details_vx['address']['postal_code']}")
                 elif has_vx_address1:
-                    print(f"{details_vx['address']['address1']}\n{details_vx['address']['city']}, {details_vx['address']['state']} {details_vx['address']['postal_code']}")
+                    print(
+                        f"{details_vx['address']['address1']}\n{details_vx['address']['city']}, {details_vx['address']['state']} {details_vx['address']['postal_code']}")
 
             has_phone = "phone" in details and len(details['phone'])
-            has_vx_phone = "phone_number" in details_vx and len(details_vx['phone_number'])
+            has_vx_phone = "phone_number" in details_vx and len(
+                details_vx['phone_number'])
             if has_phone or has_vx_phone:
                 _phone = details_vx['phone_number'] or details['phone']
-                if len(_phone): print(f"Phone: {_phone}")
+                if len(_phone):
+                    print(f"Phone: {_phone}")
 
             # Market Information
             has_market = "locale" in details_vx and len(details_vx["locale"])
-            has_exchange = "primary_exchange" in details_vx and len(details_vx["primary_exchange"])
+            has_exchange = "primary_exchange" in details_vx and len(
+                details_vx["primary_exchange"])
             print("\n====  Market Information   " + div)
             if has_market and has_exchange and has_ticker:
-                print(f"Market | Exchange | Symbol".ljust(39), f"{details_vx['locale'].upper()} | {details_vx['primary_exchange']} | {details_vx['ticker']}".rjust(40))
+                print(
+                    f"Market | Exchange | Symbol".ljust(39),
+                    f"{details_vx['locale'].upper()} | {details_vx['primary_exchange']} | {details_vx['ticker']}".rjust(40))
 
             print()
             if "market_cap" in details_vx:
-                print(f"Market Cap.".ljust(39), f"{details_vx['market_cap']:,} ({details_vx['market_cap']/1000000:,.2f} MM)".rjust(40))
+                print(
+                    f"Market Cap.".ljust(39),
+                    f"{details_vx['market_cap']:,} ({details_vx['market_cap']/1000000:,.2f} MM)".rjust(40))
             if "outstanding_shares" in details_vx:
-                print(f"Shares Outstanding".ljust(39), f"{details_vx['outstanding_shares']:,}".rjust(40))
+                print(f"Shares Outstanding".ljust(39),
+                      f"{details_vx['outstanding_shares']:,}".rjust(40))
 
             # Price Info
             snap_res = stock_client.get_snapshot(ticker)
@@ -168,23 +193,24 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
 
                 # TODO: Convert to DF and print similar to YF
                 print(f"\nCurrent Price: {snap['lastTrade']['p']} || Today\'s Change: ${snap_res['todaysChange']} - "
-                    f"{snap_res['todaysChangePerc']}%\nBid: {snap['lastQuote']['p']} x {snap['lastQuote']['s']} || Ask: "
-                    f"{snap['lastQuote']['P']} x {snap['lastQuote']['S']} || Spread: "
-                    f"{round(snap['lastQuote']['P'] - snap['lastQuote']['p'], 4)}\nOpen: {snap['day']['o']} || High: "
-                    f"{snap['day']['h']} || Low: {snap['day']['l']} || Close: {snap['day']['c']} || Volume: "
-                    f"{snap['day']['v']} || VWA: {snap['day']['vw']}")
+                      f"{snap_res['todaysChangePerc']}%\nBid: {snap['lastQuote']['p']} x {snap['lastQuote']['s']} || Ask: "
+                      f"{snap['lastQuote']['P']} x {snap['lastQuote']['S']} || Spread: "
+                      f"{round(snap['lastQuote']['P'] - snap['lastQuote']['p'], 4)}\nOpen: {snap['day']['o']} || High: "
+                      f"{snap['day']['h']} || Low: {snap['day']['l']} || Close: {snap['day']['c']} || Volume: "
+                      f"{snap['day']['v']} || VWA: {snap['day']['vw']}")
             except KeyError:
                 print(f"* Snapshot not found for {ticker}. Can not print price information.\n"
-                    f"* Note: Snapshot data is cleared at 12am EST and gets populated as data is\n"
-                    f"    received from the exchanges. This can happen as early as 4am EST.\n"
-                    f'* Requires a "Stocks Starter" subscription')
+                      f"* Note: Snapshot data is cleared at 12am EST and gets populated as data is\n"
+                      f"    received from the exchanges. This can happen as early as 4am EST.\n"
+                      f'* Requires a "Stocks Starter" subscription')
 
             # Splits and Dividends
             # divs, splits = ref_client.get_stock_dividends(ticker), ref_client.get_stock_splits(ticker)
             # # TODO: spits and dividends endpoints from polygon return a huge list. not sure if that entire list is useful
             # print(f"\nNumber of dividends: {divs['count']} || Number of splits: {splits['count']}\n")
 
-            # TODO: financials endpoint on polygon returns a huge response. I doubt if that's useful to be displayed.
+            # TODO: financials endpoint on polygon returns a huge response. I
+            # doubt if that's useful to be displayed.
 
         # Option Chains
         if kind in ["option_chains", "oc"]:
@@ -221,7 +247,8 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
             def _cleandf(chain: dict):
                 exp_dates = [x["expiration_date"] for x in chain]
                 df = DataFrame().from_records(chain)
-                df = df[["ticker", "strike_price", "expiration_date", "exercise_style"]]
+                df = df[["ticker", "strike_price",
+                         "expiration_date", "exercise_style"]]
                 df.columns = ["Contract", "Strike", "Exp. Date", "Style"]
                 df.set_index("Exp. Date", inplace=True)
                 return exp_dates, df
@@ -237,9 +264,15 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
                     print(f"\n{ticker} Puts for {exp_dates[0]}\n{putdf}")
 
             if contract_type is None:
-                alldf = merge(calldf.reset_index(), putdf.reset_index(), on="Strike")
+                alldf = merge(
+                    calldf.reset_index(),
+                    putdf.reset_index(),
+                    on="Strike")
                 alldf.rename(
-                    columns={"Contract_x": "Calls", "Contract_y": "Puts", "Exp. Date_x": "Exp. Date"},
+                    columns={
+                        "Contract_x": "Calls",
+                        "Contract_y": "Puts",
+                        "Exp. Date_x": "Exp. Date"},
                     inplace=True
                 )
                 alldf.set_index("Exp. Date", inplace=True)

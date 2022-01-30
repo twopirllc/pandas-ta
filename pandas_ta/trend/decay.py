@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def decay(
-        close: Series, kind=None, length: int = None, mode: str = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, kind=None, length: int = None, mode: str = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Decay
 
     Creates a decay moving forward from prior signals like crosses. The default is
@@ -35,7 +35,8 @@ def decay(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     _mode = "L"

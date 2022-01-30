@@ -6,10 +6,10 @@ from .atr import atr
 
 
 def aberration(
-        high: Series, low: Series, close: Series,
-        length: int = None, atr_length: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    length: int = None, atr_length: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Aberration (ABER)
 
     A volatility indicator similar to Keltner Channels.
@@ -54,7 +54,8 @@ def aberration(
     close = verify_series(close, _length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     atr_ = atr(high=high, low=low, close=close, length=atr_length)

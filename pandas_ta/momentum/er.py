@@ -4,9 +4,9 @@ from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
 def er(
-        close: Series, length: int = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Efficiency Ratio (ER)
 
     The Efficiency Ratio was invented by Perry J. Kaufman and presented in his book "New Trading Systems and Methods". It is designed to account for market noise or volatility.
@@ -34,7 +34,8 @@ def er(
     offset = get_offset(offset)
     drift = get_drift(drift)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     abs_diff = close.diff(length).abs()

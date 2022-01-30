@@ -6,9 +6,9 @@ from pandas_ta.utils import get_offset, high_low_range, verify_series
 
 
 def fisher(
-        high: Series, low: Series, length: int = None, signal: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, length: int = None, signal: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Fisher Transform (FISHT)
 
     Attempts to identify significant price reversals by normalizing prices over a
@@ -40,7 +40,8 @@ def fisher(
     low = verify_series(low, _length)
     offset = get_offset(offset)
 
-    if high is None or low is None: return
+    if high is None or low is None:
+        return
 
     # Calculate
     hl2_ = hl2(high, low)
@@ -57,8 +58,10 @@ def fisher(
     result = [nan for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
         v = 0.66 * position.iloc[i] + 0.67 * v
-        if v < -0.99: v = -0.999
-        if v > 0.99: v = 0.999
+        if v < -0.99:
+            v = -0.999
+        if v > 0.99:
+            v = 0.999
         result.append(0.5 * (log((1 + v) / (1 - v)) + result[i - 1]))
     fisher = Series(result, index=high.index)
     signalma = fisher.shift(signal)

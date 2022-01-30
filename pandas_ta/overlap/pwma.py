@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, pascals_triangle, verify_series, weights
 
 
 def pwma(
-        close: Series, length: int = None, asc: bool = None,
-        offset: bool = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, asc: bool = None,
+    offset: bool = None, **kwargs
+) -> Series:
     """Pascal's Weighted Moving Average (PWMA)
 
     Pascal's Weighted Moving Average is similar to a symmetric triangular window
@@ -33,11 +33,16 @@ def pwma(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     triangle = pascals_triangle(n=length - 1, weighted=True)
-    pwma = close.rolling(length, min_periods=length).apply(weights(triangle), raw=True)
+    pwma = close.rolling(
+        length,
+        min_periods=length).apply(
+        weights(triangle),
+        raw=True)
 
     # Offset
     if offset != 0:

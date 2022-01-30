@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, verify_series, weights
 
 
 def cg(
-        close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Center of Gravity (CG)
 
     The Center of Gravity Indicator by John Ehlers attempts to identify turning
@@ -32,7 +32,8 @@ def cg(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     coefficients = [length - i for i in range(0, length)]

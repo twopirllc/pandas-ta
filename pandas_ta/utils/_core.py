@@ -13,7 +13,7 @@ from pandas_ta.maps import Imports
 
 def camelCase2Title(x: str):
     """https://stackoverflow.com/questions/5020906/python-convert-camel-case-to-space-delimited-using-regex-and-taking-acronyms-in"""
-    return re_.sub("([a-z])([A-Z])","\g<1> \g<2>", x).title()
+    return re_.sub("([a-z])([A-Z])", "\\g<1> \\g<2>", x).title()
 
 
 def category_files(category: str) -> list:
@@ -84,7 +84,8 @@ def signed_series(series: Series, initial: int, lag: int = None) -> Series:
     and returns:
     sign = Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0])
     """
-    initial = initial if initial is not None and not isinstance(lag, str) else None
+    initial = initial if initial is not None and not isinstance(
+        lag, str) else None
     lag = int(lag) if lag is not None and isinstance(lag, int) else 1
     series = verify_series(series)
     sign = series.diff(lag)
@@ -99,19 +100,29 @@ def tal_ma(name: str) -> int:
     if Imports["talib"] and isinstance(name, str) and len(name) > 1:
         from talib import MA_Type
         name = name.lower()
-        if   name == "sma":   return MA_Type.SMA   # 0
-        elif name == "ema":   return MA_Type.EMA   # 1
-        elif name == "wma":   return MA_Type.WMA   # 2
-        elif name == "dema":  return MA_Type.DEMA  # 3
-        elif name == "tema":  return MA_Type.TEMA  # 4
-        elif name == "trima": return MA_Type.TRIMA # 5
-        elif name == "kama":  return MA_Type.KAMA  # 6
-        elif name == "mama":  return MA_Type.MAMA  # 7
-        elif name == "t3":    return MA_Type.T3    # 8
+        if name == "sma":
+            return MA_Type.SMA   # 0
+        elif name == "ema":
+            return MA_Type.EMA   # 1
+        elif name == "wma":
+            return MA_Type.WMA   # 2
+        elif name == "dema":
+            return MA_Type.DEMA  # 3
+        elif name == "tema":
+            return MA_Type.TEMA  # 4
+        elif name == "trima":
+            return MA_Type.TRIMA  # 5
+        elif name == "kama":
+            return MA_Type.KAMA  # 6
+        elif name == "mama":
+            return MA_Type.MAMA  # 7
+        elif name == "t3":
+            return MA_Type.T3    # 8
     return 0  # Default: SMA -> 0
 
 
-def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Union[Series, Series]:
+def unsigned_differences(series: Series, amount: int = None,
+                         **kwargs) -> Union[Series, Series]:
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
     on the differences of the original series. The positive series are only the
@@ -148,15 +159,23 @@ def verify_series(series: Series, min_length: int = None) -> Series:
 
 
 def performance(df: DataFrame,
-        excluded: list = None, other: list = None, top: int = None,
-        talib: bool = False, ascending: bool = False, sortby: str = "secs",
-        gradient: int = False, places: int = 5
-    ) -> DataFrame:
-    if df.empty: return
+                excluded: list = None, other: list = None, top: int = None,
+                talib: bool = False, ascending: bool = False, sortby: str = "secs",
+                gradient: int = False, places: int = 5
+                ) -> DataFrame:
+    if df.empty:
+        return
     talib = bool(talib) if isinstance(talib, int) and talib else False
     top = int(top) if isinstance(top, int) and top > 0 else None
 
-    _ex = ["above", "above_value", "below", "below_value", "cross", "cross_value", "ichimoku"]
+    _ex = [
+        "above",
+        "above_value",
+        "below",
+        "below_value",
+        "cross",
+        "cross_value",
+        "ichimoku"]
     if isinstance(excluded, list) and len(excluded) > 0:
         _ex += excluded
     indicators = df.ta.indicators(as_list=True, exclude=_ex)
@@ -173,20 +192,23 @@ def performance(df: DataFrame,
             result = df.ta(indicator, talib=talib, timed=True)
             ms = float(result.timed.split(" ")[0].split(" ")[0])
             # data.append({_index_name: indicator, "secs": round(0.001 * ms, places), "ms": ms})
-            data.append({_index_name: indicator, "secs": ms2secs(ms, places), "ms": ms})
+            data.append({_index_name: indicator,
+                        "secs": ms2secs(ms, places), "ms": ms})
 
     if isinstance(other, list) and len(other) > 0:
         for indicator in other:
             result = df.ta(indicator, talib=talib, timed=True)
             ms = float(result.timed.split(" ")[0].split(" ")[0])
             # data.append({_index_name: indicator, "secs": round(0.001 * ms, places), "ms": ms})
-            data.append({_index_name: indicator, "secs": ms2secs(ms, places), "ms": ms})
+            data.append({_index_name: indicator,
+                        "secs": ms2secs(ms, places), "ms": ms})
 
     tdf = DataFrame.from_dict(data)
     tdf.set_index(_index_name, inplace=True)
     tdf.sort_values(by=sortby, ascending=ascending, inplace=True)
 
-    total_timedf = DataFrame(tdf.describe().loc[['min', '50%', 'mean', 'max']]).T
+    total_timedf = DataFrame(
+        tdf.describe().loc[['min', '50%', 'mean', 'max']]).T
     total_timedf["total"] = tdf.sum(axis=0).T
 
     _div = "=" * 60
@@ -198,5 +220,6 @@ def performance(df: DataFrame,
         _title = f"  {_quick_slow} {top} Indicators [{tdf.shape[0]}]"
         tdf = tdf.head(top)
     print(f"\n{_div}\n{_title}\n{_observations}\n{_div}\n{tdf}\n\n{_div}\n{_perfstats}\n\n{_div}\n")
-    if isinstance(gradient, bool) and gradient: return tdf.style.background_gradient("autumn_r")
+    if isinstance(gradient, bool) and gradient:
+        return tdf.style.background_gradient("autumn_r")
     return tdf

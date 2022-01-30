@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def massi(
-        high: Series, low: Series, fast: int = None, slow: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, fast: int = None, slow: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Mass Index (MASSI)
 
     The Mass Index is a non-directional volatility indicator that utilitizes the
@@ -39,9 +39,11 @@ def massi(
     high = verify_series(high, _length)
     low = verify_series(low, _length)
     offset = get_offset(offset)
-    if "length" in kwargs: kwargs.pop("length")
+    if "length" in kwargs:
+        kwargs.pop("length")
 
-    if high is None or low is None: return
+    if high is None or low is None:
+        return
 
     # Calculate
     high_low_range = non_zero_range(high, low)

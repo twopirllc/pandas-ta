@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def midpoint(
-        close: Series, length: int = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Midpoint
 
     The Midpoint is the average of the rolling high and low of period length.
@@ -28,12 +28,14 @@ def midpoint(
     """
     # Validate
     length = int(length) if length and length > 0 else 2
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    min_periods = int(
+        kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     close = verify_series(close, max(length, min_periods))
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

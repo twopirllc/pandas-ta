@@ -4,7 +4,7 @@ from numpy import append, array, empty_like, nan, ndarray, roll, zeros_like
 try:
     from numba import njit
 except ImportError:
-    njit = lambda _: _
+    def njit(_): return _
 
 
 # Utilities
@@ -15,13 +15,14 @@ def np_prepend(x: ndarray, n: int, value=nan):
 
 
 @njit
-def np_roll(x: ndarray, n: int, fn = None):
+def np_roll(x: ndarray, n: int, fn=None):
     """Like Pandas Rolling Window. x.rolling(n).fn()"""
     m = x.size
     result = zeros_like(x, dtype=float)
-    if n <= 0: return result  # TODO: Handle negative rolling windows
+    if n <= 0:
+        return result  # TODO: Handle negative rolling windows
 
-    for i in range(0,m):
+    for i in range(0, m):
         result[i] = fn(x[i:n + i])
     result = roll(result, n - 1)
     result[:n - 1] = nan

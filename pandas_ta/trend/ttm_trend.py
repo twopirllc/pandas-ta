@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def ttm_trend(
-        high: Series, low: Series, close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """TTM Trend (TTM_TRND)
 
     This indicator is from John Carters book “Mastering the Trade” and plots the
@@ -39,7 +39,8 @@ def ttm_trend(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     trend_avg = hl2(high, low)

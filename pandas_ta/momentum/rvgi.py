@@ -5,10 +5,10 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def rvgi(
-        open_: Series, high: Series, low: Series, close: Series,
-        length: int = None, swma_length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    open_: Series, high: Series, low: Series, close: Series,
+    length: int = None, swma_length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Relative Vigor Index (RVGI)
 
     The Relative Vigor Index attempts to measure the strength of a trend relative to
@@ -47,11 +47,16 @@ def rvgi(
     close = verify_series(close, _length)
     offset = get_offset(offset)
 
-    if open_ is None or high is None or low is None or close is None: return
+    if open_ is None or high is None or low is None or close is None:
+        return
 
     # Calculate
-    numerator = swma(close_open_range, length=swma_length).rolling(length).sum()
-    denominator = swma(high_low_range, length=swma_length).rolling(length).sum()
+    numerator = swma(
+        close_open_range,
+        length=swma_length).rolling(length).sum()
+    denominator = swma(
+        high_low_range,
+        length=swma_length).rolling(length).sum()
 
     rvgi = numerator / denominator
     signal = swma(rvgi, length=swma_length)

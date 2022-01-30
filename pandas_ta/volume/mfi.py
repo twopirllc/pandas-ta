@@ -6,10 +6,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def mfi(
-        high: Series, low: Series, close: Series, volume: Series,
-        length: int = None, talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, volume: Series,
+    length: int = None, talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Money Flow Index (MFI)
 
     Money Flow Index is an oscillator indicator that is used to measure buying and
@@ -46,7 +46,8 @@ def mfi(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None or volume is None: return
+    if high is None or low is None or close is None or volume is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

@@ -7,7 +7,8 @@ from pandas_ta.utils import get_offset, verify_series
 try:
     from numba import njit
 except ImportError:
-    njit = lambda _: _
+    def njit(_): return _
+
 
 @njit
 def np_ssf(x: ndarray, n: int, pi: float, sqrt2: float):
@@ -24,6 +25,7 @@ def np_ssf(x: ndarray, n: int, pi: float, sqrt2: float):
             - a * a * result[i - 2]
 
     return result
+
 
 @njit
 def np_ssf_everget(x: ndarray, n: int, pi: float, sqrt2: float):
@@ -42,10 +44,10 @@ def np_ssf_everget(x: ndarray, n: int, pi: float, sqrt2: float):
 
 
 def ssf(
-        close: Series, length: int = None,
-        everget: bool = None, pi: float = None, sqrt2: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    everget: bool = None, pi: float = None, sqrt2: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Ehler's Super Smoother Filter (SSF) © 2013
 
     John F. Ehlers's solution to reduce lag and remove aliasing noise with his
@@ -89,7 +91,8 @@ def ssf(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     np_close = close.values

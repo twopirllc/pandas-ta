@@ -6,11 +6,11 @@ from pandas_ta.volatility import atr
 
 
 def natr(
-        high: Series, low: Series, close: Series,
-        length: int = None, scalar: float = None, mamode: str = None,
-        talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series,
+    length: int = None, scalar: float = None, mamode: str = None,
+    talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Normalized Average True Range (NATR)
 
     Normalized Average True Range attempt to normalize the average true range.
@@ -47,7 +47,8 @@ def natr(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
@@ -56,10 +57,10 @@ def natr(
     else:
         natr = scalar / close
         natr *= atr(
-                high=high, low=low, close=close, length=length,
-                mamode=mamode, drift=drift, talib=mode_tal,
-                offset=offset, **kwargs
-            )
+            high=high, low=low, close=close, length=length,
+            mamode=mamode, drift=drift, talib=mode_tal,
+            offset=offset, **kwargs
+        )
 
     # Offset
     if offset != 0:

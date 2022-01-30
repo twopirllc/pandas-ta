@@ -5,8 +5,8 @@ from pandas_ta.utils import get_drift, verify_series
 
 
 def pvr(
-        close: Series, volume: Series, drift: int = None,
-    ) -> Series:
+    close: Series, volume: Series, drift: int = None,
+) -> Series:
     """Price Volume Rank
 
     The Price Volume Rank was developed by Anthony J. Macek and is described in his
@@ -38,9 +38,9 @@ def pvr(
     pvr = Series(nan, index=close.index)
 
     pvr.loc[(close_diff >= 0) & (volume_diff >= 0)] = 1
-    pvr.loc[(close_diff >= 0) & (volume_diff < 0)]  = 2
-    pvr.loc[(close_diff < 0) & (volume_diff >= 0)]  = 3
-    pvr.loc[(close_diff < 0) & (volume_diff < 0)]   = 4
+    pvr.loc[(close_diff >= 0) & (volume_diff < 0)] = 2
+    pvr.loc[(close_diff < 0) & (volume_diff >= 0)] = 3
+    pvr.loc[(close_diff < 0) & (volume_diff < 0)] = 4
 
     # Name and Category
     pvr.name = f"PVR"

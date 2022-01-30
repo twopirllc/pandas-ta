@@ -5,10 +5,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def pvo(
-        volume: Series, fast: int = None, slow: int = None, signal: int = None,
-        scalar: float = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    volume: Series, fast: int = None, slow: int = None, signal: int = None,
+    scalar: float = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Percentage Volume Oscillator (PVO)
 
     Percentage Volume Oscillator is a Momentum Oscillator for Volume.
@@ -41,7 +41,8 @@ def pvo(
     volume = verify_series(volume, max(fast, slow, signal))
     offset = get_offset(offset)
 
-    if volume is None: return
+    if volume is None:
+        return
 
     # Calculate
     fastma = ema(volume, length=fast)

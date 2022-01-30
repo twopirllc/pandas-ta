@@ -5,10 +5,10 @@ from .tsi import tsi
 
 
 def smi(
-        close: Series, fast: int = None, slow: int = None, signal: int = None,
-        scalar: float = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, fast: int = None, slow: int = None, signal: int = None,
+    scalar: float = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """SMI Ergodic Indicator (SMI)
 
     The SMI Ergodic Indicator is the same as the True Strength Index (TSI) developed
@@ -49,7 +49,8 @@ def smi(
     close = verify_series(close, max(fast, slow, signal))
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     tsi_df = tsi(close, fast=fast, slow=slow, signal=signal, scalar=scalar)

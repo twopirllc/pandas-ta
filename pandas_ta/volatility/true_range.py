@@ -6,10 +6,10 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def true_range(
-        high: Series, low: Series, close: Series,
-        talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series,
+    talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """True Range
 
     An method to expand a classical range (high minus low) to include

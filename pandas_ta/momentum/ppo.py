@@ -6,10 +6,10 @@ from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
 def ppo(
-        close: Series, fast: int = None, slow: int = None, signal: int = None,
-        scalar: float = None, mamode: str = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, fast: int = None, slow: int = None, signal: int = None,
+    scalar: float = None, mamode: str = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Percentage Price Oscillator (PPO)
 
     The Percentage Price Oscillator is similar to MACD in measuring momentum.
@@ -47,7 +47,8 @@ def ppo(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

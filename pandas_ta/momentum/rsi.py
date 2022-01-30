@@ -6,10 +6,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
 def rsi(
-        close: Series, length: int = None, scalar: float = None,
-        talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, scalar: float = None,
+    talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Relative Strength Index (RSI)
 
     The Relative Strength Index is popular momentum oscillator used to measure the
@@ -42,7 +42,8 @@ def rsi(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

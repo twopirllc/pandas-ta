@@ -9,13 +9,13 @@ from .mom import mom
 
 
 def squeeze(
-        high: Series, low: Series, close: Series,
-        bb_length: int = None, bb_std: float = None,
-        kc_length: int = None, kc_scalar: float = None,
-        mom_length: int = None, mom_smooth: int = None,
-        use_tr=None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    bb_length: int = None, bb_std: float = None,
+    kc_length: int = None, kc_scalar: float = None,
+    mom_length: int = None, mom_smooth: int = None,
+    use_tr=None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Squeeze (SQZ)
 
     The default is based on John Carter's "TTM Squeeze" indicator, as discussed
@@ -71,7 +71,8 @@ def squeeze(
     close = verify_series(close, _length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     use_tr = kwargs.setdefault("tr", True)
     asint = kwargs.pop("asint", True)
@@ -85,7 +86,14 @@ def squeeze(
 
     # Calculate
     bbd = bbands(close, length=bb_length, std=bb_std, mamode=mamode)
-    kch = kc(high, low, close, length=kc_length, scalar=kc_scalar, mamode=mamode, tr=use_tr)
+    kch = kc(
+        high,
+        low,
+        close,
+        length=kc_length,
+        scalar=kc_scalar,
+        mamode=mamode,
+        tr=use_tr)
 
     # Simplify KC and BBAND column names for dynamic access
     bbd.columns = simplify_columns(bbd)
@@ -102,7 +110,7 @@ def squeeze(
         momo = mom(close, length=mom_length)
         if mamode.lower() == "ema":
             squeeze = ema(momo, length=mom_smooth)
-        else: # "sma"
+        else:  # "sma"
             squeeze = sma(momo, length=mom_smooth)
 
     # Classify Squeezes

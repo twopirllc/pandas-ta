@@ -4,10 +4,10 @@ from pandas_ta.utils import get_offset, non_zero_range, rma_pandas, verify_serie
 
 
 def kdj(
-        high: Series, low: Series, close: Series,
-        length: int = None, signal: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series,
+    length: int = None, signal: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """KDJ (KDJ)
 
     The KDJ indicator is actually a derived form of the Slow
@@ -44,13 +44,15 @@ def kdj(
     close = verify_series(close, _length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     highest_high = high.rolling(length).max()
     lowest_low = low.rolling(length).min()
 
-    fastk = 100 * (close - lowest_low) / non_zero_range(highest_high, lowest_low)
+    fastk = 100 * (close - lowest_low) / \
+        non_zero_range(highest_high, lowest_low)
 
     k = rma_pandas(fastk, length=signal)
     d = rma_pandas(k, length=signal)

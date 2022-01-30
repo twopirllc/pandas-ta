@@ -6,9 +6,9 @@ from .increasing import increasing
 
 
 def short_run(
-        fast: Series, slow: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    fast: Series, slow: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Short Run
 
     Short Run was developed by Kevin Johnson that returns a binary Series
@@ -44,11 +44,15 @@ def short_run(
     slow = verify_series(slow, length)
     offset = get_offset(offset)
 
-    if fast is None or slow is None: return
+    if fast is None or slow is None:
+        return
 
     # Calculate
-    pt = decreasing(fast, length) & increasing(slow, length)  # potential top or top
-    bd = decreasing(fast, length) & decreasing(slow, length)  # fast and slow are decreasing
+    pt = decreasing(
+        fast, length) & increasing(
+        slow, length)  # potential top or top
+    bd = decreasing(fast, length) & decreasing(
+        slow, length)  # fast and slow are decreasing
     short_run = pt | bd
 
     # Offset

@@ -5,10 +5,10 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def eom(
-        high: Series, low: Series, close: Series, volume: Series,
-        length: int = None, divisor=None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, volume: Series,
+    length: int = None, divisor=None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Ease of Movement (EOM)
 
     Ease of Movement is a volume based oscillator that is designed to measure the
@@ -45,11 +45,12 @@ def eom(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None or volume is None: return
+    if high is None or low is None or close is None or volume is None:
+        return
 
     # Calculate
     high_low_range = non_zero_range(high, low)
-    distance  = hl2(high=high, low=low)
+    distance = hl2(high=high, low=low)
     distance -= hl2(high=high.shift(drift), low=low.shift(drift))
     box_ratio = volume / divisor
     box_ratio /= high_low_range

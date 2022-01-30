@@ -6,10 +6,10 @@ from .true_range import true_range
 
 
 def kc(
-        high: Series, low: Series, close: Series,
-        length: int = None, scalar: float = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    length: int = None, scalar: float = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Keltner Channels (KC)
 
     A popular volatility indicator similar to Bollinger Bands and
@@ -45,7 +45,8 @@ def kc(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     use_tr = kwargs.pop("tr", True)

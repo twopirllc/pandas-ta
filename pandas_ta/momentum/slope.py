@@ -5,10 +5,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def slope(
-        close: Series, length: int = None,
-        as_angle=None, to_degrees=None, vertical=None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    as_angle=None, to_degrees=None, vertical=None,
+    offset: int = None, **kwargs
+) -> Series:
     """Slope
 
     Returns the slope of a series of length n. Can convert the slope to angle.
@@ -47,7 +47,8 @@ def slope(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     slope = close.diff(length) / length

@@ -5,9 +5,9 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def vhf(
-        close: Series, length: int = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Vertical Horizontal Filter (VHF)
 
     VHF was created by Adam White to identify trending and ranging markets.
@@ -33,13 +33,14 @@ def vhf(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     hcp = close.rolling(length).max()
     lcp = close.rolling(length).min()
     diff = fabs(close.diff(drift))
-    vhf  = fabs(non_zero_range(hcp, lcp)) / diff.rolling(length).sum()
+    vhf = fabs(non_zero_range(hcp, lcp)) / diff.rolling(length).sum()
 
     # Offset
     if offset != 0:

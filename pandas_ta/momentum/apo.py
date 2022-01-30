@@ -6,10 +6,10 @@ from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
 def apo(
-        close: Series, fast: int = None, slow: int = None,
-        mamode: str = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, fast: int = None, slow: int = None,
+    mamode: str = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Absolute Price Oscillator (APO)
 
     The Absolute Price Oscillator is an indicator used to measure a security's
@@ -45,7 +45,8 @@ def apo(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

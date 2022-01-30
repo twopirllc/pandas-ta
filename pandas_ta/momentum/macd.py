@@ -6,9 +6,9 @@ from pandas_ta.utils import get_offset, verify_series, signals
 
 
 def macd(
-        close: Series, fast: int = None, slow: int = None, signal: int = None,
-        talib: bool = None, offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, fast: int = None, slow: int = None, signal: int = None,
+    talib: bool = None, offset: int = None, **kwargs
+) -> DataFrame:
     """Moving Average Convergence Divergence (MACD)
 
     The MACD is a popular indicator to that is used to identify a security's trend.
@@ -48,7 +48,8 @@ def macd(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     as_mode = kwargs.setdefault("asmode", False)
 
@@ -61,12 +62,14 @@ def macd(
         slowma = ema(close, length=slow, talib=mode_tal)
 
         macd = fastma - slowma
-        signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal, talib=mode_tal)
+        signalma = ema(
+            close=macd.loc[macd.first_valid_index():, ], length=signal, talib=mode_tal)
         histogram = macd - signalma
 
     if as_mode:
         macd = macd - signalma
-        signalma = ema(close=macd.loc[macd.first_valid_index():,], length=signal, talib=mode_tal)
+        signalma = ema(
+            close=macd.loc[macd.first_valid_index():, ], length=signal, talib=mode_tal)
         histogram = macd - signalma
 
     # Offset
@@ -93,7 +96,10 @@ def macd(
     signalma.name = f"MACD{_asmode}s{_props}"
     macd.category = histogram.category = signalma.category = "momentum"
 
-    data = {macd.name: macd, histogram.name: histogram, signalma.name: signalma}
+    data = {
+        macd.name: macd,
+        histogram.name: histogram,
+        signalma.name: signalma}
     df = DataFrame(data)
     df.name = f"MACD{_asmode}{_props}"
     df.category = macd.category

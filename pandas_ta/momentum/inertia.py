@@ -6,12 +6,12 @@ from pandas_ta.volatility import rvi
 
 
 def inertia(
-        close: Series, high: Series = None, low: Series = None,
-        length: int = None, rvi_length: int = None, scalar: float = None,
-        refined: bool = None, thirds: bool = None,
-        drift: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, high: Series = None, low: Series = None,
+    length: int = None, rvi_length: int = None, scalar: float = None,
+    refined: bool = None, thirds: bool = None,
+    drift: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Inertia (INERTIA)
 
     Inertia was developed by Donald Dorsey and was introduced his article
@@ -54,20 +54,25 @@ def inertia(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     if refined or thirds:
         high = verify_series(high, _length)
         low = verify_series(low, _length)
-        if high is None or low is None: return
+        if high is None or low is None:
+            return
 
     # Calculate
     if refined:
-        _mode, rvi_ = "r", rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, refined=refined, mamode=mamode)
+        _mode, rvi_ = "r", rvi(close, high=high, low=low, length=rvi_length,
+                               scalar=scalar, refined=refined, mamode=mamode)
     elif thirds:
-        _mode, rvi_ = "t", rvi(close, high=high, low=low, length=rvi_length, scalar=scalar, thirds=thirds, mamode=mamode)
+        _mode, rvi_ = "t", rvi(close, high=high, low=low, length=rvi_length,
+                               scalar=scalar, thirds=thirds, mamode=mamode)
     else:
-        _mode, rvi_ = "",  rvi(close, length=rvi_length, scalar=scalar, mamode=mamode)
+        _mode, rvi_ = "", rvi(close, length=rvi_length,
+                              scalar=scalar, mamode=mamode)
 
     inertia = linreg(rvi_, length=length)
 

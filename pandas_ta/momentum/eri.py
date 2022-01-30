@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def eri(
-        high: Series, low: Series, close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Elder Ray Index (ERI)
 
     Elder's Bulls Ray Index contains his Bull and Bear Powers. Which are useful ways
@@ -44,7 +44,8 @@ def eri(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     ema_ = ema(close, length)

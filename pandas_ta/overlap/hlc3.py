@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def hlc3(
-        high: Series, low: Series, close: Series, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """HLC3
 
     HLC3 is the average of high, low and close.
@@ -33,7 +33,9 @@ def hlc3(
         from talib import TYPPRICE
         hlc3 = TYPPRICE(high, low, close)
     else:
-        hlc3 = Series((high.values + low.values + close.values) / 3.0, index=close.index)
+        hlc3 = Series(
+            (high.values + low.values + close.values) / 3.0,
+            index=close.index)
 
     # Offset
     if offset != 0:

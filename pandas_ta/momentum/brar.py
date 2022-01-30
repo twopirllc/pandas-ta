@@ -4,10 +4,10 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def brar(
-        open_: Series, high: Series, low: Series, close: Series,
-        length: int = None, scalar: float = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    open_: Series, high: Series, low: Series, close: Series,
+    length: int = None, scalar: float = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """BRAR (BRAR)
 
     BR and AR
@@ -45,7 +45,8 @@ def brar(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if open_ is None or high is None or low is None or close is None: return
+    if open_ is None or high is None or low is None or close is None:
+        return
 
     # Calculate
     hcy = non_zero_range(high, close.shift(drift))

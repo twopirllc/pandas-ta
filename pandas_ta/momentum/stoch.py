@@ -6,11 +6,11 @@ from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
 def stoch(
-        high: Series, low: Series, close: Series,
-        k: int = None, d: int = None, smooth_k: int = None,
-        mamode: str = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    k: int = None, d: int = None, smooth_k: int = None,
+    mamode: str = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Stochastic (STOCH)
 
     The Stochastic Oscillator (STOCH) was developed by George Lane in the 1950's.
@@ -57,12 +57,21 @@ def stoch(
     mamode = mamode if isinstance(mamode, str) else "sma"
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import STOCH
-        stoch_ = STOCH(high, low, close, k, d, tal_ma(mamode), d, tal_ma(mamode))
+        stoch_ = STOCH(
+            high,
+            low,
+            close,
+            k,
+            d,
+            tal_ma(mamode),
+            d,
+            tal_ma(mamode))
         stoch_k, stoch_d = stoch_[0], stoch_[1]
     else:
         lowest_low = low.rolling(k).min()
@@ -71,8 +80,10 @@ def stoch(
         stoch = 100 * (close - lowest_low)
         stoch /= non_zero_range(highest_high, lowest_low)
 
-        stoch_k = ma(mamode, stoch.loc[stoch.first_valid_index():,], length=smooth_k)
-        stoch_d = ma(mamode, stoch_k.loc[stoch_k.first_valid_index():,], length=d)
+        stoch_k = ma(
+            mamode, stoch.loc[stoch.first_valid_index():, ], length=smooth_k)
+        stoch_d = ma(
+            mamode, stoch_k.loc[stoch_k.first_valid_index():, ], length=d)
 
     # Offset
     if offset != 0:

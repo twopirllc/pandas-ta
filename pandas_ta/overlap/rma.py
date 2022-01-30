@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def rma(
-        close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """wildeR's Moving Average (RMA)
 
     The WildeR's Moving Average is simply an Exponential Moving Average (EMA) with
@@ -34,7 +34,8 @@ def rma(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     rma = close.ewm(alpha=alpha, min_periods=length).mean()

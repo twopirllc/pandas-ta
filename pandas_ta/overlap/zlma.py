@@ -21,9 +21,9 @@ from .wma import wma
 
 
 def zlma(
-        close: Series, length: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Zero Lag Moving Average (ZLMA)
 
     The Zero Lag Moving Average attempts to eliminate the lag associated
@@ -51,7 +51,8 @@ def zlma(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     lag = int(0.5 * (length - 1))
@@ -63,23 +64,40 @@ def zlma(
     # Not ideal but it works. Submit a PR for a better solution. =)
     # This design pattern is undesirable
     def _ma(**kwargs):
-        if   mamode == "dema":      return dema(**kwargs)
-        elif mamode == "fwma":      return fwma(**kwargs)
-        elif mamode == "hma":       return hma(**kwargs)
-        elif mamode == "linreg":    return linreg(**kwargs)
-        elif mamode == "midpoint":  return midpoint(**kwargs)
-        elif mamode == "pwma":      return pwma(**kwargs)
-        elif mamode == "rma":       return rma(**kwargs)
-        elif mamode == "sinwma":    return sinwma(**kwargs)
-        elif mamode == "sma":       return sma(**kwargs)
-        elif mamode == "ssf":       return ssf(**kwargs)
-        elif mamode == "swma":      return swma(**kwargs)
-        elif mamode == "t3":        return t3(**kwargs)
-        elif mamode == "tema":      return tema(**kwargs)
-        elif mamode == "trima":     return trima(**kwargs)
-        elif mamode == "vidya":     return vidya(**kwargs)
-        elif mamode == "wma":       return wma(**kwargs)
-        else:                       return ema(**kwargs)
+        if mamode == "dema":
+            return dema(**kwargs)
+        elif mamode == "fwma":
+            return fwma(**kwargs)
+        elif mamode == "hma":
+            return hma(**kwargs)
+        elif mamode == "linreg":
+            return linreg(**kwargs)
+        elif mamode == "midpoint":
+            return midpoint(**kwargs)
+        elif mamode == "pwma":
+            return pwma(**kwargs)
+        elif mamode == "rma":
+            return rma(**kwargs)
+        elif mamode == "sinwma":
+            return sinwma(**kwargs)
+        elif mamode == "sma":
+            return sma(**kwargs)
+        elif mamode == "ssf":
+            return ssf(**kwargs)
+        elif mamode == "swma":
+            return swma(**kwargs)
+        elif mamode == "t3":
+            return t3(**kwargs)
+        elif mamode == "tema":
+            return tema(**kwargs)
+        elif mamode == "trima":
+            return trima(**kwargs)
+        elif mamode == "vidya":
+            return vidya(**kwargs)
+        elif mamode == "wma":
+            return wma(**kwargs)
+        else:
+            return ema(**kwargs)
 
     zlma = _ma(**kwargs)
 

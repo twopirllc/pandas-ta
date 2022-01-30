@@ -5,9 +5,9 @@ from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
 def rsx(
-        close: Series, length: int = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Relative Strength Xtra (rsx)
 
     The Relative Strength Xtra is based on the popular RSI indicator and inspired
@@ -39,7 +39,8 @@ def rsx(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     m = close.size

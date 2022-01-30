@@ -9,14 +9,14 @@ from pandas_ta.utils import get_offset, unsigned_differences, verify_series
 
 
 def squeeze_pro(
-        high: Series, low: Series, close: Series,
-        bb_length: int = None, bb_std: float = None,
-        kc_length: int = None, kc_scalar_wide: float = None,
-        kc_scalar_normal: float = None, kc_scalar_narrow: float = None,
-        mom_length: int = None, mom_smooth: int = None,
-        use_tr=None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    bb_length: int = None, bb_std: float = None,
+    kc_length: int = None, kc_scalar_wide: float = None,
+    kc_scalar_normal: float = None, kc_scalar_narrow: float = None,
+    mom_length: int = None, mom_smooth: int = None,
+    use_tr=None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Squeeze PRO(SQZPRO)
 
     This indicator is an extended version of "TTM Squeeze" from John Carter.
@@ -63,9 +63,12 @@ def squeeze_pro(
     bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
     bb_std = float(bb_std) if bb_std and bb_std > 0 else 2.0
     kc_length = int(kc_length) if kc_length and kc_length > 0 else 20
-    kc_scalar_wide = float(kc_scalar_wide) if kc_scalar_wide and kc_scalar_wide > 0 else 2
-    kc_scalar_normal = float(kc_scalar_normal) if kc_scalar_normal and kc_scalar_normal > 0 else 1.5
-    kc_scalar_narrow = float(kc_scalar_narrow) if kc_scalar_narrow and kc_scalar_narrow > 0 else 1
+    kc_scalar_wide = float(
+        kc_scalar_wide) if kc_scalar_wide and kc_scalar_wide > 0 else 2
+    kc_scalar_normal = float(
+        kc_scalar_normal) if kc_scalar_normal and kc_scalar_normal > 0 else 1.5
+    kc_scalar_narrow = float(
+        kc_scalar_narrow) if kc_scalar_narrow and kc_scalar_narrow > 0 else 1
     mom_length = int(mom_length) if mom_length and mom_length > 0 else 12
     mom_smooth = int(mom_smooth) if mom_smooth and mom_smooth > 0 else 6
 
@@ -77,8 +80,10 @@ def squeeze_pro(
 
     valid_kc_scaler = kc_scalar_wide > kc_scalar_normal and kc_scalar_normal > kc_scalar_narrow
 
-    if not valid_kc_scaler: return
-    if high is None or low is None or close is None: return
+    if not valid_kc_scaler:
+        return
+    if high is None or low is None or close is None:
+        return
 
     use_tr = kwargs.setdefault("tr", True)
     asint = kwargs.pop("asint", True)
@@ -91,9 +96,30 @@ def squeeze_pro(
 
     # Calculate
     bbd = bbands(close, length=bb_length, std=bb_std, mamode=mamode)
-    kch_wide = kc(high, low, close, length=kc_length, scalar=kc_scalar_wide, mamode=mamode, tr=use_tr)
-    kch_normal = kc(high, low, close, length=kc_length, scalar=kc_scalar_normal, mamode=mamode, tr=use_tr)
-    kch_narrow = kc(high, low, close, length=kc_length, scalar=kc_scalar_narrow, mamode=mamode, tr=use_tr)
+    kch_wide = kc(
+        high,
+        low,
+        close,
+        length=kc_length,
+        scalar=kc_scalar_wide,
+        mamode=mamode,
+        tr=use_tr)
+    kch_normal = kc(
+        high,
+        low,
+        close,
+        length=kc_length,
+        scalar=kc_scalar_normal,
+        mamode=mamode,
+        tr=use_tr)
+    kch_narrow = kc(
+        high,
+        low,
+        close,
+        length=kc_length,
+        scalar=kc_scalar_narrow,
+        mamode=mamode,
+        tr=use_tr)
 
     # Simplify KC and BBAND column names for dynamic access
     bbd.columns = simplify_columns(bbd)
@@ -104,7 +130,7 @@ def squeeze_pro(
     momo = mom(close, length=mom_length)
     if mamode.lower() == "ema":
         squeeze = ema(momo, length=mom_smooth)
-    else: # "sma"
+    else:  # "sma"
         squeeze = sma(momo, length=mom_smooth)
 
     # Classify Squeezes

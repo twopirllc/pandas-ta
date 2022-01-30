@@ -6,10 +6,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def tsi(
-        close: Series, fast: int = None, slow: int = None, signal: int = None,
-        scalar: float = None, mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, fast: int = None, slow: int = None, signal: int = None,
+    scalar: float = None, mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """True Strength Index (TSI)
 
     The True Strength Index is a momentum indicator used to identify short-term
@@ -48,9 +48,11 @@ def tsi(
     drift = get_drift(drift)
     offset = get_offset(offset)
     mamode = mamode if isinstance(mamode, str) else "ema"
-    if "length" in kwargs: kwargs.pop("length")
+    if "length" in kwargs:
+        kwargs.pop("length")
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     diff = close.diff(drift)
@@ -80,7 +82,7 @@ def tsi(
     # Name and Category
     tsi.name = f"TSI_{fast}_{slow}_{signal}"
     tsi_signal.name = f"TSIs_{fast}_{slow}_{signal}"
-    tsi.category = tsi_signal.category =  "momentum"
+    tsi.category = tsi_signal.category = "momentum"
 
     df = DataFrame({tsi.name: tsi, tsi_signal.name: tsi_signal})
     df.name = f"TSI_{fast}_{slow}_{signal}"

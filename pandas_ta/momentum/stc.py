@@ -5,10 +5,10 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def stc(
-        close: Series, tclength: int = None,
-        fast: int = None, slow: int = None, factor: float = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, tclength: int = None,
+    fast: int = None, slow: int = None, factor: float = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Schaff Trend Cycle (STC)
 
     The Schaff Trend Cycle is an evolution of the popular MACD incorportating two
@@ -63,7 +63,8 @@ def stc(
     close = verify_series(close, _length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     # kwargs allows for three more series (ma1, ma2 and osc) which can be passed
@@ -78,13 +79,15 @@ def stc(
         ma1 = verify_series(ma1, _length)
         ma2 = verify_series(ma2, _length)
 
-        if ma1 is None or ma2 is None: return
+        if ma1 is None or ma2 is None:
+            return
         # According to external feeded series
         xmacd = ma1 - ma2
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
     elif isinstance(osc, Series):
         osc = verify_series(osc, _length)
-        if osc is None: return
+        if osc is None:
+            return
         # According to feeded oscillator (should be ranging around 0 x-axis)
         xmacd = osc
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
@@ -120,7 +123,7 @@ def stc(
     stc.name = f"STC{_props}"
     macd.name = f"STCmacd{_props}"
     stoch.name = f"STCstoch{_props}"
-    stc.category = macd.category = stoch.category ="momentum"
+    stc.category = macd.category = stoch.category = "momentum"
 
     data = {stc.name: stc, macd.name: macd, stoch.name: stoch}
     df = DataFrame(data)

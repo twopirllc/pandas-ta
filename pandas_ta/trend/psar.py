@@ -5,10 +5,10 @@ from pandas_ta.utils import get_offset, verify_series, zero
 
 
 def psar(
-        high: Series, low: Series, close: Series = None,
-        af0: float = None, af: float = None, max_af: float = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series = None,
+    af0: float = None, af: float = None, max_af: float = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Parabolic Stop and Reverse (psar)
 
     Parabolic Stop and Reverse (PSAR) was developed by J. Wells Wilder, that is used
@@ -49,7 +49,7 @@ def psar(
     max_af = float(max_af) if max_af and max_af > 0 else 0.2
     offset = get_offset(offset)
 
-    def _falling(high, low, drift:int=1):
+    def _falling(high, low, drift: int = 1):
         """Returns the last -DM value"""
         # Not to be confused with ta.falling()
         up = high - high.shift(drift)
@@ -104,10 +104,10 @@ def psar(
         if reverse:
             _sar = ep
             af = af0
-            falling = not falling # Must come before next line
+            falling = not falling  # Must come before next line
             ep = low_ if falling else high_
 
-        sar = _sar # Update SAR
+        sar = _sar  # Update SAR
 
         # Seperate long/short sar based on falling
         if falling:

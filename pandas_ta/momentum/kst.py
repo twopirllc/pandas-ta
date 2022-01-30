@@ -5,12 +5,12 @@ from .roc import roc
 
 
 def kst(
-        close: Series, signal: int = None,
-        roc1: int = None, roc2: int = None, roc3: int = None, roc4: int = None,
-        sma1: int = None, sma2: int = None, sma3: int = None, sma4: int = None,
-        drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, signal: int = None,
+    roc1: int = None, roc2: int = None, roc3: int = None, roc4: int = None,
+    sma1: int = None, sma2: int = None, sma3: int = None, sma4: int = None,
+    drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """'Know Sure Thing' (KST)
 
     The 'Know Sure Thing' is a momentum based oscillator and based on ROC.
@@ -57,7 +57,8 @@ def kst(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     rocma1 = roc(close, roc1).rolling(sma1).mean()

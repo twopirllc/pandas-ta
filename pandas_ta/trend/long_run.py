@@ -6,9 +6,9 @@ from .increasing import increasing
 
 
 def long_run(
-        fast: Series, slow: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    fast: Series, slow: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Long Run
 
     Long Run was developed by Kevin Johnson that returns a binary Series
@@ -44,11 +44,14 @@ def long_run(
     slow = verify_series(slow, length)
     offset = get_offset(offset)
 
-    if fast is None or slow is None: return
+    if fast is None or slow is None:
+        return
 
     # Calculate
-    pb = increasing(fast, length) & decreasing(slow, length)  # potential bottom or bottom
-    bi = increasing(fast, length) & increasing(slow, length)  # fast and slow are increasing
+    pb = increasing(fast, length) & decreasing(
+        slow, length)  # potential bottom or bottom
+    bi = increasing(fast, length) & increasing(
+        slow, length)  # fast and slow are increasing
     long_run = pb | bi
 
     # Offset

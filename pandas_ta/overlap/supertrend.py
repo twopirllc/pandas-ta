@@ -7,10 +7,10 @@ from pandas_ta.volatility import atr
 
 
 def supertrend(
-        high: Series, low: Series, close: Series,
-        length: int = None, multiplier: float = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    length: int = None, multiplier: float = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Supertrend (supertrend)
 
     Supertrend is an overlap indicator. It is used to help identify trend
@@ -44,7 +44,8 @@ def supertrend(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     m = close.size
@@ -75,11 +76,11 @@ def supertrend(
 
     _props = f"_{length}_{multiplier}"
     df = DataFrame({
-            f"SUPERT{_props}": trend,
-            f"SUPERTd{_props}": dir_,
-            f"SUPERTl{_props}": long,
-            f"SUPERTs{_props}": short,
-        }, index=close.index)
+        f"SUPERT{_props}": trend,
+        f"SUPERTd{_props}": dir_,
+        f"SUPERTl{_props}": long,
+        f"SUPERTs{_props}": short,
+    }, index=close.index)
 
     df.name = f"SUPERT{_props}"
     df.category = "overlap"

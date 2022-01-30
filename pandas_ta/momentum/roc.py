@@ -6,10 +6,10 @@ from .mom import mom
 
 
 def roc(
-        close: Series, length: int = None,
-        scalar: float = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    scalar: float = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Rate of Change (ROC)
 
     Rate of Change is an indicator is also referred to as Momentum (yeah, confusingly).
@@ -41,14 +41,16 @@ def roc(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import ROC
         roc = ROC(close, length)
     else:
-        roc = scalar * mom(close=close, length=length, talib=mode_tal) / close.shift(length)
+        roc = scalar * mom(close=close, length=length,
+                           talib=mode_tal) / close.shift(length)
 
     # Offset
     if offset != 0:

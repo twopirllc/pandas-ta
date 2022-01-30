@@ -4,10 +4,10 @@ from pandas_ta.utils import get_drift, get_offset, is_percent, verify_series
 
 
 def increasing(
-        close: Series, length: int = None, strict: bool = None,
-        asint: bool = None, percent: float = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, strict: bool = None,
+    asint: bool = None, percent: float = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Increasing
 
     Returns True if the series is increasing over a period, False otherwise.
@@ -40,7 +40,8 @@ def increasing(
     offset = get_offset(offset)
     percent = float(percent) if is_percent(percent) else False
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     close_ = (1 + 0.01 * percent) * close if percent else close
@@ -48,7 +49,8 @@ def increasing(
         # Returns value as float64? Have to cast to bool
         increasing = close > close_.shift(drift)
         for x in range(3, length + 1):
-            increasing = increasing & (close.shift(x - (drift + 1)) > close_.shift(x - drift))
+            increasing = increasing & (close.shift(
+                x - (drift + 1)) > close_.shift(x - drift))
 
         increasing.fillna(0, inplace=True)
         increasing = increasing.astype(bool)

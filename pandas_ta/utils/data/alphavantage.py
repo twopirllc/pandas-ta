@@ -17,20 +17,28 @@ def av(ticker: str, **kwargs) -> DataFrame:
     if Imports["alphaVantage-api"] and ticker is not None:
         # from alphaVantageAPI import alphavantage
         import alphaVantageAPI as AV
-        AVC = {"api_key": "YOUR API KEY", "clean": True, "export": False, "output_size": "full", "premium": False}
+        AVC = {
+            "api_key": "YOUR API KEY",
+            "clean": True,
+            "export": False,
+            "output_size": "full",
+            "premium": False}
         _config = kwargs.pop("av_kwargs", AVC)
         av = AV.AlphaVantage(**_config)
 
         period = kwargs.pop("period", av.output_size)
 
-        _all, div = ["all"], "=" * 53 # Max div width is 80
+        _all, div = ["all"], "=" * 53  # Max div width is 80
 
-        if kind in _all or verbose: pass
+        if kind in _all or verbose:
+            pass
 
         if kind in _all + ["history", "h"]:
             if verbose:
-                print("\n====  Chart History       " + div + f"\n[*] Pandas TA v{version} & alphaVantage-api")
-                print(f"[+] Downloading {ticker}[{interval}:{period}] from {av.API_NAME} (https://www.alphavantage.co/)")
+                print("\n====  Chart History       " + div +
+                      f"\n[*] Pandas TA v{version} & alphaVantage-api")
+                print(
+                    f"[+] Downloading {ticker}[{interval}:{period}] from {av.API_NAME} (https://www.alphavantage.co/)")
             df = av.data(ticker, interval)
             df.name = ticker
             if show is not None and isinstance(show, int) and show > 0:

@@ -6,10 +6,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def cmo(
-        close: Series, length: int = None, scalar: float = None,
-        talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, scalar: float = None,
+    talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Chande Momentum Oscillator (CMO)
 
     Attempts to capture the momentum of an asset with overbought at 50 and
@@ -44,7 +44,8 @@ def cmo(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

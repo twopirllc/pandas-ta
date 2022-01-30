@@ -6,10 +6,10 @@ from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
 def alma(
-        close: Series, length: int = None,
-        sigma: float = None, dist_offset: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    sigma: float = None, dist_offset: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Arnaud Legoux Moving Average (ALMA)
 
     The ALMA moving average uses the curve of the Normal (Gauss) distribution, which
@@ -40,14 +40,16 @@ def alma(
     # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 9
     sigma = float(sigma) if isinstance(sigma, float) and sigma > 0 else 6.0
-    if isinstance(dist_offset, float) and dist_offset >= 0 and dist_offset <= 1:
+    if isinstance(dist_offset,
+                  float) and dist_offset >= 0 and dist_offset <= 1:
         offset_ = float(dist_offset)
     else:
         offset_ = 0.85
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     np_close = close.values
@@ -61,7 +63,8 @@ def alma(
         window = sliding_window_view(np_close, length)
     else:
         window = strided_window(np_close, length)
-    result = append(array([nan] * (length - 1)), tensordot(window, weights, axes=1))
+    result = append(array([nan] * (length - 1)),
+                    tensordot(window, weights, axes=1))
     alma = Series(result, index=close.index)
 
     # Offset

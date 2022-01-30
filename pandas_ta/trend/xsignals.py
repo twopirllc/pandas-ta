@@ -6,12 +6,12 @@ from pandas_ta.utils import cross_value, get_offset, verify_series
 
 
 def xsignals(
-        signal: Series,
-        xa: Series, xb: Series,
-        above: bool = True, long: bool = True, asbool: bool = None,
-        trend_reset: int = 0, trade_offset: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    signal: Series,
+    xa: Series, xb: Series,
+    above: bool = True, long: bool = True, asbool: bool = None,
+    trend_reset: int = 0, trade_offset: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Cross Signals (XSIGNALS)
 
     Cross Signals returns Trend Signal (TSIGNALS) results for Signal Crossings. This
@@ -92,10 +92,10 @@ def xsignals(
         trends = 1 - trends
 
     tskwargs = {
-        "asbool":asbool,
-        "trade_offset":trade_offset,
-        "trend_reset":trend_reset,
-        "offset":offset
+        "asbool": asbool,
+        "trade_offset": trade_offset,
+        "trend_reset": trend_reset,
+        "offset": offset
     }
     df = tsignals(trends, **tskwargs)
 
@@ -104,7 +104,6 @@ def xsignals(
         f"XS_LONG": df.TS_Trends,
         f"XS_SHORT": 1 - df.TS_Trends
     })
-
 
     # Fill
     if "fillna" in kwargs:

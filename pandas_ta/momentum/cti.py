@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def cti(
-        close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Correlation Trend Indicator (CTI)
 
     The Correlation Trend Indicator is an oscillator created by John Ehler in 2020.
@@ -32,7 +32,8 @@ def cti(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     cti = linreg(close, length=length, r=True)

@@ -5,10 +5,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def efi(
-        close: Series, volume: Series, length: int = None,
-        mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, volume: Series, length: int = None,
+    mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Elder's Force Index (EFI)
 
     Elder's Force Index measures the power behind a price movement using price
@@ -41,7 +41,8 @@ def efi(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None or volume is None: return
+    if close is None or volume is None:
+        return
 
     # Calculate
     pv_diff = close.diff(drift) * volume

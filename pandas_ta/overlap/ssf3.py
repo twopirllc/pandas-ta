@@ -6,7 +6,7 @@ from pandas_ta.utils import get_offset, verify_series
 try:
     from numba import njit
 except ImportError:
-    njit = lambda _: _
+    def njit(_): return _
 
 
 @njit
@@ -31,10 +31,10 @@ def np_ssf3(x: ndarray, n: int, pi: float, sqrt3: float):
 
 
 def ssf3(
-        close: Series, length: int = None,
-        pi: float = None, sqrt3: float = None,
-        offset=None, **kwargs
-    ):
+    close: Series, length: int = None,
+    pi: float = None, sqrt3: float = None,
+    offset=None, **kwargs
+):
     """Ehler's 3 Pole Super Smoother Filter (SSF) © 2013
 
     John F. Ehlers's solution to reduce lag and remove aliasing noise with his
@@ -74,7 +74,8 @@ def ssf3(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     np_close = close.values

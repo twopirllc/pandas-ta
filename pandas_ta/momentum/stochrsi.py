@@ -6,10 +6,10 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def stochrsi(
-        close: Series, length: int = None, rsi_length: int = None,
-        k: int = None, d: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, length: int = None, rsi_length: int = None,
+    k: int = None, d: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Stochastic (STOCHRSI)
 
     "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll and published in Stock & Commodities V.11:5 (189-199)
@@ -49,7 +49,8 @@ def stochrsi(
     offset = get_offset(offset)
     mamode = mamode if isinstance(mamode, str) else "sma"
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     rsi_ = rsi(close, length=rsi_length)

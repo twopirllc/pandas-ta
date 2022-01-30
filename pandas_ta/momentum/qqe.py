@@ -7,11 +7,11 @@ from .rsi import rsi
 
 
 def qqe(
-        close: Series, length: int = None,
-        smooth: int = None, factor: float = None,
-        mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, length: int = None,
+    smooth: int = None, factor: float = None,
+    mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Quantitative Qualitative Estimation (QQE)
 
     The Quantitative Qualitative Estimation (QQE) is similar to SuperTrend but uses a Smoothed RSI with an upper and lower bands. The band width is a combination of a one period True Range of the Smoothed RSI which is double smoothed using Wilder's smoothing length (2 * rsiLength - 1) and multiplied by the default factor of 4.236. A Long trend is determined when the Smoothed RSI crosses the previous upperband and a Short trend when the Smoothed RSI crosses the previous lowerband.
@@ -49,7 +49,8 @@ def qqe(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     rsi_ = rsi(close, length)
@@ -58,14 +59,17 @@ def qqe(
 
     # RSI MA True Range
     rsi_ma_tr = rsi_ma.diff(drift).abs()
-    if all(isnan(rsi_ma_tr)): return
+    if all(isnan(rsi_ma_tr)):
+        return
 
     # Double Smooth the RSI MA True Range using Wilder's Length with a default
     # width of 4.236.
     smoothed_rsi_tr_ma = ma("ema", rsi_ma_tr, length=wilders_length)
-    if all(isnan(smoothed_rsi_tr_ma)): return # Emergency Break
+    if all(isnan(smoothed_rsi_tr_ma)):
+        return  # Emergency Break
     dar = factor * ma("ema", smoothed_rsi_tr_ma, length=wilders_length)
-    if all(isnan(dar)): return                # Emergency Break
+    if all(isnan(dar)):
+        return                # Emergency Break
 
     # Create the Upper and Lower Bands around RSI MA.
     upperband = rsi_ma + dar
@@ -99,7 +103,8 @@ def qqe(
         # Trend & QQE Calculation
         # Long: Current RSI_MA value Crosses the Prior Short Line Value
         # Short: Current RSI_MA Crosses the Prior Long Line Value
-        if (c_rsi > c_short and p_rsi < p_short) or (c_rsi <= c_short and p_rsi >= p_short):
+        if (c_rsi > c_short and p_rsi < p_short) or (
+                c_rsi <= c_short and p_rsi >= p_short):
             trend.iloc[i] = 1
             qqe.iloc[i] = qqe_long.iloc[i] = long.iloc[i]
         elif (c_rsi > c_long and p_rsi < p_long) or (c_rsi <= c_long and p_rsi >= p_long):
@@ -110,7 +115,7 @@ def qqe(
             if trend.iloc[i] == 1:
                 qqe.iloc[i] = qqe_long.iloc[i] = long.iloc[i]
             else:
-                qqe.iloc[i] = qqe_short.iloc[i]  = short.iloc[i]
+                qqe.iloc[i] = qqe_short.iloc[i] = short.iloc[i]
 
     # Offset
     if offset != 0:

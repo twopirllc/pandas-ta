@@ -5,8 +5,7 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils import hpoly
 
 
-
-def _gaussian_poly_coefficients() -> ndarray :
+def _gaussian_poly_coefficients() -> ndarray:
     """Three pairs of Polynomial Approximation Coefficients
     for the Gaussian Normal CDF"""
 
@@ -75,9 +74,12 @@ def inv_norm(value: Union[float, int]) -> Union[float, None]:
     v = value
 
     # if v == 0.0: return -npInfty
-    if v == 0.0: return -infty
-    if v == 1.0: return infty
-    if v < 0.0 or value > 1.0: return nan
+    if v == 0.0:
+        return -infty
+    if v == 1.0:
+        return infty
+    if v < 0.0 or value > 1.0:
+        return nan
 
     p0, q0, p1, q1, p2, q2 = _gaussian_poly_coefficients()
 
@@ -108,6 +110,7 @@ def inv_norm(value: Union[float, int]) -> Union[float, None]:
         y1 = z * hpoly(p2, z) / hpoly(q2, z)
 
     y = y0 - y1
-    if negate: y = -y
+    if negate:
+        y = -y
 
     return y
