@@ -33,14 +33,17 @@ def cdl_pattern(
 
     Examples:
 
-    Get all candle patterns (This is the default behaviour)
-    >>> df = df.ta.cdl_pattern(name="all")
+        Get all candle patterns (This is the default behaviour)::
 
-    Get only one pattern
-    >>> df = df.ta.cdl_pattern(name="doji")
+            df = df.ta.cdl_pattern(name="all")
 
-    Get some patterns
-    >>> df = df.ta.cdl_pattern(name=["doji", "inside"])
+        Get only one pattern::
+            
+            df = df.ta.cdl_pattern(name="doji")
+
+        Get some patterns::
+            
+            df = df.ta.cdl_pattern(name=["doji", "inside"])
 
     Args:
         open_ (pd.Series): Series of 'open's

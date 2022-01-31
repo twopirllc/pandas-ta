@@ -19,10 +19,12 @@ def tsignals(
     whose values are boolean or integers (0 or 1).
 
     Examples:
-    ta.tsignals(close > ta.sma(close, 50), asbool=False)
-    ta.tsignals(ta.ema(close, 8) > ta.ema(close, 21), asbool=True)
+        ta.tsignals(close > ta.sma(close, 50), asbool=False)
 
-    Source: Kevin Johnson
+        ta.tsignals(ta.ema(close, 8) > ta.ema(close, 21), asbool=True)
+
+    Source: 
+        Kevin Johnson
 
     Args:
         trend (pd.Series): Series of 'trend's. The trend can be either a boolean or

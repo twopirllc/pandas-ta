@@ -33,7 +33,7 @@ def hilo(
         close (pd.Series): Series of 'close's
         high_length (int): It's period. Default: 13
         low_length (int): It's period. Default: 21
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

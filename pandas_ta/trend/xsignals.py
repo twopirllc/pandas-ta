@@ -29,15 +29,21 @@ def xsignals(
     False, it does the same but for the short side.
 
     Example:
-    # These are two different outcomes and depends on the indicator and it's
-    # characteristics. Please check BOTH outcomes BEFORE making an Issue.
-    rsi = df.ta.rsi()
-    # Returns tsignal DataFrame when RSI crosses above 20 and then below 80
-    ta.xsignals(rsi, 20, 80, above=True)
-    # Returns tsignal DataFrame when RSI crosses below 20 and then above 80
-    ta.xsignals(rsi, 20, 80, above=False)
+        These are two different outcomes and depends on the indicator and it's
+        characteristics. Please check BOTH outcomes BEFORE making an Issue::
+    
+            rsi = df.ta.rsi()
+    
+        Returns tsignal DataFrame when RSI crosses above 20 and then below 80::
 
-    Source: Kevin Johnson
+            ta.xsignals(rsi, 20, 80, above=True)
+
+        Returns tsignal DataFrame when RSI crosses below 20 and then above 80::
+
+            ta.xsignals(rsi, 20, 80, above=False)
+
+    Source: 
+        Kevin Johnson
 
     Args:
         signal (pd.Series): The Signal to compare from. Commonly the 'close'.

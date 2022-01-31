@@ -26,7 +26,7 @@ def tsi(
         signal (int): The signal period. Default: 13
         scalar (float): How much to magnify. Default: 100
         mamode (str): Moving Average of TSI Signal Line.
-            See ```help(ta.ma)```. Default: 'ema'
+            See ``help(ta.ma)``. Default: 'ema'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 

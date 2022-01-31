@@ -22,7 +22,7 @@ def long_run(
     signals.
 
     Sources:
-    It is part of the Converging and Diverging Conditional logic in:
+        It is part of the Converging and Diverging Conditional logic in:
         https://www.tradingview.com/script/Z2mq63fE-Trade-Archer-Moving-Averages-v1-4F/
 
     Args:

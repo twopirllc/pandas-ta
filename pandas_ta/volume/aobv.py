@@ -16,7 +16,7 @@ def aobv(
     Archer On Balance Volume (AOBV) developed by Kevin Johnson provides
     additional indicator analysis on OBV. It calculates moving averages, default
     'ema', of OBV as well as the moving average Long and Short Run Trends, see
-    ```help(ta.long_run)```. Lastly, the indicator also calculates the rolling
+    ``help(ta.long_run)``. Lastly, the indicator also calculates the rolling
     Maximum and Minimum OBV.
 
     Sources:
@@ -29,7 +29,7 @@ def aobv(
         slow (int): The period of the slow moving average. Default: 12
         max_lookback (int): Maximum OBV bars back. Default: 2
         min_lookback (int): Minimum OBV bars back. Default: 2
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

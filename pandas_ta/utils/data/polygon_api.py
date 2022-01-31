@@ -12,7 +12,7 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
     It returns OCHLV data from polygon (requires a valid subscription of course). To install the
     `polygon library <https://github.com/pssolanki111/polygon>`__ , use
     ``pip install polygon``.
-    You can customize the range of data using kwargs ``from_date``, ``to_date````timespan`` and ``multiplier``. For a
+    You can customize the range of data using kwargs ``from_date``, ``to_date``, ``timespan`` and ``multiplier``. For a
     description of these arguments, see
     `Here <https://polygon.readthedocs.io/en/latest/Stocks.html#get-aggregate-bars-candles>`__
 

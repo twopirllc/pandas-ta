@@ -29,7 +29,7 @@ def wb_tsv(
         volume (pd.Series): Series of 'volume's
         length (int): It's period. Default: 18
         signal (int): It's avg period. Default: 10
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 

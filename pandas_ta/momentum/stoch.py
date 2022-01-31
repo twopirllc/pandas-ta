@@ -33,7 +33,7 @@ def stoch(
         k (int): The Fast %K period. Default: 14
         d (int): The Slow %D period. Default: 3
         smooth_k (int): The Slow %K period. Default: 3
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         offset (int): How many periods to offset the result. Default: 0

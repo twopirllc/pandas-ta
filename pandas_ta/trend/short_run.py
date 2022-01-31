@@ -17,12 +17,12 @@ def short_run(
 
     It is recommended to use 'smooth' signals for 'fast' and 'slow' for the
     comparison to reduce unnecessary noise. For indicators using long_run, see
-    Archer Moving Average Trend (```help(ta.amat)```) and Archer On Balance
-    Volume (```help(ta.aobv)```). Both use Moving Averages for 'fast' and 'slow'
+    Archer Moving Average Trend (``help(ta.amat)``) and Archer On Balance
+    Volume (``help(ta.aobv)``). Both use Moving Averages for 'fast' and 'slow'
     signals.
 
     Sources:
-    It is part of the Converging and Diverging Conditional logic in:
+        It is part of the Converging and Diverging Conditional logic in:
         https://www.tradingview.com/script/Z2mq63fE-Trade-Archer-Moving-Averages-v1-4F/
 
     Args:

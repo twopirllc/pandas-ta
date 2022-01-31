@@ -14,8 +14,8 @@ def amat(
     """Archer Moving Averages Trends (AMAT)
 
     Archer Moving Averages Trends (AMAT) developed by Kevin Johnson provides
-    creates both long run ```help(ta.long_run)``` and short run
-    ```help(ta.short_run)``` trend signals given two moving average speeds,
+    creates both long run ``help(ta.long_run)`` and short run
+    ``help(ta.short_run)`` trend signals given two moving average speeds,
     fast and slow. The long runs and short runs are binary Series where '1' is
     a trend and '0' is not a trend.
 
@@ -27,7 +27,7 @@ def amat(
         fast (int): The period of the fast moving average. Default: 8
         slow (int): The period of the slow moving average. Default: 21
         lookback (int): Lookback period for long_run and short_run. Default: 2
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

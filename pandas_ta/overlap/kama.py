@@ -27,7 +27,7 @@ def kama(
         length (int): It's period. Default: 10
         fast (int): Fast MA period. Default: 2
         slow (int): Slow MA period. Default: 30
-        mamode (str): See ```help(ta.ma)```. Valid MAs that support initialize
+        mamode (str): See ``help(ta.ma)``. Valid MAs that support initialize
             the first value: 'ema', 'fwma', 'linreg', 'midpoint', 'pwma', 'rma',
             'sinwma', 'sma', 'swma', 'trima', 'wma'. Default: 'sma'
         drift (int): The difference period. Default: 1

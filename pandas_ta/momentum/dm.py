@@ -23,7 +23,7 @@ def dm(
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
-        mamode (str): See ```help(ta.ma)```.  Default: 'rma'
+        mamode (str): See ``help(ta.ma)``.  Default: 'rma'
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         drift (int): The difference period. Default: 1

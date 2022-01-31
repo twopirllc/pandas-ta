@@ -30,7 +30,7 @@ def stochrsi(
         rsi_length (int): RSI period. Default: 14
         k (int): The Fast %K period. Default: 3
         d (int): The Slow %K period. Default: 3
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

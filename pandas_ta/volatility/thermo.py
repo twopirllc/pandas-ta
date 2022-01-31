@@ -24,7 +24,7 @@ def thermo(
         length (int): The  period. Default: 20
         long(int): The buy factor
         short(float): The sell factor
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         drift (int): The diff period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 

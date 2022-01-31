@@ -27,7 +27,7 @@ def adx(
         length (int): It's period. Default: 14
         lensig (int): Signal Length. Like TradingView's default ADX. Default: length
         scalar (float): How much to magnify. Default: 100
-        mamode (str): See ```help(ta.ma)```. Default: 'rma'
+        mamode (str): See ``help(ta.ma)``. Default: 'rma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 

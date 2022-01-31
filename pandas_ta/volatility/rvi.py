@@ -31,7 +31,7 @@ def rvi(
         refined (bool): Use 'refined' calculation which is the average of
             RVI(high) and RVI(low) instead of RVI(close). Default: False
         thirds (bool): Average of high, low and close. Default: False
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

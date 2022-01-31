@@ -23,7 +23,7 @@ def bbands(
         length (int): The short period. Default: 5
         std (int): The long period. Default: 2
         ddof (int): Degrees of Freedom to use. Default: 0
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         ddof (int): Delta Degrees of Freedom.

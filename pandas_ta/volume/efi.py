@@ -23,7 +23,7 @@ def efi(
         volume (pd.Series): Series of 'volume's
         length (int): The short period. Default: 13
         drift (int): The diff period. Default: 1
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
