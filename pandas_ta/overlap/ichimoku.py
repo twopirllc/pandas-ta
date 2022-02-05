@@ -115,7 +115,7 @@ Calculation:
     SPAN_A = 0.5 * (TENKAN_SEN + KIJUN_SEN)
     SPAN_A = SPAN_A.shift(kijun)
 
-    SPAN_B = MIDPRICE(high, low, close, length=senkou)
+    SPAN_B = MIDPRICE(high, low, length=senkou)
     SPAN_B = SPAN_B.shift(kijun)
 
 Args:
