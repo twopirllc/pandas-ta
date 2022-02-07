@@ -36,6 +36,7 @@ def colors(colors: str = None, default: str = "GrRd") -> dict:
         "GyPr": ["gray", "purple"],
         "GySv": ["gray", "silver"],
         "RdGr": ["red", "green"],
+        "RdGy": ["red", "gray"],
         "SvGy": ["silver", "gray"],
         # Triples
         "BkGrRd": ["black", "green", "red"],
@@ -147,7 +148,7 @@ class Watchlist(object):
             _last = kwargs.pop("last", 252)
             _title = kwargs.pop("title", f"{df.ticker}   {_time}   [{self.ds_name}]")
 
-            col = kwargs.pop("close", "close")
+            col = kwargs.pop("Close", "Close")
             if mas:
                 # df.ta.study(self.study, append=True)
                 price = df[[col, "SMA_10", "SMA_20", "SMA_50", "SMA_200"]]
@@ -199,7 +200,7 @@ class Watchlist(object):
                 if not df.ta.datetime_ordered:
                     df = df.set_index(pd.DatetimeIndex(df[index]))
             if self.ds_name == "yahoo":
-                df = ta.df.ta.ticker(ticker, lc_cols=True, returns=True)
+                df = ta.df.ta.ticker(ticker, timed=self.timed, returns=True)
                 to_save = f"{self.file_path}/{ticker}_{tf}.csv"
                 print(f"[+] Saving: {to_save}")
                 df.to_csv(to_save, mode="a")

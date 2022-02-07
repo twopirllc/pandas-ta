@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from multiprocessing import cpu_count
 from typing import List
 from dataclasses import dataclass, field
 
@@ -14,6 +15,7 @@ class Study:
     Args:
         name (str): Some short memorable string.  Note: Case-insensitive "All" is reserved.
         ta (list of dicts): A list of dicts containing keyword arguments where "kind" is the indicator.
+        cores (int): The number cores to use for the study(). Default: cpu_count()
         description (str): A more detailed description of what the Study tries to capture. Default: None
         created (str): At datetime string of when it was created. Default: Automatically generated. *Subject to change*
 
@@ -25,14 +27,18 @@ class Study:
         {"kind": "rsi"},
         {"kind": "macd", "fast": 8, "slow": 21},
         {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
-    ]
+    ],
     """
     name: str  # = None # Required.
     ta: List = field(default_factory=list)  # Required.
+    cores: int  = cpu_count()  # Number of cores. Default cpu_count()
     description: str = ""  # Helpful. More descriptive version or notes or w/e.
-    created: str = get_time(to_string=True) # Optional. Gets Exchange Time and Local Time execution time
+    created: str = get_time(to_string=True)  # Optional. Gets Exchange Time and Local Time execution time
 
     def __post_init__(self):
+        if isinstance(self.cores, int) and self.cores >= 0 and self.cores <= cpu_count():
+            self.cores = int(self.cores)
+
         req_args = ["[X] Study requires the following argument(s):"]
 
         if self._is_name():
@@ -75,6 +81,7 @@ AllStudy = Study(
 CommonStudy = Study(
     name="Common Price and Volume SMAs",
     description="Common Price SMAs: 10, 20, 50, 200 and Volume SMA: 20.",
+    cores=0,
     ta=[
         {"kind": "sma", "length": 10},
         {"kind": "sma", "length": 20},

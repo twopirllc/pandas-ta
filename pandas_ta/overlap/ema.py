@@ -29,11 +29,12 @@ def ema(
     ) -> Series:
     """Exponential Moving Average (EMA)
 
-    The Exponential Moving Average is more responsive moving average compared to the
-    Simple Moving Average (SMA).  The weights are determined by alpha which is
-    proportional to it's length.  There are several different methods of calculating
-    EMA.  One method uses just the standard definition of EMA and another uses the
-    SMA to generate the initial value for the rest of the calculation.
+    The Exponential Moving Average is a more responsive moving average compared
+    to the Simple Moving Average (SMA). The weights are determined by alpha
+    which is proportional to it's length.  There are several different methods
+    of calculating EMA. One method uses just the standard definition of EMA and
+    another uses the SMA to generate the initial value for the rest of the
+    calculation.
 
     Sources:
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages

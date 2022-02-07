@@ -25,33 +25,33 @@ Pandas TA - A Technical Analysis Library in Python 3
 
 ![Example Chart](/images/TA_Chart.png)
 
-_Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that leverages the Pandas package with more than 140 Indicators and Utility functions and more than 60 TA Lib Candlestick Patterns. Many commonly used indicators are included, such as: _Candle Pattern_ (**cdl_pattern**), _Simple Moving Average_ (**sma**) _Moving Average Convergence Divergence_ (**macd**), _Hull Exponential Moving Average_ (**hma**), _Bollinger Bands_ (**bbands**), _On-Balance Volume_ (**obv**), _Aroon & Aroon Oscillator_ (**aroon**), _Squeeze_ (**squeeze**) and **_many more_**.
+<br/>
 
-
-**Note:** _TA Lib_ must be installed to use **all** the Candlestick Patterns. ```pip install TA-Lib```. If _TA Lib_ is not installed, then only the builtin Candlestick Patterns will be available.
+_Pandas Technical Analysis_ (**Pandas TA**) is a free, Open Source, and easy to use Technical Analysis library with a Pandas DataFrame Extension. It has over 200 indicators, utility functions and TA Lib Candlestick Patterns. Beyond TA feature generation, it has a flat libary structure, it's own DataFrame Extension (called ```ta```), Custom Indicator Sets (called a ```Study```) and Custom Directory creation. Lastly, it includes methods to help with Data Acquisition and Stochastic Sampling, Backtesting Support with Signal and Trend methods, and some basic Performance Metrics.
 
 <br/>
 
-# **Table of contents**
+# **Contents**
 
 <!--ts-->
 * [Features](#features)
+* [Used By](#used-by)
+* [Sponsors](#sponsors)
 * [Installation](#installation)
     * [Stable](#stable)
     * [Latest Version](#latest-version)
-    * [Cutting Edge](#cutting-edge)
+    * [Development Version](#development-version)
 * [Quick Start](#quick-start)
 * [Help](#help)
 * [Issues and Contributions](#issues-and-contributions)
 * [Programming Conventions](#programming-conventions)
     * [Standard](#standard)
-    * [Pandas TA DataFrame Extension](#pandas-ta-dataframe-extension)
+    * [Pandas TA DataFrame Extension](#dataframe-extension)
     * [Pandas TA Study](#pandas-ta-study)
-* [Pandas TA Studies](#pandas-ta-studies)
     * [Types of Studies](#types-of-studies)
     * [Multiprocessing](#multiprocessing)
-* [DataFrame Properties](#dataframe-properties)
-* [DataFrame Methods](#dataframe-methods)
+* [DataFrame Extension Properties](#dataframe-extension-properties)
+* [DataFrame Extension Methods](#dataframe-extension-methods)
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-64)
     * [Cycles](#cycles-2)
@@ -64,58 +64,129 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
     * [Utility](#utility-5)
     * [Volatility](#volatility-14)
     * [Volume](#volume-16)
-* [Misc](#misc)
-    * [Backtesting](#backtesting)
-    * [Performance Metrics](#performance-metrics)
+* [Backtesting](#backtesting)
+    * [Vector BT](#vector-bt)
+* [BETA](#beta)
     * [Stochastic Samples](#stochastic-samples)
-* [Changes](#changes)
-    * [General](#general)
-    * [Breaking Indicators](#breaking-indicators)
-    * [New Indicators](#new-indicators)
-    * [Updated Indicators](#updated-indicators)
+    * [Performance Metrics](#performance-metrics)
+* [TODO](#todo)
 * [Sources](#sources)
 * [Support](#support)
 <!--te-->
 
 
-<br/><br/>
+<br/>
 
 # **Features**
 
-* Over 140+ indicators and utility functions.
-* **TA Lib** indicators (```pip install ta-lib```).
-    * TA Lib's 63 Chart Patterns
-    * Python Indicators are tightly correlated with the _de facto_ [TA Lib](https://github.com/mrjbq7/ta-lib).
-    * TA Lib computations are by default **enabled**. They can be disabled per indicator by using the argument ```talib=False```.
-        * For example to disable TA Lib calculation for **stdev**: ```ta.stdev(df["close"], length=30, talib=False)```.
-* **Stochastic Sample Realizations** with the [stochastic](https://github.com/crflynn/stochastic) package (```pip install stochastic```). See the [Stochastic Samples](#stochastic-samples) section below.
-* **External Custom Indicators Directory** independent of the builtin Pandas TA indicators. For more information, see ```import_dir``` documentation under ```/pandas_ta/custom.py```.
-* **Example Jupyter Notebooks** with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
-* **Multiprocessing** Support for Sets of Indicators called ```Study``` (formerly ```Strategy```) when using the DataFrame Extension method ```df.ta.study()```.
-    * Have the need for speed? By using the DataFrame _study_ method, you get **multiprocessing** for free! __Conditions permitting__.
-* **Study Customizations** like applying _prefixes_ or _suffixes_ or _both_ to column/indicators names. Useful for Custom Chained Studies.
-* **Example Jupyter Notebooks** under the [examples](https://github.com/twopirllc/pandas-ta/tree/main/examples) directory, including how to create Custom Studies using the new [__Study__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandasTA_Study_Examples.ipynb)
+Large & Lite Weight Library
+---------------------------
+* Over 200 Indicators, Statistics and Candlestick Patterns
+    * Over 60 Candlestick Patterns with **[TA Lib](https://github.com/mrjbq7/ta-lib)** indicator integration
+* Flat library structure similar to **TA Lib**
+* Single dependency: [Pandas](https://pandas.pydata.org/)
+
+Accuracy
+--------
+* Indicators are highly correlated, _r > 0.99_, with [TA Lib](https://github.com/mrjbq7/ta-lib) and builtin [TradingView](https://www.tradingview.com/) Indicators.
+    * :chart_with_upwards_trend: Contributions are welcome for improved accuracy and performance.
+
+Performance
+-----------
+* Pandas TA is fast, with or without **TA Lib** or **Numba** installed, but one is not penalized if they are installed.
+    * **TA Lib** computations are **enabled** by default. They can be disabled per indicator.
+    * The library includes a performance method, ```help(ta.performance)```, to check runtime indicator performance for a given _ohlcv_ DataFrame.
+* Optionable **Multiprocessing** for a Pandas TA ```Study```.
+
+Bulk Processing
+---------------
+* Easily process many indicators using the DataFrame Extension method ```df.ta.study()```
+* Supports two kinds of Studies
+    * **Builtin**: All, Categorical ("candles", "momentum", ...), and Common
+    * **Custom**: User Defined ```Study``` (formerly ```Strategy```).
+
+Additional Features
+-------------------
+* **Examples**
+    * Basic usage and workflows. See the [**Example Jupyter Notebooks**](https://github.com/twopirllc/pandas-ta/tree/main/examples)
+    * Creating Custom Studies using the [__Study__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandasTA_Study_Examples.ipynb)
+        * **Study Customizations** including, but not limited to, applying _prefixes_ or _suffixes_ or _both_ to column/indicators names.
+        * Composition/Chained Studies like putting **bbands** on **macd**.
+* **Custom Indicators Directory**
+    * Create and import a custom directory containing private indicators independent from the main library.
+    * Use ```help(ta.import_dir)``` or read the ```import_dir``` method in [/pandas_ta/custom.py](https://github.com/twopirllc/pandas-ta/blob/main/pandas_ta/custom.py) for more information.
+* **Data Acquisition**
+    * Easily download _ohlcv_ data from [yfinance](https://github.com/ranaroussi/yfinance) or with the [Polygon API](https://github.com/pssolanki111/polygon).
+    * See ```help(ta.ticker)```, ```help(ta.yf)```, ```help(ta.polygon_api)``` and examples below.
+* **Stochastic Sample Generation** _BETA_
+    * Built upon many of the Stochastic Processes from the [stochastic](https://github.com/crflynn/stochastic) package.
+    * See ```help(ta.sample)```.
+* **Performance Metrics** _BETA_
+    * A mini set of Performance Metrics.
+        * :chart_with_upwards_trend: Contributions are welcome for improved accuracy and performance.
+* **Backtesting Support** _BETA_
+    * Easily generate Trading Signals for [**vectorbt**](https://github.com/polakowo/vectorbt) using ```ta.tsignals()``` or ```ta.xsignals()``` methods.
 
 <br/>
 
-**Under Development**
+Back to [Contents](#contents)
+
+<br/>
+
+**Used By**
 ===================
-**Pandas TA** can also leverage other common or popular trading packages you may have installed in your environment. Current packages include: [**TA Lib**](https://mrjbq7.github.io/ta-lib/), [**Vector BT**](https://github.com/polakowo/vectorbt), [**YFinance**](https://github.com/ranaroussi/yfinance), [**Polygon API**](https://github.com/pssolanki111/polygon), and [**Stochastic**](https://github.com//stochastic). Much is _experimental_.
-* Easily download _ohlcv_ data from [yfinance](https://github.com/ranaroussi/yfinance) or [Polygon API](https://github.com/pssolanki111/polygon).
-    * See ```help(ta.ticker)```, ```help(ta.yf)```, ```help(ta.polygon_api)``` and examples below.
-* Some Common Performance Metrics
+Pandas TA is used by Applications and Services like
+
+[Freqtrade](https://github.com/freqtrade/freqtrade)
+----------
+> Freqtrade is a free and open source crypto trading bot written in Python. It is designed to support all major exchanges and be controlled via Telegram. It contains backtesting, plotting and money management tools as well as strategy optimization by machine learning.
+
+<br/>
+
+[Gamestonk Terminal](https://github.com/GamestonkTerminal/GamestonkTerminal)
+-------------------
+> Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
+
+<br/>
+
+[MarketMaker Lite](https://github.com/MarketMakerLite)
+-------------------
+> Make the market you deserve. Market alerts, statistics and analytics, delivered through an innovative interface, made for retail investors.
+
+<br/>
+
+Back to [Contents](#contents)
+
+<br/>
+
+**Sponsors**
+===================
+Thank you for your sponsorship of Pandas TA!
+
+<a href="https://github.com/eervin123"><img src="https://avatars.githubusercontent.com/u/32274861?v=4" class="avatar-user" width="70px;" style="border-radius: 5px;"/></a>
 
 <br/>
 
 **Installation**
 ===================
+The _minimum_ requirement is [Pandas](https://github.com/pandas-dev/pandas). Though not required, additional features _may_ require ```numba```, ```polygon```, ```sklearn```, ```statsmodels```, ```stochastic```, ```ta-lib```, ```tqdm```, ```vectorbt```, or ```yfinance```.
+* **Note**: ```vectorbt``` requires many of the additional packages listed.
+
+<br/>
 
 Stable
 ------
-The ```pip``` version is the last stable release. Version: *0.3.14b*
+The ```pip``` version, _0.3.14b_, is the last stable release.
 ```sh
 $ pip install pandas_ta
 ```
+
+How about **All**?
+```sh
+$ pip install pandas_ta[full]
+```
+
+<br/>
 
 Latest Version
 --------------
@@ -125,16 +196,27 @@ Best choice! Version: *0.3.45b*
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
 ```
 
-Cutting Edge
-------------
-This is the _Development Version_ which could have bugs and other undesireable side effects. Use at own risk!
+<br/>
+
+Development Version
+-------------------
+This branch is kept as stable as possible, but it does include fixed [Issues](https://github.com/twopirllc/pandas-ta/issues), new features and indicators.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 ```
 
+Back to [Contents](#contents)
+
 <br/>
 
- # **Quick Start**
+# **Quick Start**
+Indicators return either a Pandas Series or DataFrame.
+* **Note:** _Volume Weighted Average Price_ (**vwap**) is the only indicator that requires a DatetimeIndex.
+
+<br/>
+
+Simple Example
+--------------
 ```python
 import pandas as pd
 import pandas_ta as ta
@@ -166,8 +248,6 @@ df.tail()
 <br/>
 
 # **Help**
-**Some** indicator arguments have been reordered for consistency. Use ```help(ta.indicator_name)``` for more information or make a Pull Request to improve documentation.
-
 ```python
 import pandas as pd
 import pandas_ta as ta
@@ -175,43 +255,34 @@ import pandas_ta as ta
 # Create a DataFrame so 'ta' can be used.
 df = pd.DataFrame()
 
-# Help about this, 'ta', extension
+# Help about the DataFrame Extension: "ta"
 help(df.ta)
 
 # List of all indicators
 df.ta.indicators()
 
-# Help about an indicator such as bbands
-help(ta.bbands)
+# Help about an indicator such as adx
+help(ta.adx)
 ```
+
+Back to [Contents](#contents)
+
 <br/>
 
 # **Issues and Contributions**
 
-Thanks for using **Pandas TA**!
+Contributions, feedback, and bug squashing are integral to the success of this library. If something you can fix, _please_ do. Your contributon helps everyone!
+* :stop_sign: _Please_ **DO NOT** email me personally with Pandas TA Bugs, Issues or Feature Requests that are best handled with Github [Issues](https://github.com/twopirllc/pandas-ta/issues).
+
 <br/>
 
-* ### [Comments and Feedback](https://github.com/twopirllc/pandas-ta/issues)
-    * Have you read **_this_** document?
-    * Are you running the latest version?
-        * ```$ pip install -U git+https://github.com/twopirllc/pandas-ta```
-    * Have you tried the [Examples](https://github.com/twopirllc/pandas-ta/tree/main/examples/)?
-        * Did they help?
-        * What is missing?
-        * Could you help improve them?
-    * Did you know you can easily build _Custom Studies_ with the **[Study](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Study_Examples.ipynb) Class**?
-    * Documentation could _always_ be improved. Can you help contribute?
-
-* ### [Bugs, Indicators or Feature Requests](https://github.com/twopirllc/pandas-ta/issues)
-    * First, search the _Closed_ Issues **before** you _Open_ a new Issue; it may have already been solved.
-    * Please be as **detailed** as possible _with_ reproducible code, links if any, applicable screenshots, errors, logs, and data samples. You **will** be asked again if you provide nothing.
-        * You want a new indicator not currently listed.
-        * You want an alternate version of an existing indicator.
-        * The indicator does not match another website, library, broker platform, language, et al.
-            * Do you have correlation analysis to back your claim?
-            * Can you contribute?
-    * :stop_sign: _Please_ **DO NOT** personally email me Pandas TA questions that are best handled with Github [Issues](https://github.com/twopirllc/pandas-ta/issues).
-
+[Bugs, Indicators or Feature Requests](https://github.com/twopirllc/pandas-ta/issues)
+--------------------------------------
+1. Some bugs and features may already be be fixed or implemented in either the [Latest Version](#latest-version) or the the [Development Version](#development-version). _Please_ try them first.
+1. If the _Latest_ or _Development_ Versions do not resolve the bug or address the Issue, try searching both _Open_ and _Closed_ Issues **before** opening a new Issue.
+1. When you creating a new Issue, please be as **detailed** as possible **with** reproducible code, links if any, applicable screenshots, errors, logs, and data samples.
+    * You **will** be asked again for skipping form questions.
+    * Do you have correlation analysis to back your claim?
 
 <br/>
 
@@ -220,20 +291,36 @@ Thanks for using **Pandas TA**!
 
 _Thank you for your contributions!_
 
-<a href="https://github.com/AbyssAlora"><img src="https://avatars.githubusercontent.com/u/32155747?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/abmyii"><img src="https://avatars.githubusercontent.com/u/52673001?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/alexonab"><img src="https://avatars.githubusercontent.com/u/16689258?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/allahyarzadeh"><img src="https://avatars.githubusercontent.com/u/11909557?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/anthotsang"><img src="https://avatars.githubusercontent.com/u/929793?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/bizso09"><img src="https://avatars.githubusercontent.com/u/1904536?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/CMobley7"><img src="https://avatars.githubusercontent.com/u/10121829?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/codesutras"><img src="https://avatars.githubusercontent.com/u/56551122?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DannyMartens"><img src="https://avatars.githubusercontent.com/u/37220423?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DrPaprikaa"><img src="https://avatars.githubusercontent.com/u/64958936?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/daikts"><img src="https://avatars.githubusercontent.com/u/64799229?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/danlim-wz"><img src="https://avatars.githubusercontent.com/u/52344837?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/delicateear"><img src="https://avatars.githubusercontent.com/u/167213?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/dorren"><img src="https://avatars.githubusercontent.com/u/27552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/edwardwang1"><img src="https://avatars.githubusercontent.com/u/15675816?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/FGU1"><img src="https://avatars.githubusercontent.com/u/56175843?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ffhirata"><img src="https://avatars.githubusercontent.com/u/44292530?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/floatinghotpot"><img src="https://avatars.githubusercontent.com/u/2339512?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/FriendlyUser"><img src="https://avatars.githubusercontent.com/u/13860264?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/GSlinger"><img src="https://avatars.githubusercontent.com/u/24567123?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/hhashim1"><img src="https://avatars.githubusercontent.com/u/62855649?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/jhleong"><img src="https://avatars.githubusercontent.com/u/1499913?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/JoeSchr"><img src="https://avatars.githubusercontent.com/u/8218910?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/kush99993s"><img src="https://avatars.githubusercontent.com/u/8145062?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/Larry-u"><img src="https://avatars.githubusercontent.com/u/18108119?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lluissalord"><img src="https://avatars.githubusercontent.com/u/7021552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/locupleto"><img src="https://avatars.githubusercontent.com/u/3994906?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lucasmlofaro"><img src="https://avatars.githubusercontent.com/u/15791696?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/luisbarrancos"><img src="https://avatars.githubusercontent.com/u/387352?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/M6stafa"><img src="https://avatars.githubusercontent.com/u/7975309?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/maxdignan"><img src="https://avatars.githubusercontent.com/u/8184722?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mchant"><img src="https://avatars.githubusercontent.com/u/8502845?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mihakralj"><img src="https://avatars.githubusercontent.com/u/31756078?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/moritzgun"><img src="https://avatars.githubusercontent.com/u/68067719?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/NkosenhleDuma"><img src="https://avatars.githubusercontent.com/u/51145741?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/nicoloridulfo"><img src="https://avatars.githubusercontent.com/u/49532161?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/olafos"><img src="https://avatars.githubusercontent.com/u/2526551?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pbrumblay"><img src="https://avatars.githubusercontent.com/u/2146159?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pssolanki111"><img src="https://avatars.githubusercontent.com/u/40393715?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/RajeshDhalange"><img src="https://avatars.githubusercontent.com/u/32175897?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ramgarg102"><img src="https://avatars.githubusercontent.com/u/47526387?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rengel8"><img src="https://avatars.githubusercontent.com/u/34138513?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rluong003"><img src="https://avatars.githubusercontent.com/u/42408939?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/sgmheyhey"><img src="https://avatars.githubusercontent.com/u/30946314?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/SoftDevDanial"><img src="https://avatars.githubusercontent.com/u/64815604?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/schwaa"><img src="https://avatars.githubusercontent.com/u/2640598?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/tg12"><img src="https://avatars.githubusercontent.com/u/12201893?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/twrobel"><img src="https://avatars.githubusercontent.com/u/394724?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/UncleVasya"><img src="https://avatars.githubusercontent.com/u/1286157?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/WellMaybeItIs"><img src="https://avatars.githubusercontent.com/u/84646494?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/whubsch"><img src="https://avatars.githubusercontent.com/u/24275736?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/witokondoria"><img src="https://avatars.githubusercontent.com/u/5685669?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/wouldayajustlookatit"><img src="https://avatars.githubusercontent.com/u/44936661?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/YuvalWein"><img src="https://avatars.githubusercontent.com/u/65113623?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/zlpatel"><img src="https://avatars.githubusercontent.com/u/3293739?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a>
+<a href="https://github.com/AbyssAlora"><img src="https://avatars.githubusercontent.com/u/32155747?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/abmyii"><img src="https://avatars.githubusercontent.com/u/52673001?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/alexonab"><img src="https://avatars.githubusercontent.com/u/16689258?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/allahyarzadeh"><img src="https://avatars.githubusercontent.com/u/11909557?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/anthotsang"><img src="https://avatars.githubusercontent.com/u/929793?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/bizso09"><img src="https://avatars.githubusercontent.com/u/1904536?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/CMobley7"><img src="https://avatars.githubusercontent.com/u/10121829?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/codesutras"><img src="https://avatars.githubusercontent.com/u/56551122?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DannyMartens"><img src="https://avatars.githubusercontent.com/u/37220423?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DrPaprikaa"><img src="https://avatars.githubusercontent.com/u/64958936?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/daikts"><img src="https://avatars.githubusercontent.com/u/64799229?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/danlim-wz"><img src="https://avatars.githubusercontent.com/u/52344837?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/delicateear"><img src="https://avatars.githubusercontent.com/u/167213?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/dorren"><img src="https://avatars.githubusercontent.com/u/27552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/edwardwang1"><img src="https://avatars.githubusercontent.com/u/15675816?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/FGU1"><img src="https://avatars.githubusercontent.com/u/56175843?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ffhirata"><img src="https://avatars.githubusercontent.com/u/44292530?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/floatinghotpot"><img src="https://avatars.githubusercontent.com/u/2339512?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/FriendlyUser"><img src="https://avatars.githubusercontent.com/u/13860264?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/GSlinger"><img src="https://avatars.githubusercontent.com/u/24567123?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/hhashim1"><img src="https://avatars.githubusercontent.com/u/62855649?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/jhleong"><img src="https://avatars.githubusercontent.com/u/1499913?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/JoeSchr"><img src="https://avatars.githubusercontent.com/u/8218910?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/kush99993s"><img src="https://avatars.githubusercontent.com/u/8145062?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/Larry-u"><img src="https://avatars.githubusercontent.com/u/18108119?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lluissalord"><img src="https://avatars.githubusercontent.com/u/7021552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/locupleto"><img src="https://avatars.githubusercontent.com/u/3994906?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lucasmlofaro"><img src="https://avatars.githubusercontent.com/u/15791696?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/luisbarrancos"><img src="https://avatars.githubusercontent.com/u/387352?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/M6stafa"><img src="https://avatars.githubusercontent.com/u/7975309?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/maxdignan"><img src="https://avatars.githubusercontent.com/u/8184722?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mchant"><img src="https://avatars.githubusercontent.com/u/8502845?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mihakralj"><img src="https://avatars.githubusercontent.com/u/31756078?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/moritzgun"><img src="https://avatars.githubusercontent.com/u/68067719?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/NkosenhleDuma"><img src="https://avatars.githubusercontent.com/u/51145741?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/nicoloridulfo"><img src="https://avatars.githubusercontent.com/u/49532161?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/olafos"><img src="https://avatars.githubusercontent.com/u/2526551?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pbrumblay"><img src="https://avatars.githubusercontent.com/u/2146159?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pssolanki111"><img src="https://avatars.githubusercontent.com/u/40393715?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/RajeshDhalange"><img src="https://avatars.githubusercontent.com/u/32175897?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ramgarg102"><img src="https://avatars.githubusercontent.com/u/47526387?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rengel8"><img src="https://avatars.githubusercontent.com/u/34138513?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rluong003"><img src="https://avatars.githubusercontent.com/u/42408939?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ryanrussell"><img src="https://avatars.githubusercontent.com/u/523300?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/sgmheyhey"><img src="https://avatars.githubusercontent.com/u/30946314?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/SoftDevDanial"><img src="https://avatars.githubusercontent.com/u/64815604?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/schwaa"><img src="https://avatars.githubusercontent.com/u/2640598?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/tg12"><img src="https://avatars.githubusercontent.com/u/12201893?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/twrobel"><img src="https://avatars.githubusercontent.com/u/394724?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/UncleVasya"><img src="https://avatars.githubusercontent.com/u/1286157?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/WellMaybeItIs"><img src="https://avatars.githubusercontent.com/u/84646494?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/whubsch"><img src="https://avatars.githubusercontent.com/u/24275736?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/witokondoria"><img src="https://avatars.githubusercontent.com/u/5685669?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/wouldayajustlookatit"><img src="https://avatars.githubusercontent.com/u/44936661?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/YuvalWein"><img src="https://avatars.githubusercontent.com/u/65113623?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/zlpatel"><img src="https://avatars.githubusercontent.com/u/3293739?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a>
+
+<br/>
+
+How to [Contribute](https://github.com/twopirllc/pandas-ta/labels?sort=count-desc) or what [TODO](#todo)?
+-------------------
+| | |
+|-|-|
+| Satisfaction ```or``` Suggestions? | [Feedback](https://github.com/twopirllc/pandas-ta/labels/feedback) |
+| Knowledge ```and``` Experience? | [Info](https://github.com/twopirllc/pandas-ta/labels/info) |
+| ```!```hard | [Good First Issue](https://github.com/twopirllc/pandas-ta/labels/good%20first%20issue) |
+| A little more challenging? | [Bugs](https://github.com/twopirllc/pandas-ta/labels/bug) / [Enhancements](https://github.com/twopirllc/pandas-ta/labels/enhancement) |
+| Lonewolf? | [Help Wanted](https://github.com/twopirllc/pandas-ta/labels/help%20wanted) |
+
+
+Back to [Contents](#contents)
 
 <br/>
 
 **Programming Conventions**
 ===========================
 
-**Pandas TA** has three primary "styles" of processing Technical Indicators for your use case and/or requirements. They are: _Standard_, _DataFrame Extension_, and the _Pandas TA Study_. Each with increasing levels of abstraction for ease of use. As you become more familiar with **Pandas TA**, the simplicity and speed of using a _Pandas TA Study_ may become more apparent. Furthermore, you can create your own indicators through Chaining or Composition. Lastly, each indicator either returns a _Series_ or a _DataFrame_ in Uppercase Underscore format regardless of style.
+**Pandas TA** supports _three_ Programming Conventions to make it easy to calculate or apply TA features. This includes the Standard, DataFrame Extension, and Pandas TA Study Conventions.
+* **Note**: Each indicator either returns a _Series_ or a _DataFrame_ in Uppercase Underscore format regardless of style.
 
 <br/>
 
-_Standard_
-====================
-You explicitly define the input columns and take care of the output.
+Standard
+--------
+The Standard Convention is similar to TA Lib where one has to _explicitly_ define the input arguments and manage the resultant _Series_ or _DataFrame_.
 
 * ```sma10 = ta.sma(df["Close"], length=10)```
     * Returns a Series with name: ```SMA_10```
@@ -245,15 +332,15 @@ You explicitly define the input columns and take care of the output.
 
 <br/>
 
-_Pandas TA DataFrame Extension_
-====================
+DataFrame Extension
+-------------------
+The [DataFrame Extension](https://pandas.pydata.org/docs/development/extending.html) "ta", extends the DataFrame with additional properties and methods specific to the library. Unlike the _Standard Convention_, ```df.ta``` uses the _ohlcva_ columns as indicator arguments thus removing the need to specify the columns manually.
 
-Calling ```df.ta``` will automatically lowercase _OHLCVA_ to _ohlcva_: _open, high, low, close, volume_, _adj_close_. By default, ```df.ta``` will use the _ohlcva_ for the indicator arguments removing the need to specify input columns directly.
 * ```sma10 = df.ta.sma(length=10)```
     * Returns a Series with name: ```SMA_10```
 * ```ema10_ohlc4 = df.ta.ema(close=df.ta.ohlc4(), length=10, suffix="OHLC4")```
     * Returns a Series with name: ```EMA_10_OHLC4```
-    * Chaining Indicators _require_ specifying the input like: ```close=df.ta.ohlc4()```.
+    * Chaining Indicators _requires_ specifying the input like: ```close=df.ta.ohlc4()```.
 * ```donchiandf = df.ta.donchian(lower_length=10, upper_length=15)```
     * Returns a DataFrame named ```DC_10_15``` and column names: ```DCL_10_15, DCM_10_15, DCU_10_15```
 
@@ -261,24 +348,78 @@ Same as the last three examples, but appending the results directly to the DataF
 * ```df.ta.sma(length=10, append=True)```
     * Appends to ```df``` column name: ```SMA_10```.
 * ```df.ta.ema(close=df.ta.ohlc4(append=True), length=10, suffix="OHLC4", append=True)```
-    * Chaining Indicators _require_ specifying the input like: ```close=df.ta.ohlc4()```.
+    * Chaining Indicators _requires_ specifying the input like: ```close=df.ta.ohlc4()```.
 * ```df.ta.donchian(lower_length=10, upper_length=15, append=True)```
     * Appends to ```df``` with column names: ```DCL_10_15, DCM_10_15, DCU_10_15```.
 
-<br/>
-
-_Pandas TA Study_
-====================
-
-A **Pandas TA** Study is a named group of indicators to be run by the _study_ method. All Studies use **mulitprocessing** _except_ when using the ```col_names``` parameter (see [below](#multiprocessing)). There are different types of _Studies_ listed in the following section.
+Back to [Contents](#contents)
 
 <br/>
 
-### Here are the previous _Styles_ implemented using a Study Class:
+**Pandas TA** _Study_
+=====================
+:stop_sign: The  ```Strategy``` Class and ```strategy()``` are depreciated. Use ```Study``` Class and ```study()``` method instead.
+
+The ```Study``` [_Dataclass_](https://docs.python.org/3/library/dataclasses.html) can be used to name and group indicators and are executed by the Extension ```study()``` method. A ```Study``` can range from _complex_ with _Composition/Chaining_ to _simple_ like a ```CommonStudy```.
+* Two premade _Studies_: ```AllStudy``` and ```CommonStudy```.
+* The ```study()``` method automatically appends to the DataFrame.
+    * Can be disabled by using the argument: ```append=False```.
+* All Studies use **mulitprocessing** _except_ when the cpu ```cores``` are set to zero or when using the ```col_names``` argument (see [below](#multiprocessing)).
+* A Study will fail when consumed by Pandas TA if there is no ```{"kind": "indicator name"}``` attribute. _Remember_ to check your spelling.
+* For examples, see the [Pandas TA Study Examples Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Study_Examples.ipynb).
+
+_Required Arguments_
+--------------------
+- **name**: Some short memorable string.  _Note_: Case-insensitive "All" is reserved.
+- **ta**: A list of dicts containing keyword arguments to identify the indicator and the indicator's arguments
+
+_Optional Arguments_
+--------------------
+- **cores**: The number of cores to use for multiprocessing the **Study**. Default: ```multiprocessing.cpu_count()```
+- **description**: A more detailed description of what the Study tries to capture. Default: None
+- **created**: At datetime string of when it was created. Default: Automatically generated.
+
+<br/>
+
+Types of Studies
+================
+
+_Builtin_
+---------
 ```python
-# (1) Create the Study
+# The Default Study: ta.AllStudy
+# The following are equivalent:
+df.ta.study()
+df.ta.study("All")
+df.ta.study(ta.AllStudy)
+
+# CommonStudy
+df.ta.study(ta.CommonStudy)
+```
+
+_Categorical_
+-------------
+```python
+# List of indicator categories
+df.ta.categories
+
+# Categorical Study requires a Category name
+df.ta.study("Momentum") # Default values for all Momentum indicators
+
+# Override all Overlap 'length' attributes
+df.ta.study("overlap", length=42)
+```
+
+_Custom_
+--------
+```python
+# Help
+help(df.ta.study)
+
+# Create a Custom Study
 MyStudy = ta.Study(
     name="DCSMA10",
+    description="SMA 50,200, BBANDS, RSI, MACD and Volume SMA 20",
     ta=[
         {"kind": "ohlc4"},
         {"kind": "sma", "length": 10},
@@ -286,89 +427,19 @@ MyStudy = ta.Study(
         {"kind": "ema", "close": "OHLC4", "length": 10, "suffix": "OHLC4"},
     ]
 )
-
-# (2) Run the Study
+# Run it
 df.ta.study(MyStudy, **kwargs)
 ```
 
-<br/><br/>
-
-# **Pandas TA** _Studies_
-
-* :stop_sign: **The Study Class and corresponding method have replaced the Strategy Class and method.**
-
-<br/>
-
-The _Study_ Class is a simple way to name and group your favorite TA Indicators by using a _Data Class_. **Pandas TA** comes with two prebuilt basic Studies to help you get started: __AllStudy__ and __CommonStudy__. A _Study_ can be as simple as the __CommonStudy__ or as complex as needed using Composition/Chaining.
-
-* When using the _study_ method, **all** indicators will be automatically appended to the DataFrame ```df```.
-* You are using a Chained Study when you have the output of one indicator as input into one or more indicators in the same _Study_.
-* **Note:** Use the 'prefix' and/or 'suffix' keywords to distinguish the composed indicator from it's default Series.
-
-See the [Pandas TA Study Examples Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/PandasTA_Study_Examples.ipynb) for examples including _Indicator Composition/Chaining_.
-
-Study Requirements
----------------------
-- _name_: Some short memorable string.  _Note_: Case-insensitive "All" is reserved.
-- _ta_: A list of dicts containing keyword arguments to identify the indicator and the indicator's arguments
-- **Note:** A Study will fail when consumed by Pandas TA if there is no ```{"kind": "indicator name"}``` attribute. _Remember_ to check your spelling.
-
-Optional Parameters
--------------------
-- _description_: A more detailed description of what the Study tries to capture. Default: None
-- _created_: At datetime string of when it was created. Default: Automatically generated.
-
-<br/>
-
-Types of Studies
-=======================
-
-## _Builtin_
-```python
-# Running the Builtin CommonStudy as mentioned above
-df.ta.study(ta.CommonStudy)
-
-# The Default Study is the ta.AllStudy. The following are equivalent:
-df.ta.study()
-df.ta.study("All")
-df.ta.study(ta.AllStudy)
-```
-
-## _Categorical_
-```python
-# List of indicator categories
-df.ta.categories
-
-# Running a Categorical Study only requires the Category name
-df.ta.study("Momentum") # Default values for all Momentum indicators
-df.ta.study("overlap", length=42) # Override all Overlap 'length' attributes
-```
-
-## _Custom_
-```python
-# Create your own Custom Study
-CustomStudy = ta.Study(
-    name="Momo and Volatility",
-    description="SMA 50,200, BBANDS, RSI, MACD and Volume SMA 20",
-    ta=[
-        {"kind": "sma", "length": 50},
-        {"kind": "sma", "length": 200},
-        {"kind": "bbands", "length": 20},
-        {"kind": "rsi"},
-        {"kind": "macd", "fast": 8, "slow": 21},
-        {"kind": "sma", "close": "volume", "length": 20, "prefix": "VOLUME"},
-    ]
-)
-# To run your "Custom Study"
-df.ta.study(CustomStudy)
-```
+Back to [Contents](#contents)
 
 <br/>
 
 **Multiprocessing**
 =======================
 
-The **Pandas TA** _study_ method utilizes **multiprocessing** for bulk indicator processing of all Study types with **ONE EXCEPTION!** When using the ```col_names``` parameter to rename resultant column(s), the indicators in ```ta``` array will be ran in order.
+The **Pandas TA** ```study()``` method utilizes **multiprocessing** for bulk indicator processing of all Study types with **ONE EXCEPTION!** When using the ```col_names``` parameter to rename resultant column(s), the indicators in ```ta``` array will be ran in order.
+* Multiprocessing isn't free, it comes with the cost of spinning up a Multiprocessing Pool, so lowering or disabling the ```cores``` can improve bulk processing.
 
 ```python
 # VWAP requires the DataFrame index to be a DatetimeIndex.
@@ -389,7 +460,8 @@ df.ta.study(verbose=True)
 # Use timed if you want to see how long it takes to run.
 df.ta.study(timed=True)
 
-# Choose the number of cores to use. Default is all available cores.
+# Choose the number of cores to use.
+# Default is all available cores.
 # For no multiprocessing, set this value to 0.
 df.ta.cores = 4
 
@@ -398,7 +470,7 @@ df.ta.cores = 4
 df.ta.study(exclude=["bop", "mom", "percent_return", "wcp", "pvi"], verbose=True)
 
 # Perhaps you want to use different values for indicators.
-# This will run ALL indicators that have fast or slow as parameters.
+# This will run ALL indicators that have fast or slow as arguments.
 # Check your results and exclude as necessary.
 df.ta.study(fast=10, slow=50, verbose=True)
 
@@ -425,10 +497,12 @@ NonMPStudy = ta.Study(
 df.ta.study(NonMPStudy)
 ```
 
-<br/><br/>
+Back to [Contents](#contents)
+
+<br/>
 
 
-# **DataFrame Properties**
+# **DataFrame Extension Properties**
 
 ## **adjusted**
 
@@ -543,11 +617,13 @@ df.ta.time_range # prints DataFrame time in "days" as float
 df.ta.to_utc
 ```
 
-<br/><br/>
+Back to [Contents](#contents)
+
+<br/>
 
 
-# **DataFrame Methods**
-These are some additional methods available to the DataFrame Extension (ta).
+# **DataFrame Extension Methods**
+These are some additional methods available to the DataFrame Extension.
 
 <br/>
 
@@ -588,10 +664,9 @@ smaller_list = df.ta.indicators(exclude=["cg", "pgo", "ui"], as_list=True)
 <br/>
 
 ## **ticker**
-
-### Yahoo Finance (_default_)
+### [Yahoo Finance](https://github.com/ranaroussi/yfinance)
 ```python
-# Download Chart history using yfinance. (pip install yfinance) https://github.com/ranaroussi/yfinance
+# Download Chart history using yfinance. (pip install yfinance)
 # It uses the same keyword arguments as yfinance (excluding start and end)
 df = df.ta.ticker("aapl") # Default ticker is "SPY"
 
@@ -609,26 +684,28 @@ df = df.ta.ticker("aapl", period="1mo", interval="1h") # Gets this past month in
 # A Ticker & DataFrame Dictionary with a Study applied
 tickers = ["SPY", "AAPL", "SQ"]
 s = ta.CommonStudy
-asset = {f"{t}_D": ta.df.ta.ticker(t, cores=0, study=s, ds="yf") for t in tickers}
+asset = {f"{t}_D": ta.df.ta.ticker(t, period="1y", cores=0, study=s, timed=True, returns=True, ds="yf") for t in tickers}
 print(asset.keys())
-spydf = asset["SPY_D]
+spydf = asset["SPY_D"]
 
-# BUT WAIT!! THERE'S MORE!!
+# For more info
 help(ta.yf)
 ```
 
-### Polygon
+<br/>
+
+### [Polygon](https://github.com/pssolanki111/polygon)
 
 ```python
-# Download Chart history from Polygon. (pip install polygon) https://github.com/pssolanki111/polygon
+# Download Chart history from Polygon. (pip install polygon)
 polygon_api_key = # Your Polygon API Key
 df = df.ta.ticker("aapl", ds="polygon", api_key=polygon_api_key) # Default ticker is "SPY"
 
-# BUT WAIT!! THERE'S MORE!!
+# For more info
 help(ta.polygon_api)
 ```
 
-<br/><br/>
+<br/>
 
 # **Indicators** (_by Category_)
 ### **Candles** (64)
@@ -712,6 +789,8 @@ df = df.ta.cdl_pattern(name="doji")
 df = df.ta.cdl_pattern(name=["doji", "inside"])
 ```
 
+Back to [Contents](#contents)
+
 <br/>
 
 ### **Cycles** (2)
@@ -773,6 +852,8 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 |:--------:|
 | ![Example MACD](/images/SPY_MACD.png) |
 
+Back to [Contents](#contents)
+
 <br/>
 
 ### **Overlap** (36)
@@ -822,6 +903,8 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 |:--------:|
 | ![Example Chart](/images/TA_Chart.png) |
 
+Back to [Contents](#contents)
+
 <br/>
 
 ### **Performance** (3)
@@ -854,6 +937,8 @@ Use parameter: cumulative=**True** for cumulative results.
 | _Z Score_ |
 |:--------:|
 | ![Example Z Score](/images/SPY_ZScore.png) |
+
+Back to [Contents](#contents)
 
 <br/>
 
@@ -905,6 +990,8 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Below Value_: **below_value**
 * _Cross_: **cross**
 
+Back to [Contents](#contents)
+
 <br/>
 
 ### **Volatility** (14)
@@ -953,31 +1040,55 @@ Use parameter: cumulative=**True** for cumulative results.
 |:--------:|
 | ![Example OBV](/images/SPY_OBV.png) |
 
-<br/><br/>
-
-# **Backtesting**
-## Vector BT
-For **easier** integration with **vectorbt**'s Portfolio ```from_signals``` method, the ```ta.trend_return``` method has been replaced with ```ta.tsignals``` method to simplify the generation of trading signals. For a comprehensive example, see the example Jupyter Notebook [VectorBT Backtest with Pandas TA](https://github.com/twopirllc/pandas-ta/blob/main/examples/VectorBT_Backtest_with_Pandas_TA.ipynb) in the examples directory.
-* See the [**vectorbt**](https://polakowo.io/vectorbt/) website more options and examples.
+Back to [Contents](#contents)
 
 <br/>
 
-### Brief example
+# **Backtesting**
+While Pandas TA is not a backtesting application, Pandas TA does provide _two_ methods to help generate trading signals for backtesting purposes: **Trend Signals** (```ta.tsignals()```) and **Cross Signals** (```ta.xsignals()```). Both Signal methods return a DataFrame with columns for the Trend, Trades, Entries and Exits.
+
+A simple manual backtest using **Trend Signals** can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/AIExample.ipynb) starting at _Trend Creation_ cell.
+
+<br/>
+
+Trend Signals
+-------------
+* Useful for signals based on trends or **states**.
+* Examples
+    * **Golden Cross**: ```df.ta.sma(length=50) > df.ta.sma(length=200)```
+    * **Positive MACD Histogram**: ```df.ta.macd().iloc[:,1] > 0```
+
+Cross Signals
+-------------
+* Useful for Signal Crossings or **events**.
+* Examples
+    * RSI crosses above 30 and then below 70
+    * ZSCORE crosses above -2 and then below 2.
+
+<br/>
+
+## Vector BT
+_Ideally_ a backtesting application like [**vectorbt**](https://polakowo.io/vectorbt/) should be used. For an example comparing a _Buy and Hold Strategy_ versus a _TA Signal Strategy_, see: [VectorBT Backtest with Pandas TA Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/VectorBT_Backtest_with_Pandas_TA.ipynb).
+
+<br/>
+
+Trend Signal Example
+--------------------
 ```python
 import pandas as pd
 import pandas_ta as ta
 import vectorbt as vbt
 
-df = pd.DataFrame().ta.ticker("AAPL") # requires 'yfinance' installed
+df = pd.DataFrame()
+
+# requires 'yfinance' installed
+df = df.ta.ticker("AAPL", timed=True)
 
 # Create the "Golden Cross"
 df["GC"] = df.ta.sma(50, append=True) > df.ta.sma(200, append=True)
 
-# Create boolean Signals(TS_Entries, TS_Exits) for vectorbt
+# Create Trend Signals
 golden = df.ta.tsignals(df.GC, asbool=True, append=True)
-
-# Sanity Check (Ensure data exists)
-print(df)
 
 # Create the Signals Portfolio
 pf = vbt.Portfolio.from_signals(df.close, entries=golden.TS_Entries, exits=golden.TS_Exits, freq="D", init_cash=100_000, fees=0.0025, slippage=0.0025)
@@ -987,36 +1098,28 @@ print(pf.stats())
 print(pf.returns_stats())
 ```
 
-<br/>
-
-# **Performance Metrics** &nbsp; _BETA_
-_Performance Metrics_ are a **new** addition to the package and consequentially are likely unreliable. **Use at your own risk.** These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called the Standard way. For Example:
-
-```python
-import pandas_ta as ta
-result = ta.cagr(df.close)
-```
-
-### Available Metrics
-* _Compounded Annual Growth Rate_: **cagr**
-* _Calmar Ratio_: **calmar_ratio**
-* _Downside Deviation_: **downside_deviation**
-* _Jensen's Alpha_: **jensens_alpha**
-* _Log Max Drawdown_: **log_max_drawdown**
-* _Max Drawdown_: **max_drawdown**
-* _Pure Profit Score_: **pure_profit_score**
-* _Sharpe Ratio_: **sharpe_ratio**
-* _Sortino Ratio_: **sortino_ratio**
-* _Volatility_: **volatility**
+Back to [Contents](#contents)
 
 <br/>
 
-# **Stochastic Samples** &nbsp; _BETA_
-Pandas TA can utilize the [stochastic](https://github.com/crflynn/stochastic) package (```pip install stochastic```) to Generate Sample Processes. For arguments and features, see ```help(ta.sample)```
 
-In short, when you create a Stochastic Sample,
+# BETA
 
+Pandas TA also includes features: _Stochastic Processes_ and _Performance Metrics_.
+* :chart_with_upwards_trend: Contributions are welcome to improve and stablize them.
+
+<br/>
+
+## **Stochastic Samples**
+_Need to fake some data?_ Pandas TA can utilize the [stochastic](https://github.com/crflynn/stochastic) package to Generate Sample Processes. For additional arguments and features, use ```help(ta.sample)```
+
+<br/>
+
+Brief Example
+-------------
 ```python
+# pip install stochastic
+
 # Returns a Sample Realization Object
 sp = ta.sample() # Sample Process Object
 print(sp)
@@ -1041,56 +1144,80 @@ print(sp.noise)
 help(ta.sample)
 ```
 
-<br/><br/>
-
-# **Changes**
-## **General**
-* A __Study__ Class to help name and group your favorite indicators.
-* If a **TA Lib** is already installed, Pandas TA will run TA Lib's version. (**BETA**)
-* Some indicators have had their ```mamode``` _kwarg_ updated with more _moving average_ choices with the **Moving Average Utility** function ```ta.ma()```. For simplicity, all _choices_ are single source _moving averages_. This is primarily an internal utility used by indicators that have a ```mamode``` _kwarg_. This includes indicators: _accbands_, _amat_, _aobv_, _atr_, _bbands_, _bias_, _efi_, _hilo_, _kc_, _natr_, _qqe_, _rvi_, and _thermo_; the default ```mamode``` parameters have not changed. However, ```ta.ma()``` can be used by the user as well if needed. For more information: ```help(ta.ma)```
-    * **Moving Average Choices**: dema, ema, fwma, hma, linreg, midpoint, pwma, rma, sinwma, sma, swma, t3, tema, trima, vidya, wma, zlma.
-* An _experimental_ and independent __Watchlist__ Class located in the [Examples](https://github.com/twopirllc/pandas-ta/tree/main/examples/watchlist.py) Directory that can be used in conjunction with the new __Study__ Class.
-* _Linear Regression_ (**linear_regression**) is a new utility method for Simple Linear Regression using _Numpy_ or _Scikit Learn_'s implementation.
-* Added utility/convience function, ```to_utc```, to convert the DataFrame index to UTC. See: ```help(ta.to_utc)``` **Now** as a Pandas TA DataFrame Property to easily convert the DataFrame index to UTC.
-
-<br />
-
-## **Breaking / Depreciated Indicators**
-* _Arnaud Legoux Moving Average_ (**alma**) Updated accuracy and speed with new default ```length=9``` and argument ```distribution_offset``` renamed to ```dist_offset```. See ```help(ta.alma)```.
-* _Trend Return_ (**trend_return**) has been removed and replaced with **tsignals**. When given a trend Series like ```close > sma(close, 50)``` it returns the Trend, Trade Entries and Trade Exits of that trend to make it compatible with [**vectorbt**](https://github.com/polakowo/vectorbt) by setting ```asbool=True``` to get boolean Trade Entries and Exits. See ```help(ta.tsignals)```
-* _Volume Profile_ (**vp**) is no longer part of the DataFrame Extension since it does not return a Time Series.
-* _Zero Lag Moving Average_ (**zlma**) now using available Moving Averages from ```ta.ma```. See ```help(ta.zlma)``` and ```help(ta.ma)```.
+Back to [Contents](#contents)
 
 <br/>
 
-## **New Indicators**
-* _Bill Williams Alligator_ (**alligator**) attempts to identify if an asset is trending. See ```help(ta.alligator)```
-* _Cross Signals_ (**xsignals**) is a wrapper of Trend Signals (```help(ta.tsignals)```) that returns Trends, Trades, Entries and Exits. Cross Signals are commonly used for **bbands**, **rsi**, **zscore** crossing some value either above or below two values at different times. See ```help(ta.xsignals)```
-* _Directional Movement_ (**dm**) developed by J. Welles Wilder in 1978 attempts to determine which direction the price of an asset is moving. See ```help(ta.dm)```
-* _Jurik Moving Average_ (**jma**) attempts to eliminate noise to see the "true" underlying activity. See: ```help(ta.jma)```
-* _Smoothed Moving Average_ (**smma**) can be used to confirm trends and define areas of support and resistance. See: ```help(ta.smma)```
-* _Fast Stochastic Oscillator_ (**stochf**) is related to **stoch** but is less rarely used since it is more volatile. See: ```help(ta.stochf)```
-* _Squeeze Pro_ (**squeeze_pro**) is an extended version of "TTM Squeeze" from John Carter. See ```help(ta.squeeze_pro)```
-* _Tom DeMark's Sequential_ (**td_seq**) attempts to identify a price point where an uptrend or a downtrend exhausts itself and reverses. Currently exlcuded from ```df.ta.study()``` for performance reasons. See ```help(ta.td_seq)```
-* _Think or Swim Standard Deviation All_ (**tos_stdevall**) indicator which returns the standard deviation of data for the entire plot or for the interval of the last bars defined by the length parameter. See ```help(ta.tos_stdevall)```
-* _Worden Brothers Time Segmented Value_ (**wb_tsv**) is an oscillator indicator that attempts to indentify money flow in a stock, similar to On Balance Volume (**obv**). See ```help(ta.wb_tsv)```
+## **Performance Metrics**
+
+_Performance Metrics_ are a **new** addition to the package.These metrics return a _float_ and are _not_ part of the _DataFrame_ Extension. They are called using the _Standard Convention_.
+
+```python
+import pandas_ta as ta
+result = ta.cagr(df.close)
+
+# Help
+help(ta.cagr)
+```
+
+Metrics
+-------
+The current metrics include:
+* _Compounded Annual Growth Rate_: **cagr**
+* _Calmar Ratio_: **calmar_ratio**
+* _Downside Deviation_: **downside_deviation**
+* _Jensen's Alpha_: **jensens_alpha**
+* _Log Max Drawdown_: **log_max_drawdown**
+* _Max Drawdown_: **max_drawdown**
+* _Pure Profit Score_: **pure_profit_score**
+* _Sharpe Ratio_: **sharpe_ratio**
+* _Sortino Ratio_: **sortino_ratio**
+* _Volatility_: **volatility**
+
+Back to [Contents](#contents)
 
 <br/>
 
-## **Updated Indicators**
+TODO
+----
+**Complete remaining TA Lib Indicators**
+|||
+| - | - |
+| &#9744; | Candlesticks |
+| &#9744; | Indicators: ```ht_dcperiod```, ```ht_dcphase```, ```ht_phasor```, ```ht_sine```, ```ht_trendline```, ```ht_trendmode```, ```mama``` |
+| &#9744; | **Numpy**/**Numba**_-ify_ base indicators |
 
-* _Average True Range_ (**atr**): The default ```mamode``` is now "**RMA**" and with the same ```mamode``` options as TradingView. See ```help(ta.atr)```.
-* _Exponential Moving Average_ (**ema**): The argument ```sma``` has been renamed ```presma`` to avoid potential name collision. When ```presma=True```, then the Pandas TA version will bootstrap **ema** like TA Lib. See ```help(ta.ema)```.
-* _Kaufman Adaptive Moving Average_ (**kama**): An ```mamode``` as been added with default "**SMA**" to properly boostrap **kama**. _Note_: Not all MAs are usable. See ```help(ta.kama)```.
-* _Linear Regression_ (**linreg**): Checks **numpy**'s version to determine whether to utilize the ```as_strided``` method or the newer ```sliding_window_view``` method. This should resolve Issues with Google Colab and it's delayed dependency updates as well as TensorFlow's dependencies as discussed in Issues [#285](https://github.com/twopirllc/pandas-ta/issues/285) and [#329](https://github.com/twopirllc/pandas-ta/issues/329).
-* _Ehler's Super Smoother Filter_ (**ssf**): Some new arguments (```pi```, ```sqrt2```) were added to control the precision of the calculation since it varies by author and user. Additionally, the ```poles``` argument has been removed. For 3 Poles, see ```help(ta.ssf3)```. See ```help(ta.ssf)```.
-* _Ehler's Super Smoother Filter (3 Poles)_ (**ssf3**): Was split from ```ta.ssf``` and also has addtional arguments arguments (```pi```, ```sqrt3```).  See ```help(ta.ssf3)```.
-* _Standard Deviation_ (**stdev**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **variance**. See ```help(ta.stdev)```.
-* _Variance_ (**variance**): To use ```ddof``` argument, also set ```talib=False```. The ```ddof``` argument is not available if you have TA Lib installed in your environment. Same goes for **stdev**. See ```help(ta.variance)```.
-* _Volume Profile_ (**vp**): Calculation improvements. See [Pull Request #320](https://github.com/twopirllc/pandas-ta/pull/320) See ```help(ta.vp)```.
+<br/>
 
+**Config System**
+|||
+| - | - |
+| &#9744; | JSON Config File |
+| | &#9744; JSON Config File Format |
+| &#9744; | DataFrame Extension property: ```config``` |
+| &#9744; | Features |
 
-<br />
+**Data Acquisition**
+|||
+| - | - |
+| &#10004; | [Yahoo Finance]() _Default_ |
+| &#10004; | [Polygon]() |
+| &#9744; | [AlphaVantage](https://github.com/twopirllc/AlphaVantageAPI) |
+| &#9744; | [Financial Modeling Prep](https://github.com/daxm/fmpsdk) |
+
+**Stabilize**
+|||
+| - | - |
+| &#9744; | Trading Signals |
+| | &#9744; Trend Signals |
+| | &#9744; Cross Signals |
+| &#9744; | Performance Metrics |
+
+<br/>
+
+Back to [Contents](#contents)
+
+<br/>
 
 # **Sources**
 [Original TA-LIB](http://ta-lib.org/) | [TradingView](http://www.tradingview.com) | [Sierra Chart](https://search.sierrachart.com/?Query=indicators&submitted=true) | [MQL5](https://www.mql5.com) | [FM Labs](https://www.fmlabs.com/reference/default.htm) | [Pro Real Code](https://www.prorealcode.com/prorealtime-indicators) | [User 42](https://user42.tuxfamily.org/chart/manual/index.html) | [Technical Traders](http://technical.traders.com/tradersonline/FeedTT-2014.html)
@@ -1107,3 +1234,7 @@ Feeling generous, like the package or want to see it become more a mature packag
 
 ### Consider
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/twopirllc)
+
+<br/>
+
+Back to [Contents](#contents)

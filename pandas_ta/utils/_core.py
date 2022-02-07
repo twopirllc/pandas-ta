@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import re as re_
+from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
 from sys import float_info as sflt
 from typing import Union
@@ -148,55 +150,66 @@ def verify_series(series: Series, min_length: int = None) -> Series:
 
 
 def performance(df: DataFrame,
-        excluded: list = None, other: list = None, top: int = None,
-        talib: bool = False, ascending: bool = False, sortby: str = "secs",
-        gradient: int = False, places: int = 5
+        excluded: list = None, top: int = None, talib: bool = False,
+        ascending: bool = False, sortby: str = "secs",
+        gradient: int = False, places: int = 5, stats: bool = False,
+        verbose: bool = False
     ) -> DataFrame:
     if df.empty: return
-    talib = bool(talib) if isinstance(talib, int) and talib else False
+    talib = bool(talib) if isinstance(talib, bool) and talib else False
     top = int(top) if isinstance(top, int) and top > 0 else None
+    stats = bool(stats) if isinstance(stats, bool) and stats else False
+    verbose = bool(verbose) if isinstance(verbose, bool) and verbose else False
 
     _ex = ["above", "above_value", "below", "below_value", "cross", "cross_value", "ichimoku"]
     if isinstance(excluded, list) and len(excluded) > 0:
         _ex += excluded
     indicators = df.ta.indicators(as_list=True, exclude=_ex)
+    if len(indicators) == 0: return None
 
-    def ms2secs(ms, places):
-        return round(0.001 * ms, places)
+    def ms2secs(ms, p: int):
+        return round(0.001 * ms, p)
 
-    data = []
-    df = df.copy()
-    _index_name = "Indicator"
-    if len(indicators):
+    def indicator_time(df: DataFrame, group: list = [], index_name: str = "Indicator", p: int = 4):
+        times = []
+        for i in group:
+            r = df.ta(i, talib=talib, timed=True)
+            ms = float(r.timed.split(" ")[0].split(" ")[0])
+            times.append({index_name: i, "secs": ms2secs(ms, p), "ms": ms})
+        return times
+
+    _iname = "Indicator"
+    if verbose:
         print()
-        for indicator in indicators:
-            result = df.ta(indicator, talib=talib, timed=True)
-            ms = float(result.timed.split(" ")[0].split(" ")[0])
-            # data.append({_index_name: indicator, "secs": round(0.001 * ms, places), "ms": ms})
-            data.append({_index_name: indicator, "secs": ms2secs(ms, places), "ms": ms})
-
-    if isinstance(other, list) and len(other) > 0:
-        for indicator in other:
-            result = df.ta(indicator, talib=talib, timed=True)
-            ms = float(result.timed.split(" ")[0].split(" ")[0])
-            # data.append({_index_name: indicator, "secs": round(0.001 * ms, places), "ms": ms})
-            data.append({_index_name: indicator, "secs": ms2secs(ms, places), "ms": ms})
+        data = indicator_time(df.copy(), indicators, _iname, places)
+    else:
+        _this = StringIO()
+        with redirect_stdout(_this):
+            data = indicator_time(df.copy(), indicators, _iname, places)
+        _this.close()
 
     tdf = DataFrame.from_dict(data)
-    tdf.set_index(_index_name, inplace=True)
+    tdf.set_index(_iname, inplace=True)
     tdf.sort_values(by=sortby, ascending=ascending, inplace=True)
 
     total_timedf = DataFrame(tdf.describe().loc[['min', '50%', 'mean', 'max']]).T
     total_timedf["total"] = tdf.sum(axis=0).T
+    total_timedf = total_timedf.T
 
     _div = "=" * 60
-    _observations = f"  Observations: {df.shape[0]} {'[talib]' if talib else ''}"
+    _observations = f"  Observations{'[talib]' if talib else ''}: {df.shape[0]}"
     _quick_slow = "Quickest" if ascending else "Slowest"
     _title = f"  {_quick_slow} Indicators"
-    _perfstats = f"Time Stats:\n{total_timedf.T}"
+    _perfstats = f"Time Stats:\n{total_timedf}"
     if top:
         _title = f"  {_quick_slow} {top} Indicators [{tdf.shape[0]}]"
         tdf = tdf.head(top)
     print(f"\n{_div}\n{_title}\n{_observations}\n{_div}\n{tdf}\n\n{_div}\n{_perfstats}\n\n{_div}\n")
-    if isinstance(gradient, bool) and gradient: return tdf.style.background_gradient("autumn_r")
-    return tdf
+
+    if isinstance(gradient, bool) and gradient:
+        return tdf.style.background_gradient("autumn_r"), total_timedf
+
+    if stats:
+        return tdf, total_timedf
+    else:
+        return tdf

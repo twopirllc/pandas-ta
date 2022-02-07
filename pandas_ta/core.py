@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# from dataclasses import dataclass, field
-from email.policy import default
 from multiprocessing import cpu_count, Pool
+from pathlib import Path
 from time import perf_counter
 from typing import Union
 from warnings import simplefilter
@@ -13,73 +12,25 @@ from pandas.errors import PerformanceWarning
 from pandas import DataFrame, Series
 
 from pandas_ta import *
-# from pandas_ta.utils import *
 
 
-# Base Class for extending a Pandas DataFrame
-class BasePandasObject(PandasObject):
-    """Simple PandasObject Extension
-
-    Ensures the DataFrame is not empty and has columns.
-    It would be a sad Panda otherwise.
-
-    Args:
-        df (pd.DataFrame): Extends Pandas DataFrame
-    """
-
-    def __init__(self, df: DataFrame, **kwargs):
-        if df.empty: return
-        print(f"\n[!] kwargs: {kwargs}\n")
-        if len(df.columns) > 0:
-            common_names = {
-                "Date": "date",
-                "Time": "time",
-                "Timestamp": "timestamp",
-                "Datetime": "datetime",
-                "Open": "open",
-                "High": "high",
-                "Low": "low",
-                "Close": "close",
-                "Adj Close": "adj_close",
-                "Volume": "volume",
-                "Dividends": "dividends",
-                "Stock Splits": "split",
-            }
-            # Preemptively drop the rows that are all NaNs
-            # Might need to be moved to AnalysisIndicators.__call__() to be
-            #   toggleable via kwargs.
-            # df.dropna(axis=0, inplace=True)
-            # Preemptively rename columns to lowercase
-            df.rename(columns=common_names, errors="ignore", inplace=True)
-
-            # Preemptively lowercase the index
-            index_name = df.index.name
-            if index_name is not None:
-                df.index.rename(index_name.lower(), inplace=True)
-
-            self._df = df
-        else:
-            raise AttributeError(f"[X] No columns!")
-
-    def __call__(self, kind, *args, **kwargs):
-        raise NotImplementedError()
 
 
-# Pandas TA - DataFrame Analysis Indicators
+# Pandas TA - DataFrame Extension Analysis Indicators
 @register_dataframe_accessor("ta")
-class AnalysisIndicators(BasePandasObject):
+class AnalysisIndicators(object):
     """
     This Pandas Extension is named 'ta' for Technical Analysis. In other words,
     it is a Numerical Time Series Feature Generator where the Time Series data
-    is biased towards Financial Market data; typical data includes columns
+    with emphasis on Financial Market data; typical data includes columns
     named :"open", "high", "low", "close", "volume".
 
     This TA Library hopefully allows you to apply familiar and unique Technical
-    Analysis Indicators easily with the DataFrame Extension named 'ta'. Even
-    though 'ta' is a Pandas DataFrame Extension, you can still call Technical
-    Analysis indicators individually if you are more comfortable with that
-    approach or it allows you to easily and automatically apply the indicators
-    with the study method. See: help(ta.study).
+    Analysis Indicators easily with this DataFrame Extension. Even though 'ta'
+    is a Pandas DataFrame Extension, you can still call Technical Analysis
+    indicators individually if you are more comfortable with that approach or
+    it allows you to easily and automatically apply the indicators with the
+    study method. See: help(ta.study).
 
     By default, the 'ta' extension uses lower case column names: open, high,
     low, close, and volume. You can override the defaults by providing the it's
@@ -151,23 +102,26 @@ class AnalysisIndicators(BasePandasObject):
     >>> print(apo.timed)
     """
 
+    # DataFrame Extension Properties
     _adjusted = None
+    _config = None
     _cores = cpu_count()
+    _custom = None
     _df = DataFrame()
-    _ds = "yf"
+    _ds = "yf" if Imports["yfinance"] else None
     _exchange = "NYSE"
-    _time_range = "years"
     _last_run = get_time(_exchange, to_string=True)
+    _time_range = "years"
 
-    def __init__(self, pandas_obj: Union[DataFrame, Series]):
-        self._validate(pandas_obj)
-        self._df = pandas_obj
+    def __init__(self, obj: Union[DataFrame, Series]):
+        self._validate(obj)
+        self._df = obj
         self._last_run = get_time(self._exchange, to_string=True)
 
     @staticmethod
     def _validate(obj: Union[DataFrame, Series]):
         if not isinstance(obj, DataFrame) and not isinstance(obj, Series):
-            raise AttributeError("[X] Must be either a Pandas Series or DataFrame.")
+            raise AttributeError("[X] Requires a Pandas Series or DataFrame.")
 
     # DataFrame Behavioral Methods
     def __call__(
@@ -260,6 +214,20 @@ class AnalysisIndicators(BasePandasObject):
         return list(Category.keys())
 
     @property
+    def config(self) -> str:
+        """Returns the Pandas TA JSON config path."""
+        return f"{self._config}"
+
+    @config.setter
+    def config(self, value: str) -> None:
+        """property: df.ta.config = None (Default)"""
+        _p = Path(value).expanduser()
+        if _p.exists() and  _p.suffix == ".json":
+            self._config = _p
+        else:
+            self._config = None
+
+    @property
     def datetime_ordered(self) -> bool:
         """Returns True if the index is a datetime and ordered."""
         hasdf = hasattr(self, "_df")
@@ -335,6 +303,7 @@ class AnalysisIndicators(BasePandasObject):
                             print(f"Not enough col_names were specified : got {len(kwargs['col_names'])}, expected {len(result.columns)}.")
                             return
                     else:
+                        # df = result.copy(deep=True) # Breaks Extension Indicators?
                         for i, column in enumerate(result.columns):
                             df[column] = result.iloc[:, i]
                 else:
@@ -370,9 +339,16 @@ class AnalysisIndicators(BasePandasObject):
                 matches = df.columns.str.match(series, case=False)
                 match = [i for i, x in enumerate(matches) if x]
                 # If found, awesome.  Return it or return the 'series'.
+                NOT_FOUND = f"[X] The '{series}' column was not found in"
                 cols = ", ".join(list(df.columns))
-                NOT_FOUND = f"[X] Ooops!!! It's {series not in df.columns}, the column '{series}' was not found in {cols}"
-                return df.iloc[:, match[0]] if len(match) else print(NOT_FOUND)
+
+                if len(df.columns): NOT_FOUND += f": {cols}"
+                else:               NOT_FOUND += " the DataFrame"
+
+                if len(match):
+                    return df.iloc[:, match[0]]
+                else:
+                    print(NOT_FOUND)
 
     def _indicators_by_category(self, name: str) -> list:
         """Returns indicators by Categorical name."""
@@ -395,7 +371,7 @@ class AnalysisIndicators(BasePandasObject):
         verbose = kwargs.pop("verbose", False)
         if not isinstance(result, (Series, DataFrame)):
             if verbose:
-                print(f"[X] Oops! The result was not a Series or DataFrame.")
+                print(f"[X] The result is not a Series or DataFrame.")
             return self._df
         else:
             # Append only specific columns to the dataframe (via
@@ -457,7 +433,7 @@ class AnalysisIndicators(BasePandasObject):
 
         Args:
             append (bool): If True, appends a Numpy range of constants to the
-                working DataFrame.  If False, it removes the constant range from
+                working DataFrame. If False, it removes the constant range from
                 the working DataFrame. Default: None.
 
         Returns:
@@ -493,7 +469,9 @@ class AnalysisIndicators(BasePandasObject):
         ta_properties = [
             "adjusted",
             "categories",
+            "config",
             "cores",
+            # "custom",
             "datetime_ordered",
             "ds",
             "exchange",
@@ -503,7 +481,7 @@ class AnalysisIndicators(BasePandasObject):
             "ticker",
             "time_range",
             "to_utc",
-            "version",
+            "version"
         ]
 
         # Public non-indicator methods
@@ -570,16 +548,18 @@ class AnalysisIndicators(BasePandasObject):
                 disabled when using it's replacement method: df.ta.study().
                 Default: True
         """
+        _dep_warning = kwargs.pop("warning", True)
+        all_ordered = kwargs.pop("ordered", True)
+        # Ensure indicators are appended to the DataFrame
+        kwargs.setdefault("append", True)
         # If True, it returns the resultant DataFrame. Default: False
         returns = kwargs.pop("returns", False)
-        # Ensure indicators are appended to the DataFrame
-        kwargs["append"] = True
-        all_ordered = kwargs.pop("ordered", True)
+
         mp_chunksize = kwargs.pop("chunksize", self.cores)
-        _depwarning = kwargs.pop("warning", True)
+        cores = kwargs.pop("cores", self.cores)
+        self.cores = cores
 
-
-        if _depwarning:
+        if _dep_warning:
             print(f"\n[!] DEPRECIATION WARNING:\n    Use study() instead of strategy().\n")
 
         # Initialize
@@ -611,13 +591,15 @@ class AnalysisIndicators(BasePandasObject):
             ta = self._indicators_by_category(name.lower())
             [ta.remove(x) for x in excluded if x in ta]
         elif mode["custom"]:
+            if hasattr(args[0], "cores") and isinstance(args[0].cores, int):
+                self.cores = min(self.cores, args[0].cores)
             ta = args[0].ta
             for kwds in ta:
                 kwds["append"] = True
         elif mode["all"]:
             ta = self.indicators(as_list=True, exclude=excluded)
         else:
-            print(f"[X] Not an available study.")
+            print(f"[X] Study not available.")
             return None
 
         # Remove Custom indicators with "length" keyword when larger than the DataFrame
@@ -729,7 +711,7 @@ class AnalysisIndicators(BasePandasObject):
                         getattr(self, ind)(*tuple(), **kwargs)
                 self._last_run = get_time(self.exchange, to_string=True)
 
-        # Apply prefixes/suffixes and appends indicator results to the  DataFrame
+        # Apply prefixes/suffixes and appends indicator results to the DataFrame
         [self._post_process(r, **kwargs) for r in results]
 
         if verbose:
@@ -737,7 +719,7 @@ class AnalysisIndicators(BasePandasObject):
             print(f"[i] Columns added: {len(self._df.columns) - initial_column_count}")
             print(f"[i] Last Run: {self._last_run}")
         if timed:
-            print(f"[i] Runtime: {final_time(stime)}")
+            print(f"[i] Analysis Time: {final_time(stime)}")
 
         if returns: return self._df
 
@@ -831,24 +813,23 @@ class AnalysisIndicators(BasePandasObject):
         elif ds in ["yahoo", "yf"]:
             if timed: stime = perf_counter()
             df = yf(ticker, **kwargs)
-        else: return
+        else:
+            return None
 
         if timed:
             df.timed = final_time(stime)
-            print(f"[+] {ds} | {ticker}: {df.timed}")
+            print(f"[+] {ds} | {ticker}{df.shape}: {df.timed}")
 
-        if df is None: return
-        elif df.empty:
+        if df is None or df.empty:
             print(f"[X] DataFrame is empty: {df.shape}")
-            return
-        else:
-            if kwargs.pop("lc_cols", False):
-                df.index.name = df.index.name.lower()
-                df.columns = df.columns.str.lower()
-            self._df = df
+            return None
 
-        if study is not None: return self.study(study, returns=True, **kwargs)
-        return df
+        self._df = df
+
+        if study is not None:
+            self.study(study, **kwargs)
+
+        return self._df
 
     # Public DataFrame Methods: Indicators and Utilities
     # Candles

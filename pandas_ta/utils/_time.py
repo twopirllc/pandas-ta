@@ -111,10 +111,10 @@ def unix_convert(ts: Union[int, Series]) -> Union[datetime, str]:
     """
     Converts timestamps from polygon to readable datetime strings.
 
-    :param ts: The timestamp(s). An integer posix timestamp or a pd.Series of timestamps
+    :param ts: The timestamp(s). An integer posix timestamp or a pd.Series of
+        timestamps.
     :return: The converted datetime string
     """
-    # return pd.to_datetime(ts, unit="ms")
     return to_datetime(ts, unit="ms")
 
 

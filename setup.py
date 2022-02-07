@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
 
-long_description = "An easy to use Python 3 Pandas Extension with 140+ Technical Analysis Indicators. Can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
+long_description = "An easy to use Python 3 Pandas Extension with 200+ Technical Analysis Indicators, Utilities and Candlestick Patterns. Indicators can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
 
 setup(
     name="pandas_ta",
@@ -13,13 +13,14 @@ setup(
         "pandas_ta.overlap",
         "pandas_ta.performance",
         "pandas_ta.statistics",
+        "pandas_ta.transform",
         "pandas_ta.trend",
         "pandas_ta.utils",
         "pandas_ta.utils.data",
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "3", "45b")),
+    version=".".join(("0", "3", "46b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -31,7 +32,7 @@ setup(
     keywords=[
         "technical analysis", "trading", "backtest", "trading bot",
         "features",
-        "pandas", "numpy", "vectorbt", "yfinance",
+        "pandas", "numpy", "vectorbt", "yfinance", "polygon",
         "python3"
     ],
     license="The MIT License (MIT)",
@@ -58,10 +59,11 @@ setup(
     install_requires=["pandas"],
     # List additional groups of dependencies here (e.g. development dependencies).
     # You can install these using the following syntax, for example:
-    # $ pip install -e .[dev,test]
+    # $ pip install -e .[full,test]     # locally
+    # $ pip install -U pandas_ta[full]  # pip
     extras_require={
-        "dev": [
-            "alphaVantage-api", "matplotlib", "mplfinance", "polygon"
+        "full": [
+            "alphaVantage-api", "matplotlib", "mplfinance", "numba", "polygon"
             "scipy", "sklearn", "statsmodels", "stochastic", "ta-lib", "tqdm",
             "vectorbt", "yfinance",
         ],

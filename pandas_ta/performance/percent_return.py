@@ -39,7 +39,7 @@ def percent_return(
 
     # Calculate
     np_close = close.values
-    if True:#cumulative:
+    if cumulative:
         pr = (np_close / np_close[0]) - 1
     else:
         pr = (np_close / roll(np_close, length)) - 1

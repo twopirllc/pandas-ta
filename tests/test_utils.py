@@ -310,6 +310,32 @@ class TestUtilities(TestCase):
         result = self.utils.performance(self.data, top=10, ascending=False, places=4)
         self.assertIsInstance(result, DataFrame)
 
+    def test__performance_excluded(self):
+        """Utility[Core]: Indicator Performance sans Excluded"""
+        # Top 3 Slowest with TA Lib since: 1/26/2022
+        exclude = ["reflex", "td_seq", "trendflex"]
+        exclude += ["ssf", "ssf3"]  # Top 5
+
+        print(f"\n[i] excluded: {', '.join(exclude)}")
+        result = self.utils.performance(self.data, excluded=exclude, top=5, talib=True, ascending=False, places=4, stats=False, verbose=True)
+        self.assertIsInstance(result, DataFrame)
+
+        # Top 3 Slowest without TA Lib since: 1/26/2022
+        exclude = ["alligator", "qqe", "td_seq"]
+        exclude += ["hilo", "psar"]  # Top 5
+
+        print(f"\n[i] excluded: {', '.join(exclude)}")
+        result = self.utils.performance(self.data, excluded=exclude, top=5, ascending=False, places=4, stats=False, verbose=True)
+        self.assertIsInstance(result, DataFrame)
+
+    def test__performance_verbose(self):
+        """Utility[Core]: Verbose Indicator Performance"""
+        result = self.utils.performance(self.data, top=5, talib=True, ascending=False, places=4, stats=False, verbose=True)
+        self.assertIsInstance(result, DataFrame)
+
+        result = self.utils.performance(self.data, top=5, ascending=False, places=4, stats=False, verbose=True)
+        self.assertIsInstance(result, DataFrame)
+
     def test_symmetric_triangle(self):
         """Utility[Math]: Symmetric Triangle"""
         npt.assert_array_equal(self.utils.symmetric_triangle(), np.array([1,1]))

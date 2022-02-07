@@ -114,8 +114,6 @@ class sample(object):
     >>> rpn = ta.sample(s0=1.0, process="rand", noise="rand", positive=True, orient="i", scale="m", verbose=True)
     >>> rpn.np  # numpy values
     >>> rpn.df  # Pandas DataFrame
-
-
     """
 
     _noises = ["b", "br", "fg", "g", "p", "r", "v", "w", None, "rand"]

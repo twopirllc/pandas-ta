@@ -5,7 +5,7 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def td_seq(
-        close: Series, asint: bool = None,
+        close: Series, asint: bool = None, show_all: bool = None,
         offset: int = None, **kwargs
     ) -> DataFrame:
     """TD Sequential (TD_SEQ)
@@ -20,10 +20,10 @@ def td_seq(
         close (pd.Series): Series of 'close's
         asint (bool): If True, fillnas with 0 and change type to int.
             Default: False
+        show_all (bool): Show 1 - 13. If set to False, show 6 - 9. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        show_all (bool): Show 1 - 13. If set to False, show 6 - 9. Default: True
         fillna (value, optional): pd.DataFrame.fillna(value)
 
     Returns:
@@ -33,7 +33,7 @@ def td_seq(
     close = verify_series(close)
     offset = get_offset(offset)
     asint = asint if isinstance(asint, bool) else False
-    show_all = kwargs.setdefault("show_all", True)
+    show_all = show_all if isinstance(show_all, bool) else True
 
     if close is None: return
 

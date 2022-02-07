@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from typing import Union
 from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta.trend import tsignals
@@ -7,7 +8,8 @@ from pandas_ta.utils import cross_value, get_offset, verify_series
 
 def xsignals(
         signal: Series,
-        xa: Series, xb: Series,
+        xa: Union[int, float, Series],
+        xb: Union[int, float, Series],
         above: bool = True, long: bool = True, asbool: bool = None,
         trend_reset: int = 0, trade_offset: int = None,
         offset: int = None, **kwargs

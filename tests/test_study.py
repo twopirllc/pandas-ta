@@ -18,7 +18,6 @@ timed_test = False
 timed = True
 verbose = VERBOSE
 
-
 class TestStudyMethods(TestCase):
 
     @classmethod
@@ -66,9 +65,10 @@ class TestStudyMethods(TestCase):
             self.time_diff = perf_counter() - self.stime
         self.added_cols = len(self.data.columns) - self.init_cols
 
-        self.result = self.data[self.data.columns[-self.added_cols:]]
-        self.assertIsInstance(self.result, DataFrame)
-        self.data.drop(columns=self.result.columns, axis=1, inplace=True)
+        if self.added_cols > 0:
+            self.result = self.data[self.data.columns[-self.added_cols:]]
+            self.assertIsInstance(self.result, DataFrame)
+            self.data.drop(columns=self.result.columns, axis=1, inplace=True)
 
         self.speed_test[self.category] = [self.added_cols, self.time_diff]
 
@@ -110,6 +110,12 @@ class TestStudyMethods(TestCase):
         """Study: All"""
         self.data.ta.study(pandas_ta.AllStudy, verbose=verbose, timed=timed_test)
 
+    def test_all_without_append(self):
+        """Study: All sans append"""
+        self.category = "All: Sans Append"
+
+        self.data.ta.study(append=False, verbose=verbose, timed=timed_test)
+
     # @skip
     def test_candles_category(self):
         """Category: Candles"""
@@ -137,23 +143,23 @@ class TestStudyMethods(TestCase):
             {"kind": "rsi"},  # 1
             {"kind": "macd"},  # 3
             {"kind": "sma", "length": 50},  # 1
-            {"kind": "trix"},  # 1
-            {"kind": "bbands", "length": 20},  # 3
+            {"kind": "trix"},  # 2
+            {"kind": "bbands", "length": 20},  # 5
             {"kind": "log_return", "cumulative": True},  # 1
             {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"} # 1
         ]
 
         # total_columns = len(self.data.columns)
         custom = pandas_ta.Study(
-            "Commons with Cumulative Log Return EMA Chain",  # name
-            momo_bands_sma_ta,  # ta
-            "Common indicators with specific lengths and a chained indicator",  # description
+            name="Commons with Cumulative Log Return EMA Chain",  # name
+            ta=momo_bands_sma_ta,  # ta
+            description="Common indicators with specific lengths and a chained indicator",  # description
         )
-        self.data.ta.study(custom, verbose=verbose, timed=timed_test)
+        self.data.ta.study(custom, cores=0, verbose=verbose, timed=timed_test)
 
         # Note: Will not find column 'CUMLOGRET_1' with mp, use cores=0 instead
         if "adj close" in self.data.columns or "adj_close" in self.data.columns:
-            self.assertEqual(len(self.data.columns), 20)
+            self.assertEqual(len(self.data.columns), 21)
         else:
             self.assertEqual(len(self.data.columns), 19)
 
@@ -161,9 +167,8 @@ class TestStudyMethods(TestCase):
     def test_custom_a_without_multiprocessing(self):
         """Custom A: Without Multiprocessing"""
         self.category = "Custom A: Sans Multiprocessing"
+        _cores = self.data.ta.cores
 
-        cores = self.data.ta.cores
-        self.data.ta.cores = 0
 
         momo_bands_sma_ta = [
             {"kind": "rsi"},  # 1
@@ -171,20 +176,20 @@ class TestStudyMethods(TestCase):
             {"kind": "sma", "length": 50},  # 1
             {"kind": "sma", "length": 100, "col_names": "sma100"},  # 1
             {"kind": "sma", "length": 200 },  # 1
-            {"kind": "bbands", "length": 20},  # 3
+            {"kind": "bbands", "length": 20},  # 5
             {"kind": "log_return", "cumulative": True},  # 1
             {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"} # 1
         ]
 
         custom = pandas_ta.Study(
-            "Commons with Cumulative Log Return EMA Chain",  # name
-            momo_bands_sma_ta,  # ta
-            "Common indicators with specific lengths and a chained indicator",  # description
+            name="Commons with Cumulative Log Return EMA Chain",  # name
+            ta=momo_bands_sma_ta,  # ta
+            description="Common indicators with specific lengths and a chained indicator",  # description
+            cores=0
         )
         # Depreciation warning test
-        self.data.ta.strategy(custom, verbose=verbose, timed=timed_test)
-        # self.data.ta.study(custom, verbose=verbose, timed=timed_test)
-        self.data.ta.cores = cores
+        self.data.ta.strategy(custom, cores=4, verbose=verbose, timed=timed_test)
+        self.data.ta.cores = _cores
 
     # @skip
     def test_custom_args_tuple(self):
