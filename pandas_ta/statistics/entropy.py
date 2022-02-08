@@ -5,14 +5,14 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def entropy(
-        close: Series, length: int = None, base: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, base: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Entropy (ENTP)
 
-    Introduced by Claude Shannon in 1948, entropy measures the unpredictability
-    of the data, or equivalently, of its average information. A die has higher
-    entropy (p=1/6) versus a coin (p=1/2).
+    Introduced by Claude Shannon in 1948, entropy measures the
+    unpredictability of the data, or equivalently, of its average
+    information. A die has higher entropy (p=1/6) versus a coin (p=1/2).
 
     Sources:
         https://en.wikipedia.org/wiki/Entropy_(information_theory)
@@ -36,7 +36,8 @@ def entropy(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     p = close / close.rolling(length).sum()

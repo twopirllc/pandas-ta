@@ -13,14 +13,15 @@ def stoch(
 ) -> DataFrame:
     """Stochastic (STOCH)
 
-    The Stochastic Oscillator (STOCH) was developed by George Lane in the 1950's.
-    He believed this indicator was a good way to measure momentum because changes in
-    momentum precede changes in price.
+    The Stochastic Oscillator (STOCH) was developed by George Lane in the
+    1950's. He believed this indicator was a good way to measure momentum
+    because changes in momentum precede changes in price.
 
     It is a range-bound oscillator with two lines moving between 0 and 100.
-    The first line (%K) displays the current close in relation to the period's
-    high/low range. The second line (%D) is a Simple Moving Average of the %K line.
-    The most common choices are a 14 period %K and a 3 period SMA for %D.
+    The first line (%K) displays the current close in relation to the
+    period's high/low range. The second line (%D) is a Simple Moving Average
+    of the %K line. The most common choices are a 14 period %K and a 3 period
+    SMA for %D.
 
     Sources:
         https://www.tradingview.com/wiki/Stochastic_(STOCH)
@@ -34,8 +35,8 @@ def stoch(
         d (int): The Slow %D period. Default: 3
         smooth_k (int): The Slow %K period. Default: 3
         mamode (str): See ``help(ta.ma)``. Default: 'sma'
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -64,14 +65,8 @@ def stoch(
     if Imports["talib"] and mode_tal:
         from talib import STOCH
         stoch_ = STOCH(
-            high,
-            low,
-            close,
-            k,
-            d,
-            tal_ma(mamode),
-            d,
-            tal_ma(mamode))
+            high, low, close, k, d, tal_ma(mamode), d, tal_ma(mamode)
+        )
         stoch_k, stoch_d = stoch_[0], stoch_[1]
     else:
         lowest_low = low.rolling(k).min()
@@ -80,10 +75,11 @@ def stoch(
         stoch = 100 * (close - lowest_low)
         stoch /= non_zero_range(highest_high, lowest_low)
 
-        stoch_k = ma(
-            mamode, stoch.loc[stoch.first_valid_index():, ], length=smooth_k)
-        stoch_d = ma(
-            mamode, stoch_k.loc[stoch_k.first_valid_index():, ], length=d)
+        stoch_fvi = stoch.loc[stoch.first_valid_index():, ]
+        stoch_k = ma(mamode, stoch_fvi, length=smooth_k)
+
+        stochk_fvi = stoch_k.loc[stoch_k.first_valid_index():, ]
+        stoch_d = ma(mamode, stochk_fvi, length=d)
 
     # Offset
     if offset != 0:

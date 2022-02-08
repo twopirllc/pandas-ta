@@ -29,10 +29,8 @@ def ohlc4(
     offset = get_offset(offset)
 
     # Calculate
-    ohlc4 = Series(
-        0.25 * (open_.values + high.values + low.values + close.values),
-        index=close.index
-    )
+    avg = 0.25 * (open_.values + high.values + low.values + close.values)
+    ohlc4 = Series(avg, index=close.index)
 
     # Offset
     if offset != 0:

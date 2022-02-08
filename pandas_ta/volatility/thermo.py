@@ -91,7 +91,8 @@ def thermo(
     thermo_ma.name = f"THERMOma{_props}"
     thermo_long.name = f"THERMOl{_props}"
     thermo_short.name = f"THERMOs{_props}"
-    thermo.category = thermo_ma.category = thermo_long.category = thermo_short.category = "volatility"
+    thermo.category = thermo_ma.category = "volatility"
+    thermo_long.category = thermo_short.category = thermo.category
 
     data = {
         thermo.name: thermo,

@@ -19,7 +19,8 @@ def log_return(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 20
-        cumulative (bool): If True, returns the cumulative returns. Default: False
+        cumulative (bool): If True, returns the cumulative returns.
+            Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -31,8 +32,10 @@ def log_return(
     """
     # Validate
     length = int(length) if length and length > 0 else 1
-    cumulative = bool(
-        cumulative) if cumulative is not None and cumulative else False
+    if cumulative is not None and cumulative:
+        cumulative = bool(cumulative)
+    else:
+        cumulative = False
     close = verify_series(close, length)
     offset = get_offset(offset)
 

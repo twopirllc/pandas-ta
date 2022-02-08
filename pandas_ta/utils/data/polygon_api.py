@@ -9,20 +9,24 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
     r"""
     polygon_api - polygon.io API helper function.
 
-    It returns OCHLV data from polygon (requires a valid subscription of course). To install the
-    `polygon library <https://github.com/pssolanki111/polygon>`__ , use
-    ``pip install polygon``.
-    You can customize the range of data using kwargs ``from_date``, ``to_date``, ``timespan`` and ``multiplier``. For a
-    description of these arguments, see
+    It returns OCHLV data from polygon (A valid subscription is required).
+    To install the `polygon library <https://github.com/pssolanki111/polygon>`__ ,
+    use ``pip install polygon``.
+    You can customize the range of data using kwargs ``from_date``,
+    ``to_date``, ``timespan`` and ``multiplier``. For a description of
+    these arguments, see
     `Here <https://polygon.readthedocs.io/en/latest/Stocks.html#get-aggregate-bars-candles>`__
 
-    To view additional information about the ticker symbols, you can use the **kwarg** ``kind``, defaulting to
-    ``None`` which doesn't pull/display any additional info.
+    To view additional information about the ticker symbols, you can use
+    the **kwarg** ``kind``, defaulting to ``None`` which doesn't
+    pull/display any additional info.
 
-    **The function will always return the OCHLV dataframe no matter what additional info you ask it to pull.** The
-    additional information is used for display only (yet?)
+    **The function will always return the OCHLV dataframe no matter what
+    additional info you ask it to pull.** The additional information is
+    used for display only (yet?)
 
-    Other options for kwarg ``kind`` are as described (in format: ``value_to_supply: description of that info type``):
+    Other options for kwarg ``kind`` are as described
+    in format: ``value_to_supply: description of that info type``):
 
     * ``all`` OR ``info``: Everything below is displayed
     * ``option_chains`` OR ``oc``: Option chains information
@@ -32,20 +36,29 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
         Described Below
 
     :Keyword Arguments:
-        * ``api_key`` - REQUIRED. Your polygon API key. Visit your dashboard to get this key.
-        * ``show`` - How many last rows of Chart History to show. Default: None
-        * ``kind`` - options described above. Defaults to None
-        * ``desc`` - whether to print the description of company or not. Defaults to False.
-        * ``start_date`` - start date of time range to get data for. Defaults to roughly a year back. Can be supplied
-                           as a ``datetime`` or ``date`` object or string ``YYYY-MM-DD``
-        * ``to_date`` - end date of time range to get data for. Defaults to up to most recent data available. Can be
-                        supplied as a ``datetime`` or ``date`` object or string ``YYYY-MM-DD``
-        * ``limit`` - max number of base candles to aggregate from. Defaults to 50000 (also the maximum value).
-        * ``timespan`` - Type of candles' granularity. Defaults to ``day`` which returns day candles.
-        * ``multiplier`` - multiplier of granularity. defaults to 1. so defaults candles are of `1Day` granularity.
-        * ``contract_type`` - default to all contract types. Can be changed to ``call`` OR ``put``. Only applicable
-                              when displaying option chains data
-        * ``contract_limit`` - max number of contracts to display from option chains information. Defaults to 10
+        * ``api_key`` - REQUIRED. Your polygon API key.
+            Visit your dashboard to get this key.
+        * ``show`` - How many last rows of Chart History to show.
+            Default: None
+        * ``kind`` - Options described above. Default: None
+        * ``desc`` - Company description. Default: False
+        * ``start_date`` - Start Date for the time range.
+            Defaults to roughly a year back. Can be supplied as a
+            ``datetime`` or ``date`` object or string ``YYYY-MM-DD``
+        * ``to_date`` - End date for the time range.
+            Defaults to up to most recent data available. Can be supplied as
+            a ``datetime`` or ``date`` object or string ``YYYY-MM-DD``
+        * ``limit`` - Max number of candles to aggregate.
+            Default: 50000 (also the maximum value).
+        * ``timespan`` - Type of candles' granularity.
+            Default: ``day`` (Daily Candles)
+        * ``multiplier`` - Multiplier of granularity. Default: 1.
+            Defaults candles are of `1Day` granularity.
+        * ``contract_type`` - Can be changed to ``call`` OR ``put``.
+            Only applicable when displaying option chains data.
+            Default: both
+        * ``contract_limit`` - Max number of Contracts to display from
+            Option Chains. Default: 10
         * ``verbose`` - Prints Company Information "info" and a Chart History
                         header to the screen. Default: False
     """
@@ -69,10 +82,8 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
             f"Ticker symbol name must be a valid name string. Eg: \'AMD\'")
 
     start_date = kwargs.pop(
-        "start_date",
-        (datetime.date.today() -
-         datetime.timedelta(
-            days=525)))
+        "start_date", (datetime.date.today() - datetime.timedelta(days=525))
+    )
     end_date = kwargs.pop("end_date", datetime.date.today())
     limit = kwargs.pop("limit", 50000)
     multiplier = kwargs.pop("multiplier", 1)
@@ -85,8 +96,10 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
         import polygon as polyapi
 
         with polyapi.StocksClient(api_key) as polygon_client:
-            resp = polygon_client.get_aggregate_bars(ticker, start_date, end_date, limit=limit,
-                                                     multiplier=multiplier, timespan=timespan)
+            resp = polygon_client.get_aggregate_bars(
+                ticker, start_date, end_date, limit=limit,
+                multiplier=multiplier, timespan=timespan
+            )
 
         df = DataFrame()
         if "results" in resp.keys():
@@ -126,7 +139,7 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
             else:
                 print(f"{details_vx['ticker']}")
 
-            # TODO: polygon returns hell lotta data for market info across a few endpoints. I don't know which ones to
+            # TODO: polygon returns a lot of data for market info across a few endpoints. I don't know which ones to
             #  include here lol. I wrote the ones i felt were important. Feel free to suggest more.
             #  Yeah. It needs some additional modifications since details and details_vx are
             #    not equal and sparse depending on asset of ticker
@@ -265,15 +278,14 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
 
             if contract_type is None:
                 alldf = merge(
-                    calldf.reset_index(),
-                    putdf.reset_index(),
-                    on="Strike")
+                    calldf.reset_index(), putdf.reset_index(), on="Strike"
+                )
                 alldf.rename(
                     columns={
                         "Contract_x": "Calls",
                         "Contract_y": "Puts",
-                        "Exp. Date_x": "Exp. Date"},
-                    inplace=True
+                        "Exp. Date_x": "Exp. Date"
+                    }, inplace=True
                 )
                 alldf.set_index("Exp. Date", inplace=True)
                 alldf = alldf[["Calls", "Strike", "Puts"]]

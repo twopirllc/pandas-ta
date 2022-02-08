@@ -11,14 +11,15 @@ def increasing(
     """Increasing
 
     Returns True if the series is increasing over a period, False otherwise.
-    If the kwarg 'strict' is True, it returns True if it is continuously increasing
-    over the period. When using the kwarg 'asint', then it returns 1 for True
-    or 0 for False.
+    If the kwarg 'strict' is True, it returns True if it is continuously
+    increasing over the period. When using the kwarg 'asint', then it
+    returns 1 for True or 0 for False.
 
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1
-        strict (bool): If True, checks if the series is continuously increasing over the period. Default: False
+        strict (bool): If True, checks if the series is continuously increasing
+            over the period. Default: False
         percent (float): Percent as an integer. Default: None
         asint (bool): Returns as binary. Default: True
         drift (int): The difference period. Default: 1
@@ -49,8 +50,7 @@ def increasing(
         # Returns value as float64? Have to cast to bool
         increasing = close > close_.shift(drift)
         for x in range(3, length + 1):
-            increasing = increasing & (close.shift(
-                x - (drift + 1)) > close_.shift(x - drift))
+            increasing &= (close.shift(x - (drift + 1)) > close_.shift(x - drift))
 
         increasing.fillna(0, inplace=True)
         increasing = increasing.astype(bool)

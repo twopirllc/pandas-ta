@@ -43,8 +43,8 @@ def pvi(
 
     # Calculate
     signed_volume = signed_series(volume, 1)
-    pvi = roc(close=close, length=length) * \
-        signed_volume[signed_volume > 0].abs()
+    _roc = roc(close=close, length=length)
+    pvi = _roc * signed_volume[signed_volume > 0].abs()
     pvi.fillna(0, inplace=True)
     pvi.iloc[0] = initial
     pvi = pvi.cumsum()

@@ -10,8 +10,9 @@ def ao(
 ) -> Series:
     """Awesome Oscillator (AO)
 
-    The Awesome Oscillator is an indicator used to measure a security's momentum.
-    AO is generally used to affirm trends or to anticipate possible reversals.
+    The Awesome Oscillator is an indicator used to measure a security's
+    momentum. AO is generally used to affirm trends or to anticipate
+    possible reversals.
 
     Sources:
         https://www.tradingview.com/wiki/Awesome_Oscillator_(AO)

@@ -12,12 +12,14 @@ def stochrsi(
 ) -> DataFrame:
     """Stochastic (STOCHRSI)
 
-    "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande and Stanley Kroll and published in Stock & Commodities V.11:5 (189-199)
+    "Stochastic RSI and Dynamic Momentum Index" was created by Tushar Chande
+    and Stanley Kroll and published in Stock & Commodities V.11:5 (189-199)
 
     It is a range-bound oscillator with two lines moving between 0 and 100.
     The first line (%K) displays the current RSI in relation to the period's
-    high/low range. The second line (%D) is a Simple Moving Average of the %K line.
-    The most common choices are a 14 period %K and a 3 period SMA for %D.
+    high/low range. The second line (%D) is a Simple Moving Average of the
+    %K line. The most common choices are a 14 period %K and a 3 period
+    SMA for %D.
 
     Sources:
         https://www.tradingview.com/wiki/Stochastic_(STOCH)

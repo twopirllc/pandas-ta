@@ -4,10 +4,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def remap(
-        close: Series, from_min: float = None, from_max: float = None,
-        to_min: float = None, to_max: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, from_min: float = None, from_max: float = None,
+    to_min: float = None, to_max: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """
     Indicator: ReMap (REMAP)
 

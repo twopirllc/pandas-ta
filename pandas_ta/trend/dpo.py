@@ -21,7 +21,8 @@ def dpo(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1
-        centered (bool): Shift the dpo back by int(0.5 * length) + 1. Default: True
+        centered (bool): Shift the dpo back by int(0.5 * length) + 1.
+            Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

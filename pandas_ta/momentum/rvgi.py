@@ -11,10 +11,10 @@ def rvgi(
 ) -> Series:
     """Relative Vigor Index (RVGI)
 
-    The Relative Vigor Index attempts to measure the strength of a trend relative to
-    its closing price to its trading range.  It is based on the belief that it tends
-    to close higher than they open in uptrends or close lower than they open in
-    downtrends.
+    The Relative Vigor Index attempts to measure the strength of a trend
+    relative to its closing price to its trading range.  It is based on the
+    belief that it tends to close higher than they open in uptrends or close
+    lower than they open in downtrends.
 
     Sources:
         https://www.investopedia.com/terms/r/relative_vigor_index.asp
@@ -52,11 +52,11 @@ def rvgi(
 
     # Calculate
     numerator = swma(
-        close_open_range,
-        length=swma_length).rolling(length).sum()
+        close_open_range, length=swma_length
+    ).rolling(length).sum()
     denominator = swma(
-        high_low_range,
-        length=swma_length).rolling(length).sum()
+        high_low_range, length=swma_length
+    ).rolling(length).sum()
 
     rvgi = numerator / denominator
     signal = swma(rvgi, length=swma_length)

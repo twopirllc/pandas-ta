@@ -21,14 +21,15 @@ class sample(object):
     To get the most out of sample(), install the 'stochastic' package:
         $ pip install stochastic
 
-    The following stochastic package noise and processes have been implemented:
+    The following stochastic package noise and processes have been
+    implemented:
     * Noise[9]: Blue "b", Brownian "br, Fractal Gaussian "fg", Gaussian "g",
         Pink "p", Red "r", Violet "v", Wiener "w", Random "rand", or None
     * Processes[11]: Brownian Bridge "bb", Brownian Excursion "be",
-        Brownian Meander "bm", Brownian Motion "bmo", Cox Ingersoll Ross "cir",
-        Fractional Brownian Motion "fbm", Geometric Brownian Motion "gbm",
-        Ornstein Uhlenbeck "ou", Random Walk "rw", Wiener "w", Random "rand"
-        or None.
+        Brownian Meander "bm", Brownian Motion "bmo",
+        Cox Ingersoll Ross "cir", Fractional Brownian Motion "fbm",
+        Geometric Brownian Motion "gbm", Ornstein Uhlenbeck "ou",
+        Random Walk "rw", Wiener "w", Random "rand" or None.
     * If the stochastic process is not installed, a Simple Random Walk is
         realized without noise.
     * When argument process="rand", a process is chosen at random.
@@ -40,16 +41,19 @@ class sample(object):
     Args:
         * Basic options
         name (str): Set a ticker name. Default: A random ticker like 'SMPL'.
-        process (str): The process to realize. See options above. Default: None
+        process (str): The process to realize. See options above.
+            Default: None
         noise (str): Noise to apply. See options above. Default: None
         length (int): How many observations to generate.
             Default: ta.RATE["TRADING_DAYS_PER_YEAR"] (252)
 
         * Additional transformations
-        orient (str): Applies either a Reversal, Inversion or Inverted Reversal
-            of the realization. Default: None.
-        positive (bool): If the resultant process is non-negative. Default: True
-        scale (str): Applies either Mean, Normal or Standard scale. Default: None.
+        orient (str): Applies either a Reversal, Inversion or
+            Inverted Reversal of the realization. Default: None.
+        positive (bool): If the resultant process is non-negative.
+            Default: True
+        scale (str): Applies either Mean, Normal or Standard scale.
+            Default: None.
         noise_percent (float): Percentage of noise to apply. (Not implemented)
             Default: 1.0
 
@@ -73,10 +77,10 @@ class sample(object):
         * Misc. Options
         future (bool): Whether the resultant DataFrame Index has a future
             date range or a past date range. Default: True
-        freq (str): The frequency to use for the generated DataFrame date range
-            index. (Not implemented) In Default: "D"
-        intraday (str): If intraday is 'full', 24 hours, or is an 'equity' with
-            6.5 hours. (Not implemented) Default: "full"
+        freq (str): The frequency to use for the generated DataFrame
+            date range index. (Not implemented) In Default: "D"
+        intraday (str): If intraday is 'full', 24 hours, or is an 'equity'
+            with 6.5 hours. (Not implemented) Default: "full"
         date_fmt (str): Date Format for Daterange. Default: '%Y-%m-%d'
         precision (int): How many decimals to round when printing to stdout.
             Default: 6
@@ -119,29 +123,20 @@ class sample(object):
     _noises = ["b", "br", "fg", "g", "p", "r", "v", "w", None, "rand"]
     _orientations = ["i", "r", "ir", "ri", None, "rand"]
     _processes = [
-        "bb",
-        "be",
-        "bm",
-        "bmo",
-        "cir",
-        "fbm",
-        "gbm",
-        "ou",
-        "rw",
-        "w",
-        None,
-        "rand"]
+        "bb", "be", "bm", "bmo", "cir", "fbm",
+        "gbm", "ou", "rw", "w", None, "rand"
+    ]
     _scales = ["m", "n", "s", None]
 
     def __init__(self,
-                 name=None, process=None, noise=None, length=None,
-                 s0=None, b=None, t=None, drift=None, volatility=None,
-                 speed=None, hurst=None, steps=None, random_number=None,
-                 orient=None, positive=None, scale=None,
-                 future=None, freq=None, intraday=None,
-                 noise_percent=None,
-                 date_fmt=None, precision=None, verbose=None
-                 ):
+        name=None, process=None, noise=None, length=None,
+        s0=None, b=None, t=None, drift=None, volatility=None,
+        speed=None, hurst=None, steps=None, random_number=None,
+        orient=None, positive=None, scale=None,
+        future=None, freq=None, intraday=None,
+        noise_percent=None,
+        date_fmt=None, precision=None, verbose=None
+    ):
         """Validation and initialization of arguments and then runs the
         _generate() method to build a sample realization with the given
         arguments.
@@ -362,16 +357,9 @@ class sample(object):
         if up < down:
             down, up = up, down
 
-        x = concatenate(
-            ([0.0],
-             where(
-                randint(
-                    0,
-                    2,
-                    size=self.length -
-                    1) == 0,
-                down,
-                up)))
+        x = concatenate(([0.0],
+             where(randint(0, 2, size=self.length - 1) == 0, down, up)
+        ))
         return cumsum(x).astype(float)
 
     def _stoch_noise(self):

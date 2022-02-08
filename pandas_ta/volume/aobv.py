@@ -43,10 +43,17 @@ def aobv(
     # Validate
     fast = int(fast) if fast and fast > 0 else 4
     slow = int(slow) if slow and slow > 0 else 12
-    max_lookback = int(
-        max_lookback) if max_lookback and max_lookback > 0 else 2
-    min_lookback = int(
-        min_lookback) if min_lookback and min_lookback > 0 else 2
+
+    if max_lookback and max_lookback > 0:
+        max_lookback = int(max_lookback)
+    else:
+        max_lookback = 2
+
+    if min_lookback and min_lookback > 0:
+        min_lookback = int(min_lookback)
+    else:
+        min_lookback = 2
+
     if slow < fast:
         fast, slow = slow, fast
     mamode = mamode if isinstance(mamode, str) else "ema"

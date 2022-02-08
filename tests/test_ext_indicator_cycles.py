@@ -23,6 +23,10 @@ class TestCylesExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "EBSW_40_10")
 
+        self.data.ta.ebsw(append=True, initial_version=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "EBSW_40_10")
+
     def test_reflex_ext(self):
         self.data.ta.reflex(append=True)
         self.assertIsInstance(self.data, DataFrame)

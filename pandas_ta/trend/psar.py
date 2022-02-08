@@ -11,15 +11,16 @@ def psar(
 ) -> DataFrame:
     """Parabolic Stop and Reverse (psar)
 
-    Parabolic Stop and Reverse (PSAR) was developed by J. Wells Wilder, that is used
-    to determine trend direction and it's potential reversals in price. PSAR uses a
-    trailing stop and reverse method called "SAR," or stop and reverse, to identify
-    possible entries and exits. It is also known as SAR.
+    Parabolic Stop and Reverse (PSAR) was developed by J. Wells Wilder, that
+    is used to determine trend direction and it's potential reversals in
+    price. PSAR uses a trailing stop and reverse method called "SAR," or stop
+    and reverse, to identify possible entries and exits. It is also known
+    as SAR.
 
-    PSAR indicator typically appears on a chart as a series of dots, either above or
-    below an asset's price, depending on the direction the price is moving. A dot is
-    placed below the price when it is trending upward, and above the price when it
-    is trending downward.
+    PSAR indicator typically appears on a chart as a series of dots, either
+    above or below an asset's price, depending on the direction the price is
+    moving. A dot is placed below the price when it is trending upward, and
+    above the price when it is trending downward.
 
     Sources:
         https://www.tradingview.com/pine-script-reference/#fun_sar
@@ -48,14 +49,6 @@ def psar(
     af0 = float(af0) if af0 and af0 > 0 else af
     max_af = float(max_af) if max_af and max_af > 0 else 0.2
     offset = get_offset(offset)
-
-    def _falling(high, low, drift: int = 1):
-        """Returns the last -DM value"""
-        # Not to be confused with ta.falling()
-        up = high - high.shift(drift)
-        dn = low.shift(drift) - low
-        _dmn = (((dn > up) & (dn > 0)) * dn).apply(zero).iloc[-1]
-        return _dmn > 0
 
     # Falling if the first NaN -DM is positive
     falling = _falling(high.iloc[:2], low.iloc[:2])
@@ -149,3 +142,11 @@ def psar(
     psardf.category = long.category = short.category = "trend"
 
     return psardf
+
+def _falling(high, low, drift: int = 1):
+    """Returns the last -DM value"""
+    # Not to be confused with ta.falling()
+    up = high - high.shift(drift)
+    dn = low.shift(drift) - low
+    _dmn = (((dn > up) & (dn > 0)) * dn).apply(zero).iloc[-1]
+    return _dmn > 0

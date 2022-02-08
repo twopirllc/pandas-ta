@@ -11,8 +11,8 @@ def hma(
 ) -> Series:
     """Hull Moving Average (HMA)
 
-    The Hull Exponential Moving Average attempts to reduce or remove lag in moving
-    averages.
+    The Hull Exponential Moving Average attempts to reduce or remove lag
+    in moving averages.
 
     Sources:
         https://alanhull.com/hull-moving-average

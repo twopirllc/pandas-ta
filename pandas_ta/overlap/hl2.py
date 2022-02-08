@@ -25,7 +25,8 @@ def hl2(
     offset = get_offset(offset)
 
     # Calculate
-    hl2 = Series(0.5 * (high.values + low.values), index=high.index)
+    avg = 0.5 * (high.values + low.values)
+    hl2 = Series(avg, index=high.index)
 
     # Offset
     if offset != 0:

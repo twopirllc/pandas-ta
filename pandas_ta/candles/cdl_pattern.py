@@ -38,11 +38,11 @@ def cdl_pattern(
             df = df.ta.cdl_pattern(name="all")
 
         Get only one pattern::
-            
+
             df = df.ta.cdl_pattern(name="doji")
 
         Get some patterns::
-            
+
             df = df.ta.cdl_pattern(name=["doji", "inside"])
 
     Args:

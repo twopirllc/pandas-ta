@@ -24,8 +24,9 @@ def cagr(close: Series) -> float:
     return ((end / start) ** (1 / total_time(close))) - 1
 
 
-def calmar_ratio(close: Series, method: str = "percent",
-                 years: int = 3) -> float:
+def calmar_ratio(
+    close: Series, method: str = "percent", years: int = 3
+) -> float:
     """The Calmar Ratio is the percent Max Drawdown Ratio 'typically' over
     the past three years.
 
@@ -49,7 +50,8 @@ def calmar_ratio(close: Series, method: str = "percent",
 
 
 def downside_deviation(
-        returns: Series, benchmark_rate: float = 0.0, tf: str = "years") -> float:
+    returns: Series, benchmark_rate: float = 0.0, tf: str = "years"
+) -> float:
     """Downside Deviation for the Sortino ratio.
     Benchmark rate is assumed to be annualized. Adjusted according for the
     number of periods per year seen in the data.
@@ -103,8 +105,9 @@ def log_max_drawdown(close: Series) -> float:
     return log_return - max_drawdown(close, method="log")
 
 
-def max_drawdown(close: Series, method: str = None,
-                 all: bool = False) -> float:
+def max_drawdown(
+    close: Series, method: str = None, all: bool = False
+) -> float:
     """Maximum Drawdown from close. Default: 'dollar'.
 
     Args:
@@ -132,16 +135,18 @@ def max_drawdown(close: Series, method: str = None,
     return max_dd_["dollar"]
 
 
-def optimal_leverage(close: Series, benchmark_rate: float = 0.0,
-                     period: Union[float, int] = RATE["TRADING_DAYS_PER_YEAR"],
-                     log: bool = False, capital: float = 1., **kwargs) -> float:
+def optimal_leverage(
+    close: Series, benchmark_rate: float = 0.0,
+    period: Union[float, int] = RATE["TRADING_DAYS_PER_YEAR"],
+    log: bool = False, capital: float = 1., **kwargs
+) -> float:
     """Optimal Leverage of a series. NOTE: Incomplete. Do NOT use.
 
     Args:
         close (pd.Series): Series of 'close's
         benchmark_rate (float): Benchmark Rate to use. Default: 0.0
-        period (int, float): Period to use to calculate Mean Annual Return and
-            Annual Standard Deviation.
+        period (int, float): Period to use to calculate Mean Annual Return
+            and Annual Standard Deviation.
             Default: None or the default sharpe_ratio.period()
         log (bool): If True, calculates log_return. Otherwise it returns
             percent_return. Default: False
@@ -184,8 +189,10 @@ def pure_profit_score(close: Series) -> Union[float, int]:
     return 0
 
 
-def sharpe_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False, use_cagr: bool = False,
-                 period: int = RATE["TRADING_DAYS_PER_YEAR"]) -> float:
+def sharpe_ratio(
+    close: Series, benchmark_rate: float = 0.0, log: bool = False,
+    use_cagr: bool = False, period: int = RATE["TRADING_DAYS_PER_YEAR"]
+) -> float:
     """Sharpe Ratio of a series.
 
     Args:
@@ -213,8 +220,9 @@ def sharpe_ratio(close: Series, benchmark_rate: float = 0.0, log: bool = False, 
         return (period_mu - benchmark_rate) / period_std
 
 
-def sortino_ratio(close: Series, benchmark_rate: float = 0.0,
-                  log: bool = False) -> float:
+def sortino_ratio(
+    close: Series, benchmark_rate: float = 0.0, log: bool = False
+) -> float:
     """Sortino Ratio of a series.
 
     Args:
@@ -235,21 +243,22 @@ def sortino_ratio(close: Series, benchmark_rate: float = 0.0,
     return result
 
 
-def volatility(close: Series, tf: str = "years",
-               returns: bool = False, log: bool = False, **kwargs) -> float:
+def volatility(
+    close: Series, tf: str = "years", returns: bool = False, log: bool = False
+) -> float:
     """Volatility of a series. Default: 'years'
 
     Args:
         close (pd.Series): Series of 'close's
         tf (str): Time Frame options: 'days', 'weeks', 'months', and 'years'.
             Default: 'years'
-        returns (bool): If True, then it replace the close Series with the user
-            defined Series; typically user generated returns or percent returns
-            or log returns. Default: False
+        returns (bool): If True, then it replace the close Series with the
+            user defined Series; typically user generated returns or percent
+            returns or log returns. Default: False
         log (bool): If True, calculates log_return. Otherwise it calculates
             percent_return. Default: False
 
-    >>> result = ta.volatility(close, tf="years", returns=False, log=False, **kwargs)
+    >>> result = ta.volatility(close, tf="years", returns=False, log=False)
     """
     close = verify_series(close)
 

@@ -11,10 +11,10 @@ def macd(
 ) -> DataFrame:
     """Moving Average Convergence Divergence (MACD)
 
-    The MACD is a popular indicator to that is used to identify a security's trend.
-    While APO and MACD are the same calculation, MACD also returns two more series
-    called Signal and Histogram. The Signal is an EMA of MACD and the Histogram is
-    the difference of MACD and Signal.
+    The MACD is a popular indicator to that is used to identify a security's
+    trend. While APO and MACD are the same calculation, MACD also returns
+    two more series called Signal and Histogram. The Signal is an EMA of
+    MACD and the Histogram is the difference of MACD and Signal.
 
     Sources:
         https://www.tradingview.com/wiki/MACD_(Moving_Average_Convergence/Divergence)
@@ -25,8 +25,8 @@ def macd(
         fast (int): The short period. Default: 12
         slow (int): The long period. Default: 26
         signal (int): The signal period. Default: 9
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -62,14 +62,14 @@ def macd(
         slowma = ema(close, length=slow, talib=mode_tal)
 
         macd = fastma - slowma
-        signalma = ema(
-            close=macd.loc[macd.first_valid_index():, ], length=signal, talib=mode_tal)
+        macd_fvi = macd.loc[macd.first_valid_index():, ]
+        signalma = ema(close=macd_fvi, length=signal, talib=mode_tal)
         histogram = macd - signalma
 
     if as_mode:
         macd = macd - signalma
-        signalma = ema(
-            close=macd.loc[macd.first_valid_index():, ], length=signal, talib=mode_tal)
+        macd_fvi = macd.loc[macd.first_valid_index():, ]
+        signalma = ema(close=macd_fvi, length=signal, talib=mode_tal)
         histogram = macd - signalma
 
     # Offset

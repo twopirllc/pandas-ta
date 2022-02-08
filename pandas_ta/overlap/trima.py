@@ -11,8 +11,8 @@ def trima(
 ) -> Series:
     """Triangular Moving Average (TRIMA)
 
-    A weighted moving average where the shape of the weights are triangular and the
-    greatest weight is in the middle of the period.
+    A weighted moving average where the shape of the weights are triangular
+    and the greatest weight is in the middle of the period.
 
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/triangular-moving-average-trima/
@@ -22,8 +22,8 @@ def trima(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

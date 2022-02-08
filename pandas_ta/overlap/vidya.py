@@ -10,11 +10,11 @@ def vidya(
 ) -> Series:
     """Variable Index Dynamic Average (VIDYA)
 
-    Variable Index Dynamic Average (VIDYA) was developed by Tushar Chande. It is
-    similar to an Exponential Moving Average but it has a dynamically adjusted
-    lookback period dependent on relative price volatility as measured by Chande
-    Momentum Oscillator (CMO). When volatility is high, VIDYA reacts faster to
-    price changes. It is often used as moving average or trend identifier.
+    Variable Index Dynamic Average (VIDYA) was developed by Tushar Chande.
+    It is similar to an EMA but it has a dynamically adjusted lookback
+    period dependent on relative price volatility as measured by CMO. When
+    volatility is high, VIDYA reacts faster to price changes.
+    It is often used as moving average or trend identifier.
 
     Sources:
         https://www.tradingview.com/script/hdrf0fXV-Variable-Index-Dynamic-Average-VIDYA/
@@ -26,9 +26,12 @@ def vidya(
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        adjust (bool, optional): Use adjust option for EMA calculation. Default: False
-        sma (bool, optional): If True, uses SMA for initial value for EMA calculation. Default: True
-        talib (bool): If True, uses TA-Libs implementation for CMO. Otherwise uses EMA version. Default: True
+        adjust (bool, optional): Use adjust option for EMA calculation.
+            Default: False
+        sma (bool, optional): If True, uses SMA for initial value for EMA
+            calculation. Default: True
+        talib (bool): If True, uses TA-Libs implementation for CMO.
+            Otherwise uses EMA version. Default: True
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 

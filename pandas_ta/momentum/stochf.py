@@ -12,9 +12,9 @@ def stochf(
 ) -> DataFrame:
     """Fast Stochastic (STOCHF)
 
-    The Fast Stochastic Oscillator (STOCHF) was developed by George Lane in the
-    1950's. This STOCHF is more volatile than STOCH (help(ta.stoch)) and it's
-    calculation is similar to STOCH.
+    The Fast Stochastic Oscillator (STOCHF) was developed by George Lane
+    in the 1950's. This STOCHF is more volatile than STOCH (help(ta.stoch))
+    and it's calculation is similar to STOCH.
 
     Sources:
         https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=333&Name=KD_-_Fast
@@ -27,8 +27,8 @@ def stochf(
         k (int): The Fast %K period. Default: 14
         d (int): The Slow %D period. Default: 3
         mamode (str): See ``help(ta.ma)``. Default: 'sma'
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -63,11 +63,8 @@ def stochf(
 
         stochf_k = 100 * (close - lowest_low)
         stochf_k /= non_zero_range(highest_high, lowest_low)
-        stochf_d = ma(mamode,
-                      stochf_k.loc[stochf_k.first_valid_index():,
-                                   ],
-                      length=d,
-                      talib=mode_tal)
+        stochfk_fvi = stochf_k.loc[stochf_k.first_valid_index():, ]
+        stochf_d = ma(mamode, stochfk_fvi, length=d, talib=mode_tal)
 
     # Offset
     if offset != 0:

@@ -12,9 +12,9 @@ def tsi(
 ) -> DataFrame:
     """True Strength Index (TSI)
 
-    The True Strength Index is a momentum indicator used to identify short-term
-    swings while in the direction of the trend as well as determining overbought
-    and oversold conditions.
+    The True Strength Index is a momentum indicator used to identify
+    short-term swings while in the direction of the trend as well as
+    determining overbought and oversold conditions.
 
     Sources:
         https://www.investopedia.com/terms/t/tsi.asp

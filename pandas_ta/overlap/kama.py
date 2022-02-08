@@ -12,11 +12,13 @@ def kama(
 ) -> Series:
     """Kaufman's Adaptive Moving Average (KAMA)
 
-    Developed by Perry Kaufman, Kaufman's Adaptive Moving Average (KAMA) is a moving average
-    designed to account for market noise or volatility. KAMA will closely follow prices when
-    the price swings are relatively small and the noise is low. KAMA will adjust when the
-    price swings widen and follow prices from a greater distance. This trend-following indicator
-    can be used to identify the overall trend, time turning points and filter price movements.
+    Developed by Perry Kaufman, Kaufman's Adaptive Moving Average (KAMA) is
+    a moving average designed to account for market noise or volatility.
+    KAMA will closely follow prices when the price swings are relatively
+    small and the noise is low. KAMA will adjust when the price swings widen
+    and follow prices from a greater distance. This trend-following
+    indicator can be used to identify the overall trend, time turning points
+    and filter price movements.
 
     Sources:
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:kaufman_s_adaptive_moving_average
@@ -28,8 +30,8 @@ def kama(
         fast (int): Fast MA period. Default: 2
         slow (int): Slow MA period. Default: 30
         mamode (str): See ``help(ta.ma)``. Valid MAs that support initialize
-            the first value: 'ema', 'fwma', 'linreg', 'midpoint', 'pwma', 'rma',
-            'sinwma', 'sma', 'swma', 'trima', 'wma'. Default: 'sma'
+            the first value: 'ema', 'fwma', 'linreg', 'midpoint', 'pwma',
+            'rma', 'sinwma', 'sma', 'swma', 'trima', 'wma'. Default: 'sma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -77,8 +79,8 @@ def kama(
     ma0 = ma(mamode, close.iloc[:length], length=length, **kwargs).iloc[-1]
     result = [nan for _ in range(0, length - 1)] + [ma0]
     for i in range(length, m):
-        result.append(sc.iloc[i] * close.iloc[i] +
-                      (1 - sc.iloc[i]) * result[i - 1])
+        result.append(sc.iloc[i] * close.iloc[i] \
+            + (1 - sc.iloc[i]) * result[i - 1])
 
     kama = Series(result, index=close.index)
 

@@ -5,9 +5,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def hwc(
-        close: Series, scalar: float = None, channel_eval: bool = None,
-        na: float = None, nb: float = None, nc: float = None, nd: float = None,
-        offset: int = None, **kwargs) -> DataFrame:
+    close: Series, scalar: float = None, channel_eval: bool = None,
+    na: float = None, nb: float = None, nc: float = None, nd: float = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """HWC (Holt-Winter Channel)
 
     Channel indicator HWC (Holt-Winters Channel) based on HWMA - a three-parameter
@@ -44,8 +45,10 @@ def hwc(
     nc = float(nc) if nc and nc > 0 else 0.1
     nd = float(nd) if nd and nd > 0 else 0.1
     scalar = float(scalar) if scalar and scalar > 0 else 1
-    channel_eval = bool(
-        channel_eval) if channel_eval and channel_eval else False
+    if isinstance(channel_eval, bool) and channel_eval:
+        channel_eval = bool(channel_eval)
+    else:
+        channel_eval = False
     close = verify_series(close)
     offset = get_offset(offset)
 
@@ -62,8 +65,8 @@ def hwc(
         A = (1.0 - nc) * last_a + nc * (V - last_v)
         result.append((F + V + 0.5 * A))
 
-        var = (1.0 - nd) * last_var + nd * (last_price -
-                                            last_result) * (last_price - last_result)
+        var = (1.0 - nd) * last_var + \
+            nd * (last_price - last_result) * (last_price - last_result)
         stddev = sqrt(last_var)
         upper.append(result[i] + scalar * stddev)
         lower.append(result[i] - scalar * stddev)
@@ -72,9 +75,7 @@ def hwc(
             # channel width
             chan_width.append(upper[i] - lower[i])
             # channel percentage price position
-            chan_pct_width.append(
-                (close[i] - lower[i]) / (upper[i] - lower[i]))
-            # print('channel_eval (width|percentageWidth):', chan_width[i], chan_pct_width[i])
+            chan_pct_width.append((close[i] - lower[i]) / (upper[i] - lower[i]))
 
         # update values
         last_price = close[i]
@@ -119,28 +120,28 @@ def hwc(
             hwc_pctwidth.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    # suffix = f'{str(na).replace(".", "")}-{str(nb).replace(".", "")}-{str(nc).replace(".", "")}'
-    hwc.name = "HWM"
-    hwc_upper.name = "HWU"
-    hwc_lower.name = "HWL"
+    _props = f"_{scalar}"
+    hwc.name = f"HWM{_props}"
+    hwc_upper.name = f"HWU{_props}"
+    hwc_lower.name = f"HWL{_props}"
     hwc.category = hwc_upper.category = hwc_lower.category = "volatility"
-    if channel_eval:
-        hwc_width.name = "HWW"
-        hwc_pctwidth.name = "HWPCT"
 
     if channel_eval:
-        data = {hwc.name: hwc, hwc_upper.name: hwc_upper, hwc_lower.name: hwc_lower,
-                hwc_width.name: hwc_width, hwc_pctwidth.name: hwc_pctwidth}
-        df = DataFrame(data)
-        df.name = "HWC"
-        df.category = hwc.category
+        data = {
+            hwc.name: hwc,
+            hwc_upper.name: hwc_upper,
+            hwc_lower.name: hwc_lower,
+            f"HWW{_props}": hwc_width,
+            f"HWPCT{_props}": hwc_pctwidth
+        }
     else:
         data = {
             hwc.name: hwc,
             hwc_upper.name: hwc_upper,
-            hwc_lower.name: hwc_lower}
-        df = DataFrame(data)
-        df.name = "HWC"
-        df.category = hwc.category
+            hwc_lower.name: hwc_lower
+        }
+    df = DataFrame(data)
+    df.name = f"HWC_{scalar}"
+    df.category = hwc.category
 
     return df

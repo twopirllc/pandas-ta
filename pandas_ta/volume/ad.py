@@ -12,7 +12,7 @@ def ad(
     """Accumulation/Distribution (AD)
 
     Accumulation/Distribution indicator utilizes the relative position
-    of the close to it's High-Low range with volume.  Then it is cumulated.
+    of the close to it's High-Low range with volume then cummulated.
 
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/accumulationdistribution-ad/
@@ -23,8 +23,8 @@ def ad(
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's
         open_ (pd.Series): Series of 'open's
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

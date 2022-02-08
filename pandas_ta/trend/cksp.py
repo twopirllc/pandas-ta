@@ -16,10 +16,10 @@ def cksp(
     “The New Technical Trader”. It is a trend-following indicator,
     identifying your stop by calculating the average true range of
     the recent market volatility. The indicator defaults to the implementation
-    found on tradingview but it provides the original book implementation as well,
-    which differs by the default periods and moving average mode. While the trading
-    view implementation uses the Welles Wilder moving average, the book uses a
-    simple moving average.
+    found on tradingview but it provides the original book implementation as
+    well, which differs by the default periods and moving average mode. While
+    the trading view implementation uses the Welles Wilder moving average, the
+    book uses a simple moving average.
 
     Defaults:
     Book:         p=10, x=3, q=20
@@ -88,8 +88,9 @@ def cksp(
     short_stop.name = f"CKSPs{_props}"
     long_stop.category = short_stop.category = "trend"
 
-    ckspdf = DataFrame(
-        {long_stop.name: long_stop, short_stop.name: short_stop})
+    ckspdf = DataFrame({
+        long_stop.name: long_stop, short_stop.name: short_stop
+    })
     ckspdf.name = f"CKSP{_props}"
     ckspdf.category = long_stop.category
 

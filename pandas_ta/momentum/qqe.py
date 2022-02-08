@@ -14,9 +14,17 @@ def qqe(
 ) -> DataFrame:
     """Quantitative Qualitative Estimation (QQE)
 
-    The Quantitative Qualitative Estimation (QQE) is similar to SuperTrend but uses a Smoothed RSI with an upper and lower bands. The band width is a combination of a one period True Range of the Smoothed RSI which is double smoothed using Wilder's smoothing length (2 * rsiLength - 1) and multiplied by the default factor of 4.236. A Long trend is determined when the Smoothed RSI crosses the previous upperband and a Short trend when the Smoothed RSI crosses the previous lowerband.
+    The Quantitative Qualitative Estimation (QQE) is similar to SuperTrend
+    but uses a Smoothed RSI with an upper and lower bands. The band width
+    is a combination of a one period True Range of the Smoothed RSI which
+    is double smoothed using Wilder's smoothing length (2 * rsiLength - 1)
+    and multiplied by the default factor of 4.236. A Long trend is
+    determined when the Smoothed RSI crosses the previous upperband and
+    a Short trend when the Smoothed RSI crosses the previous lowerband.
 
-    Based on QQE.mq5 by EarnForex Copyright © 2010, based on version by Tim Hyder (2008), based on version by Roman Ignatov (2006)
+    Based on QQE.mq5 by EarnForex Copyright © 2010
+    based on version by Tim Hyder (2008),
+    based on version by Roman Ignatov (2006)
 
     Sources:
         https://www.tradingview.com/script/IYfA9R2k-QQE-MT4/
@@ -37,7 +45,7 @@ def qqe(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.DataFrame: QQE, RSI_MA (basis), QQEl (long), and QQEs (short) columns.
+        pd.DataFrame: QQE, RSI_MA (basis), QQEl (long), QQEs (short) columns.
     """
     # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 14
@@ -103,11 +111,12 @@ def qqe(
         # Trend & QQE Calculation
         # Long: Current RSI_MA value Crosses the Prior Short Line Value
         # Short: Current RSI_MA Crosses the Prior Long Line Value
-        if (c_rsi > c_short and p_rsi < p_short) or (
-                c_rsi <= c_short and p_rsi >= p_short):
+        if (c_rsi > c_short and p_rsi < p_short) or \
+            (c_rsi <= c_short and p_rsi >= p_short):
             trend.iloc[i] = 1
             qqe.iloc[i] = qqe_long.iloc[i] = long.iloc[i]
-        elif (c_rsi > c_long and p_rsi < p_long) or (c_rsi <= c_long and p_rsi >= p_long):
+        elif (c_rsi > c_long and p_rsi < p_long) or \
+            (c_rsi <= c_long and p_rsi >= p_long):
             trend.iloc[i] = -1
             qqe.iloc[i] = qqe_short.iloc[i] = short.iloc[i]
         else:

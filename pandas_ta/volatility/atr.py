@@ -13,8 +13,8 @@ def atr(
 ) -> Series:
     """Average True Range (ATR)
 
-    Averge True Range is used to measure volatility, especially volatility caused by
-    gaps or limit moves.
+    Averge True Range is used to measure volatility, especially volatility
+    caused by gaps or limit moves.
 
     Sources:
         https://www.tradingview.com/wiki/Average_True_Range_(ATR)
@@ -25,8 +25,8 @@ def atr(
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14
         mamode (str): See ``help(ta.ma)``. Default: 'rma'
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns the
+            TA Lib version. Default: True
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -57,11 +57,8 @@ def atr(
         atr = ATR(high, low, close, length)
     else:
         tr = true_range(
-            high=high,
-            low=low,
-            close=close,
-            drift=drift,
-            talib=mode_tal)
+            high=high, low=low, close=close, drift=drift, talib=mode_tal
+        )
         atr = ma(mamode, tr, length=length, talib=mode_tal)
 
     percentage = kwargs.pop("percent", False)

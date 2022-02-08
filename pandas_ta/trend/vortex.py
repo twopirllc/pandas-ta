@@ -33,8 +33,10 @@ def vortex(
     """
     # Validate
     length = length if length and length > 0 else 14
-    min_periods = int(
-        kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    if "min_periods" in kwargs and kwargs["min_periods"] is not None:
+        min_periods = int(kwargs["min_periods"])
+    else:
+        min_periods = length
     _length = max(length, min_periods)
     high = verify_series(high, _length)
     low = verify_series(low, _length)

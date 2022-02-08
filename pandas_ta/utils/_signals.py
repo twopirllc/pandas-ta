@@ -41,8 +41,9 @@ def above(
     series_a: Series, series_b: Series, asint: bool = True,
     offset: int = None, **kwargs
 ) -> Series:
-    return _above_below(series_a, series_b, above=True,
-                        asint=asint, offset=offset, **kwargs)
+    return _above_below(
+        series_a, series_b, above=True, asint=asint, offset=offset, **kwargs
+        )
 
 
 def above_value(
@@ -53,22 +54,21 @@ def above_value(
         print("[X] value is not a number")
         return
     series_b = Series(
-        value,
-        index=series_a.index,
-        name=f"{value}".replace(
-            ".",
-            "_"))
+        value, index=series_a.index, name=f"{value}".replace(".", "_")
+        )
 
-    return _above_below(series_a, series_b, above=True,
-                        asint=asint, offset=offset, **kwargs)
+    return _above_below(
+        series_a, series_b, above=True, asint=asint, offset=offset, **kwargs
+        )
 
 
 def below(
     series_a: Series, series_b: Series, asint: bool = True,
     offset: int = None, **kwargs
 ) -> Series:
-    return _above_below(series_a, series_b, above=False,
-                        asint=asint, offset=offset, **kwargs)
+    return _above_below(
+        series_a, series_b, above=False, asint=asint, offset=offset, **kwargs
+        )
 
 
 def below_value(
@@ -79,13 +79,11 @@ def below_value(
         print("[X] value is not a number")
         return
     series_b = Series(
-        value,
-        index=series_a.index,
-        name=f"{value}".replace(
-            ".",
-            "_"))
-    return _above_below(series_a, series_b, above=False,
-                        asint=asint, offset=offset, **kwargs)
+        value, index=series_a.index, name=f"{value}".replace(".", "_")
+        )
+    return _above_below(
+        series_a, series_b, above=False, asint=asint, offset=offset, **kwargs
+        )
 
 
 def cross_value(
@@ -93,11 +91,8 @@ def cross_value(
     offset: int = None, **kwargs
 ) -> Series:
     series_b = Series(
-        value,
-        index=series_a.index,
-        name=f"{value}".replace(
-            ".",
-            "_"))
+        value, index=series_a.index, name=f"{value}".replace(".", "_")
+        )
 
     return cross(series_a, series_b, above, asint, offset, **kwargs)
 

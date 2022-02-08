@@ -11,20 +11,23 @@ def ebsw(
 ) -> Series:
     """Even Better SineWave (EBSW)
 
-    This indicator measures market cycles and uses a low pass filter to remove noise.
-    Its output is bound signal between -1 and 1 and the maximum length of a detected
-    trend is limited by its length input.
+    This indicator measures market cycles and uses a low pass filter to
+    remove noise. Its output is bound signal between -1 and 1 and the
+    maximum length of a detected trend is limited by its length input.
 
-    Written by rengel8 for Pandas TA based on a publication at 'prorealcode.com' and
-    a book by J.F.Ehlers. According to the suggestion by Squigglez2* and major differences between
-    the initial version's output close to the implementation from Ehler's, the default version is now
-    more closely related to the code from pro-realcode.
+    Written by rengel8 for Pandas TA based on a publication at
+    'prorealcode.com' and a book by J.F.Ehlers. According to the suggestion
+    by Squigglez2* and major differences between the initial version's
+    output close to the implementation from Ehler's, the default version is
+    now more closely related to the code from pro-realcode.
 
     Remark:
-    The default version is now more cycle oriented and tends to be less whipsaw-prune. Thus the older version
-    might offer earlier signals at medium and stronger reversals.
-    A test against the version at TradingView showed very close results with the advantage to be one bar/candle
-    faster, than the corresponding reference value. This might be pre-roll related and was not further investigated.
+    The default version is now more cycle oriented and tends to be less
+    whipsaw-prune. Thus the older version might offer earlier signals at
+    medium and stronger reversals. A test against the version at TradingView
+    showed very close results with the advantage to be one bar/candle faster,
+    than the corresponding reference value. This might be pre-roll related
+    and was not further investigated.
     * https://github.com/twopirllc/pandas-ta/issues/350
 
     Sources:
@@ -33,8 +36,8 @@ def ebsw(
 
     Args:
         close (pd.Series): Series of 'close's
-        length (int): It's max cycle/trend period. Values between 40-48 work like
-            expected with minimum value: 39. Default: 40.
+        length (int): It's max cycle/trend period. Values between 40-48
+            work like expected with minimum value: 39. Default: 40.
         bars (int): Period of low pass filtering. Default: 10
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
@@ -89,11 +92,11 @@ def ebsw(
 
             # 3 Bar average of wave amplitude and power
             wave = (filter_ + filtHist[1] + filtHist[0]) / 3
-            power_ = (
-                filter_ * filter_ + filtHist[1] * filtHist[1] + filtHist[0] * filtHist[0]) / 3
-
+            power_ = filter_ * filter_ + filtHist[1] * filtHist[1] \
+                + filtHist[0] * filtHist[0]
+            power_ /= 3
             # Normalize the Average Wave to Square Root of the Average Power
-            wave = wave / np.sqrt(power_)
+            wave = wave / sqrt(power_)
 
             # update storage, result
             filtHist.append(filter_)  # append new filter_ value

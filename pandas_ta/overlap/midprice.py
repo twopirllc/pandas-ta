@@ -16,8 +16,8 @@ def midprice(
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
         length (int): It's period. Default: 2
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -29,8 +29,10 @@ def midprice(
     """
     # Validate
     length = int(length) if length and length > 0 else 2
-    min_periods = int(
-        kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    if "min_periods" in kwargs and kwargs["min_periods"] is not None:
+        min_periods = int(kwargs["min_periods"])
+    else:
+        min_periods = length
     _length = max(length, min_periods)
     high = verify_series(high, _length)
     low = verify_series(low, _length)

@@ -10,11 +10,11 @@ def rsx(
 ) -> Series:
     """Relative Strength Xtra (rsx)
 
-    The Relative Strength Xtra is based on the popular RSI indicator and inspired
-    by the work Jurik Research. The code implemented is based on published code
-    found at 'prorealcode.com'. This enhanced version of the rsi reduces noise and
-    provides a clearer, only slightly delayed insight on momentum and velocity of
-    price movements.
+    The Relative Strength Xtra is based on the popular RSI indicator and
+    inspired by the work Jurik Research. The code implemented is based on
+    published code found at 'prorealcode.com'. This enhanced version of the
+    rsi reduces noise and provides a clearer, only slightly delayed insight
+    on momentum and velocity of price movements.
 
     Sources:
         http://www.jurikres.com/catalog1/ms_rsx.htm

@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def quantile(
-        close: Series, length: int = None, q: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, q: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Rolling Quantile
 
     Calculates the Quantile over a rolling period.
@@ -26,12 +26,16 @@ def quantile(
     """
     # Validate
     length = int(length) if length and length > 0 else 30
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    if "min_periods" in kwargs and kwargs["min_periods"] is not None:
+        min_periods = int(kwargs["min_periods"])
+    else:
+        min_periods = length
     q = float(q) if q and q > 0 and q < 1 else 0.5
     close = verify_series(close, max(length, min_periods))
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     quantile = close.rolling(length, min_periods=min_periods).quantile(q)

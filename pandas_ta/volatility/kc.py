@@ -28,8 +28,9 @@ def kc(
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        tr (bool): When True, it uses True Range for calculation. When False, use a
-            high - low as it's range calculation. Default: True
+        tr (bool): When True, it uses True Range for calculation.
+            When False, use a high - low as it's range calculation.
+            Default: True
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 

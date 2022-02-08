@@ -12,11 +12,11 @@ def alma(
 ) -> Series:
     """Arnaud Legoux Moving Average (ALMA)
 
-    The ALMA moving average uses the curve of the Normal (Gauss) distribution, which
-    can be shifted from 0 to 1. This allows regulating the smoothness and high
-    sensitivity of the indicator. Sigma is another parameter that is responsible for
-    the shape of the curve coefficients. This moving average reduces lag of the data
-    in conjunction with smoothing to reduce noise.
+    The ALMA moving average uses the curve of the Normal (Gauss) distribution,
+    which can be shifted from 0 to 1. This allows regulating the smoothness
+    and high sensitivity of the indicator. Sigma is another parameter that is
+    responsible for the shape of the curve coefficients. This moving average
+    reduces lag of the data in conjunction with smoothing to reduce noise.
 
     Sources:
         https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=475&Name=Moving_Average_-_Arnaud_Legoux
@@ -26,8 +26,8 @@ def alma(
         close (pd.Series): Series of 'close's
         length (int): It's period, window size. Default: 9
         sigma (float): Smoothing value. Default 6.0
-        dist_offset (float): Value to offset the distribution where min 0 (smoother),
-            max 1 (more responsive). Default 0.85
+        dist_offset (float): Value to offset the distribution where
+            min 0 (smoother), max 1 (more responsive). Default 0.85
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -40,8 +40,7 @@ def alma(
     # Validate
     length = int(length) if isinstance(length, int) and length > 0 else 9
     sigma = float(sigma) if isinstance(sigma, float) and sigma > 0 else 6.0
-    if isinstance(dist_offset,
-                  float) and dist_offset >= 0 and dist_offset <= 1:
+    if isinstance(dist_offset, float) and 0 <= dist_offset <= 1:
         offset_ = float(dist_offset)
     else:
         offset_ = 0.85

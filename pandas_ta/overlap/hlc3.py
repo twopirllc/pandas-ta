@@ -33,9 +33,8 @@ def hlc3(
         from talib import TYPPRICE
         hlc3 = TYPPRICE(high, low, close)
     else:
-        hlc3 = Series(
-            (high.values + low.values + close.values) / 3.0,
-            index=close.index)
+        avg = (high.values + low.values + close.values) / 3.0
+        hlc3 = Series(avg, index=close.index)
 
     # Offset
     if offset != 0:

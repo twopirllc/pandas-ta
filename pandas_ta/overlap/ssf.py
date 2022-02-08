@@ -50,10 +50,11 @@ def ssf(
 ) -> Series:
     """Ehler's Super Smoother Filter (SSF) © 2013
 
-    John F. Ehlers's solution to reduce lag and remove aliasing noise with his
-    research in aerospace analog filter design. This implementation had two
-    poles. Since SSF is a (Resursive) Digital Filter, the number of poles
-    determine how many prior recursive SSF bars to include in the filter design.
+    John F. Ehlers's solution to reduce lag and remove aliasing noise with
+    his research in Aerospace analog filter design. This implementation had
+    two poles. Since SSF is a (Resursive) Digital Filter, the number of
+    poles determine how many prior recursive SSF bars to include in the
+    filter design.
 
     For Everget's calculation on TradingView, set arguments:
         pi = np.pi, sqrt2 = np.sqrt(2)
@@ -66,8 +67,8 @@ def ssf(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 20
-        everget (bool): Everget's implementation of ssf that uses pi instead of
-            180 for the b factor of ssf. Default: False
+        everget (bool): Everget's implementation of ssf that uses pi
+            instead of 180 for the b factor of ssf. Default: False
         pi (float): The value of PI to use. The default is Ehler's
             truncated value 3.14159. Adjust the value for more precision.
             Default: 3.14159

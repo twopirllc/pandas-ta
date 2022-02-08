@@ -12,9 +12,10 @@ def roc(
 ) -> Series:
     """Rate of Change (ROC)
 
-    Rate of Change is an indicator is also referred to as Momentum (yeah, confusingly).
-    It is a pure momentum oscillator that measures the percent change in price with the
-    previous price 'n' (or length) periods ago.
+    Rate of Change is an indicator is also referred to as Momentum
+    (yeah, confusingly). It is a pure momentum oscillator that measures the
+    percent change in price with the previous price 'n' (or length)
+    periods ago.
 
     Sources:
         https://www.tradingview.com/wiki/Rate_of_Change_(ROC)
@@ -23,8 +24,8 @@ def roc(
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1
         scalar (float): How much to magnify. Default: 100
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -49,8 +50,8 @@ def roc(
         from talib import ROC
         roc = ROC(close, length)
     else:
-        roc = scalar * mom(close=close, length=length,
-                           talib=mode_tal) / close.shift(length)
+        roc = scalar * mom(close=close, length=length, talib=mode_tal)
+        roc /= close.shift(length)
 
     # Offset
     if offset != 0:

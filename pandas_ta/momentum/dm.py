@@ -12,9 +12,9 @@ def dm(
 ) -> DataFrame:
     """Directional Movement (DM)
 
-    The Directional Movement was developed by J. Welles Wilder in 1978 attempts to
-    determine which direction the price of an asset is moving. It compares prior
-    highs and lows to yield to two series +DM and -DM.
+    The Directional Movement was developed by J. Welles Wilder in 1978
+    attempts to determine which direction the price of an asset is moving.
+    It compares prior highs and lows to yield to two series +DM and -DM.
 
     Sources:
         https://www.tradingview.com/pine-script-reference/#fun_dmi
@@ -24,8 +24,8 @@ def dm(
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
         mamode (str): See ``help(ta.ma)``.  Default: 'rma'
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 

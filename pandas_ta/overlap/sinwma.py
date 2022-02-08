@@ -10,8 +10,8 @@ def sinwma(
 ) -> Series:
     """Sine Weighted Moving Average (SWMA)
 
-    A weighted average using sine cycles. The middle term(s) of the average have the
-    highest weight(s).
+    A weighted average using sine cycles. The middle term(s) of the average
+    have the highest weight(s).
 
     Source:
         https://www.tradingview.com/script/6MWFvnPO-Sine-Weighted-Moving-Average/
@@ -42,11 +42,8 @@ def sinwma(
                    for i in range(0, length)])
     w = sines / sines.sum()
 
-    sinwma = close.rolling(
-        length,
-        min_periods=length).apply(
-        weights(w),
-        raw=True)
+    sinwma = close.rolling(length, min_periods=length) \
+        .apply(weights(w), raw=True)
 
     # Offset
     if offset != 0:

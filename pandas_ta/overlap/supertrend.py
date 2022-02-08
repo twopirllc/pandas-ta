@@ -34,7 +34,8 @@ def supertrend(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.DataFrame: SUPERT (trend), SUPERTd (direction), SUPERTl (long), SUPERTs (short) columns.
+        pd.DataFrame: SUPERT (trend), SUPERTd (direction),
+            SUPERTl (long), SUPERTs (short) columns.
     """
     # Validate
     length = int(length) if length and length > 0 else 7
@@ -54,25 +55,25 @@ def supertrend(
 
     hl2_ = hl2(high, low)
     matr = multiplier * atr(high, low, close, length)
-    upperband = hl2_ + matr
-    lowerband = hl2_ - matr
+    ub = hl2_ + matr  # Upperband
+    lb = hl2_ - matr  # Lowerband
 
     for i in range(1, m):
-        if close.iloc[i] > upperband.iloc[i - 1]:
+        if close.iloc[i] > ub.iloc[i - 1]:
             dir_[i] = 1
-        elif close.iloc[i] < lowerband.iloc[i - 1]:
+        elif close.iloc[i] < lb.iloc[i - 1]:
             dir_[i] = -1
         else:
             dir_[i] = dir_[i - 1]
-            if dir_[i] > 0 and lowerband.iloc[i] < lowerband.iloc[i - 1]:
-                lowerband.iloc[i] = lowerband.iloc[i - 1]
-            if dir_[i] < 0 and upperband.iloc[i] > upperband.iloc[i - 1]:
-                upperband.iloc[i] = upperband.iloc[i - 1]
+            if dir_[i] > 0 and lb.iloc[i] < lb.iloc[i - 1]:
+                lb.iloc[i] = lb.iloc[i - 1]
+            if dir_[i] < 0 and ub.iloc[i] > ub.iloc[i - 1]:
+                ub.iloc[i] = ub.iloc[i - 1]
 
         if dir_[i] > 0:
-            trend[i] = long[i] = lowerband.iloc[i]
+            trend[i] = long[i] = lb.iloc[i]
         else:
-            trend[i] = short[i] = upperband.iloc[i]
+            trend[i] = short[i] = ub.iloc[i]
 
     _props = f"_{length}_{multiplier}"
     df = DataFrame({

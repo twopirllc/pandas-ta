@@ -11,9 +11,11 @@ def pgo(
 ) -> Series:
     """Pretty Good Oscillator (PGO)
 
-    The Pretty Good Oscillator indicator was created by Mark Johnson to measure the distance of the current close from its N-day Simple Moving Average, expressed in terms of an average true range over a similar period. Johnson's approach was to
-    use it as a breakout system for longer term trades. Long if greater than 3.0 and
-    short if less than -3.0.
+    The Pretty Good Oscillator indicator was created by Mark Johnson to
+    measure the distance of the current close from its N-day SMA, expressed
+    in terms of an average true range over a similar period. Johnson's
+    approach was to use it as a breakout system for longer term trades.
+    Long if greater than 3.0 and short if less than -3.0.
 
     Sources:
         https://library.tradingtechnologies.com/trade/chrt-ti-pretty-good-oscillator.html

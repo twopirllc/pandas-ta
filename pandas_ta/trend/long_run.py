@@ -48,10 +48,10 @@ def long_run(
         return
 
     # Calculate
-    pb = increasing(fast, length) & decreasing(
-        slow, length)  # potential bottom or bottom
-    bi = increasing(fast, length) & increasing(
-        slow, length)  # fast and slow are increasing
+    # potential bottom or bottom
+    pb = increasing(fast, length) & decreasing(slow, length)
+    # fast and slow are increasing
+    bi = increasing(fast, length) & increasing(slow, length)
     long_run = pb | bi
 
     # Offset

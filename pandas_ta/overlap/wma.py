@@ -5,12 +5,15 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
-def wma(close: Series, length: int = None, asc: bool = None, talib: bool = None, offset: int = None,
-        **kwargs) -> Series:
+def wma(
+    close: Series, length: int = None,
+    asc: bool = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Weighted Moving Average (WMA)
 
-    The Weighted Moving Average where the weights are linearly increasing and
-    the most recent data has the heaviest weight.
+    The Weighted Moving Average where the weights are linearly increasing
+    and the most recent data has the heaviest weight.
 
     Sources:
         https://en.wikipedia.org/wiki/Moving_average#Weighted_moving_average
@@ -19,8 +22,8 @@ def wma(close: Series, length: int = None, asc: bool = None, talib: bool = None,
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
         asc (bool): Recent values weigh more. Default: True
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

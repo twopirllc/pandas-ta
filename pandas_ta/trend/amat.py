@@ -16,8 +16,8 @@ def amat(
     Archer Moving Averages Trends (AMAT) developed by Kevin Johnson provides
     creates both long run ``help(ta.long_run)`` and short run
     ``help(ta.short_run)`` trend signals given two moving average speeds,
-    fast and slow. The long runs and short runs are binary Series where '1' is
-    a trend and '0' is not a trend.
+    fast and slow. The long runs and short runs are binary Series where '1'
+    is a trend and '0' is not a trend.
 
     Sources:
         https://www.tradingview.com/script/Z2mq63fE-Trade-Archer-Moving-Averages-v1-4F/

@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def cube(
-        close: Series, cubing_exponent: float = None, signal_offset: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, cubing_exponent: float = None, signal_offset: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """
     Indicator: Cube Transform
 

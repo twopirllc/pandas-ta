@@ -11,8 +11,8 @@ def dema(
 ) -> Series:
     """Double Exponential Moving Average (DEMA)
 
-    The Double Exponential Moving Average attempts to a smoother average with less
-    lag than the normal Exponential Moving Average (EMA).
+    The Double Exponential Moving Average attempts to a smoother average
+    with less lag than the normal Exponential Moving Average (EMA).
 
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/double-exponential-moving-average-dema/
@@ -20,8 +20,8 @@ def dema(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

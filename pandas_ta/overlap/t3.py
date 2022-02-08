@@ -11,8 +11,8 @@ def t3(
 ) -> Series:
     """Tim Tillson's T3 Moving Average (T3)
 
-    Tim Tillson's T3 Moving Average is considered a smoother and more responsive
-    moving average relative to other moving averages.
+    Tim Tillson's T3 Moving Average is considered a smoother and more
+    responsive moving average relative to other moving averages.
 
     Sources:
         http://www.binarytribune.com/forex-trading-indicators/t3-moving-average-indicator/
@@ -21,8 +21,8 @@ def t3(
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
         a (float): 0 < a < 1. Default: 0.7
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

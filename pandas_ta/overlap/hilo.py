@@ -12,12 +12,12 @@ def hilo(
 ) -> DataFrame:
     """Gann HiLo Activator(HiLo)
 
-    The Gann High Low Activator Indicator was created by Robert Krausz in a 1998
-    issue of Stocks & Commodities Magazine. It is a moving average based trend
-    indicator consisting of two different simple moving averages.
+    The Gann High Low Activator Indicator was created by Robert Krausz in
+    a 1998 issue of Stocks & Commodities Magazine. It is a moving average
+    based trend indicator consisting of two different simple moving averages.
 
-    The indicator tracks both curves (of the highs and the lows). The close of the
-    bar defines which of the two gets plotted.
+    The indicator tracks both curves (of the highs and the lows). The close
+    of the bar defines which of the two gets plotted.
 
     Increasing high_length and decreasing low_length better for short trades,
     vice versa for long positions.

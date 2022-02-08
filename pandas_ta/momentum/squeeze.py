@@ -3,7 +3,7 @@ from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta.overlap import ema, linreg, sma
 from pandas_ta.trend import decreasing, increasing
-from pandas_ta.utils import get_offset, unsigned_differences, verify_series
+from pandas_ta.utils import get_offset, simplify_columns, unsigned_differences, verify_series
 from pandas_ta.volatility import bbands, kc
 from .mom import mom
 
@@ -18,12 +18,13 @@ def squeeze(
 ) -> DataFrame:
     """Squeeze (SQZ)
 
-    The default is based on John Carter's "TTM Squeeze" indicator, as discussed
-    in his book "Mastering the Trade" (chapter 11). The Squeeze indicator attempts
-    to capture the relationship between two studies: Bollinger Bands® and Keltner's
-    Channels. When the volatility increases, so does the distance between the bands,
-    conversely, when the volatility declines, the distance also decreases. It finds
-    sections of the Bollinger Bands® study which fall inside the Keltner's Channels.
+    The default is based on John Carter's "TTM Squeeze" indicator, as
+    discussed in his book "Mastering the Trade" (chapter 11). The Squeeze
+    indicator attempts to capture the relationship between two studies:
+    Bollinger Bands® and Keltner's Channels. When the volatility increases,
+    so does the distance between the bands, conversely, when the volatility
+    declines, the distance also decreases. It finds sections of the
+    Bollinger Bands® study which fall inside the Keltner's Channels.
 
     Sources:
         https://tradestation.tradingappstore.com/products/TTMSqueeze
@@ -44,7 +45,8 @@ def squeeze(
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        tr (value, optional): Use True Range for Keltner Channels. Default: True
+        tr (value, optional): Use True Range for Keltner Channels.
+            Default: True
         asint (value, optional): Use integers instead of bool. Default: True
         mamode (value, optional): Which MA to use. Default: "sma"
         lazybear (value, optional): Use LazyBear's TradingView implementation.
@@ -80,20 +82,12 @@ def squeeze(
     lazybear = kwargs.pop("lazybear", False)
     mamode = mamode if isinstance(mamode, str) else "sma"
 
-    def simplify_columns(df, n=3):
-        df.columns = df.columns.str.lower()
-        return [c.split("_")[0][n - 1:n] for c in df.columns]
-
     # Calculate
     bbd = bbands(close, length=bb_length, std=bb_std, mamode=mamode)
     kch = kc(
-        high,
-        low,
-        close,
-        length=kc_length,
-        scalar=kc_scalar,
-        mamode=mamode,
-        tr=use_tr)
+        high, low, close, length=kc_length, scalar=kc_scalar,
+        mamode=mamode, tr=use_tr
+    )
 
     # Simplify KC and BBAND column names for dynamic access
     bbd.columns = simplify_columns(bbd)

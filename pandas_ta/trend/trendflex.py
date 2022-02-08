@@ -11,8 +11,9 @@ except ImportError:
 
 
 @njit
-def np_trendflex(x: ndarray, n: int, k: int,
-                 alpha: float, pi: float, sqrt2: float):
+def np_trendflex(
+    x: ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: float
+):
     """Ehler's Trendflex
     http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html"""
     m, ratio = x.size, 2 * sqrt2 / k
@@ -50,12 +51,14 @@ def trendflex(
 
     John F. Ehlers introduced two indicators within the article "Reflex: A New
     Zero-Lag Indicator” in February 2020, TASC magazine. One of which is the
-    Trendflex, a lag reduced trend indicator. Both indicators (Reflex/Trendflex) are
-    oscillators and complement each other with the focus for cycle and trend.
+    Trendflex, a lag reduced trend indicator.
+    Both indicators (Reflex/Trendflex) are oscillators and complement each
+    other with the focus for cycle and trend.
 
-    Written for Pandas TA by rengel8 (2021-08-11) based on the implementation on
-    ProRealCode (see Sources). Beyond the mentioned source, this implementation has
-    a separate control parameter for the internal applied SuperSmoother.
+    Written for Pandas TA by rengel8 (2021-08-11) based on the implementation
+    on ProRealCode (see Sources). Beyond the mentioned source, this
+    implementation has a separate control parameter for the internal applied
+    SuperSmoother.
 
     Sources:
         http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html

@@ -15,9 +15,9 @@ def rvi(
 ) -> Series:
     """Relative Volatility Index (RVI)
 
-    The Relative Volatility Index (RVI) was created in 1993 and revised in 1995.
-    Instead of adding up price changes like RSI based on price direction, the RVI
-    adds up standard deviations based on price direction.
+    The Relative Volatility Index (RVI) was created in 1993 and revised
+    in 1995. Instead of adding up price changes like RSI based on price
+    direction, the RVI adds up standard deviations based on price direction.
 
     Sources:
         https://www.tradingview.com/wiki/Keltner_Channels_(KC)

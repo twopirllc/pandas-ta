@@ -9,8 +9,8 @@ def fwma(
 ) -> Series:
     """Fibonacci's Weighted Moving Average (FWMA)
 
-    Fibonacci's Weighted Moving Average is similar to a Weighted Moving Average
-    (WMA) where the weights are based on the Fibonacci Sequence.
+    Fibonacci's Weighted Moving Average is similar to a Weighted Moving
+    Average (WMA) where the weights are based on the Fibonacci Sequence.
 
     Source: Kevin Johnson
 
@@ -38,11 +38,8 @@ def fwma(
 
     # Calculate
     fibs = fibonacci(n=length, weighted=True)
-    fwma = close.rolling(
-        length,
-        min_periods=length).apply(
-        weights(fibs),
-        raw=True)
+    fwma = close.rolling(length, min_periods=length) \
+        .apply(weights(fibs), raw=True)
 
     # Offset
     if offset != 0:

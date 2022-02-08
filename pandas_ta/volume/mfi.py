@@ -12,8 +12,8 @@ def mfi(
 ) -> Series:
     """Money Flow Index (MFI)
 
-    Money Flow Index is an oscillator indicator that is used to measure buying and
-    selling pressure by utilizing both price and volume.
+    Money Flow Index is an oscillator indicator that is used to measure
+    buying and selling pressure by utilizing both price and volume.
 
     Sources:
         https://www.tradingview.com/wiki/Money_Flow_(MFI)
@@ -24,8 +24,8 @@ def mfi(
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's
         length (int): The sum period. Default: 14
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -57,7 +57,9 @@ def mfi(
         typical_price = hlc3(high=high, low=low, close=close, talib=mode_tal)
         raw_money_flow = typical_price * volume
 
-        tdf = DataFrame({"diff": 0, "rmf": raw_money_flow, "+mf": 0, "-mf": 0})
+        tdf = DataFrame(
+            {"diff": 0, "rmf": raw_money_flow, "+mf": 0, "-mf": 0}
+        )
 
         tdf.loc[(typical_price.diff(drift) > 0), "diff"] = 1
         tdf.loc[tdf["diff"] == 1, "+mf"] = raw_money_flow

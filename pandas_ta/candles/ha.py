@@ -52,7 +52,8 @@ def ha(
     })
 
     for i in range(1, m):
-        df["HA_open"].iloc[i] = 0.5 * (df["HA_open"].iloc[i - 1] + df["HA_close"].iloc[i - 1])
+        df["HA_open"].iloc[i] = 0.5 * (df["HA_open"].iloc[i - 1] \
+            + df["HA_close"].iloc[i - 1])
 
     df["HA_high"] = df[["HA_open", "HA_high", "HA_close"]].max(axis=1)
     df["HA_low"] = df[["HA_open", "HA_low", "HA_close"]].min(axis=1)

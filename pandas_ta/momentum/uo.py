@@ -29,8 +29,8 @@ def uo(
         fast_w (float): The Fast %K period. Default: 4.0
         medium_w (float): The Slow %K period. Default: 2.0
         slow_w (float): The Slow %D period. Default: 1.0
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -64,10 +64,9 @@ def uo(
         from talib import ULTOSC
         uo = ULTOSC(high, low, close, fast, medium, slow)
     else:
+        close_drift = close.shift(drift)
         tdf = DataFrame({
-            "high": high,
-            "low": low,
-            f"close_{drift}": close.shift(drift)
+            "high": high, "low": low, f"close_{drift}": close_drift
         })
         max_h_or_pc = tdf.loc[:, ["high", f"close_{drift}"]].max(axis=1)
         min_l_or_pc = tdf.loc[:, ["low", f"close_{drift}"]].min(axis=1)
@@ -81,8 +80,8 @@ def uo(
         slow_avg = bp.rolling(slow).sum() / tr.rolling(slow).sum()
 
         total_weight = fast_w + medium_w + slow_w
-        weights = (fast_w * fast_avg) + (medium_w *
-                                         medium_avg) + (slow_w * slow_avg)
+        weights = (fast_w * fast_avg) + (medium_w * medium_avg) \
+            + (slow_w * slow_avg)
         uo = 100 * weights / total_weight
 
     # Offset

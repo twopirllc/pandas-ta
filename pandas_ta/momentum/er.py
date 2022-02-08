@@ -9,9 +9,12 @@ def er(
 ) -> Series:
     """Efficiency Ratio (ER)
 
-    The Efficiency Ratio was invented by Perry J. Kaufman and presented in his book "New Trading Systems and Methods". It is designed to account for market noise or volatility.
+    The Efficiency Ratio was invented by Perry J. Kaufman and presented in
+    his book "New Trading Systems and Methods". It is designed to account
+    for market noise or volatility.
 
-    It is calculated by dividing the net change in price movement over N periods by the sum of the absolute net changes over the same N periods.
+    It is calculated by dividing the net change in price movement over
+    N periods by the sum of the absolute net changes over the same N periods.
 
     Sources:
         https://help.tc2000.com/m/69404/l/749623-kaufman-efficiency-ratio

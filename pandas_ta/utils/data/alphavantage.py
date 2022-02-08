@@ -12,7 +12,10 @@ def av(ticker: str, **kwargs) -> DataFrame:
     show = kwargs.pop("show", None)
     # last = kwargs.pop("last", RATE["TRADING_DAYS_PER_YEAR"])
 
-    ticker = ticker.upper() if ticker is not None and isinstance(ticker, str) else None
+    if ticker is not None and isinstance(ticker, str):
+        ticker = ticker.upper()
+    else:
+        ticker = None
 
     if Imports["alphaVantage-api"] and ticker is not None:
         # from alphaVantageAPI import alphavantage
@@ -22,7 +25,8 @@ def av(ticker: str, **kwargs) -> DataFrame:
             "clean": True,
             "export": False,
             "output_size": "full",
-            "premium": False}
+            "premium": False
+        }
         _config = kwargs.pop("av_kwargs", AVC)
         av = AV.AlphaVantage(**_config)
 

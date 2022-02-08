@@ -12,9 +12,9 @@ def jma(
 ) -> Series:
     """Jurik Moving Average Average (JMA)
 
-    Mark Jurik's Moving Average (JMA) attempts to eliminate noise to see the "true"
-    underlying activity. It has extremely low lag, is very smooth and is responsive
-    to market gaps.
+    Mark Jurik's Moving Average (JMA) attempts to eliminate noise to see
+    the "true" underlying activity. It has extremely low lag, is very
+    smooth and is responsive to market gaps.
 
     Sources:
         https://c.mql5.com/forextsd/forum/164/jurik_1.pdf
@@ -94,7 +94,7 @@ def jma(
         ma2 = ma1 + pr * det0
 
         # 3rd stage - final smoothing by unique Jurik adaptive filter
-        det1 = ((ma2 - jma[i - 1]) * (1 - alpha) *
+        det1 = ((ma2 - jma[i - 1]) * (1 - alpha) * \
                 (1 - alpha)) + (alpha * alpha * det1)
         jma[i] = jma[i - 1] + det1
 

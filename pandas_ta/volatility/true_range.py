@@ -22,8 +22,8 @@ def true_range(
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         drift (int): The shift period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 

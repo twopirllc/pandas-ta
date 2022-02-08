@@ -27,7 +27,8 @@ def cdl_doji(
         length (int): The period. Default: 10
         factor (float): Doji value. Default: 100
         scalar (float): How much to magnify. Default: 100
-        asint (bool): Keep results numerical instead of boolean. Default: True
+        asint (bool): Keep results numerical instead of boolean.
+            Default: True
 
     Kwargs:
         naive (bool, optional): If True, prefills potential Doji less than

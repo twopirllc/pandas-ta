@@ -27,7 +27,8 @@ def zlma(
     """Zero Lag Moving Average (ZLMA)
 
     The Zero Lag Moving Average attempts to eliminate the lag associated
-    with moving averages.  This is an adaption created by John Ehler and Ric Way.
+    with moving averages. This is an adaption created by John Ehler
+    and Ric Way.
 
     Sources:
         https://en.wikipedia.org/wiki/Zero_lag_exponential_moving_average

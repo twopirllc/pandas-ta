@@ -29,8 +29,8 @@ def adosc(
         volume (pd.Series): Series of 'volume's
         fast (int): The short period. Default: 12
         slow (int): The long period. Default: 26
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -62,12 +62,9 @@ def adosc(
         adosc = ADOSC(high, low, close, volume, fast, slow)
     else:
         ad_ = ad(
-            high=high,
-            low=low,
-            close=close,
-            volume=volume,
-            open_=open_,
-            talib=mode_tal)
+            high=high, low=low, close=close, volume=volume,
+            open_=open_, talib=mode_tal
+        )
         fast_ad = ema(close=ad_, length=fast, **kwargs, talib=mode_tal)
         slow_ad = ema(close=ad_, length=slow, **kwargs, talib=mode_tal)
         adosc = fast_ad - slow_ad

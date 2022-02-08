@@ -11,8 +11,9 @@ def ui(
 ) -> Series:
     """Ulcer Index (UI)
 
-    The Ulcer Index by Peter Martin measures the downside volatility with the use of
-    the Quadratic Mean, which has the effect of emphasising large drawdowns.
+    The Ulcer Index by Peter Martin measures the downside volatility with
+    the use of the Quadratic Mean, which has the effect of emphasising
+    large drawdowns.
 
     Sources:
         https://library.tradingtechnologies.com/trade/chrt-ti-ulcer-index.html

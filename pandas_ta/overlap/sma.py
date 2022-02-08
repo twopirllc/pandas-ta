@@ -38,8 +38,8 @@ def sma(
 ) -> Series:
     """Simple Moving Average (SMA)
 
-    The Simple Moving Average is the classic moving average that is the equally
-    weighted average over n periods.
+    The Simple Moving Average is the classic moving average that is the
+    equally weighted average over its length.
 
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/simple-moving-average-sma/
@@ -47,8 +47,8 @@ def sma(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -62,8 +62,10 @@ def sma(
     """
     # Validate
     length = int(length) if length and length > 0 else 10
-    min_periods = int(
-        kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    if "min_periods" in kwargs and kwargs["min_periods"] is not None:
+        min_periods = int(kwargs["min_periods"])
+    else:
+        min_periods = length
     close = verify_series(close, max(length, min_periods))
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True

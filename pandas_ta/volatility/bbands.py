@@ -24,11 +24,11 @@ def bbands(
         std (int): The long period. Default: 2
         ddof (int): Degrees of Freedom to use. Default: 0
         mamode (str): See ``help(ta.ma)``. Default: 'sma'
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         ddof (int): Delta Degrees of Freedom.
-                    The divisor used in calculations is N - ddof,
-                    where N represents the number of elements. The 'talib' argument
+                    The divisor used in calculations is N - ddof, where N
+                    represents the number of elements. The 'talib' argument
                     must be false for 'ddof' to work. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -43,8 +43,10 @@ def bbands(
     length = int(length) if length and length > 0 else 5
     std = float(std) if std and std > 0 else 2.0
     mamode = mamode if isinstance(mamode, str) else "sma"
-    ddof = int(ddof) if isinstance(
-        ddof, int) and ddof >= 0 and ddof < length else 1
+    if isinstance(ddof, int) and ddof >= 0 and ddof < length:
+        ddof = int(ddof)
+    else:
+        ddof = 1
     close = verify_series(close, length)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
@@ -58,10 +60,8 @@ def bbands(
         upper, mid, lower = BBANDS(close, length, std, std, tal_ma(mamode))
     else:
         standard_deviation = stdev(
-            close=close,
-            length=length,
-            ddof=ddof,
-            talib=mode_tal)
+            close=close, length=length, ddof=ddof, talib=mode_tal
+        )
         deviations = std * standard_deviation
         # deviations = std * standard_deviation.loc[standard_deviation.first_valid_index():,]
 

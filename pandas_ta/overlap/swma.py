@@ -11,8 +11,8 @@ def swma(
 
     Symmetric Weighted Moving Average where weights are based on a symmetric
     triangle.  For example: n=3 -> [1, 2, 1], n=4 -> [1, 2, 2, 1], etc...
-    This moving average has variable length in contrast to TradingView's fixed
-    length of 4.
+    This moving average has variable length in contrast to TradingView's
+    fixed length of 4.
 
     Source:
         https://www.tradingview.com/study-script-reference/#fun_swma
@@ -40,11 +40,8 @@ def swma(
 
     # Calculate
     triangle = symmetric_triangle(length, weighted=True)
-    swma = close.rolling(
-        length,
-        min_periods=length).apply(
-        weights(triangle),
-        raw=True)
+    swma = close.rolling(length, min_periods=length) \
+        .apply(weights(triangle), raw=True)
 
     # Offset
     if offset != 0:

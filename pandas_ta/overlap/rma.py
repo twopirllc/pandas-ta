@@ -9,8 +9,8 @@ def rma(
 ) -> Series:
     """wildeR's Moving Average (RMA)
 
-    The WildeR's Moving Average is simply an Exponential Moving Average (EMA) with
-    a modified alpha = 1 / length.
+    The WildeR's Moving Average is simply an EMA with a modified
+    alpha = 1 / length.
 
     Sources:
         https://tlc.thinkorswim.com/center/reference/Tech-Indicators/studies-library/V-Z/WildersSmoothing

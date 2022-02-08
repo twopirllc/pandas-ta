@@ -9,8 +9,8 @@ def cg(
 ) -> Series:
     """Center of Gravity (CG)
 
-    The Center of Gravity Indicator by John Ehlers attempts to identify turning
-    points while exhibiting zero lag and smoothing.
+    The Center of Gravity Indicator by John Ehlers attempts to identify
+    turning points while exhibiting zero lag and smoothing.
 
     Sources:
         http://www.mesasoftware.com/papers/TheCGOscillator.pdf

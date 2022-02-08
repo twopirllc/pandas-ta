@@ -13,8 +13,8 @@ def cci(
 ) -> Series:
     """Commodity Channel Index (CCI)
 
-    Commodity Channel Index is a momentum oscillator used to primarily identify
-    overbought and oversold levels relative to a mean.
+    Commodity Channel Index is a momentum oscillator used to primarily
+    identify overbought and oversold levels relative to a mean.
 
     Sources:
         https://www.tradingview.com/wiki/Commodity_Channel_Index_(CCI)
@@ -25,8 +25,8 @@ def cci(
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14
         c (float): Scaling Constant. Default: 0.015
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

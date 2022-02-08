@@ -50,8 +50,9 @@ def final_time(stime: float) -> str:
     return f"{time_diff * 1000:2.4f} ms ({time_diff:2.4f} s)"
 
 
-def get_time(exchange: str = "NYSE", full: bool = True,
-             to_string: bool = False) -> Union[None, str]:
+def get_time(
+    exchange: str = "NYSE", full: bool = True, to_string: bool = False
+) -> Union[None, str]:
     """Returns Current Time, Day of the Year and Percentage, and the current
     time of the selected Exchange."""
     tz = EXCHANGE_TZ["NYSE"]  # Default is NYSE (Eastern Time Zone)

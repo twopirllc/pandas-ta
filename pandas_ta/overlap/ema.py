@@ -29,12 +29,12 @@ def ema(
 ) -> Series:
     """Exponential Moving Average (EMA)
 
-    The Exponential Moving Average is a more responsive moving average compared
-    to the Simple Moving Average (SMA). The weights are determined by alpha
-    which is proportional to it's length.  There are several different methods
-    of calculating EMA. One method uses just the standard definition of EMA and
-    another uses the SMA to generate the initial value for the rest of the
-    calculation.
+    The Exponential Moving Average is a more responsive moving average
+    compared to the Simple Moving Average (SMA). The weights are determined
+    by alpha which is proportional to it's length.  There are several
+    different methods of calculating EMA. One method uses just the standard
+    definition of EMA and another uses the SMA to generate the initial value
+    for the rest of the calculation.
 
     Sources:
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
@@ -43,10 +43,10 @@ def ema(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
-        talib (bool): If TA Lib is installed and talib=True, it returns the
-            TA Lib values. Default: True
-        presma (bool, optional): If True, uses SMA for initial value like TA Lib.
-            Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
+        presma (bool, optional): If True, uses SMA for initial value like
+            TA Lib. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

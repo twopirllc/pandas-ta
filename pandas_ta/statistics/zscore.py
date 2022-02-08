@@ -6,9 +6,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def zscore(
-        close: Series, length: int = None, std: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, std: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Rolling Z Score
 
     Calculates the Z Score over a rolling period.
@@ -32,7 +32,8 @@ def zscore(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     std *= stdev(close=close, length=length, **kwargs)

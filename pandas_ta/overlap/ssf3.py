@@ -37,10 +37,11 @@ def ssf3(
 ):
     """Ehler's 3 Pole Super Smoother Filter (SSF) © 2013
 
-    John F. Ehlers's solution to reduce lag and remove aliasing noise with his
-    research in aerospace analog filter design. This is implementation has three
-    poles. Since SSF is a (Resursive) Digital Filter, the number of poles
-    determine how many prior recursive SSF bars to include in the filter design.
+    John F. Ehlers's solution to reduce lag and remove aliasing noise
+    with his research in aerospace analog filter design. This is
+    implementation has three poles. Since SSF is a (Resursive) Digital
+    Filter, the number of poles determine how many prior recursive SSF bars
+    to include in the filter design.
 
     For Everget's calculation on TradingView, set arguments:
         pi = np.pi, sqrt3 = 1.738

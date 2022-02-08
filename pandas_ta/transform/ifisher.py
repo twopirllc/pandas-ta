@@ -6,10 +6,10 @@ from .remap import remap
 
 
 def ifisher(
-        close: Series,
-        amp: float = None, signal_offset: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series,
+    amp: float = None, signal_offset: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """
     Indicator: Inverse Fisher Transform
 

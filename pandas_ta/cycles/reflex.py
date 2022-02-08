@@ -49,13 +49,15 @@ def reflex(
     """Reflex (reflex)
 
     John F. Ehlers introduced two indicators within the article
-    "Reflex: A New Zero-Lag Indicator” in February 2020, TASC magazine. One of which
-    is the Reflex, a lag reduced cycle indicator. Both indicators (Reflex/Trendflex)
-    are oscillators and complement each other with the focus for  cycle and trend.
+    "Reflex: A New Zero-Lag Indicator” in February 2020, TASC magazine. One
+    of which is the Reflex, a lag reduced cycle indicator. Both indicators
+    (Reflex/Trendflex) are oscillators and complement each other with the
+    focus for cycle and trend.
 
-    Written for Pandas TA by rengel8 (2021-08-11) based on the implementation on
-    ProRealCode (see Sources). Beyond the mentioned source, this implementation has
-    a separate control parameter for the internal applied SuperSmoother.
+    Written for Pandas TA by rengel8 (2021-08-11) based on the implementation
+    on ProRealCode (see Sources). Beyond the mentioned source, this
+    implementation has a separate control parameter for the internal
+    applied SuperSmoother.
 
     Sources:
         http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html

@@ -12,8 +12,9 @@ def rsi(
 ) -> Series:
     """Relative Strength Index (RSI)
 
-    The Relative Strength Index is popular momentum oscillator used to measure the
-    velocity as well as the magnitude of directional price movements.
+    The Relative Strength Index is popular momentum oscillator used to
+    measure the velocity as well as the magnitude of directional price
+    movements.
 
     Sources:
         https://www.tradingview.com/wiki/Relative_Strength_Index_(RSI)
@@ -22,8 +23,8 @@ def rsi(
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14
         scalar (float): How much to magnify. Default: 100
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 

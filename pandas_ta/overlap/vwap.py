@@ -25,8 +25,9 @@ def vwap(
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's
-        anchor (str): How to anchor VWAP. Depending on the index values, it will
-            implement various Timeseries Offset Aliases as listed here:
+        anchor (str): How to anchor VWAP. Depending on the index values,
+            it will implement various Timeseries Offset Aliases
+            as listed here:
             https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
             Default: "D".
         offset (int): How many periods to offset the result. Default: 0
@@ -49,11 +50,11 @@ def vwap(
 
     typical_price = hlc3(high=high, low=low, close=close)
     if not is_datetime_ordered(volume):
-        print(
-            f"[!] VWAP volume series is not datetime ordered. Results may not be as expected.")
+        _s = "[!] VWAP volume series is not datetime ordered."
+        print(f"{_s} Results may not be as expected.")
     if not is_datetime_ordered(typical_price):
-        print(
-            f"[!] VWAP price series is not datetime ordered. Results may not be as expected.")
+        _s = "[!] VWAP price series is not datetime ordered."
+        print(f"{_s} Results may not be as expected.")
 
     # Calculate
     wp = typical_price * volume

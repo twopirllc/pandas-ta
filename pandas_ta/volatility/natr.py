@@ -25,8 +25,8 @@ def natr(
         length (int): The short period. Default: 20
         scalar (float): How much to magnify. Default: 100
         mamode (str): See ``help(ta.ma)``. Default: 'ema'
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

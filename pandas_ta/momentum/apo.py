@@ -12,9 +12,10 @@ def apo(
 ) -> Series:
     """Absolute Price Oscillator (APO)
 
-    The Absolute Price Oscillator is an indicator used to measure a security's
-    momentum.  It is simply the difference of two Exponential Moving Averages
-    (EMA) of two different periods. Note: APO and MACD lines are equivalent.
+    The Absolute Price Oscillator is an indicator used to measure a
+    security's momentum.  It is simply the difference of two Exponential
+    Moving Averages (EMA) of two different periods. Note: APO and MACD lines
+    are equivalent.
 
     Sources:
         https://www.tradingtechnologies.com/xtrader-help/x-study/technical-indicator-definitions/absolute-price-oscillator-apo/
@@ -24,8 +25,8 @@ def apo(
         fast (int): The short period. Default: 12
         slow (int): The long period. Default: 26
         mamode (str): See ``help(ta.ma)``. Default: 'sma'
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

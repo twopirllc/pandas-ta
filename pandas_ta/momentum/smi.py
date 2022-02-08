@@ -11,13 +11,14 @@ def smi(
 ) -> DataFrame:
     """SMI Ergodic Indicator (SMI)
 
-    The SMI Ergodic Indicator is the same as the True Strength Index (TSI) developed
-    by William Blau, except the SMI includes a signal line. The SMI uses double
-    moving averages of price minus previous price over 2 time frames. The signal
-    line, which is an EMA of the SMI, is plotted to help trigger trading signals.
-    The trend is bullish when crossing above zero and bearish when crossing below
-    zero. This implementation includes both the SMI Ergodic Indicator and SMI
-    Ergodic Oscillator.
+    The SMI Ergodic Indicator is the same as the True Strength Index (TSI)
+    developed by William Blau, except the SMI includes a signal line.
+    The SMI uses double moving averages of price minus previous price
+    over 2 time frames. The signal line, which is an EMA of the SMI, is
+    plotted to help trigger trading signals. The trend is bullish when
+    crossing above zero and bearish when crossing below zero. This
+    implementation includes both the SMI Ergodic Indicator and
+    SMI Ergodic Oscillator.
 
     Sources:
         https://www.motivewave.com/studies/smi_ergodic_indicator.htm

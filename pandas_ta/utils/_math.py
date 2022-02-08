@@ -7,7 +7,6 @@ from typing import List, Optional, Union
 
 from numpy import all, append, array, corrcoef, dot, exp, fabs
 from numpy import log, nan, ndarray, ones, seterr, sqrt, sum, triu
-# from numpy import array as npArray
 from pandas import DataFrame, Series
 from pandas_ta.maps import Imports
 from pandas_ta.utils._core import verify_series
@@ -130,8 +129,7 @@ def linear_regression(x: Series, y: Series) -> dict:
     m, n = x.size, y.size
 
     if m != n:
-        print(
-            f"[X] Linear Regression X and y have unequal total observations: {m} != {n}")
+        print(f"[X] X and y have unequal total observations: {m} != {n}")
         return {}
 
     if Imports["sklearn"]:
@@ -231,7 +229,8 @@ def weights(w: ndarray):
 
 
 def zero(x: Union[int, float]) -> Union[int, float]:
-    """If the value is close to zero, then return zero. Otherwise return itself."""
+    """If the value is close to zero, then return zero.
+    Otherwise return itself."""
     return 0 if abs(x) < sflt.epsilon else x
 
 
@@ -260,7 +259,8 @@ def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
 
 # PRIVATE
 def _linear_regression_np(x: Series, y: Series) -> dict:
-    """Simple Linear Regression in Numpy for two 1d arrays for environments without the sklearn package."""
+    """Simple Linear Regression in Numpy
+    for two 1d arrays for environments without the sklearn package."""
     result = {"a": nan, "b": nan, "r": nan, "t": nan, "line": nan}
     x_sum = x.sum()
     y_sum = y.sum()

@@ -11,13 +11,14 @@ def alligator(
 ) -> DataFrame:
     """Bill Williams Alligator (ALLIGATOR)
 
-    The Alligator Indicator was developed by Bill Williams and combines moving
-    averages with fractal geometry and the lines are meant to resemeble an alligator
-    opening and closing his mouth.. It attempts to identify if an asset is trending.
-    It consists of 3 lines: the Alligator's Jaw, Teeth, and Lips. Each have
-    different lookback periods and but require the user to offset the results; this
-    is avoid data leaks by Pandas TA. See help(ta.ichimoku) or help(ta.dpo) to
-    offset the resultant lines.
+    The Alligator Indicator was developed by Bill Williams and combines
+    moving averages with fractal geometry and the lines are meant to
+    resemeble an alligator opening and closing his mouth.. It attempts to
+    identify if an asset is trending. It consists of 3 lines: the
+    Alligator's Jaw, Teeth, and Lips. Each have different lookback periods
+    and but require the user to offset the results; this is avoid data leaks
+    by Pandas TA. See help(ta.ichimoku) or help(ta.dpo) to offset the
+    resultant lines.
 
     Sources:
         https://www.tradingview.com/scripts/alligator/
@@ -28,8 +29,8 @@ def alligator(
         jaw (int): The Jaw period. Default: 13
         teeth (int): The Teeth period. Default: 8
         lips (int): The Lips period. Default: 5
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

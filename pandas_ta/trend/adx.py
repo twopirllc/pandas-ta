@@ -13,8 +13,8 @@ def adx(
 ) -> DataFrame:
     """Average Directional Movement (ADX)
 
-    Average Directional Movement is meant to quantify trend strength by measuring
-    the amount of movement in a single direction.
+    Average Directional Movement is meant to quantify trend strength by
+    measuring the amount of movement in a single direction.
 
     Sources:
         TA Lib Correlation: >99%
@@ -25,7 +25,8 @@ def adx(
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14
-        lensig (int): Signal Length. Like TradingView's default ADX. Default: length
+        lensig (int): Signal Length. Like TradingView's default ADX.
+            Default: length
         scalar (float): How much to magnify. Default: 100
         mamode (str): See ``help(ta.ma)``. Default: 'rma'
         drift (int): The difference period. Default: 1

@@ -9,9 +9,9 @@ def drawdown(
 ) -> DataFrame:
     """Drawdown (DD)
 
-    Drawdown is a peak-to-trough decline during a specific period for an investment,
-    trading account, or fund. It is usually quoted as the percentage between the
-    peak and the subsequent trough.
+    Drawdown is a peak-to-trough decline during a specific period for an
+    investment, trading account, or fund. It is usually quoted as the
+    percentage between the peak and the subsequent trough.
 
     Sources:
         https://www.investopedia.com/terms/d/drawdown.asp

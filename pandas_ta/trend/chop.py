@@ -43,8 +43,10 @@ def chop(
     """
     # Validate
     length = int(length) if length and length > 0 else 14
-    atr_length = int(
-        atr_length) if atr_length is not None and atr_length > 0 else 1
+    if atr_length is not None and atr_length > 0:
+        atr_length = int(atr_length)
+    else:
+        atr_length = 1
     ln = bool(ln) if isinstance(ln, bool) else False
     scalar = float(scalar) if scalar else 100
     high = verify_series(high, length)

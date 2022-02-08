@@ -5,7 +5,7 @@ from pandas_ta.momentum import mom
 from pandas_ta.overlap import ema, sma
 from pandas_ta.trend import decreasing, increasing
 from pandas_ta.volatility import bbands, kc
-from pandas_ta.utils import get_offset, unsigned_differences, verify_series
+from pandas_ta.utils import get_offset, simplify_columns, unsigned_differences, verify_series
 
 
 def squeeze_pro(
@@ -20,12 +20,13 @@ def squeeze_pro(
     """Squeeze PRO(SQZPRO)
 
     This indicator is an extended version of "TTM Squeeze" from John Carter.
-    The default is based on John Carter's "TTM Squeeze" indicator, as discussed
-    in his book "Mastering the Trade" (chapter 11). The Squeeze indicator attempts
-    to capture the relationship between two studies: Bollinger Bands® and Keltner's
-    Channels. When the volatility increases, so does the distance between the bands,
-    conversely, when the volatility declines, the distance also decreases. It finds
-    sections of the Bollinger Bands® study which fall inside the Keltner's Channels.
+    The default is based on John Carter's "TTM Squeeze" indicator, as
+    discussed in his book "Mastering the Trade" (chapter 11). The Squeeze
+    indicator attempts to capture the relationship between two studies:
+    Bollinger Bands® and Keltner's Channels. When the volatility increases,
+    so does the distance between the bands, conversely, when the volatility
+    declines, the distance also decreases. It finds sections of the
+    Bollinger Bands® study which fall inside the Keltner's Channels.
 
     Sources:
         https://usethinkscript.com/threads/john-carters-squeeze-pro-indicator-for-thinkorswim-free.4021/
@@ -38,16 +39,20 @@ def squeeze_pro(
         bb_length (int): Bollinger Bands period. Default: 20
         bb_std (float): Bollinger Bands Std. Dev. Default: 2
         kc_length (int): Keltner Channel period. Default: 20
-        kc_scalar_wide (float): Keltner Channel scalar for wider channel. Default: 2
-        kc_scalar_normal (float): Keltner Channel scalar for normal channel. Default: 1.5
-        kc_scalar_narrow (float): Keltner Channel scalar for narrow channel. Default: 1
+        kc_scalar_wide (float): Keltner Channel scalar for wider channel.
+            Default: 2
+        kc_scalar_normal (float): Keltner Channel scalar for normal channel.
+            Default: 1.5
+        kc_scalar_narrow (float): Keltner Channel scalar for narrow channel.
+            Default: 1
         mom_length (int): Momentum Period. Default: 12
         mom_smooth (int): Smoothing Period of Momentum. Default: 6
         mamode (str): Only "ema" or "sma". Default: "sma"
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        tr (value, optional): Use True Range for Keltner Channels. Default: True
+        tr (value, optional): Use True Range for Keltner Channels.
+            Default: True
         asint (value, optional): Use integers instead of bool. Default: True
         mamode (value, optional): Which MA to use. Default: "sma"
         detailed (value, optional): Return additional variations of SQZ for
@@ -56,19 +61,30 @@ def squeeze_pro(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.DataFrame: SQZPRO, SQZPRO_ON_WIDE, SQZPRO_ON_NORMAL, SQZPRO_ON_NARROW, SQZPRO_OFF_WIDE, SQZPRO_NO columns by default. More
-            detailed columns if 'detailed' kwarg is True.
+        pd.DataFrame: SQZPRO, SQZPRO_ON_WIDE, SQZPRO_ON_NORMAL,
+            SQZPRO_ON_NARROW, SQZPRO_OFF_WIDE, SQZPRO_NO columns by default.
+            More detailed columns if 'detailed' kwarg is True.
     """
     # Validate
     bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
     bb_std = float(bb_std) if bb_std and bb_std > 0 else 2.0
     kc_length = int(kc_length) if kc_length and kc_length > 0 else 20
-    kc_scalar_wide = float(
-        kc_scalar_wide) if kc_scalar_wide and kc_scalar_wide > 0 else 2
-    kc_scalar_normal = float(
-        kc_scalar_normal) if kc_scalar_normal and kc_scalar_normal > 0 else 1.5
-    kc_scalar_narrow = float(
-        kc_scalar_narrow) if kc_scalar_narrow and kc_scalar_narrow > 0 else 1
+
+    if kc_scalar_wide and kc_scalar_wide > 0:
+        kc_scalar_wide = float(kc_scalar_wide)
+    else:
+        kc_scalar_wide = 2
+
+    if kc_scalar_normal and kc_scalar_normal > 0:
+        kc_scalar_normal = float(kc_scalar_normal)
+    else:
+        kc_scalar_normal = 1.5
+
+    if kc_scalar_narrow and kc_scalar_narrow > 0:
+        kc_scalar_narrow = float(kc_scalar_narrow)
+    else:
+        kc_scalar_narrow = 1
+
     mom_length = int(mom_length) if mom_length and mom_length > 0 else 12
     mom_smooth = int(mom_smooth) if mom_smooth and mom_smooth > 0 else 6
 
@@ -90,36 +106,20 @@ def squeeze_pro(
     detailed = kwargs.pop("detailed", False)
     mamode = mamode if isinstance(mamode, str) else "sma"
 
-    def simplify_columns(df, n=3):
-        df.columns = df.columns.str.lower()
-        return [c.split("_")[0][n - 1:n] for c in df.columns]
-
     # Calculate
     bbd = bbands(close, length=bb_length, std=bb_std, mamode=mamode)
     kch_wide = kc(
-        high,
-        low,
-        close,
-        length=kc_length,
-        scalar=kc_scalar_wide,
-        mamode=mamode,
-        tr=use_tr)
+        high, low, close, length=kc_length, scalar=kc_scalar_wide,
+        mamode=mamode, tr=use_tr
+    )
     kch_normal = kc(
-        high,
-        low,
-        close,
-        length=kc_length,
-        scalar=kc_scalar_normal,
-        mamode=mamode,
-        tr=use_tr)
+        high, low, close, length=kc_length, scalar=kc_scalar_normal,
+        mamode=mamode, tr=use_tr
+    )
     kch_narrow = kc(
-        high,
-        low,
-        close,
-        length=kc_length,
-        scalar=kc_scalar_narrow,
-        mamode=mamode,
-        tr=use_tr)
+        high, low, close, length=kc_length, scalar=kc_scalar_narrow,
+        mamode=mamode, tr=use_tr
+    )
 
     # Simplify KC and BBAND column names for dynamic access
     bbd.columns = simplify_columns(bbd)

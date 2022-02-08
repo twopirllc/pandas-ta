@@ -114,6 +114,16 @@ class TestVolatility(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "DC_20_5")
 
+    def test_hwc(self):
+        """Volatility: HWC"""
+        result = pandas_ta.hwc(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "HWC_1")
+
+        result = pandas_ta.hwc(self.close, channel_eval=True)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "HWC_1")
+
     def test_kc(self):
         """Volatility: KC"""
         result = pandas_ta.kc(self.high, self.low, self.close)

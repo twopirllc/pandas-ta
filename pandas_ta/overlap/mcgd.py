@@ -9,13 +9,14 @@ def mcgd(
 ) -> Series:
     """McGinley Dynamic Indicator
 
-    The McGinley Dynamic looks like a moving average line, yet it is actually a
-    smoothing mechanism for prices that minimizes price separation, price whipsaws,
-    and hugs prices much more closely. Because of the calculation, the Dynamic Line
-    speeds up in down markets as it follows prices yet moves more slowly in up
-    markets. The indicator was designed by John R. McGinley, a Certified Market
-    Technician and former editor of the Market Technicians Association's Journal
-    of Technical Analysis.
+    The McGinley Dynamic looks like a moving average line, yet it is
+    actually a smoothing mechanism for prices that minimizes price
+    separation, price whipsaws, and hugs prices much more closely. Because
+    of the calculation, the Dynamic Line speeds up in down markets as it
+    follows prices yet moves more slowly in up markets. The indicator was
+    designed by John R. McGinley, a Certified Market Technician and former
+    editor of the Market Technicians Association's Journal of Technical
+    Analysis.
 
     Sources:
         https://www.investopedia.com/articles/forex/09/mcginley-dynamic-indicator.asp
@@ -23,7 +24,8 @@ def mcgd(
     Args:
         close (pd.Series): Series of 'close's
         length (int): Indicator's period. Default: 10
-        c (float): Multiplier for the denominator, sometimes set to 0.6. Default: 1
+        c (float): Multiplier for the denominator, sometimes set to 0.6.
+            Default: 1
         offset (int): Number of periods to offset the result. Default: 0
 
     Kwargs:

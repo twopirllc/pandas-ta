@@ -10,8 +10,8 @@ def mom(
 ) -> Series:
     """Momentum (MOM)
 
-    Momentum is an indicator used to measure a security's speed (or strength) of
-    movement.  Or simply the change in price.
+    Momentum is an indicator used to measure a security's speed
+    (or strength) of movement or simply the change in price.
 
     Sources:
         http://www.onlinetradingconcepts.com/TechnicalAnalysis/Momentum.html
@@ -19,8 +19,8 @@ def mom(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

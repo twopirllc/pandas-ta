@@ -12,12 +12,12 @@ def wb_tsv(
 ) -> DataFrame:
     """Time Segmented Value (TSV)
 
-    TSV is a proprietary technical indicator developed by Worden Brothers Inc.,
-    classified as an oscillator. It compares various time segments of both price
-    and volume. It measures the amount money flowing at various time segments
-    for price and time; similar to On Balance Volume. The zero line is called
-    the baseline. Entry and exit points are commonly determined when crossing
-    the baseline.
+    TSV is a proprietary technical indicator developed by Worden Brothers
+    Inc., classified as an oscillator. It compares various time segments of
+    both price and volume. It measures the amount money flowing at various
+    time segments for price and time; similar to On Balance Volume. The zero
+    line is called the baseline. Entry and exit points are commonly
+    determined when crossing the baseline.
 
     Sources:
         https://www.tradingview.com/script/6GR4ht9X-Time-Segmented-Volume/

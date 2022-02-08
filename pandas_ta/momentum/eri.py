@@ -10,15 +10,14 @@ def eri(
 ) -> DataFrame:
     """Elder Ray Index (ERI)
 
-    Elder's Bulls Ray Index contains his Bull and Bear Powers. Which are useful ways
-    to look at the price and see the strength behind the market. Bull Power
-    measures the capability of buyers in the market, to lift prices above an average
-    consensus of value.
+    Elder's Bulls Ray Index contains his Bull and Bear Powers. Which are
+    useful ways to look at the price and see the strength behind the market.
+    Bull Power measures the capability of buyers in the market, to lift
+    prices above an average consensus of value.
 
-    Bears Power measures the capability of sellers, to drag prices below an average
-    consensus of value. Using them in tandem with a measure of trend allows you to
-    identify favourable entry points. We hope you've found this to be a useful
-    discussion of the Bulls and Bears Power indicators.
+    Bears Power measures the capability of sellers, to drag prices below
+    an average consensus of value. Using them in tandem with a measure of
+    trend allows you to identify favourable entry points.
 
     Sources:
         https://admiralmarkets.com/education/articles/forex-indicators/bears-and-bulls-power-indicator

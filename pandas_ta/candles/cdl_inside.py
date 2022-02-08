@@ -10,13 +10,14 @@ def cdl_inside(
 ) -> Series:
     """Candle Type: Inside Bar
 
-    An Inside Bar is a bar that is engulfed by the prior highs and lows of it's
-    previous bar. In other words, the current bar is smaller than it's previous
-    bar.
+    An Inside Bar is a bar that is engulfed by the prior highs and lows of
+    it's previous bar. In other words, the current bar is smaller than it's
+    previous bar.
 
-    Set asbool=True if you want to know if it is an Inside Bar. Note by default
-    asbool=False so this returns a 0 if it is not an Inside Bar, 1 if it is an
-    Inside Bar and close > open, and -1 if it is an Inside Bar but close < open.
+    Set asbool=True if you want to know if it is an Inside Bar. Note by
+    default asbool=False so this returns a 0 if it is not an Inside Bar, 1 if
+    it is an Inside Bar and close > open, and -1 if it is an Inside Bar
+    but close < open.
 
     Sources:
         https://www.tradingview.com/script/IyIGN1WO-Inside-Bar/

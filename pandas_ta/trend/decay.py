@@ -10,8 +10,9 @@ def decay(
 ) -> Series:
     """Decay
 
-    Creates a decay moving forward from prior signals like crosses. The default is
-    "linear". Exponential is optional as "exponential" or "exp".
+    Creates a decay moving forward from prior signals like crosses.
+    The default is "linear".
+    Exponential is optional as "exponential" or "exp".
 
     Sources:
         https://tulipindicators.org/decay

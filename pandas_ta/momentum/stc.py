@@ -11,14 +11,15 @@ def stc(
 ) -> DataFrame:
     """Schaff Trend Cycle (STC)
 
-    The Schaff Trend Cycle is an evolution of the popular MACD incorportating two
-    cascaded stochastic calculations with additional smoothing.
+    The Schaff Trend Cycle is an evolution of the popular MACD
+    incorportating two cascaded stochastic calculations with additional
+    smoothing.
 
-    The STC returns also the beginning MACD result as well as the result after the
-    first stochastic including its smoothing. This implementation has been extended
-    for Pandas TA to also allow for separatly feeding any other two moving Averages
-    (as ma1 and ma2) or to skip this to feed an oscillator (osc), based on which the
-    Schaff Trend Cycle should be calculated.
+    The STC returns also the beginning MACD result as well as the result
+    after the first stochastic including its smoothing. This implementation
+    has been extended for Pandas TA to also allow for separatly feeding any
+    other two moving Averages (as ma1 and ma2) or to skip this to feed an
+    oscillator, based on which the Schaff Trend Cycle should be calculated.
 
     Feed external moving averages:
     Internally calculation..
@@ -35,17 +36,19 @@ def stc(
         https://www.prorealcode.com/prorealtime-indicators/schaff-trend-cycle2/
 
     Args:
-        close (pd.Series): Series of 'close's, used for indexing Series, mandatory
-        tclen (int): SchaffTC Signal-Line length.  Default: 10 (adjust to the half of cycle)
-        fast (int): The short period.   Default: 12
-        slow (int): The long period.   Default: 26
-        factor (float): smoothing factor for last stoch. calculation.   Default: 0.5
-        offset (int): How many periods to offset the result.  Default: 0
+        close (pd.Series): Series of 'close's
+        tclen (int): SchaffTC Signal-Line length.
+            Default: 10 (adjust to the half of cycle)
+        fast (int): The short period. Default: 12
+        slow (int): The long period. Default: 26
+        factor (float): smoothing factor for last stoch. calculation.
+            Default: 0.5
+        offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        ma1: 1st moving average provided externally (mandatory in conjuction with ma2)
-        ma2: 2nd moving average provided externally (mandatory in conjuction with ma1)
-        osc: an externally feeded osillator
+        ma1: External MA (mandatory in conjuction with ma2)
+        ma2: External MA (mandatory in conjuction with ma1)
+        osc: External osillator
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 

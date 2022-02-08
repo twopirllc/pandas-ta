@@ -11,8 +11,9 @@ def cfo(
 ) -> Series:
     """Chande Forcast Oscillator (CFO)
 
-    The Forecast Oscillator calculates the percentage difference between the actual
-    price and the Time Series Forecast (the endpoint of a linear regression line).
+    The Forecast Oscillator calculates the percentage difference between
+    the actual price and the Time Series Forecast (the endpoint of a
+    linear regression line).
 
     Sources:
         https://www.fmlabs.com/reference/default.htm?url=ForecastOscillator.htm

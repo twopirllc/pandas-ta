@@ -11,9 +11,9 @@ def fisher(
 ) -> Series:
     """Fisher Transform (FISHT)
 
-    Attempts to identify significant price reversals by normalizing prices over a
-    user-specified number of periods. A reversal signal is suggested when the the
-    two lines cross.
+    Attempts to identify significant price reversals by normalizing prices
+    over a user-specified number of periods. A reversal signal is suggested
+    when the the two lines cross.
 
     Sources:
         TradingView (Correlation >99%)

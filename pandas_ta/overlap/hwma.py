@@ -9,9 +9,9 @@ def hwma(
 ) -> Series:
     """HWMA (Holt-Winter Moving Average)
 
-    Indicator HWMA (Holt-Winter Moving Average) is a three-parameter moving average
-    by the Holt-Winter method; the three parameters should be selected to obtain a
-    forecast.
+    Indicator HWMA (Holt-Winter Moving Average) is a three-parameter
+    moving average by the Holt-Winter method; the three parameters should
+    be selected to obtain a forecast.
 
     This version has been implemented for Pandas TA by rengel8 based
     on a publication for MetaTrader 5.
@@ -66,8 +66,7 @@ def hwma(
         hwma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    suffix = f"{na}_{nb}_{nc}"
-    hwma.name = f"HWMA_{suffix}"
+    hwma.name = f"HWMA_{na}_{nb}_{nc}"
     hwma.category = "overlap"
 
     return hwma

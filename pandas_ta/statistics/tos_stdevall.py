@@ -5,15 +5,15 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def tos_stdevall(
-        close: Series, length: int = None,
-        stds: list = None, ddof: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, length: int = None,
+    stds: list = None, ddof: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """TD Ameritrade's Think or Swim Standard Deviation All (TOS_STDEV)
 
-    A port of TD Ameritrade's Think or Swim Standard Deviation All indicator which
-    returns the standard deviation of data for the entire plot or for the interval
-    of the last bars defined by the length parameter.
+    A port of TD Ameritrade's Think or Swim Standard Deviation All indicator
+    which returns the standard deviation of data for the entire plot or for
+    the interval of the last bars defined by the length parameter.
 
     Sources:
         https://tlc.thinkorswim.com/center/reference/thinkScript/Functions/Statistical/StDevAll
@@ -54,7 +54,8 @@ def tos_stdevall(
 
     close = verify_series(close, length)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     X = src_index = close.index

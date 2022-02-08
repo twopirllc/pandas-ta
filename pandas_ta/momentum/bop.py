@@ -22,8 +22,8 @@ def bop(
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         scalar (float): How much to magnify. Default: 1
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

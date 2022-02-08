@@ -11,11 +11,11 @@ def coppock(
 ) -> Series:
     """Coppock Curve (COPC)
 
-    Coppock Curve (originally called the "Trendex Model") is a momentum indicator
-    is designed for use on a monthly time scale.  Although designed for monthly
-    use, a daily calculation over the same period can be made, converting the
-    periods to 294-day and 231-day rate of changes, and a 210-day weighted
-    moving average.
+    Coppock Curve (originally called the "Trendex Model") is a momentum
+    indicator is designed for use on a monthly time scale. Although designed
+    for monthly use, a daily calculation over the same period can be made,
+    converting the periods to 294-day and 231-day rate of changes,
+    and a 210-day WMA.
 
     Sources:
         https://en.wikipedia.org/wiki/Coppock_curve

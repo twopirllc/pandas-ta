@@ -37,8 +37,8 @@ def yf(ticker: str, **kwargs) -> DataFrame:
         ticker (str): Any string for a ticker you would use with yfinance.
             Default: "SPY"
     Kwargs:
-        calls (bool): When True, prints only Option Calls for the Option Chain.
-            Default: None
+        calls (bool): When True, prints only Option Calls for the
+            Option Chain. Default: None
         desc (bool): Will print Company Description when printing Company
             Information. Default: False
         exp (str): Used to print other Option Chains for the given Expiration

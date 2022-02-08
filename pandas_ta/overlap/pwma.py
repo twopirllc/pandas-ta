@@ -9,8 +9,8 @@ def pwma(
 ) -> Series:
     """Pascal's Weighted Moving Average (PWMA)
 
-    Pascal's Weighted Moving Average is similar to a symmetric triangular window
-    except PWMA's weights are based on Pascal's Triangle.
+    Pascal's Weighted Moving Average is similar to a symmetric triangular
+    window except PWMA's weights are based on Pascal's Triangle.
 
     Source: Kevin Johnson
 
@@ -38,11 +38,8 @@ def pwma(
 
     # Calculate
     triangle = pascals_triangle(n=length - 1, weighted=True)
-    pwma = close.rolling(
-        length,
-        min_periods=length).apply(
-        weights(triangle),
-        raw=True)
+    pwma = close.rolling(length, min_periods=length) \
+        .apply(weights(triangle), raw=True)
 
     # Offset
     if offset != 0:

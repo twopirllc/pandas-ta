@@ -12,27 +12,28 @@ def linreg(
 ) -> Series:
     """Linear Regression Moving Average (linreg)
 
-    Linear Regression Moving Average (LINREG). This is a simplified version of a
-    Standard Linear Regression. LINREG is a rolling regression of one variable. A
-    Standard Linear Regression is between two or more variables.
+    Linear Regression Moving Average (LINREG). This is a simplified version
+    of a Standard Linear Regression. LINREG is a rolling regression of one
+    variable. A Standard Linear Regression is between two or more variables.
 
     Source: TA Lib
 
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
-        talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
-            version. Default: True
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        angle (bool, optional): If True, returns the angle of the slope in radians.
+        angle (bool, optional): If True, returns the slope angle in radians.
             Default: False.
-        degrees (bool, optional): If True, returns the angle of the slope in
+        degrees (bool, optional): If True, returns the slope angle in
             degrees. Default: False.
-        intercept (bool, optional): If True, returns the angle of the slope in
-            radians. Default: False.
-        r (bool, optional): If True, returns it's correlation 'r'. Default: False.
+        intercept (bool, optional): If True, returns the intercept.
+            Default: False.
+        r (bool, optional): If True, returns it's correlation 'r'.
+            Default: False.
         slope (bool, optional): If True, returns the slope. Default: False.
         tsf (bool, optional): If True, returns the Time Series Forecast value.
             Default: False.
@@ -80,6 +81,7 @@ def linreg(
         x2_sum = x_sum * (2 * length + 1) / 3
         divisor = length * x2_sum - x_sum * x_sum
 
+        # Needs to be reworked outside the method
         def linear_regression(series):
             y_sum = series.sum()
             xy_sum = (x * series).sum()
@@ -109,12 +111,14 @@ def linreg(
             from numpy.lib.stride_tricks import sliding_window_view
             linreg_ = [
                 linear_regression(_) for _ in sliding_window_view(
-                    np_close, length)]
+                    np_close, length)
+            ]
 
         else:
             linreg_ = [
                 linear_regression(_) for _ in strided_window(
-                    np_close, length)]
+                    np_close, length)
+            ]
 
         linreg = Series([nan] * (length - 1) + linreg_, index=close.index)
 
