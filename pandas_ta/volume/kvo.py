@@ -7,11 +7,11 @@ from pandas_ta.utils import get_drift, get_offset, signed_series, verify_series
 
 
 def kvo(
-        high: Series, low: Series, close: Series, volume: Series,
-        fast: int = None, slow: int = None, signal=None,
-        mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series, volume: Series,
+    fast: int = None, slow: int = None, signal=None,
+    mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Klinger Volume Oscillator (KVO)
 
     This indicator was developed by Stephen J. Klinger. It is designed to predict
@@ -29,7 +29,7 @@ def kvo(
         fast (int): The fast period. Default: 34
         slow (int): The slow period. Default: 55
         signal (int): The signal period. Default: 13
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -52,15 +52,18 @@ def kvo(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None or volume is None: return
+    if high is None or low is None or close is None or volume is None:
+        return
 
     # Calculate
     signed_volume = volume * signed_series(hlc3(high, low, close), 1)
-    sv = signed_volume.loc[signed_volume.first_valid_index():,]
+    sv = signed_volume.loc[signed_volume.first_valid_index():, ]
     kvo = ma(mamode, sv, length=fast) - ma(mamode, sv, length=slow)
-    if kvo is None or all(isnan(kvo.values)): return  # Emergency Break
-    kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():,], length=signal)
-    if kvo_signal is None or all(isnan(kvo_signal.values)): return  # Emergency Break
+    if kvo is None or all(isnan(kvo.values)):
+        return  # Emergency Break
+    kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():, ], length=signal)
+    if kvo_signal is None or all(isnan(kvo_signal.values)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

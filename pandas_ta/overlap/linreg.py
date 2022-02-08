@@ -7,9 +7,9 @@ from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
 def linreg(
-        close: Series, length: int = None, talib: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, talib: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Linear Regression Moving Average (linreg)
 
     Linear Regression Moving Average (LINREG). This is a simplified version of a
@@ -54,7 +54,8 @@ def linreg(
     tsf = kwargs.pop("tsf", False)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     np_close = close.values
@@ -73,7 +74,8 @@ def linreg(
             linreg = LINEARREG(close, timeperiod=length)
     else:
         linreg_ = zeros_like(np_close)
-        x = range(1, length + 1)  # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
+        # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
+        x = range(1, length + 1)
         x_sum = 0.5 * length * (length + 1)
         x2_sum = x_sum * (2 * length + 1) / 3
         divisor = length * x2_sum - x_sum * x_sum
@@ -105,10 +107,14 @@ def linreg(
 
         if version >= "1.20.0":
             from numpy.lib.stride_tricks import sliding_window_view
-            linreg_ = [linear_regression(_) for _ in sliding_window_view(np_close, length)]
+            linreg_ = [
+                linear_regression(_) for _ in sliding_window_view(
+                    np_close, length)]
 
         else:
-            linreg_ = [linear_regression(_) for _ in strided_window(np_close, length)]
+            linreg_ = [
+                linear_regression(_) for _ in strided_window(
+                    np_close, length)]
 
         linreg = Series([nan] * (length - 1) + linreg_, index=close.index)
 
@@ -124,10 +130,14 @@ def linreg(
 
     # Name and Category
     linreg.name = f"LR"
-    if slope: linreg.name += "m"
-    if intercept: linreg.name += "b"
-    if angle: linreg.name += "a"
-    if r: linreg.name += "r"
+    if slope:
+        linreg.name += "m"
+    if intercept:
+        linreg.name += "b"
+    if angle:
+        linreg.name += "a"
+    if r:
+        linreg.name += "r"
 
     linreg.name += f"_{length}"
     linreg.category = "overlap"

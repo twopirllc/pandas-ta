@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def wcp(
-        high: Series, low: Series, close: Series, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Weighted Closing Price (WCP)
 
     Weighted Closing Price is the weighted price given: high, low
@@ -43,7 +43,9 @@ def wcp(
         from talib import WCLPRICE
         wcp = WCLPRICE(high, low, close)
     else:
-        wcp = Series((high.values + low.values + 2 * close.values), index=close.index)
+        wcp = Series(
+            (high.values + low.values + 2 * close.values),
+            index=close.index)
 
     # Offset
     if offset != 0:

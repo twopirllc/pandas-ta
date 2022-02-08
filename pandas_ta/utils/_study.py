@@ -33,7 +33,8 @@ class Study:
     ta: List = field(default_factory=list)  # Required.
     cores: int  = cpu_count()  # Number of cores. Default cpu_count()
     description: str = ""  # Helpful. More descriptive version or notes or w/e.
-    created: str = get_time(to_string=True)  # Optional. Gets Exchange Time and Local Time execution time
+    # Optional. Gets Exchange Time and Local Time execution time
+    created: str = get_time(to_string=True)
 
     def __post_init__(self):
         if isinstance(self.cores, int) and self.cores >= 0 and self.cores <= cpu_count():
@@ -42,7 +43,8 @@ class Study:
         req_args = ["[X] Study requires the following argument(s):"]
 
         if self._is_name():
-            req_args.append(' - name. Must be a string. Example: "My TA". Note: "all" is reserved.')
+            req_args.append(
+                ' - name. Must be a string. Example: "My TA". Note: "all" is reserved.')
 
         if self.ta is None:
             self.ta = None
@@ -63,7 +65,8 @@ class Study:
             # Check that all elements of the list are dicts.
             # Does not check if the dicts values are valid indicator kwargs
             # User must check indicator documentation for all indicators args.
-            return all([isinstance(_, dict) and len(_.keys()) > 0 for _ in self.ta])
+            return all([isinstance(_, dict) and len(
+                _.keys()) > 0 for _ in self.ta])
         return False
 
     def total_ta(self):

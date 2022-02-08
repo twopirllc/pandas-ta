@@ -44,7 +44,8 @@ def hwc(
     nc = float(nc) if nc and nc > 0 else 0.1
     nd = float(nd) if nd and nd > 0 else 0.1
     scalar = float(scalar) if scalar and scalar > 0 else 1
-    channel_eval = bool(channel_eval) if channel_eval and channel_eval else False
+    channel_eval = bool(
+        channel_eval) if channel_eval and channel_eval else False
     close = verify_series(close)
     offset = get_offset(offset)
 
@@ -61,7 +62,8 @@ def hwc(
         A = (1.0 - nc) * last_a + nc * (V - last_v)
         result.append((F + V + 0.5 * A))
 
-        var = (1.0 - nd) * last_var + nd * (last_price - last_result) * (last_price - last_result)
+        var = (1.0 - nd) * last_var + nd * (last_price -
+                                            last_result) * (last_price - last_result)
         stddev = sqrt(last_var)
         upper.append(result[i] + scalar * stddev)
         lower.append(result[i] - scalar * stddev)
@@ -70,7 +72,8 @@ def hwc(
             # channel width
             chan_width.append(upper[i] - lower[i])
             # channel percentage price position
-            chan_pct_width.append((close[i] - lower[i]) / (upper[i] - lower[i]))
+            chan_pct_width.append(
+                (close[i] - lower[i]) / (upper[i] - lower[i]))
             # print('channel_eval (width|percentageWidth):', chan_width[i], chan_pct_width[i])
 
         # update values
@@ -132,7 +135,10 @@ def hwc(
         df.name = "HWC"
         df.category = hwc.category
     else:
-        data = {hwc.name: hwc, hwc_upper.name: hwc_upper, hwc_lower.name: hwc_lower}
+        data = {
+            hwc.name: hwc,
+            hwc_upper.name: hwc_upper,
+            hwc_lower.name: hwc_lower}
         df = DataFrame(data)
         df.name = "HWC"
         df.category = hwc.category

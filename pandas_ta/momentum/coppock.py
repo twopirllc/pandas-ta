@@ -6,9 +6,9 @@ from .roc import roc
 
 
 def coppock(
-        close: Series, length: int = None, fast: int = None, slow: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, fast: int = None, slow: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Coppock Curve (COPC)
 
     Coppock Curve (originally called the "Trendex Model") is a momentum indicator
@@ -41,7 +41,8 @@ def coppock(
     close = verify_series(close, max(length, fast, slow))
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     total_roc = roc(close, fast) + roc(close, slow)

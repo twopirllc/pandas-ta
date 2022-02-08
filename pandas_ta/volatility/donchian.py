@@ -4,10 +4,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def donchian(
-        high: Series, low: Series,
-        lower_length: int = None, upper_length: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series,
+    lower_length: int = None, upper_length: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Donchian Channels (DC)
 
     Donchian Channels are used to measure volatility, similar to
@@ -31,16 +31,25 @@ def donchian(
         pd.DataFrame: lower, mid, upper columns.
     """
     # Validate
-    lower_length = int(lower_length) if lower_length and lower_length > 0 else 20
-    upper_length = int(upper_length) if upper_length and upper_length > 0 else 20
-    lower_min_periods = int(kwargs["lower_min_periods"]) if "lower_min_periods" in kwargs and kwargs["lower_min_periods"] is not None else lower_length
-    upper_min_periods = int(kwargs["upper_min_periods"]) if "upper_min_periods" in kwargs and kwargs["upper_min_periods"] is not None else upper_length
-    _length = max(lower_length, lower_min_periods, upper_length, upper_min_periods)
+    lower_length = int(
+        lower_length) if lower_length and lower_length > 0 else 20
+    upper_length = int(
+        upper_length) if upper_length and upper_length > 0 else 20
+    lower_min_periods = int(
+        kwargs["lower_min_periods"]) if "lower_min_periods" in kwargs and kwargs["lower_min_periods"] is not None else lower_length
+    upper_min_periods = int(
+        kwargs["upper_min_periods"]) if "upper_min_periods" in kwargs and kwargs["upper_min_periods"] is not None else upper_length
+    _length = max(
+        lower_length,
+        lower_min_periods,
+        upper_length,
+        upper_min_periods)
     high = verify_series(high, _length)
     low = verify_series(low, _length)
     offset = get_offset(offset)
 
-    if high is None or low is None: return
+    if high is None or low is None:
+        return
 
     # Calculate
     lower = low.rolling(lower_length, min_periods=lower_min_periods).min()

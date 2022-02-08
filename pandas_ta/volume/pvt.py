@@ -5,9 +5,9 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def pvt(
-        close: Series, volume: Series, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, volume: Series, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Price-Volume Trend (PVT)
 
     The Price-Volume Trend utilizes the Rate of Change with volume to

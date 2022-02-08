@@ -5,11 +5,11 @@ from pandas_ta.utils import get_offset, verify_series, get_drift
 
 
 def thermo(
-        high: Series, low: Series, length: int = None,
-        long: int = None, short: int = None,
-        mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, length: int = None,
+    long: int = None, short: int = None,
+    mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Elders Thermometer (THERMO)
 
     Elder's Thermometer measures price volatility.
@@ -24,7 +24,7 @@ def thermo(
         length (int): The  period. Default: 20
         long(int): The buy factor
         short(float): The sell factor
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         drift (int): The diff period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -46,7 +46,8 @@ def thermo(
     offset = get_offset(offset)
     asint = kwargs.pop("asint", True)
 
-    if high is None or low is None: return
+    if high is None or low is None:
+        return
 
     # Calculate
     thermoL = (low.shift(drift) - low).abs()

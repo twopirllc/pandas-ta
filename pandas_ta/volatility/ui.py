@@ -6,9 +6,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def ui(
-        close: Series, length: int = None, scalar: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, scalar: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Ulcer Index (UI)
 
     The Ulcer Index by Peter Martin measures the downside volatility with the use of
@@ -41,7 +41,8 @@ def ui(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     highest_close = close.rolling(length).max()

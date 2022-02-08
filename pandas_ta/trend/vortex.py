@@ -5,10 +5,10 @@ from pandas_ta.volatility import true_range
 
 
 def vortex(
-        high: Series, low: Series, close: Series,
-        length: int = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    length: int = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Vortex
 
     Two oscillators that capture positive and negative trend movement.
@@ -33,7 +33,8 @@ def vortex(
     """
     # Validate
     length = length if length and length > 0 else 14
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    min_periods = int(
+        kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     _length = max(length, min_periods)
     high = verify_series(high, _length)
     low = verify_series(low, _length)
@@ -41,7 +42,8 @@ def vortex(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     tr = true_range(high=high, low=low, close=close)

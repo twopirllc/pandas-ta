@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def mcgd(
-        close: Series, length: int = None,  c: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, c: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """McGinley Dynamic Indicator
 
     The McGinley Dynamic looks like a moving average line, yet it is actually a
@@ -39,7 +39,8 @@ def mcgd(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     close = close.copy()

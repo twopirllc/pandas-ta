@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def obv(
-        close: Series, volume: Series, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, volume: Series, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """On Balance Volume (OBV)
 
     On Balance Volume is a cumulative indicator to measure buying and selling

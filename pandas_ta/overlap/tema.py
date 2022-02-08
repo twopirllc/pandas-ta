@@ -6,9 +6,9 @@ from .ema import ema
 
 
 def tema(
-        close: Series, length: int = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Triple Exponential Moving Average (TEMA)
 
     A less laggy Exponential Moving Average.
@@ -38,7 +38,8 @@ def tema(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

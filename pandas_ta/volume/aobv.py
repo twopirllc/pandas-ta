@@ -7,16 +7,16 @@ from .obv import obv
 
 
 def aobv(
-        close: Series, volume: Series, fast: int = None, slow: int = None,
-        max_lookback: int = None, min_lookback: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, volume: Series, fast: int = None, slow: int = None,
+    max_lookback: int = None, min_lookback: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Archer On Balance Volume (AOBV)
 
     Archer On Balance Volume (AOBV) developed by Kevin Johnson provides
     additional indicator analysis on OBV. It calculates moving averages, default
     'ema', of OBV as well as the moving average Long and Short Run Trends, see
-    ```help(ta.long_run)```. Lastly, the indicator also calculates the rolling
+    ``help(ta.long_run)``. Lastly, the indicator also calculates the rolling
     Maximum and Minimum OBV.
 
     Sources:
@@ -29,7 +29,7 @@ def aobv(
         slow (int): The period of the slow moving average. Default: 12
         max_lookback (int): Maximum OBV bars back. Default: 2
         min_lookback (int): Minimum OBV bars back. Default: 2
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -43,8 +43,10 @@ def aobv(
     # Validate
     fast = int(fast) if fast and fast > 0 else 4
     slow = int(slow) if slow and slow > 0 else 12
-    max_lookback = int(max_lookback) if max_lookback and max_lookback > 0 else 2
-    min_lookback = int(min_lookback) if min_lookback and min_lookback > 0 else 2
+    max_lookback = int(
+        max_lookback) if max_lookback and max_lookback > 0 else 2
+    min_lookback = int(
+        min_lookback) if min_lookback and min_lookback > 0 else 2
     if slow < fast:
         fast, slow = slow, fast
     mamode = mamode if isinstance(mamode, str) else "ema"
@@ -52,10 +54,12 @@ def aobv(
     close = verify_series(close, _length)
     volume = verify_series(volume, _length)
     offset = get_offset(offset)
-    if "length" in kwargs: kwargs.pop("length")
+    if "length" in kwargs:
+        kwargs.pop("length")
     run_length = kwargs.pop("run_length", 2)
 
-    if close is None or volume is None: return
+    if close is None or volume is None:
+        return
 
     # Calculate
     obv_ = obv(close=close, volume=volume, **kwargs)

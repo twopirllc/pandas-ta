@@ -5,9 +5,9 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def vidya(
-        close: Series, length: int = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Variable Index Dynamic Average (VIDYA)
 
     Variable Index Dynamic Average (VIDYA) was developed by Tushar Chande. It is
@@ -41,7 +41,8 @@ def vidya(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     m = close.size
@@ -49,7 +50,8 @@ def vidya(
     abs_cmo = _cmo(close, length, drift).abs()
     vidya = Series(0, index=close.index)
     for i in range(length, m):
-        vidya.iloc[i] = alpha * abs_cmo.iloc[i] * close.iloc[i] + vidya.iloc[i - 1] * (1 - alpha * abs_cmo.iloc[i])
+        vidya.iloc[i] = alpha * abs_cmo.iloc[i] * close.iloc[i] + \
+            vidya.iloc[i - 1] * (1 - alpha * abs_cmo.iloc[i])
     vidya.replace({0: nan}, inplace=True)
 
     # Offset
@@ -69,7 +71,7 @@ def vidya(
     return vidya
 
 
-def _cmo(source: Series, n:int , d: int):
+def _cmo(source: Series, n: int, d: int):
     """Chande Momentum Oscillator (CMO) Patch
     For some reason: from pandas_ta.momentum import cmo causes
     pandas_ta.momentum.coppock to not be able to import it's

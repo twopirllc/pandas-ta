@@ -8,7 +8,8 @@ from pandas_ta.utils import get_offset, np_prepend, verify_series
 try:
     from numba import njit
 except ImportError:
-    njit = lambda _: _
+    def njit(_): return _
+
 
 @njit
 def np_sma(x: ndarray, n: int):
@@ -16,7 +17,7 @@ def np_sma(x: ndarray, n: int):
     result = convolve(ones(n) / n, x)[n - 1:1 - n]
     return np_prepend(result, n - 1)
 
-## SMA: Alternative Implementations
+# SMA: Alternative Implementations
 # @njit
 # def np_sma(x: np.ndarray, n: int):
 #     result = np.convolve(x, np.ones(n), mode="valid") / n
@@ -31,10 +32,10 @@ def np_sma(x: ndarray, n: int):
 
 
 def sma(
-        close: Series, length: int = None,
-        talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Simple Moving Average (SMA)
 
     The Simple Moving Average is the classic moving average that is the equally
@@ -61,12 +62,14 @@ def sma(
     """
     # Validate
     length = int(length) if length and length > 0 else 10
-    min_periods = int(kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    min_periods = int(
+        kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
     close = verify_series(close, max(length, min_periods))
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

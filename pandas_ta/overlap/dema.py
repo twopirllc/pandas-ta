@@ -6,9 +6,9 @@ from .ema import ema
 
 
 def dema(
-        close: Series, length: int = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Double Exponential Moving Average (DEMA)
 
     The Double Exponential Moving Average attempts to a smoother average with less
@@ -37,7 +37,8 @@ def dema(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

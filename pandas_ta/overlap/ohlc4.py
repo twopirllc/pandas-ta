@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def ohlc4(
-        open_: Series, high: Series, low: Series, close: Series,
-        offset: int = None, **kwargs
-    ) -> Series:
+    open_: Series, high: Series, low: Series, close: Series,
+    offset: int = None, **kwargs
+) -> Series:
     """OHLC4
 
     OHLC4 is the average of open, high, low and close.
@@ -30,9 +30,9 @@ def ohlc4(
 
     # Calculate
     ohlc4 = Series(
-            0.25 * (open_.values + high.values + low.values + close.values),
-            index=close.index
-        )
+        0.25 * (open_.values + high.values + low.values + close.values),
+        index=close.index
+    )
 
     # Offset
     if offset != 0:

@@ -6,10 +6,10 @@ from .true_range import true_range
 
 
 def kc(
-        high: Series, low: Series, close: Series,
-        length: int = None, scalar: float = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    length: int = None, scalar: float = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Keltner Channels (KC)
 
     A popular volatility indicator similar to Bollinger Bands and
@@ -24,7 +24,7 @@ def kc(
         close (pd.Series): Series of 'close's
         length (int): The short period.  Default: 20
         scalar (float): A positive float to scale the bands. Default: 2
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -45,7 +45,8 @@ def kc(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     use_tr = kwargs.pop("tr", True)

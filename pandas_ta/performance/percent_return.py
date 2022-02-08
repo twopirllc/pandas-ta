@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def percent_return(
-        close: Series, length: int = None, cumulative: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, cumulative: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Percent Return
 
     Calculates the percent return of a Series.
@@ -31,11 +31,13 @@ def percent_return(
     """
     # Validate
     length = int(length) if length and length > 0 else 1
-    cumulative = bool(cumulative) if cumulative is not None and cumulative else False
+    cumulative = bool(
+        cumulative) if cumulative is not None and cumulative else False
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     np_close = close.values

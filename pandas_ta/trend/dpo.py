@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def dpo(
-        close: Series, length: int = None, centered: bool = True,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, centered: bool = True,
+    offset: int = None, **kwargs
+) -> Series:
     """Detrend Price Oscillator (DPO)
 
     Is an indicator designed to remove trend from price and make it easier to
@@ -38,7 +38,8 @@ def dpo(
     if not kwargs.get("lookahead", True):
         centered = False
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     t = int(0.5 * length) + 1

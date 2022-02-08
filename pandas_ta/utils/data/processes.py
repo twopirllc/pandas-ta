@@ -118,51 +118,85 @@ class sample(object):
 
     _noises = ["b", "br", "fg", "g", "p", "r", "v", "w", None, "rand"]
     _orientations = ["i", "r", "ir", "ri", None, "rand"]
-    _processes = ["bb", "be", "bm", "bmo", "cir", "fbm", "gbm", "ou", "rw", "w", None, "rand"]
+    _processes = [
+        "bb",
+        "be",
+        "bm",
+        "bmo",
+        "cir",
+        "fbm",
+        "gbm",
+        "ou",
+        "rw",
+        "w",
+        None,
+        "rand"]
     _scales = ["m", "n", "s", None]
 
     def __init__(self,
-        name=None, process=None, noise=None, length=None,
-        s0=None, b=None, t=None, drift=None, volatility=None,
-        speed=None, hurst=None, steps=None, random_number=None,
-        orient=None, positive=None, scale=None,
-        future=None, freq=None, intraday=None,
-        noise_percent=None,
-        date_fmt=None, precision=None, verbose=None
-    ):
+                 name=None, process=None, noise=None, length=None,
+                 s0=None, b=None, t=None, drift=None, volatility=None,
+                 speed=None, hurst=None, steps=None, random_number=None,
+                 orient=None, positive=None, scale=None,
+                 future=None, freq=None, intraday=None,
+                 noise_percent=None,
+                 date_fmt=None, precision=None, verbose=None
+                 ):
         """Validation and initialization of arguments and then runs the
         _generate() method to build a sample realization with the given
         arguments.
         """
-        _random_symbol = ''.join([rChoice("ABCDEFGHIJKLMNOPQRSTUVWXYZ") for _ in range(randint(3, 6))])
-        self._name = str(name) if name is not None and isinstance(name, str) else _random_symbol
-        self._process = str(process).lower() if process is not None and isinstance(process, str) and process in self._processes else None
-        self._noise = str(noise).lower() if noise is not None and isinstance(noise, str) and noise in self._noises else None
-        self._length = int(length) if isinstance(length, int) else RATE["TRADING_DAYS_PER_YEAR"]
+        _random_symbol = ''.join(
+            [rChoice("ABCDEFGHIJKLMNOPQRSTUVWXYZ") for _ in range(randint(3, 6))])
+        self._name = str(name) if name is not None and isinstance(
+            name, str) else _random_symbol
+        self._process = str(process).lower() if process is not None and isinstance(
+            process, str) and process in self._processes else None
+        self._noise = str(noise).lower() if noise is not None and isinstance(
+            noise, str) and noise in self._noises else None
+        self._length = int(length) if isinstance(
+            length, int) else RATE["TRADING_DAYS_PER_YEAR"]
 
-        self._s0 = float(s0) if s0 is not None and isinstance(s0, (float, int)) else 0.01
+        self._s0 = float(s0) if s0 is not None and isinstance(
+            s0, (float, int)) else 0.01
         self._b = float(b) if b is not None and isinstance(b, float) else 0.0
-        self._t = float(t) if t is not None and isinstance(t, (float, int)) else 1.0
-        self._drift = float(drift) if drift is not None and isinstance(drift, (float, int)) else 0.0
-        self._volatility = float(volatility) if volatility is not None and isinstance(volatility, (float, int)) else 1.0
-        self._speed = float(speed) if speed is not None and isinstance(speed, (float, int)) else 1.0
-        self._hurst = float(hurst) if hurst is not None and isinstance(hurst, float) and 0 <= hurst <= 1 else 0.5
-        self._steps = steps if steps is not None and isinstance(steps, list) and len(steps) > 1 else [-1.0, 1.0]
+        self._t = float(t) if t is not None and isinstance(
+            t, (float, int)) else 1.0
+        self._drift = float(drift) if drift is not None and isinstance(
+            drift, (float, int)) else 0.0
+        self._volatility = float(volatility) if volatility is not None and isinstance(
+            volatility, (float, int)) else 1.0
+        self._speed = float(speed) if speed is not None and isinstance(
+            speed, (float, int)) else 1.0
+        self._hurst = float(hurst) if hurst is not None and isinstance(
+            hurst, float) and 0 <= hurst <= 1 else 0.5
+        self._steps = steps if steps is not None and isinstance(
+            steps, list) and len(steps) > 1 else [-1.0, 1.0]
         self._random_number = random_number if random_number is not None else None
 
-        self._orient = str(orient).lower() if orient is not None and isinstance(orient, str) and orient in self._orientations else None
-        self._positive = positive if positive is not None and isinstance(positive, bool) else False
-        self._scale = str(scale).lower() if scale is not None and isinstance(scale, str) and scale in self._scales else None
+        self._orient = str(orient).lower() if orient is not None and isinstance(
+            orient, str) and orient in self._orientations else None
+        self._positive = positive if positive is not None and isinstance(
+            positive, bool) else False
+        self._scale = str(scale).lower() if scale is not None and isinstance(
+            scale, str) and scale in self._scales else None
 
-        self._future = future if future is not None and isinstance(future, bool) else False
-        self._freq = f"{freq.lower()}" if freq is not None and len(freq) else "D"
-        self._intraday = intraday.lower() if intraday is not None and len(intraday) and intraday in ["full", "equity"] else "full"
+        self._future = future if future is not None and isinstance(
+            future, bool) else False
+        self._freq = f"{freq.lower()}" if freq is not None and len(
+            freq) else "D"
+        self._intraday = intraday.lower() if intraday is not None and len(
+            intraday) and intraday in ["full", "equity"] else "full"
 
-        self._noise_percent = float(noise_percent) if noise_percent is not None and isinstance(noise_percent, float) else 1.0 # Percent as decimal
-        _date_fmt = str(noise) if date_fmt is not None and isinstance(date_fmt, str) else "%Y-%m-%d"
+        self._noise_percent = float(noise_percent) if noise_percent is not None and isinstance(
+            noise_percent, float) else 1.0  # Percent as decimal
+        _date_fmt = str(noise) if date_fmt is not None and isinstance(
+            date_fmt, str) else "%Y-%m-%d"
         self._date_today = dt.date.today().strftime(_date_fmt)
-        self._precision = int(precision) if precision is not None and isinstance(precision, int) else 6
-        self._verbose = verbose if verbose is not None and isinstance(verbose, bool) else False
+        self._precision = int(precision) if precision is not None and isinstance(
+            precision, int) else 6
+        self._verbose = verbose if verbose is not None and isinstance(
+            verbose, bool) else False
 
         if self._process == "rand":
             self._process = choice(self._processes[:-2])
@@ -170,14 +204,16 @@ class sample(object):
         if self._noise == "rand":
             self._noise = choice(self._noises[:-1])
 
-        self._generate() # Run it
+        self._generate()  # Run it
 
-
-    def _bernoulli_mask(self, array: ndarray, percent:float = None, p:float = None):
+    def _bernoulli_mask(self, array: ndarray,
+                        percent: float = None, p: float = None):
         """Bernoulli Mask - Positive or Negative"""
         if array.size > 0:
-            percent = float(percent) if percent is not None and isinstance(percent, float) else self.noise_percent
-            p = float(p) if p is not None and isinstance(p, float) and p > 0 and p < 1 else 0.5
+            percent = float(percent) if percent is not None and isinstance(
+                percent, float) else self.noise_percent
+            p = float(p) if p is not None and isinstance(
+                p, float) and p > 0 and p < 1 else 0.5
             return array * self.noise_percent * self._bernoulli_process()
         return array
 
@@ -208,7 +244,8 @@ class sample(object):
             _s0 = values[0]
             values = self._nonnegative(values)
             if self._verbose:
-                print(f"[i] New s0: {round(values[0], self._precision)} from {round(_s0, self._precision)} (change {round(values[0] - _s0, self._precision)})")
+                print(
+                    f"[i] New s0: {round(values[0], self._precision)} from {round(_s0, self._precision)} (change {round(values[0] - _s0, self._precision)})")
 
         if self._scale is not None and isinstance(self._scale, str):
             values = self._scaler(values, self._scale)
@@ -221,8 +258,8 @@ class sample(object):
         _s0n = f"s0: {round(self.np[0], self._precision)}, sN: {round(self.np[-1], self._precision)}"
         _msmm = f"mu: {round(mean(self.np), self._precision)}, sigma: {round(std(self.np), self._precision)}"
         self._dfname = f"{_npns} | {_s0n} | {_msmm}"
-        if self._verbose: print(self._dfname)
-
+        if self._verbose:
+            print(self._dfname)
 
     def nonnegative(self, array: ndarray = None):
         """Vertical Translation the 'array' where the resultant 'array' has
@@ -231,7 +268,6 @@ class sample(object):
             return self._nonnegative(array)
         return array
 
-
     def _nonnegative(self, array: ndarray):
         """Translates the array up by the minimum of the 'array' if any values
         are negative."""
@@ -239,7 +275,6 @@ class sample(object):
             array += -1 * array.min()
             self._s0 = array[0]
         return array
-
 
     def _normal_mask(self, array: ndarray):
         """A method to add some additional randomness to the realized
@@ -250,7 +285,6 @@ class sample(object):
             return array * self.noise_percent * norm
         return array
 
-
     def orientation(self, array: ndarray, mode: str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
@@ -258,16 +292,18 @@ class sample(object):
             return self._orientation(array, mode=mode)
         return array
 
-
     def _orientation(self, array: ndarray, mode: str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
         _modes = ["i", "r", "ir", "ri", None, "rand"]
-        mode = str(mode).lower() if mode is not None and isinstance(mode, str) and mode.lower() in _modes else None
+        mode = str(mode).lower() if mode is not None and isinstance(
+            mode, str) and mode.lower() in _modes else None
 
         result = array
-        if mode is None:    return result
-        if mode == "rand":  mode = choice(_modes[3:])
+        if mode is None:
+            return result
+        if mode == "rand":
+            mode = choice(_modes[3:])
 
         if mode == "i":
             mid = 0.5 * (min(array) + max(array))
@@ -283,47 +319,59 @@ class sample(object):
 
         return result
 
-
     def scale(self, array: ndarray, mode: str):
         """Mean, Normal or Standard scaling of the 'array'."""
         if isinstance(array, ndarray):
             return self._scaler(array, mode=mode)
         return array
 
-
     def _scaler(self, array: ndarray, mode: str):
         """Scaling: mean, normal, standard"""
         result = array
-        if mode is None:    return result
-        if mode == "rand":  mode = choice(self._scales[3:])
+        if mode is None:
+            return result
+        if mode == "rand":
+            mode = choice(self._scales[3:])
 
         min_, max_ = min(array), max(array)
         range_ = absolute(max_ - min_)
         mu_, std_ = mean(array), std(array)
 
-        if mode == "m" and range_ > 0: # "mean"
+        if mode == "m" and range_ > 0:  # "mean"
             result = ((array - mu_) / range_)
 
-        if mode == "n" and range_ > 0: # "normal"
+        if mode == "n" and range_ > 0:  # "normal"
             result = ((array - min_) / range_)
 
-        if mode == "s" and std_ > 0: # "standard"
+        if mode == "s" and std_ > 0:  # "standard"
             result = ((array - mu_) / std_)
 
         return result
 
-
-    def _simple_random_walk(self, up:float = None, down:float = None) -> ndarray:
+    def _simple_random_walk(self, up: float = None,
+                            down: float = None) -> ndarray:
         """Simple Random Walk
 
         Sources:
             https://sphelps.net/teaching/scf/slides/random-walks-slides.html
         """
-        up = float(up) if up is not None and isinstance(up, (int, float)) else 1.0
-        down = float(down) if down is not None and isinstance(down, (int, float)) else -1.0
-        if up < down: down, up = up, down
+        up = float(up) if up is not None and isinstance(
+            up, (int, float)) else 1.0
+        down = float(down) if down is not None and isinstance(
+            down, (int, float)) else -1.0
+        if up < down:
+            down, up = up, down
 
-        x = concatenate(([0.0], where(randint(0, 2, size=self.length - 1) == 0, down, up)))
+        x = concatenate(
+            ([0.0],
+             where(
+                randint(
+                    0,
+                    2,
+                    size=self.length -
+                    1) == 0,
+                down,
+                up)))
         return cumsum(x).astype(float)
 
     def _stoch_noise(self):
@@ -348,7 +396,9 @@ class sample(object):
                 _desc += f"Brownian Noise [brownian|br] | t: {self.t}"
             elif self._noise in ["fractional", "fg"]:
                 from stochastic.processes.noise.fractional_gaussian_noise import FractionalGaussianNoise
-                result = FractionalGaussianNoise(hurst=self.hurst, t=self.t).sample(self.length)
+                result = FractionalGaussianNoise(
+                    hurst=self.hurst, t=self.t).sample(
+                    self.length)
                 _desc += f"Fractional Gaussian Noise [fractal|fg] | hurst: {self.hurst}, t: {self.t}"
             elif self._noise in ["gauss", "g"]:
                 from stochastic.processes.noise import GaussianNoise
@@ -373,13 +423,15 @@ class sample(object):
             else:
                 _desc = "Noiseless"
 
-        else: # Default if no stochastic package installed
+        else:  # Default if no stochastic package installed
             _desc = "srw"
 
         # Initial Value (s0) adjustment
-        result = result + result[0] if result[0] > self.s0 else result - result[0]
+        result = result + \
+            result[0] if result[0] > self.s0 else result - result[0]
 
-        if result is not None and any(result) and self._verbose: print(_desc)
+        if result is not None and any(result) and self._verbose:
+            print(_desc)
 
         return result
 
@@ -395,50 +447,79 @@ class sample(object):
 
             if self._process == "bb":
                 from stochastic.processes.continuous import BrownianBridge
-                result = self.s0 + BrownianBridge(b=self.b, t=self.t).sample(self.length - 1)
+                result = self.s0 + \
+                    BrownianBridge(b=self.b, t=self.t).sample(self.length - 1)
                 _desc += f"Brownian Bridge [bb] | s0: {self.s0}, b: {self.b}, t: {self.t}"
             elif self._process == "be":
                 from stochastic.processes.continuous import BrownianExcursion
-                result = self.s0 + BrownianExcursion(t=self.t).sample(self.length - 1)
+                result = self.s0 + \
+                    BrownianExcursion(t=self.t).sample(self.length - 1)
                 _desc += f"Brownian Excursion [be] | s0: {self.s0}, t: {self.t}"
             elif self._process == "bm":
                 from stochastic.processes.continuous import BrownianMeander
-                result = self.s0 + BrownianMeander(t=self.t).sample(self.length - 1, self.b)
+                result = self.s0 + \
+                    BrownianMeander(t=self.t).sample(self.length - 1, self.b)
                 _desc += f"Brownian Meander [bm] | s0: {self.s0}, t: {self.t}"
             elif self._process == "bmo":
                 from stochastic.processes.continuous import BrownianMotion
-                result = self.s0 + BrownianMotion(drift=self.drift, scale=self.volatility, t=self.t).sample(self.length - 1)
+                result = self.s0 + BrownianMotion(
+                    drift=self.drift,
+                    scale=self.volatility,
+                    t=self.t).sample(
+                    self.length - 1)
                 _desc += f"Brownian Motion [bmo] | s0: {self.s0}, drift: {self.drift}, scale: {self.volatility}, t: {self.t}"
             elif self._process == "cir":
                 from stochastic.processes.diffusion import CoxIngersollRossProcess
-                result = CoxIngersollRossProcess(speed=self.speed, mean=self.drift, vol=self.volatility, t=self.t).sample(self.length - 1, self.s0)
+                result = CoxIngersollRossProcess(
+                    speed=self.speed,
+                    mean=self.drift,
+                    vol=self.volatility,
+                    t=self.t).sample(
+                    self.length - 1,
+                    self.s0)
                 _desc += f"Cox Ingersoll Ross [cir] | s0: {self.s0}, speed: {self.speed}, mean: {self.drift}, vol: {self.volatility}, t: {self.t}"
             elif self._process == "fbm":
                 from stochastic.processes.continuous import FractionalBrownianMotion
-                result = self.s0 + FractionalBrownianMotion(hurst=self.hurst, t=self.t).sample(self.length - 1)
+                result = self.s0 + \
+                    FractionalBrownianMotion(
+                        hurst=self.hurst, t=self.t).sample(
+                        self.length - 1)
                 _desc += f"Fractal Brownian Motion [fbm] | s0: {self.s0}, hurst: {self.hurst}, t: {self.t}"
             elif self._process == "gbm":
                 from stochastic.processes.continuous import GeometricBrownianMotion
-                result = GeometricBrownianMotion(drift=self.drift, volatility=self.volatility, t=self.t).sample(self.length - 1, self.s0)
+                result = GeometricBrownianMotion(
+                    drift=self.drift,
+                    volatility=self.volatility,
+                    t=self.t).sample(
+                    self.length - 1,
+                    self.s0)
                 _desc += f"Geometric Brownian Motion [gbm] | s0: {self.s0}, drift: {self.drift}, vol: {self.volatility}, t: {self.t}"
             elif self._process == "ou":
                 from stochastic.processes.diffusion import OrnsteinUhlenbeckProcess
-                result = OrnsteinUhlenbeckProcess(speed=self.speed, vol=self.volatility, t=self.t).sample(self.length - 1, self.s0)
+                result = OrnsteinUhlenbeckProcess(
+                    speed=self.speed, vol=self.volatility, t=self.t).sample(
+                    self.length - 1, self.s0)
                 _desc += f"Ornstein Uhlenbeck [ou] | s0: {self.s0}, speed: {self.speed}, vol: {self.volatility}, t: {self.t}"
             elif self._process == "rw":
                 from stochastic.processes.discrete import RandomWalk
-                result = self.s0 + RandomWalk(steps=self.steps).sample(self.length - 1).astype(float)
+                result = self.s0 + \
+                    RandomWalk(
+                        steps=self.steps).sample(
+                        self.length -
+                        1).astype(float)
                 _desc += f"Random Walk [rw] |  s0: {self.s0}, steps: {self.steps}"
             elif self._process == "w":
                 from stochastic.processes.continuous import WienerProcess
-                result = self.s0 + WienerProcess(t=self.t).sample(self.length - 1)
+                result = self.s0 + \
+                    WienerProcess(t=self.t).sample(self.length - 1)
                 _desc += f"Wiener [w] | s0: {self.s0},  t: {self.t}"
 
-        else: # Default if no stochastic package installed
+        else:  # Default if no stochastic package installed
             result = self.s0 + self._simple_random_walk()
             _desc += f"Simple Random Walk | s0: {self.s0}"
 
-        if result is not None and self._verbose: print(_desc)
+        if result is not None and self._verbose:
+            print(_desc)
 
         return result
 
@@ -456,9 +537,11 @@ class sample(object):
             self._datetimerange = None
             # datelist = date_range(date_N_days_ago, periods=N, freq=freq).to_pydatetime().tolist()
             if self.future:
-                self._datetimerange = date_range(start=self._date_today, periods=self.length, freq=self.freq)
+                self._datetimerange = date_range(
+                    start=self._date_today, periods=self.length, freq=self.freq)
             else:
-                self._datetimerange = date_range(end=self._date_today, periods=self.length, freq=self.freq)
+                self._datetimerange = date_range(
+                    end=self._date_today, periods=self.length, freq=self.freq)
 
         return self._datetimerange
 
@@ -466,7 +549,10 @@ class sample(object):
     def df(self):
         """The Pandas DataFrame of the sample/realization."""
         if self.np is not None and self.np.size > 0:
-            df = DataFrame(self.np, index=self.datetime_range, columns=["close"])
+            df = DataFrame(
+                self.np,
+                index=self.datetime_range,
+                columns=["close"])
             df.name = self._dfname
             self._df = df
             return self._df

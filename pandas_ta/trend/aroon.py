@@ -6,10 +6,10 @@ from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 
 
 def aroon(
-        high: Series, low: Series,
-        length: int = None, scalar: float = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series,
+    length: int = None, scalar: float = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Aroon & Aroon Oscillator (AROON)
 
     Aroon attempts to identify if a security is trending and how strong.
@@ -41,7 +41,8 @@ def aroon(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None: return
+    if high is None or low is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
@@ -49,8 +50,16 @@ def aroon(
         aroon_down, aroon_up = AROON(high, low, length)
         aroon_osc = AROONOSC(high, low, length)
     else:
-        periods_from_hh = high.rolling(length + 1).apply(recent_maximum_index, raw=True)
-        periods_from_ll = low.rolling(length + 1).apply(recent_minimum_index, raw=True)
+        periods_from_hh = high.rolling(
+            length +
+            1).apply(
+            recent_maximum_index,
+            raw=True)
+        periods_from_ll = low.rolling(
+            length +
+            1).apply(
+            recent_minimum_index,
+            raw=True)
 
         aroon_up = aroon_down = scalar
         aroon_up *= 1 - (periods_from_hh / length)

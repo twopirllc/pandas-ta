@@ -6,10 +6,10 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def kama(
-        close: Series, length: int = None, fast: int = None, slow: int = None,
-        mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, fast: int = None, slow: int = None,
+    mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Kaufman's Adaptive Moving Average (KAMA)
 
     Developed by Perry Kaufman, Kaufman's Adaptive Moving Average (KAMA) is a moving average
@@ -27,7 +27,7 @@ def kama(
         length (int): It's period. Default: 10
         fast (int): Fast MA period. Default: 2
         slow (int): Slow MA period. Default: 30
-        mamode (str): See ```help(ta.ma)```. Valid MAs that support initialize
+        mamode (str): See ``help(ta.ma)``. Valid MAs that support initialize
             the first value: 'ema', 'fwma', 'linreg', 'midpoint', 'pwma', 'rma',
             'sinwma', 'sma', 'swma', 'trima', 'wma'. Default: 'sma'
         drift (int): The difference period. Default: 1
@@ -56,7 +56,8 @@ def kama(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     def weight(length: int) -> float:
@@ -76,7 +77,8 @@ def kama(
     ma0 = ma(mamode, close.iloc[:length], length=length, **kwargs).iloc[-1]
     result = [nan for _ in range(0, length - 1)] + [ma0]
     for i in range(length, m):
-        result.append(sc.iloc[i] * close.iloc[i] + (1 - sc.iloc[i]) * result[i - 1])
+        result.append(sc.iloc[i] * close.iloc[i] +
+                      (1 - sc.iloc[i]) * result[i - 1])
 
     kama = Series(result, index=close.index)
 

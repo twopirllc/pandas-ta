@@ -6,9 +6,9 @@ from .increasing import increasing
 
 
 def short_run(
-        fast: Series, slow: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    fast: Series, slow: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Short Run
 
     Short Run was developed by Kevin Johnson that returns a binary Series
@@ -17,12 +17,12 @@ def short_run(
 
     It is recommended to use 'smooth' signals for 'fast' and 'slow' for the
     comparison to reduce unnecessary noise. For indicators using long_run, see
-    Archer Moving Average Trend (```help(ta.amat)```) and Archer On Balance
-    Volume (```help(ta.aobv)```). Both use Moving Averages for 'fast' and 'slow'
+    Archer Moving Average Trend (``help(ta.amat)``) and Archer On Balance
+    Volume (``help(ta.aobv)``). Both use Moving Averages for 'fast' and 'slow'
     signals.
 
     Sources:
-    It is part of the Converging and Diverging Conditional logic in:
+        It is part of the Converging and Diverging Conditional logic in:
         https://www.tradingview.com/script/Z2mq63fE-Trade-Archer-Moving-Averages-v1-4F/
 
     Args:
@@ -44,11 +44,15 @@ def short_run(
     slow = verify_series(slow, length)
     offset = get_offset(offset)
 
-    if fast is None or slow is None: return
+    if fast is None or slow is None:
+        return
 
     # Calculate
-    pt = decreasing(fast, length) & increasing(slow, length)  # potential top or top
-    bd = decreasing(fast, length) & decreasing(slow, length)  # fast and slow are decreasing
+    pt = decreasing(
+        fast, length) & increasing(
+        slow, length)  # potential top or top
+    bd = decreasing(fast, length) & decreasing(
+        slow, length)  # fast and slow are decreasing
     short_run = pt | bd
 
     # Offset

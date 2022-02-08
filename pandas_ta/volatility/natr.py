@@ -6,11 +6,11 @@ from pandas_ta.volatility import atr
 
 
 def natr(
-        high: Series, low: Series, close: Series,
-        length: int = None, scalar: float = None, mamode: str = None,
-        talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series,
+    length: int = None, scalar: float = None, mamode: str = None,
+    talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Normalized Average True Range (NATR)
 
     Normalized Average True Range attempt to normalize the average true range.
@@ -24,7 +24,7 @@ def natr(
         close (pd.Series): Series of 'close's
         length (int): The short period. Default: 20
         scalar (float): How much to magnify. Default: 100
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         offset (int): How many periods to offset the result. Default: 0
@@ -47,7 +47,8 @@ def natr(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
@@ -56,10 +57,10 @@ def natr(
     else:
         natr = scalar / close
         natr *= atr(
-                high=high, low=low, close=close, length=length,
-                mamode=mamode, drift=drift, talib=mode_tal,
-                offset=offset, **kwargs
-            )
+            high=high, low=low, close=close, length=length,
+            mamode=mamode, drift=drift, talib=mode_tal,
+            offset=offset, **kwargs
+        )
 
     # Offset
     if offset != 0:

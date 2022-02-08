@@ -6,11 +6,11 @@ from pandas_ta.volatility import atr
 
 
 def adx(
-        high: Series, low: Series, close: Series,
-        length: int = None, lensig: int = None, scalar: float = None,
-        mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    length: int = None, lensig: int = None, scalar: float = None,
+    mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Average Directional Movement (ADX)
 
     Average Directional Movement is meant to quantify trend strength by measuring
@@ -27,7 +27,7 @@ def adx(
         length (int): It's period. Default: 14
         lensig (int): Signal Length. Like TradingView's default ADX. Default: length
         scalar (float): How much to magnify. Default: 100
-        mamode (str): See ```help(ta.ma)```. Default: 'rma'
+        mamode (str): See ``help(ta.ma)``. Default: 'rma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -49,7 +49,8 @@ def adx(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     atr_ = atr(high=high, low=low, close=close, length=length)

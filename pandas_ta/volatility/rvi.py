@@ -7,12 +7,12 @@ from pandas_ta.utils import unsigned_differences, verify_series
 
 
 def rvi(
-        close: Series, high: Series = None, low: Series = None,
-        length: int = None, scalar: float = None,
-        refined: bool = None, thirds: bool = None,
-        mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, high: Series = None, low: Series = None,
+    length: int = None, scalar: float = None,
+    refined: bool = None, thirds: bool = None,
+    mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Relative Volatility Index (RVI)
 
     The Relative Volatility Index (RVI) was created in 1993 and revised in 1995.
@@ -31,7 +31,7 @@ def rvi(
         refined (bool): Use 'refined' calculation which is the average of
             RVI(high) and RVI(low) instead of RVI(close). Default: False
         thirds (bool): Average of high, low and close. Default: False
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -51,7 +51,8 @@ def rvi(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     if refined or thirds:
         high = verify_series(high)

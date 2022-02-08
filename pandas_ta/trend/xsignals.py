@@ -7,13 +7,13 @@ from pandas_ta.utils import cross_value, get_offset, verify_series
 
 
 def xsignals(
-        signal: Series,
-        xa: Union[int, float, Series],
-        xb: Union[int, float, Series],
-        above: bool = True, long: bool = True, asbool: bool = None,
-        trend_reset: int = 0, trade_offset: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    signal: Series,
+    xa: Union[int, float, Series],
+    xb: Union[int, float, Series],
+    above: bool = True, long: bool = True, asbool: bool = None,
+    trend_reset: int = 0, trade_offset: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Cross Signals (XSIGNALS)
 
     Cross Signals returns Trend Signal (TSIGNALS) results for Signal Crossings. This
@@ -22,24 +22,31 @@ def xsignals(
 
     Cross Signals has two kinds of modes: above and long.
 
-    The first mode 'above', default True, xsignals determines if the signal first
-    crosses above 'xa' and then below 'xb'. If 'above' is False, xsignals determines
-    if the signal first crosses below 'xa' and then above 'xb'.
+    The first mode 'above', default True, xsignals determines if the
+    signal first crosses above 'xa' and then below 'xb'. If 'above' is False,
+    xsignals determines if the signal first crosses below 'xa' and then
+    above 'xb'.
 
     The second mode 'long', default True, passes the long trend result into
-    tsignals so it can determine the appropriate Entries and Exits. When 'long' is
-    False, it does the same but for the short side.
+    tsignals so it can determine the appropriate Entries and Exits.
+    When 'long' is False, it does the same but for the short side.
 
     Example:
-    # These are two different outcomes and depends on the indicator and it's
-    # characteristics. Please check BOTH outcomes BEFORE making an Issue.
-    rsi = df.ta.rsi()
-    # Returns tsignal DataFrame when RSI crosses above 20 and then below 80
-    ta.xsignals(rsi, 20, 80, above=True)
-    # Returns tsignal DataFrame when RSI crosses below 20 and then above 80
-    ta.xsignals(rsi, 20, 80, above=False)
+        These are two different outcomes and depends on the indicator and it's
+        characteristics. Please check BOTH outcomes BEFORE making an Issue::
 
-    Source: Kevin Johnson
+            rsi = df.ta.rsi()
+
+        Returns tsignal DataFrame when RSI crosses above 20 and then below 80::
+
+            ta.xsignals(rsi, 20, 80, above=True)
+
+        Returns tsignal DataFrame when RSI crosses below 20 and then above 80::
+
+            ta.xsignals(rsi, 20, 80, above=False)
+
+    Source:
+        Kevin Johnson
 
     Args:
         signal (pd.Series): The Signal to compare from. Commonly the 'close'.
@@ -94,10 +101,10 @@ def xsignals(
         trends = 1 - trends
 
     tskwargs = {
-        "asbool":asbool,
-        "trade_offset":trade_offset,
-        "trend_reset":trend_reset,
-        "offset":offset
+        "asbool": asbool,
+        "trade_offset": trade_offset,
+        "trend_reset": trend_reset,
+        "offset": offset
     }
     df = tsignals(trends, **tskwargs)
 
@@ -106,7 +113,6 @@ def xsignals(
         f"XS_LONG": df.TS_Trends,
         f"XS_SHORT": 1 - df.TS_Trends
     })
-
 
     # Fill
     if "fillna" in kwargs:

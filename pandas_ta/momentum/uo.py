@@ -5,12 +5,12 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def uo(
-        high: Series, low: Series, close: Series,
-        fast: int = None, medium: int = None, slow: int = None,
-        fast_w: float = None, medium_w: float = None, slow_w: float = None,
-        talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series,
+    fast: int = None, medium: int = None, slow: int = None,
+    fast_w: float = None, medium_w: float = None, slow_w: float = None,
+    talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Ultimate Oscillator (UO)
 
     The Ultimate Oscillator is a momentum indicator over three different
@@ -56,7 +56,8 @@ def uo(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
@@ -80,7 +81,8 @@ def uo(
         slow_avg = bp.rolling(slow).sum() / tr.rolling(slow).sum()
 
         total_weight = fast_w + medium_w + slow_w
-        weights = (fast_w * fast_avg) + (medium_w * medium_avg) + (slow_w * slow_avg)
+        weights = (fast_w * fast_avg) + (medium_w *
+                                         medium_avg) + (slow_w * slow_avg)
         uo = 100 * weights / total_weight
 
     # Offset

@@ -6,9 +6,9 @@ from .sma import sma
 
 
 def trima(
-        close: Series, length: int = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Triangular Moving Average (TRIMA)
 
     A weighted moving average where the shape of the weights are triangular and the
@@ -40,7 +40,8 @@ def trima(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

@@ -6,10 +6,10 @@ from pandas_ta.utils import get_offset, verify_series, get_drift, zero
 
 
 def dm(
-        high: Series, low: Series, length: int = None,
-        mamode: str = None, talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, length: int = None,
+    mamode: str = None, talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Directional Movement (DM)
 
     The Directional Movement was developed by J. Welles Wilder in 1978 attempts to
@@ -23,7 +23,7 @@ def dm(
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
-        mamode (str): See ```help(ta.ma)```.  Default: 'rma'
+        mamode (str): See ``help(ta.ma)``.  Default: 'rma'
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         drift (int): The difference period. Default: 1
@@ -81,7 +81,7 @@ def dm(
 
     # Name and Category
     _params = f"_{length}"
-    data = {f"DMP{_params}": pos, f"DMN{_params}": neg,}
+    data = {f"DMP{_params}": pos, f"DMN{_params}": neg, }
 
     dmdf = DataFrame(data)
     dmdf.name = f"DM{_params}"

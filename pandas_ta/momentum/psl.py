@@ -5,10 +5,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def psl(
-        close: Series, open_: Series = None,
-        length: int = None, scalar: float = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, open_: Series = None,
+    length: int = None, scalar: float = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Psychological Line (PSL)
 
     The Psychological Line is an oscillator-type indicator that compares the
@@ -41,7 +41,8 @@ def psl(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if open_ is not None:

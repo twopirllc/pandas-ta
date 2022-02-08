@@ -37,7 +37,8 @@ def wma(close: Series, length: int = None, asc: bool = None, talib: bool = None,
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

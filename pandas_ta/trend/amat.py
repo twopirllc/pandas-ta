@@ -7,15 +7,15 @@ from .short_run import short_run
 
 
 def amat(
-        close: Series, fast: int = None, slow: int = None,
-        lookback: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, fast: int = None, slow: int = None,
+    lookback: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Archer Moving Averages Trends (AMAT)
 
     Archer Moving Averages Trends (AMAT) developed by Kevin Johnson provides
-    creates both long run ```help(ta.long_run)``` and short run
-    ```help(ta.short_run)``` trend signals given two moving average speeds,
+    creates both long run ``help(ta.long_run)`` and short run
+    ``help(ta.short_run)`` trend signals given two moving average speeds,
     fast and slow. The long runs and short runs are binary Series where '1' is
     a trend and '0' is not a trend.
 
@@ -27,7 +27,7 @@ def amat(
         fast (int): The period of the fast moving average. Default: 8
         slow (int): The period of the slow moving average. Default: 21
         lookback (int): Lookback period for long_run and short_run. Default: 2
-        mamode (str): See ```help(ta.ma)```. Default: 'ema'
+        mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -45,9 +45,11 @@ def amat(
     mamode = mamode.lower() if isinstance(mamode, str) else "ema"
     close = verify_series(close, max(fast, slow, lookback))
     offset = get_offset(offset)
-    if "length" in kwargs: kwargs.pop("length")
+    if "length" in kwargs:
+        kwargs.pop("length")
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     fast_ma = ma(mamode, close, length=fast, **kwargs)

@@ -7,11 +7,11 @@ from pandas_ta.volume import ad
 
 
 def adosc(
-        high: Series, low: Series, close: Series, volume: Series,
-        open_: Series = None, fast: int = None, slow: int = None,
-        talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, volume: Series,
+    open_: Series = None, fast: int = None, slow: int = None,
+    talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Accumulation/Distribution Oscillator or Chaikin Oscillator
 
     Accumulation/Distribution Oscillator indicator utilizes
@@ -49,17 +49,25 @@ def adosc(
     close = verify_series(close, _length)
     volume = verify_series(volume, _length)
     offset = get_offset(offset)
-    if "length" in kwargs: kwargs.pop("length")
+    if "length" in kwargs:
+        kwargs.pop("length")
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None or volume is None: return
+    if high is None or low is None or close is None or volume is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import ADOSC
         adosc = ADOSC(high, low, close, volume, fast, slow)
     else:
-        ad_ = ad(high=high, low=low, close=close, volume=volume, open_=open_, talib=mode_tal)
+        ad_ = ad(
+            high=high,
+            low=low,
+            close=close,
+            volume=volume,
+            open_=open_,
+            talib=mode_tal)
         fast_ad = ema(close=ad_, length=fast, **kwargs, talib=mode_tal)
         slow_ad = ema(close=ad_, length=slow, **kwargs, talib=mode_tal)
         adosc = fast_ad - slow_ad

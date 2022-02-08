@@ -5,11 +5,11 @@ from pandas_ta.utils import get_drift, get_offset, verify_series, signed_series,
 
 
 def wb_tsv(
-        close: Series, volume: Series,
-        length: int = None, signal: int = None,
-        mamode: str = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, volume: Series,
+    length: int = None, signal: int = None,
+    mamode: str = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Time Segmented Value (TSV)
 
     TSV is a proprietary technical indicator developed by Worden Brothers Inc.,
@@ -29,7 +29,7 @@ def wb_tsv(
         volume (pd.Series): Series of 'volume's
         length (int): It's period. Default: 18
         signal (int): It's avg period. Default: 10
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 

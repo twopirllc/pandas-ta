@@ -15,7 +15,7 @@ from pandas_ta.maps import Imports
 
 def camelCase2Title(x: str):
     """https://stackoverflow.com/questions/5020906/python-convert-camel-case-to-space-delimited-using-regex-and-taking-acronyms-in"""
-    return re_.sub("([a-z])([A-Z])","\g<1> \g<2>", x).title()
+    return re_.sub("([a-z])([A-Z])", "\\g<1> \\g<2>", x).title()
 
 
 def category_files(category: str) -> list:
@@ -86,7 +86,8 @@ def signed_series(series: Series, initial: int, lag: int = None) -> Series:
     and returns:
     sign = Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0])
     """
-    initial = initial if initial is not None and not isinstance(lag, str) else None
+    initial = initial if initial is not None and not isinstance(
+        lag, str) else None
     lag = int(lag) if lag is not None and isinstance(lag, int) else 1
     series = verify_series(series)
     sign = series.diff(lag)
@@ -96,24 +97,39 @@ def signed_series(series: Series, initial: int, lag: int = None) -> Series:
     return sign
 
 
+def simplify_columns(df, n=3):
+    df.columns = df.columns.str.lower()
+    return [c.split("_")[0][n - 1:n] for c in df.columns]
+
+
 def tal_ma(name: str) -> int:
     """Helper Function that returns the Enum value for TA Lib's MA Type"""
     if Imports["talib"] and isinstance(name, str) and len(name) > 1:
         from talib import MA_Type
         name = name.lower()
-        if   name == "sma":   return MA_Type.SMA   # 0
-        elif name == "ema":   return MA_Type.EMA   # 1
-        elif name == "wma":   return MA_Type.WMA   # 2
-        elif name == "dema":  return MA_Type.DEMA  # 3
-        elif name == "tema":  return MA_Type.TEMA  # 4
-        elif name == "trima": return MA_Type.TRIMA # 5
-        elif name == "kama":  return MA_Type.KAMA  # 6
-        elif name == "mama":  return MA_Type.MAMA  # 7
-        elif name == "t3":    return MA_Type.T3    # 8
+        if name == "sma":
+            return MA_Type.SMA   # 0
+        elif name == "ema":
+            return MA_Type.EMA   # 1
+        elif name == "wma":
+            return MA_Type.WMA   # 2
+        elif name == "dema":
+            return MA_Type.DEMA  # 3
+        elif name == "tema":
+            return MA_Type.TEMA  # 4
+        elif name == "trima":
+            return MA_Type.TRIMA  # 5
+        elif name == "kama":
+            return MA_Type.KAMA  # 6
+        elif name == "mama":
+            return MA_Type.MAMA  # 7
+        elif name == "t3":
+            return MA_Type.T3    # 8
     return 0  # Default: SMA -> 0
 
 
-def unsigned_differences(series: Series, amount: int = None, **kwargs) -> Union[Series, Series]:
+def unsigned_differences(series: Series, amount: int = None,
+                         **kwargs) -> Union[Series, Series]:
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
     on the differences of the original series. The positive series are only the
@@ -161,7 +177,14 @@ def performance(df: DataFrame,
     stats = bool(stats) if isinstance(stats, bool) and stats else False
     verbose = bool(verbose) if isinstance(verbose, bool) and verbose else False
 
-    _ex = ["above", "above_value", "below", "below_value", "cross", "cross_value", "ichimoku"]
+    _ex = [
+        "above",
+        "above_value",
+        "below",
+        "below_value",
+        "cross",
+        "cross_value",
+        "ichimoku"]
     if isinstance(excluded, list) and len(excluded) > 0:
         _ex += excluded
     indicators = df.ta.indicators(as_list=True, exclude=_ex)
@@ -170,7 +193,10 @@ def performance(df: DataFrame,
     def ms2secs(ms, p: int):
         return round(0.001 * ms, p)
 
-    def indicator_time(df: DataFrame, group: list = [], index_name: str = "Indicator", p: int = 4):
+    def indicator_time(
+            df: DataFrame, group: list = [],
+            index_name: str = "Indicator", p: int = 4
+        ):
         times = []
         for i in group:
             r = df.ta(i, talib=talib, timed=True)
@@ -192,7 +218,8 @@ def performance(df: DataFrame,
     tdf.set_index(_iname, inplace=True)
     tdf.sort_values(by=sortby, ascending=ascending, inplace=True)
 
-    total_timedf = DataFrame(tdf.describe().loc[['min', '50%', 'mean', 'max']]).T
+    total_timedf = DataFrame(
+        tdf.describe().loc[['min', '50%', 'mean', 'max']]).T
     total_timedf["total"] = tdf.sum(axis=0).T
     total_timedf = total_timedf.T
 

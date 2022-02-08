@@ -6,10 +6,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def hilo(
-        high: Series, low: Series, close: Series,
-        high_length: int = None, low_length: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series,
+    high_length: int = None, low_length: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Gann HiLo Activator(HiLo)
 
     The Gann High Low Activator Indicator was created by Robert Krausz in a 1998
@@ -33,7 +33,7 @@ def hilo(
         close (pd.Series): Series of 'close's
         high_length (int): It's period. Default: 13
         low_length (int): It's period. Default: 21
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -55,7 +55,8 @@ def hilo(
     close = verify_series(close, _length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     m = close.size
@@ -93,7 +94,10 @@ def hilo(
 
     # Name and Category
     _props = f"_{high_length}_{low_length}"
-    data = {f"HILO{_props}": hilo, f"HILOl{_props}": long, f"HILOs{_props}": short}
+    data = {
+        f"HILO{_props}": hilo,
+        f"HILOl{_props}": long,
+        f"HILOs{_props}": short}
     df = DataFrame(data, index=close.index)
 
     df.name = f"HILO{_props}"

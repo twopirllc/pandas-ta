@@ -4,10 +4,10 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def tsignals(
-        trend: Series, asbool: bool = None,
-        trend_reset=0, trade_offset=None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    trend: Series, asbool: bool = None,
+    trend_reset=0, trade_offset=None, drift: int = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Trend Signals
 
     Given a Trend, Trend Signals returns the Trend, Trades, Entries and Exits as
@@ -19,10 +19,12 @@ def tsignals(
     whose values are boolean or integers (0 or 1).
 
     Examples:
-    ta.tsignals(close > ta.sma(close, 50), asbool=False)
-    ta.tsignals(ta.ema(close, 8) > ta.ema(close, 21), asbool=True)
+        ta.tsignals(close > ta.sma(close, 50), asbool=False)
 
-    Source: Kevin Johnson
+        ta.tsignals(ta.ema(close, 8) > ta.ema(close, 21), asbool=True)
+
+    Source: 
+        Kevin Johnson
 
     Args:
         trend (pd.Series): Series of 'trend's. The trend can be either a boolean or
@@ -48,9 +50,11 @@ def tsignals(
     # Validate
     trend = verify_series(trend)
     asbool = bool(asbool) if isinstance(asbool, bool) else False
-    trend_reset = int(trend_reset) if trend_reset and isinstance(trend_reset, int) else 0
-    if trade_offset !=0:
-        trade_offset = int(trade_offset) if trade_offset and isinstance(trade_offset, int) else 0
+    trend_reset = int(trend_reset) if trend_reset and isinstance(
+        trend_reset, int) else 0
+    if trade_offset != 0:
+        trade_offset = int(trade_offset) if trade_offset and isinstance(
+            trade_offset, int) else 0
     drift = get_drift(drift)
     offset = get_offset(offset)
 

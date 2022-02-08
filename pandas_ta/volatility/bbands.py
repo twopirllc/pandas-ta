@@ -7,10 +7,10 @@ from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
 def bbands(
-        close: Series, length: int = None, std: int = None, ddof: int = 0,
-        mamode: str = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, length: int = None, std: int = None, ddof: int = 0,
+    mamode: str = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Bollinger Bands (BBANDS)
 
     A popular volatility indicator by John Bollinger.
@@ -23,7 +23,7 @@ def bbands(
         length (int): The short period. Default: 5
         std (int): The long period. Default: 2
         ddof (int): Degrees of Freedom to use. Default: 0
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         ddof (int): Delta Degrees of Freedom.
@@ -43,19 +43,25 @@ def bbands(
     length = int(length) if length and length > 0 else 5
     std = float(std) if std and std > 0 else 2.0
     mamode = mamode if isinstance(mamode, str) else "sma"
-    ddof = int(ddof) if isinstance(ddof, int) and ddof >= 0 and ddof < length else 1
+    ddof = int(ddof) if isinstance(
+        ddof, int) and ddof >= 0 and ddof < length else 1
     close = verify_series(close, length)
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import BBANDS
         upper, mid, lower = BBANDS(close, length, std, std, tal_ma(mamode))
     else:
-        standard_deviation = stdev(close=close, length=length, ddof=ddof, talib=mode_tal)
+        standard_deviation = stdev(
+            close=close,
+            length=length,
+            ddof=ddof,
+            talib=mode_tal)
         deviations = std * standard_deviation
         # deviations = std * standard_deviation.loc[standard_deviation.first_valid_index():,]
 

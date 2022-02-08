@@ -6,11 +6,11 @@ from pandas_ta.volatility import atr
 
 
 def chop(
-        high: Series, low: Series, close: Series,
-        length: int = None, atr_length: int = None,
-        ln: bool = None, scalar: float = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series,
+    length: int = None, atr_length: int = None,
+    ln: bool = None, scalar: float = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Choppiness Index (CHOP)
 
     The Choppiness Index was created by Australian commodity trader
@@ -43,7 +43,8 @@ def chop(
     """
     # Validate
     length = int(length) if length and length > 0 else 14
-    atr_length = int(atr_length) if atr_length is not None and atr_length > 0 else 1
+    atr_length = int(
+        atr_length) if atr_length is not None and atr_length > 0 else 1
     ln = bool(ln) if isinstance(ln, bool) else False
     scalar = float(scalar) if scalar else 100
     high = verify_series(high, length)
@@ -52,7 +53,8 @@ def chop(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     diff = high.rolling(length).max() - low.rolling(length).min()

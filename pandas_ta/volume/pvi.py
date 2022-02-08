@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def pvi(
-        close: Series, volume: Series, length: int = None, initial: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, volume: Series, length: int = None, initial: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Positive Volume Index (PVI)
 
     The Positive Volume Index is a cumulative indicator that uses volume change in
@@ -38,11 +38,13 @@ def pvi(
     volume = verify_series(volume, length)
     offset = get_offset(offset)
 
-    if close is None or volume is None: return
+    if close is None or volume is None:
+        return
 
     # Calculate
     signed_volume = signed_series(volume, 1)
-    pvi = roc(close=close, length=length) * signed_volume[signed_volume > 0].abs()
+    pvi = roc(close=close, length=length) * \
+        signed_volume[signed_volume > 0].abs()
     pvi.fillna(0, inplace=True)
     pvi.iloc[0] = initial
     pvi = pvi.cumsum()

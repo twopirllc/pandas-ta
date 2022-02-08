@@ -6,9 +6,9 @@ from pandas_ta.volatility import atr
 
 
 def pgo(
-        high: Series, low: Series, close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Pretty Good Oscillator (PGO)
 
     The Pretty Good Oscillator indicator was created by Mark Johnson to measure the distance of the current close from its N-day Simple Moving Average, expressed in terms of an average true range over a similar period. Johnson's approach was to
@@ -39,7 +39,8 @@ def pgo(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     pgo = close - sma(close, length)

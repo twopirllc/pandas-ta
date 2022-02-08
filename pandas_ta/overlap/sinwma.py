@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series, weights
 
 
 def sinwma(
-        close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Sine Weighted Moving Average (SWMA)
 
     A weighted average using sine cycles. The middle term(s) of the average have the
@@ -34,13 +34,19 @@ def sinwma(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
-    sines = Series([sin((i + 1) * pi / (length + 1)) for i in range(0, length)])
+    sines = Series([sin((i + 1) * pi / (length + 1))
+                   for i in range(0, length)])
     w = sines / sines.sum()
 
-    sinwma = close.rolling(length, min_periods=length).apply(weights(w), raw=True)
+    sinwma = close.rolling(
+        length,
+        min_periods=length).apply(
+        weights(w),
+        raw=True)
 
     # Offset
     if offset != 0:

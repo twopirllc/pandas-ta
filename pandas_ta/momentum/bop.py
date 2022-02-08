@@ -5,10 +5,10 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def bop(
-        open_: Series, high: Series, low: Series, close: Series,
-        scalar: float = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    open_: Series, high: Series, low: Series, close: Series,
+    scalar: float = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Balance of Power (BOP)
 
     Balance of Power measure the market strength of buyers against sellers.

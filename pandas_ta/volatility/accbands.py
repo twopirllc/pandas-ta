@@ -5,10 +5,10 @@ from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def accbands(
-        high: Series, low: Series, close: Series, length: int = None,
-        c: int = None, drift: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series, length: int = None,
+    c: int = None, drift: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Acceleration Bands (ACCBANDS)
 
     Acceleration Bands created by Price Headley plots upper and lower envelope
@@ -23,7 +23,7 @@ def accbands(
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
         c (int): Multiplier. Default: 4
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -44,7 +44,8 @@ def accbands(
     drift = get_drift(drift)
     offset = get_offset(offset)
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     high_low_range = non_zero_range(high, low)

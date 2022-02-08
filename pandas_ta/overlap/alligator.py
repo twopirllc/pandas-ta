@@ -5,10 +5,10 @@ from .smma import smma
 
 
 def alligator(
-        close: Series, jaw: int = None, teeth: int = None, lips: int = None,
-        talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, jaw: int = None, teeth: int = None, lips: int = None,
+    talib: bool = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Bill Williams Alligator (ALLIGATOR)
 
     The Alligator Indicator was developed by Bill Williams and combines moving
@@ -47,7 +47,8 @@ def alligator(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     gator_jaw = smma(close, length=jaw, talib=mode_tal)

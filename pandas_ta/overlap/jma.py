@@ -7,9 +7,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def jma(
-        close: Series, length: int = None, phase: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, phase: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Jurik Moving Average Average (JMA)
 
     Mark Jurik's Moving Average (JMA) attempts to eliminate noise to see the "true"
@@ -38,7 +38,8 @@ def jma(
     phase = float(phase) if phase and phase != 0 else 0
     close = verify_series(close, _length)
     offset = get_offset(offset)
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     jma = zeros_like(close)
@@ -65,12 +66,13 @@ def jma(
         # Price volatility
         del1 = price - uBand
         del2 = price - lBand
-        volty[i] = max(abs(del1),abs(del2)) if abs(del1)!=abs(del2) else 0
+        volty[i] = max(abs(del1), abs(del2)) if abs(del1) != abs(del2) else 0
 
         # Relative price volatility factor
-        v_sum[i] = v_sum[i - 1] + (volty[i] - volty[max(i - sum_length, 0)]) / sum_length
+        v_sum[i] = v_sum[i - 1] + \
+            (volty[i] - volty[max(i - sum_length, 0)]) / sum_length
         avg_volty = average(v_sum[max(i - 65, 0):i + 1])
-        d_volty = 0 if avg_volty ==0 else volty[i] / avg_volty
+        d_volty = 0 if avg_volty == 0 else volty[i] / avg_volty
         r_volty = max(1.0, min(np_power(length1, 1 / pow1), d_volty))
         # r_volty = max(1.0, min(length1 **(1 / pow1), d_volty))
 
@@ -92,8 +94,9 @@ def jma(
         ma2 = ma1 + pr * det0
 
         # 3rd stage - final smoothing by unique Jurik adaptive filter
-        det1 = ((ma2 - jma[i - 1]) * (1 - alpha) * (1 - alpha)) + (alpha * alpha * det1)
-        jma[i] = jma[i-1] + det1
+        det1 = ((ma2 - jma[i - 1]) * (1 - alpha) *
+                (1 - alpha)) + (alpha * alpha * det1)
+        jma[i] = jma[i - 1] + det1
 
     jma = Series(jma, index=close.index)
     jma.iloc[0:_length - 1] = nan

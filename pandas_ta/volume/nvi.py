@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def nvi(
-        close: Series, volume: Series, length: int = None, initial: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, volume: Series, length: int = None, initial: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Negative Volume Index (NVI)
 
     The Negative Volume Index is a cumulative indicator that uses volume change in
@@ -38,7 +38,8 @@ def nvi(
     volume = verify_series(volume, length)
     offset = get_offset(offset)
 
-    if close is None or volume is None: return
+    if close is None or volume is None:
+        return
 
     # Calculate
     roc_ = roc(close=close, length=length)

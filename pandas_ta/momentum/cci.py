@@ -7,10 +7,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def cci(
-        high: Series, low: Series, close: Series, length: int = None,
-        c: float = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, length: int = None,
+    c: float = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Commodity Channel Index (CCI)
 
     Commodity Channel Index is a momentum oscillator used to primarily identify
@@ -45,7 +45,8 @@ def cci(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

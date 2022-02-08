@@ -6,9 +6,9 @@ from .ema import ema
 
 
 def t3(
-        close: Series, length: int = None, a: float = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, a: float = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Tim Tillson's T3 Moving Average (T3)
 
     Tim Tillson's T3 Moving Average is considered a smoother and more responsive
@@ -41,7 +41,8 @@ def t3(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

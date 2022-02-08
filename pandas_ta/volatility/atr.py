@@ -7,10 +7,10 @@ from .true_range import true_range
 
 
 def atr(
-        high: Series, low: Series, close: Series, length: int = None,
-        mamode: str = None, talib: bool = None, drift: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, length: int = None,
+    mamode: str = None, talib: bool = None, drift: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Average True Range (ATR)
 
     Averge True Range is used to measure volatility, especially volatility caused by
@@ -24,7 +24,7 @@ def atr(
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14
-        mamode (str): See ```help(ta.ma)```. Default: 'rma'
+        mamode (str): See ``help(ta.ma)``. Default: 'rma'
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         drift (int): The difference period. Default: 1
@@ -48,14 +48,20 @@ def atr(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import ATR
         atr = ATR(high, low, close, length)
     else:
-        tr = true_range(high=high, low=low, close=close, drift=drift, talib=mode_tal)
+        tr = true_range(
+            high=high,
+            low=low,
+            close=close,
+            drift=drift,
+            talib=mode_tal)
         atr = ma(mamode, tr, length=length, talib=mode_tal)
 
     percentage = kwargs.pop("percent", False)

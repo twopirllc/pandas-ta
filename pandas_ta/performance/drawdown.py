@@ -5,8 +5,8 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def drawdown(
-        close: Series, offset: int = None, **kwargs
-    ) -> DataFrame:
+    close: Series, offset: int = None, **kwargs
+) -> DataFrame:
     """Drawdown (DD)
 
     Drawdown is a peak-to-trough decline during a specific period for an investment,

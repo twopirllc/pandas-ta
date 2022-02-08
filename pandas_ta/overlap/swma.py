@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, symmetric_triangle, verify_series, weigh
 
 
 def swma(
-        close: Series, length: int = None, asc: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, asc: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Symmetric Weighted Moving Average (SWMA)
 
     Symmetric Weighted Moving Average where weights are based on a symmetric
@@ -35,11 +35,16 @@ def swma(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     triangle = symmetric_triangle(length, weighted=True)
-    swma = close.rolling(length, min_periods=length).apply(weights(triangle), raw=True)
+    swma = close.rolling(
+        length,
+        min_periods=length).apply(
+        weights(triangle),
+        raw=True)
 
     # Offset
     if offset != 0:

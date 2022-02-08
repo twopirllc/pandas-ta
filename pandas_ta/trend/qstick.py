@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def qstick(
-        open_: Series, close: Series, length: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    open_: Series, close: Series, length: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Q Stick
 
     The Q Stick indicator, developed by Tushar Chande, attempts to quantify and
@@ -37,7 +37,8 @@ def qstick(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if open_ is None or close is None: return
+    if open_ is None or close is None:
+        return
 
     # Calculate
     diff = non_zero_range(close, open_)
@@ -50,7 +51,7 @@ def qstick(
         qstick = hma(diff, length=length)
     elif ma == "rma":
         qstick = rma(diff, length=length)
-    else: # "sma"
+    else:  # "sma"
         qstick = sma(diff, length=length)
 
     # Offset

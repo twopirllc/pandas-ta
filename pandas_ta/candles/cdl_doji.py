@@ -6,11 +6,11 @@ from pandas_ta.utils import real_body, verify_series
 
 
 def cdl_doji(
-        open_: Series, high: Series, low: Series, close: Series,
-        length: int = None, factor: float = None, scalar: float = None,
-        asint: bool = True,
-        offset: int = None, **kwargs
-    ) -> Series:
+    open_: Series, high: Series, low: Series, close: Series,
+    length: int = None, factor: float = None, scalar: float = None,
+    asint: bool = True,
+    offset: int = None, **kwargs
+) -> Series:
     """Candle Type: Doji
 
     A candle body is Doji, when it's shorter than 10% of the
@@ -50,7 +50,8 @@ def cdl_doji(
     offset = get_offset(offset)
     naive = kwargs.pop("naive", False)
 
-    if open_ is None or high is None or low is None or close is None: return
+    if open_ is None or high is None or low is None or close is None:
+        return
 
     # Calculate
     body = real_body(open_, close).abs()

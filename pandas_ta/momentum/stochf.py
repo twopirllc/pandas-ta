@@ -6,10 +6,10 @@ from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
 def stochf(
-        high: Series, low: Series, close: Series, k: int = None, d: int = None,
-        mamode: str = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    high: Series, low: Series, close: Series, k: int = None, d: int = None,
+    mamode: str = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Fast Stochastic (STOCHF)
 
     The Fast Stochastic Oscillator (STOCHF) was developed by George Lane in the
@@ -26,7 +26,7 @@ def stochf(
         close (pd.Series): Series of 'close's
         k (int): The Fast %K period. Default: 14
         d (int): The Slow %D period. Default: 3
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         talib (bool): If TA Lib is installed and talib is True, Returns the TA Lib
             version. Default: True
         offset (int): How many periods to offset the result. Default: 0
@@ -49,7 +49,8 @@ def stochf(
     mamode = mamode if isinstance(mamode, str) else "sma"
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if high is None or low is None or close is None: return
+    if high is None or low is None or close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
@@ -62,7 +63,11 @@ def stochf(
 
         stochf_k = 100 * (close - lowest_low)
         stochf_k /= non_zero_range(highest_high, lowest_low)
-        stochf_d = ma(mamode, stochf_k.loc[stochf_k.first_valid_index():,], length=d, talib=mode_tal)
+        stochf_d = ma(mamode,
+                      stochf_k.loc[stochf_k.first_valid_index():,
+                                   ],
+                      length=d,
+                      talib=mode_tal)
 
     # Offset
     if offset != 0:

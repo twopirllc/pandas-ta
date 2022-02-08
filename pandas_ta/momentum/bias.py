@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def bias(
-        close: Series, length: int = None, mamode: str = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, mamode: str = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Bias (BIAS)
 
     Rate of change between the source and a moving average.
@@ -19,7 +19,7 @@ def bias(
     Args:
         close (pd.Series): Series of 'close's
         length (int): The period. Default: 26
-        mamode (str): See ```help(ta.ma)```. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -35,7 +35,8 @@ def bias(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     bma = ma(mamode, close, length=length, **kwargs)

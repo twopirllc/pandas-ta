@@ -5,10 +5,10 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def cdl_z(
-        open_: Series, high: Series, low: Series, close: Series,
-        length: int = None, full: bool = None, ddof=None,
-        offset: int = None, **kwargs
-    ) -> DataFrame:
+    open_: Series, high: Series, low: Series, close: Series,
+    length: int = None, full: bool = None, ddof=None,
+    offset: int = None, **kwargs
+) -> DataFrame:
     """Candle Type: Z
 
     Normalizes OHLC Candles with a rolling Z Score.
@@ -42,7 +42,8 @@ def cdl_z(
     offset = get_offset(offset)
     full = bool(full) if full is not None and full else False
 
-    if open_ is None or high is None or low is None or close is None: return
+    if open_ is None or high is None or low is None or close is None:
+        return
 
     # Calculate
     if full:

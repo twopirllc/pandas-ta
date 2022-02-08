@@ -4,9 +4,9 @@ from pandas_ta.utils import fibonacci, get_offset, verify_series, weights
 
 
 def fwma(
-        close: Series, length: int = None, asc: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, asc: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Fibonacci's Weighted Moving Average (FWMA)
 
     Fibonacci's Weighted Moving Average is similar to a Weighted Moving Average
@@ -33,11 +33,16 @@ def fwma(
     close = verify_series(close, length)
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     fibs = fibonacci(n=length, weighted=True)
-    fwma = close.rolling(length, min_periods=length).apply(weights(fibs), raw=True)
+    fwma = close.rolling(
+        length,
+        min_periods=length).apply(
+        weights(fibs),
+        raw=True)
 
     # Offset
     if offset != 0:

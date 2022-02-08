@@ -7,10 +7,12 @@ from pandas_ta.utils import get_offset, verify_series
 try:
     from numba import njit
 except ImportError:
-    njit = lambda _: _
+    def njit(_): return _
+
 
 @njit
-def np_trendflex(x: ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: float):
+def np_trendflex(x: ndarray, n: int, k: int,
+                 alpha: float, pi: float, sqrt2: float):
     """Ehler's Trendflex
     http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html"""
     m, ratio = x.size, 2 * sqrt2 / k
@@ -23,7 +25,7 @@ def np_trendflex(x: ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: flo
     result = zeros_like(x)
 
     for i in range(2, m):
-        _f[i] =  0.5 * c * (x[i] + x[i - 1]) + b * _f[i - 1] - a * a * _f[i - 2]
+        _f[i] = 0.5 * c * (x[i] + x[i - 1]) + b * _f[i - 1] - a * a * _f[i - 2]
 
     for i in range(n, m):
         _sum = 0
@@ -39,11 +41,11 @@ def np_trendflex(x: ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: flo
 
 
 def trendflex(
-        close: Series, length: int = None,
-        smooth: int = None, alpha: float = None,
-        pi: float = None, sqrt2: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    smooth: int = None, alpha: float = None,
+    pi: float = None, sqrt2: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Trendflex (TRENDFLEX)
 
     John F. Ehlers introduced two indicators within the article "Reflex: A New
@@ -88,7 +90,8 @@ def trendflex(
     close = verify_series(close, max(length, smooth))
     offset = get_offset(offset)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     np_close = close.values

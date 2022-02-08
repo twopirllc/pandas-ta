@@ -4,9 +4,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def hwma(
-        close: Series, na: float = None, nb: float = None, nc: float = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, na: float = None, nb: float = None, nc: float = None,
+    offset: int = None, **kwargs
+) -> Series:
     """HWMA (Holt-Winter Moving Average)
 
     Indicator HWMA (Holt-Winter Moving Average) is a three-parameter moving average
@@ -51,7 +51,7 @@ def hwma(
         V = (1.0 - nb) * (last_v + last_a) + nb * (F - last_f)
         A = (1.0 - nc) * last_a + nc * (V - last_v)
         result.append((F + V + 0.5 * A))
-        last_a, last_f, last_v = A, F, V # update values
+        last_a, last_f, last_v = A, F, V  # update values
 
     hwma = Series(result, index=close.index)
 

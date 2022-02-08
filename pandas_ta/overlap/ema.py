@@ -7,7 +7,7 @@ from pandas_ta.utils import get_offset, verify_series
 try:
     from numba import njit
 except ImportError:
-    njit = lambda _: _
+    def njit(_): return _
 
 # Almost there
 # @njit
@@ -23,10 +23,10 @@ except ImportError:
 
 
 def ema(
-        close: Series, length: int = None,
-        talib: bool = None, presma: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None,
+    talib: bool = None, presma: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Exponential Moving Average (EMA)
 
     The Exponential Moving Average is a more responsive moving average compared
@@ -65,14 +65,15 @@ def ema(
     offset = get_offset(offset)
     adjust = kwargs.pop("adjust", False)
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import EMA
         ema = EMA(close, length)
     else:
-        if presma: # TA Lib implementation
+        if presma:  # TA Lib implementation
             close = close.copy()
             sma_nth = close[0:length].mean()
             close[:length - 1] = nan

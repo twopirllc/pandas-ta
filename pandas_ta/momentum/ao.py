@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def ao(
-        high: Series, low: Series, fast: int = None, slow: int = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, fast: int = None, slow: int = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Awesome Oscillator (AO)
 
     The Awesome Oscillator is an indicator used to measure a security's momentum.
@@ -41,7 +41,8 @@ def ao(
     low = verify_series(low, _length)
     offset = get_offset(offset)
 
-    if high is None or low is None: return
+    if high is None or low is None:
+        return
 
     # Calculate
     median_price = 0.5 * (high + low)

@@ -5,9 +5,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def mom(
-        close: Series, length: int = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    close: Series, length: int = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Momentum (MOM)
 
     Momentum is an indicator used to measure a security's speed (or strength) of
@@ -36,7 +36,8 @@ def mom(
     offset = get_offset(offset)
     mode_tal = bool(talib) if isinstance(talib, bool) else True
 
-    if close is None: return
+    if close is None:
+        return
 
     # Calculate
     if Imports["talib"] and mode_tal:

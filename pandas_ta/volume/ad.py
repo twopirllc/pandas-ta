@@ -5,10 +5,10 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def ad(
-        high: Series, low: Series, close: Series, volume: Series,
-        open_: Series = None, talib: bool = None,
-        offset: int = None, **kwargs
-    ) -> Series:
+    high: Series, low: Series, close: Series, volume: Series,
+    open_: Series = None, talib: bool = None,
+    offset: int = None, **kwargs
+) -> Series:
     """Accumulation/Distribution (AD)
 
     Accumulation/Distribution indicator utilizes the relative position
