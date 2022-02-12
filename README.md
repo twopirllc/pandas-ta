@@ -24,6 +24,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 <br/>
 
 ![Example Chart](/images/TA_Chart.png)
+![Example Chart](/images/TA_Volume.png)
 
 <br/>
 
@@ -81,9 +82,9 @@ _Pandas Technical Analysis_ (**Pandas TA**) is a free, Open Source, and easy to 
 
 Large & Lite Weight Library
 ---------------------------
-* Over 200 Indicators, Statistics and Candlestick Patterns
-    * Over 60 Candlestick Patterns with **[TA Lib](https://github.com/mrjbq7/ta-lib)** indicator integration
-* Flat library structure similar to **TA Lib**
+* Over 200 Indicators, Statistics and Candlestick Patterns.
+    * Over 60 Candlestick Patterns with **[TA Lib](https://github.com/mrjbq7/ta-lib)** indicator integration.
+* Flat library structure similar to **TA Lib**.
 * Single dependency: [Pandas](https://pandas.pydata.org/)
 
 Accuracy
@@ -97,19 +98,20 @@ Performance
     * **TA Lib** computations are **enabled** by default. They can be disabled per indicator.
     * The library includes a performance method, ```help(ta.performance)```, to check runtime indicator performance for a given _ohlcv_ DataFrame.
 * Optionable **Multiprocessing** for a Pandas TA ```Study```.
+* Check your Indicator Performance with the [Indicator Performance Notebook](https://github.com/twopirllc/pandas-ta/tree/main/examples/Performance_Check.ipynb).
 
 Bulk Processing
 ---------------
-* Easily process many indicators using the DataFrame Extension method ```df.ta.study()```
-* Supports two kinds of Studies
-    * **Builtin**: All, Categorical ("candles", "momentum", ...), and Common
+* Easily process many indicators using the DataFrame Extension method ```df.ta.study()```.
+* Supports two kinds of Studies.
+    * **Builtin**: All, Categorical ("candles", "momentum", ...), and Common.
     * **Custom**: User Defined ```Study``` (formerly ```Strategy```).
 
 Additional Features
 -------------------
 * **Examples**
-    * Basic usage and workflows. See the [**Example Jupyter Notebooks**](https://github.com/twopirllc/pandas-ta/tree/main/examples)
-    * Creating Custom Studies using the [__Study__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandasTA_Study_Examples.ipynb)
+    * Basic usage and workflows. See the [**Example Jupyter Notebooks**](https://github.com/twopirllc/pandas-ta/tree/main/examples).
+    * Creating Custom Studies using the [__Study__ Class](https://github.com/twopirllc/pandas-ta/tree/main/examples/PandasTA_Study_Examples.ipynb).
         * **Study Customizations** including, but not limited to, applying _prefixes_ or _suffixes_ or _both_ to column/indicators names.
         * Composition/Chained Studies like putting **bbands** on **macd**.
 * **Custom Indicators Directory**
@@ -899,7 +901,7 @@ Back to [Contents](#contents)
 * _Weighted Moving Average_: **wma**
 * _Zero Lag Moving Average_: **zlma**
 
-| _Simple Moving Averages_ (SMA) and _Bollinger Bands_ (BBANDS) |
+| _Exponential Moving Averages_ (EMA) and _Keltner Channels_ (BBANDS) |
 |:--------:|
 | ![Example Chart](/images/TA_Chart.png) |
 
@@ -915,9 +917,9 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Log Return_: **log_return**
 * _Percent Return_: **percent_return**
 
-| _Percent Return_ (Cumulative) with _Simple Moving Average_ (SMA) |
+| _Log Returns_ (Cumulative) with _Simple Moving Average_ (SMA) |
 |:--------:|
-| ![Example Cumulative Percent Return](/images/SPY_CumulativePercentReturn.png) |
+| ![Example Cumulative Percent Return](/images/SPY_CumLogReturns.png) |
 
 <br/>
 
@@ -1047,7 +1049,7 @@ Back to [Contents](#contents)
 # **Backtesting**
 While Pandas TA is not a backtesting application, Pandas TA does provide _two_ methods to help generate trading signals for backtesting purposes: **Trend Signals** (```ta.tsignals()```) and **Cross Signals** (```ta.xsignals()```). Both Signal methods return a DataFrame with columns for the Trend, Trades, Entries and Exits.
 
-A simple manual backtest using **Trend Signals** can be found in the [AI Example Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/AIExample.ipynb) starting at _Trend Creation_ cell.
+A simple manual backtest using **Trend Signals** can be found in the [TA Analysis Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/TA_Analysis.ipynb) starting at _Trend Creation_ cell.
 
 <br/>
 
@@ -1180,8 +1182,8 @@ Back to [Contents](#contents)
 
 TODO
 ----
-**Complete remaining TA Lib Indicators**
-|||
+
+| **Status** | **Remaining TA Lib Indicators** |
 | - | - |
 | &#9744; | Candlesticks |
 | &#9744; | Indicators: ```ht_dcperiod```, ```ht_dcphase```, ```ht_phasor```, ```ht_sine```, ```ht_trendline```, ```ht_trendmode```, ```mama``` |
@@ -1189,24 +1191,26 @@ TODO
 
 <br/>
 
-**Config System**
-|||
+| **Status** | **Config System** |
 | - | - |
 | &#9744; | JSON Config File |
 | | &#9744; JSON Config File Format |
 | &#9744; | DataFrame Extension property: ```config``` |
 | &#9744; | Features |
 
-**Data Acquisition**
-|||
+<br/>
+
+
+| **Status** | **Data Acquisition** |
 | - | - |
-| &#10004; | [Yahoo Finance]() _Default_ |
-| &#10004; | [Polygon]() |
+| &#10004; | [Yahoo Finance](https://github.com/ranaroussi/yfinance) _Default_ |
+| &#10004; | [Polygon](https://github.com/pssolanki111/polygon) |
 | &#9744; | [AlphaVantage](https://github.com/twopirllc/AlphaVantageAPI) |
 | &#9744; | [Financial Modeling Prep](https://github.com/daxm/fmpsdk) |
 
-**Stabilize**
-|||
+<br/>
+
+| **Status** | **Stabilize** |
 | - | - |
 | &#9744; | Trading Signals |
 | | &#9744; Trend Signals |

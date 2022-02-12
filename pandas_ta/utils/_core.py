@@ -177,14 +177,7 @@ def performance(df: DataFrame,
     stats = bool(stats) if isinstance(stats, bool) and stats else False
     verbose = bool(verbose) if isinstance(verbose, bool) and verbose else False
 
-    _ex = [
-        "above",
-        "above_value",
-        "below",
-        "below_value",
-        "cross",
-        "cross_value",
-        "ichimoku"]
+    _ex = ["ichimoku"]
     if isinstance(excluded, list) and len(excluded) > 0:
         _ex += excluded
     indicators = df.ta.indicators(as_list=True, exclude=_ex)

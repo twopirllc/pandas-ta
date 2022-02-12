@@ -15,7 +15,6 @@ from pandas_ta import *
 
 
 
-
 # Pandas TA - DataFrame Extension Analysis Indicators
 @register_dataframe_accessor("ta")
 class AnalysisIndicators(object):
@@ -564,19 +563,7 @@ class AnalysisIndicators(object):
 
         # Initialize
         initial_column_count = len(self._df.columns)
-        excluded = [
-            "above",
-            "above_value",
-            "below",
-            "below_value",
-            "cross",
-            "cross_value",
-            # "data", # reserved
-            "long_run",
-            "short_run",
-            "tsignals",
-            "xsignals",
-        ]
+        excluded = ["long_run", "short_run", "tsignals", "xsignals"]
 
         # Get the Study Name and mode
         name, mode = self._study_mode(*args)
@@ -1076,9 +1063,9 @@ class AnalysisIndicators(object):
                              use_tr=use_tr, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def stc(self, ma1=None, ma2=None, osc=None, tclength=None, fast=None, slow=None, factor=None, offset=None, **kwargs):
+    def stc(self, tclength=None, ma1=None, ma2=None, osc=None, fast=None, slow=None, factor=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = stc(close=close, ma1=ma1, ma2=ma2, osc=osc, tclength=tclength, fast=fast, slow=slow, factor=factor,
+        result = stc(close=close, tclength=tclength, ma1=ma1, ma2=ma2, osc=osc, fast=fast, slow=slow, factor=factor,
                      offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
@@ -1444,11 +1431,11 @@ class AnalysisIndicators(object):
         result = aroon(high=high, low=low, length=length, scalar=scalar, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def chop(self, length=None, atr_length=None, scalar=None, drift=None, offset=None, **kwargs):
+    def chop(self, length=None, atr_length=None, ln=None, scalar=None, drift=None, offset=None, **kwargs):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = chop(high=high, low=low, close=close, length=length, atr_length=atr_length, scalar=scalar,
+        result = chop(high=high, low=low, close=close, length=length, atr_length=atr_length, ln=ln, scalar=scalar,
                       drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
@@ -1552,40 +1539,6 @@ class AnalysisIndicators(object):
             result = xsignals(signal=signal, xa=xa, xb=xb, above=above, long=long, asbool=asbool,
                               trend_offset=trend_offset, trend_reset=trend_reset, offset=offset, **kwargs)
             return self._post_process(result, **kwargs)
-
-    # Utility
-    def above(self, asint=True, offset=None, **kwargs):
-        a = self._get_column(kwargs.pop("close", "a"))
-        b = self._get_column(kwargs.pop("close", "b"))
-        result = above(series_a=a, series_b=b, asint=asint, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def above_value(self, value=None, asint=True, offset=None, **kwargs):
-        a = self._get_column(kwargs.pop("close", "a"))
-        result = above_value(series_a=a, value=value, asint=asint, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def below(self, asint=True, offset=None, **kwargs):
-        a = self._get_column(kwargs.pop("close", "a"))
-        b = self._get_column(kwargs.pop("close", "b"))
-        result = below(series_a=a, series_b=b, asint=asint, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def below_value(self, value=None, asint=True, offset=None, **kwargs):
-        a = self._get_column(kwargs.pop("close", "a"))
-        result = below_value(series_a=a, value=value, asint=asint, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def cross(self, above=True, asint=True, offset=None, **kwargs):
-        a = self._get_column(kwargs.pop("close", "a"))
-        b = self._get_column(kwargs.pop("close", "b"))
-        result = cross(series_a=a, series_b=b, above=above, asint=asint, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def cross_value(self, value=None, above=True, asint=True, offset=None, **kwargs):
-        a = self._get_column(kwargs.pop("close", "a"))
-        result = cross_value(series_a=a, value=value, above=above, asint=asint, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
 
     # Volatility
     def aberration(self, length=None, atr_length=None, offset=None, **kwargs):

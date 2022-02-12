@@ -11,7 +11,7 @@ from .context import pandas_ta
 
 
 # Testing Parameters
-cores = cpu_count() - 1
+cores = 4# cpu_count() - 1
 cumulative = False
 speed_table = False
 timed_test = False
@@ -80,7 +80,7 @@ class TestStudyMethods(TestCase):
         self.category = "All: TA Lib"
 
     def test_all_no_talib(self):
-        """Study: Sans TA Lib"""
+        """Study: All Sans TA Lib"""
         self.category = "All"
         self.data.ta.study(talib=False, verbose=verbose, timed=timed_test)
         self.category = "All: Sans TA Lib"
@@ -92,7 +92,7 @@ class TestStudyMethods(TestCase):
         self.data.ta.study(self.category, length=10, verbose=verbose, timed=timed_test)
         self.data.ta.study(self.category, length=50, verbose=verbose, timed=timed_test)
         self.data.ta.study(self.category, fast=5, slow=10, verbose=verbose, timed=timed_test)
-        self.category = "All: Multiruns with diff Args" # Rename for Speed Table
+        self.category = "All: Multiruns with Multiparameters" # Rename for Speed Table
 
     @skipUnless(verbose, "verbose mode only")
     def test_all_name_study(self):
@@ -108,17 +108,17 @@ class TestStudyMethods(TestCase):
     @skipUnless(verbose, "verbose mode only")
     def test_all_study(self):
         """Study: All"""
+        self.category = "Candles"
         self.data.ta.study(pandas_ta.AllStudy, verbose=verbose, timed=timed_test)
 
     def test_all_without_append(self):
         """Study: All sans append"""
-        self.category = "All: Sans Append"
-
+        self.category = "All: Sans append"
         self.data.ta.study(append=False, verbose=verbose, timed=timed_test)
 
     # @skip
     def test_candles_category(self):
-        """Category: Candles"""
+        """Candles"""
         self.category = "Candles"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
@@ -129,16 +129,16 @@ class TestStudyMethods(TestCase):
         self.data.ta.study(pandas_ta.CommonStudy, verbose=verbose, timed=timed_test)
 
     def test_cycles_category(self):
-        """Category: Cycles"""
+        """Cycles"""
         self.category = "Cycles"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
     # @skip
     def test_custom_a_with_multiprocessing(self):
-        """Custom A: With Multiprocessing"""
-        self.category = "Custom A"
+        """Custom A: Multiprocessing"""
+        self.category = "Custom A: Multiprocessing"
 
-        momo_bands_sma_ta = [
+        cta = [
             {"kind": "cdl_pattern", "name": "tristar"},  # 1
             {"kind": "rsi"},  # 1
             {"kind": "macd"},  # 3
@@ -148,27 +148,20 @@ class TestStudyMethods(TestCase):
             {"kind": "log_return", "cumulative": True},  # 1
             {"kind": "ema", "close": "CUMLOGRET_1", "length": 5, "suffix": "CLR"} # 1
         ]
-
-        # total_columns = len(self.data.columns)
         custom = pandas_ta.Study(
             name="Commons with Cumulative Log Return EMA Chain",  # name
-            ta=momo_bands_sma_ta,  # ta
+            ta=cta,  # ta
             description="Common indicators with specific lengths and a chained indicator",  # description
+            cores=cores
         )
-        self.data.ta.study(custom, cores=0, verbose=verbose, timed=timed_test)
-
-        # Note: Will not find column 'CUMLOGRET_1' with mp, use cores=0 instead
-        if "adj close" in self.data.columns or "adj_close" in self.data.columns:
-            self.assertEqual(len(self.data.columns), 21)
-        else:
-            self.assertEqual(len(self.data.columns), 19)
+        self.data.ta.study(custom, verbose=verbose, timed=timed_test)
+        self.assertEqual(len(self.data.columns), 21)
 
     # @skipUnless(verbose, "verbose mode only")
     def test_custom_a_without_multiprocessing(self):
-        """Custom A: Without Multiprocessing"""
+        """Custom A: Sans Multiprocessing"""
         self.category = "Custom A: Sans Multiprocessing"
         _cores = self.data.ta.cores
-
 
         momo_bands_sma_ta = [
             {"kind": "rsi"},  # 1
@@ -188,13 +181,13 @@ class TestStudyMethods(TestCase):
             cores=0
         )
         # Depreciation warning test
-        self.data.ta.strategy(custom, cores=4, verbose=verbose, timed=timed_test)
-        self.data.ta.cores = _cores
+        self.data.ta.strategy(custom, cores=0, verbose=verbose, timed=timed_test)
+        self.data.ta.cores = cores
 
     # @skip
     def test_custom_args_tuple(self):
         """Custom B: Tuple Arguments"""
-        self.category = "Custom B"
+        self.category = "Custom B: Tuple Arguments"
 
         custom_args_ta = [
             {"kind": "ema", "params": (5,)},
@@ -210,7 +203,7 @@ class TestStudyMethods(TestCase):
 
     def test_custom_col_names_tuple(self):
         """Custom C: Column Name Tuple"""
-        self.category = "Custom C"
+        self.category = "Custom C: Column Name Tuple"
 
         custom_args_ta = [{"kind": "bbands", "col_names": ("LB", "MB", "UB", "BW", "BP")}]
 
@@ -224,7 +217,7 @@ class TestStudyMethods(TestCase):
     # @skip
     def test_custom_col_numbers_tuple(self):
         """Custom D: Column Number Tuple"""
-        self.category = "Custom D"
+        self.category = "Custom D: Column Number Tuple"
 
         custom_args_ta = [{"kind": "macd", "col_numbers": (1,)}]
 
@@ -261,51 +254,56 @@ class TestStudyMethods(TestCase):
 
     # @skip
     def test_momentum_category(self):
-        """Category: Momentum"""
+        """Momentum"""
         self.category = "Momentum"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
     # @skip
     def test_overlap_category(self):
-        """Category: Overlap"""
+        """Overlap"""
         self.category = "Overlap"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
     # @skip
     def test_performance_category(self):
-        """Category: Performance"""
+        """Performance"""
         self.category = "Performance"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
     # @skip
     def test_statistics_category(self):
-        """Category: Statistics"""
+        """Statistics"""
         self.category = "Statistics"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
     # @skip
+    def test_transform_category(self):
+        """Transform"""
+        self.category = "Transform"
+        self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
+
+    # @skip
     def test_trend_category(self):
-        """Category: Trend"""
+        """Trend"""
         self.category = "Trend"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
     # @skip
     def test_volatility_category(self):
-        """Category: Volume"""
+        """Volatility"""
         self.category = "Volatility"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
     # @skip
     def test_volume_category(self):
-        """Category: Volume"""
+        """Volume"""
         self.category = "Volume"
         self.data.ta.study(self.category, verbose=verbose, timed=timed_test)
 
     # @skipUnless(verbose, "verbose mode only")
     def test_all_without_multiprocessing(self):
-        """Study: All without Multiprocessing"""
-        self.category = "All: Sans Multiprocessing"
-
+        """Study: All sans Multiprocessing"""
+        self.category = "Study: All sans Multiprocessing"
         cores = self.data.ta.cores
         self.data.ta.cores = 0
         self.data.ta.study(verbose=verbose, timed=timed_test)

@@ -56,10 +56,13 @@ def stc(
         pd.DataFrame: stc, macd, stoch
     """
     # Validate
-    tclength = int(tclength) if tclength and tclength > 0 else 10
-    fast = int(fast) if fast and fast > 0 else 12
-    slow = int(slow) if slow and slow > 0 else 26
-    factor = float(factor) if factor and factor > 0 else 0.5
+    if isinstance(tclength, int) and tclength > 0:
+        tclength = int(tclength)
+    else:
+        tclength = 10
+    fast = int(fast) if isinstance(fast, int) and fast > 0 else 12
+    slow = int(slow) if isinstance(slow, int) and slow > 0 else 26
+    factor = float(factor) if isinstance(factor, int) and factor > 0 else 0.5
     if slow < fast:                # mandatory condition, but might be confusing
         fast, slow = slow, fast
     _length = max(tclength, fast, slow)

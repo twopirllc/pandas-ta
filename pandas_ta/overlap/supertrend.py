@@ -38,8 +38,11 @@ def supertrend(
             SUPERTl (long), SUPERTs (short) columns.
     """
     # Validate
-    length = int(length) if length and length > 0 else 7
-    multiplier = float(multiplier) if multiplier and multiplier > 0 else 3.0
+    length = int(length) if isinstance(length, int) and length > 0 else 7
+    if isinstance(multiplier, float) and multiplier > 0:
+        multiplier = float(multiplier)
+    else:
+        multiplier = 3.0
     high = verify_series(high, length)
     low = verify_series(low, length)
     close = verify_series(close, length)
