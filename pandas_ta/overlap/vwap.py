@@ -44,8 +44,10 @@ def vwap(
     low = verify_series(low)
     close = verify_series(close)
     volume = verify_series(volume)
-    anchor = anchor.upper() if anchor and isinstance(
-        anchor, str) and len(anchor) >= 1 else "D"
+    if anchor and isinstance(anchor, str) and len(anchor) >= 1:
+        anchor = anchor.upper()
+    else:
+        anchor = "D"
     offset = get_offset(offset)
 
     typical_price = hlc3(high=high, low=low, close=close)

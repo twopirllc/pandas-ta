@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from distutils.core import setup
 
-long_description = "An easy to use Python 3 Pandas Extension with 200+ Technical Analysis Indicators, Utilities and Candlestick Patterns. Indicators can be called from a Pandas DataFrame or standalone like TA-Lib. Correlation tested with TA-Lib."
+long_description = "Pandas Technical Analysis, Pandas TA, is a free, Open Source, and easy to use Technical Analysis library with a Pandas DataFrame Extension. It has over 200 indicators, utility functions and TA Lib Candlestick Patterns. Beyond TA feature generation, it has a flat libary structure, it's own DataFrame Extension (called 'ta'), Custom Indicator Studies and Independent Custom Directory."
 
 setup(
     name="pandas_ta",
@@ -20,7 +20,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "3", "48b")),
+    version=".".join(("0", "3", "49b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",

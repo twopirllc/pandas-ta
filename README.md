@@ -176,8 +176,8 @@ The _minimum_ requirement is [Pandas](https://github.com/pandas-dev/pandas). Tho
 
 <br/>
 
-Stable
-------
+Pip
+---
 The ```pip``` version, _0.3.14b_, is the last stable release.
 ```sh
 $ pip install pandas_ta
@@ -192,7 +192,7 @@ $ pip install pandas_ta[full]
 
 Latest Version
 --------------
-Best choice! Version: *0.3.48b*
+Best choice! Version: *0.3.49b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -246,6 +246,10 @@ df.tail()
 
 # vv Continue Post Processing vv
 ```
+
+<br/>
+
+For a more descriptive Quick Start, please check out Michelangiolo Mazzeschi's Medium post: [Technical Analysis with Python: Quickstart Guide for Pandas TA](https://pub.towardsai.net/technical-analysis-with-python-quickstart-guide-for-pandas-ta-fe4b152e95a2).
 
 <br/>
 
