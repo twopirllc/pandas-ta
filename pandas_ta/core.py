@@ -1309,6 +1309,18 @@ class AnalysisIndicators(object):
         result = vwap(high=high, low=low, close=close, volume=volume, anchor=anchor, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def vwap_with_bands(self, anchor=None, offset=None, **kwargs):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        volume = self._get_column(kwargs.pop("volume", "volume"))
+
+        if not self.datetime_ordered:
+            volume.index = self._df.index
+
+        result = vwap_with_bands(high=high, low=low, close=close, volume=volume, anchor=anchor, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def vwma(self, volume=None, length=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
