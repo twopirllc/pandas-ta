@@ -31,6 +31,7 @@ from .tema import tema
 from .trima import trima
 from .vidya import vidya
 from .vwap import vwap
+from .vwap_with_bands import vwap_with_bands
 from .vwma import vwma
 from .wcp import wcp
 from .wma import wma
