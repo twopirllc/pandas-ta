@@ -13,6 +13,8 @@ from pandas import DataFrame, Series
 
 from pandas_ta import *
 
+if Imports["dotenv"]:
+    from dotenv import load_dotenv
 
 
 # Pandas TA - DataFrame Extension Analysis Indicators

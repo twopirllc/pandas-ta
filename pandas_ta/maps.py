@@ -18,6 +18,7 @@ version = __version__ = _dist.version
 
 Imports = {
     "alphaVantage-api": find_spec("alphaVantageAPI") is not None,
+    "dotenv": find_spec("dotenv") is not None,
     "matplotlib": find_spec("matplotlib") is not None,
     "mplfinance": find_spec("mplfinance") is not None,
     "numba": find_spec("numba") is not None,
