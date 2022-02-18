@@ -463,8 +463,25 @@ class TestOverlap(TestCase):
 
     def test_vwap(self):
         """Overlap: VWAP"""
+        from icecream import ic
         result = pandas_ta.vwap(self.high, self.low, self.close, self.volume)
         self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "VWAP_D")
+
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume, bands=[1])
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "VWAP_D")
+
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume, bands=[-1, 1])
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "VWAP_D")
+
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume, bands=[1, 2, 4, 8])
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "VWAP_D")
+
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume, bands=[1, 2.5, 4.13])
+        self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "VWAP_D")
 
     def test_vwma(self):

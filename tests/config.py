@@ -54,7 +54,6 @@ def load(**kwargs):
         df.to_csv(filename, mode="a")
         _mode = "Downloading"
 
-
     kwargs.setdefault("n", 0)
     if kwargs['n'] > 0:
         df = df[:kwargs['n']]

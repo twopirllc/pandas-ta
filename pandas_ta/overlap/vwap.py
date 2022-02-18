@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from pandas import Series
+from pandas import DataFrame, Series
 from pandas_ta.overlap import hlc3
 from pandas_ta.utils import get_offset, is_datetime_ordered, verify_series
 
 
 def vwap(
     high: Series, low: Series, close: Series, volume: Series,
-    anchor: str = None,
+    anchor: str = None, bands: list = None,
     offset: int = None, **kwargs
 ) -> Series:
     """Volume Weighted Average Price (VWAP)
@@ -19,6 +19,7 @@ def vwap(
         https://www.tradingview.com/wiki/Volume_Weighted_Average_Price_(VWAP)
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/volume-weighted-average-price-vwap/
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:vwap_intraday
+        https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=108&Name=Volume_Weighted_Average_Price_-_VWAP_-_with_Standard_Deviation_Lines
 
     Args:
         high (pd.Series): Series of 'high's
@@ -30,6 +31,9 @@ def vwap(
             as listed here:
             https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
             Default: "D".
+        bands (list): List of deviations to be calculated. Calculates upper
+            and lower values given a postive list of ints or floats.
+            Default: []
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -38,6 +42,8 @@ def vwap(
 
     Returns:
         pd.Series: New feature generated.
+        Or
+        pd.DataFrame: New feature generated.
     """
     # Validate
     high = verify_series(high)
@@ -48,6 +54,7 @@ def vwap(
         anchor = anchor.upper()
     else:
         anchor = "D"
+    bands = bands if isinstance(bands, list) and len(bands) else []
     offset = get_offset(offset)
 
     typical_price = hlc3(high=high, low=low, close=close)
@@ -59,22 +66,55 @@ def vwap(
         print(f"{_s} Results may not be as expected.")
 
     # Calculate
+    _props = f"VWAP_{anchor}"
     wp = typical_price * volume
     vwap = wp.groupby(wp.index.to_period(anchor)).cumsum()
     vwap /= volume.groupby(volume.index.to_period(anchor)).cumsum()
 
+    if bands and len(bands):
+        # Calculate vwap stdev bands
+        vwap_var = volume * (typical_price - vwap) ** 2
+        vwap_var_sum = vwap_var.groupby(
+            vwap_var.index.to_period(anchor)
+        ).cumsum()
+        vwap_volume_sum = volume.groupby(
+            volume.index.to_period(anchor)
+        ).cumsum()
+        std_volume_weighted = (vwap_var_sum / vwap_volume_sum) ** 0.5
+
+    # Name and Category
+    vwap.name = _props
+    vwap.category = "overlap"
+
+    if bands:
+        df = DataFrame({vwap.name: vwap}, index=close.index)
+        for i in bands:
+            df[f"{_props}_L_{i}"] = vwap - i * std_volume_weighted
+            df[f"{_props}_U_{i}"] = vwap + i * std_volume_weighted
+            df[f"{_props}_L_{i}"].name = df[f"{_props}_U_{i}"].name = _props
+            df[f"{_props}_L_{i}"].category = "overlap"
+            df[f"{_props}_U_{i}"].category = "overlap"
+        df.name = _props
+        df.category = "overlap"
+
     # Offset
     if offset != 0:
+        if bands and not df.empty:
+            df = df.shift(offset)
         vwap = vwap.shift(offset)
 
     # Fill
     if "fillna" in kwargs:
-        vwap.fillna(kwargs["fillna"], inplace=True)
+        if bands and not df.empty:
+            df.fillna(kwargs["fillna"], inplace=True)
+        else:
+            vwap.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
-        vwap.fillna(method=kwargs["fill_method"], inplace=True)
+        if bands and not df.empty:
+            df.fillna(method=kwargs["fill_method"], inplace=True)
+        else:
+            vwap.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Category
-    vwap.name = f"VWAP_{anchor}"
-    vwap.category = "overlap"
-
+    if bands and not df.empty:
+        return df
     return vwap

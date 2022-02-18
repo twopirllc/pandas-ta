@@ -31,8 +31,10 @@ def percent_return(
     """
     # Validate
     length = int(length) if length and length > 0 else 1
-    cumulative = bool(
-        cumulative) if cumulative is not None and cumulative else False
+    if cumulative is not None and cumulative:
+        cumulative = bool(cumulative)
+    else:
+        cumulative = False
     close = verify_series(close, length)
     offset = get_offset(offset)
 
