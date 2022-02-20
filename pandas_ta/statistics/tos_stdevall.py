@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from numpy import arange, array, polyfit, std
 from pandas import DataFrame, DatetimeIndex, Series
+from pandas_ta._typing import DictLike, Int, List
 from pandas_ta.utils import get_offset, verify_series
 
 
 def tos_stdevall(
-    close: Series, length: int = None,
-    stds: list = None, ddof: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    stds: List = None, ddof: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """TD Ameritrade's Think or Swim Standard Deviation All (TOS_STDEV)
 

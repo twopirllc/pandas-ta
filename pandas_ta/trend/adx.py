@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series, zero
 from pandas_ta.volatility import atr
@@ -7,9 +8,9 @@ from pandas_ta.volatility import atr
 
 def adx(
     high: Series, low: Series, close: Series,
-    length: int = None, lensig: int = None, scalar: float = None,
-    mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, lensig: Int = None, scalar: IntFloat = None,
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Average Directional Movement (ADX)
 

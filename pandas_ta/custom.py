@@ -8,6 +8,7 @@ from os.path import abspath, join, exists, basename, splitext
 from glob import glob
 
 import pandas_ta
+from pandas_ta._typing import DictLike
 
 
 def bind(name: str, f: types.FunctionType):#, method: types.MethodType = None):
@@ -56,9 +57,10 @@ def create_dir(path: str, create_categories: bool = True, verbose: bool = True):
                     print(f"[i] Created an empty sub-directory '{dirname}'.")
 
 
-def get_module_functions(module: types.ModuleType) -> dict:
+def get_module_functions(module: types.ModuleType) -> DictLike:
     """
-     Helper function to get the functions of an imported module as a dictionary.
+     Helper function to get the functions of an imported module
+     as a dictionary.
 
     Args:
         module: python module
@@ -87,14 +89,14 @@ def import_dir(path: str, verbose: bool = True):
         path (str): Full path to your indicator tree
         verbose (bool): If True verbose output of results
 
-    This method allows you to experiment and develop your own technical analysis
-    indicators in a separate local directory of your choice but use them seamlessly
-    together with the existing pandas_ta functions just like if they were part of
-    pandas_ta.
+    This method allows you to experiment and develop your own technical
+    analysis indicators in a separate local directory of your choice but
+    use them seamlessly together with the existing pandas_ta functions just
+    like if they were part of pandas_ta.
 
-    If you at some late point would like to push them into the pandas_ta library
-    you can do so very easily by following the step by step instruction here
-    https://github.com/twopirllc/pandas-ta/issues/355.
+    If you at some late point would like to push them into the pandas_ta
+    library you can do so very easily by following the step by step
+    instruction here https://github.com/twopirllc/pandas-ta/issues/355.
 
     A brief example of usage:
 
@@ -102,9 +104,9 @@ def import_dir(path: str, verbose: bool = True):
     >>> import pandas as pd
     >>> import pandas_ta as ta
 
-    2. Create an empty directory on your machine where you want to work with your
-    indicators. Invoke pandas_ta.custom.import_dir once to pre-populate it with
-    sub-folders for all available indicator categories, e.g.:
+    2. Create an empty directory on your machine where you want to work with
+    your indicators. Invoke pandas_ta.custom.import_dir once to pre-populate
+    it with sub-folders for all available indicator categories, e.g.:
 
     >>> import os
     >>> from os.path import abspath, join, expanduser
@@ -121,8 +123,8 @@ def import_dir(path: str, verbose: bool = True):
     ending with '_method'. E.g. 'ni_method'
 
     In essence these modules should look exactly like the standard indicators
-    available in categories under the pandas_ta-folder. The only difference will
-    be an addition of a matching class method.
+    available in categories under the pandas_ta-folder. The only difference
+    will be an addition of a matching class method.
 
     For an example of the correct structure, look at the example ni.py in the
     examples folder.

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import where
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def td_seq(
     close: Series, asint: bool = None, show_all: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """TD Sequential (TD_SEQ)
 

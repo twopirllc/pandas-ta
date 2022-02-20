@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.momentum import roc
 from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def nvi(
-    close: Series, volume: Series, length: int = None, initial: int = None,
-    offset: int = None, **kwargs
+    close: Series, volume: Series, length: Int = None, initial: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Negative Volume Index (NVI)
 
-    The Negative Volume Index is a cumulative indicator that uses volume change in
-    an attempt to identify where smart money is active.
+    The Negative Volume Index is a cumulative indicator that uses volume
+    change in an attempt to identify where smart money is active.
 
     Sources:
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:negative_volume_inde

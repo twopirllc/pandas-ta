@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from numpy import exp, logical_and, max, min
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 from .remap import remap
 
 
 def ifisher(
     close: Series,
-    amp: float = None, signal_offset: int = None,
-    offset: int = None, **kwargs
+    amp: IntFloat = None, signal_offset: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """
     Indicator: Inverse Fisher Transform
@@ -29,8 +30,10 @@ def ifisher(
 
     Sources:
         https://www.mesasoftware.com/papers/TheInverseFisherTransform.pdf,
-        Book: Cycle Analytics for Traders, 2014, written by John Ehlers, page 198
-        Implemented by rengel8 for Pandas TA based on code of Markus K. (cryptocoinserver)
+        Book: Cycle Analytics for Traders, 2014, written by John Ehlers,
+            page 198
+        Implemented by rengel8 for Pandas TA based on code of
+            Markus K. (cryptocoinserver)
 
     Args:
         close (pd.Series): Series of 'close's

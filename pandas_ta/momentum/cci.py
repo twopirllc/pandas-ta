@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import hlc3, sma
 from pandas_ta.statistics import mad
@@ -7,9 +8,9 @@ from pandas_ta.utils import get_offset, verify_series
 
 
 def cci(
-    high: Series, low: Series, close: Series, length: int = None,
-    c: float = None, talib: bool = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, close: Series, length: Int = None,
+    c: IntFloat = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Commodity Channel Index (CCI)
 

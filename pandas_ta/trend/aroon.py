@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 from pandas_ta.utils import recent_maximum_index, recent_minimum_index
@@ -7,8 +8,8 @@ from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 
 def aroon(
     high: Series, low: Series,
-    length: int = None, scalar: float = None, talib: bool = None,
-    offset: int = None, **kwargs
+    length: Int = None, scalar: IntFloat = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Aroon & Aroon Oscillator (AROON)
 

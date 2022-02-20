@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def pdist(
     open_: Series, high: Series, low: Series, close: Series,
-    drift: int = None,
-    offset: int = None, **kwargs
+    drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Price Distance (PDIST)
 

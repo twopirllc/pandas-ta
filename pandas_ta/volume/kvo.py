@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import isnan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.overlap import hlc3
 from pandas_ta.utils import get_drift, get_offset, signed_series, verify_series
@@ -8,9 +9,9 @@ from pandas_ta.utils import get_drift, get_offset, signed_series, verify_series
 
 def kvo(
     high: Series, low: Series, close: Series, volume: Series,
-    fast: int = None, slow: int = None, signal=None,
-    mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    fast: Int = None, slow: Int = None, signal: Int = None,
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Klinger Volume Oscillator (KVO)
 

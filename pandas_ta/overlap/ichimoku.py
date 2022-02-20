@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import date_range, DataFrame, RangeIndex, Timedelta, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 from .midprice import midprice
 
 
 def ichimoku(
     high: Series, low: Series, close: Series,
-    tenkan: int = None, kijun: int = None, senkou: int = None,
+    tenkan: Int = None, kijun: Int = None, senkou: Int = None,
     include_chikou: bool = True,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Ichimoku Kinkō Hyō (ichimoku)
 

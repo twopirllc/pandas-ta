@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from numpy import array_split, mean, sum
 from pandas import cut, concat, DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import signed_series, verify_series
 
 
 def vp(
-    close: Series, volume: Series, width: int = None,
-    **kwargs
+    close: Series, volume: Series, width: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Volume Profile (VP)
 

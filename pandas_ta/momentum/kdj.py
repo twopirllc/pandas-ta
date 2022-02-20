@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, non_zero_range, rma_pandas, verify_series
 
 
 def kdj(
     high: Series, low: Series, close: Series,
-    length: int = None, signal: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, signal: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """KDJ (KDJ)
 

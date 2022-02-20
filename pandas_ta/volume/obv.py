@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def obv(
     close: Series, volume: Series, talib: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """On Balance Volume (OBV)
 

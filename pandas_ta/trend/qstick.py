@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import dema, ema, hma, rma, sma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def qstick(
-    open_: Series, close: Series, length: int = None,
-    offset: int = None, **kwargs
+    open_: Series, close: Series, length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Q Stick
 

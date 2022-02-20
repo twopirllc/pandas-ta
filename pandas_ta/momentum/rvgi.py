@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import swma
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def rvgi(
     open_: Series, high: Series, low: Series, close: Series,
-    length: int = None, swma_length: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, swma_length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Relative Vigor Index (RVGI)
 

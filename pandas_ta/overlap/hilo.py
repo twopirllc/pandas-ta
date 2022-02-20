@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
 def hilo(
     high: Series, low: Series, close: Series,
-    high_length: int = None, low_length: int = None, mamode: str = None,
-    offset: int = None, **kwargs
+    high_length: Int = None, low_length: Int = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Gann HiLo Activator(HiLo)
 

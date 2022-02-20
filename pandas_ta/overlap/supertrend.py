@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import hl2
 from pandas_ta.utils import get_offset, verify_series
 from pandas_ta.volatility import atr
@@ -8,8 +9,8 @@ from pandas_ta.volatility import atr
 
 def supertrend(
     high: Series, low: Series, close: Series,
-    length: int = None, multiplier: float = None,
-    offset: int = None, **kwargs
+    length: Int = None, multiplier: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Supertrend (supertrend)
 

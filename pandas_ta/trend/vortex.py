@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_drift, get_offset, verify_series
 from pandas_ta.volatility import true_range
 
 
 def vortex(
     high: Series, low: Series, close: Series,
-    length: int = None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Vortex
 

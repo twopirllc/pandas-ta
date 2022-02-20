@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
 from pandas_ta.statistics import stdev
@@ -7,9 +8,9 @@ from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
 def bbands(
-    close: Series, length: int = None, std: int = None, ddof: int = 0,
+    close: Series, length: Int = None, std: IntFloat = None, ddof: Int = 0,
     mamode: str = None, talib: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Bollinger Bands (BBANDS)
 

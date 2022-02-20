@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from numpy import cos, exp, mean, nan, pi, roll, sin, sqrt, zeros
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def ebsw(
-    close: Series, length: int = None, bars: int = None,
+    close: Series, length: Int = None, bars: Int = None,
     initial_version: bool = False,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Even Better SineWave (EBSW)
 

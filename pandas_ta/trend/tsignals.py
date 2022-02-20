@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def tsignals(
     trend: Series, asbool: bool = None,
-    trend_reset=0, trade_offset=None, drift: int = None,
-    offset: int = None, **kwargs
+    trend_reset: Int = None, trade_offset: Int = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Trend Signals
 

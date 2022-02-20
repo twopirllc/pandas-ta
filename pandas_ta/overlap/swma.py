@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, symmetric_triangle, verify_series, weights
 
 
 def swma(
-    close: Series, length: int = None, asc: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Symmetric Weighted Moving Average (SWMA)
 
@@ -20,7 +21,6 @@ def swma(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 10
-        asc (bool): Recent values weigh more. Default: True
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:

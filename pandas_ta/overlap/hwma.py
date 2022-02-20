@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 
 
 def hwma(
-    close: Series, na: float = None, nb: float = None, nc: float = None,
-    offset: int = None, **kwargs
+    close: Series,
+    na: IntFloat = None, nb: IntFloat = None, nc: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """HWMA (Holt-Winter Moving Average)
 

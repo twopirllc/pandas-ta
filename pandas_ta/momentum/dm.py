@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series, get_drift, zero
 
 
 def dm(
-    high: Series, low: Series, length: int = None,
-    mamode: str = None, talib: bool = None, drift: int = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, length: Int = None,
+    mamode: str = None, talib: bool = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Directional Movement (DM)
 

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 from .tsi import tsi
 
 
 def smi(
-    close: Series, fast: int = None, slow: int = None, signal: int = None,
-    scalar: float = None,
-    offset: int = None, **kwargs
+    close: Series, fast: Int = None, slow: Int = None,
+    signal: Int = None, scalar: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """SMI Ergodic Indicator (SMI)
 

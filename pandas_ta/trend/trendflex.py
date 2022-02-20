@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from numpy import cos, exp, nan, ndarray, sqrt, zeros_like
+from numpy import cos, exp, nan, sqrt, zeros_like
 from pandas import Series
+from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -12,7 +13,7 @@ except ImportError:
 
 @njit
 def np_trendflex(
-    x: ndarray, n: int, k: int, alpha: float, pi: float, sqrt2: float
+    x: Array, n: Int, k: Int, alpha: IntFloat, pi: IntFloat, sqrt2: IntFloat
 ):
     """Ehler's Trendflex
     http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html"""
@@ -42,10 +43,10 @@ def np_trendflex(
 
 
 def trendflex(
-    close: Series, length: int = None,
-    smooth: int = None, alpha: float = None,
-    pi: float = None, sqrt2: float = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    smooth: Int = None, alpha: IntFloat = None,
+    pi: IntFloat = None, sqrt2: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Trendflex (TRENDFLEX)
 

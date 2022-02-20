@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
@@ -7,9 +8,9 @@ from .true_range import true_range
 
 
 def atr(
-    high: Series, low: Series, close: Series, length: int = None,
-    mamode: str = None, talib: bool = None, drift: int = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, close: Series, length: Int = None,
+    mamode: str = None, talib: bool = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Average True Range (ATR)
 

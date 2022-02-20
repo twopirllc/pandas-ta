@@ -7,6 +7,8 @@ from numpy import absolute, any, concatenate, cumsum, flip, max
 from numpy import mean, min, ndarray, std, sum, where, zeros
 from numpy.random import choice, normal, randint
 from pandas import DataFrame, date_range
+
+from pandas_ta._typing import Array, Float, Int, IntFloat, List, Optional
 from pandas_ta.maps import Imports, RATE
 
 
@@ -129,13 +131,15 @@ class sample(object):
     _scales = ["m", "n", "s", None]
 
     def __init__(self,
-        name=None, process=None, noise=None, length=None,
-        s0=None, b=None, t=None, drift=None, volatility=None,
-        speed=None, hurst=None, steps=None, random_number=None,
-        orient=None, positive=None, scale=None,
-        future=None, freq=None, intraday=None,
-        noise_percent=None,
-        date_fmt=None, precision=None, verbose=None
+        name: str = None, process: str = None, noise: str = None,
+        length: Int = None, s0: IntFloat = None, b: IntFloat = None,
+        t: IntFloat = None, drift: Int = None, volatility: IntFloat = None,
+        speed: IntFloat = None, hurst: Float = None,
+        steps: List[IntFloat] = None, random_number: Optional[Int] = None,
+        orient: str = None, positive: bool = None, scale: str = None,
+        future: bool = None, freq: str = None, intraday: str = None,
+        noise_percent: Float = None, date_fmt: str = None,
+        precision: Int = None, verbose: bool = None
     ):
         """Validation and initialization of arguments and then runs the
         _generate() method to build a sample realization with the given
@@ -201,8 +205,9 @@ class sample(object):
 
         self._generate()  # Run it
 
-    def _bernoulli_mask(self, array: ndarray,
-                        percent: float = None, p: float = None):
+    def _bernoulli_mask(self,
+        array: Array, percent: Float = None, p: Float = None
+    ):
         """Bernoulli Mask - Positive or Negative"""
         if array.size > 0:
             percent = float(percent) if percent is not None and isinstance(
@@ -256,14 +261,14 @@ class sample(object):
         if self._verbose:
             print(self._dfname)
 
-    def nonnegative(self, array: ndarray = None):
+    def nonnegative(self, array: Array = None):
         """Vertical Translation the 'array' where the resultant 'array' has
         non-negative values."""
         if isinstance(array, ndarray):
             return self._nonnegative(array)
         return array
 
-    def _nonnegative(self, array: ndarray):
+    def _nonnegative(self, array: Array):
         """Translates the array up by the minimum of the 'array' if any values
         are negative."""
         if array.size > 0 and any(array < 0):
@@ -271,7 +276,7 @@ class sample(object):
             self._s0 = array[0]
         return array
 
-    def _normal_mask(self, array: ndarray):
+    def _normal_mask(self, array: Array):
         """A method to add some additional randomness to the realized
         process. Applies a mask based on the Normal Distribution and the 'array's
         mean and standard deviation."""
@@ -280,14 +285,14 @@ class sample(object):
             return array * self.noise_percent * norm
         return array
 
-    def orientation(self, array: ndarray, mode: str = None):
+    def orientation(self, array: Array, mode: str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
         if isinstance(array, ndarray):
             return self._orientation(array, mode=mode)
         return array
 
-    def _orientation(self, array: ndarray, mode: str = None):
+    def _orientation(self, array: Array, mode: str = None):
         """Orients the 'array' either by Inversion, Reversal, or an
         Inverted Reversal."""
         _modes = ["i", "r", "ir", "ri", None, "rand"]
@@ -314,13 +319,13 @@ class sample(object):
 
         return result
 
-    def scale(self, array: ndarray, mode: str):
+    def scale(self, array: Array, mode: str):
         """Mean, Normal or Standard scaling of the 'array'."""
         if isinstance(array, ndarray):
             return self._scaler(array, mode=mode)
         return array
 
-    def _scaler(self, array: ndarray, mode: str):
+    def _scaler(self, array: Array, mode: str):
         """Scaling: mean, normal, standard"""
         result = array
         if mode is None:
@@ -343,8 +348,9 @@ class sample(object):
 
         return result
 
-    def _simple_random_walk(self, up: float = None,
-                            down: float = None) -> ndarray:
+    def _simple_random_walk(self,
+            up: Float = None, down: Float = None
+    ) -> Array:
         """Simple Random Walk
 
         Sources:

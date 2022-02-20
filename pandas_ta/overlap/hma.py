@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from numpy import sqrt
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 from .wma import wma
 
 
 def hma(
-    close: Series, length: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Hull Moving Average (HMA)
 

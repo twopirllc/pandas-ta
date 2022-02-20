@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.momentum import roc
 from pandas_ta.utils import get_offset, signed_series, verify_series
 
 
 def pvi(
-    close: Series, volume: Series, length: int = None, initial: int = None,
-    offset: int = None, **kwargs
+    close: Series, volume: Series, length: Int = None, initial: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Positive Volume Index (PVI)
 

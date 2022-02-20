@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, List
 from pandas_ta.overlap import hlc3
 from pandas_ta.utils import get_offset, is_datetime_ordered, verify_series
 
 
 def vwap(
     high: Series, low: Series, close: Series, volume: Series,
-    anchor: str = None, bands: list = None,
-    offset: int = None, **kwargs
+    anchor: str = None, bands: List = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Volume Weighted Average Price (VWAP)
 

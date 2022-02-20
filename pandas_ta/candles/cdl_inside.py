@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import candle_color, get_offset, verify_series
 
 
 def cdl_inside(
     open_: Series, high: Series, low: Series, close: Series,
     asbool: bool = False,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Candle Type: Inside Bar
 

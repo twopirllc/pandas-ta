@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def tsi(
-    close: Series, fast: int = None, slow: int = None, signal: int = None,
-    scalar: float = None, mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, fast: Int = None, slow: Int = None,
+    signal: Int = None, scalar: IntFloat = None,
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """True Strength Index (TSI)
 

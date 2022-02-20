@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from numpy import append, array, empty_like, nan, ndarray, roll, zeros_like
 
+from pandas_ta._typing import Array, Int, IntFloat
+
 try:
     from numba import njit
 except ImportError:
@@ -9,13 +11,13 @@ except ImportError:
 
 # Utilities
 @njit
-def np_prepend(x: ndarray, n: int, value=nan):
+def np_prepend(x: Array, n: Int, value: IntFloat = nan) -> Array:
     """Append array x to an array of values, typically nan."""
     return append(array([value] * n), x)
 
 
 @njit
-def np_roll(x: ndarray, n: int, fn=None):
+def np_roll(x: Array, n: Int, fn = None) -> Array:
     """Like Pandas Rolling Window. x.rolling(n).fn()"""
     m = x.size
     result = zeros_like(x, dtype=float)
@@ -30,7 +32,7 @@ def np_roll(x: ndarray, n: int, fn=None):
 
 
 @njit
-def np_shift(x: ndarray, n: int, value=nan):
+def np_shift(x: Array, n: Int, value: IntFloat = nan) -> Array:
     """np shift
     shift5 - preallocate empty array and assign slice by chrisaycock
     https://stackoverflow.com/questions/30399534/shift-elements-in-a-numpy-array
@@ -49,7 +51,7 @@ def np_shift(x: ndarray, n: int, value=nan):
 
 # Uncategorized
 # @njit
-# def np_roofing_filter(x: np.ndarray, n: int, k: int, pi: float, sqrt2: float):
+# def np_roofing_filter(x: Array, n: Int, k: Int, pi: Float, sqrt2: Float):
 #     """Ehler's Roofing Filter (INCOMPLETE)
 #     http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html"""
 #     m, hp = x.size, np.copy(x)

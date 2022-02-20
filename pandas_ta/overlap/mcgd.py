@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 
 
 def mcgd(
-    close: Series, length: int = None, c: float = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, c: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """McGinley Dynamic Indicator
 

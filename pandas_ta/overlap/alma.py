@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from numpy import append, arange, array, exp, floor, nan, tensordot
 from numpy.version import version as npVersion
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas import Series
 from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
 def alma(
-    close: Series, length: int = None,
-    sigma: float = None, dist_offset: float = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    sigma: IntFloat = None, dist_offset: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Arnaud Legoux Moving Average (ALMA)
 

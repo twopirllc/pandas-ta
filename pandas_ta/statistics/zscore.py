@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import sma
 from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_offset, verify_series
 
 
 def zscore(
-    close: Series, length: int = None, std: float = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, std: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Rolling Z Score
 

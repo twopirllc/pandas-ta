@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
 def midprice(
-    high: Series, low: Series, length: int = None, talib: bool = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, length: Int = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Midprice
 

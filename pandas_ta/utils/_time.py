@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from time import localtime, perf_counter
-from typing import Tuple, Union
 
 from pandas import DataFrame, Series, Timestamp, to_datetime
+from pandas_ta._typing import Float, MaybeSeriesFrame, Optional, Tuple, Union
 from pandas_ta.maps import EXCHANGE_TZ, RATE
 
 
-def df_dates(df: DataFrame, dates: Tuple[str, list] = None) -> DataFrame:
+def df_dates(
+    df: DataFrame, dates: Tuple[str, list] = None
+) -> MaybeSeriesFrame:
     """Yields the DataFrame with the given dates"""
     if dates is None:
         return None
@@ -43,7 +45,7 @@ def df_year_to_date(df: DataFrame) -> DataFrame:
     return df
 
 
-def final_time(stime: float) -> str:
+def final_time(stime: Float) -> str:
     """Human readable elapsed time. Calculates the final time elasped since
     stime and returns a string with microseconds and seconds."""
     time_diff = perf_counter() - stime
@@ -52,7 +54,7 @@ def final_time(stime: float) -> str:
 
 def get_time(
     exchange: str = "NYSE", full: bool = True, to_string: bool = False
-) -> Union[None, str]:
+) -> Optional[str]:
     """Returns Current Time, Day of the Year and Percentage, and the current
     time of the selected Exchange."""
     tz = EXCHANGE_TZ["NYSE"]  # Default is NYSE (Eastern Time Zone)
@@ -80,7 +82,7 @@ def get_time(
     return s if to_string else print(s)
 
 
-def total_time(df: DataFrame, tf: str = "years") -> float:
+def total_time(df: DataFrame, tf: str = "years") -> Float:
     """Calculates the total time of a DataFrame. Difference of the Last and
     First index. Options: 'months', 'weeks', 'days', 'hours', 'minutes'
     and 'seconds'. Default: 'years'.

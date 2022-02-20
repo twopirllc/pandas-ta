@@ -4,12 +4,12 @@ from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
 from sys import float_info as sflt
-from typing import Union
 
 from numpy import argmax, argmin
 from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
 
+from pandas_ta._typing import Int, IntFloat, ListStr, SeriesFrame, Union
 from pandas_ta.maps import Imports
 
 
@@ -28,17 +28,17 @@ def category_files(category: str) -> list:
     return files
 
 
-def get_drift(x: int) -> int:
-    """Returns an int if not zero, otherwise defaults to one."""
+def get_drift(x: Int) -> Int:
+    """Returns an Int if not zero, otherwise defaults to one."""
     return int(x) if isinstance(x, int) and x != 0 else 1
 
 
-def get_offset(x: int) -> int:
-    """Returns an int, otherwise defaults to zero."""
+def get_offset(x: Int) -> Int:
+    """Returns an Int, otherwise defaults to zero."""
     return int(x) if isinstance(x, int) else 0
 
 
-def is_datetime_ordered(df: Union[DataFrame, Series]) -> bool:
+def is_datetime_ordered(df: SeriesFrame) -> bool:
     """Returns True if the index is a datetime and ordered."""
     index_is_datetime = is_datetime64_any_dtype(df.index)
     try:
@@ -49,7 +49,7 @@ def is_datetime_ordered(df: Union[DataFrame, Series]) -> bool:
         return True if index_is_datetime and ordered else False
 
 
-def is_percent(x: int or float) -> bool:
+def is_percent(x: IntFloat) -> bool:
     if isinstance(x, (int, float)):
         return x is not None and 0 <= x <= 100
     return False
@@ -64,21 +64,21 @@ def non_zero_range(high: Series, low: Series) -> Series:
     return diff
 
 
-def recent_maximum_index(x) -> int:
+def recent_maximum_index(x) -> Int:
     return int(argmax(x[::-1]))
 
 
-def recent_minimum_index(x) -> int:
+def recent_minimum_index(x) -> Int:
     return int(argmin(x[::-1]))
 
 
-def rma_pandas(series: Series, length: int):
+def rma_pandas(series: Series, length: Int):
     series = verify_series(series)
     alpha = (1.0 / length) if length > 0 else 0.5
     return series.ewm(alpha=alpha, min_periods=length).mean()
 
 
-def signed_series(series: Series, initial: int, lag: int = None) -> Series:
+def signed_series(series: Series, initial: Int, lag: Int = None) -> Series:
     """Returns a Signed Series with or without an initial value
 
     Default Example:
@@ -97,12 +97,12 @@ def signed_series(series: Series, initial: int, lag: int = None) -> Series:
     return sign
 
 
-def simplify_columns(df, n=3):
+def simplify_columns(df, n: Int=3) -> ListStr:
     df.columns = df.columns.str.lower()
     return [c.split("_")[0][n - 1:n] for c in df.columns]
 
 
-def tal_ma(name: str) -> int:
+def tal_ma(name: str) -> Int:
     """Helper Function that returns the Enum value for TA Lib's MA Type"""
     if Imports["talib"] and isinstance(name, str) and len(name) > 1:
         from talib import MA_Type
@@ -128,7 +128,7 @@ def tal_ma(name: str) -> int:
     return 0  # Default: SMA -> 0
 
 
-def unsigned_differences(series: Series, amount: int = None,
+def unsigned_differences(series: Series, amount: Int = None,
                          **kwargs) -> Union[Series, Series]:
     """Unsigned Differences
     Returns two Series, an unsigned positive and unsigned negative series based
@@ -158,7 +158,7 @@ def unsigned_differences(series: Series, amount: int = None,
     return positive, negative
 
 
-def verify_series(series: Series, min_length: int = None) -> Series:
+def verify_series(series: Series, min_length: Int = None) -> Series:
     """If a Pandas Series and it meets the min_length of the indicator return it."""
     has_length = min_length is not None and isinstance(min_length, int)
     if series is not None and isinstance(series, Series):
@@ -166,11 +166,34 @@ def verify_series(series: Series, min_length: int = None) -> Series:
 
 
 def performance(df: DataFrame,
-        excluded: list = None, top: int = None, talib: bool = False,
+        excluded: ListStr = None, top: Int = None, talib: bool = False,
         ascending: bool = False, sortby: str = "secs",
-        gradient: int = False, places: int = 5, stats: bool = False,
+        gradient: bool = False, places: Int = 5, stats: bool = False,
         verbose: bool = False
     ) -> DataFrame:
+    """performance
+
+    Calculates the individual performance time for some DataFrame.
+
+    Args:
+        df (pd.DataFrame): DataFrame with ohlcv columns
+        excluded (list): List of indicators to exclude. Default: None
+        top (Int): Return a DataFrame the 'top' values. Default: None
+        talib (bool): Enable TA Lib. Default: False
+        ascending (bool): Ascending Order. Default: False
+        sortby (str): Options: "ms", "secs". Default: "secs"
+        gradient (bool): Returns a DataFrame the 'top' values with gradient
+            styling. Default: False
+        places (Int): Decimal places. Default: 5
+        stats (bool): Returns a Tuple of two DataFrames. The second tuple
+            contains Stats on the performance time. Default: False
+        verbose (bool): Default: False
+
+    Returns:
+        pd.DataFrame: if stats is False
+        (pd.DataFrame, pd.DataFrame): if stats is True
+
+    """
     if df.empty: return
     talib = bool(talib) if isinstance(talib, bool) and talib else False
     top = int(top) if isinstance(top, int) and top > 0 else None
@@ -183,7 +206,7 @@ def performance(df: DataFrame,
     indicators = df.ta.indicators(as_list=True, exclude=_ex)
     if len(indicators) == 0: return None
 
-    def ms2secs(ms, p: int):
+    def ms2secs(ms, p: Int):
         return round(0.001 * ms, p)
 
     def indicator_time(

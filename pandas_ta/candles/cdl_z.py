@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.statistics import zscore
 from pandas_ta.utils import get_offset, verify_series
 
 
 def cdl_z(
     open_: Series, high: Series, low: Series, close: Series,
-    length: int = None, full: bool = None, ddof=None,
-    offset: int = None, **kwargs
+    length: Int = None, full: bool = None, ddof: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Candle Type: Z
 
@@ -21,6 +22,8 @@ def cdl_z(
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         length (int): The period. Default: 10
+        full (bool): Apply to whole DataFrame. Default: False
+        ddof (int): Degrees of Freedom. Default: 1
 
     Kwargs:
         naive (bool, optional): If True, prefills potential Doji less than

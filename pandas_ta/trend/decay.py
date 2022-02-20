@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import exp
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def decay(
-    close: Series, kind=None, length: int = None, mode: str = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, mode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Decay
 
@@ -41,7 +42,7 @@ def decay(
 
     # Calculate
     _mode = "L"
-    if mode == "exp" or kind == "exponential":
+    if mode in ["exp", "exponential"]:
         _mode = "EXP"
         diff = close.shift(1) - exp(-length)
     else:  # "linear"

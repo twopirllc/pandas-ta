@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from numpy import arctan, pi
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def slope(
-    close: Series, length: int = None,
-    as_angle=None, to_degrees=None, vertical=None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    as_angle: bool = None, to_degrees: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Slope
 

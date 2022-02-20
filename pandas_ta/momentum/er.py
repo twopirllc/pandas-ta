@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
 def er(
-    close: Series, length: int = None, drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Efficiency Ratio (ER)
 

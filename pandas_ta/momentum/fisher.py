@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from numpy import log, nan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import hl2
 from pandas_ta.utils import get_offset, high_low_range, verify_series
 
 
 def fisher(
-    high: Series, low: Series, length: int = None, signal: int = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, length: Int = None, signal: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Fisher Transform (FISHT)
 

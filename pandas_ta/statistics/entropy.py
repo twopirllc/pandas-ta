@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import log
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 
 
 def entropy(
-    close: Series, length: int = None, base: float = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, base: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Entropy (ENTP)
 

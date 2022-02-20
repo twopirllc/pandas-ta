@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Float, Int, IntFloat
 from pandas_ta.utils._core import get_offset, verify_series
 from pandas_ta.utils._math import zero
 
@@ -7,7 +8,7 @@ from pandas_ta.utils._math import zero
 def _above_below(
     series_a: Series, series_b: Series,
     above: bool = True, asint: bool = True,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs
 ) -> Series:
     # Verify
     series_a = verify_series(series_a)
@@ -39,7 +40,7 @@ def _above_below(
 
 def above(
     series_a: Series, series_b: Series, asint: bool = True,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs
 ) -> Series:
     return _above_below(
         series_a, series_b, above=True, asint=asint, offset=offset, **kwargs
@@ -47,8 +48,8 @@ def above(
 
 
 def above_value(
-    series_a: Series, value: float, asint: bool = True,
-    offset: int = None, **kwargs
+    series_a: Series, value: IntFloat, asint: bool = True,
+    offset: Int = None, **kwargs
 ) -> Series:
     if not isinstance(value, (int, float, complex)):
         print("[X] value is not a number")
@@ -64,7 +65,7 @@ def above_value(
 
 def below(
     series_a: Series, series_b: Series, asint: bool = True,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs
 ) -> Series:
     return _above_below(
         series_a, series_b, above=False, asint=asint, offset=offset, **kwargs
@@ -72,8 +73,8 @@ def below(
 
 
 def below_value(
-    series_a: Series, value: float, asint: bool = True,
-    offset: int = None, **kwargs
+    series_a: Series, value: IntFloat, asint: bool = True,
+    offset: Int = None, **kwargs
 ) -> Series:
     if not isinstance(value, (int, float, complex)):
         print("[X] value is not a number")
@@ -87,8 +88,8 @@ def below_value(
 
 
 def cross_value(
-    series_a: Series, value: float, above: bool = True, asint: bool = True,
-    offset: int = None, **kwargs
+    series_a: Series, value: IntFloat, above: bool = True, asint: bool = True,
+    offset: Int = None, **kwargs
 ) -> Series:
     series_b = Series(
         value, index=series_a.index, name=f"{value}".replace(".", "_")
@@ -100,7 +101,7 @@ def cross_value(
 def cross(
     series_a: Series, series_b: Series,
     above: bool = True, asint: bool = True,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     # Validate
     series_a = verify_series(series_a)
@@ -133,9 +134,9 @@ def cross(
 
 
 def signals(
-    indicator: Series, xa: float, xb: float, cross_values: bool,
+    indicator: Series, xa: IntFloat, xb: IntFloat, cross_values: bool,
     xserie: Series, xserie_a: Series, xserie_b: Series, cross_series: bool,
-    offset: int
+    offset: Int
 ) -> DataFrame:
     df = DataFrame()
     if xa is not None and isinstance(xa, (int, float)):

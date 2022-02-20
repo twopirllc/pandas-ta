@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from numpy import log, log10
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_drift, get_offset, verify_series
 from pandas_ta.volatility import atr
 
 
 def chop(
     high: Series, low: Series, close: Series,
-    length: int = None, atr_length: int = None,
-    ln: bool = None, scalar: float = None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, atr_length: Int = None,
+    ln: bool = None, scalar: IntFloat = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Choppiness Index (CHOP)
 

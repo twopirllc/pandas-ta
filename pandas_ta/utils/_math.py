@@ -3,21 +3,24 @@ from functools import reduce
 from math import floor as mfloor
 from operator import mul
 from sys import float_info as sflt
-from typing import List, Optional, Union
 
 from numpy import all, append, array, corrcoef, dot, exp, fabs
 from numpy import log, nan, ndarray, ones, seterr, sqrt, sum, triu
 from pandas import DataFrame, Series
+
+from pandas_ta._typing import Array, DictLike, Float, Int, IntFloat, List, Optional
 from pandas_ta.maps import Imports
 from pandas_ta.utils._core import verify_series
 
 
-def combination(**kwargs) -> int:
+def combination(
+    n: Int = 1, r: Int = 0,
+    repetition: bool = False, multichoose: bool = False
+) -> Int:
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""
-    n = int(fabs(kwargs.pop("n", 1)))
-    r = int(fabs(kwargs.pop("r", 0)))
+    n, r = int(fabs(n)), int(fabs(r))
 
-    if kwargs.pop("repetition", False) or kwargs.pop("multichoose", False):
+    if repetition or multichoose:
         n = n + r - 1
 
     # if r < 0: return None
@@ -30,7 +33,7 @@ def combination(**kwargs) -> int:
     return numerator // denominator
 
 
-def erf(x: Union[int, float]):
+def erf(x: IntFloat) -> Float:
     """Error Function erf(x)
     The algorithm comes from Handbook of Mathematical Functions, formula 7.1.26.
     Source: https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python
@@ -54,11 +57,12 @@ def erf(x: Union[int, float]):
     return sign * y  # erf(-x) = -erf(x)
 
 
-def fibonacci(n: int = 2, **kwargs: dict) -> ndarray:
+def fibonacci(
+    n: Int = 2, weighted: bool = False, zero: bool = False
+) -> Array:
     """Fibonacci Sequence as a numpy array"""
     n = int(fabs(n)) if n >= 0 else 2
 
-    zero = kwargs.pop("zero", False)
     if zero:
         a, b = 0, 1
     else:
@@ -70,7 +74,6 @@ def fibonacci(n: int = 2, **kwargs: dict) -> ndarray:
         a, b = b, a + b
         result = append(result, a)
 
-    weighted = kwargs.pop("weighted", False)
     if weighted:
         fib_sum = sum(result)
         if fib_sum > 0:
@@ -81,7 +84,7 @@ def fibonacci(n: int = 2, **kwargs: dict) -> ndarray:
         return result
 
 
-def geometric_mean(series: Series) -> float:
+def geometric_mean(series: Series) -> Float:
     """Returns the Geometric Mean for a Series of positive values."""
     n = series.size
     if n < 1:
@@ -96,7 +99,7 @@ def geometric_mean(series: Series) -> float:
     return 0
 
 
-def hpoly(c: ndarray, x: Union[int, float]) -> float:
+def hpoly(c: Array, x: IntFloat) -> Float:
     """Horner Calculation for Polynomial Evaluation (hpoly)
 
     array: np.array of polynomial coefficients
@@ -123,7 +126,7 @@ def hpoly(c: ndarray, x: Union[int, float]) -> float:
     return y
 
 
-def linear_regression(x: Series, y: Series) -> dict:
+def linear_regression(x: Series, y: Series) -> DictLike:
     """Classic Linear Regression in Numpy or Scikit-Learn"""
     x, y = verify_series(x), verify_series(y)
     m, n = x.size, y.size
@@ -138,7 +141,7 @@ def linear_regression(x: Series, y: Series) -> dict:
         return _linear_regression_np(x, y)
 
 
-def log_geometric_mean(series: Series) -> float:
+def log_geometric_mean(series: Series) -> Float:
     """Returns the Logarithmic Geometric Mean"""
     n = series.size
     if n < 2:
@@ -150,7 +153,9 @@ def log_geometric_mean(series: Series) -> float:
         return 0
 
 
-def pascals_triangle(n: int = None, **kwargs: dict) -> ndarray:
+def pascals_triangle(
+    n: Int = None, inverse: bool = False, weighted: bool = False
+) -> Array:
     """Pascal's Triangle
 
     Returns a numpy array of the nth row of Pascal's Triangle.
@@ -166,8 +171,6 @@ def pascals_triangle(n: int = None, **kwargs: dict) -> ndarray:
     triangle_weights = triangle / triangle_sum
     inverse_weights = 1 - triangle_weights
 
-    weighted = kwargs.pop("weighted", False)
-    inverse = kwargs.pop("inverse", False)
     if weighted and inverse:
         return inverse_weights
     if weighted:
@@ -178,7 +181,7 @@ def pascals_triangle(n: int = None, **kwargs: dict) -> ndarray:
     return triangle
 
 
-def strided_window(array, length: int):
+def strided_window(array: Array, length: Int) -> Array:
     """as_strided
     creates a view into the array given the exact strides and shape.
     * Recommended to avoid when possible.
@@ -192,7 +195,9 @@ def strided_window(array, length: int):
     return as_strided(array, shape=shape, strides=strides, writeable=False)
 
 
-def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:
+def symmetric_triangle(
+    n: Int = None, weighted: bool = False
+) -> Optional[List[int]]:
     """Symmetric Triangle with n >= 2
 
     Returns a numpy array of the nth row of Symmetric Triangle.
@@ -215,20 +220,20 @@ def symmetric_triangle(n: int = None, **kwargs: dict) -> Optional[List[int]]:
             front.pop()
             triangle += front[::-1]
 
-    if kwargs.pop("weighted", False) and isinstance(triangle, list):
+    if weighted and isinstance(triangle, list):
         return triangle / sum(triangle)
 
     return triangle
 
 
-def weights(w: ndarray):
+def weights(w: Array):
     """Calculates the dot product of weights with values x"""
     def _dot(x):
         return dot(w, x)
     return _dot
 
 
-def zero(x: Union[int, float]) -> Union[int, float]:
+def zero(x: IntFloat) -> IntFloat:
     """If the value is close to zero, then return zero.
     Otherwise return itself."""
     return 0 if abs(x) < sflt.epsilon else x
@@ -237,28 +242,33 @@ def zero(x: Union[int, float]) -> Union[int, float]:
 # TESTING
 
 
-def df_error_analysis(dfA: DataFrame, dfB: DataFrame, **kwargs) -> DataFrame:
+def df_error_analysis(
+    A: DataFrame, B: DataFrame,
+    plot: bool = False, triangular: bool = False,
+    method: str = "pearson",
+) -> DataFrame:
     """DataFrame Correlation Analysis helper"""
-    corr_method = kwargs.pop("corr_method", "pearson")
+    _r_method = ["pearson", "kendall", "spearman"]
+    corr_method = method if method in _r_method else _r_method[0]
 
     # Find their differences and correlation
-    diff = dfA - dfB
-    corr = dfA.corr(dfB, method=corr_method)
+    diff = A - B
+    result = A.corr(B, method=corr_method)
 
     # For plotting
-    if kwargs.pop("plot", False):
+    if plot:
         diff.hist()
         if diff[diff > 0].any():
             diff.plot(kind="kde")
 
-    if kwargs.pop("triangular", False):
-        return corr.where(triu(ones(corr.shape)).astype(bool))
+    if triangular:
+        return result.where(triu(ones(result.shape)).astype(bool))
 
-    return corr
+    return result
 
 
 # PRIVATE
-def _linear_regression_np(x: Series, y: Series) -> dict:
+def _linear_regression_np(x: Series, y: Series) -> DictLike:
     """Simple Linear Regression in Numpy
     for two 1d arrays for environments without the sklearn package."""
     result = {"a": nan, "b": nan, "r": nan, "t": nan, "line": nan}
@@ -287,7 +297,7 @@ def _linear_regression_np(x: Series, y: Series) -> dict:
     return result
 
 
-def _linear_regression_sklearn(x: Series, y: Series) -> dict:
+def _linear_regression_sklearn(x: Series, y: Series) -> DictLike:
     """Simple Linear Regression in Scikit Learn for two 1d arrays for
     environments with the sklearn package."""
     from sklearn.linear_model import LinearRegression

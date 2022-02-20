@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from numpy import log, nan, roll
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def log_return(
-    close: Series, length: int = None, cumulative: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, cumulative: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Log Return
 

@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def cmf(
     high: Series, low: Series, close: Series, volume: Series,
-    open_: Series = None, length: int = None,
-    offset: int = None, **kwargs
+    open_: Series = None, length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Chaikin Money Flow (CMF)
 
-    Chailin Money Flow measures the amount of money flow volume over a specific
-    period in conjunction with Accumulation/Distribution.
+    Chaikin Money Flow measures the amount of money flow volume over a
+    specific period in conjunction with Accumulation/Distribution.
 
     Sources:
         https://www.tradingview.com/wiki/Chaikin_Money_Flow_(CMF)

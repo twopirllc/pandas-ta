@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
-import os
 import datetime
-from pandas import DataFrame, DatetimeIndex, concat, read_csv
+from pathlib import Path
+
+from pandas import DataFrame, read_csv
 import pandas_datareader as pdr
 
 import pandas_ta
+from pandas_ta._typing import DictLike, IntFloat
 
 
-ALERT = f"[!]"
-INFO = f"[i]"
-TEST = f"[T]"
+ALERT: str = f"[!]"
+INFO: str = f"[i]"
+TEST: str = f"[T]"
 
-CORRELATION = "corr"  # "sem"
-CORRELATION_THRESHOLD = 0.99  # Less than 0.99 is undesirable
-VERBOSE = False
+CORRELATION: str = "corr"  # "sem"
+CORRELATION_THRESHOLD: IntFloat = 0.99  # Less than 0.99 is undesirable
+VERBOSE: bool = False
 
 
-def error_analysis(df, kind, msg, icon=INFO, newline=True):
+def error_analysis(
+    df: DataFrame, kind: str, msg: str,
+    icon: str = INFO, newline: bool = True
+):
     if VERBOSE:
         s = f"{icon} {df.name}['{kind}']: {msg}"
         if newline:
@@ -24,7 +29,7 @@ def error_analysis(df, kind, msg, icon=INFO, newline=True):
         print(s)
 
 
-def load(**kwargs):
+def load(**kwargs: DictLike):
     kwargs.setdefault("ticker", "SPY")
     kwargs.setdefault("prefix", "PDR_")
     kwargs.setdefault("interval", "d")
@@ -38,9 +43,10 @@ def load(**kwargs):
 
     print(f"\n{TEST} Pandas TA on {datetime.datetime.now()}")
     filename = f"{kwargs['prefix']}{kwargs['ticker']}_{kwargs['interval']}.csv"
+    fpath = f"./{Path(filename).suffix.replace('.', '')}/{filename}"
     try:
         df = read_csv(
-            filename,
+            Path(fpath),
             index_col=kwargs["index_col"],
             parse_dates=kwargs["parse_dates"],
             infer_datetime_format=kwargs["infer_datetime_format"],
@@ -51,24 +57,26 @@ def load(**kwargs):
         print(f"{ALERT} {err}")
         if kwargs["verbose"]: print(f"{INFO} Downloading: {kwargs['ticker']} from YF")
         df = pdr.get_data_yahoo(kwargs['ticker'], interval=kwargs['interval'])
-        df.to_csv(filename, mode="a")
+        df.to_csv(Path(fpath), mode="a")
         _mode = "Downloading"
 
     kwargs.setdefault("n", 0)
-    if kwargs['n'] > 0:
-        df = df[:kwargs['n']]
+    if kwargs["n"] > 0:
+        df = df[:kwargs["n"]]
     elif kwargs['n'] < 0:
-        df = df[kwargs['n']:]
+        df = df[kwargs["n"]:]
 
     df.columns = df.columns.str.lower()
     if kwargs["verbose"]:
-        print(f"{INFO} {_mode} {kwargs['ticker']}{df.shape} from {filename}")
+        # print(f"{INFO} {_mode} {kwargs['ticker']}{df.shape} from {filename}")
+        print(f"{INFO} {_mode} {kwargs['ticker']}{df.shape} from {fpath}")
         print(f"{INFO} From {df.index[0]} to {df.index[-1]}\n{df}\n")
     return df
 
 _tdpy = pandas_ta.RATE["TRADING_DAYS_PER_YEAR"]
 # At least 90 (88 with trix with default values) bars/rows/observations are
-# needed to test All indicators individually and within the DataFrame extension
+# needed to test All indicators individually and within the DataFrame
+# extension. A larger sample may be required because of the Unstable Period
 sample_data = load(
         n = [
             -2 * _tdpy, -_tdpy,

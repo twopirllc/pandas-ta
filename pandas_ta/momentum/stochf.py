@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
 
 
 def stochf(
-    high: Series, low: Series, close: Series, k: int = None, d: int = None,
+    high: Series, low: Series, close: Series,
+    k: Int = None, d: Int = None,
     mamode: str = None, talib: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Fast Stochastic (STOCHF)
 

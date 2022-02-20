@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 from .decreasing import decreasing
 from .increasing import increasing
 
 
 def short_run(
-    fast: Series, slow: Series, length: int = None,
-    offset: int = None, **kwargs
+    fast: Series, slow: Series, length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Short Run
 

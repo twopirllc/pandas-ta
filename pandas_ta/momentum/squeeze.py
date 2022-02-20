@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import ema, linreg, sma
 from pandas_ta.trend import decreasing, increasing
 from pandas_ta.utils import get_offset, simplify_columns, unsigned_differences, verify_series
@@ -10,11 +11,11 @@ from .mom import mom
 
 def squeeze(
     high: Series, low: Series, close: Series,
-    bb_length: int = None, bb_std: float = None,
-    kc_length: int = None, kc_scalar: float = None,
-    mom_length: int = None, mom_smooth: int = None,
-    use_tr=None, mamode: str = None,
-    offset: int = None, **kwargs
+    bb_length: Int = None, bb_std: IntFloat = None,
+    kc_length: Int = None, kc_scalar: IntFloat = None,
+    mom_length: Int = None, mom_smooth: Int = None,
+    use_tr: bool = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Squeeze (SQZ)
 

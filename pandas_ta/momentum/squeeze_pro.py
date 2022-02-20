@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.momentum import mom
 from pandas_ta.overlap import ema, sma
 from pandas_ta.trend import decreasing, increasing
@@ -10,12 +11,12 @@ from pandas_ta.utils import get_offset, simplify_columns, unsigned_differences, 
 
 def squeeze_pro(
     high: Series, low: Series, close: Series,
-    bb_length: int = None, bb_std: float = None,
-    kc_length: int = None, kc_scalar_wide: float = None,
-    kc_scalar_normal: float = None, kc_scalar_narrow: float = None,
-    mom_length: int = None, mom_smooth: int = None,
-    use_tr=None, mamode: str = None,
-    offset: int = None, **kwargs
+    bb_length: Int = None, bb_std: IntFloat = None,
+    kc_length: Int = None, kc_scalar_wide: IntFloat = None,
+    kc_scalar_normal: IntFloat = None, kc_scalar_narrow: IntFloat = None,
+    mom_length: Int = None, mom_smooth: Int = None,
+    use_tr: bool = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Squeeze PRO(SQZPRO)
 
@@ -94,7 +95,8 @@ def squeeze_pro(
     close = verify_series(close, _length)
     offset = get_offset(offset)
 
-    valid_kc_scaler = kc_scalar_wide > kc_scalar_normal and kc_scalar_normal > kc_scalar_narrow
+    valid_kc_scaler = kc_scalar_wide > kc_scalar_normal \
+        and kc_scalar_normal > kc_scalar_narrow
 
     if not valid_kc_scaler:
         return

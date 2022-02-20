@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 from .sma import sma
 
 
 def trima(
-    close: Series, length: int = None, talib: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Triangular Moving Average (TRIMA)
 

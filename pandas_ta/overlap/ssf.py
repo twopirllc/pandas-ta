@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from numpy import copy, cos, exp, ndarray
+from numpy import copy, cos, exp
 from pandas import Series
+from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 
 
@@ -11,7 +12,7 @@ except ImportError:
 
 
 @njit
-def np_ssf(x: ndarray, n: int, pi: float, sqrt2: float):
+def np_ssf(x: Array, n: Int, pi: IntFloat, sqrt2: IntFloat):
     """Ehler's Super Smoother Filter
     http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
     """
@@ -28,7 +29,7 @@ def np_ssf(x: ndarray, n: int, pi: float, sqrt2: float):
 
 
 @njit
-def np_ssf_everget(x: ndarray, n: int, pi: float, sqrt2: float):
+def np_ssf_everget(x: Array, n: Int, pi: IntFloat, sqrt2: IntFloat):
     """John F. Ehler's Super Smoother Filter by Everget (2 poles), Tradingview
     https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
     """
@@ -44,9 +45,9 @@ def np_ssf_everget(x: ndarray, n: int, pi: float, sqrt2: float):
 
 
 def ssf(
-    close: Series, length: int = None,
-    everget: bool = None, pi: float = None, sqrt2: float = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    everget: bool = None, pi: IntFloat = None, sqrt2: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Ehler's Super Smoother Filter (SSF) © 2013
 

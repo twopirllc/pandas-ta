@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import concat, DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series, signals
 
 
 def macd(
-    close: Series, fast: int = None, slow: int = None, signal: int = None,
-    talib: bool = None, offset: int = None, **kwargs
+    close: Series, fast: Int = None, slow: Int = None, signal: Int = None,
+    talib: bool = None, offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Moving Average Convergence Divergence (MACD)
 

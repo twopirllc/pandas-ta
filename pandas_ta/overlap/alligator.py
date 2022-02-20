@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 from .smma import smma
 
 
 def alligator(
-    close: Series, jaw: int = None, teeth: int = None, lips: int = None,
+    close: Series, jaw: Int = None, teeth: Int = None, lips: Int = None,
     talib: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Bill Williams Alligator (ALLIGATOR)
 

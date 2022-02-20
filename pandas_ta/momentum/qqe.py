@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 from numpy import isnan, maximum, minimum, nan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 from .rsi import rsi
 
 
 def qqe(
-    close: Series, length: int = None,
-    smooth: int = None, factor: float = None,
-    mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    smooth: Int = None, factor: IntFloat = None,
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Quantitative Qualitative Estimation (QQE)
 

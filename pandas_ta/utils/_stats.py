@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from typing import Union
-from numpy import array, infty, log, nan, ndarray, pi, sqrt
+from numpy import array, infty, log, nan, pi, sqrt
+from pandas_ta._typing import Array, IntFloat, Number, Union
 from pandas_ta.maps import Imports
 from pandas_ta.utils import hpoly
 
 
-def _gaussian_poly_coefficients() -> ndarray:
+def _gaussian_poly_coefficients() -> Array:
     """Three pairs of Polynomial Approximation Coefficients
     for the Gaussian Normal CDF"""
 
@@ -55,7 +55,7 @@ def _gaussian_poly_coefficients() -> ndarray:
     return [p0, q0, p1, q1, p2, q2]
 
 
-def inv_norm(value: Union[float, int]) -> Union[float, None]:
+def inv_norm(value: IntFloat) -> Union[None, Number]:
     """Inverse Normal (inv_norm)
     Calculates the 'x' in which the area under the Gaussian PDF is
     equal to value.

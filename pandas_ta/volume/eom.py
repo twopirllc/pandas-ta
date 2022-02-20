@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import hl2, sma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def eom(
     high: Series, low: Series, close: Series, volume: Series,
-    length: int = None, divisor=None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, divisor: IntFloat= None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Ease of Movement (EOM)
 
@@ -25,6 +26,7 @@ def eom(
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's
         length (int): The short period. Default: 14
+        divisor (float): Divisor. Default: 100000000
         drift (int): The diff period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -37,7 +39,7 @@ def eom(
     """
     # Validate
     length = int(length) if length and length > 0 else 14
-    divisor = divisor if divisor and divisor > 0 else 100000000
+    divisor = float(divisor) if divisor and divisor > 0 else 100000000
     high = verify_series(high, length)
     low = verify_series(low, length)
     close = verify_series(close, length)

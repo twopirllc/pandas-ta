@@ -3,12 +3,13 @@
 from numpy import average, log, nan, sqrt, zeros_like
 from numpy import power as np_power
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 
 
 def jma(
-    close: Series, length: int = None, phase: float = None,
-    offset: int = None, **kwargs
+    close: Series, length: IntFloat = None, phase: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Jurik Moving Average Average (JMA)
 

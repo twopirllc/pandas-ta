@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def kama(
-    close: Series, length: int = None, fast: int = None, slow: int = None,
-    mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, fast: Int = None, slow: Int = None,
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Kaufman's Adaptive Moving Average (KAMA)
 

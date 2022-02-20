@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from numpy import fabs, nan
+from numpy import fabs
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def vhf(
-    close: Series, length: int = None, drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Vertical Horizontal Filter (VHF)
 

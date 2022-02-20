@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
 
 def eri(
-    high: Series, low: Series, close: Series, length: int = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, close: Series, length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Elder Ray Index (ERI)
 

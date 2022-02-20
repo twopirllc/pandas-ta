@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def efi(
-    close: Series, volume: Series, length: int = None,
-    mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, volume: Series, length: Int = None,
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Elder's Force Index (EFI)
 
-    Elder's Force Index measures the power behind a price movement using price
-    and volume as well as potential reversals and price corrections.
+    Elder's Force Index measures the power behind a price movement using
+    price and volume as well as potential reversals and price corrections.
 
     Sources:
         https://www.tradingview.com/wiki/Elder%27s_Force_Index_(EFI)

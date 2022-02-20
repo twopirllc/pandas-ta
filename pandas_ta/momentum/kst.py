@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_drift, get_offset, verify_series
 from .roc import roc
 
 
 def kst(
-    close: Series, signal: int = None,
-    roc1: int = None, roc2: int = None, roc3: int = None, roc4: int = None,
-    sma1: int = None, sma2: int = None, sma3: int = None, sma4: int = None,
-    drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, signal: Int = None,
+    roc1: Int = None, roc2: Int = None, roc3: Int = None, roc4: Int = None,
+    sma1: Int = None, sma2: Int = None, sma3: Int = None, sma4: Int = None,
+    drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """'Know Sure Thing' (KST)
 

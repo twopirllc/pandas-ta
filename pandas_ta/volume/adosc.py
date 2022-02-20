@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
@@ -8,9 +9,9 @@ from pandas_ta.volume import ad
 
 def adosc(
     high: Series, low: Series, close: Series, volume: Series,
-    open_: Series = None, fast: int = None, slow: int = None,
+    open_: Series = None, fast: Int = None, slow: Int = None,
     talib: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Accumulation/Distribution Oscillator or Chaikin Oscillator
 

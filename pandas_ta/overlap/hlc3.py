@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
 def hlc3(
     high: Series, low: Series, close: Series, talib: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """HLC3
 
@@ -17,6 +18,12 @@ def hlc3(
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value). Only works if
+            result is offset.
+        fill_method (value, optional): Type of fill method. Only works if
+            result is offset.
 
     Returns:
         pd.Series: New feature generated.
@@ -39,6 +46,12 @@ def hlc3(
     # Offset
     if offset != 0:
         hlc3 = hlc3.shift(offset)
+
+        # Fill
+        if "fillna" in kwargs:
+            hlc3.fillna(kwargs["fillna"], inplace=True)
+        if "fill_method" in kwargs:
+            hlc3.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     hlc3.name = "HLC3"

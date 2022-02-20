@@ -24,7 +24,7 @@ class TestPerformaceExtension(TestCase):
     def test_cube_ext(self):
         self.data.ta.cube(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ["CUBE_3.0_1", "CUBEs_3.0_1"])
+        self.assertEqual(list(self.data.columns[-2:]), ["CUBE_3.0_-1", "CUBEs_3.0_-1"])
 
     def test_inverse_fisher_ext(self):
         self.data.ta.ifisher(append=True)

@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, verify_series, signed_series, zero
 
 
 def wb_tsv(
     close: Series, volume: Series,
-    length: int = None, signal: int = None,
-    mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, signal: Int = None,
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Time Segmented Value (TSV)
 
@@ -43,9 +44,13 @@ def wb_tsv(
     # Validate
     length = int(length) if length and length > 0 else 18
     signal = int(signal) if signal and signal > 0 else 10
+    close = verify_series(close, max(length, signal))
     mamode = mamode if isinstance(mamode, str) else "sma"
     drift = get_drift(drift)
     offset = get_offset(offset)
+
+    if close is None:
+        return
 
     # Calculate
     signed_volume = volume * signed_series(close, 1)     # > 0

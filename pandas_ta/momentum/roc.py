@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 from .mom import mom
 
 
 def roc(
-    close: Series, length: int = None,
-    scalar: float = None, talib: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    scalar: IntFloat = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Rate of Change (ROC)
 

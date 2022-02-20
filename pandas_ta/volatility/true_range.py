@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
 from pandas import concat, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def true_range(
     high: Series, low: Series, close: Series,
-    talib: bool = None, drift: int = None,
-    offset: int = None, **kwargs
+    talib: bool = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """True Range
 

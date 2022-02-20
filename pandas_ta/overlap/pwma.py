@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, pascals_triangle, verify_series, weights
 
 
 def pwma(
-    close: Series, length: int = None, asc: bool = None,
-    offset: bool = None, **kwargs
+    close: Series, length: Int = None, asc: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Pascal's Weighted Moving Average (PWMA)
 

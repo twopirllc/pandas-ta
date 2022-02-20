@@ -3,6 +3,8 @@ from importlib.util import find_spec
 from pathlib import Path
 from pkg_resources import get_distribution, DistributionNotFound
 
+from pandas_ta._typing import Dict, IntFloat, ListStr
+
 
 _dist = get_distribution("pandas_ta")
 try:
@@ -16,7 +18,7 @@ except DistributionNotFound:
 
 version = __version__ = _dist.version
 
-Imports = {
+Imports: Dict[str, bool] = {
     "alphaVantage-api": find_spec("alphaVantageAPI") is not None,
     "dotenv": find_spec("dotenv") is not None,
     "matplotlib": find_spec("matplotlib") is not None,
@@ -36,7 +38,7 @@ Imports = {
 
 # Not ideal and not dynamic but it works.
 # Will find a dynamic solution later.
-Category = {
+Category: Dict[str, ListStr] = {
     # Candles
     "candles": [
         "cdl_pattern", "cdl_z", "ha"
@@ -88,7 +90,7 @@ Category = {
     ],
 }
 
-CANDLE_AGG = {
+CANDLE_AGG: Dict[str, str] = {
     "open": "first",
     "high": "max",
     "low": "min",
@@ -97,7 +99,7 @@ CANDLE_AGG = {
 }
 
 # https://www.worldtimezone.com/markets24.php
-EXCHANGE_TZ = {
+EXCHANGE_TZ: Dict[str, IntFloat] = {
     "NZSX": 12, "ASX": 11,
     "TSE": 9, "HKE": 8, "SSE": 8, "SGX": 8,
     "NSE": 5.5, "DIFX": 4, "RTS": 3,
@@ -106,7 +108,7 @@ EXCHANGE_TZ = {
     "GENR": 0 # Generated Data
 }
 
-RATE = {
+RATE: Dict[str, IntFloat] = {
     "DAYS_PER_MONTH": 21,
     "MINUTES_PER_HOUR": 60,
     "MONTHS_PER_YEAR": 12,

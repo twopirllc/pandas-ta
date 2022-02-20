@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from numpy import convolve, ndarray, ones
 from pandas import Series
+from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, np_prepend, verify_series
 
@@ -12,7 +13,7 @@ except ImportError:
 
 
 @njit
-def np_sma(x: ndarray, n: int):
+def np_sma(x: Array, n: Int):
     """https://github.com/numba/numba/issues/4119"""
     result = convolve(ones(n) / n, x)[n - 1:1 - n]
     return np_prepend(result, n - 1)
@@ -32,9 +33,8 @@ def np_sma(x: ndarray, n: int):
 
 
 def sma(
-    close: Series, length: int = None,
-    talib: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Simple Moving Average (SMA)
 

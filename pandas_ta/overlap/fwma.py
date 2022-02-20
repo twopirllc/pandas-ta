@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import fibonacci, get_offset, verify_series, weights
 
 
 def fwma(
-    close: Series, length: int = None, asc: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, asc: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Fibonacci's Weighted Moving Average (FWMA)
 

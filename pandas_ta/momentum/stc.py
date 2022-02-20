@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def stc(
-    close: Series, tclength: int = None,
-    fast: int = None, slow: int = None, factor: float = None,
-    offset: int = None, **kwargs
+    close: Series, tclength: Int = None,
+    fast: Int = None, slow: Int = None, factor: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Schaff Trend Cycle (STC)
 
@@ -29,7 +30,8 @@ def stc(
         extMa2 = df.ta.ema(close=df["close"], length=ma2_interval, append=True)
         stc = ta.stc(close=df["close"], tclen=stc_tclen, ma1=extMa1, ma2=extMa2, factor=stc_factor)
 
-    The same goes for osc=, which allows the input of an externally calculated oscillator, overriding ma1 & ma2.
+    The same goes for osc=, which allows the input of an externally
+    calculated oscillator, overriding ma1 & ma2.
 
     Sources:
         Implemented by rengel8 based on work found here:

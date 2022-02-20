@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_offset, verify_series
 
 
 def bias(
-    close: Series, length: int = None, mamode: str = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Bias (BIAS)
 

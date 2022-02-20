@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def ohlc4(
     open_: Series, high: Series, low: Series, close: Series,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """OHLC4
 
@@ -17,6 +18,12 @@ def ohlc4(
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value). Only works if
+            result is offset.
+        fill_method (value, optional): Type of fill method. Only works if
+            result is offset.
 
     Returns:
         pd.Series: New feature generated.
@@ -35,6 +42,12 @@ def ohlc4(
     # Offset
     if offset != 0:
         ohlc4 = ohlc4.shift(offset)
+
+        # Fill
+        if "fillna" in kwargs:
+            ohlc4.fillna(kwargs["fillna"], inplace=True)
+        if "fill_method" in kwargs:
+            ohlc4.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     ohlc4.name = "OHLC4"

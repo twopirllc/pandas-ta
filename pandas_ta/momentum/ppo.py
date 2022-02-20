@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, tal_ma, verify_series
 
 
 def ppo(
-    close: Series, fast: int = None, slow: int = None, signal: int = None,
-    scalar: float = None, mamode: str = None, talib: bool = None,
-    offset: int = None, **kwargs
+    close: Series, fast: Int = None, slow: Int = None, signal: Int = None,
+    scalar: IntFloat = None, mamode: str = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Percentage Price Oscillator (PPO)
 

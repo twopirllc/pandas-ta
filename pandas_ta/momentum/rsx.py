@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
+from pandas_ta._typing import DictLike, Int
 from pandas import concat, DataFrame, Series
 from pandas_ta.utils import get_drift, get_offset, verify_series, signals
 
 
 def rsx(
-    close: Series, length: int = None, drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Relative Strength Xtra (rsx)
 

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def brar(
     open_: Series, high: Series, low: Series, close: Series,
-    length: int = None, scalar: float = None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, scalar: IntFloat = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """BRAR (BRAR)
 

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series, zero
 
 
 def psar(
     high: Series, low: Series, close: Series = None,
-    af0: float = None, af: float = None, max_af: float = None,
-    offset: int = None, **kwargs
+    af0: IntFloat = None, af: IntFloat = None, max_af: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Parabolic Stop and Reverse (psar)
 

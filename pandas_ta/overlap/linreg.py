@@ -2,13 +2,14 @@
 from numpy import arctan, nan, pi, zeros_like
 from numpy.version import version
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, strided_window, verify_series
 
 
 def linreg(
-    close: Series, length: int = None, talib: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Linear Regression Moving Average (linreg)
 

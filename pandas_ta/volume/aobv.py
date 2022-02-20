@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.trend import long_run, short_run
 from pandas_ta.utils import get_offset, verify_series
@@ -7,9 +8,9 @@ from .obv import obv
 
 
 def aobv(
-    close: Series, volume: Series, fast: int = None, slow: int = None,
-    max_lookback: int = None, min_lookback: int = None, mamode: str = None,
-    offset: int = None, **kwargs
+    close: Series, volume: Series, fast: Int = None, slow: Int = None,
+    max_lookback: Int = None, min_lookback: Int = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Archer On Balance Volume (AOBV)
 

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from numpy import log, seterr
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def drawdown(
-    close: Series, offset: int = None, **kwargs
+    close: Series, offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Drawdown (DD)
 

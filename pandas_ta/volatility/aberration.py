@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import hlc3, sma
 from pandas_ta.utils import get_offset, verify_series
 from .atr import atr
@@ -7,8 +8,8 @@ from .atr import atr
 
 def aberration(
     high: Series, low: Series, close: Series,
-    length: int = None, atr_length: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, atr_length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Aberration (ABER)
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_offset, verify_series
 from .long_run import long_run
@@ -7,9 +8,9 @@ from .short_run import short_run
 
 
 def amat(
-    close: Series, fast: int = None, slow: int = None,
-    lookback: int = None, mamode: str = None,
-    offset: int = None, **kwargs
+    close: Series, fast: Int = None, slow: Int = None,
+    lookback: Int = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Archer Moving Averages Trends (AMAT)
 

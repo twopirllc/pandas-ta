@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, verify_series
 
 
 def pvo(
-    volume: Series, fast: int = None, slow: int = None, signal: int = None,
-    scalar: float = None,
-    offset: int = None, **kwargs
+    volume: Series, fast: Int = None, slow: Int = None,
+    signal: Int = None, scalar: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Percentage Volume Oscillator (PVO)
 

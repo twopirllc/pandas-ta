@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from typing import Sequence, Union
 from pandas import Series, DataFrame
+from pandas_ta._typing import DictLike, Int, IntFloat, List, Union
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 from pandas_ta.candles import cdl_doji, cdl_inside
@@ -24,8 +24,8 @@ ALL_PATTERNS = [
 
 def cdl_pattern(
     open_: Series, high: Series, low: Series, close: Series,
-    name: Union[str, Sequence[str]] = "all", scalar: float = None,
-    offset: int = None, **kwargs
+    name: Union[str, List[str]] = "all", scalar: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """TA Lib Candle Patterns
 
@@ -89,6 +89,8 @@ def cdl_pattern(
         if n in pta_patterns:
             pattern_result = pta_patterns[n](
                 open_, high, low, close, offset=offset, scalar=scalar, **kwargs)
+            if not isinstance(pattern_result,Series):
+                continue
             result[pattern_result.name] = pattern_result
         else:
             if not Imports["talib"]:
@@ -96,16 +98,10 @@ def cdl_pattern(
                     f"[X] Please install TA-Lib to use {n}. (pip install TA-Lib)")
                 continue
 
-            pattern_func = tala.Function(f"CDL{n.upper()}")
+            pf = tala.Function(f"CDL{n.upper()}")
             pattern_result = Series(
-                pattern_func(
-                    open_,
-                    high,
-                    low,
-                    close,
-                    **kwargs) /
-                100 *
-                scalar)
+                0.01 * scalar * pf(open_, high, low, close, **kwargs)
+            )
             pattern_result.index = close.index
 
             # Offset
@@ -129,6 +125,5 @@ def cdl_pattern(
     df.name = "CDL_PATTERN"
     df.category = "candles"
     return df
-
 
 cdl = cdl_pattern  # Alias

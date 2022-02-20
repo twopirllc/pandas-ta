@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 
 
 def remap(
-    close: Series, from_min: float = None, from_max: float = None,
-    to_min: float = None, to_max: float = None,
-    offset: int = None, **kwargs
+    close: Series, from_min: IntFloat = None, from_max: IntFloat = None,
+    to_min: IntFloat = None, to_max: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """
     Indicator: ReMap (REMAP)

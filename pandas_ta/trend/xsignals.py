@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
-from typing import Union
 from numpy import nan
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat, Union
 from pandas_ta.trend import tsignals
 from pandas_ta.utils import cross_value, get_offset, verify_series
 
 
 def xsignals(
     signal: Series,
-    xa: Union[int, float, Series],
-    xb: Union[int, float, Series],
+    xa: Union[IntFloat, Series],
+    xb: Union[IntFloat, Series],
     above: bool = True, long: bool = True, asbool: bool = None,
-    trend_reset: int = 0, trade_offset: int = None,
-    offset: int = None, **kwargs
+    trend_reset: Int = 0, trade_offset: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Cross Signals (XSIGNALS)
 
-    Cross Signals returns Trend Signal (TSIGNALS) results for Signal Crossings. This
-    is useful for indicators like RSI, ZSCORE, et al where one wants trade Entries
-    and Exits (and Trends).
+    Cross Signals returns Trend Signal (TSIGNALS) results for Signal
+    Crossings. This is useful for indicators like RSI, ZSCORE, et al where
+    one wants trade Entries and Exits (and Trends).
 
     Cross Signals has two kinds of modes: above and long.
 

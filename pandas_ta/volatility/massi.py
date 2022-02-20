@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import ema
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def massi(
-    high: Series, low: Series, fast: int = None, slow: int = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, fast: Int = None, slow: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Mass Index (MASSI)
 

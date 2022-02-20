@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import wma
 from pandas_ta.utils import get_offset, verify_series
 from .roc import roc
 
 
 def coppock(
-    close: Series, length: int = None, fast: int = None, slow: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, fast: Int = None, slow: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Coppock Curve (COPC)
 

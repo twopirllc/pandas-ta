@@ -1,19 +1,21 @@
 # -*- coding: utf-8 -*-
 from numpy import nan
 from pandas import Series
+from pandas_ta._typing import Int
 from pandas_ta.utils import get_drift, verify_series
 
 
 def pvr(
-    close: Series, volume: Series, drift: int = None,
+    close: Series, volume: Series, drift: Int = None,
 ) -> Series:
     """Price Volume Rank
 
-    The Price Volume Rank was developed by Anthony J. Macek and is described in his
-    article in the June, 1994 issue of Technical Analysis of Stocks & Commodities
-    Magazine. It was developed as a simple indicator that could be calculated even
-    without a computer. The basic interpretation is to buy when the PV Rank is below
-    2.5 and sell when it is above 2.5.
+    The Price Volume Rank was developed by Anthony J. Macek and is described
+    in his article in the June, 1994 issue of Technical Analysis of
+    Stocks & Commodities (TASC) Magazine. It was developed as a simple
+    indicator that could be calculated even without a computer. The basic
+    interpretation is to buy when the PV Rank is below 2.5 and
+    sell when it is above 2.5.
 
     Sources:
         https://www.fmlabs.com/reference/default.htm?url=PVrank.htm

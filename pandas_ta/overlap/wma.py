@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from numpy import arange, dot
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
 def wma(
-    close: Series, length: int = None,
+    close: Series, length: Int = None,
     asc: bool = None, talib: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Weighted Moving Average (WMA)
 

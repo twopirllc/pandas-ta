@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
 
 
 def vwma(
-    close: Series, volume: Series, length: int = None,
-    offset: int = None, **kwargs
+    close: Series, volume: Series, length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Volume Weighted Moving Average (VWMA)
 

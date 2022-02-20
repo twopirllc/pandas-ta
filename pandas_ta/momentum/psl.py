@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from numpy import sign
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def psl(
     close: Series, open_: Series = None,
-    length: int = None, scalar: float = None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, scalar: IntFloat = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Psychological Line (PSL)
 

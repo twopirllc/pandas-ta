@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 from .ema import ema
 
 
 def t3(
-    close: Series, length: int = None, a: float = None, talib: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, a: IntFloat = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Tim Tillson's T3 Moving Average (T3)
 

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import fabs
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def mad(
-    close: Series, length: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Rolling Mean Absolute Deviation
 

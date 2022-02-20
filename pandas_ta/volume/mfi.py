@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import hlc3
 from pandas_ta.utils import get_drift, get_offset, verify_series
@@ -7,8 +8,8 @@ from pandas_ta.utils import get_drift, get_offset, verify_series
 
 def mfi(
     high: Series, low: Series, close: Series, volume: Series,
-    length: int = None, talib: bool = None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, talib: bool = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Money Flow Index (MFI)
 

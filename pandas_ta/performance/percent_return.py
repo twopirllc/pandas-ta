@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from numpy import nan, roll
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def percent_return(
-    close: Series, length: int = None, cumulative: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, cumulative: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Percent Return
 

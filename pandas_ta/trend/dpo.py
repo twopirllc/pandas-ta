@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import sma
 from pandas_ta.utils import get_offset, verify_series
 
 
 def dpo(
-    close: Series, length: int = None, centered: bool = True,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, centered: bool = True,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Detrend Price Oscillator (DPO)
 

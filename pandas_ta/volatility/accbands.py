@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
 
 
 def accbands(
-    high: Series, low: Series, close: Series, length: int = None,
-    c: int = None, drift: int = None, mamode: str = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, close: Series, length: Int = None,
+    c: IntFloat = None, drift: Int = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Acceleration Bands (ACCBANDS)
 

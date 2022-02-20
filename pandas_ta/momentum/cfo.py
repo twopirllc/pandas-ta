@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import linreg
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def cfo(
-    close: Series, length: int = None,
-    scalar: float = None, drift: int = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    scalar: IntFloat = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Chande Forcast Oscillator (CFO)
 

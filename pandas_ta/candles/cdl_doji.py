@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta.overlap import sma
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, high_low_range, is_percent
 from pandas_ta.utils import real_body, verify_series
 
 
 def cdl_doji(
     open_: Series, high: Series, low: Series, close: Series,
-    length: int = None, factor: float = None, scalar: float = None,
+    length: Int = None, factor: IntFloat = None, scalar: IntFloat = None,
     asint: bool = True,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Candle Type: Doji
 

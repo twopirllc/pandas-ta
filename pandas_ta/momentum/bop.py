@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def bop(
     open_: Series, high: Series, low: Series, close: Series,
-    scalar: float = None, talib: bool = None,
-    offset: int = None, **kwargs
+    scalar: IntFloat = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Balance of Power (BOP)
 

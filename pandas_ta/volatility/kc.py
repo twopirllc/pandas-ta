@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_offset, high_low_range, verify_series
 from .true_range import true_range
@@ -7,8 +8,8 @@ from .true_range import true_range
 
 def kc(
     high: Series, low: Series, close: Series,
-    length: int = None, scalar: float = None, mamode: str = None,
-    offset: int = None, **kwargs
+    length: Int = None, scalar: IntFloat = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Keltner Channels (KC)
 

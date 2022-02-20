@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.utils import get_offset, verify_series, get_drift
 
 
 def thermo(
-    high: Series, low: Series, length: int = None,
-    long: int = None, short: int = None,
-    mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    high: Series, low: Series, length: Int = None,
+    long: Int = None, short: Int = None,
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Elders Thermometer (THERMO)
 

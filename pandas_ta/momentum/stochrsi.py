@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.momentum import rsi
 from pandas_ta.utils import get_offset, non_zero_range, verify_series
 
 
 def stochrsi(
-    close: Series, length: int = None, rsi_length: int = None,
-    k: int = None, d: int = None, mamode: str = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, rsi_length: Int = None,
+    k: Int = None, d: Int = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Stochastic (STOCHRSI)
 

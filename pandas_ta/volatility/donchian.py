@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 
 
 def donchian(
     high: Series, low: Series,
-    lower_length: int = None, upper_length: int = None,
-    offset: int = None, **kwargs
+    lower_length: Int = None, upper_length: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Donchian Channels (DC)
 

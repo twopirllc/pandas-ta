@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
 
 
 def uo(
     high: Series, low: Series, close: Series,
-    fast: int = None, medium: int = None, slow: int = None,
-    fast_w: float = None, medium_w: float = None, slow_w: float = None,
-    talib: bool = None, drift: int = None,
-    offset: int = None, **kwargs
+    fast: Int = None, medium: Int = None, slow: Int = None,
+    fast_w: IntFloat = None, medium_w: IntFloat = None, slow_w: IntFloat = None,
+    talib: bool = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Ultimate Oscillator (UO)
 

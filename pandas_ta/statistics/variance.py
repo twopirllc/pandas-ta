@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_offset, verify_series
 
 
 def variance(
-    close: Series, length: int = None,
-    ddof: int = None, talib: bool = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None,
+    ddof: Int = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Rolling Variance
 

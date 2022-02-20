@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 from numpy import sqrt
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 
 
 def hwc(
-    close: Series, scalar: float = None, channel_eval: bool = None,
-    na: float = None, nb: float = None, nc: float = None, nd: float = None,
-    offset: int = None, **kwargs
+    close: Series, scalar: IntFloat = None, channel_eval: bool = None,
+    na: IntFloat = None, nb: IntFloat = None,
+    nc: IntFloat = None, nd: IntFloat = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """HWC (Holt-Winter Channel)
 
-    Channel indicator HWC (Holt-Winters Channel) based on HWMA - a three-parameter
-    moving average calculated by the method of Holt-Winters.
+    Channel indicator HWC (Holt-Winters Channel) based on HWMA - a
+    three-parameter moving average calculated by the method of Holt-Winters.
 
     This version has been implemented for Pandas TA by rengel8 based on a
-    publication for MetaTrader 5 extended by width and percentage price position
-    against width of channel.
+    publication for MetaTrader 5 extended by width and percentage price
+    position against width of channel.
 
     Sources:
         https://www.mql5.com/en/code/20857
@@ -24,8 +26,8 @@ def hwc(
     Args:
         close (pd.Series): Series of 'close's
         scaler (float): Width multiplier of the channel. Default: 1
-        channel_eval (bool): Return width and percentage price position against
-            price. Default: False
+        channel_eval (bool): Return width and percentage price position
+            against price. Default: False
         na (float): Smoothed series (from 0 to 1). Default: 0.2
         nb (float): Trend value (from 0 to 1). Default: 0.1
         nc (float): Seasonality value (from 0 to 1). Default: 0.1

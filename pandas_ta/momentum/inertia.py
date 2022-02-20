@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import linreg
 from pandas_ta.utils import get_drift, get_offset, verify_series
 from pandas_ta.volatility import rvi
@@ -7,10 +8,10 @@ from pandas_ta.volatility import rvi
 
 def inertia(
     close: Series, high: Series = None, low: Series = None,
-    length: int = None, rvi_length: int = None, scalar: float = None,
+    length: Int = None, rvi_length: Int = None, scalar: IntFloat = None,
     refined: bool = None, thirds: bool = None,
-    drift: int = None, mamode: str = None,
-    offset: int = None, **kwargs
+    drift: Int = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Inertia (INERTIA)
 

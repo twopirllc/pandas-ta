@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import get_drift, get_offset, verify_series
 from pandas_ta.volatility import atr
@@ -7,9 +8,9 @@ from pandas_ta.volatility import atr
 
 def natr(
     high: Series, low: Series, close: Series,
-    length: int = None, scalar: float = None, mamode: str = None,
-    talib: bool = None, drift: int = None,
-    offset: int = None, **kwargs
+    length: Int = None, scalar: IntFloat = None, mamode: str = None,
+    talib: bool = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Normalized Average True Range (NATR)
 

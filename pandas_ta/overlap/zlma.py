@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import get_offset, verify_series
 from .dema import dema
 from .ema import ema
@@ -22,7 +23,7 @@ from .wma import wma
 
 # Not ideal but it works. Submit a PR for a better solution. =)
 # This design pattern is undesirable
-def _ma(mamode, **kwargs):
+def _ma(mamode: str, **kwargs: DictLike):
     if mamode == "dema":
         return dema(**kwargs)
     elif mamode == "fwma":
@@ -58,9 +59,10 @@ def _ma(mamode, **kwargs):
     else:
         return ema(**kwargs)
 
+
 def zlma(
-    close: Series, length: int = None, mamode: str = None,
-    offset: int = None, **kwargs
+    close: Series, length: Int = None, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Zero Lag Moving Average (ZLMA)
 

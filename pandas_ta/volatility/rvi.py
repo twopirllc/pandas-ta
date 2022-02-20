@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.statistics import stdev
 from pandas_ta.utils import get_drift, get_offset
@@ -8,10 +9,10 @@ from pandas_ta.utils import unsigned_differences, verify_series
 
 def rvi(
     close: Series, high: Series = None, low: Series = None,
-    length: int = None, scalar: float = None,
+    length: Int = None, scalar: IntFloat = None,
     refined: bool = None, thirds: bool = None,
-    mamode: str = None, drift: int = None,
-    offset: int = None, **kwargs
+    mamode: str = None, drift: Int = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Relative Volatility Index (RVI)
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from multiprocessing import cpu_count
-from typing import List
 from dataclasses import dataclass, field
 
+from pandas_ta._typing import Int, List
 from pandas_ta.utils._time import get_time
 
 
@@ -13,11 +13,16 @@ class Study:
     Class to name and group indicators for processing
 
     Args:
-        name (str): Some short memorable string.  Note: Case-insensitive "All" is reserved.
-        ta (list of dicts): A list of dicts containing keyword arguments where "kind" is the indicator.
-        cores (int): The number cores to use for the study(). Default: cpu_count()
-        description (str): A more detailed description of what the Study tries to capture. Default: None
-        created (str): At datetime string of when it was created. Default: Automatically generated. *Subject to change*
+        name (str): Some short memorable string.
+            Note: Case-insensitive "All" is reserved.
+        ta (list of dicts): A list of dicts containing keyword arguments
+            where "kind" is the indicator.
+        cores (int): The number cores to use for the study().
+            Default: cpu_count()
+        description (str): A more detailed description of what the Study
+            tries to capture. Default: None
+        created (str): At datetime string of when it was created.
+            Default: Automatically generated. *Subject to change*
 
     Example TA:
     ta = [
@@ -31,7 +36,7 @@ class Study:
     """
     name: str  # = None # Required.
     ta: List = field(default_factory=list)  # Required.
-    cores: int  = cpu_count()  # Number of cores. Default cpu_count()
+    cores: Int  = cpu_count()  # Number of cores. Default cpu_count()
     description: str = ""  # Helpful. More descriptive version or notes or w/e.
     # Optional. Gets Exchange Time and Local Time execution time
     created: str = get_time(to_string=True)

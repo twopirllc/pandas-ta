@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
+from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import get_offset, verify_series
 from pandas_ta.volatility import atr
 
 
 def cksp(
     high: Series, low: Series, close: Series,
-    p: int = None, x: float = None, q: int = None,
+    p: Int = None, x: IntFloat = None, q: Int = None,
     tvmode: bool = None,
-    offset: int = None, **kwargs
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Chande Kroll Stop (CKSP)
 

@@ -32,7 +32,7 @@ class TestPerformace(TestCase):
         """Transform: Cube"""
         result = pandas_ta.cube(self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "CUBE_3.0_1")
+        self.assertEqual(result.name, "CUBE_3.0_-1")
 
     def test_inverse_fisher(self):
         """Transform: Inverse Fisher"""
