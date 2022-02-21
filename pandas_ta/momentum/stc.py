@@ -7,8 +7,7 @@ from pandas_ta.utils import get_offset, non_zero_range, verify_series
 def stc(
     close: Series, tclength: int = None,
     fast: int = None, slow: int = None, factor: float = None,
-    offset: int = None, **kwargs
-) -> DataFrame:
+    offset: int = None, **kwargs) -> DataFrame:
     """Schaff Trend Cycle (STC)
 
     The Schaff Trend Cycle is an evolution of the popular MACD
@@ -23,11 +22,11 @@ def stc(
 
     Feed external moving averages:
     Internally calculation..
-        stc = ta.stc(close=df["close"], tclen=stc_tclen, fast=ma1_interval, slow=ma2_interval, factor=stc_factor)
+        stc = ta.stc(close=df["close"], tclength=stc_tclen, fast=ma1_interval, slow=ma2_interval, factor=stc_factor)
     becomes..
         extMa1 = df.ta.zlma(close=df["close"], length=ma1_interval, append=True)
         extMa2 = df.ta.ema(close=df["close"], length=ma2_interval, append=True)
-        stc = ta.stc(close=df["close"], tclen=stc_tclen, ma1=extMa1, ma2=extMa2, factor=stc_factor)
+        stc = ta.stc(close=df["close"], tclength=stc_tclen, ma1=extMa1, ma2=extMa2, factor=stc_factor)
 
     The same goes for osc=, which allows the input of an externally calculated oscillator, overriding ma1 & ma2.
 
@@ -37,7 +36,7 @@ def stc(
 
     Args:
         close (pd.Series): Series of 'close's
-        tclen (int): SchaffTC Signal-Line length.
+        tclength (int): SchaffTC Signal-Line length.
             Default: 10 (adjust to the half of cycle)
         fast (int): The short period. Default: 12
         slow (int): The long period. Default: 26
@@ -46,8 +45,8 @@ def stc(
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        ma1: External MA (mandatory in conjuction with ma2)
-        ma2: External MA (mandatory in conjuction with ma1)
+        ma1: External MA (mandatory in conjuction with ma2) - the shorter interval [fast]
+        ma2: External MA (mandatory in conjuction with ma1) - the longer inerval [slow]
         osc: External osillator
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
@@ -56,15 +55,12 @@ def stc(
         pd.DataFrame: stc, macd, stoch
     """
     # Validate
-    if isinstance(tclength, int) and tclength > 0:
-        tclength = int(tclength)
-    else:
-        tclength = 10
+    tclength = int(tclength) if isinstance(tclength, int) and tclength > 0 else 10
     fast = int(fast) if isinstance(fast, int) and fast > 0 else 12
     slow = int(slow) if isinstance(slow, int) and slow > 0 else 26
     factor = float(factor) if isinstance(factor, int) and factor > 0 else 0.5
-    if slow < fast:                # mandatory condition, but might be confusing
-        fast, slow = slow, fast
+    if slow < fast:                 # mandatory condition, but might be confusing
+        fast, slow = slow, fast     # fast (shorter interval) becomes slow (longer interval), if necessary
     _length = max(tclength, fast, slow)
     close = verify_series(close, _length)
     offset = get_offset(offset)
