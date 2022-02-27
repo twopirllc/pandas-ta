@@ -367,11 +367,6 @@ class AnalysisIndicators(BasePandasObject):
             self._time_range = "years"
 
     @property
-    def to_utc(self) -> None:
-        """Sets the DataFrame index to UTC format"""
-        self._df = to_utc(self._df)
-
-    @property
     def version(self) -> str:
         """Returns the version."""
         return version
@@ -516,6 +511,10 @@ class AnalysisIndicators(BasePandasObject):
         return name, mode
 
     # Public DataFrame Methods
+    def to_utc(self) -> None:
+        """Sets the DataFrame index to UTC format"""
+        self._df = to_utc(self._df)
+    
     def constants(self, append: bool, values: list):
         """Constants
 
