@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, pascals_triangle, verify_series, weights
+from pandas_ta.utils import pascals_triangle, v_offset
+from pandas_ta.utils import v_ascending, v_pos_default, v_series, weights
 
 
 def pwma(
@@ -29,13 +30,14 @@ def pwma(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    asc = asc if asc else True
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    asc = v_ascending(asc)
+    offset = v_offset(offset)
 
     # Calculate
     triangle = pascals_triangle(n=length - 1, weighted=True)

@@ -2,7 +2,7 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, List
 from pandas_ta.overlap import hlc3
-from pandas_ta.utils import get_offset, is_datetime_ordered, verify_series
+from pandas_ta.utils import v_datetime_ordered, v_list, v_offset, v_series
 
 
 def vwap(
@@ -47,22 +47,23 @@ def vwap(
         pd.DataFrame: New feature generated.
     """
     # Validate
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    volume = verify_series(volume)
+    high = v_series(high)
+    low = v_series(low)
+    close = v_series(close)
+    volume = v_series(volume)
+    bands = v_list(bands)
+    offset = v_offset(offset)
+
     if anchor and isinstance(anchor, str) and len(anchor) >= 1:
         anchor = anchor.upper()
     else:
         anchor = "D"
-    bands = bands if isinstance(bands, list) and len(bands) else []
-    offset = get_offset(offset)
 
     typical_price = hlc3(high=high, low=low, close=close)
-    if not is_datetime_ordered(volume):
+    if not v_datetime_ordered(volume):
         _s = "[!] VWAP volume series is not datetime ordered."
         print(f"{_s} Results may not be as expected.")
-    if not is_datetime_ordered(typical_price):
+    if not v_datetime_ordered(typical_price):
         _s = "[!] VWAP price series is not datetime ordered."
         print(f"{_s} Results may not be as expected.")
 

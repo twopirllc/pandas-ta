@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 from .dema import dema
 from .ema import ema
 from .fwma import fwma
@@ -87,13 +87,14 @@ def zlma(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    mamode = mamode.lower() if isinstance(mamode, str) else "ema"
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    mamode = v_mamode(mamode, "ema")
+    offset = v_offset(offset)
 
     # Calculate
     lag = int(0.5 * (length - 1))
@@ -101,8 +102,6 @@ def zlma(
 
     kwargs.update({"close": close_})
     kwargs.update({"length": length})
-
-
 
     zlma = _ma(mamode, **kwargs)
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import candle_color, get_offset, verify_series
+from pandas_ta.utils import candle_color, v_offset, v_series
 
 
 def cdl_inside(
@@ -39,11 +39,11 @@ def cdl_inside(
         pd.Series: New feature
     """
     # Validate
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    offset = get_offset(offset)
+    open_ = v_series(open_)
+    high = v_series(high)
+    low = v_series(low)
+    close = v_series(close)
+    offset = v_offset(offset)
 
     # Calculate
     inside = (high.diff() < 0) & (low.diff() > 0)

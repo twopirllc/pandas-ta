@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from email.policy import default
 from unittest import TestCase, skip
 
 import numpy as np
@@ -120,6 +121,7 @@ class TestUtilities(TestCase):
         self.assertIsNone(result)
 
     def test_combination(self):
+        """Utility[Math]: Combination"""
         self.assertIsNotNone(self.utils.combination())
 
         self.assertEqual(self.utils.combination(), 1)
@@ -146,6 +148,7 @@ class TestUtilities(TestCase):
         self.assertFalse(result[0])
 
     def test_df_dates(self):
+        """Utility[Date]: DF Dates"""
         result = self.utils.df_dates(self.data)
         self.assertEqual(None, result)
 
@@ -160,17 +163,21 @@ class TestUtilities(TestCase):
 
     @skip
     def test_df_month_to_date(self):
+        """Utility[Date]: MTD"""
         result = self.utils.df_month_to_date(self.data)
 
     @skip
     def test_df_quarter_to_date(self):
+        """Utility[Date]: QTD"""
         result = self.utils.df_quarter_to_date(self.data)
 
     @skip
     def test_df_year_to_date(self):
+        """Utility[Date]: YTD"""
         result = self.utils.df_year_to_date(self.data)
 
     def test_fibonacci(self):
+        """Utility[Math]: Fibonacci"""
         self.assertIs(type(self.utils.fibonacci(zero=True, weighted=False)), np.ndarray)
 
         npt.assert_array_equal(self.utils.fibonacci(zero=True), np.array([0, 1, 1]))
@@ -183,6 +190,7 @@ class TestUtilities(TestCase):
         npt.assert_array_equal(self.utils.fibonacci(n=5, zero=False, weighted=False), np.array([1, 1, 2, 3, 5]))
 
     def test_fibonacci_weighted(self):
+        """Utility[Math]: Fibonacci Weighted"""
         self.assertIs(type(self.utils.fibonacci(zero=True, weighted=True)), np.ndarray)
         npt.assert_array_equal(self.utils.fibonacci(n=0, zero=True, weighted=True), np.array([0]))
         npt.assert_array_equal(self.utils.fibonacci(n=0, zero=False, weighted=True), np.array([1]))
@@ -191,6 +199,7 @@ class TestUtilities(TestCase):
         npt.assert_allclose(self.utils.fibonacci(n=5, zero=False, weighted=True), np.array([1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
 
     def test_geometric_mean(self):
+        """Utility[Stats]: Geometric Mean"""
         returns = percent_return(self.data.close)
         result = self.utils.geometric_mean(returns)
         # result = geometric_mean(returns)
@@ -247,7 +256,6 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.inv_norm(1), np.infty)
         np.testing.assert_equal(self.utils.inv_norm(1.01), np.nan)
 
-
     def test_linear_regression(self):
         """Utility[Math]: Linear Regression"""
         x = Series([1, 2, 3, 4, 5])
@@ -302,22 +310,24 @@ class TestUtilities(TestCase):
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True), array_5w)
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True, inverse=True), array_5iw)
 
-    def test__performance(self):
-        """Utility[Core]: Indicator Performance"""
-        result = self.utils.performance(self.data, top=10, talib=True, ascending=False, places=4)
+    # @skip
+    def test__speed_test(self):
+        """Utility[Core]: Indicator Speed Test"""
+        result = self.utils.speed_test(self.data, top=10, talib=True, ascending=False, places=4)
         self.assertIsInstance(result, DataFrame)
 
-        result = self.utils.performance(self.data, top=10, ascending=False, places=4)
+        result = self.utils.speed_test(self.data, top=10, ascending=False, places=4)
         self.assertIsInstance(result, DataFrame)
 
-    def test__performance_excluded(self):
-        """Utility[Core]: Indicator Performance sans Excluded"""
+    # @skip
+    def test__speed_test_excluded(self):
+        """Utility[Core]: Indicator Speed Test sans Excluded"""
         # Top 3 Slowest with TA Lib since: 1/26/2022
         exclude = ["reflex", "td_seq", "trendflex"]
         exclude += ["ssf", "ssf3"]  # Top 5
 
         print(f"\n[i] excluded: {', '.join(exclude)}")
-        result = self.utils.performance(self.data, excluded=exclude, top=5, talib=True, ascending=False, places=4, stats=False, verbose=True)
+        result = self.utils.speed_test(self.data, excluded=exclude, top=5, talib=True, ascending=False, places=4, stats=False, verbose=True)
         self.assertIsInstance(result, DataFrame)
 
         # Top 3 Slowest without TA Lib since: 1/26/2022
@@ -325,15 +335,16 @@ class TestUtilities(TestCase):
         exclude += ["hilo", "psar"]  # Top 5
 
         print(f"\n[i] excluded: {', '.join(exclude)}")
-        result = self.utils.performance(self.data, excluded=exclude, top=5, ascending=False, places=4, stats=False, verbose=True)
+        result = self.utils.speed_test(self.data, excluded=exclude, top=5, ascending=False, places=4, stats=False, verbose=True)
         self.assertIsInstance(result, DataFrame)
 
-    def test__performance_verbose(self):
-        """Utility[Core]: Verbose Indicator Performance"""
-        result = self.utils.performance(self.data, top=5, talib=True, ascending=False, places=4, stats=False, verbose=True)
+    # @skip
+    def test__speed_test_verbose(self):
+        """Utility[Core]: Verbose Indicator Speed Test"""
+        result = self.utils.speed_test(self.data, top=5, talib=True, ascending=False, places=4, stats=False, verbose=True)
         self.assertIsInstance(result, DataFrame)
 
-        result = self.utils.performance(self.data, top=5, ascending=False, places=4, stats=False, verbose=True)
+        result = self.utils.speed_test(self.data, top=5, ascending=False, places=4, stats=False, verbose=True)
         self.assertIsInstance(result, DataFrame)
 
     def test_symmetric_triangle(self):
@@ -352,6 +363,7 @@ class TestUtilities(TestCase):
         npt.assert_array_equal(self.utils.symmetric_triangle(n=5, weighted=True), array_5w)
 
     def test_tal_ma(self):
+        """Utility[TA]: TA Lib MA {str: int}"""
         self.assertEqual(self.utils.tal_ma("sma"), 0)
         self.assertEqual(self.utils.tal_ma("Sma"), 0)
         self.assertEqual(self.utils.tal_ma("ema"), 1)
@@ -364,6 +376,7 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.tal_ma("t3"), 8)
 
     def test_zero(self):
+        """Utility[Math]: Zero"""
         self.assertEqual(self.utils.zero(-0.0000000000000001), 0)
         self.assertEqual(self.utils.zero(0), 0)
         self.assertEqual(self.utils.zero(0.0), 0)
@@ -373,23 +386,70 @@ class TestUtilities(TestCase):
         self.assertNotEqual(self.utils.zero(0.000000000000001), 0)
         self.assertNotEqual(self.utils.zero(1), 0)
 
-    def test_get_drift(self):
+    def test_v_drift(self):
+        """Validate: drift"""
         for s in [0, None, "", [], {}]:
-            self.assertIsInstance(self.utils.get_drift(s), int)
+            self.assertIsInstance(self.utils.v_drift(s), int)
 
-        self.assertEqual(self.utils.get_drift(0), 1)
-        self.assertEqual(self.utils.get_drift(1.1), 1)
-        self.assertEqual(self.utils.get_drift(-1.1), 1)
+        self.assertEqual(self.utils.v_drift(-1.1), 1)
+        self.assertEqual(self.utils.v_drift(0), 1)
+        self.assertEqual(self.utils.v_drift(1.1), 1)
 
-    def test_get_offset(self):
+    @skip
+    def test_v_gtb(self):
         for s in [0, None, "", [], {}]:
-            self.assertIsInstance(self.utils.get_offset(s), int)
+            self.assertIsInstance(self.utils.v_gtb(s), (float, int))
 
-        self.assertEqual(self.utils.get_offset(0), 0)
-        self.assertEqual(self.utils.get_offset(-1.1), 0)
-        self.assertEqual(self.utils.get_offset(1), 1)
+        self.assertEqual(self.utils.v_drift(-1.1), 1)
+        self.assertEqual(self.utils.v_drift(0), 1)
+        self.assertEqual(self.utils.v_drift(1.1), 1)
+
+    def test_v_lowerbound(self):
+        """Validate: lowerbound"""
+        _vars = [None, "", [], {}, -1.1, -1, 0.0, 0, 0.1, 1.0, 1]
+        for strict in [True, False]:
+            for v in _vars:
+                self.assertIsInstance(self.utils.v_lowerbound(v, strict=strict), (float, int))
+
+        self.assertEqual(self.utils.v_lowerbound(-1.1, 0), 0)
+        self.assertEqual(self.utils.v_lowerbound(-1, 0), 0)
+        self.assertEqual(self.utils.v_lowerbound(0.0, 0), 0)
+        self.assertEqual(self.utils.v_lowerbound(0, 0), 0)
+        self.assertEqual(self.utils.v_lowerbound(0.1, 0), 0.1)
+        self.assertEqual(self.utils.v_lowerbound(1.0, 0), 1.0)
+        self.assertEqual(self.utils.v_lowerbound(1, 0), 1)
+
+        self.assertEqual(self.utils.v_lowerbound(-1.1, 0, strict=False), 0)
+        self.assertEqual(self.utils.v_lowerbound(-1, 0, strict=False), 0)
+        self.assertEqual(self.utils.v_lowerbound(0.0, 0, strict=False), 0.0)
+        self.assertEqual(self.utils.v_lowerbound(0, 0, strict=False), 0)
+        self.assertEqual(self.utils.v_lowerbound(0.1, 0, strict=False), 0.1)
+        self.assertEqual(self.utils.v_lowerbound(1.0, 0, strict=False), 1)
+        self.assertEqual(self.utils.v_lowerbound(1, 0, strict=False), 1)
+
+    def test_v_upperbound(self):
+        """Validate: upperbound"""
+        _vars = [None, "", [], {}, -1.1, -1, 0.0, 0, 0.1, 1.0, 1]
+        for strict in [True, False]:
+            for v in _vars:
+                self.assertIsInstance(self.utils.v_upperbound(v, strict=strict), (float, int))
+
+
+    def test_v_offset(self):
+        """Validate: offset"""
+        for s in [0, None, "", [], {}]:
+            self.assertIsInstance(self.utils.v_offset(s), int)
+
+        self.assertEqual(self.utils.v_offset(None), 0)
+        self.assertEqual(self.utils.v_offset(-1.1), 0)
+        self.assertEqual(self.utils.v_offset(-1), -1)
+        self.assertEqual(self.utils.v_offset(0), 0)
+        self.assertEqual(self.utils.v_offset(1.1), 0)
+        self.assertEqual(self.utils.v_offset(1), 1)
+        self.assertEqual(self.utils.v_offset(2), 2)
 
     def test_sample_processes(self):
+        """Feature[Math]: sample"""
         s0 = 0.01
         # tmp = pandas_ta.sample(length=2)
         tmp = pta_sample(length=2)
@@ -418,12 +478,14 @@ class TestUtilities(TestCase):
 
 
     def test_to_utc(self):
+        """Utility[Time]: to_utc"""
         result = self.utils.to_utc(self.data.copy())
         self.assertTrue(is_datetime64_ns_dtype(result.index))
         self.assertTrue(is_datetime64tz_dtype(result.index))
 
     @skip
     def test_total_time(self):
+        """Utility[Time]: total_time"""
         result = self.utils.total_time(self.data)
         self.assertEqual(30.182539682539684, result)
 
@@ -446,6 +508,7 @@ class TestUtilities(TestCase):
         self.assertEqual(657158400.0, result)
 
     def test_version(self):
+        """Utility[Core]: version"""
         result = pandas_ta.version
         self.assertIsInstance(result, str)
         print(f"\nPandas TA v{result}")

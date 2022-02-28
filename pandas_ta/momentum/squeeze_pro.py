@@ -2,12 +2,13 @@
 from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
+from pandas_ta.ma import ma
 from pandas_ta.momentum import mom
-from pandas_ta.overlap import ema, sma
+# from pandas_ta.overlap import ema, sma
 from pandas_ta.trend import decreasing, increasing
 from pandas_ta.volatility import bbands, kc
-from pandas_ta.utils import get_offset, simplify_columns, unsigned_differences, verify_series
-
+from pandas_ta.utils import simplify_columns, unsigned_differences, v_mamode
+from pandas_ta.utils import v_offset, v_pos_default, v_scalar, v_series
 
 def squeeze_pro(
     high: Series, low: Series, close: Series,
@@ -67,46 +68,33 @@ def squeeze_pro(
             More detailed columns if 'detailed' kwarg is True.
     """
     # Validate
-    bb_length = int(bb_length) if bb_length and bb_length > 0 else 20
-    bb_std = float(bb_std) if bb_std and bb_std > 0 else 2.0
-    kc_length = int(kc_length) if kc_length and kc_length > 0 else 20
-
-    if kc_scalar_wide and kc_scalar_wide > 0:
-        kc_scalar_wide = float(kc_scalar_wide)
-    else:
-        kc_scalar_wide = 2
-
-    if kc_scalar_normal and kc_scalar_normal > 0:
-        kc_scalar_normal = float(kc_scalar_normal)
-    else:
-        kc_scalar_normal = 1.5
-
-    if kc_scalar_narrow and kc_scalar_narrow > 0:
-        kc_scalar_narrow = float(kc_scalar_narrow)
-    else:
-        kc_scalar_narrow = 1
-
-    mom_length = int(mom_length) if mom_length and mom_length > 0 else 12
-    mom_smooth = int(mom_smooth) if mom_smooth and mom_smooth > 0 else 6
-
+    bb_length = v_pos_default(bb_length, 20)
+    kc_length = v_pos_default(kc_length, 20)
+    mom_length = v_pos_default(mom_length, 12)
+    mom_smooth = v_pos_default(mom_smooth, 6)
     _length = max(bb_length, kc_length, mom_length, mom_smooth)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
+    if high is None or low is None or close is None:
+        return
+
+    kc_scalar_narrow = v_scalar(kc_scalar_narrow, 1)
+    kc_scalar_normal = v_scalar(kc_scalar_normal, 1.5)
+    kc_scalar_wide = v_scalar(kc_scalar_wide, 2)
     valid_kc_scaler = kc_scalar_wide > kc_scalar_normal \
         and kc_scalar_normal > kc_scalar_narrow
 
     if not valid_kc_scaler:
         return
-    if high is None or low is None or close is None:
-        return
 
-    use_tr = kwargs.setdefault("tr", True)
+    bb_std = v_pos_default(bb_std, 2.0)
+    mamode = v_mamode(mamode, "sma")
+    offset = v_offset(offset)
+    use_tr = kwargs.pop("tr", True)
     asint = kwargs.pop("asint", True)
     detailed = kwargs.pop("detailed", False)
-    mamode = mamode if isinstance(mamode, str) else "sma"
 
     # Calculate
     bbd = bbands(close, length=bb_length, std=bb_std, mamode=mamode)
@@ -130,10 +118,7 @@ def squeeze_pro(
     kch_narrow.columns = simplify_columns(kch_narrow)
 
     momo = mom(close, length=mom_length)
-    if mamode.lower() == "ema":
-        squeeze = ema(momo, length=mom_smooth)
-    else:  # "sma"
-        squeeze = sma(momo, length=mom_smooth)
+    squeeze = ma(mamode, momo, length=mom_smooth)
 
     # Classify Squeezes
     squeeze_on_wide = (bbd.l > kch_wide.l) & (bbd.u < kch_wide.u)

@@ -7,7 +7,6 @@ from warnings import simplefilter
 
 from numpy import log10, ndarray
 from pandas.api.extensions import register_dataframe_accessor
-from pandas.core.base import PandasObject
 from pandas.errors import PerformanceWarning
 from pandas import DataFrame, Series
 
@@ -116,19 +115,15 @@ class AnalysisIndicators(object):
     _time_range = "years"
 
     def __init__(self, obj: SeriesFrame):
-        self._validate(obj)
+        v_dataframe(obj)
         self._df = obj
         self._last_run = get_time(self._exchange, to_string=True)
 
-    @staticmethod
-    def _validate(obj: SeriesFrame):
-        if not isinstance(obj, DataFrame) and not isinstance(obj, Series):
-            raise AttributeError("[X] Requires a Pandas Series or DataFrame.")
 
     # DataFrame Behavioral Methods
     def __call__(
-            self, kind: str = None,
-            timed: bool = False, version: bool = False, **kwargs: DictLike
+            self, kind: str = None, timed: bool = False,
+            version: bool = False, **kwargs: DictLike
         ):
         if version: print(f"Pandas TA - Technical Analysis Indicators - v{self.version}")
         try:
@@ -141,12 +136,12 @@ class AnalysisIndicators(object):
 
                 # Run the indicator
                 result = fn(**kwargs)  # = getattr(self, kind)(**kwargs)
-                self._last_run = get_time(self.exchange, to_string=True) # Save when it completed it's run
 
                 if timed:
                     result.timed = final_time(stime)
                     print(f"[+] {kind}: {result.timed}")
 
+                self._last_run = get_time(self.exchange, to_string=True)
                 return result
             else:
                 self.help()
@@ -232,10 +227,9 @@ class AnalysisIndicators(object):
     @property
     def datetime_ordered(self) -> bool:
         """Returns True if the index is a datetime and ordered."""
-        hasdf = hasattr(self, "_df")
-        if hasdf:
-            return is_datetime_ordered(self._df)
-        return hasdf
+        if hasattr(self, "_df"):
+            return v_datetime_ordered(self._df)
+        return False
 
     @property
     def reverse(self) -> DataFrame:
@@ -543,27 +537,25 @@ class AnalysisIndicators(object):
         with possibly as json, yaml config file or an sqlite3 table.
 
         Kwargs:
-            chunksize (bool): Adjust the chunksize for the Multiprocessing Pool.
-                Default: Number of cores of the OS
-            exclude (list): List of indicator names to exclude. Some are
-                excluded by default for various reasons; they require additional
-                sources, performance (td_seq), not a time series chart (vp) etc.
+            chunksize (bool): Adjust the chunksize for the Multiprocessing
+                Pool. Default: Number of cores of the OS
+            exclude (list): List of indicator names to exclude.
             name (str): Select all indicators or indicators by
-                Category such as: "candles", "cycles", "momentum", "overlap",
-                "performance", "statistics", "trend", "volatility", "volume", or
-                "all". Default: "all"
+                Category such as: "candles", "cycles", "momentum",
+                "overlap", "performance", "statistics", "trend", "volatility",
+                "volume", or "all". Default: "all"
             ordered (bool): Whether to run "all" in order. Default: True
             timed (bool): Show the process time of the study().
                 Default: False
-            verbose (bool): Provide some additional insight on the progress of
-                the study() execution. Default: False
+            verbose (bool): Provide some additional insight on the progress
+                of the study() execution. Default: False
             warning (bool): Disables depreciation message. Automatically
                 disabled when using it's replacement method: df.ta.study().
                 Default: True
         """
         _dep_warning = kwargs.pop("warning", True)
         all_ordered = kwargs.pop("ordered", True)
-        # Ensure indicators are appended to the DataFrame
+        # Append indicators to the DataFrame by default
         kwargs.setdefault("append", True)
         # If True, it returns the resultant DataFrame. Default: False
         returns = kwargs.pop("returns", False)
@@ -576,7 +568,7 @@ class AnalysisIndicators(object):
             print(f"\n[!] DEPRECIATION WARNING:\n    Use study() instead of strategy().\n")
 
         # Initialize
-        initial_column_count = len(self._df.columns)
+        initial_column_count = self._df.shape[1]
         excluded = ["long_run", "short_run", "tsignals", "xsignals"]
 
         # Get the Study Name and mode
@@ -608,7 +600,8 @@ class AnalysisIndicators(object):
         removal = []
         for kwds in ta:
             _ = False
-            if "length" in kwds and kwds["length"] > self._df.shape[0]: _ = True
+            if "length" in kwds and kwds["length"] > self._df.shape[0]:
+                _ = True
             if _: removal.append(kwds)
         if len(removal) > 0: [ta.remove(x) for x in removal]
 
@@ -638,16 +631,19 @@ class AnalysisIndicators(object):
                 use_multiprocessing = False
 
         if Imports["tqdm"]:
-            # from tqdm import tqdm
             from tqdm import tqdm
 
         if use_multiprocessing:
             _total_ta = len(ta)
             with Pool(self.cores) as pool:
-                # Some magic to optimize chunksize for speed based on total ta indicators
-                _chunksize = mp_chunksize - 1 if mp_chunksize > _total_ta else int(log10(_total_ta)) + 1
+                # Some magic to optimize chunksize for speed
+                # based on total ta indicators
+                if mp_chunksize > _total_ta:
+                    _chunksize = mp_chunksize - 1
+                else:
+                    _chunksize = int(log10(_total_ta)) + 1
                 if verbose:
-                    print(f"[i] Multiprocessing {_total_ta} indicators with {_chunksize} chunks and {self.cores}/{cpu_count()} cpus.")
+                    print(f"[i] Multiprocessing {_total_ta} indicators with chunksize {_chunksize} and {self.cores}/{cpu_count()} cpus.")
 
                 results = None
                 if mode["custom"]:
@@ -715,15 +711,23 @@ class AnalysisIndicators(object):
         # Apply prefixes/suffixes and appends indicator results to the DataFrame
         [self._post_process(r, **kwargs) for r in results]
 
+        final_column_count = self._df.shape[1]
+        _added_columns = final_column_count - initial_column_count
+
         if verbose:
             print(f"[i] Total indicators: {len(ta)}")
-            print(f"[i] Columns added: {len(self._df.columns) - initial_column_count}")
+            print(f"[i] Columns added: {_added_columns}")
             print(f"[i] Last Run: {self._last_run}")
         if timed:
-            print(f"[i] Analysis Time: {final_time(stime)}")
+            ft = final_time(stime)
+            if _added_columns > 0:
+                avgtd = (perf_counter() - stime) / _added_columns
+            else:
+                avgtd = perf_counter() - stime
+            print(f"[i] Analysis Time: {ft} for {_added_columns} columns (avg {avgtd * 1000:2.4f} ms / col).")
 
-        if returns: return self._df
-
+        if returns:
+            return self._df
 
     def study(self, *args: Args, **kwargs: DictLike) -> dataclass:
         """Study Method

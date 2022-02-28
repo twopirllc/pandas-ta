@@ -36,11 +36,11 @@ class TestTrendExtension(TestCase):
     def test_chop_ext(self):
         self.data.ta.chop(append=True, ln=False)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "CHOP_14_1_100")
+        self.assertEqual(self.data.columns[-1], "CHOP_14_1_100.0")
 
         self.data.ta.chop(append=True, ln=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "CHOPln_14_1_100")
+        self.assertEqual(self.data.columns[-1], "CHOPln_14_1_100.0")
 
     def test_cksp_ext(self):
         self.data.ta.cksp(tvmode=False, append=True)
@@ -55,11 +55,11 @@ class TestTrendExtension(TestCase):
     def test_decay_ext(self):
         self.data.ta.decay(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "LDECAY_5")
+        self.assertEqual(self.data.columns[-1], "LDECAY_1")
 
         self.data.ta.decay(mode="exp", append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "EXPDECAY_5")
+        self.assertEqual(self.data.columns[-1], "EXPDECAY_1")
 
     def test_decreasing_ext(self):
         self.data.ta.decreasing(append=True)

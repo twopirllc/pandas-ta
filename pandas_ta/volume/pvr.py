@@ -2,7 +2,7 @@
 from numpy import nan
 from pandas import Series
 from pandas_ta._typing import Int
-from pandas_ta.utils import get_drift, verify_series
+from pandas_ta.utils import v_drift, v_series
 
 
 def pvr(
@@ -29,9 +29,12 @@ def pvr(
         pd.Series: New feature generated.
     """
     # Validate
-    drift = get_drift(drift)
-    close = verify_series(close, drift)
-    volume = verify_series(volume, drift)
+    drift = v_drift(drift)
+    close = v_series(close, drift)
+    volume = v_series(volume, drift)
+
+    if close is None or volume is None:
+        return
 
     # Calculate
     close_diff = close.diff(drift).fillna(0)

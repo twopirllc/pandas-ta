@@ -2,13 +2,14 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_offset, verify_series, get_drift
+from pandas_ta.utils import v_bool, v_drift, v_mamode
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def thermo(
     high: Series, low: Series, length: Int = None,
     long: Int = None, short: Int = None,
-    mamode: str = None, drift: Int = None,
+    mamode: str = None, asint: bool = None, drift: Int = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Elders Thermometer (THERMO)
@@ -26,6 +27,7 @@ def thermo(
         long(int): The buy factor
         short(float): The sell factor
         mamode (str): See ``help(ta.ma)``. Default: 'ema'
+        asint (int): Returns as int. Default: True
         drift (int): The diff period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -37,18 +39,19 @@ def thermo(
         pd.DataFrame: thermo, thermo_ma, thermo_long, thermo_short columns.
     """
     # Validate
-    length = int(length) if length and length > 0 else 20
-    long = float(long) if long and long > 0 else 2
-    short = float(short) if short and short > 0 else 0.5
-    mamode = mamode if isinstance(mamode, str) else "ema"
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    asint = kwargs.pop("asint", True)
+    length = v_pos_default(length, 20)
+    high = v_series(high, length)
+    low = v_series(low, length)
 
     if high is None or low is None:
         return
+
+    long = v_pos_default(long, 2)
+    short = v_pos_default(short, 0.5)
+    mamode = v_mamode(mamode, "ema")
+    asint = v_bool(asint, True)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     thermoL = (low.shift(drift) - low).abs()

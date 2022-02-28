@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 
 
 def midpoint(
@@ -28,17 +28,18 @@ def midpoint(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 2
+    length = v_pos_default(length, 2)
     if "min_periods" in kwargs and kwargs["min_periods"] is not None:
         min_periods = int(kwargs["min_periods"])
     else:
         min_periods = length
-    close = verify_series(close, max(length, min_periods))
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    close = v_series(close, max(length, min_periods))
 
     if close is None:
         return
+
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

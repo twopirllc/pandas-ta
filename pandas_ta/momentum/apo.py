@@ -3,7 +3,8 @@ from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, tal_ma, verify_series
+from pandas_ta.utils import tal_ma, v_mamode, v_offset
+from pandas_ta.utils import v_pos_default, v_series, v_talib
 
 
 def apo(
@@ -38,17 +39,18 @@ def apo(
         pd.Series: New feature generated.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 12
-    slow = int(slow) if slow and slow > 0 else 26
+    fast = v_pos_default(fast, 12)
+    slow = v_pos_default(slow, 26)
     if slow < fast:
         fast, slow = slow, fast
-    close = verify_series(close, max(fast, slow))
-    mamode = mamode if isinstance(mamode, str) else "sma"
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    close = v_series(close, max(fast, slow))
 
     if close is None:
         return
+
+    mamode = v_mamode(mamode, "sma")
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

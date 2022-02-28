@@ -185,7 +185,7 @@ class TestMomentumExtension(TestCase):
     def test_smi_ext(self):
         self.data.ta.smi(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["SMI_5_20_5", "SMIs_5_20_5", "SMIo_5_20_5"])
+        self.assertEqual(list(self.data.columns[-3:]), ["SMI_5_20_5_1.0", "SMIs_5_20_5_1.0", "SMIo_5_20_5_1.0"])
 
         self.data.ta.smi(scalar=10, append=True)
         self.assertIsInstance(self.data, DataFrame)
@@ -211,7 +211,7 @@ class TestMomentumExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(
             list(self.data.columns[-4:]),
-            ["SQZPRO_ON_NARROW", "SQZPRO_OFF", "SQZPRO_NO", "SQZPROhlr_20_2.0_20_2_1.5_1"]
+            ["SQZPRO_ON_NARROW", "SQZPRO_OFF", "SQZPRO_NO", "SQZPROhlr_20_2.0_20_2.0_1.5_1.0"]
         )
 
     def test_stc_ext(self):

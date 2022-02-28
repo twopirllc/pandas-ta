@@ -2,7 +2,7 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.statistics import zscore
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
 def cdl_z(
@@ -36,17 +36,18 @@ def cdl_z(
         pd.Series: CDL_DOJI column.
     """
     # Validate
-    length = int(length) if length and length > 0 else 30
-    ddof = int(ddof) if ddof and ddof >= 0 and ddof < length else 1
-    open_ = verify_series(open_, length)
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    full = bool(full) if full is not None and full else False
+    length = v_pos_default(length, 30)
+    open_ = v_series(open_, length)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
 
     if open_ is None or high is None or low is None or close is None:
         return
+
+    full = v_bool(full, False) if isinstance(full, bool) else False
+    ddof = int(ddof) if isinstance(ddof, int) and 0 <= ddof < length else 1
+    offset = v_offset(offset)
 
     # Calculate
     if full:

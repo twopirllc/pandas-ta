@@ -2,7 +2,7 @@
 from pandas import Series
 from numpy import log, nan, roll
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
 def log_return(
@@ -32,16 +32,14 @@ def log_return(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 1
-    if cumulative is not None and cumulative:
-        cumulative = bool(cumulative)
-    else:
-        cumulative = False
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 1)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    cumulative = v_bool(cumulative, False)
+    offset = v_offset(offset)
 
     # Calculate
     np_close = close.values

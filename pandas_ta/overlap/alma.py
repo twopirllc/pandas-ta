@@ -3,7 +3,7 @@ from numpy import append, arange, array, exp, floor, nan, tensordot
 from numpy.version import version as npVersion
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas import Series
-from pandas_ta.utils import get_offset, strided_window, verify_series
+from pandas_ta.utils import strided_window, v_offset, v_pos_default, v_series
 
 
 def alma(
@@ -39,17 +39,19 @@ def alma(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if isinstance(length, int) and length > 0 else 9
-    sigma = float(sigma) if isinstance(sigma, float) and sigma > 0 else 6.0
+    length = v_pos_default(length, 9)
+    close = v_series(close, length)
+
+    if close is None:
+        return
+
+    sigma = v_pos_default(sigma, 6.0)
     if isinstance(dist_offset, float) and 0 <= dist_offset <= 1:
         offset_ = float(dist_offset)
     else:
         offset_ = 0.85
-    close = verify_series(close, length)
-    offset = get_offset(offset)
 
-    if close is None:
-        return
+    offset = v_offset(offset)
 
     # Calculate
     np_close = close.values

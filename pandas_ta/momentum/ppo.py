@@ -3,7 +3,8 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, tal_ma, verify_series
+from pandas_ta.utils import tal_ma, v_mamode, v_offset, v_pos_default
+from pandas_ta.utils import v_scalar, v_series, v_talib
 
 
 def ppo(
@@ -37,19 +38,20 @@ def ppo(
         pd.DataFrame: ppo, histogram, signal columns
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 12
-    slow = int(slow) if slow and slow > 0 else 26
-    signal = int(signal) if signal and signal > 0 else 9
-    scalar = float(scalar) if scalar else 100
-    mamode = mamode if isinstance(mamode, str) else "sma"
+    fast = v_pos_default(fast, 12)
+    slow = v_pos_default(slow, 26)
+    signal = v_pos_default(signal, 9)
     if slow < fast:
         fast, slow = slow, fast
-    close = verify_series(close, max(fast, slow, signal))
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    close = v_series(close, max(fast, slow, signal))
 
     if close is None:
         return
+
+    scalar = v_scalar(scalar, 100)
+    mamode = v_mamode(mamode, "sma")
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

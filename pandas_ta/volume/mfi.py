@@ -3,7 +3,7 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import hlc3
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series, v_talib
 
 
 def mfi(
@@ -38,17 +38,18 @@ def mfi(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 14)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
+    volume = v_series(volume, length)
 
     if high is None or low is None or close is None or volume is None:
         return
+
+    mode_tal = v_talib(talib)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

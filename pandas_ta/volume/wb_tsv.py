@@ -2,7 +2,8 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_drift, get_offset, verify_series, signed_series, zero
+from pandas_ta.utils import signed_series, v_drift, v_mamode
+from pandas_ta.utils import v_pos_default, v_offset, v_series, zero
 
 
 def wb_tsv(
@@ -42,15 +43,16 @@ def wb_tsv(
         pd.DataFrame: tsv, signal, ratio
     """
     # Validate
-    length = int(length) if length and length > 0 else 18
-    signal = int(signal) if signal and signal > 0 else 10
-    close = verify_series(close, max(length, signal))
-    mamode = mamode if isinstance(mamode, str) else "sma"
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 18)
+    signal = v_pos_default(signal, 10)
+    close = v_series(close, max(length, signal))
 
     if close is None:
         return
+
+    mamode = v_mamode(mamode, "sma")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     signed_volume = volume * signed_series(close, 1)     # > 0

@@ -2,7 +2,8 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import linreg
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_bool, v_drift, v_mamode, v_offset
+from pandas_ta.utils import v_pos_default, v_scalar, v_series
 from pandas_ta.volatility import rvi
 
 
@@ -44,36 +45,44 @@ def inertia(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 20
-    rvi_length = int(rvi_length) if rvi_length and rvi_length > 0 else 14
-    scalar = float(scalar) if scalar and scalar > 0 else 100
-    refined = False if refined is None else True
-    thirds = False if thirds is None else True
-    mamode = mamode if isinstance(mamode, str) else "ema"
+    length = v_pos_default(length, 20)
+    rvi_length = v_pos_default(rvi_length, 14)
     _length = max(length, rvi_length)
-    close = verify_series(close, _length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    close = v_series(close, _length)
 
     if close is None:
         return
 
+    refined = v_bool(refined, False)
+    thirds = v_bool(thirds, False)
+
     if refined or thirds:
-        high = verify_series(high, _length)
-        low = verify_series(low, _length)
+        high = v_series(high, _length)
+        low = v_series(low, _length)
         if high is None or low is None:
             return
 
+    scalar = v_scalar(scalar, 100)
+    mamode = v_mamode(mamode, "ema")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
+
     # Calculate
     if refined:
-        _mode, rvi_ = "r", rvi(close, high=high, low=low, length=rvi_length,
-                               scalar=scalar, refined=refined, mamode=mamode)
+        _mode = "r"
+        rvi_ = rvi(
+                    close, high=high, low=low, length=rvi_length,
+                    scalar=scalar, refined=refined, mamode=mamode
+                )
     elif thirds:
-        _mode, rvi_ = "t", rvi(close, high=high, low=low, length=rvi_length,
-                               scalar=scalar, thirds=thirds, mamode=mamode)
+        _mode = "t"
+        rvi_ = rvi(
+                    close, high=high, low=low, length=rvi_length,
+                    scalar=scalar, thirds=thirds, mamode=mamode
+                )
     else:
-        _mode, rvi_ = "", rvi(close, length=rvi_length,
-                              scalar=scalar, mamode=mamode)
+        _mode = ""
+        rvi_ = rvi(close, length=rvi_length, scalar=scalar, mamode=mamode)
 
     inertia = linreg(rvi_, length=length)
 

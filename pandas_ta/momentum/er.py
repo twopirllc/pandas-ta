@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, concat, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_drift, get_offset, verify_series, signals
+from pandas_ta.utils import signals, v_drift, v_offset, v_pos_default, v_series
 
 
 def er(
@@ -33,13 +33,14 @@ def er(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    drift = get_drift(drift)
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     abs_diff = close.diff(length).abs()

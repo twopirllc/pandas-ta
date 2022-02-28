@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
-from pandas_ta._typing import DictLike, Int, IntFloat
+from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import sma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
 def dpo(
@@ -34,14 +34,16 @@ def dpo(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 20
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    if not kwargs.get("lookahead", True):
-        centered = False
+    length = v_pos_default(length, 20)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    centered = v_bool(centered, True)
+    offset = v_offset(offset)
+    if not kwargs.get("lookahead", True):
+        centered = False
 
     # Calculate
     t = int(0.5 * length) + 1

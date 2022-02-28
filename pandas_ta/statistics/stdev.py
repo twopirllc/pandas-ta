@@ -3,7 +3,7 @@ from numpy import sqrt
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from .variance import variance
 
 
@@ -36,17 +36,15 @@ def stdev(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if isinstance(length, int) and length > 0 else 30
-    if isinstance(ddof, int) and ddof >= 0 and ddof < length:
-        ddof = int(ddof)
-    else:
-        ddof = 1
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 30)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    ddof = int(ddof) if isinstance(ddof, int) and 0 <= ddof < length else 1
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

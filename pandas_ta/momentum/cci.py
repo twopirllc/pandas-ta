@@ -4,7 +4,7 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import hlc3, sma
 from pandas_ta.statistics import mad
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 
 
 def cci(
@@ -38,16 +38,17 @@ def cci(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    c = float(c) if c and c > 0 else 0.015
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 14)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
 
     if high is None or low is None or close is None:
         return
+
+    c = v_pos_default(c, 0.015)
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

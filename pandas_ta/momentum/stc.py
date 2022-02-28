@@ -2,7 +2,8 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import ema
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_offset
+from pandas_ta.utils import v_pos_default, v_series
 
 
 def stc(
@@ -33,8 +34,9 @@ def stc(
     The same goes for osc=, which allows the input of an externally
     calculated oscillator, overriding ma1 & ma2.
 
+    Coded by rengel8
+
     Sources:
-        Implemented by rengel8 based on work found here:
         https://www.prorealcode.com/prorealtime-indicators/schaff-trend-cycle2/
 
     Args:
@@ -58,21 +60,19 @@ def stc(
         pd.DataFrame: stc, macd, stoch
     """
     # Validate
-    if isinstance(tclength, int) and tclength > 0:
-        tclength = int(tclength)
-    else:
-        tclength = 10
-    fast = int(fast) if isinstance(fast, int) and fast > 0 else 12
-    slow = int(slow) if isinstance(slow, int) and slow > 0 else 26
-    factor = float(factor) if isinstance(factor, int) and factor > 0 else 0.5
+    fast = v_pos_default(fast, 12)
+    slow = v_pos_default(slow, 26)
+    tclength = v_pos_default(tclength, 10)
     if slow < fast:                # mandatory condition, but might be confusing
         fast, slow = slow, fast
     _length = max(tclength, fast, slow)
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
+    close = v_series(close, _length)
 
     if close is None:
         return
+
+    factor = v_pos_default(factor, 0.5)
+    offset = v_offset(offset)
 
     # Calculate
     # kwargs allows for three more series (ma1, ma2 and osc) which can be passed
@@ -84,8 +84,8 @@ def stc(
 
     # 3 different modes of calculation..
     if isinstance(ma1, Series) and isinstance(ma2, Series) and not osc:
-        ma1 = verify_series(ma1, _length)
-        ma2 = verify_series(ma2, _length)
+        ma1 = v_series(ma1, _length)
+        ma2 = v_series(ma2, _length)
 
         if ma1 is None or ma2 is None:
             return
@@ -93,7 +93,7 @@ def stc(
         xmacd = ma1 - ma2
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
     elif isinstance(osc, Series):
-        osc = verify_series(osc, _length)
+        osc = v_series(osc, _length)
         if osc is None:
             return
         # According to feeded oscillator (should be ranging around 0 x-axis)

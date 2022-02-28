@@ -2,7 +2,7 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import swma
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_offset, v_pos_default, v_series
 
 
 def rvgi(
@@ -37,21 +37,23 @@ def rvgi(
         pd.Series: New feature generated.
     """
     # Validate
-    high_low_range = non_zero_range(high, low)
-    close_open_range = non_zero_range(close, open_)
-    length = int(length) if length and length > 0 else 14
-    swma_length = int(swma_length) if swma_length and swma_length > 0 else 4
+    length = v_pos_default(length, 14)
+    swma_length = v_pos_default(swma_length, 4)
     _length = max(length, swma_length)
-    open_ = verify_series(open_, _length)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
+    open_ = v_series(open_, _length)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if open_ is None or high is None or low is None or close is None:
         return
 
+    offset = v_offset(offset)
+
     # Calculate
+    high_low_range = non_zero_range(high, low)
+    close_open_range = non_zero_range(close, open_)
+
     numerator = swma(
         close_open_range, length=swma_length
     ).rolling(length).sum()

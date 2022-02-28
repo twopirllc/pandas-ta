@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_offset, v_series, v_talib
 
 
 def ad(
@@ -36,12 +36,12 @@ def ad(
         pd.Series: New feature generated.
     """
     # Validate
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    volume = verify_series(volume)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    high = v_series(high)
+    low = v_series(low)
+    close = v_series(close)
+    volume = v_series(volume)
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:
@@ -49,7 +49,7 @@ def ad(
         ad = AD(high, low, close, volume)
     else:
         if open_ is not None:
-            open_ = verify_series(open_)
+            open_ = v_series(open_)
             ad = non_zero_range(close, open_)  # AD with Open
         else:
             ad = 2 * close - (high + low)  # AD with High, Low, Close

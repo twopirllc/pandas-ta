@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import wma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 from .roc import roc
 
 
@@ -36,14 +36,15 @@ def coppock(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    fast = int(fast) if fast and fast > 0 else 11
-    slow = int(slow) if slow and slow > 0 else 14
-    close = verify_series(close, max(length, fast, slow))
-    offset = get_offset(offset)
+    length = v_pos_default(length, 10)
+    fast = v_pos_default(fast, 11)
+    slow = v_pos_default(slow, 14)
+    close = v_series(close, max(length, fast, slow))
 
     if close is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     total_roc = roc(close, fast) + roc(close, slow)

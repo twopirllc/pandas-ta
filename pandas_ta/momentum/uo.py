@@ -2,7 +2,7 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series, v_talib
 
 
 def uo(
@@ -43,22 +43,23 @@ def uo(
         pd.Series: New feature generated.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 7
-    fast_w = float(fast_w) if fast_w and fast_w > 0 else 4.0
-    medium = int(medium) if medium and medium > 0 else 14
-    medium_w = float(medium_w) if medium_w and medium_w > 0 else 2.0
-    slow = int(slow) if slow and slow > 0 else 28
-    slow_w = float(slow_w) if slow_w and slow_w > 0 else 1.0
+    fast = v_pos_default(fast, 7)
+    medium = v_pos_default(medium, 14)
+    slow = v_pos_default(slow, 28)
     _length = max(fast, medium, slow)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return
+
+    fast_w = v_pos_default(fast_w, 4.0)
+    medium_w = v_pos_default(medium_w, 2.0)
+    slow_w = v_pos_default(slow_w, 1.0)
+    mode_tal = v_talib(talib)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

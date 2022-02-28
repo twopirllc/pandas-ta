@@ -3,7 +3,8 @@ from numpy import arange, dot
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_ascending, v_offset, v_pos_default
+from pandas_ta.utils import v_series, v_talib
 
 
 def wma(
@@ -35,14 +36,15 @@ def wma(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    asc = asc if asc else True
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    asc = v_ascending(asc)
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

@@ -2,7 +2,8 @@
 from numpy import log, log10
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_bool, v_drift, v_offset
+from pandas_ta.utils import v_pos_default, v_scalar, v_series
 from pandas_ta.volatility import atr
 
 
@@ -43,21 +44,19 @@ def chop(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    if atr_length is not None and atr_length > 0:
-        atr_length = int(atr_length)
-    else:
-        atr_length = 1
-    ln = bool(ln) if isinstance(ln, bool) else False
-    scalar = float(scalar) if scalar else 100
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
 
     if high is None or low is None or close is None:
         return
+
+    atr_length = v_pos_default(atr_length, 1)
+    scalar = v_scalar(scalar, 100)
+    ln = v_bool(ln, False)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     diff = high.rolling(length).max() - low.rolling(length).min()

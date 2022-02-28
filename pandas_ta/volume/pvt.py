@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.momentum import roc
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_offset, v_series
 
 
 def pvt(
@@ -31,10 +31,14 @@ def pvt(
         pd.Series: New feature generated.
     """
     # Validate
-    close = verify_series(close)
-    volume = verify_series(volume)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    drift = v_drift(drift)
+    close = v_series(close, drift)
+    volume = v_series(volume, drift)
+
+    if close is None or volume is None:
+        return
+
+    offset = v_offset(offset)
 
     # Calculate
     pv = roc(close=close, length=drift) * volume

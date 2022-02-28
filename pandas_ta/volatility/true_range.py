@@ -3,7 +3,8 @@ from numpy import nan
 from pandas import concat, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_drift, v_offset
+from pandas_ta.utils import v_series, v_talib
 
 
 def true_range(
@@ -36,12 +37,12 @@ def true_range(
         pd.Series: New feature
     """
     # Validate
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    high = v_series(high)
+    low = v_series(low)
+    close = v_series(close)
+    mode_tal = v_talib(talib)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

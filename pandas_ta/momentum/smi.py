@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_scalar, v_series
 from .tsi import tsi
 
 
@@ -42,17 +42,18 @@ def smi(
         pd.DataFrame: smi, signal, oscillator columns.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 5
-    slow = int(slow) if slow and slow > 0 else 20
-    signal = int(signal) if signal and signal > 0 else 5
+    fast = v_pos_default(fast, 5)
+    slow = v_pos_default(slow, 20)
+    signal = v_pos_default(signal, 5)
     if slow < fast:
         fast, slow = slow, fast
-    scalar = float(scalar) if scalar else 1
-    close = verify_series(close, max(fast, slow, signal))
-    offset = get_offset(offset)
+    close = v_series(close, max(fast, slow, signal))
 
     if close is None:
         return
+
+    scalar = v_scalar(scalar, 1)
+    offset = v_offset(offset)
 
     # Calculate
     tsi_df = tsi(close, fast=fast, slow=slow, signal=signal, scalar=scalar)
@@ -77,8 +78,8 @@ def smi(
         osc.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    _scalar = f"_{scalar}" if scalar != 1 else ""
-    _props = f"_{fast}_{slow}_{signal}{_scalar}"
+    # _scalar = f"_{scalar}" if scalar != 1 else ""
+    _props = f"_{fast}_{slow}_{signal}_{scalar}"
     smi.name = f"SMI{_props}"
     signalma.name = f"SMIs{_props}"
     osc.name = f"SMIo{_props}"

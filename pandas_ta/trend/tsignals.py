@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_bool, v_drift, v_int, v_offset, v_series
 
 
 def tsignals(
@@ -53,19 +53,12 @@ def tsignals(
         Exits (exit: 1, nothing: 0)
     """
     # Validate
-    trend = verify_series(trend)
-    asbool = bool(asbool) if isinstance(asbool, bool) else False
-    if trend_reset and isinstance(trend_reset, int):
-        trend_reset = int(trend_reset)
-    else:
-        trend_reset = 0
-    if trade_offset != 0:
-        if trade_offset and isinstance(trade_offset, int):
-            trade_offset = int(trade_offset)
-        else:
-            trade_offset = 0
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    trend = v_series(trend)
+    asbool = v_bool(asbool, False)
+    trend_reset = v_int(trend_reset, 0)
+    trade_offset = v_int(trade_offset, 0)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     trends = trend.astype(int)

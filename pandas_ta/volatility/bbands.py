@@ -4,7 +4,8 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
 from pandas_ta.statistics import stdev
-from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
+from pandas_ta.utils import non_zero_range, tal_ma, v_mamode
+from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 
 
 def bbands(
@@ -41,19 +42,17 @@ def bbands(
         pd.DataFrame: lower, mid, upper, bandwidth, and percent columns.
     """
     # Validate
-    length = int(length) if length and length > 0 else 5
-    std = float(std) if std and std > 0 else 2.0
-    mamode = mamode if isinstance(mamode, str) else "sma"
-    if isinstance(ddof, int) and ddof >= 0 and ddof < length:
-        ddof = int(ddof)
-    else:
-        ddof = 1
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 5)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    std = v_pos_default(std, 2.0)
+    ddof = int(ddof) if isinstance(ddof, int) and 0 <= ddof < length else 1
+    mamode = v_mamode(mamode, "sma")
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

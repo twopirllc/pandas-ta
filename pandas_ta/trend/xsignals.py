@@ -3,7 +3,7 @@ from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat, Union
 from pandas_ta.trend import tsignals
-from pandas_ta.utils import cross_value, get_offset, verify_series
+from pandas_ta.utils import cross_value, v_offset, v_series
 
 
 def xsignals(
@@ -79,8 +79,8 @@ def xsignals(
         Entries (entry: 1, nothing: 0), Exits (exit: 1, nothing: 0)
     """
     # Validate
-    signal = verify_series(signal)
-    offset = get_offset(offset)
+    signal = v_series(signal)
+    offset = v_offset(offset)
 
     # Calculate
     if above:

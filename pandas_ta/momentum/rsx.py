@@ -2,7 +2,7 @@
 from numpy import nan
 from pandas_ta._typing import DictLike, Int
 from pandas import concat, DataFrame, Series
-from pandas_ta.utils import get_drift, get_offset, verify_series, signals
+from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series, signals
 
 
 def rsx(
@@ -35,13 +35,14 @@ def rsx(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     m = close.size

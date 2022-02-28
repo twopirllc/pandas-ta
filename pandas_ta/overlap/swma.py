@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, symmetric_triangle, verify_series, weights
+from pandas_ta.utils import symmetric_triangle, v_offset, v_pos_default
+from pandas_ta.utils import v_series, weights
 
 
 def swma(
@@ -31,12 +32,13 @@ def swma(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     triangle = symmetric_triangle(length, weighted=True)

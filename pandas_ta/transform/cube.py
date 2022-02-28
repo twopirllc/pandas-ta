@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_int, v_lowerbound, v_offset, v_series
 
 
 def cube(
-    close: Series, exp: IntFloat = None, signal_offset: Int = None,
+    close: Series, pwr: IntFloat = None, signal_offset: Int = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """
@@ -22,13 +22,12 @@ def cube(
     Sources:
         Book: Cycle Analytics for Traders, 2014, written by John Ehlers
             page 200
-        Implemented by rengel8 for Pandas TA based on code of
-            Markus K. (cryptocoinserver)
+        Coded by rengel8 based on Markus K. (cryptocoinserver)'s source.
 
     Args:
         close (pd.Series): Series of 'close's
-        exp (float): Use this exponent 'wisely' to increase the impact of the
-        soft limiter. Default: 3
+        pwr (float): Use this exponent 'wisely' to increase the impact of the
+            soft limiter. Default: 3
         signal_offset (int): Offset the signal line. Default: -1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -40,13 +39,13 @@ def cube(
         pd.DataFrame: New feature generated.
     """
     # Validate
-    close = verify_series(close)
-    exp = float(exp) if exp and exp >= 3.0 else 3.0
-    signal_offset = int(signal_offset) if signal_offset and signal_offset > 0 else -1
-    offset = get_offset(offset)
+    close = v_series(close)
+    pwr = v_lowerbound(pwr, 3.0, 3.0, strict=False)
+    signal_offset = v_int(signal_offset, -1, 0)
+    offset = v_offset(offset)
 
     # Calculate
-    result = close ** exp
+    result = close ** pwr
     ct = Series(result, index=close.index)
     ct_signal = Series(result, index=close.index)
 
@@ -67,7 +66,7 @@ def cube(
         ct_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    _props = f"_{exp}_{signal_offset}"
+    _props = f"_{pwr}_{signal_offset}"
     ct.name = f"CUBE{_props}"
     ct_signal.name = f"CUBEs{_props}"
     ct.category = ct_signal.category = "transform"

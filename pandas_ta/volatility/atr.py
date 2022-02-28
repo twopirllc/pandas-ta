@@ -3,7 +3,8 @@ from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_mamode, v_offset
+from pandas_ta.utils import v_pos_default, v_series, v_talib
 from .true_range import true_range
 
 
@@ -40,17 +41,18 @@ def atr(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    mamode = mamode.lower() if mamode and isinstance(mamode, str) else "rma"
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 14)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
 
     if high is None or low is None or close is None:
         return
+
+    mamode = v_mamode(mamode, "rma")
+    mode_tal = v_talib(talib)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

@@ -3,7 +3,7 @@ from numpy import sqrt
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import sma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def ui(
@@ -38,13 +38,14 @@ def ui(
         pd.Series: New feature
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    scalar = float(scalar) if scalar and scalar > 0 else 100
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    scalar = v_pos_default(scalar, 100)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     highest_close = close.rolling(length).max()

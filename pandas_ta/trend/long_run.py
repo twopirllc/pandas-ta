@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 from .decreasing import decreasing
 from .increasing import increasing
 
@@ -40,13 +40,14 @@ def long_run(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 2
-    fast = verify_series(fast, length)
-    slow = verify_series(slow, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 2)
+    fast = v_series(fast, length)
+    slow = v_series(slow, length)
 
     if fast is None or slow is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     # potential bottom or bottom

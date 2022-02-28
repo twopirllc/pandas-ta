@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
-from pandas_ta._typing import DictLike, Int
+from pandas_ta._typing import DictLike
 from pandas_ta.overlap.dema import dema
 from pandas_ta.overlap.ema import ema
 from pandas_ta.overlap.fwma import fwma
@@ -42,7 +42,6 @@ def ma(name: str = None, source: Series = None, **kwargs: DictLike) -> Series:
     Returns:
         pd.Series: New feature generated.
     """
-
     _mas = [
         "dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
         "sinwma", "sma", "ssf", "swma", "t3", "tema", "trima", "vidya", "wma"

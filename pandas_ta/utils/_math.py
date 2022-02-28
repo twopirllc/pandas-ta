@@ -5,12 +5,12 @@ from operator import mul
 from sys import float_info as sflt
 
 from numpy import all, append, array, corrcoef, dot, exp, fabs
-from numpy import log, nan, ndarray, ones, seterr, sqrt, sum, triu
+from numpy import log, nan, ndarray, ones, seterr, sign, sqrt, sum, triu
 from pandas import DataFrame, Series
 
 from pandas_ta._typing import Array, DictLike, Float, Int, IntFloat, List, Optional
 from pandas_ta.maps import Imports
-from pandas_ta.utils._core import verify_series
+from pandas_ta.utils._validate import v_series
 
 
 def combination(
@@ -38,8 +38,7 @@ def erf(x: IntFloat) -> Float:
     The algorithm comes from Handbook of Mathematical Functions, formula 7.1.26.
     Source: https://stackoverflow.com/questions/457408/is-there-an-easily-available-implementation-of-erf-for-python
     """
-    # save the sign of x
-    sign = 1 if x >= 0 else -1
+    x_sign = sign(x)
     x = abs(x)
 
     # constants
@@ -54,7 +53,7 @@ def erf(x: IntFloat) -> Float:
     t = 1.0 / (1.0 + p * x)
     y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2)
                * t + a1) * t * exp(-x * x)
-    return sign * y  # erf(-x) = -erf(x)
+    return x_sign * y  # erf(-x) = -erf(x)
 
 
 def fibonacci(
@@ -128,11 +127,11 @@ def hpoly(c: Array, x: IntFloat) -> Float:
 
 def linear_regression(x: Series, y: Series) -> DictLike:
     """Classic Linear Regression in Numpy or Scikit-Learn"""
-    x, y = verify_series(x), verify_series(y)
+    x, y = v_series(x), v_series(y)
     m, n = x.size, y.size
 
     if m != n:
-        print(f"[X] X and y have unequal total observations: {m} != {n}")
+        print(f"[X] X and y have unequal sizes: {m} != {n}")
         return {}
 
     if Imports["sklearn"]:
@@ -144,13 +143,11 @@ def linear_regression(x: Series, y: Series) -> DictLike:
 def log_geometric_mean(series: Series) -> Float:
     """Returns the Logarithmic Geometric Mean"""
     n = series.size
-    if n < 2:
-        return 0
-    else:
+    if n > 1:
         series = series.fillna(0) + 1
         if all(series > 0):
             return exp(log(series).sum() / n) - 1
-        return 0
+    return 0
 
 
 def pascals_triangle(
@@ -181,7 +178,7 @@ def pascals_triangle(
     return triangle
 
 
-def strided_window(array: Array, length: Int) -> Array:
+def strided_window(x: Array, length: Int) -> Array:
     """as_strided
     creates a view into the array given the exact strides and shape.
     * Recommended to avoid when possible.
@@ -190,9 +187,9 @@ def strided_window(array: Array, length: Int) -> Array:
     Pandas TA Issue: https://github.com/twopirllc/pandas-ta/issues/285
     """
     from numpy.lib.stride_tricks import as_strided
-    strides = array.strides + (array.strides[-1],)
-    shape = array.shape[:-1] + (array.shape[-1] - length + 1, length)
-    return as_strided(array, shape=shape, strides=strides, writeable=False)
+    strides = x.strides + (x.strides[-1],)
+    shape = x.shape[:-1] + (x.shape[-1] - length + 1, length)
+    return as_strided(x, shape=shape, strides=strides, writeable=False)
 
 
 def symmetric_triangle(

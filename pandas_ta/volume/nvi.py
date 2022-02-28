@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.momentum import roc
-from pandas_ta.utils import get_offset, signed_series, verify_series
+from pandas_ta.utils import signed_series, v_offset, v_pos_default, v_series
 
 
 def nvi(
@@ -12,7 +12,8 @@ def nvi(
     """Negative Volume Index (NVI)
 
     The Negative Volume Index is a cumulative indicator that uses volume
-    change in an attempt to identify where smart money is active.
+    change in an attempt to identify where smart money is active. Used in
+    conjunction with PVI.
 
     Sources:
         https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:negative_volume_inde
@@ -33,14 +34,15 @@ def nvi(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 1
-    initial = int(initial) if initial and initial > 0 else 1000
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 1)
+    close = v_series(close, length)
+    volume = v_series(volume, length)
 
     if close is None or volume is None:
         return
+
+    initial = v_pos_default(initial, 1000)
+    offset = v_offset(offset)
 
     # Calculate
     roc_ = roc(close=close, length=length)

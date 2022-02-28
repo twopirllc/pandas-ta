@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 
 
 def bias(
@@ -31,13 +31,14 @@ def bias(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 26
-    mamode = mamode if isinstance(mamode, str) else "sma"
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 26)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    mamode = v_mamode(mamode, "sma")
+    offset = v_offset(offset)
 
     # Calculate
     bma = ma(mamode, close, length=length, **kwargs)

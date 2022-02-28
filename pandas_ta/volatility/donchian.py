@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def donchian(
@@ -32,39 +32,23 @@ def donchian(
         pd.DataFrame: lower, mid, upper columns.
     """
     # Validate
-    if lower_length and lower_length > 0:
-        lower_length = int(lower_length)
-    else:
-        lower_length = 20
+    lower_length = v_pos_default(lower_length, 20)
+    upper_length = v_pos_default(upper_length, 20)
+    lmin_periods = int(kwargs.pop("lmin_periods", lower_length))
+    umin_periods = int(kwargs.pop("umin_periods", upper_length))
 
-    if upper_length and upper_length > 0:
-        upper_length = int(upper_length)
-    else:
-        upper_length = 20
-
-    if "lower_min_periods" in kwargs and kwargs["lower_min_periods"] is not None:
-        lower_min_periods = int(kwargs["lower_min_periods"])
-    else:
-        lower_min_periods = lower_length
-
-    if "upper_min_periods" in kwargs and kwargs["upper_min_periods"] is not None:
-        upper_min_periods = int(kwargs["upper_min_periods"])
-    else:
-        upper_min_periods = upper_length
-
-    _length = max(
-        lower_length, lower_min_periods, upper_length, upper_min_periods
-    )
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    offset = get_offset(offset)
+    _length = max(lower_length, lmin_periods, upper_length, umin_periods)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
 
     if high is None or low is None:
         return
 
+    offset = v_offset(offset)
+
     # Calculate
-    lower = low.rolling(lower_length, min_periods=lower_min_periods).min()
-    upper = high.rolling(upper_length, min_periods=upper_min_periods).max()
+    lower = low.rolling(lower_length, min_periods=lmin_periods).min()
+    upper = high.rolling(upper_length, min_periods=umin_periods).max()
     mid = 0.5 * (lower + upper)
 
     # Fill

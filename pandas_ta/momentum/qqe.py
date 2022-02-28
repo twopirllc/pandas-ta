@@ -3,7 +3,8 @@ from numpy import isnan, maximum, minimum, nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_mamode, v_offset
+from pandas_ta.utils import v_pos_default, v_scalar, v_series
 from .rsi import rsi
 
 
@@ -49,17 +50,18 @@ def qqe(
         pd.DataFrame: QQE, RSI_MA (basis), QQEl (long), QQEs (short) columns.
     """
     # Validate
-    length = int(length) if isinstance(length, int) and length > 0 else 14
-    smooth = int(smooth) if isinstance(smooth, int) and smooth > 0 else 5
-    factor = float(factor) if isinstance(factor, float) and factor else 4.236
+    length = v_pos_default(length, 14)
+    smooth = v_pos_default(smooth, 5)
     wilders_length = 2 * length - 1
-    mamode = mamode if isinstance(mamode, str) else "ema"
-    close = verify_series(close, smooth + wilders_length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    close = v_series(close, smooth + wilders_length)
 
     if close is None:
         return
+
+    factor = v_scalar(factor, 4.236)
+    mamode = v_mamode(mamode, "ema")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     rsi_ = rsi(close, length)

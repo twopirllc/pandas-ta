@@ -2,7 +2,8 @@
 from numpy import fabs
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_drift, v_offset
+from pandas_ta.utils import v_pos_default, v_series
 
 
 def vhf(
@@ -29,13 +30,14 @@ def vhf(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 28
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 28)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     hcp = close.rolling(length).max()

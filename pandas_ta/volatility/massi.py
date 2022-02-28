@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import ema
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_offset, v_pos_default, v_series
 
 
 def massi(
@@ -33,19 +33,20 @@ def massi(
         pd.Series: New feature generated.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 9
-    slow = int(slow) if slow and slow > 0 else 25
+    fast = v_pos_default(fast, 9)
+    slow = v_pos_default(slow, 25)
     if slow < fast:
         fast, slow = slow, fast
     _length = max(fast, slow)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    offset = get_offset(offset)
-    if "length" in kwargs:
-        kwargs.pop("length")
+    high = v_series(high, _length)
+    low = v_series(low, _length)
 
     if high is None or low is None:
         return
+
+    offset = v_offset(offset)
+    if "length" in kwargs:
+        kwargs.pop("length")
 
     # Calculate
     high_low_range = non_zero_range(high, low)

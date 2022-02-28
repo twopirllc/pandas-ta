@@ -2,7 +2,8 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_scalar
+from pandas_ta.utils import v_series, v_talib
 from .mom import mom
 
 
@@ -37,14 +38,15 @@ def roc(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    scalar = float(scalar) if scalar and scalar > 0 else 100
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    scalar = v_scalar(scalar, 100)
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

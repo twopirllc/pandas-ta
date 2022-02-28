@@ -2,7 +2,7 @@
 from numpy import arange, array, polyfit, std
 from pandas import DataFrame, DatetimeIndex, Series
 from pandas_ta._typing import DictLike, Int, List
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_list, v_lowerbound, v_offset, v_series
 
 
 def tos_stdevall(
@@ -38,25 +38,28 @@ def tos_stdevall(
             mulitples of the standard deviation. Default: returns 7 columns.
     """
     # Validate
-    stds = stds if isinstance(stds, list) and len(stds) > 0 else [1, 2, 3]
-    if min(stds) <= 0: return
+    stds = v_list(stds, [1, 2, 3])
+    if min(stds) <= 0:
+        return
+
     if not all(i < j for i, j in zip(stds, stds[1:])):
         stds = stds[::-1]
-    ddof = int(ddof) if ddof and ddof >= 0 and ddof < length else 1
-    offset = get_offset(offset)
 
     _props = f"TOS_STDEVALL"
     if length is None:
         length = close.size
     else:
-        length = int(length) if isinstance(length, int) and length > 2 else 30
+        length = v_lowerbound(length, 2, 30)
         close = close.iloc[-length:]
         _props = f"{_props}_{length}"
 
-    close = verify_series(close, length)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    ddof = int(ddof) if isinstance(ddof, int) and 0 <= ddof < length else 1
+    offset = v_offset(offset)
 
     # Calculate
     X = src_index = close.index

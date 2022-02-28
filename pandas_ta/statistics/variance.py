@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_lowerbound, v_offset, v_series, v_talib
 
 
 def variance(
@@ -35,18 +35,19 @@ def variance(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if isinstance(length, int) and length > 1 else 30
-    ddof = int(ddof) if isinstance(ddof, int) and ddof >= 0 and ddof < length else 1
+    length = v_lowerbound(length, 1, 30)
     if "min_periods" in kwargs and kwargs["min_periods"] is not None:
         min_periods = int(kwargs["min_periods"])
     else:
         min_periods = length
-    close = verify_series(close, max(length, min_periods))
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    close = v_series(close, max(length, min_periods))
 
     if close is None:
         return
+
+    ddof = int(ddof) if isinstance(ddof, int) and 0 <= ddof < length else 1
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

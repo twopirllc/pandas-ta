@@ -2,8 +2,9 @@
 from pandas import Series
 from pandas_ta.overlap import sma
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, high_low_range, is_percent
-from pandas_ta.utils import real_body, verify_series
+from pandas_ta.utils import high_low_range, is_percent
+from pandas_ta.utils import real_body, v_offset, v_pos_default
+from pandas_ta.utils import v_scalar, v_series
 
 
 def cdl_doji(
@@ -42,18 +43,19 @@ def cdl_doji(
         pd.Series: CDL_DOJI column.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    factor = float(factor) if is_percent(factor) else 10
-    scalar = float(scalar) if scalar else 100
-    open_ = verify_series(open_, length)
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    naive = kwargs.pop("naive", False)
+    length = v_pos_default(length, 10)
+    open_ = v_series(open_, length)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
 
     if open_ is None or high is None or low is None or close is None:
         return
+
+    factor = v_scalar(factor, 10) if is_percent(factor) else 10
+    scalar = v_scalar(scalar, 100)
+    offset = v_offset(offset)
+    naive = kwargs.pop("naive", False)
 
     # Calculate
     body = real_body(open_, close).abs()

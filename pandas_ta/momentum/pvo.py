@@ -2,7 +2,7 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import ema
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_scalar, v_series
 
 
 def pvo(
@@ -33,17 +33,18 @@ def pvo(
         pd.DataFrame: pvo, histogram, signal columns.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 12
-    slow = int(slow) if slow and slow > 0 else 26
-    signal = int(signal) if signal and signal > 0 else 9
-    scalar = float(scalar) if scalar else 100
+    fast = v_pos_default(fast, 12)
+    slow = v_pos_default(slow, 26)
+    signal = v_pos_default(signal, 9)
     if slow < fast:
         fast, slow = slow, fast
-    volume = verify_series(volume, max(fast, slow, signal))
-    offset = get_offset(offset)
+    volume = v_series(volume, max(fast, slow, signal))
 
     if volume is None:
         return
+
+    scalar = v_scalar(scalar, 100)
+    offset = v_offset(offset)
 
     # Calculate
     fastma = ema(volume, length=fast)

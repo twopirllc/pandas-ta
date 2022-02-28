@@ -2,7 +2,7 @@
 from numpy import cos, exp, nan, sqrt, zeros_like
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 try:
@@ -56,8 +56,8 @@ def reflex(
     (Reflex/Trendflex) are oscillators and complement each other with the
     focus for cycle and trend.
 
-    Written for Pandas TA by rengel8 (2021-08-11) based on the implementation
-    on ProRealCode (see Sources). Beyond the mentioned source, this
+    Coded by rengel8 (2021-08-11) based on the implementation on
+    ProRealCode (see Sources). Beyond the mentioned source, this
     implementation has a separate control parameter for the internal
     applied SuperSmoother.
 
@@ -86,13 +86,17 @@ def reflex(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if isinstance(length, int) and length > 0 else 20
-    smooth = int(smooth) if isinstance(smooth, int) and smooth > 0 else 20
-    alpha = float(alpha) if isinstance(alpha, float) and alpha > 0 else 0.04
-    pi = float(pi) if isinstance(pi, float) and pi > 0 else 3.14159
-    sqrt2 = float(sqrt2) if isinstance(sqrt2, float) and sqrt2 > 0 else 1.414
-    close = verify_series(close, max(length, smooth))
-    offset = get_offset(offset)
+    length = v_pos_default(length, 20)
+    smooth = v_pos_default(smooth, 20)
+    close = v_series(close, max(length, smooth))
+
+    if close is None:
+        return
+
+    alpha = v_pos_default(alpha, 0.04)
+    pi = v_pos_default(pi, 3.14159)
+    sqrt2 = v_pos_default(sqrt2, 1.414)
+    offset = v_offset(offset)
 
     # Calculate
     np_close = close.values

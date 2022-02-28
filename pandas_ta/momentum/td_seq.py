@@ -2,7 +2,7 @@
 from numpy import where
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_bool, v_offset, v_series
 
 
 def td_seq(
@@ -32,13 +32,14 @@ def td_seq(
         pd.DataFrame: New feature generated.
     """
     # Validate
-    close = verify_series(close)
-    offset = get_offset(offset)
-    asint = asint if isinstance(asint, bool) else False
-    show_all = show_all if isinstance(show_all, bool) else True
+    close = v_series(close)
 
     if close is None:
         return
+
+    asint = v_bool(asint, False)
+    show_all = v_bool(show_all, True)
+    offset = v_offset(offset)
 
     # Calculate
     up_seq = calc_td(close, "up", show_all)

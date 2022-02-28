@@ -2,7 +2,8 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_mamode, v_offset
+from pandas_ta.utils import v_pos_default, v_series
 
 
 def efi(
@@ -35,15 +36,16 @@ def efi(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 13
-    mamode = mamode if isinstance(mamode, str) else "ema"
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 13)
+    close = v_series(close, length)
+    volume = v_series(volume, length)
 
     if close is None or volume is None:
         return
+
+    mamode = v_mamode(mamode, "ema")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     pv_diff = close.diff(drift) * volume

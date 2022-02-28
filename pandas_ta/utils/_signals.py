@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
-from pandas_ta._typing import DictLike, Float, Int, IntFloat
-from pandas_ta.utils._core import get_offset, verify_series
+from pandas_ta._typing import DictLike, Int, IntFloat
+from pandas_ta.utils._validate import v_offset, v_series
 from pandas_ta.utils._math import zero
 
 
@@ -11,9 +11,9 @@ def _above_below(
     offset: Int = None, **kwargs
 ) -> Series:
     # Verify
-    series_a = verify_series(series_a)
-    series_b = verify_series(series_b)
-    offset = get_offset(offset)
+    series_a = v_series(series_a)
+    series_b = v_series(series_b)
+    offset = v_offset(offset)
 
     series_a.apply(zero)
     series_b.apply(zero)
@@ -104,9 +104,9 @@ def cross(
     offset: Int = None, **kwargs: DictLike
 ) -> Series:
     # Validate
-    series_a = verify_series(series_a)
-    series_b = verify_series(series_b)
-    offset = get_offset(offset)
+    series_a = v_series(series_a)
+    series_b = v_series(series_b)
+    offset = v_offset(offset)
 
     series_a.apply(zero)
     series_b.apply(zero)
@@ -169,7 +169,7 @@ def signals(
     if xserie_b is None:
         xserie_b = xserie
 
-    if xserie_a is not None and verify_series(xserie_a):
+    if xserie_a is not None and v_series(xserie_a):
         if cross_series:
             cross_serie_above = cross(
                 indicator, xserie_a, above=True, offset=offset)
@@ -178,7 +178,7 @@ def signals(
 
         df[cross_serie_above.name] = cross_serie_above
 
-    if xserie_b is not None and verify_series(xserie_b):
+    if xserie_b is not None and v_series(xserie_b):
         if cross_series:
             cross_serie_below = cross(
                 indicator, xserie_b, above=False, offset=offset)

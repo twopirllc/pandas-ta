@@ -98,7 +98,7 @@ Performance
     * **TA Lib** computations are **enabled** by default. They can be disabled per indicator.
     * The library includes a performance method, ```help(ta.performance)```, to check runtime indicator performance for a given _ohlcv_ DataFrame.
 * Optionable **Multiprocessing** for a Pandas TA ```Study```.
-* Check your Indicator Performance with the [Indicator Performance Notebook](https://github.com/twopirllc/pandas-ta/tree/main/examples/Performance_Check.ipynb).
+* Check Indicator Speeds on your system with the [Indicator Speed Check Notebook](https://github.com/twopirllc/pandas-ta/tree/main/examples/Speed_Check.ipynb).
 
 Bulk Processing
 ---------------
@@ -157,6 +157,12 @@ Pandas TA is used by Applications and Services like
 
 <br/>
 
+[Tune TA](https://github.com/jmrichardson/tuneta)
+-------------------
+> TuneTA optimizes technical indicators using a distance correlation measure to a user defined target feature such as next day return. Indicator parameter(s) are selected using clustering techniques to avoid "peak" or "lucky" values. The set of tuned indicators can be ...
+
+<br/>
+
 Back to [Contents](#contents)
 
 <br/>
@@ -192,7 +198,7 @@ $ pip install pandas_ta[full]
 
 Latest Version
 --------------
-Best choice! Version: *0.3.52b*
+Best choice! Version: *0.3.53b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta

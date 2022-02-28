@@ -3,7 +3,7 @@ from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import ema
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from pandas_ta.volume import ad
 
 
@@ -42,26 +42,29 @@ def adosc(
         pd.Series: New feature generated.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 3
-    slow = int(slow) if slow and slow > 0 else 10
+    fast = v_pos_default(fast, 3)
+    slow = v_pos_default(slow, 10)
     _length = max(fast, slow)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    volume = verify_series(volume, _length)
-    offset = get_offset(offset)
-    if "length" in kwargs:
-        kwargs.pop("length")
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
+    volume = v_series(volume, _length)
 
     if high is None or low is None or close is None or volume is None:
         return
+
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import ADOSC
         adosc = ADOSC(high, low, close, volume, fast, slow)
     else:
+        # remove length so it doesn't override ema length
+        if "length" in kwargs:
+            kwargs.pop("length")
+
         ad_ = ad(
             high=high, low=low, close=close, volume=volume,
             open_=open_, talib=mode_tal

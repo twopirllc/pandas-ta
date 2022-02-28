@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_series
 
 
 def hl2(
@@ -27,9 +27,9 @@ def hl2(
         pd.Series: New feature generated.
     """
     # Validate
-    high = verify_series(high)
-    low = verify_series(low)
-    offset = get_offset(offset)
+    high = v_series(high)
+    low = v_series(low)
+    offset = v_offset(offset)
 
     # Calculate
     avg = 0.5 * (high.values + low.values)

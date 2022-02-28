@@ -1,24 +1,59 @@
 # -*- coding: utf-8 -*-
-from pandas_ta.overlap import sma
-from pandas_ta.utils import get_offset, verify_series
+from pandas import Series
+from pandas_ta._typing import DictLike, Int, IntFloat
+from pandas_ta.ma import ma
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 
 # - Standard definition of your custom indicator function (including docs)-
+def ni(
+    close: Series, length: Int = None,
+    centered: bool = False, mamode: str = None,
+    offset: Int = None, **kwargs: DictLike
+):
+    """Example indicator (NI)
 
-def ni(close, length=None, centered=False, offset=None, **kwargs):
-    """
-    Example indicator ni
-    """
-    # Validate Arguments
-    length = int(length) if length and length > 0 else 20
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    Is an indicator provided solely as an example
 
-    if close is None: return
+    Sources:
+        https://github.com/twopirllc/pandas-ta/issues/264
+
+    Calculation:
+        Default Inputs:
+            length=20, centered=False
+        SMA = Simple Moving Average
+        t = int(0.5 * length) + 1
+
+        ni = close.shift(t) - SMA(close, length)
+        if centered:
+            ni = ni.shift(-t)
+
+    Args:
+        close (pd.Series): Series of 'close's
+        length (int): It's period. Default: 20
+        mamode (str): Chosen Moving Average. Default: "sma"
+        centered (bool): Shift the ni back by int(0.5 * length) + 1. Default: False
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.Series: New feature generated.
+    """    # Validate Arguments
+    length = v_pos_default(length, 20)
+    close = v_series(close, length)
+
+    if close is None:
+        return
+
+    mamode = v_mamode(mamode, "sma")
+    offset = v_offset(offset)
 
     # Calculate Result
-    t = int(0.5 * length) + 1
-    ma = sma(close, length)
+    ma = ma(mamode, close, length=length, **kwargs)
 
+    t = int(0.5 * length) + 1
     ni = close - ma.shift(t)
     if centered:
         ni = (close.shift(t) - ma).shift(-t)
@@ -39,37 +74,6 @@ def ni(close, length=None, centered=False, offset=None, **kwargs):
 
     return ni
 
-ni.__doc__ = \
-"""Example indicator (NI)
-
-Is an indicator provided solely as an example
-
-Sources:
-    https://github.com/twopirllc/pandas-ta/issues/264
-
-Calculation:
-    Default Inputs:
-        length=20, centered=False
-    SMA = Simple Moving Average
-    t = int(0.5 * length) + 1
-
-    ni = close.shift(t) - SMA(close, length)
-    if centered:
-        ni = ni.shift(-t)
-
-Args:
-    close (pd.Series): Series of 'close's
-    length (int): It's period. Default: 20
-    centered (bool): Shift the ni back by int(0.5 * length) + 1. Default: False
-    offset (int): How many periods to offset the result. Default: 0
-
-Kwargs:
-    fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
-
-Returns:
-    pd.Series: New feature generated.
-"""
 
 # - Define a matching class method --------------------------------------------
 

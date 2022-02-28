@@ -439,7 +439,7 @@ class TestMomentum(TestCase):
         """Momentum: SMI"""
         result = pandas_ta.smi(self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "SMI_5_20_5")
+        self.assertEqual(result.name, "SMI_5_20_5_1.0")
         self.assertEqual(len(result.columns), 3)
 
     def test_smi_scalar(self):
@@ -471,19 +471,19 @@ class TestMomentum(TestCase):
         """Momentum: Squeeze Pro"""
         result = pandas_ta.squeeze_pro(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "SQZPRO_20_2.0_20_2_1.5_1")
+        self.assertEqual(result.name, "SQZPRO_20_2.0_20_2.0_1.5_1.0")
 
         result = pandas_ta.squeeze_pro(self.high, self.low, self.close, tr=False)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "SQZPROhlr_20_2.0_20_2_1.5_1")
+        self.assertEqual(result.name, "SQZPROhlr_20_2.0_20_2.0_1.5_1.0")
 
         result = pandas_ta.squeeze_pro(self.high, self.low, self.close, 20, 2, 20, 3, 2, 1)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "SQZPRO_20_2.0_20_3.0_2.0_1.0")
+        self.assertEqual(result.name, "SQZPRO_20_2_20_3.0_2.0_1.0")
 
         result = pandas_ta.squeeze_pro(self.high, self.low, self.close, 20, 2, 20, 3, 2, 1, tr=False)
         self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "SQZPROhlr_20_2.0_20_3.0_2.0_1.0")
+        self.assertEqual(result.name, "SQZPROhlr_20_2_20_3.0_2.0_1.0")
 
     def test_stc(self):
         """Momentum: STC"""
@@ -576,7 +576,6 @@ class TestMomentum(TestCase):
         """Momentum: TRIX"""
         result = pandas_ta.trix(self.close)
         if result is not None and result.shape[0] > 87:
-            print(f"T [trix:{result.shape}]")
             self.assertIsInstance(result, DataFrame)
             self.assertEqual(result.name, "TRIX_30_9")
         else:

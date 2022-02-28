@@ -71,7 +71,7 @@ class TestOverlapExtension(TestCase):
     def test_jma_ext(self):
         self.data.ta.jma(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "JMA_7_0")
+        self.assertEqual(self.data.columns[-1], "JMA_7_0.0")
 
     def test_kama_ext(self):
         self.data.ta.kama(append=True)

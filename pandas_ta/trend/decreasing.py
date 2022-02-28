@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_drift, get_offset, is_percent, verify_series
+from pandas_ta.utils import is_percent, v_bool, v_drift, v_offset
+from pandas_ta.utils import v_pos_default, v_series
 
 
 def decreasing(
@@ -34,16 +35,17 @@ def decreasing(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 1
-    strict = strict if isinstance(strict, bool) else False
-    asint = asint if isinstance(asint, bool) else True
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    percent = float(percent) if is_percent(percent) else False
+    length = v_pos_default(length, 1)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    strict = v_bool(strict, False)
+    asint = v_bool(asint, True)
+    percent = float(percent) if is_percent(percent) else False
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     close_ = (1 - 0.01 * percent) * close if percent else close

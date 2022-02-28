@@ -3,7 +3,8 @@ from numpy import nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_drift, v_mamode
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def kama(
@@ -30,9 +31,7 @@ def kama(
         length (int): It's period. Default: 10
         fast (int): Fast MA period. Default: 2
         slow (int): Slow MA period. Default: 30
-        mamode (str): See ``help(ta.ma)``. Valid MAs that support initialize
-            the first value: 'ema', 'fwma', 'linreg', 'midpoint', 'pwma',
-            'rma', 'sinwma', 'sma', 'swma', 'trima', 'wma'. Default: 'sma'
+        mamode (str): See ``help(ta.ma)``. Default: 'sma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -44,23 +43,17 @@ def kama(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    fast = int(fast) if fast and fast > 0 else 2
-    slow = int(slow) if slow and slow > 0 else 30
-    close = verify_series(close, max(fast, slow, length))
-    valid_ma = [
-        "ema", "fwma", "linreg", "midpoint", "pwma", "rma",
-        "sinwma", "sma", "swma", "trima", "wma"
-    ]
-    if isinstance(mamode, str) and mamode.lower() in valid_ma:
-        mamode = mamode.lower()
-    else:
-        mamode = "sma"
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 10)
+    fast = v_pos_default(fast, 2)
+    slow = v_pos_default(slow, 30)
+    close = v_series(close, max(fast, slow, length))
 
     if close is None:
         return
+
+    mamode = v_mamode(mamode, "sma")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     def weight(length: int) -> float:

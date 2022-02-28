@@ -3,7 +3,8 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series, get_drift, zero
+from pandas_ta.utils import v_drift, v_mamode, v_offset
+from pandas_ta.utils import v_pos_default, v_series, v_talib, zero
 
 
 def dm(
@@ -38,16 +39,17 @@ def dm(
         pd.DataFrame: DMP (+DM) and DMN (-DM) columns.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    mamode = mamode.lower() if mamode and isinstance(mamode, str) else "rma"
-    high = verify_series(high)
-    low = verify_series(low)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 14)
+    high = v_series(high)
+    low = v_series(low)
 
     if high is None or low is None:
         return
+
+    mamode = v_mamode(mamode, "rma")
+    mode_tal = v_talib(talib)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     if Imports["talib"] and mode_tal:
         from talib import MINUS_DM, PLUS_DM

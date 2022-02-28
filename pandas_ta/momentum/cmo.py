@@ -3,7 +3,9 @@ from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import rma
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_offset, v_pos_default
+from pandas_ta.utils import v_scalar, v_series, v_talib
+
 
 
 def cmo(
@@ -39,15 +41,16 @@ def cmo(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    scalar = float(scalar) if scalar else 100
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 14)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    scalar = v_scalar(scalar, 100)
+    mode_tal = v_talib(talib)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

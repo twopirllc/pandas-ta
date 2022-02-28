@@ -2,7 +2,7 @@
 from numpy import log, seterr
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_series
 
 
 def drawdown(
@@ -29,8 +29,8 @@ def drawdown(
         pd.DataFrame: drawdown, drawdown percent, drawdown log columns
     """
     # Validate
-    close = verify_series(close)
-    offset = get_offset(offset)
+    close = v_series(close)
+    offset = v_offset(offset)
 
     # Calculate
     max_close = close.cummax()

@@ -2,11 +2,13 @@
 from numpy import array_split, mean, sum
 from pandas import cut, concat, DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import signed_series, verify_series
+from pandas_ta.utils import signed_series, v_bool, v_pos_default, v_series
 
 
 def vp(
-    close: Series, volume: Series, width: Int = None, **kwargs: DictLike
+    close: Series, volume: Series,
+    width: Int = None, sort: bool = None,
+    **kwargs: DictLike
 ) -> DataFrame:
     """Volume Profile (VP)
 
@@ -23,24 +25,25 @@ def vp(
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's
         width (int): How many ranges to distrubute price into. Default: 10
+        sort (value, optional): Whether to sort by close before
+            splitting into ranges. Default: False
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
-        sort_close (value, optional): Whether to sort by close before splitting
-            into ranges. Default: False
 
     Returns:
         pd.DataFrame: New feature generated.
     """
     # Validate
-    width = int(width) if width and width > 0 else 10
-    close = verify_series(close, width)
-    volume = verify_series(volume, width)
-    sort_close = kwargs.pop("sort_close", False)
+    width = v_pos_default(width, 10)
+    close = v_series(close, width)
+    volume = v_series(volume, width)
 
     if close is None or volume is None:
         return
+
+    sort = v_bool(sort, False)
 
     # Calculate
     signed_price = signed_series(close, 1)
@@ -61,9 +64,9 @@ def vp(
     total_volume_col = f"total_{volume_col}"
     vp.columns = [close_col, pos_volume_col, neg_volume_col]
 
-    # sort_close: Sort by close before splitting into ranges. Default: False
+    # sort: Sort by close before splitting into ranges. Default: False
     # If False, it sorts by date index or chronological versus by price
-    if sort_close:
+    if sort:
         vp[mean_price_col] = vp[close_col]
         vpdf = vp.groupby(
             cut(vp[close_col], width, include_lowest=True, precision=2)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series
 from .roc import roc
 
 
@@ -52,14 +52,15 @@ def kst(
     sma3 = int(sma3) if sma3 and sma3 > 0 else 10
     sma4 = int(sma4) if sma4 and sma4 > 0 else 15
 
-    signal = int(signal) if signal and signal > 0 else 9
+    signal = v_pos_default(signal, 9)
     _length = max(roc1, roc2, roc3, roc4, sma1, sma2, sma3, sma4, signal)
-    close = verify_series(close, _length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    close = v_series(close, _length)
 
     if close is None:
         return
+
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     rocma1 = roc(close, roc1).rolling(sma1).mean()

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_drift, v_offset
+from pandas_ta.utils import v_pos_default, v_scalar, v_series
 
 
 def brar(
@@ -35,21 +36,22 @@ def brar(
         pd.DataFrame: ar, br columns.
     """
     # Validate
-    length = int(length) if length and length > 0 else 26
-    scalar = float(scalar) if scalar else 100
-    high_open_range = non_zero_range(high, open_)
-    open_low_range = non_zero_range(open_, low)
-    open_ = verify_series(open_, length)
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 26)
+    open_ = v_series(open_, length)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
 
     if open_ is None or high is None or low is None or close is None:
         return
 
+    scalar = v_scalar(scalar, 100)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
+
     # Calculate
+    high_open_range = non_zero_range(high, open_)
+    open_low_range = non_zero_range(open_, low)
     hcy = non_zero_range(high, close.shift(drift))
     cyl = non_zero_range(close.shift(drift), low)
 

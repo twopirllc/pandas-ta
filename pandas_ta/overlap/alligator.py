@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from .smma import smma
 
 
@@ -42,15 +42,16 @@ def alligator(
         pd.DataFrame: JAW, TEETH, LIPS columns.
     """
     # Validate
-    jaw = int(jaw) if jaw and jaw > 0 else 13
-    teeth = int(teeth) if teeth and teeth > 0 else 8
-    lips = int(lips) if lips and lips > 0 else 5
-    close = verify_series(close, max(jaw, teeth, lips))
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    jaw = v_pos_default(jaw, 13)
+    teeth = v_pos_default(teeth, 8)
+    lips = v_pos_default(lips, 5)
+    close = v_series(close, max(jaw, teeth, lips))
 
     if close is None:
         return
+
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     gator_jaw = smma(close, length=jaw, talib=mode_tal)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_offset, v_pos_default, v_series
 
 
 def cmf(
@@ -35,22 +35,25 @@ def cmf(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 20
-    min_periods = int(
-        kwargs["min_periods"]) if "min_periods" in kwargs and kwargs["min_periods"] is not None else length
+    length = v_pos_default(length, 20)
+    if "min_periods" in kwargs and kwargs["min_periods"] is not None:
+        min_periods = int(kwargs["min_periods"])
+    else:
+        min_periods = length
     _length = max(length, min_periods)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    volume = verify_series(volume, _length)
-    offset = get_offset(offset)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
+    volume = v_series(volume, _length)
 
     if high is None or low is None or close is None or volume is None:
         return
 
+    offset = v_offset(offset)
+
     # Calculate
     if open_ is not None:
-        open_ = verify_series(open_)
+        open_ = v_series(open_)
         ad = non_zero_range(close, open_)  # AD with Open
     else:
         ad = 2 * close - (high + low)  # AD with High, Low, Close

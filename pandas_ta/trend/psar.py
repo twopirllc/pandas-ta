@@ -2,7 +2,7 @@
 from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series, zero
+from pandas_ta.utils import v_offset, v_pos_default, v_series, zero
 
 
 def psar(
@@ -44,12 +44,12 @@ def psar(
         pd.DataFrame: long, short, af, and reversal columns.
     """
     # Validate
-    high = verify_series(high)
-    low = verify_series(low)
-    af = float(af) if af and af > 0 else 0.02
-    af0 = float(af0) if af0 and af0 > 0 else af
-    max_af = float(max_af) if max_af and max_af > 0 else 0.2
-    offset = get_offset(offset)
+    high = v_series(high)
+    low = v_series(low)
+    af = v_pos_default(af, 0.02)
+    af0 = v_pos_default(af0,  af)
+    max_af = v_pos_default(max_af, 0.2)
+    offset = v_offset(offset)
 
     # Falling if the first NaN -DM is positive
     falling = _falling(high.iloc[:2], low.iloc[:2])
@@ -61,7 +61,7 @@ def psar(
         ep = high.iloc[0]
 
     if close is not None:
-        close = verify_series(close)
+        close = v_series(close)
         sar = close.iloc[0]
 
     long = Series(nan, index=high.index)

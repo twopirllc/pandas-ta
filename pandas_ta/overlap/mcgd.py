@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def mcgd(
@@ -37,13 +37,14 @@ def mcgd(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    c = float(c) if c and 0 < c <= 1 else 1
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    c = float(c) if isinstance(c, float) and 0 < c <= 1 else 1
+    offset = v_offset(offset)
 
     # Calculate
     close = close.copy()

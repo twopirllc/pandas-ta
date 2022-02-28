@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default
+from pandas_ta.utils import v_series, v_tradingview
 from pandas_ta.volatility import atr
 
 
 def cksp(
     high: Series, low: Series, close: Series,
     p: Int = None, x: IntFloat = None, q: Int = None,
-    tvmode: bool = None,
+    tvmode: bool = None, mamode: str = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Chande Kroll Stop (CKSP)
@@ -23,8 +24,8 @@ def cksp(
     book uses a simple moving average.
 
     Defaults:
-    Book:         p=10, x=3, q=20
-    Trading View: p=10, x=1, q=9
+    Book:         p=10, x=3, q=20, ma=sma
+    Trading View: p=10, x=1, q=9,  ma=rma
 
     Sources:
         https://www.multicharts.com/discussion/viewtopic.php?t=48914
@@ -36,6 +37,7 @@ def cksp(
         x (float): ATR scalar. Default: 1 in TV mode, 3 otherwise
         q (int): Second stop period. Default: 9 in TV mode, 20 otherwise
         tvmode (bool): Trading View or book implementation mode. Default: True
+        mamode (str): See ``help(ta.ma)``. Default: None
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -46,20 +48,22 @@ def cksp(
         pd.DataFrame: long and short columns.
     """
     # Validate
-    tvmode = tvmode if isinstance(tvmode, bool) else True
-    p = int(p) if p and p > 0 else 10
-    x = float(x) if x and x > 0 else 1 if tvmode is True else 3
-    q = int(q) if q and q > 0 else 9 if tvmode is True else 20
+    tvmode = v_tradingview(tvmode)
+    p = v_pos_default(p, 10)
+    # TODO: clean up x and q
+    x = float(x) if isinstance(x, float) and x > 0 else 1 if tvmode is True else 3
+    q = int(q) if isinstance(q, float) and q > 0 else 9 if tvmode is True else 20
     _length = max(p, q, x)
 
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
+
     if high is None or low is None or close is None:
         return
 
-    offset = get_offset(offset)
-    mamode = "rma" if tvmode is True else "sma"
+    mamode = v_mamode(mamode, "rma") if tvmode else v_mamode(mamode, "sma")
+    offset = v_offset(offset)
 
     # Calculate
     atr_ = atr(high=high, low=low, close=close, length=p, mamode=mamode)

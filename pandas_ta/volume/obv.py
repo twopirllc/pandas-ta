@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, signed_series, verify_series
+from pandas_ta.utils import signed_series, v_offset, v_series, v_talib
 
 
 def obv(
@@ -34,18 +34,18 @@ def obv(
         pd.Series: New feature generated.
     """
     # Validate
-    close = verify_series(close)
-    volume = verify_series(volume)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    close = v_series(close)
+    volume = v_series(volume)
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import OBV
         obv = OBV(close, volume)
     else:
-        signed_volume = signed_series(close, initial=1) * volume
-        obv = signed_volume.cumsum()
+        sv = signed_series(close, initial=1) * volume
+        obv = sv.cumsum()
 
     # Offset
     if offset != 0:

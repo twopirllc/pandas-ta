@@ -2,7 +2,8 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap.ema import ema
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_offset, v_pos_default
+from pandas_ta.utils import v_scalar, v_series
 
 
 def trix(
@@ -33,16 +34,17 @@ def trix(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 30
-    signal = int(signal) if signal and signal > 0 else 9
-    scalar = float(scalar) if scalar else 100
+    length = v_pos_default(length, 30)
     _length = 3 * length - 2
-    close = verify_series(close, _length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    close = v_series(close, _length)
 
     if close is None:
         return
+
+    signal = v_pos_default(signal, 9)
+    scalar = v_scalar(scalar, 100)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     ema1 = ema(close=close, length=length, **kwargs)

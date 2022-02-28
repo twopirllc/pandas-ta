@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import ema, sma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 from pandas_ta.volatility import atr
 
 
@@ -36,14 +36,15 @@ def pgo(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
 
     if high is None or low is None or close is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     pgo = close - sma(close, length)

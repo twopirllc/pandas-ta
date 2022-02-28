@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import append, array, empty_like, nan, ndarray, roll, zeros_like
+from numpy import append, array, empty_like, nan, roll, zeros_like
 
 from pandas_ta._typing import Array, Int, IntFloat
 

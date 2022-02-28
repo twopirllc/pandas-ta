@@ -2,7 +2,7 @@
 from numpy import sign
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_scalar, v_series
 
 
 def psl(
@@ -36,18 +36,19 @@ def psl(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 12
-    scalar = float(scalar) if scalar and scalar > 0 else 100
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 12)
+    close = v_series(close, length)
 
     if close is None:
         return
 
+    scalar = v_scalar(scalar, 100)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
+
     # Calculate
     if open_ is not None:
-        open_ = verify_series(open_)
+        open_ = v_series(open_)
         diff = sign(close - open_)
     else:
         diff = sign(close.diff(drift))

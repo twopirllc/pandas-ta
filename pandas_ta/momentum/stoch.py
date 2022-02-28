@@ -3,7 +3,8 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, non_zero_range, tal_ma, verify_series
+from pandas_ta.utils import non_zero_range, tal_ma, v_mamode
+from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 
 
 def stoch(
@@ -48,19 +49,20 @@ def stoch(
         pd.DataFrame: %K, %D columns.
     """
     # Validate
-    k = k if k and k > 0 else 14
-    d = d if d and d > 0 else 3
-    smooth_k = smooth_k if smooth_k and smooth_k > 0 else 3
+    k = v_pos_default(k, 14)
+    d = v_pos_default(d, 3)
+    smooth_k = v_pos_default(smooth_k, 3)
     _length = k + d + smooth_k
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
-    mamode = mamode if isinstance(mamode, str) else "sma"
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return
+
+    mode_tal = v_talib(talib)
+    mamode = v_mamode(mamode, "sma")
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

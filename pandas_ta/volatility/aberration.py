@@ -2,7 +2,7 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import hlc3, sma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 from .atr import atr
 
 
@@ -47,16 +47,17 @@ def aberration(
         pd.DataFrame: zg, sg, xg, atr columns.
     """
     # Validate
-    length = int(length) if length and length > 0 else 5
-    atr_length = int(atr_length) if atr_length and atr_length > 0 else 15
+    length = v_pos_default(length, 5)
+    atr_length = v_pos_default(atr_length, 15)
     _length = max(atr_length, length)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     atr_ = atr(high=high, low=low, close=close, length=atr_length)

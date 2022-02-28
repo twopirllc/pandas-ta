@@ -3,8 +3,8 @@ from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.statistics import stdev
-from pandas_ta.utils import get_drift, get_offset
-from pandas_ta.utils import unsigned_differences, verify_series
+from pandas_ta.utils import unsigned_differences, v_bool, v_drift
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 
 
 def rvi(
@@ -43,21 +43,22 @@ def rvi(
         pd.DataFrame: lower, basis, upper columns.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    scalar = float(scalar) if scalar and scalar > 0 else 100
-    refined = False if refined is None else refined
-    thirds = False if thirds is None else thirds
-    mamode = mamode if isinstance(mamode, str) else "ema"
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    close = v_series(close, length)
 
     if close is None:
         return
 
+    scalar = v_pos_default(scalar, 100)
+    refined = v_bool(refined, False)
+    thirds = v_bool(thirds, False)
+    mamode = v_mamode(mamode, "ema")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
+
     if refined or thirds:
-        high = verify_series(high)
-        low = verify_series(low)
+        high = v_series(high)
+        low = v_series(low)
 
     # Calculate
     def _rvi(source, length, scalar, mode, drift):

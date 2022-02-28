@@ -7,9 +7,9 @@ from sys import float_info as sflt
 
 from numpy import argmax, argmin
 from pandas import DataFrame, Series
-from pandas.api.types import is_datetime64_any_dtype
 
-from pandas_ta._typing import Int, IntFloat, ListStr, SeriesFrame, Union
+from pandas_ta._typing import Int, IntFloat, ListStr, Union
+from pandas_ta.utils._validate import v_bool, v_pos_default, v_series
 from pandas_ta.maps import Imports
 
 
@@ -26,33 +26,6 @@ def category_files(category: str) -> list:
         if x.stem != "__init__"
     ]
     return files
-
-
-def get_drift(x: Int) -> Int:
-    """Returns an Int if not zero, otherwise defaults to one."""
-    return int(x) if isinstance(x, int) and x != 0 else 1
-
-
-def get_offset(x: Int) -> Int:
-    """Returns an Int, otherwise defaults to zero."""
-    return int(x) if isinstance(x, int) else 0
-
-
-def is_datetime_ordered(df: SeriesFrame) -> bool:
-    """Returns True if the index is a datetime and ordered."""
-    index_is_datetime = is_datetime64_any_dtype(df.index)
-    try:
-        ordered = df.index[0] < df.index[-1]
-    except RuntimeWarning:
-        pass
-    finally:
-        return True if index_is_datetime and ordered else False
-
-
-def is_percent(x: IntFloat) -> bool:
-    if isinstance(x, (int, float)):
-        return x is not None and 0 <= x <= 100
-    return False
 
 
 def non_zero_range(high: Series, low: Series) -> Series:
@@ -73,7 +46,7 @@ def recent_minimum_index(x) -> Int:
 
 
 def rma_pandas(series: Series, length: Int):
-    series = verify_series(series)
+    series = v_series(series)
     alpha = (1.0 / length) if length > 0 else 0.5
     return series.ewm(alpha=alpha, min_periods=length).mean()
 
@@ -86,10 +59,11 @@ def signed_series(series: Series, initial: Int, lag: Int = None) -> Series:
     and returns:
     sign = Series([NaN, -1.0, 0.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0])
     """
-    initial = initial if initial is not None and not isinstance(
-        lag, str) else None
-    lag = int(lag) if lag is not None and isinstance(lag, int) else 1
-    series = verify_series(series)
+    initial = None
+    if initial is not None and not isinstance(lag, str):
+        initial = initial
+    series = v_series(series)
+    lag = v_pos_default(lag, 1)
     sign = series.diff(lag)
     sign[sign > 0] = 1
     sign[sign < 0] = -1
@@ -158,25 +132,37 @@ def unsigned_differences(series: Series, amount: Int = None,
     return positive, negative
 
 
-def verify_series(series: Series, min_length: Int = None) -> Series:
-    """If a Pandas Series and it meets the min_length of the indicator return it."""
-    has_length = min_length is not None and isinstance(min_length, int)
-    if series is not None and isinstance(series, Series):
-        return None if has_length and series.size < min_length else series
+def ms2secs(ms, p: Int) -> IntFloat:
+    return round(0.001 * ms, p)
 
 
-def performance(df: DataFrame,
-        excluded: ListStr = None, top: Int = None, talib: bool = False,
+def _speed_group(
+        df: DataFrame, group: ListStr = [], talib: bool = False,
+        index_name: str = "Indicator", p: Int = 4
+    ) -> ListStr:
+    times = []
+    for i in group:
+        r = df.ta(i, talib=talib, timed=True)
+        ms = float(r.timed.split(" ")[0].split(" ")[0])
+        times.append({index_name: i, "secs": ms2secs(ms, p), "ms": ms})
+    return times
+
+
+def speed_test(df: DataFrame,
+        only: ListStr = None, excluded: ListStr = None,
+        top: Int = None, talib: bool = False,
         ascending: bool = False, sortby: str = "secs",
         gradient: bool = False, places: Int = 5, stats: bool = False,
         verbose: bool = False
     ) -> DataFrame:
-    """performance
+    """Speed Test
 
-    Calculates the individual performance time for some DataFrame.
+    Given a standard ohlcv DataFrame, the Speed Test calculates the
+    speed of each indicator of the DataFrame Extension: df.ta.<indicator>().
 
     Args:
         df (pd.DataFrame): DataFrame with ohlcv columns
+        only (list): List of indicators to run. Default: None
         excluded (list): List of indicators to exclude. Default: None
         top (Int): Return a DataFrame the 'top' values. Default: None
         talib (bool): Enable TA Lib. Default: False
@@ -194,40 +180,35 @@ def performance(df: DataFrame,
         (pd.DataFrame, pd.DataFrame): if stats is True
 
     """
-    if df.empty: return
-    talib = bool(talib) if isinstance(talib, bool) and talib else False
+    if df.empty:
+        print(f"[X] No DataFrame")
+        return
+    talib = v_bool(talib, False)
     top = int(top) if isinstance(top, int) and top > 0 else None
-    stats = bool(stats) if isinstance(stats, bool) and stats else False
-    verbose = bool(verbose) if isinstance(verbose, bool) and verbose else False
+    stats = v_bool(stats, False)
+    verbose = v_bool(verbose, False)
 
-    _ex = ["ichimoku"]
-    if isinstance(excluded, list) and len(excluded) > 0:
-        _ex += excluded
-    indicators = df.ta.indicators(as_list=True, exclude=_ex)
-    if len(indicators) == 0: return None
+    _ichimoku = ["ichimoku"]
+    if excluded is None and isinstance(only, list) and len(only) > 0:
+        _indicators = only
+    elif only is None and isinstance(excluded, list) and len(excluded) > 0:
+        _indicators = df.ta.indicators(as_list=True, exclude=_ichimoku + excluded)
+    else:
+        _indicators = df.ta.indicators(as_list=True, exclude=_ichimoku)
 
-    def ms2secs(ms, p: Int):
-        return round(0.001 * ms, p)
+    if len(_indicators) == 0: return None
 
-    def indicator_time(
-            df: DataFrame, group: list = [],
-            index_name: str = "Indicator", p: int = 4
-        ):
-        times = []
-        for i in group:
-            r = df.ta(i, talib=talib, timed=True)
-            ms = float(r.timed.split(" ")[0].split(" ")[0])
-            times.append({index_name: i, "secs": ms2secs(ms, p), "ms": ms})
-        return times
+
+
 
     _iname = "Indicator"
     if verbose:
         print()
-        data = indicator_time(df.copy(), indicators, _iname, places)
+        data = _speed_group(df.copy(), _indicators, talib, _iname, places)
     else:
         _this = StringIO()
         with redirect_stdout(_this):
-            data = indicator_time(df.copy(), indicators, _iname, places)
+            data = _speed_group(df.copy(), _indicators, talib, _iname, places)
         _this.close()
 
     tdf = DataFrame.from_dict(data)

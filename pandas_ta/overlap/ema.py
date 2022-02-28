@@ -3,7 +3,7 @@ from numpy import nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series, v_talib
 
 try:
     from numba import njit
@@ -59,15 +59,16 @@ def ema(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    presma = bool(presma) if isinstance(presma, bool) else True
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
-    close = verify_series(close, length)
-    offset = get_offset(offset)
-    adjust = kwargs.pop("adjust", False)
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    mode_tal = v_talib(talib)
+    presma = v_bool(presma, True)
+    offset = v_offset(offset)
+    adjust = kwargs.setdefault("adjust", False)
 
     # Calculate
     if Imports["talib"] and mode_tal:

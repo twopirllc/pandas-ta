@@ -3,7 +3,8 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.momentum import rsi
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_mamode
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def stochrsi(
@@ -44,16 +45,17 @@ def stochrsi(
         pd.DataFrame: RSI %K, RSI %D columns.
     """
     # Validate
-    length = length if length and length > 0 else 14
-    rsi_length = rsi_length if rsi_length and rsi_length > 0 else 14
-    k = k if k and k > 0 else 3
-    d = d if d and d > 0 else 3
-    close = verify_series(close, length + rsi_length + k + d)
-    offset = get_offset(offset)
-    mamode = mamode if isinstance(mamode, str) else "sma"
+    length = v_pos_default(length, 14)
+    rsi_length = v_pos_default(rsi_length, 14)
+    k = v_pos_default(k, 3)
+    d = v_pos_default(d, 3)
+    close = v_series(close, length + rsi_length + k + d)
 
     if close is None:
         return
+
+    mamode = v_mamode(mamode, "sma")
+    offset = v_offset(offset)
 
     # Calculate
     rsi_ = rsi(close, length=rsi_length)

@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import linreg
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def cti(
@@ -30,12 +30,13 @@ def cti(
         pd.Series: Series of the CTI values for the given period.
     """
     # Validate
-    length = int(length) if length and length > 0 else 12
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 12)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     cti = linreg(close, length=length, r=True)

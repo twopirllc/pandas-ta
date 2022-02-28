@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import sma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def vwma(
@@ -30,13 +30,14 @@ def vwma(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
+    volume = v_series(volume, length)
 
     if close is None or volume is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     pv = close * volume

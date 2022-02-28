@@ -3,13 +3,14 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.trend import long_run, short_run
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 from .obv import obv
 
 
 def aobv(
     close: Series, volume: Series, fast: Int = None, slow: Int = None,
-    max_lookback: Int = None, min_lookback: Int = None, mamode: str = None,
+    max_lookback: Int = None, min_lookback: Int = None,
+    mamode: str = None, run_length: Int = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Archer On Balance Volume (AOBV)
@@ -30,11 +31,11 @@ def aobv(
         slow (int): The period of the slow moving average. Default: 12
         max_lookback (int): Maximum OBV bars back. Default: 2
         min_lookback (int): Minimum OBV bars back. Default: 2
+        run_length (int): Trend length for OBV long and short runs. Default: 2
         mamode (str): See ``help(ta.ma)``. Default: 'ema'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        run_length (int): Trend length for OBV long and short runs. Default: 2
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 
@@ -42,32 +43,27 @@ def aobv(
         pd.DataFrame: OBV_MIN, OBV_MAX, OBV_FMA, OBV_SMA, OBV_LR, OBV_SR columns.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 4
-    slow = int(slow) if slow and slow > 0 else 12
-
-    if max_lookback and max_lookback > 0:
-        max_lookback = int(max_lookback)
-    else:
-        max_lookback = 2
-
-    if min_lookback and min_lookback > 0:
-        min_lookback = int(min_lookback)
-    else:
-        min_lookback = 2
+    fast = v_pos_default(fast, 4)
+    slow = v_pos_default(slow, 12)
+    min_lookback = v_pos_default(min_lookback, 2)
+    max_lookback = v_pos_default(max_lookback, 2)
 
     if slow < fast:
         fast, slow = slow, fast
-    mamode = mamode if isinstance(mamode, str) else "ema"
     _length = max(fast, slow, max_lookback, min_lookback)
-    close = verify_series(close, _length)
-    volume = verify_series(volume, _length)
-    offset = get_offset(offset)
-    if "length" in kwargs:
-        kwargs.pop("length")
-    run_length = kwargs.pop("run_length", 2)
+
+    close = v_series(close, _length)
+    volume = v_series(volume, _length)
 
     if close is None or volume is None:
         return
+
+    mamode = v_mamode(mamode, "ema")
+    run_length = v_pos_default(run_length, 2)
+    offset = v_offset(offset)
+    # remove length so it doesn't override ema length
+    if "length" in kwargs:
+        kwargs.pop("length")
 
     # Calculate
     obv_ = obv(close=close, volume=volume, **kwargs)

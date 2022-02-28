@@ -2,7 +2,7 @@
 from numpy import copy, cos, exp
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
 try:
@@ -86,15 +86,16 @@ def ssf(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if isinstance(length, int) and length > 0 else 20
-    everget = bool(everget) if isinstance(everget, bool) else False
-    pi = float(pi) if isinstance(pi, float) and pi > 0 else 3.14159
-    sqrt2 = float(sqrt2) if isinstance(sqrt2, float) and sqrt2 > 0 else 1.414
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 20)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    pi = v_pos_default(pi, 3.14159)
+    sqrt2 = v_pos_default(sqrt2, 1.414)
+    everget = v_bool(everget, False)
+    offset = v_offset(offset)
 
     # Calculate
     np_close = close.values

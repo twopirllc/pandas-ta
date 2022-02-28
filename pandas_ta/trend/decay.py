@@ -2,7 +2,7 @@
 from numpy import exp
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series, v_str
 
 
 def decay(
@@ -32,13 +32,14 @@ def decay(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 5
-    mode = mode.lower() if isinstance(mode, str) else "linear"
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 1)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    mode = v_str(mode, "linear")
+    offset = v_offset(offset)
 
     # Calculate
     _mode = "L"

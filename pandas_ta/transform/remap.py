@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_float, v_offset, v_series
 
 
 def remap(
@@ -25,10 +25,10 @@ def remap(
 
     Args:
         close (pd.Series): Series of 'close's
-        from_min (float): Input minimum. Default: 0
-        from_max (float): Input maximum. Default: 100
-        to_min (float): Output minimum. Default: 0
-        to_max (float): Output maximum. Default: 100
+        from_min (float): Input minimum. Default: 0.0
+        from_max (float): Input maximum. Default: 100.0
+        to_min (float): Output minimum. Default: 0.0
+        to_max (float): Output maximum. Default: 100.0
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -39,15 +39,17 @@ def remap(
         pd.Series: New feature generated.
     """
     # Validate
-    close = verify_series(close)
-    from_min = float(from_min) if from_min and from_min != 0.0 else 0.0
-    from_max = float(from_max) if from_max and from_max != 0.0 else 100.0
-    to_min = float(to_min) if to_min and to_min != 0.0 else -1.0
-    to_max = float(to_max) if to_max and to_max != 0.0 else 1.0
-    offset = get_offset(offset)
+    close = v_series(close)
+    from_min = v_float(from_min, 0.0, 0.0)
+    from_max = v_float(from_max, 100.0, 0.0)
+    to_min = v_float(to_min, -1.0, 0.0)
+    to_max = v_float(to_max, 1.0, 0.0)
+    offset = v_offset(offset)
 
     # Calculate
     frange, trange = from_max - from_min, to_max - to_min
+    if frange <= 0 or trange <= 0:
+        return
     result = to_min + (trange / frange) * (close.values - from_min)
     result = Series(result, index=close.index)
 

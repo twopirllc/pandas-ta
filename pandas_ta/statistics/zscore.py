@@ -3,7 +3,7 @@ from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import sma
 from pandas_ta.statistics import stdev
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_lowerbound, v_offset, v_series
 
 
 def zscore(
@@ -28,13 +28,14 @@ def zscore(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 1 else 30
-    std = float(std) if std and std > 1 else 1
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_lowerbound(length, 1, 30)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    std = v_lowerbound(std, 1, 1.0)
+    offset = v_offset(offset)
 
     # Calculate
     std *= stdev(close=close, length=length, **kwargs)

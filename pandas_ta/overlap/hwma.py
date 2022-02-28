@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_series
 
 
 def hwma(
@@ -15,8 +15,7 @@ def hwma(
     moving average by the Holt-Winter method; the three parameters should
     be selected to obtain a forecast.
 
-    This version has been implemented for Pandas TA by rengel8 based
-    on a publication for MetaTrader 5.
+    Coded by rengel8 based on a publication for MetaTrader 5.
 
     Sources:
         https://www.mql5.com/en/code/20856
@@ -36,11 +35,11 @@ def hwma(
         pd.Series: hwma
     """
     # Validate
-    na = float(na) if na and na > 0 and na < 1 else 0.2
-    nb = float(nb) if nb and nb > 0 and nb < 1 else 0.1
-    nc = float(nc) if nc and nc > 0 and nc < 1 else 0.1
-    close = verify_series(close)
-    offset = get_offset(offset)
+    close = v_series(close)
+    na = float(na) if isinstance(na, float) and 0 < na < 1 else 0.2
+    nb = float(nb) if isinstance(nb, float) and 0 < nb < 1 else 0.1
+    nc = float(nc) if isinstance(nc, float) and 0 < nc < 1 else 0.1
+    offset = v_offset(offset)
 
     # Calculate
     last_a = last_v = 0

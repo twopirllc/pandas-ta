@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series
 from pandas_ta.volatility import true_range
 
 
@@ -33,20 +33,21 @@ def vortex(
         pd.DataFrame: vip and vim columns
     """
     # Validate
-    length = length if length and length > 0 else 14
+    length = v_pos_default(length, 14)
     if "min_periods" in kwargs and kwargs["min_periods"] is not None:
         min_periods = int(kwargs["min_periods"])
     else:
         min_periods = length
     _length = max(length, min_periods)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return
+
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     tr = true_range(high=high, low=low, close=close)

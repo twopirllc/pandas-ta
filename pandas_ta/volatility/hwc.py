@@ -2,11 +2,11 @@
 from numpy import sqrt
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
 def hwc(
-    close: Series, scalar: IntFloat = None, channel_eval: bool = None,
+    close: Series, scalar: IntFloat = None, channels: bool = None,
     na: IntFloat = None, nb: IntFloat = None,
     nc: IntFloat = None, nd: IntFloat = None,
     offset: Int = None, **kwargs: DictLike
@@ -16,9 +16,8 @@ def hwc(
     Channel indicator HWC (Holt-Winters Channel) based on HWMA - a
     three-parameter moving average calculated by the method of Holt-Winters.
 
-    This version has been implemented for Pandas TA by rengel8 based on a
-    publication for MetaTrader 5 extended by width and percentage price
-    position against width of channel.
+    Coded by rengel8 based on a publication for MetaTrader 5 extended by
+    width and percentage price position against width of channel.
 
     Sources:
         https://www.mql5.com/en/code/20857
@@ -26,7 +25,7 @@ def hwc(
     Args:
         close (pd.Series): Series of 'close's
         scaler (float): Width multiplier of the channel. Default: 1
-        channel_eval (bool): Return width and percentage price position
+        channels (bool): Return width and percentage price position
             against price. Default: False
         na (float): Smoothed series (from 0 to 1). Default: 0.2
         nb (float): Trend value (from 0 to 1). Default: 0.1
@@ -42,17 +41,14 @@ def hwc(
         pd.DataFrame: HWM (Mid), HWU (Upper), HWL (Lower) columns.
     """
     # Validate
-    na = float(na) if na and na > 0 else 0.2
-    nb = float(nb) if nb and nb > 0 else 0.1
-    nc = float(nc) if nc and nc > 0 else 0.1
-    nd = float(nd) if nd and nd > 0 else 0.1
-    scalar = float(scalar) if scalar and scalar > 0 else 1
-    if isinstance(channel_eval, bool) and channel_eval:
-        channel_eval = bool(channel_eval)
-    else:
-        channel_eval = False
-    close = verify_series(close)
-    offset = get_offset(offset)
+    close = v_series(close)
+    scalar = v_pos_default(scalar, 1)
+    channels = v_bool(channels, False)
+    na = v_pos_default(na, 0.2)
+    nb = v_pos_default(nb, 0.1)
+    nc = v_pos_default(nc, 0.1)
+    nd = v_pos_default(nd, 0.1)
+    offset = v_offset(offset)
 
     # Calculate Result
     last_a = last_v = last_var = 0
@@ -73,7 +69,7 @@ def hwc(
         upper.append(result[i] + scalar * stddev)
         lower.append(result[i] - scalar * stddev)
 
-        if channel_eval:
+        if channels:
             # channel width
             chan_width.append(upper[i] - lower[i])
             # channel percentage price position
@@ -91,7 +87,7 @@ def hwc(
     hwc = Series(result, index=close.index)
     hwc_upper = Series(upper, index=close.index)
     hwc_lower = Series(lower, index=close.index)
-    if channel_eval:
+    if channels:
         hwc_width = Series(chan_width, index=close.index)
         hwc_pctwidth = Series(chan_pct_width, index=close.index)
 
@@ -100,7 +96,7 @@ def hwc(
         hwc = hwc.shift(offset)
         hwc_upper = hwc_upper.shift(offset)
         hwc_lower = hwc_lower.shift(offset)
-        if channel_eval:
+        if channels:
             hwc_width = hwc_width.shift(offset)
             hwc_pctwidth = hwc_pctwidth.shift(offset)
 
@@ -109,7 +105,7 @@ def hwc(
         hwc.fillna(kwargs["fillna"], inplace=True)
         hwc_upper.fillna(kwargs["fillna"], inplace=True)
         hwc_lower.fillna(kwargs["fillna"], inplace=True)
-        if channel_eval:
+        if channels:
             hwc_width.fillna(kwargs["fillna"], inplace=True)
             hwc_pctwidth.fillna(kwargs["fillna"], inplace=True)
 
@@ -117,7 +113,7 @@ def hwc(
         hwc.fillna(method=kwargs["fill_method"], inplace=True)
         hwc_upper.fillna(method=kwargs["fill_method"], inplace=True)
         hwc_lower.fillna(method=kwargs["fill_method"], inplace=True)
-        if channel_eval:
+        if channels:
             hwc_width.fillna(method=kwargs["fill_method"], inplace=True)
             hwc_pctwidth.fillna(method=kwargs["fill_method"], inplace=True)
 
@@ -128,7 +124,7 @@ def hwc(
     hwc_lower.name = f"HWL{_props}"
     hwc.category = hwc_upper.category = hwc_lower.category = "volatility"
 
-    if channel_eval:
+    if channels:
         data = {
             hwc.name: hwc,
             hwc_upper.name: hwc_upper,

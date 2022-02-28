@@ -2,7 +2,8 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import hl2, sma
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_drift
+from pandas_ta.utils import v_pos_default, v_offset, v_series
 
 
 def eom(
@@ -12,8 +13,9 @@ def eom(
 ) -> Series:
     """Ease of Movement (EOM)
 
-    Ease of Movement is a volume based oscillator that is designed to measure the
-    relationship between price and volume flucuating across a zero line.
+    Ease of Movement is a volume based oscillator that is designed to
+    measure the relationship between price and volume flucuating across
+    a zero line.
 
     Sources:
         https://www.tradingview.com/wiki/Ease_of_Movement_(EOM)
@@ -38,17 +40,18 @@ def eom(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    divisor = float(divisor) if divisor and divisor > 0 else 100000000
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    volume = verify_series(volume, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
+    volume = v_series(volume, length)
 
     if high is None or low is None or close is None or volume is None:
         return
+
+    divisor = v_pos_default(divisor, 100_000_000)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     high_low_range = non_zero_range(high, low)

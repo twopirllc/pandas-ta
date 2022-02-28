@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_series
 
 
 def ohlc4(
@@ -29,11 +29,11 @@ def ohlc4(
         pd.Series: New feature generated.
     """
     # Validate
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    offset = get_offset(offset)
+    open_ = v_series(open_)
+    high = v_series(high)
+    low = v_series(low)
+    close = v_series(close)
+    offset = v_offset(offset)
 
     # Calculate
     avg = 0.25 * (open_.values + high.values + low.values + close.values)

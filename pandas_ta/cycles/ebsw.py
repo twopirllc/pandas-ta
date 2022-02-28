@@ -2,7 +2,7 @@
 from numpy import cos, exp, mean, nan, pi, roll, sin, sqrt, zeros
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 def ebsw(
@@ -16,7 +16,7 @@ def ebsw(
     remove noise. Its output is bound signal between -1 and 1 and the
     maximum length of a detected trend is limited by its length input.
 
-    Written by rengel8 for Pandas TA based on a publication at
+    Coded by rengel8 for Pandas TA based on a publication at
     'prorealcode.com' and a book by J.F.Ehlers. According to the suggestion
     by Squigglez2* and major differences between the initial version's
     output close to the implementation from Ehler's, the default version is
@@ -51,21 +51,20 @@ def ebsw(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if isinstance(length, int) and length > 10 else 40
-    bars = int(bars) if isinstance(bars, int) and bars > 0 else 10
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 40)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    bars = v_pos_default(bars, 10)
+    offset = v_offset(offset)
 
     # Calculate
     # allow initial version to be used (more responsive/caution!)
     m = close.size
 
-    initial_version = bool(initial_version) if isinstance(
-        initial_version, bool) else False
-    if initial_version:
+    if isinstance(initial_version, bool) and initial_version:
         # not the default version that is active
         alpha1 = hp = 0  # alpha and HighPass
         a1 = b1 = c1 = c2 = c3 = 0

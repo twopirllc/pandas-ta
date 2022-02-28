@@ -2,7 +2,7 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 from .long_run import long_run
 from .short_run import short_run
 
@@ -40,17 +40,18 @@ def amat(
         pd.DataFrame: AMAT_LR, AMAT_SR columns.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 8
-    slow = int(slow) if slow and slow > 0 else 21
-    lookback = int(lookback) if lookback and lookback > 0 else 2
-    mamode = mamode.lower() if isinstance(mamode, str) else "ema"
-    close = verify_series(close, max(fast, slow, lookback))
-    offset = get_offset(offset)
-    if "length" in kwargs:
-        kwargs.pop("length")
+    fast = v_pos_default(fast, 8)
+    slow = v_pos_default(slow, 21)
+    lookback = v_pos_default(lookback, 2)
+    close = v_series(close, max(fast, slow, lookback))
 
     if close is None:
         return
+
+    mamode = v_mamode(mamode, "ema")
+    offset = v_offset(offset)
+    if "length" in kwargs:
+        kwargs.pop("length")
 
     # Calculate
     fast_ma = ma(mamode, close, length=fast, **kwargs)

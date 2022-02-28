@@ -3,12 +3,14 @@ from pandas import concat, DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import ema
-from pandas_ta.utils import get_offset, verify_series, signals
+from pandas_ta.utils import signals, v_offset, v_mamode
+from pandas_ta.utils import v_pos_default, v_series, v_talib
 
 
 def macd(
-    close: Series, fast: Int = None, slow: Int = None, signal: Int = None,
-    talib: bool = None, offset: Int = None, **kwargs: DictLike
+    close: Series, fast: Int = None, slow: Int = None,
+    signal: Int = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Moving Average Convergence Divergence (MACD)
 
@@ -40,18 +42,18 @@ def macd(
         pd.DataFrame: macd, histogram, signal columns.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 12
-    slow = int(slow) if slow and slow > 0 else 26
-    signal = int(signal) if signal and signal > 0 else 9
+    fast = v_pos_default(fast, 12)
+    slow = v_pos_default(slow, 26)
+    signal = v_pos_default(signal, 9)
     if slow < fast:
         fast, slow = slow, fast
-    close = verify_series(close, slow + signal)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    close = v_series(close, slow + signal)
 
     if close is None:
         return
 
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
     as_mode = kwargs.setdefault("asmode", False)
 
     # Calculate

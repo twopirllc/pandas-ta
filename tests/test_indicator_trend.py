@@ -109,11 +109,11 @@ class TestTrend(TestCase):
         """Trend: Chop"""
         result = pandas_ta.chop(self.high, self.low, self.close, ln=False)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "CHOP_14_1_100")
+        self.assertEqual(result.name, "CHOP_14_1_100.0")
 
         result = pandas_ta.chop(self.high, self.low, self.close, ln=True)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "CHOPln_14_1_100")
+        self.assertEqual(result.name, "CHOPln_14_1_100.0")
 
     def test_cksp(self):
         """Trend: CKSP"""
@@ -131,11 +131,11 @@ class TestTrend(TestCase):
         """Trend: DECAY"""
         result = pandas_ta.decay(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LDECAY_5")
+        self.assertEqual(result.name, "LDECAY_1")
 
         result = pandas_ta.decay(self.close, mode="exp")
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "EXPDECAY_5")
+        self.assertEqual(result.name, "EXPDECAY_1")
 
     def test_decreasing(self):
         """Trend: Decreasing"""

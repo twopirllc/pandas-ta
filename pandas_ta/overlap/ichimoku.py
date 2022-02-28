@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import date_range, DataFrame, RangeIndex, Timedelta, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 from .midprice import midprice
 
 
@@ -40,19 +40,20 @@ def ichimoku(
             For the forward looking period: spanA and spanB columns
     """
     # Validate
-    tenkan = int(tenkan) if tenkan and tenkan > 0 else 9
-    kijun = int(kijun) if kijun and kijun > 0 else 26
-    senkou = int(senkou) if senkou and senkou > 0 else 52
+    tenkan = v_pos_default(tenkan, 9)
+    kijun = v_pos_default(kijun, 26)
+    senkou = v_pos_default(senkou, 52)
     _length = max(tenkan, kijun, senkou)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
-    if not kwargs.get("lookahead", True):
-        include_chikou = False
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return None, None
+
+    offset = v_offset(offset)
+    if not kwargs.get("lookahead", True):
+        include_chikou = False
 
     # Calculate
     tenkan_sen = midprice(high=high, low=low, length=tenkan)

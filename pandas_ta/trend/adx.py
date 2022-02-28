@@ -2,7 +2,8 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_drift, get_offset, verify_series, zero
+from pandas_ta.utils import v_drift, v_mamode, v_offset, v_pos_default
+from pandas_ta.utils import v_scalar, v_series, zero
 from pandas_ta.volatility import atr
 
 
@@ -41,18 +42,20 @@ def adx(
         pd.DataFrame: adx, dmp, dmn columns.
     """
     # Validate
-    length = length if length and length > 0 else 14
-    lensig = lensig if lensig and lensig > 0 else length
-    mamode = mamode if isinstance(mamode, str) else "rma"
-    scalar = float(scalar) if scalar else 100
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    lensig = v_pos_default(lensig, length)
+    _length = max(length, lensig)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return
+
+    scalar = v_scalar(scalar, 100)
+    mamode = v_mamode(mamode, "rma")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     atr_ = atr(high=high, low=low, close=close, length=length)

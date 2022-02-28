@@ -2,7 +2,8 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default
+from pandas_ta.utils import v_scalar, v_series, v_talib
 from pandas_ta.utils import recent_maximum_index, recent_minimum_index
 
 
@@ -35,15 +36,16 @@ def aroon(
         pd.DataFrame: aroon_up, aroon_down, aroon_osc columns.
     """
     # Validate
-    length = length if length and length > 0 else 14
-    scalar = float(scalar) if scalar else 100
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    length = v_pos_default(length, 14)
+    high = v_series(high, length)
+    low = v_series(low, length)
 
     if high is None or low is None:
         return
+
+    scalar = v_scalar(scalar, 100)
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

@@ -2,7 +2,7 @@
 from numpy import pi, sin
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, verify_series, weights
+from pandas_ta.utils import v_offset, v_pos_default, v_series, weights
 
 
 def sinwma(
@@ -31,12 +31,13 @@ def sinwma(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     sines = Series([sin((i + 1) * pi / (length + 1))

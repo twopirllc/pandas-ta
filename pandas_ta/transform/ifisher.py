@@ -2,7 +2,7 @@
 from numpy import exp, logical_and, max, min
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_int, v_offset, v_scalar, v_series
 from .remap import remap
 
 
@@ -32,8 +32,7 @@ def ifisher(
         https://www.mesasoftware.com/papers/TheInverseFisherTransform.pdf,
         Book: Cycle Analytics for Traders, 2014, written by John Ehlers,
             page 198
-        Implemented by rengel8 for Pandas TA based on code of
-            Markus K. (cryptocoinserver)
+        Coded by rengel8 based on Markus K. (cryptocoinserver)'s source.
 
     Args:
         close (pd.Series): Series of 'close's
@@ -50,10 +49,10 @@ def ifisher(
         pd.DataFrame: New feature generated.
     """
     # Validate
-    close = verify_series(close)
-    amp = float(amp) if amp and amp != 0 else 1.0
-    signal_offset = int(signal_offset) if signal_offset and signal_offset > 0 else 1
-    offset = get_offset(offset)
+    close = v_series(close)
+    amp = v_scalar(amp, 1.0)
+    signal_offset = v_int(signal_offset, -1, 0)
+    offset = v_offset(offset)
 
     # Calculate
     np_close = close.values

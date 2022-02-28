@@ -2,7 +2,7 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_offset, v_scalar, v_series, v_talib
 
 
 def bop(
@@ -35,13 +35,13 @@ def bop(
         pd.Series: New feature generated.
     """
     # Validate
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    scalar = float(scalar) if scalar else 1
-    offset = get_offset(offset)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
+    open_ = v_series(open_)
+    high = v_series(high)
+    low = v_series(low)
+    close = v_series(close)
+    scalar = v_scalar(scalar, 1)
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     # Calculate
     if Imports["talib"] and mode_tal:

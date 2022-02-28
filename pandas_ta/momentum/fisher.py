@@ -3,7 +3,7 @@ from numpy import log, nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import hl2
-from pandas_ta.utils import get_offset, high_low_range, verify_series
+from pandas_ta.utils import high_low_range, v_offset, v_pos_default, v_series
 
 
 def fisher(
@@ -34,15 +34,16 @@ def fisher(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 9
-    signal = int(signal) if signal and signal > 0 else 1
+    length = v_pos_default(length, 9)
+    signal = v_pos_default(signal, 1)
     _length = max(length, signal)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    offset = get_offset(offset)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
 
     if high is None or low is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     hl2_ = hl2(high, low)

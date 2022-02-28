@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, non_zero_range, rma_pandas, verify_series
+from pandas_ta.utils import non_zero_range, rma_pandas, v_offset
+from pandas_ta.utils import v_pos_default, v_series
 
 
 def kdj(
@@ -37,16 +38,17 @@ def kdj(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 9
-    signal = int(signal) if signal and signal > 0 else 3
+    length = v_pos_default(length, 9)
+    signal = v_pos_default(signal, 3)
     _length = max(length, signal)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return
+
+    offset = v_offset(offset)
 
     # Calculate
     highest_high = high.rolling(length).max()

@@ -8,4 +8,5 @@ from ._signals import *
 from ._stats import *
 from ._study import *
 from ._time import *
+from ._validate import *
 from .data import *

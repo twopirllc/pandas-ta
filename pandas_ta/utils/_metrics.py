@@ -4,8 +4,7 @@ from pandas import Series, Timedelta
 
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import RATE
-from pandas_ta.performance import drawdown, log_return, percent_return
-from pandas_ta.utils._core import verify_series
+from pandas_ta.utils._validate import v_series
 from pandas_ta.utils._math import linear_regression, log_geometric_mean
 from pandas_ta.utils._time import total_time
 
@@ -18,7 +17,7 @@ def cagr(close: Series) -> IntFloat:
 
     >>> result = ta.cagr(df.close)
     """
-    close = verify_series(close)
+    close = v_series(close)
     start, end = close.iloc[0], close.iloc[-1]
     return ((end / start) ** (1 / total_time(close))) - 1
 
@@ -40,7 +39,7 @@ def calmar_ratio(
     if years <= 0:
         print(f"[!] calmar_ratio 'years' argument must be greater than zero.")
         return
-    close = verify_series(close)
+    close = v_series(close)
 
     n_years_ago = close.index[-1] - Timedelta(days=365.25 * years)
     close = close[close.index > n_years_ago]
@@ -64,7 +63,7 @@ def downside_deviation(
     >>> result = ta.downside_deviation(returns, benchmark_rate=0.0, tf="years")
     """
     # For both de-annualizing the benchmark rate and annualizing result
-    returns = verify_series(returns)
+    returns = v_series(returns)
     days_per_year = returns.shape[0] / total_time(returns, tf)
 
     adjusted_benchmark_rate = ((1 + benchmark_rate) ** (1 / days_per_year)) - 1
@@ -84,8 +83,8 @@ def jensens_alpha(returns: Series, benchmark_returns: Series) -> IntFloat:
 
     >>> result = ta.jensens_alpha(returns, benchmark_returns)
     """
-    returns = verify_series(returns)
-    benchmark_returns = verify_series(benchmark_returns)
+    returns = v_series(returns)
+    benchmark_returns = v_series(benchmark_returns)
 
     benchmark_returns.interpolate(inplace=True)
     return linear_regression(benchmark_returns, returns)["a"]
@@ -99,7 +98,7 @@ def log_max_drawdown(close: Series) -> IntFloat:
 
     >>> result = ta.log_max_drawdown(close)
     """
-    close = verify_series(close)
+    close = v_series(close)
     log_return = log(close.iloc[-1]) - log(close.iloc[0])
     return log_return - max_drawdown(close, method="log")
 
@@ -118,7 +117,8 @@ def max_drawdown(
 
     >>> result = ta.max_drawdown(close, method="dollar", all=False)
     """
-    close = verify_series(close)
+    from pandas_ta.performance import drawdown
+    close = v_series(close)
     max_dd = drawdown(close).max()
 
     max_dd_ = {
@@ -152,12 +152,14 @@ def optimal_leverage(
 
     >>> result = ta.optimal_leverage(close, benchmark_rate=0.0, log=False)
     """
-    close = verify_series(close)
+    from pandas_ta.performance import log_return, percent_return
+    close = v_series(close)
 
     use_cagr = kwargs.pop("use_cagr", False)
-    returns = percent_return(
-        close=close) if not log else log_return(
-        close=close)
+    if log:
+        returns = log_return(close=close)
+    else:
+        returns = percent_return(close=close)
     # sharpe = sharpe_ratio(close, benchmark_rate=benchmark_rate, log=log, use_cagr=use_cagr, period=period)
 
     period_mu = period * returns.mean()
@@ -179,7 +181,7 @@ def pure_profit_score(close: Series) -> IntFloat:
 
     >>> result = ta.pure_profit_score(df.close)
     """
-    close = verify_series(close)
+    close = v_series(close)
     close_index = Series(0, index=close.reset_index().index)
 
     r = linear_regression(close_index, close)["r"]
@@ -206,10 +208,13 @@ def sharpe_ratio(
 
     >>> result = ta.sharpe_ratio(close, benchmark_rate=0.0, log=False)
     """
-    close = verify_series(close)
-    returns = percent_return(
-        close=close) if not log else log_return(
-        close=close)
+    from pandas_ta.performance import log_return, percent_return
+    close = v_series(close)
+    if log:
+        returns = log_return(close=close)
+    else:
+        returns = percent_return(close=close)
+
 
     if use_cagr:
         return cagr(close) / volatility(close, returns, log=log)
@@ -232,10 +237,13 @@ def sortino_ratio(
 
     >>> result = ta.sortino_ratio(close, benchmark_rate=0.0, log=False)
     """
-    close = verify_series(close)
-    returns = percent_return(
-        close=close) if not log else log_return(
-        close=close)
+    from pandas_ta.performance import log_return, percent_return
+    close = v_series(close)
+
+    if log:
+        returns = log_return(close=close)
+    else:
+        returns = percent_return(close=close)
 
     result = cagr(close) - benchmark_rate
     result /= downside_deviation(returns)
@@ -259,12 +267,14 @@ def volatility(
 
     >>> result = ta.volatility(close, tf="years", returns=False, log=False)
     """
-    close = verify_series(close)
+    from pandas_ta.performance import log_return, percent_return
+    close = v_series(close)
 
     if not returns:
-        returns = percent_return(
-            close=close) if not log else log_return(
-            close=close)
+        if log:
+            returns = log_return(close=close)
+        else:
+            returns = percent_return(close=close)
     else:
         returns = close
 

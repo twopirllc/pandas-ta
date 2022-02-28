@@ -4,7 +4,8 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.overlap import hlc3
-from pandas_ta.utils import get_drift, get_offset, signed_series, verify_series
+from pandas_ta.utils import signed_series, v_drift, v_mamode, v_offset
+from pandas_ta.utils import  v_pos_default, v_series
 
 
 def kvo(
@@ -15,8 +16,8 @@ def kvo(
 ) -> DataFrame:
     """Klinger Volume Oscillator (KVO)
 
-    This indicator was developed by Stephen J. Klinger. It is designed to predict
-    price reversals in a market by comparing volume to price.
+    This indicator was developed by Stephen J. Klinger. It attemps to
+    predict price reversals in a market by comparing volume to price.
 
     Sources:
         https://www.investopedia.com/terms/k/klingeroscillator.asp
@@ -41,20 +42,21 @@ def kvo(
         pd.DataFrame: KVO and Signal columns.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 34
-    slow = int(slow) if slow and slow > 0 else 55
-    signal = int(signal) if signal and signal > 0 else 13
-    mamode = mamode.lower() if mamode and isinstance(mamode, str) else "ema"
-    _length = slow - 1
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    volume = verify_series(volume, _length)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    fast = v_pos_default(fast, 34)
+    slow = v_pos_default(slow, 55)
+    _length = max(fast, slow - 1)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
+    volume = v_series(volume, _length)
 
     if high is None or low is None or close is None or volume is None:
         return
+
+    signal = v_pos_default(signal, 13)
+    mamode = v_mamode(mamode, "ema")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     signed_volume = volume * signed_series(hlc3(high, low, close), 1)

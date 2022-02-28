@@ -3,7 +3,7 @@ from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 
 
 def hilo(
@@ -47,17 +47,18 @@ def hilo(
         pd.DataFrame: HILO (line), HILOl (long), HILOs (short) columns.
     """
     # Validate
-    high_length = int(high_length) if high_length and high_length > 0 else 13
-    low_length = int(low_length) if low_length and low_length > 0 else 21
-    mamode = mamode.lower() if isinstance(mamode, str) else "sma"
+    high_length = v_pos_default(high_length, 13)
+    low_length = v_pos_default(low_length, 21)
     _length = max(high_length, low_length)
-    high = verify_series(high, _length)
-    low = verify_series(low, _length)
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return
+
+    mamode = v_mamode(mamode, "sma")
+    offset = v_offset(offset)
 
     # Calculate
     m = close.size

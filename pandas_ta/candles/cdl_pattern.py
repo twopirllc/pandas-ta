@@ -2,7 +2,7 @@
 from pandas import Series, DataFrame
 from pandas_ta._typing import DictLike, Int, IntFloat, List, Union
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_scalar, v_series
 from pandas_ta.candles import cdl_doji, cdl_inside
 
 
@@ -62,12 +62,12 @@ def cdl_pattern(
         pd.DataFrame: one column for each pattern.
     """
     # Validate Arguments
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    offset = get_offset(offset)
-    scalar = float(scalar) if scalar else 100
+    open_ = v_series(open_)
+    high = v_series(high)
+    low = v_series(low)
+    close = v_series(close)
+    offset = v_offset(offset)
+    scalar = v_scalar(scalar, 100)
 
     # Patterns that implemented in pandas-ta
     pta_patterns = {"doji": cdl_doji, "inside": cdl_inside}

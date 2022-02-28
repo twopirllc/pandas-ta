@@ -161,7 +161,7 @@ class TestOverlap(TestCase):
         """Overlap: JMA"""
         result = pandas_ta.jma(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "JMA_7_0")
+        self.assertEqual(result.name, "JMA_7_0.0")
 
     def test_ichimoku(self):
         """Overlap: Ichimoku"""

@@ -3,7 +3,7 @@ from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import hl2
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_offset, v_pos_default, v_series
 from pandas_ta.volatility import atr
 
 
@@ -39,18 +39,17 @@ def supertrend(
             SUPERTl (long), SUPERTs (short) columns.
     """
     # Validate
-    length = int(length) if isinstance(length, int) and length > 0 else 7
-    if isinstance(multiplier, float) and multiplier > 0:
-        multiplier = float(multiplier)
-    else:
-        multiplier = 3.0
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 7)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
+
 
     if high is None or low is None or close is None:
         return
+
+    multiplier = v_pos_default(multiplier, 3.0)
+    offset = v_offset(offset)
 
     # Calculate
     m = close.size

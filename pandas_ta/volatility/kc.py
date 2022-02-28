@@ -2,13 +2,15 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
-from pandas_ta.utils import get_offset, high_low_range, verify_series
+from pandas_ta.utils import high_low_range, v_bool, v_offset
+from pandas_ta.utils import v_mamode, v_pos_default, v_series
 from .true_range import true_range
 
 
 def kc(
     high: Series, low: Series, close: Series,
-    length: Int = None, scalar: IntFloat = None, mamode: str = None,
+    length: Int = None, scalar: IntFloat = None,
+    tr: bool = None, mamode: str = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Keltner Channels (KC)
@@ -39,24 +41,21 @@ def kc(
         pd.DataFrame: lower, basis, upper columns.
     """
     # Validate
-    length = int(length) if length and length > 0 else 20
-    scalar = float(scalar) if scalar and scalar > 0 else 2
-    mamode = mamode if isinstance(mamode, str) else "ema"
-    high = verify_series(high, length)
-    low = verify_series(low, length)
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 20)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
 
     if high is None or low is None or close is None:
         return
 
-    # Calculate
-    use_tr = kwargs.pop("tr", True)
-    if use_tr:
-        range_ = true_range(high, low, close)
-    else:
-        range_ = high_low_range(high, low)
+    scalar = v_pos_default(scalar, 2)
+    tr = v_bool(tr, True)
+    mamode = v_mamode(mamode, "ema")
+    offset = v_offset(offset)
 
+    # Calculate
+    range_ = true_range(high, low, close) if tr else high_low_range(high, low)
     basis = ma(mamode, close, length=length)
     band = ma(mamode, range_, length=length)
 

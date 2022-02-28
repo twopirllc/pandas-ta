@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_offset, signed_series, verify_series
+from pandas_ta.utils import signed_series, v_bool, v_offset, v_series
 
 
 def pvol(
-    close: Series, volume: Series,
+    close: Series, volume: Series, signed: bool = None,
     offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Price-Volume (PVOL)
@@ -16,7 +16,7 @@ def pvol(
         close (pd.Series): Series of 'close's
         volume (pd.Series): Series of 'volume's
         signed (bool): Keeps the sign of the difference in 'close's.
-            Default: True
+            Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -27,10 +27,10 @@ def pvol(
         pd.Series: New feature generated.
     """
     # Validate
-    close = verify_series(close)
-    volume = verify_series(volume)
-    offset = get_offset(offset)
-    signed = kwargs.pop("signed", False)
+    close = v_series(close)
+    volume = v_series(volume)
+    signed = v_bool(signed, False)
+    offset = v_offset(offset)
 
     # Calculate
     pvol = close * volume

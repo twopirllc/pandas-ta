@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import fibonacci, get_offset, verify_series, weights
+from pandas_ta.utils import fibonacci, v_ascending, v_offset
+from pandas_ta.utils import v_pos_default, v_series, weights
 
 
 def fwma(
@@ -29,13 +30,14 @@ def fwma(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 10
-    asc = asc if asc else True
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 10)
+    close = v_series(close, length)
 
     if close is None:
         return
+
+    asc = v_ascending(asc)
+    offset = v_offset(offset)
 
     # Calculate
     fibs = fibonacci(n=length, weighted=True)

@@ -4,7 +4,7 @@ from numpy import average, log, nan, sqrt, zeros_like
 from numpy import power as np_power
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import get_offset, verify_series
+from pandas_ta.utils import v_float, v_offset, v_pos_default, v_series
 
 
 def jma(
@@ -35,12 +35,14 @@ def jma(
         pd.Series: New feature generated.
     """
     # Validate
-    _length = int(length) if length and length > 0 else 7
-    phase = float(phase) if phase and phase != 0 else 0
-    close = verify_series(close, _length)
-    offset = get_offset(offset)
+    _length = v_pos_default(length, 7)
+    close = v_series(close, _length)
+
     if close is None:
         return
+
+    phase = v_float(phase, 0.0)
+    offset = v_offset(offset)
 
     # Calculate
     jma = zeros_like(close)

@@ -3,7 +3,8 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.overlap import ema
-from pandas_ta.utils import get_drift, get_offset, verify_series
+from pandas_ta.utils import v_drift, v_mamode, v_offset
+from pandas_ta.utils import v_pos_default, v_scalar, v_series
 
 
 def tsi(
@@ -40,21 +41,20 @@ def tsi(
         pd.DataFrame: tsi, signal.
     """
     # Validate
-    fast = int(fast) if fast and fast > 0 else 13
-    slow = int(slow) if slow and slow > 0 else 25
-    signal = int(signal) if signal and signal > 0 else 13
-    # if slow < fast:
-    #     fast, slow = slow, fast
-    scalar = float(scalar) if scalar else 100
-    close = verify_series(close, max(fast, slow))
-    drift = get_drift(drift)
-    offset = get_offset(offset)
-    mamode = mamode if isinstance(mamode, str) else "ema"
+    fast = v_pos_default(fast, 13)
+    slow = v_pos_default(slow, 25)
+    close = v_series(close, max(fast, slow))
     if "length" in kwargs:
         kwargs.pop("length")
 
     if close is None:
         return
+
+    signal = v_pos_default(signal, 13)
+    scalar = v_scalar(scalar, 100)
+    mamode = v_mamode(mamode, "ema")
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     diff = close.diff(drift)

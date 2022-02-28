@@ -4,7 +4,8 @@ from numpy.version import version
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import get_offset, strided_window, verify_series
+from pandas_ta.utils import strided_window, v_offset, v_pos_default
+from pandas_ta.utils import v_series, v_talib
 
 
 def linreg(
@@ -45,19 +46,21 @@ def linreg(
         pd.Series: New feature generated.
     """
     # Validate
-    length = int(length) if length and length > 0 else 14
-    close = verify_series(close, length)
-    offset = get_offset(offset)
+    length = v_pos_default(length, 14)
+    close = v_series(close, length)
+
+    if close is None:
+        return
+
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
+
     angle = kwargs.pop("angle", False)
     intercept = kwargs.pop("intercept", False)
     degrees = kwargs.pop("degrees", False)
     r = kwargs.pop("r", False)
     slope = kwargs.pop("slope", False)
     tsf = kwargs.pop("tsf", False)
-    mode_tal = bool(talib) if isinstance(talib, bool) else True
-
-    if close is None:
-        return
 
     # Calculate
     np_close = close.values

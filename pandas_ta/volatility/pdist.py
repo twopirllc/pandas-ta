@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import get_drift, get_offset, non_zero_range, verify_series
+from pandas_ta.utils import non_zero_range, v_drift, v_offset, v_series
 
 
 def pdist(
@@ -32,12 +32,12 @@ def pdist(
         pd.Series: New feature generated.
     """
     # Validate
-    open_ = verify_series(open_)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
-    drift = get_drift(drift)
-    offset = get_offset(offset)
+    open_ = v_series(open_)
+    high = v_series(high)
+    low = v_series(low)
+    close = v_series(close)
+    drift = v_drift(drift)
+    offset = v_offset(offset)
 
     # Calculate
     pdist = 2 * non_zero_range(high, low)
