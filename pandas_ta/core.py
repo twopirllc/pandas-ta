@@ -250,11 +250,6 @@ class AnalysisIndicators(object):
             self._time_range = "years"
 
     @property
-    def to_utc(self) -> None:
-        """Sets the DataFrame index to UTC format"""
-        self._df = to_utc(self._df)
-
-    @property
     def version(self) -> str:
         """Returns the version."""
         return version
@@ -835,6 +830,10 @@ class AnalysisIndicators(object):
             self.study(study, **kwargs)
 
         return self._df
+
+    def to_utc(self) -> None:
+        """Sets the DataFrame index to UTC format"""
+        self._df = to_utc(self._df)
 
     # Public DataFrame Methods: Indicators and Utilities
     # Candles
