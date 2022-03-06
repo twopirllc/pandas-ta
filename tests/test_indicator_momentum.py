@@ -38,25 +38,25 @@ class TestMomentum(TestCase):
     def test_datetime_ordered(self):
         """Datetime Ordered"""
         # Test if datetime64 index and ordered
-        result = self.data.ta.datetime_ordered
+        result = self.data.ta.datetime_ordered()
         self.assertTrue(result)
 
         # Test if not ordered
         original = self.data.copy()
-        reversal = original.ta.reverse
-        result = reversal.ta.datetime_ordered
+        reversal = original.ta.reverse()
+        result = reversal.ta.datetime_ordered()
         self.assertFalse(result)
 
         # Test a non-datetime64 index
         original = self.data.copy()
         original.reset_index(inplace=True)
-        result = original.ta.datetime_ordered
+        result = original.ta.datetime_ordered()
         self.assertFalse(result)
 
     def test_reverse(self):
         """Reverse"""
         original = self.data.copy()
-        result = original.ta.reverse
+        result = original.ta.reverse()
 
         # Check if first and last time are reversed
         self.assertEqual(result.index[-1], original.index[0])

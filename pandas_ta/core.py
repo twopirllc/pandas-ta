@@ -206,11 +206,6 @@ class AnalysisIndicators(object):
 
     # Public Get DataFrame Properties
     @property
-    def categories(self) -> List:
-        """Returns the categories."""
-        return list(Category.keys())
-
-    @property
     def config(self) -> str:
         """Returns the Pandas TA JSON config path."""
         return f"{self._config}"
@@ -223,18 +218,6 @@ class AnalysisIndicators(object):
             self._config = _p
         else:
             self._config = None
-
-    @property
-    def datetime_ordered(self) -> bool:
-        """Returns True if the index is a datetime and ordered."""
-        if hasattr(self, "_df"):
-            return v_datetime_ordered(self._df)
-        return False
-
-    @property
-    def reverse(self) -> DataFrame:
-        """Reverses the DataFrame. Simply: df.iloc[::-1]"""
-        return self._df.iloc[::-1]
 
     @property
     def time_range(self) -> Float:
@@ -347,7 +330,7 @@ class AnalysisIndicators(object):
 
     def _indicators_by_category(self, name: str) -> List:
         """Returns indicators by Categorical name."""
-        return Category[name] if name in self.categories else None
+        return Category[name] if name in self.categories() else None
 
     def _mp_worker(self, arguments: Tuple):
         """Multiprocessing Worker to handle different Methods."""
@@ -391,17 +374,18 @@ class AnalysisIndicators(object):
         if len(args) == 0:
             mode["all"] = True
         else:
+            _categories = self.categories()
             if isinstance(args[0], str):
                 if args[0].lower() == "all":
                     name, mode["all"] = name, True
-                if args[0].lower() in self.categories:
+                if args[0].lower() in _categories:
                     name, mode["category"] = args[0], True
 
             if isinstance(args[0], Study):
                 study_ = args[0]
                 if study_.ta is None or study_.name.lower() == "all":
                     name, mode["all"] = name, True
-                elif study_.name.lower() in self.categories:
+                elif study_.name.lower() in _categories:
                     name, mode["category"] = study_.name, True
                 else:
                     name, mode["custom"] = study_.name, True
@@ -409,6 +393,10 @@ class AnalysisIndicators(object):
         return name, mode
 
     # Public DataFrame Methods
+    def categories(self) -> ListStr:
+        """Returns the categories."""
+        return list(Category.keys())
+
     def constants(self, append: bool, values: List):
         """Constants
 
@@ -447,6 +435,12 @@ class AnalysisIndicators(object):
                 for x in values:
                     del self._df[f"{x}"]
 
+    def datetime_ordered(self) -> bool:
+        """Returns True if the index is a datetime and ordered."""
+        if hasattr(self, "_df"):
+            return v_datetime_ordered(self._df)
+        return False
+
     def indicators(self,
         as_list: bool = None, exclude: ListStr = None
     ) -> List:
@@ -466,24 +460,29 @@ class AnalysisIndicators(object):
         if isinstance(exclude, list) and len(exclude):
             user_excluded = exclude
 
-        # Public non-indicator methods
-        helper_methods = ["constants", "indicators", "strategy", "study"]
+        # Public DataFrame Extension methods
+        df_ext_methods = [
+            "categories",
+            "constants",
+            "datetime_ordered",
+            "indicators",
+            "reverse",
+            "strategy",
+            "study",
+            "to_utc",
+        ]
         # Public df.ta.properties
         ta_properties = [
             "adjusted",
-            "categories",
             "config",
             "cores",
             # "custom",
-            "datetime_ordered",
             "ds",
             "exchange",
             "last_run",
-            "reverse",
             "sample",
             "ticker",
             "time_range",
-            "to_utc",
             "version"
         ]
 
@@ -491,7 +490,7 @@ class AnalysisIndicators(object):
         ta_indicators = list((x for x in dir(DataFrame().ta) if not x.startswith("_") and not x.endswith("_")))
 
         # Add Pandas TA methods and properties to be removed
-        removed = helper_methods + ta_properties
+        removed = df_ext_methods + ta_properties
 
         # Add user excluded methods to be removed
         if isinstance(user_excluded, list) and len(user_excluded) > 0:
@@ -517,6 +516,10 @@ class AnalysisIndicators(object):
                 _count += len(ALL_PATTERNS)
         s += f"\nTotal Candles, Indicators and Utilities: {_count}"
         print(s)
+
+    def reverse(self) -> DataFrame:
+        """Reverses the DataFrame. Simply: df.iloc[::-1]"""
+        return self._df.iloc[::-1]
 
     def sample(self, **kwargs: DictLike):
         """sample
@@ -747,7 +750,6 @@ class AnalysisIndicators(object):
         """
         kwargs.update({"warning": False})
         return self.strategy(*args, **kwargs)
-
 
     def ticker(self, ticker: str, ds: str = None, **kwargs: DictLike):
         """ticker
@@ -1320,7 +1322,7 @@ class AnalysisIndicators(object):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
 
-        if not self.datetime_ordered:
+        if not self.datetime_ordered():
             volume.index = self._df.index
 
         result = vwap(high=high, low=low, close=close, volume=volume, anchor=anchor, offset=offset, **kwargs)

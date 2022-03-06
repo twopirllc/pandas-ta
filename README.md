@@ -23,8 +23,8 @@ Pandas TA - A Technical Analysis Library in Python 3
 
 <br/>
 
-![Example Chart](/images/TA_Chart.png)
-![Example Chart](/images/TA_Volume.png)
+![Example Chart](/images/SPY_Chart.png)
+![Example Chart](/images/SPY_VOL.png)
 
 <br/>
 
@@ -198,7 +198,7 @@ $ pip install pandas_ta[full]
 
 Latest Version
 --------------
-Best choice! Version: *0.3.53b*
+Best choice! Version: *0.3.54b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -303,7 +303,7 @@ Contributions, feedback, and bug squashing are integral to the success of this l
 
 _Thank you for your contributions!_
 
-<a href="https://github.com/AbyssAlora"><img src="https://avatars.githubusercontent.com/u/32155747?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/abmyii"><img src="https://avatars.githubusercontent.com/u/52673001?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/alexonab"><img src="https://avatars.githubusercontent.com/u/16689258?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/allahyarzadeh"><img src="https://avatars.githubusercontent.com/u/11909557?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/anthotsang"><img src="https://avatars.githubusercontent.com/u/929793?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/austinvdubs"><img src="https://avatars.githubusercontent.com/u/34928616?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/baotang2118"><img src="https://avatars.githubusercontent.com/u/42202403?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/bizso09"><img src="https://avatars.githubusercontent.com/u/1904536?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/CMobley7"><img src="https://avatars.githubusercontent.com/u/10121829?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/codesutras"><img src="https://avatars.githubusercontent.com/u/56551122?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DannyMartens"><img src="https://avatars.githubusercontent.com/u/37220423?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DrPaprikaa"><img src="https://avatars.githubusercontent.com/u/64958936?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/daikts"><img src="https://avatars.githubusercontent.com/u/64799229?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/danlim-wz"><img src="https://avatars.githubusercontent.com/u/52344837?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/delicateear"><img src="https://avatars.githubusercontent.com/u/167213?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/dorren"><img src="https://avatars.githubusercontent.com/u/27552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/edwardwang1"><img src="https://avatars.githubusercontent.com/u/15675816?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/FGU1"><img src="https://avatars.githubusercontent.com/u/56175843?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ffhirata"><img src="https://avatars.githubusercontent.com/u/44292530?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/floatinghotpot"><img src="https://avatars.githubusercontent.com/u/2339512?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/FriendlyUser"><img src="https://avatars.githubusercontent.com/u/13860264?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/GSlinger"><img src="https://avatars.githubusercontent.com/u/24567123?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/hhashim1"><img src="https://avatars.githubusercontent.com/u/62855649?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/jaggas"><img src="https://avatars.githubusercontent.com/u/10492880?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/jhleong"><img src="https://avatars.githubusercontent.com/u/1499913?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/JoeSchr"><img src="https://avatars.githubusercontent.com/u/8218910?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/KRaw1"><img src="https://avatars.githubusercontent.com/u/77465250?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/kush99993s"><img src="https://avatars.githubusercontent.com/u/8145062?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/Larry-u"><img src="https://avatars.githubusercontent.com/u/18108119?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lluissalord"><img src="https://avatars.githubusercontent.com/u/7021552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/locupleto"><img src="https://avatars.githubusercontent.com/u/3994906?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lucasmlofaro"><img src="https://avatars.githubusercontent.com/u/15791696?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/luisbarrancos"><img src="https://avatars.githubusercontent.com/u/387352?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/M6stafa"><img src="https://avatars.githubusercontent.com/u/7975309?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/maxdignan"><img src="https://avatars.githubusercontent.com/u/8184722?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mchant"><img src="https://avatars.githubusercontent.com/u/8502845?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mihakralj"><img src="https://avatars.githubusercontent.com/u/31756078?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/moritzgun"><img src="https://avatars.githubusercontent.com/u/68067719?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/NkosenhleDuma"><img src="https://avatars.githubusercontent.com/u/51145741?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/nicoloridulfo"><img src="https://avatars.githubusercontent.com/u/49532161?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/olafos"><img src="https://avatars.githubusercontent.com/u/2526551?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/oliver-zehentleitner"><img src="https://avatars.githubusercontent.com/u/47597331?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pbrumblay"><img src="https://avatars.githubusercontent.com/u/2146159?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pssolanki111"><img src="https://avatars.githubusercontent.com/u/40393715?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/RajeshDhalange"><img src="https://avatars.githubusercontent.com/u/32175897?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ramgarg102"><img src="https://avatars.githubusercontent.com/u/47526387?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rengel8"><img src="https://avatars.githubusercontent.com/u/34138513?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rluong003"><img src="https://avatars.githubusercontent.com/u/42408939?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ryanrussell"><img src="https://avatars.githubusercontent.com/u/523300?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/sgmheyhey"><img src="https://avatars.githubusercontent.com/u/30946314?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/SoftDevDanial"><img src="https://avatars.githubusercontent.com/u/64815604?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/schwaa"><img src="https://avatars.githubusercontent.com/u/2640598?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/tg12"><img src="https://avatars.githubusercontent.com/u/12201893?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/twrobel"><img src="https://avatars.githubusercontent.com/u/394724?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/UncleVasya"><img src="https://avatars.githubusercontent.com/u/1286157?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/WellMaybeItIs"><img src="https://avatars.githubusercontent.com/u/84646494?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/whubsch"><img src="https://avatars.githubusercontent.com/u/24275736?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/witokondoria"><img src="https://avatars.githubusercontent.com/u/5685669?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/wouldayajustlookatit"><img src="https://avatars.githubusercontent.com/u/44936661?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/YuvalWein"><img src="https://avatars.githubusercontent.com/u/65113623?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/zlpatel"><img src="https://avatars.githubusercontent.com/u/3293739?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a>
+<a href="https://github.com/AbyssAlora"><img src="https://avatars.githubusercontent.com/u/32155747?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/abmyii"><img src="https://avatars.githubusercontent.com/u/52673001?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/alexonab"><img src="https://avatars.githubusercontent.com/u/16689258?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/allahyarzadeh"><img src="https://avatars.githubusercontent.com/u/11909557?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/anthotsang"><img src="https://avatars.githubusercontent.com/u/929793?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/austinvdubs"><img src="https://avatars.githubusercontent.com/u/34928616?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/baotang2118"><img src="https://avatars.githubusercontent.com/u/42202403?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/bizso09"><img src="https://avatars.githubusercontent.com/u/1904536?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/CMobley7"><img src="https://avatars.githubusercontent.com/u/10121829?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/codesutras"><img src="https://avatars.githubusercontent.com/u/56551122?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DannyMartens"><img src="https://avatars.githubusercontent.com/u/37220423?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/DrPaprikaa"><img src="https://avatars.githubusercontent.com/u/64958936?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/daikts"><img src="https://avatars.githubusercontent.com/u/64799229?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/danlim-wz"><img src="https://avatars.githubusercontent.com/u/52344837?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/delicateear"><img src="https://avatars.githubusercontent.com/u/167213?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/dorren"><img src="https://avatars.githubusercontent.com/u/27552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/edwardwang1"><img src="https://avatars.githubusercontent.com/u/15675816?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/FGU1"><img src="https://avatars.githubusercontent.com/u/56175843?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ffhirata"><img src="https://avatars.githubusercontent.com/u/44292530?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/floatinghotpot"><img src="https://avatars.githubusercontent.com/u/2339512?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/FriendlyUser"><img src="https://avatars.githubusercontent.com/u/13860264?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/GF-Huang"><img src="https://avatars.githubusercontent.com/u/4510984?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/GSlinger"><img src="https://avatars.githubusercontent.com/u/24567123?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/hhashim1"><img src="https://avatars.githubusercontent.com/u/62855649?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/jaggas"><img src="https://avatars.githubusercontent.com/u/10492880?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/jhleong"><img src="https://avatars.githubusercontent.com/u/1499913?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/JoeSchr"><img src="https://avatars.githubusercontent.com/u/8218910?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/KRaw1"><img src="https://avatars.githubusercontent.com/u/77465250?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/kush99993s"><img src="https://avatars.githubusercontent.com/u/8145062?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/Larry-u"><img src="https://avatars.githubusercontent.com/u/18108119?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lluissalord"><img src="https://avatars.githubusercontent.com/u/7021552?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/locupleto"><img src="https://avatars.githubusercontent.com/u/3994906?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/lucasmlofaro"><img src="https://avatars.githubusercontent.com/u/15791696?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/luisbarrancos"><img src="https://avatars.githubusercontent.com/u/387352?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/M6stafa"><img src="https://avatars.githubusercontent.com/u/7975309?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/maxdignan"><img src="https://avatars.githubusercontent.com/u/8184722?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mchant"><img src="https://avatars.githubusercontent.com/u/8502845?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/mihakralj"><img src="https://avatars.githubusercontent.com/u/31756078?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/moritzgun"><img src="https://avatars.githubusercontent.com/u/68067719?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/NkosenhleDuma"><img src="https://avatars.githubusercontent.com/u/51145741?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/nicoloridulfo"><img src="https://avatars.githubusercontent.com/u/49532161?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/olafos"><img src="https://avatars.githubusercontent.com/u/2526551?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/oliver-zehentleitner"><img src="https://avatars.githubusercontent.com/u/47597331?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pbrumblay"><img src="https://avatars.githubusercontent.com/u/2146159?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/pssolanki111"><img src="https://avatars.githubusercontent.com/u/40393715?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/RajeshDhalange"><img src="https://avatars.githubusercontent.com/u/32175897?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ramgarg102"><img src="https://avatars.githubusercontent.com/u/47526387?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rengel8"><img src="https://avatars.githubusercontent.com/u/34138513?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/rluong003"><img src="https://avatars.githubusercontent.com/u/42408939?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/ryanrussell"><img src="https://avatars.githubusercontent.com/u/523300?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/sgmheyhey"><img src="https://avatars.githubusercontent.com/u/30946314?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/SoftDevDanial"><img src="https://avatars.githubusercontent.com/u/64815604?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/schwaa"><img src="https://avatars.githubusercontent.com/u/2640598?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/tg12"><img src="https://avatars.githubusercontent.com/u/12201893?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/twrobel"><img src="https://avatars.githubusercontent.com/u/394724?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/UncleVasya"><img src="https://avatars.githubusercontent.com/u/1286157?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/WellMaybeItIs"><img src="https://avatars.githubusercontent.com/u/84646494?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/whubsch"><img src="https://avatars.githubusercontent.com/u/24275736?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/witokondoria"><img src="https://avatars.githubusercontent.com/u/5685669?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/wouldayajustlookatit"><img src="https://avatars.githubusercontent.com/u/44936661?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"></a> <a href="https://github.com/YuvalWein"><img src="https://avatars.githubusercontent.com/u/65113623?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a> <a href="https://github.com/zlpatel"><img src="https://avatars.githubusercontent.com/u/3293739?v=4" class="avatar-user" width="35px;" style="border-radius: 5px;"/></a>
 
 <br/>
 
@@ -511,7 +511,8 @@ df.ta.study(NonMPStudy)
 
 Back to [Contents](#contents)
 
-<br/>
+
+<br/><br/>
 
 
 # **DataFrame Extension Properties**
@@ -527,13 +528,6 @@ df.ta.sma(length=10, append=True)
 df.ta.adjusted = None
 ```
 
-## **categories**
-
-```python
-# List of Pandas TA categories.
-df.ta.categories
-```
-
 ## **cores**
 
 ```python
@@ -546,15 +540,6 @@ df.ta.cores = 0
 
 # Returns the number of cores you set or your default number of cpus.
 df.ta.cores
-```
-
-## **datetime_ordered**
-
-```python
-# The 'datetime_ordered' property returns True if the DataFrame
-# index is of Pandas datetime64 and df.index[0] < df.index[-1].
-# Otherwise it returns False.
-df.ta.datetime_ordered
 ```
 
 ## **ds**
@@ -586,14 +571,6 @@ df.ta.exchange = "LSE"
 df.ta.last_run
 ```
 
-## **reverse**
-
-```python
-# The 'reverse' is a helper property that returns the DataFrame
-# in reverse order.
-df.ta.reverse
-```
-
 ## **prefix & suffix**
 
 ```python
@@ -622,20 +599,23 @@ df.ta.time_range = "days"
 df.ta.time_range # prints DataFrame time in "days" as float
 ```
 
-## **to_utc**
-
-```python
-# Sets the DataFrame index to UTC format.
-df.ta.to_utc
-```
 
 Back to [Contents](#contents)
 
-<br/>
+<br/><br/>
 
 
 # **DataFrame Extension Methods**
 These are some additional methods available to the DataFrame Extension.
+
+<br/>
+
+## **categories**
+
+```python
+# Returns a List of Pandas TA categories.
+df.ta.categories()
+```
 
 <br/>
 
@@ -658,6 +638,17 @@ df.ta.constants(False, np.array([-60, -40, 40, 60]))
 
 <br/>
 
+## **datetime_ordered**
+
+```python
+# The 'datetime_ordered' method returns True if the DataFrame
+# index is of Pandas datetime64 and df.index[0] < df.index[-1].
+# Otherwise it returns False.
+df.ta.datetime_ordered()
+```
+
+<br/>
+
 ## **indicators**
 
 ```python
@@ -671,6 +662,42 @@ ind_list = df.ta.indicators(as_list=True)
 df.ta.indicators(exclude=["cg", "pgo", "ui"])
 # Returns a list of the indicators and utility functions that are not in the excluded list
 smaller_list = df.ta.indicators(exclude=["cg", "pgo", "ui"], as_list=True)
+```
+
+<br/>
+
+## **reverse**
+
+```python
+# The 'reverse' method returns the DataFrame in reverse order.
+df.ta.reverse()
+```
+
+<br/>
+
+## **sample**
+
+Used to generate [Stochastic Samples](#stochastic-samples).
+```python
+# The 'sample' method returns a stochastic sample
+df.ta.sample(**kwargs)
+
+# For list of arguments, see:
+help(ta.sample)
+```
+
+<br/>
+
+## **study**
+
+The heart of Pandas TA DataFrame Extension; formerly **strategy**. See the [Pandas TA Study](#pandas-ta-study) section for more details.
+
+```python
+# The 'study' method returns the DataFrame in reverse order.
+df.ta.study(**kwargs)
+
+# For list of arguments, see:
+help(ta.study)
 ```
 
 <br/>
@@ -715,6 +742,15 @@ df = df.ta.ticker("aapl", ds="polygon", api_key=polygon_api_key) # Default ticke
 
 # For more info
 help(ta.polygon_api)
+```
+
+<br/>
+
+## **to_utc**
+
+```python
+# Sets the DataFrame index to UTC format.
+df.ta.to_utc()
 ```
 
 <br/>
@@ -812,6 +848,13 @@ Back to [Contents](#contents)
 
 <br/>
 
+| _Even Better Sinewave_ (EBSW) |
+|:--------:|
+| ![Example EBSW](/images/SPY_EBSW.png) |
+
+
+<br/>
+
 ### **Momentum** (42)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
@@ -859,6 +902,7 @@ Back to [Contents](#contents)
 * _Ultimate Oscillator_: **uo**
 * _Williams %R_: **willr**
 
+<br/>
 
 | _Moving Average Convergence Divergence_ (MACD) |
 |:--------:|
@@ -911,9 +955,11 @@ Back to [Contents](#contents)
 * _Weighted Moving Average_: **wma**
 * _Zero Lag Moving Average_: **zlma**
 
-| _Exponential Moving Averages_ (EMA) and _Keltner Channels_ (BBANDS) |
+<br/>
+
+| _Exponential Moving Averages_ (EMA) and _Donchian Channels_ (KC) |
 |:--------:|
-| ![Example Chart](/images/TA_Chart.png) |
+| ![Example Chart](/images/SPY_Chart.png) |
 
 Back to [Contents](#contents)
 
@@ -927,9 +973,11 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Log Return_: **log_return**
 * _Percent Return_: **percent_return**
 
-| _Log Returns_ (Cumulative) with _Simple Moving Average_ (SMA) |
+<br/>
+
+| _Log Returns_ (Cumulative) with _Exponential Moving Average_ (EMA) |
 |:--------:|
-| ![Example Cumulative Percent Return](/images/SPY_CumLogReturns.png) |
+| ![Example Cumulative Percent Return](/images/SPY_CLR.png) |
 
 <br/>
 
@@ -946,9 +994,11 @@ Use parameter: cumulative=**True** for cumulative results.
 * _Variance_: **variance**
 * _Z Score_: **zscore**
 
-| _Z Score_ |
+<br/>
+
+| _Standard Deviation_ (STDEV) |
 |:--------:|
-| ![Example Z Score](/images/SPY_ZScore.png) |
+| ![Example STDEV](/images/SPY_STDEV.png) |
 
 Back to [Contents](#contents)
 
@@ -988,6 +1038,8 @@ Back to [Contents](#contents)
 * _Vortex_: **vortex**
 * _Cross Signals_: **xsignals**
 
+<br/>
+
 | _Average Directional Movement Index_ (ADX) |
 |:--------:|
 | ![Example ADX](/images/SPY_ADX.png) |
@@ -1023,6 +1075,8 @@ Back to [Contents](#contents)
 * _True Range_: **true_range**
 * _Ulcer Index_: **ui**
 
+<br/>
+
 | _Average True Range_ (ATR) |
 |:--------:|
 | ![Example ATR](/images/SPY_ATR.png) |
@@ -1047,6 +1101,8 @@ Back to [Contents](#contents)
 * _Price Volume Trend_: **pvt**
 * _Volume Profile_: **vp**
 * _Worden Brothers Time Segmented Value_: **wb_tsv**
+
+<br/>
 
 | _On-Balance Volume_ (OBV) |
 |:--------:|
@@ -1123,7 +1179,7 @@ Pandas TA also includes features: _Stochastic Processes_ and _Performance Metric
 <br/>
 
 ## **Stochastic Samples**
-_Need to fake some data?_ Pandas TA can utilize the [stochastic](https://github.com/crflynn/stochastic) package to Generate Sample Processes. For additional arguments and features, use ```help(ta.sample)```
+_Need fake data?_ Pandas TA can utilize the [stochastic](https://github.com/crflynn/stochastic) package to Generate Sample Processes. For additional arguments and features, use ```help(ta.sample)```
 
 <br/>
 
@@ -1226,7 +1282,7 @@ TODO
 | | &#9744; Trend Signals |
 | | &#9744; Cross Signals |
 | &#9744; | Performance Metrics |
-| &#9744; | Better argument validation |
+| &#10004; | Better argument validation |
 
 <br/>
 
