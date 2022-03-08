@@ -1575,6 +1575,13 @@ class AnalysisIndicators(BasePandasObject):
         result = atr(high=high, low=low, close=close, length=length, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def atrts(self, length=None, factor=None, mamode=None, offset=None, **kwargs):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = atrts(high=high, low=low, close=close, length=length, factor=factor, mamode=mamode, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def bbands(self, length=None, std=None, mamode=None, offset=None, **kwargs):
         close  = self._get_column(kwargs.pop("close", "close"))
         result = bbands(close=close, length=length, std=std, mamode=mamode, offset=offset, **kwargs)
