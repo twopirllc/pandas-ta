@@ -125,7 +125,8 @@ class AnalysisIndicators(object):
             self, kind: str = None, timed: bool = False,
             version: bool = False, **kwargs: DictLike
         ):
-        if version: print(f"Pandas TA - Technical Analysis Indicators - v{self.version}")
+        if version:
+            print(f"Pandas TA - Technical Analysis Indicators - v{self.version}")
         try:
             if isinstance(kind, str):
                 kind = kind.lower()

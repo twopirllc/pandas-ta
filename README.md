@@ -198,7 +198,7 @@ $ pip install pandas_ta[full]
 
 Latest Version
 --------------
-Best choice! Version: *0.3.54b*
+Best choice! Version: *0.3.55b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta

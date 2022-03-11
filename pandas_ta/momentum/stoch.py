@@ -79,7 +79,10 @@ def stoch(
         stoch /= non_zero_range(highest_high, lowest_low)
 
         stoch_fvi = stoch.loc[stoch.first_valid_index():, ]
-        stoch_k = ma(mamode, stoch_fvi, length=smooth_k)
+        if smooth_k == 1:
+            stoch_k = stoch
+        else:
+            stoch_k = ma(mamode, stoch_fvi, length=smooth_k)
 
         stochk_fvi = stoch_k.loc[stoch_k.first_valid_index():, ]
         stoch_d = ma(mamode, stochk_fvi, length=d)
