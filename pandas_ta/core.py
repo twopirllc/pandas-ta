@@ -558,7 +558,31 @@ class AnalysisIndicators(object):
                 disabled when using it's replacement method: df.ta.study().
                 Default: True
         """
-        _dep_warning = kwargs.pop("warning", True)
+        kwargs.update({"warning": True})
+        return self.study(*args, **kwargs)
+
+    def study(self, *args: Args, **kwargs: DictLike) -> dataclass:
+        """Study Method
+
+        An experimental method that by default runs all applicable indicators.
+
+        Kwargs:
+            chunksize (bool): Adjust the chunksize for the Multiprocessing Pool.
+                Default: Number of cores of the OS
+            exclude (list): List of indicator names to exclude. Some are
+                excluded by default for various reasons; they require additional
+                sources, performance (td_seq), not a time series chart (vp) etc.
+            name (str): Select all indicators or indicators by
+                Category such as: "candles", "cycles", "momentum", "overlap",
+                "performance", "statistics", "trend", "volatility", "volume", or
+                "all". Default: "all"
+            ordered (bool): Whether to run "all" in order. Default: True
+            timed (bool): Show the process time of the study().
+                Default: False
+            verbose (bool): Provide some additional insight on the progress of
+                the study() execution. Default: False
+        """
+        _dep_warning = kwargs.pop("warning", False)
         all_ordered = kwargs.pop("ordered", True)
         # Append indicators to the DataFrame by default
         kwargs.setdefault("append", True)
@@ -733,30 +757,6 @@ class AnalysisIndicators(object):
 
         if returns:
             return self._df
-
-    def study(self, *args: Args, **kwargs: DictLike) -> dataclass:
-        """Study Method
-
-        An experimental method that by default runs all applicable indicators.
-
-        Kwargs:
-            chunksize (bool): Adjust the chunksize for the Multiprocessing Pool.
-                Default: Number of cores of the OS
-            exclude (list): List of indicator names to exclude. Some are
-                excluded by default for various reasons; they require additional
-                sources, performance (td_seq), not a time series chart (vp) etc.
-            name (str): Select all indicators or indicators by
-                Category such as: "candles", "cycles", "momentum", "overlap",
-                "performance", "statistics", "trend", "volatility", "volume", or
-                "all". Default: "all"
-            ordered (bool): Whether to run "all" in order. Default: True
-            timed (bool): Show the process time of the study().
-                Default: False
-            verbose (bool): Provide some additional insight on the progress of
-                the study() execution. Default: False
-        """
-        kwargs.update({"warning": False})
-        return self.strategy(*args, **kwargs)
 
     def ticker(self, ticker: str, ds: str = None, **kwargs: DictLike):
         """ticker
