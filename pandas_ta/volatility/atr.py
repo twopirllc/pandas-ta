@@ -64,8 +64,8 @@ def atr(
         )
         atr = ma(mamode, tr, length=length, talib=mode_tal)
 
-    percentage = kwargs.pop("percent", False)
-    if percentage:
+    percent = kwargs.pop("percent", False)
+    if percent:
         atr *= 100 / close
 
     # Offset
@@ -79,7 +79,7 @@ def atr(
         atr.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    atr.name = f"ATR{mamode[0]}_{length}{'p' if percentage else ''}"
+    atr.name = f"ATR{mamode[0]}{'p' if percent else ''}_{length}"
     atr.category = "volatility"
 
     return atr

@@ -65,7 +65,7 @@ def stoch(
     offset = v_offset(offset)
 
     # Calculate
-    if Imports["talib"] and mode_tal:
+    if Imports["talib"] and mode_tal and smooth_k > 2:
         from talib import STOCH
         stoch_ = STOCH(
             high, low, close, k, d, tal_ma(mamode), d, tal_ma(mamode)

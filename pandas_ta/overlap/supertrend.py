@@ -44,7 +44,6 @@ def supertrend(
     low = v_series(low, length)
     close = v_series(close, length)
 
-
     if high is None or low is None or close is None:
         return
 
@@ -58,9 +57,8 @@ def supertrend(
 
     hl2_ = hl2(high, low)
     matr = multiplier * atr(high, low, close, length)
-    ub = hl2_ + matr  # Upperband
     lb = hl2_ - matr  # Lowerband
-
+    ub = hl2_ + matr  # Upperband
     for i in range(1, m):
         if close.iloc[i] > ub.iloc[i - 1]:
             dir_[i] = 1
@@ -77,6 +75,9 @@ def supertrend(
             trend[i] = long[i] = lb.iloc[i]
         else:
             trend[i] = short[i] = ub.iloc[i]
+
+    trend[0] = nan
+    dir_[:length] = [nan] * length
 
     _props = f"_{length}_{multiplier}"
     df = DataFrame({

@@ -67,6 +67,12 @@ class TestVolatility(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "ATRr_14")
 
+    def test_atrts(self):
+        """Volatility: ATRTS"""
+        result = pandas_ta.atrts(self.high, self.low, self.close, talib=False)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "ATRTSe_14_20_3.0")
+
     def test_bbands(self):
         """Volatility: BBANDS"""
         result = pandas_ta.bbands(self.close, talib=False)

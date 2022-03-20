@@ -33,6 +33,11 @@ class TestVolatilityExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "ATRr_14")
 
+    def test_atrts_ext(self):
+        self.data.ta.atrts(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "ATRTSe_14_20_3.0")
+
     def test_bbands_ext(self):
         self.data.ta.bbands(append=True)
         self.assertIsInstance(self.data, DataFrame)

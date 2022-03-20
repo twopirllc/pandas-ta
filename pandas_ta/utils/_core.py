@@ -144,7 +144,7 @@ def _speed_group(
     for i in group:
         r = df.ta(i, talib=talib, timed=True)
         ms = float(r.timed.split(" ")[0].split(" ")[0])
-        times.append({index_name: i, "secs": ms2secs(ms, p), "ms": ms})
+        times.append({index_name: i, "ms": ms, "secs": ms2secs(ms, p)})
     return times
 
 

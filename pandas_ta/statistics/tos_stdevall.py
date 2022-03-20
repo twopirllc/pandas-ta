@@ -38,13 +38,6 @@ def tos_stdevall(
             mulitples of the standard deviation. Default: returns 7 columns.
     """
     # Validate
-    stds = v_list(stds, [1, 2, 3])
-    if min(stds) <= 0:
-        return
-
-    if not all(i < j for i, j in zip(stds, stds[1:])):
-        stds = stds[::-1]
-
     _props = f"TOS_STDEVALL"
     if length is None:
         length = close.size
@@ -57,6 +50,13 @@ def tos_stdevall(
 
     if close is None:
         return
+
+    stds = v_list(stds, [1, 2, 3])
+    if min(stds) <= 0:
+        return
+
+    if not all(i < j for i, j in zip(stds, stds[1:])):
+        stds = stds[::-1]
 
     ddof = int(ddof) if isinstance(ddof, int) and 0 <= ddof < length else 1
     offset = v_offset(offset)

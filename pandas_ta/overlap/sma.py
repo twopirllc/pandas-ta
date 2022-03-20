@@ -76,7 +76,7 @@ def sma(
     offset = v_offset(offset)
 
     # Calculate
-    if Imports["talib"] and mode_tal:
+    if Imports["talib"] and mode_tal and length > 1:
         from talib import SMA
         sma = SMA(close, length)
     else:

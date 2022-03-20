@@ -49,9 +49,9 @@ def true_range(
         from talib import TRANGE
         true_range = TRANGE(high, low, close)
     else:
-        high_low_range = non_zero_range(high, low)
-        prev_close = close.shift(drift)
-        ranges = [high_low_range, high - prev_close, prev_close - low]
+        hl_range = non_zero_range(high, low)
+        pc = close.shift(drift)
+        ranges = [hl_range, high - pc, pc - low]
         true_range = concat(ranges, axis=1)
         true_range = true_range.abs().max(axis=1)
         true_range.iloc[:drift] = nan
