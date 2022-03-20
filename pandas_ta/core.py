@@ -363,7 +363,13 @@ class AnalysisIndicators(object):
                       kwargs["col_numbers"] is not None else result)
             # Add prefix/suffix and append to the dataframe
             self._add_prefix_suffix(result=result, **kwargs)
-            self._append(result=result, **kwargs)
+
+            if kwargs["append"]:
+                self._append(result=result, **kwargs)
+            else:
+                # Issue 388 - No appending, just print to stdout
+                # No DatetimeIndex could break execution.
+                print(result)
         return result
 
     def _study_mode(self, *args: Args) -> Tuple:
@@ -723,7 +729,7 @@ class AnalysisIndicators(object):
                 avgtd = (perf_counter() - stime) / _added_columns
             else:
                 avgtd = perf_counter() - stime
-            print(f"[i] Analysis Time: {ft} for {_added_columns} columns (avg {avgtd * 1000:2.4f} ms / col).")
+            print(f"[i] Analysis Time: {ft} for {_added_columns} columns (avg {avgtd * 1000:2.4f} ms / col)")
 
         if returns:
             return self._df
