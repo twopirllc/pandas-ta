@@ -364,9 +364,10 @@ class AnalysisIndicators(object):
             # Add prefix/suffix and append to the dataframe
             self._add_prefix_suffix(result=result, **kwargs)
 
-            if kwargs["append"]:
+            if "append" in kwargs and kwargs["append"]:
+                # Default: Appends result to DataFrame
                 self._append(result=result, **kwargs)
-            else:
+            if "append" in kwargs and kwargs["append"] is None:
                 # Issue 388 - No appending, just print to stdout
                 # No DatetimeIndex could break execution.
                 print(result)

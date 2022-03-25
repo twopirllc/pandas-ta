@@ -198,9 +198,6 @@ def speed_test(df: DataFrame,
 
     if len(_indicators) == 0: return None
 
-
-
-
     _iname = "Indicator"
     if verbose:
         print()

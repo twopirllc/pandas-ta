@@ -60,12 +60,9 @@ def vwap(
         anchor = "D"
 
     typical_price = hlc3(high=high, low=low, close=close)
-    if not v_datetime_ordered(volume):
-        _s = "[!] VWAP volume series is not datetime ordered."
-        print(f"{_s} Results may not be as expected.")
-    if not v_datetime_ordered(typical_price):
-        _s = "[!] VWAP price series is not datetime ordered."
-        print(f"{_s} Results may not be as expected.")
+    if not v_datetime_ordered(volume) or not v_datetime_ordered(typical_price):
+        print("[!] VWAP requires a datetime ordered index.")
+        return
 
     # Calculate
     _props = f"VWAP_{anchor}"

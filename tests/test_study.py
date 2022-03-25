@@ -112,7 +112,7 @@ class TestStudyMethods(TestCase):
         self.category = "Candles"
         self.data.ta.study(pandas_ta.AllStudy, verbose=verbose, timed=timed_test)
 
-    @skipUnless(verbose, "verbose mode only")
+    # @skipUnless(verbose, "verbose mode only")
     def test_all_without_append(self):
         """Study: All sans append"""
         self.category = "All: Sans append"

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import fabs
+from numpy import inf, fabs, nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import non_zero_range, v_drift, v_offset
@@ -44,6 +44,8 @@ def vhf(
     lcp = close.rolling(length).min()
     diff = fabs(close.diff(drift))
     vhf = fabs(non_zero_range(hcp, lcp)) / diff.rolling(length).sum()
+    vhf.replace([inf, -inf], nan, inplace=True)
+    # np_vhf = where(np_vhf == inf, nan, np_vhf)
 
     # Offset
     if offset != 0:
