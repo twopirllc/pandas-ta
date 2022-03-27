@@ -46,6 +46,7 @@ def cdl_inside(
     offset = v_offset(offset)
 
     # Calculate
+    # TODO: Return if high or low has nan
     inside = (high.diff() < 0) & (low.diff() > 0)
 
     if not asbool:

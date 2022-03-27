@@ -198,7 +198,7 @@ $ pip install pandas_ta[full]
 
 Latest Version
 --------------
-Best choice! Version: *0.3.59b*
+Best choice! Version: *0.3.60b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -707,6 +707,7 @@ help(ta.study)
 ```python
 # Download Chart history using yfinance. (pip install yfinance)
 # It uses the same keyword arguments as yfinance (excluding start and end)
+# Note: It automatically sets the index to be a DatetimeIndex
 df = df.ta.ticker("aapl") # Default ticker is "SPY"
 
 # Period is used instead of start/end
@@ -723,9 +724,9 @@ df = df.ta.ticker("aapl", period="1mo", interval="1h") # Gets this past month in
 # A Ticker & DataFrame Dictionary with a Study applied
 tickers = ["SPY", "AAPL", "SQ"]
 s = ta.CommonStudy
-asset = {f"{t}_D": ta.df.ta.ticker(t, period="1y", cores=0, study=s, timed=True, returns=True, ds="yf") for t in tickers}
-print(asset.keys())
-spydf = asset["SPY_D"]
+assets = {f"{t}_D": ta.df.ta.ticker(t, period="1y", cores=0, study=s, timed=True, returns=True, ds="yf") for t in tickers}
+print(assets.keys())
+spydf = assets["SPY_D"]
 
 # For more info
 help(ta.yf)

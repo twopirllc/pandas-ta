@@ -60,7 +60,8 @@ def yf(ticker: str, **kwargs) -> DataFrame:
 
     Returns:
         Exits if the DataFrame is empty or None
-        Otherwise it returns a DataFrame of the Chart History
+        Otherwise it returns a DataFrame of the Chart History with a
+        DatetimeIndex
     """
     verbose = kwargs.pop("verbose", False)
     if ticker is not None and isinstance(ticker, str) and len(ticker):

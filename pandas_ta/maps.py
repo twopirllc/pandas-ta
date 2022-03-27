@@ -48,10 +48,10 @@ Category: Dict[str, ListStr] = {
     # Momentum
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
-        "coppock", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst", "macd",
-        "mom", "pgo", "ppo", "psl", "pvo", "qqe", "roc", "rsi", "rsx", "rvgi",
-        "slope", "smi", "squeeze", "squeeze_pro", "stc", "stoch", "stochf",
-        "stochrsi", "td_seq", "trix", "tsi", "uo", "willr"
+        "coppock", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst",
+        "macd", "mom", "pgo", "ppo", "psl", "pvo", "qqe", "roc", "rsi",
+        "rsx", "rvgi", "slope", "smi", "squeeze", "squeeze_pro", "stc",
+        "stoch", "stochf", "stochrsi", "td_seq", "trix", "tsi", "uo", "willr"
     ],
     # Overlap
     "overlap": [
@@ -73,20 +73,21 @@ Category: Dict[str, ListStr] = {
     # Trend
     "trend": [
         "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
-        "increasing", "long_run", "psar", "qstick", "short_run", "trendflex", "tsignals",
-        "ttm_trend", "vhf", "vortex", "xsignals"
+        "increasing", "long_run", "psar", "qstick", "short_run", "trendflex",
+        "tsignals", "ttm_trend", "vhf", "vortex", "xsignals"
     ],
     # Volatility
     "volatility": [
-        "aberration", "accbands", "atr", "bbands", "donchian", "hwc", "kc", "massi",
-        "natr", "pdist", "rvi", "thermo", "true_range", "ui"
+        "aberration", "accbands", "atr", "atrts", "bbands", "donchian",
+        "hwc", "kc", "massi", "natr", "pdist", "rvi", "thermo",
+        "true_range", "ui"
     ],
 
     # Volume.
     # Note: "vp" or "Volume Profile" is excluded since it does not return a Time Series
     "volume": [
-        "ad", "adosc", "aobv", "cmf", "efi", "eom", "kvo", "mfi", "nvi", "obv",
-        "pvi", "pvol", "pvr", "pvt", "wb_tsv"
+        "ad", "adosc", "aobv", "cmf", "efi", "eom", "kvo", "mfi", "nvi",
+        "obv", "pvi", "pvol", "pvr", "pvt", "wb_tsv"
     ],
 }
 
