@@ -17,7 +17,7 @@ def ppo(
     The Percentage Price Oscillator is similar to MACD in measuring momentum.
 
     Sources:
-        https://www.tradingview.com/wiki/MACD_(Moving_Average_Convergence/Divergence)
+        https://www.investopedia.com/terms/p/ppo.asp
 
     Args:
         close(pandas.Series): Series of 'close's
