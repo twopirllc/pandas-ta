@@ -17,7 +17,7 @@ def alma(close, length=None, sigma=None, distribution_offset=None, offset=None, 
     if close is None: return
 
     # Pre-Calculations
-    m = distribution_offset * (length - 1)
+    m = (1-distribution_offset) * (length - 1)
     s = length / sigma
     wtd = list(range(length))
     for i in range(0, length):
