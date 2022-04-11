@@ -65,7 +65,7 @@ def linreg(
     # Calculate
     np_close = close.values
 
-    if Imports["talib"] and mode_tal:
+    if Imports["talib"] and mode_tal and not r:
         from talib import LINEARREG, LINEARREG_ANGLE, LINEARREG_INTERCEPT, LINEARREG_SLOPE, TSF
         if tsf:
             linreg = TSF(close, timeperiod=length)
