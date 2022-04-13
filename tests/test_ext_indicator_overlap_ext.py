@@ -88,6 +88,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "LR_14")
 
+    def test_mama_ext(self):
+        self.data.ta.mama(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-2:]), ["MAMA_0.5_0.05", "FAMA_0.5_0.05"])
+
     def test_mcgd_ext(self):
         self.data.ta.mcgd(append=True)
         self.assertIsInstance(self.data, DataFrame)

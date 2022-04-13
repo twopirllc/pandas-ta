@@ -56,10 +56,10 @@ Category: Dict[str, ListStr] = {
     # Overlap
     "overlap": [
         "alligator", "alma", "dema", "ema", "fwma", "hilo", "hl2", "hlc3",
-        "hma", "hwma", "ichimoku", "jma", "kama", "linreg", "mcgd", "midpoint",
-        "midprice", "ohlc4", "pwma", "rma", "sinwma", "sma", "smma", "ssf",
-        "ssf3", "supertrend", "swma", "t3", "tema", "trima", "vidya", "vwap",
-        "vwma", "wcp", "wma", "zlma"
+        "hma", "hwma", "ichimoku", "jma", "kama", "linreg", "mama",
+        "mcgd", "midpoint", "midprice", "ohlc4", "pwma", "rma", "sinwma",
+        "sma", "smma", "ssf", "ssf3", "supertrend", "swma", "t3", "tema",
+        "trima", "vidya", "vwap", "vwma", "wcp", "wma", "zlma"
     ],
     # Performance
     "performance": ["log_return", "percent_return"],
