@@ -364,12 +364,14 @@ class AnalysisIndicators(object):
             # Add prefix/suffix and append to the dataframe
             self._add_prefix_suffix(result=result, **kwargs)
 
-            if kwargs["append"]:
-                self._append(result=result, **kwargs)
-            else:
-                # Issue 388 - No appending, just print to stdout
-                # No DatetimeIndex could break execution.
-                print(result)
+            if "append" in kwargs and isinstance(kwargs["append"], bool):
+                if not kwargs["append"]:
+                    # Issue 388 - No appending, just print to stdout
+                    # No DatetimeIndex could break execution.
+                    print(result)
+                else:
+                    # Default: Appends result to DataFrame
+                    self._append(result=result, **kwargs)
         return result
 
     def _study_mode(self, *args: Args) -> Tuple:
@@ -1229,6 +1231,11 @@ class AnalysisIndicators(object):
     def linreg(self, length=None, offset: Int = None, adjust=None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = linreg(close=close, length=length, offset=offset, adjust=adjust, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def mama(self, fastlimit=None, slowlimit=None, prenan: Int = None, offset: Int = None, **kwargs: DictLike):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = mama(close=close, fastlimit=fastlimit, slowlimit=slowlimit, prenan=prenan, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def mcgd(self, length=None, offset: Int = None, **kwargs: DictLike):

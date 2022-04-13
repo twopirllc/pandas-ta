@@ -57,7 +57,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is a free, Open Source, and easy to 
     * [Candles](#candles-64)
     * [Cycles](#cycles-2)
     * [Momentum](#momentum-42)
-    * [Overlap](#overlap-36)
+    * [Overlap](#overlap-37)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
     * [Transform](#transform-3)
@@ -912,7 +912,7 @@ Back to [Contents](#contents)
 
 <br/>
 
-### **Overlap** (36)
+### **Overlap** (37)
 
 * _Bill Williams Alligator_: **alligator**
 * _Arnaud Legoux Moving Average_: **alma**
@@ -931,6 +931,8 @@ Back to [Contents](#contents)
 * _Jurik Moving Average_: **jma**
 * _Kaufman's Adaptive Moving Average_: **kama**
 * _Linear Regression_: **linreg**
+* _Ehler's MESA Adapative Moving Average_: **mama**
+    * Includes: **fama**
 * _McGinley Dynamic_: **mcgd**
 * _Midpoint_: **midpoint**
 * _Midprice_: **midprice**
@@ -1253,7 +1255,7 @@ TODO
 | **Status** | **Remaining TA Lib Indicators** |
 | - | - |
 | &#9744; | Candlesticks |
-| &#9744; | Indicators: ```ht_dcperiod```, ```ht_dcphase```, ```ht_phasor```, ```ht_sine```, ```ht_trendline```, ```ht_trendmode```, ```mama``` |
+| &#9744; | Indicators: ```ht_dcperiod```, ```ht_dcphase```, ```ht_phasor```, ```ht_sine```, ```ht_trendline```, ```ht_trendmode``` |
 | &#9744; | **Numpy**/**Numba**_-ify_ base indicators |
 
 <br/>

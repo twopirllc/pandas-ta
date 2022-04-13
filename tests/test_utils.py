@@ -42,19 +42,19 @@ class TestUtilities(TestCase):
         del self.utils
 
     def test__add_prefix_suffix(self):
-        result = self.data.ta.hl2(append=False, prefix="pre")
+        result = self.data.ta.hl2(prefix="pre")
         self.assertEqual(result.name, "pre_HL2")
 
-        result = self.data.ta.hl2(append=False, suffix="suf")
+        result = self.data.ta.hl2(suffix="suf")
         self.assertEqual(result.name, "HL2_suf")
 
-        result = self.data.ta.hl2(append=False, prefix="pre", suffix="suf")
+        result = self.data.ta.hl2(prefix="pre", suffix="suf")
         self.assertEqual(result.name, "pre_HL2_suf")
 
-        result = self.data.ta.hl2(append=False, prefix=1, suffix=2)
+        result = self.data.ta.hl2(prefix=1, suffix=2)
         self.assertEqual(result.name, "1_HL2_2")
 
-        result = self.data.ta.macd(append=False, prefix="pre", suffix="suf")
+        result = self.data.ta.macd(prefix="pre", suffix="suf")
         for col in result.columns:
             self.assertTrue(col.startswith("pre_") and col.endswith("_suf"))
 
