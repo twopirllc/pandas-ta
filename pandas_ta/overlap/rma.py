@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
+from numpy import nan
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
@@ -39,8 +40,14 @@ def rma(
     alpha = (1.0 / length) if length > 0 else 0.5
     offset = v_offset(offset)
 
-    # Calculate
-    rma = close.ewm(alpha=alpha, min_periods=length).mean()
+    # Prefill initial bars with NaN and SMA
+    close = close.copy()
+    sma_nth = close[0:length].mean()
+    close[:length - 1] = nan
+    close.iloc[length - 1] = sma_nth
+
+    # Calculate Exponential part
+    rma = close.ewm(span=length, alpha=alpha, min_periods=length).mean()
 
     # Offset
     if offset != 0:
