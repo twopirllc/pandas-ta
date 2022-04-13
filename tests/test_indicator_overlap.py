@@ -271,6 +271,26 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "FWMA_15")
 
+    def test_mama(self):
+        """Overlap: MAMA/FAMA"""
+        result = pandas_ta.mama(self.close, talib=False)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "MAMA_0.5_0.05")
+
+        try:
+            expected = tal.MAMA(self.close)
+            pdt.assert_series_equal(result, expected, check_names=False)
+        except AssertionError:
+            try:
+                corr = pandas_ta.utils.df_error_analysis(result, expected)
+                self.assertGreater(corr, CORRELATION_THRESHOLD)
+            except Exception as ex:
+                error_analysis(result, CORRELATION, ex)
+
+        result = pandas_ta.mama(self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "MAMA_0.5_0.05")
+
     def test_mcgd(self):
         """Overlap: MCGD"""
         result = pandas_ta.mcgd(self.close)
