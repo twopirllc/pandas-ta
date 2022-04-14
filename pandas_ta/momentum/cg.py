@@ -38,9 +38,9 @@ def cg(
     offset = v_offset(offset)
 
     # Calculate
-    coefficients = list(range(1, length + 1))
-    numerator = -close.rolling(length).apply(weights(coefficients), raw=True)
-    cg = numerator / close.rolling(length).sum()
+    coefficients = range(1, length + 1)
+    numerator = close.rolling(length).apply(weights(coefficients), raw=True)
+    cg = -numerator / close.rolling(length).sum()
 
     # Offset
     if offset != 0:
