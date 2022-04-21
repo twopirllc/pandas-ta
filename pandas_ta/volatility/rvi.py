@@ -7,6 +7,22 @@ from pandas_ta.utils import unsigned_differences, v_bool, v_drift
 from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 
 
+def _rvi(source, length, scalar, mode, drift):
+    """RVI"""
+    std = stdev(source, length)
+    pos, neg = unsigned_differences(source, amount=drift)
+
+    pos_std = pos * std
+    neg_std = neg * std
+
+    pos_avg = ma(mode, pos_std, length=length)
+    neg_avg = ma(mode, neg_std, length=length)
+
+    result = scalar * pos_avg
+    result /= pos_avg + neg_avg
+    return result
+
+
 def rvi(
     close: Series, high: Series = None, low: Series = None,
     length: Int = None, scalar: IntFloat = None,
@@ -21,7 +37,9 @@ def rvi(
     direction, the RVI adds up standard deviations based on price direction.
 
     Sources:
-        https://www.tradingview.com/wiki/Keltner_Channels_(KC)
+        https://www.motivewave.com/studies/relative_volatility_index.htm
+        https://www.tradingview.com/script/mLZJqxKn-Relative-Volatility-Index/
+        https://www.tradingview.com/support/solutions/43000594684-relative-volatility-index/
 
     Args:
         high (pd.Series): Series of 'high's
@@ -61,21 +79,6 @@ def rvi(
         low = v_series(low)
 
     # Calculate
-    def _rvi(source, length, scalar, mode, drift):
-        """RVI"""
-        std = stdev(source, length)
-        pos, neg = unsigned_differences(source, amount=drift)
-
-        pos_std = pos * std
-        neg_std = neg * std
-
-        pos_avg = ma(mode, pos_std, length=length)
-        neg_avg = ma(mode, neg_std, length=length)
-
-        result = scalar * pos_avg
-        result /= pos_avg + neg_avg
-        return result
-
     _mode = ""
     if refined:
         high_rvi = _rvi(high, length, scalar, mamode, drift)

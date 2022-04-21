@@ -22,7 +22,8 @@ def inertia(
     Negative Inertia otherwise.
 
     Sources:
-        https://www.investopedia.com/terms/r/relative_vigor_index.asp
+        https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=285&Name=Inertia
+        https://www.tradingview.com/script/mLZJqxKn-Relative-Volatility-Index/
 
     Args:
         open_ (pd.Series): Series of 'open's
