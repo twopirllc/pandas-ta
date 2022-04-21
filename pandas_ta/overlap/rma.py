@@ -39,8 +39,7 @@ def rma(
     alpha = (1.0 / length) if length > 0 else 0.5
     offset = v_offset(offset)
 
-    # Calculate
-    rma = close.ewm(alpha=alpha, min_periods=length).mean()
+    rma = close.ewm(alpha=alpha, adjust=False).mean()
 
     # Offset
     if offset != 0:

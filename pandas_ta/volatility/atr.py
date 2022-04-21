@@ -1,16 +1,25 @@
 # -*- coding: utf-8 -*-
+from numpy import nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_drift, v_mamode, v_offset
-from pandas_ta.utils import v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    v_bool,
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 from .true_range import true_range
 
 
 def atr(
     high: Series, low: Series, close: Series, length: Int = None,
-    mamode: str = None, talib: bool = None, drift: Int = None,
+    mamode: str = None, talib: bool = None,
+    prenan: bool = None, drift: Int = None,
     offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Average True Range (ATR)
@@ -29,6 +38,8 @@ def atr(
         mamode (str): See ``help(ta.ma)``. Default: 'rma'
         talib (bool): If TA Lib is installed and talib is True, Returns the
             TA Lib version. Default: True
+        prenan (bool): If True, behave like TA Lib with some initial nan
+            based on drift (typically 1). Default: False
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -51,6 +62,7 @@ def atr(
 
     mamode = v_mamode(mamode, "rma")
     mode_tal = v_talib(talib)
+    prenan = v_bool(prenan, False)
     drift = v_drift(drift)
     offset = v_offset(offset)
 
@@ -60,8 +72,12 @@ def atr(
         atr = ATR(high, low, close, length)
     else:
         tr = true_range(
-            high=high, low=low, close=close, drift=drift, talib=mode_tal
+            high=high, low=low, close=close,
+            talib=mode_tal, prenan=prenan, drift=drift
         )
+        sma_nth = tr[0:length].mean()
+        tr[:length - 1] = nan
+        tr.iloc[length - 1] = sma_nth
         atr = ma(mamode, tr, length=length, talib=mode_tal)
 
     percent = kwargs.pop("percent", False)

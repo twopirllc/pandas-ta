@@ -6,7 +6,12 @@ from pandas import DataFrame, Series
 
 import talib as tal
 
-from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis, sample_data
+from .config import (
+    CORRELATION,
+    CORRELATION_THRESHOLD,
+    error_analysis,
+    sample_data,
+)
 from .context import pandas_ta
 
 
