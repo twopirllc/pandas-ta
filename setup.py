@@ -42,6 +42,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
@@ -64,8 +65,8 @@ setup(
     extras_require={
         "full": [
             "alphaVantage-api", "matplotlib", "mplfinance", "numba", "polygon"
-            "scipy", "sklearn", "statsmodels", "stochastic", "ta-lib", "tqdm",
-            "vectorbt", "yfinance",
+            "python-dotenv", "scipy", "sklearn", "statsmodels", "stochastic",
+            "ta-lib", "tqdm", "vectorbt", "yfinance",
         ],
         "test": ["ta-lib"],
     },

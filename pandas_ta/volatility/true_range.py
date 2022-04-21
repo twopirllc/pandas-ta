@@ -3,13 +3,13 @@ from numpy import nan
 from pandas import concat, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import non_zero_range, v_drift, v_offset
-from pandas_ta.utils import v_series, v_talib
+from pandas_ta.utils import non_zero_range, v_bool, v_drift
+from pandas_ta.utils import v_offset, v_series, v_talib
 
 
 def true_range(
     high: Series, low: Series, close: Series,
-    talib: bool = None, drift: Int = None,
+    talib: bool = None, prenan: bool = None, drift: Int = None,
     offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """True Range
@@ -26,6 +26,8 @@ def true_range(
         close (pd.Series): Series of 'close's
         talib (bool): If TA Lib is installed and talib is True, Returns
             the TA Lib version. Default: True
+        prenan (bool): If True, behave like TA Lib with some initial nan
+            based on drift (typically 1). Default: False
         drift (int): The shift period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
@@ -41,6 +43,7 @@ def true_range(
     low = v_series(low)
     close = v_series(close)
     mode_tal = v_talib(talib)
+    prenan = v_bool(prenan, False)
     drift = v_drift(drift)
     offset = v_offset(offset)
 
@@ -54,7 +57,8 @@ def true_range(
         ranges = [hl_range, high - pc, pc - low]
         true_range = concat(ranges, axis=1)
         true_range = true_range.abs().max(axis=1)
-        true_range.iloc[:drift] = nan
+        if prenan:
+            true_range.iloc[:drift] = nan
 
     # Offset
     if offset != 0:

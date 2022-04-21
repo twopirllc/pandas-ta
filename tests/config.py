@@ -2,6 +2,7 @@
 import datetime
 from pathlib import Path
 
+from numpy import array
 from pandas import DataFrame, read_csv
 import pandas_datareader as pdr
 
@@ -16,6 +17,13 @@ TEST: str = f"[T]"
 CORRELATION: str = "corr"  # "sem"
 CORRELATION_THRESHOLD: IntFloat = 0.99  # Less than 0.99 is undesirable
 VERBOSE: bool = False
+
+welles_wilder_df = DataFrame({
+    "open": array([50, 50.7, 51.7, 52.5, 53.6, 54.4, 52.9, 52]),
+    "high": array([51.2, 51.8, 52.9, 53.7, 54.8, 54.4, 53.2, 52.7]),
+    "low": array([49.8, 50.3, 51.7, 52.3, 53.5, 52.9, 52, 52]),
+    "close": array([50.9, 51.5, 52.8, 53.5, 54.7, 53, 52, 52.2])
+})
 
 
 def error_analysis(
