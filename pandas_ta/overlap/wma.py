@@ -3,8 +3,13 @@ from numpy import arange, dot
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_ascending, v_offset, v_pos_default
-from pandas_ta.utils import v_series, v_talib
+from pandas_ta.utils import (
+    v_ascending,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 def wma(

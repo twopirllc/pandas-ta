@@ -13,7 +13,8 @@ except ImportError:
 
 @njit
 def np_trendflex(
-    x: Array, n: Int, k: Int, alpha: IntFloat, pi: IntFloat, sqrt2: IntFloat
+    x: Array, n: Int, k: Int,
+    alpha: IntFloat, pi: IntFloat, sqrt2: IntFloat
 ):
     """Ehler's Trendflex
     http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html"""
@@ -88,7 +89,7 @@ def trendflex(
     # Validate
     length = v_pos_default(length, 20)
     smooth = v_pos_default(smooth, 20)
-    close = v_series(close, max(length, smooth))
+    close = v_series(close, max(length, smooth) + 1)
 
     if close is None:
         return

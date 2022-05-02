@@ -30,9 +30,10 @@ def slope(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1
-        as_angle (value, optional): Converts slope to an angle. Default: False
-        to_degrees (value, optional): Converts slope angle to degrees.
-            Default: False
+        as_angle (value, optional): Converts slope to an angle in radians
+            per np.arctan(). Default: False
+        to_degrees (value, optional): If as_angle=True, it converts the slope
+            angle to degrees. Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -44,7 +45,7 @@ def slope(
     """
     # Validate
     length = v_pos_default(length, 1)
-    close = v_series(close, length)
+    close = v_series(close, length + 1)
 
     if close is None:
         return

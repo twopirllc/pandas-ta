@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import non_zero_range, v_drift, v_offset, v_series
@@ -32,17 +33,23 @@ def pdist(
         pd.Series: New feature generated.
     """
     # Validate
+    drift = v_drift(drift)
     open_ = v_series(open_)
     high = v_series(high)
     low = v_series(low)
     close = v_series(close)
-    drift = v_drift(drift)
     offset = v_offset(offset)
 
     # Calculate
     pdist = 2 * non_zero_range(high, low)
+    if all(isnan(pdist)):
+        return  # Emergency Break
+
     pdist += non_zero_range(open_, close.shift(drift)).abs()
     pdist -= non_zero_range(close, open_).abs()
+
+    if all(isnan(pdist)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

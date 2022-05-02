@@ -2,7 +2,13 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import non_zero_range, v_offset, v_scalar, v_series, v_talib
+from pandas_ta.utils import (
+    non_zero_range,
+    v_offset,
+    v_scalar,
+    v_series,
+    v_talib
+)
 
 
 def bop(

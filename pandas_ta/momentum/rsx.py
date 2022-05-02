@@ -2,7 +2,13 @@
 from numpy import nan
 from pandas_ta._typing import DictLike, Int
 from pandas import concat, DataFrame, Series
-from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series, signals
+from pandas_ta.utils import (
+    signals,
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def rsx(
@@ -53,7 +59,7 @@ def rsx(
     f40, f48, f50, f58, f60, f68, f70, f78 = 0, 0, 0, 0, 0, 0, 0, 0
     f80, f88, f90 = 0, 0, 0
 
-    result = [nan for _ in range(0, length - 1)] + [0]
+    result = [nan for _ in range(0, length - 1)] + [50]
     for i in range(length, m):
         if f90 == 0:
             f90 = 1.0

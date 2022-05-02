@@ -2,9 +2,15 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_offset, v_pos_default
-from pandas_ta.utils import v_scalar, v_series, v_talib
-from pandas_ta.utils import recent_maximum_index, recent_minimum_index
+from pandas_ta.utils import (
+    recent_maximum_index,
+    recent_minimum_index,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series,
+    v_talib
+)
 
 
 def aroon(
@@ -37,8 +43,8 @@ def aroon(
     """
     # Validate
     length = v_pos_default(length, 14)
-    high = v_series(high, length)
-    low = v_series(low, length)
+    high = v_series(high, length + 1)
+    low = v_series(low, length + 1)
 
     if high is None or low is None:
         return

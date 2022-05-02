@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
@@ -37,7 +38,7 @@ def t3(
     """
     # Validate
     length = v_pos_default(length, 10)
-    close = v_series(close, length)
+    close = v_series(close, 5 * (length + 1))
 
     if close is None:
         return

@@ -3,8 +3,15 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import tal_ma, v_mamode, v_offset, v_pos_default
-from pandas_ta.utils import v_scalar, v_series, v_talib
+from pandas_ta.utils import (
+    tal_ma,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series,
+    v_talib
+)
 
 
 def ppo(
@@ -43,7 +50,8 @@ def ppo(
     signal = v_pos_default(signal, 9)
     if slow < fast:
         fast, slow = slow, fast
-    close = v_series(close, max(fast, slow, signal))
+    _length = max(fast, slow, signal)
+    close = v_series(close, _length)
 
     if close is None:
         return

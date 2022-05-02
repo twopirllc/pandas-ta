@@ -3,7 +3,13 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import hlc3
-from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 def mfi(
@@ -39,10 +45,11 @@ def mfi(
     """
     # Validate
     length = v_pos_default(length, 14)
-    high = v_series(high, length)
-    low = v_series(low, length)
-    close = v_series(close, length)
-    volume = v_series(volume, length)
+    _length = length + 1
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
+    volume = v_series(volume, _length)
 
     if high is None or low is None or close is None or volume is None:
         return
@@ -59,9 +66,12 @@ def mfi(
         typical_price = hlc3(high=high, low=low, close=close, talib=mode_tal)
         raw_money_flow = typical_price * volume
 
-        tdf = DataFrame(
-            {"diff": 0, "rmf": raw_money_flow, "+mf": 0, "-mf": 0}
-        )
+        tdf = DataFrame({
+            "diff": 0,
+            "rmf": raw_money_flow,
+            "+mf": 0,
+            "-mf": 0
+        })
 
         tdf.loc[(typical_price.diff(drift) > 0), "diff"] = 1
         tdf.loc[tdf["diff"] == 1, "+mf"] = raw_money_flow

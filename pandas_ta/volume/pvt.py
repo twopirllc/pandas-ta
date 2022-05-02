@@ -32,8 +32,9 @@ def pvt(
     """
     # Validate
     drift = v_drift(drift)
-    close = v_series(close, drift)
-    volume = v_series(volume, drift)
+    _drift = drift + 1
+    close = v_series(close, _drift)
+    volume = v_series(volume, _drift)
 
     if close is None or volume is None:
         return

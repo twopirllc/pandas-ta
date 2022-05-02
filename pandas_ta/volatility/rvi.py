@@ -1,10 +1,18 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.statistics import stdev
-from pandas_ta.utils import unsigned_differences, v_bool, v_drift
-from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
+from pandas_ta.utils import (
+    unsigned_differences,
+    v_bool,
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def _rvi(source, length, scalar, mode, drift):
@@ -62,7 +70,7 @@ def rvi(
     """
     # Validate
     length = v_pos_default(length, 14)
-    close = v_series(close, length)
+    close = v_series(close, length + 2)
 
     if close is None:
         return
@@ -93,6 +101,9 @@ def rvi(
         _mode = "t"
     else:
         rvi = _rvi(close, length, scalar, mamode, drift)
+
+    if all(isnan(rvi)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

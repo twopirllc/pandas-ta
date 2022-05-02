@@ -3,8 +3,14 @@ from numpy import isnan, maximum, minimum, nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
-from pandas_ta.utils import v_drift, v_mamode, v_offset
-from pandas_ta.utils import v_pos_default, v_scalar, v_series
+from pandas_ta.utils import (
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series
+)
 from .rsi import rsi
 
 
@@ -53,7 +59,8 @@ def qqe(
     length = v_pos_default(length, 14)
     smooth = v_pos_default(smooth, 5)
     wilders_length = 2 * length - 1
-    close = v_series(close, smooth + wilders_length)
+    _length = wilders_length + smooth
+    close = v_series(close, _length)
 
     if close is None:
         return
@@ -80,7 +87,7 @@ def qqe(
         return  # Emergency Break
     dar = factor * ma("ema", smoothed_rsi_tr_ma, length=wilders_length)
     if all(isnan(dar)):
-        return                # Emergency Break
+        return  # Emergency Break
 
     # Create the Upper and Lower Bands around RSI MA.
     upperband = rsi_ma + dar

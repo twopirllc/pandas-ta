@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import fibonacci, v_ascending, v_offset
-from pandas_ta.utils import v_pos_default, v_series, weights
+from pandas_ta.utils import (
+    fibonacci,
+    v_ascending,
+    v_offset,
+    v_pos_default,
+    v_series,
+    weights
+)
 
 
 def fwma(

@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 from numpy import arctan, nan, pi, zeros_like
-from numpy.version import version
+from numpy.version import version as np_version
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import strided_window, v_offset, v_pos_default
-from pandas_ta.utils import v_series, v_talib
-
+from pandas_ta.utils import (
+    strided_window,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 def linreg(
     close: Series, length: Int = None, talib: bool = None,
@@ -111,7 +115,7 @@ def linreg(
 
             return m * length + b if not tsf else m * (length - 1) + b
 
-        if version >= "1.20.0":
+        if np_version >= "1.20.0":
             from numpy.lib.stride_tricks import sliding_window_view
             linreg_ = [
                 linear_regression(_) for _ in sliding_window_view(
@@ -137,7 +141,7 @@ def linreg(
         linreg.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    linreg.name = f"LR"
+    linreg.name = f"LINREG"
     if slope:
         linreg.name += "m"
     if intercept:

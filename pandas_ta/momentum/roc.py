@@ -2,8 +2,13 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_offset, v_pos_default, v_scalar
-from pandas_ta.utils import v_series, v_talib
+from pandas_ta.utils import (
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series,
+    v_talib
+)
 from .mom import mom
 
 
@@ -39,7 +44,7 @@ def roc(
     """
     # Validate
     length = v_pos_default(length, 10)
-    close = v_series(close, length)
+    close = v_series(close, length + 1)
 
     if close is None:
         return

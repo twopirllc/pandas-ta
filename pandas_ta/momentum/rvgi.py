@@ -39,7 +39,7 @@ def rvgi(
     # Validate
     length = v_pos_default(length, 14)
     swma_length = v_pos_default(swma_length, 4)
-    _length = max(length, swma_length)
+    _length = length + swma_length - 1
     open_ = v_series(open_, _length)
     high = v_series(high, _length)
     low = v_series(low, _length)

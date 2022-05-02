@@ -2,8 +2,14 @@
 from numpy import log, log10
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import v_bool, v_drift, v_offset
-from pandas_ta.utils import v_pos_default, v_scalar, v_series
+from pandas_ta.utils import (
+    v_bool,
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series,
+)
 from pandas_ta.volatility import atr
 
 
@@ -45,9 +51,9 @@ def chop(
     """
     # Validate
     length = v_pos_default(length, 14)
-    high = v_series(high, length)
-    low = v_series(low, length)
-    close = v_series(close, length)
+    high = v_series(high, length + 1)
+    low = v_series(low, length + 1)
+    close = v_series(close, length + 1)
 
     if high is None or low is None or close is None:
         return

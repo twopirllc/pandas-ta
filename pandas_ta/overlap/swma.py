@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import symmetric_triangle, v_offset, v_pos_default
-from pandas_ta.utils import v_series, weights
+from pandas_ta.utils import (
+    symmetric_triangle,
+    v_offset,
+    v_pos_default,
+    v_series,
+    weights
+)
 
 
 def swma(

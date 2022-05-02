@@ -2,8 +2,14 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
-from pandas_ta.utils import high_low_range, v_bool, v_offset
-from pandas_ta.utils import v_mamode, v_pos_default, v_series
+from pandas_ta.utils import (
+    high_low_range,
+    v_bool,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 from .true_range import true_range
 
 
@@ -42,9 +48,10 @@ def kc(
     """
     # Validate
     length = v_pos_default(length, 20)
-    high = v_series(high, length)
-    low = v_series(low, length)
-    close = v_series(close, length)
+    _length = length + 1
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return

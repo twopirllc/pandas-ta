@@ -96,7 +96,7 @@ Performance
 -----------
 * Pandas TA is fast, with or without **TA Lib** or **Numba** installed, but one is not penalized if they are installed.
     * **TA Lib** computations are **enabled** by default. They can be disabled per indicator.
-    * The library includes a performance method, ```help(ta.performance)```, to check runtime indicator performance for a given _ohlcv_ DataFrame.
+    * The library includes a performance method, ```help(ta.speed_test)```, to check runtime indicator performance for a given _ohlcv_ DataFrame.
 * Optionable **Multiprocessing** for a Pandas TA ```Study```.
 * Check Indicator Speeds on your system with the [Indicator Speed Check Notebook](https://github.com/twopirllc/pandas-ta/tree/main/examples/Speed_Check.ipynb).
 
@@ -145,15 +145,10 @@ Pandas TA is used by Applications and Services like
 
 <br/>
 
-[Gamestonk Terminal](https://github.com/GamestonkTerminal/GamestonkTerminal)
+[Open BB](https://openbb.co/) (previously Gamestonk Terminal)
 -------------------
-> Gamestonk Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
-
-<br/>
-
-[MarketMaker Lite](https://github.com/MarketMakerLite)
--------------------
-> Make the market you deserve. Market alerts, statistics and analytics, delivered through an innovative interface, made for retail investors.
+> OpenBB is a leading open source investment analysis company.
+We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
 <br/>
 
@@ -198,7 +193,7 @@ $ pip install pandas_ta[full]
 
 Latest Version
 --------------
-Best choice! Version: *0.3.63b*
+Best choice! Version: *0.3.64b*
 * Includes all fixes and updates between **pypi** and what is covered in this README.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta
@@ -1305,7 +1300,7 @@ Back to [Contents](#contents)
 
 # **Support**
 
-Feeling generous, like the package or want to see it become more a mature package?
+Like the package, want more indicators and features? Continued Support?
 * Donations help cover data and API costs so platform indicators (like [TradingView](https://github.com/tradingview/)) are accurate.
 * I appreciate **ALL** of those that have bought me Coffee/Beer/Wine et al. I greatly appreciate it! 😎
 

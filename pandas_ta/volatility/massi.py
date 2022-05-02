@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import ema
@@ -37,7 +38,7 @@ def massi(
     slow = v_pos_default(slow, 25)
     if slow < fast:
         fast, slow = slow, fast
-    _length = max(fast, slow)
+    _length = 2 * max(fast, slow) - min(fast, slow)
     high = v_series(high, _length)
     low = v_series(low, _length)
 
@@ -51,10 +52,16 @@ def massi(
     # Calculate
     high_low_range = non_zero_range(high, low)
     hl_ema1 = ema(close=high_low_range, length=fast, **kwargs)
+    if all(isnan(hl_ema1)):
+        return  # Emergency Break
     hl_ema2 = ema(close=hl_ema1, length=fast, **kwargs)
+    if all(isnan(hl_ema2)):
+        return  # Emergency Break
 
     hl_ratio = hl_ema1 / hl_ema2
     massi = hl_ratio.rolling(slow, min_periods=slow).sum()
+    if all(isnan(massi)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_scalar, v_series
@@ -47,7 +48,8 @@ def smi(
     signal = v_pos_default(signal, 5)
     if slow < fast:
         fast, slow = slow, fast
-    close = v_series(close, max(fast, slow, signal))
+    _length = slow + signal + 1
+    close = v_series(close, _length)
 
     if close is None:
         return
@@ -57,8 +59,13 @@ def smi(
 
     # Calculate
     tsi_df = tsi(close, fast=fast, slow=slow, signal=signal, scalar=scalar)
+    if tsi_df is None:
+        return  # Emergency Break
+
     smi = tsi_df.iloc[:, 0]
     signalma = tsi_df.iloc[:, 1]
+    if all(isnan(signalma)):
+        return  # Emergency Break
     osc = smi - signalma
 
     # Offset

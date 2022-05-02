@@ -2,8 +2,15 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import linreg
-from pandas_ta.utils import v_bool, v_drift, v_mamode, v_offset
-from pandas_ta.utils import v_pos_default, v_scalar, v_series
+from pandas_ta.utils import (
+    v_bool,
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series
+)
 from pandas_ta.volatility import rvi
 
 
@@ -48,7 +55,7 @@ def inertia(
     # Validate
     length = v_pos_default(length, 20)
     rvi_length = v_pos_default(rvi_length, 14)
-    _length = max(length, rvi_length)
+    _length = 2 * max(length, rvi_length) - min(length, rvi_length) // 2 - 1
     close = v_series(close, _length)
 
     if close is None:

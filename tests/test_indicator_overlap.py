@@ -180,7 +180,7 @@ class TestOverlap(TestCase):
         """Overlap: LINREG"""
         result = pandas_ta.linreg(self.close, talib=False)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LR_14")
+        self.assertEqual(result.name, "LINREG_14")
 
         try:
             expected = tal.LINEARREG(self.close)
@@ -194,13 +194,13 @@ class TestOverlap(TestCase):
 
         result = pandas_ta.linreg(self.close)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LR_14")
+        self.assertEqual(result.name, "LINREG_14")
 
     def test_linreg_angle(self):
         """Overlap: LINREG (Angle)"""
         result = pandas_ta.linreg(self.close, angle=True, talib=False)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LRa_14")
+        self.assertEqual(result.name, "LINREGa_14")
 
         try:
             expected = tal.LINEARREG_ANGLE(self.close)
@@ -214,13 +214,13 @@ class TestOverlap(TestCase):
 
         result = pandas_ta.linreg(self.close, angle=True)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LRa_14")
+        self.assertEqual(result.name, "LINREGa_14")
 
     def test_linreg_intercept(self):
         """Overlap: LINREG (Intercept)"""
         result = pandas_ta.linreg(self.close, intercept=True, talib=False)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LRb_14")
+        self.assertEqual(result.name, "LINREGb_14")
 
         try:
             expected = tal.LINEARREG_INTERCEPT(self.close)
@@ -234,19 +234,19 @@ class TestOverlap(TestCase):
 
         result = pandas_ta.linreg(self.close, intercept=True)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LRb_14")
+        self.assertEqual(result.name, "LINREGb_14")
 
     def test_linreg_r(self):
         """Overlap: LINREG (r)"""
         result = pandas_ta.linreg(self.close, r=True)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LRr_14")
+        self.assertEqual(result.name, "LINREGr_14")
 
     def test_linreg_slope(self):
         """Overlap: LINREG (Slope)"""
         result = pandas_ta.linreg(self.close, slope=True, talib=False)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LRm_14")
+        self.assertEqual(result.name, "LINREGm_14")
 
         try:
             expected = tal.LINEARREG_SLOPE(self.close)
@@ -260,7 +260,7 @@ class TestOverlap(TestCase):
 
         result = pandas_ta.linreg(self.close, slope=True)
         self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "LRm_14")
+        self.assertEqual(result.name, "LINREGm_14")
 
     def test_ma(self):
         """Overlap: General MA"""

@@ -2,8 +2,13 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import hl2, sma
-from pandas_ta.utils import non_zero_range, v_drift
-from pandas_ta.utils import v_pos_default, v_offset, v_series
+from pandas_ta.utils import (
+    non_zero_range,
+    v_drift,
+    v_pos_default,
+    v_offset,
+    v_series
+)
 
 
 def eom(
@@ -41,10 +46,11 @@ def eom(
     """
     # Validate
     length = v_pos_default(length, 14)
-    high = v_series(high, length)
-    low = v_series(low, length)
-    close = v_series(close, length)
-    volume = v_series(volume, length)
+    _length = length + 1
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
+    volume = v_series(volume, _length)
 
     if high is None or low is None or close is None or volume is None:
         return

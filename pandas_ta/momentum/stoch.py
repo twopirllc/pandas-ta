@@ -3,8 +3,15 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import non_zero_range, tal_ma, v_mamode
-from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    non_zero_range,
+    tal_ma,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 def stoch(

@@ -46,7 +46,7 @@ def tos_stdevall(
         close = close.iloc[-length:]
         _props = f"{_props}_{length}"
 
-    close = v_series(close, length)
+    close = v_series(close, 2)
 
     if close is None:
         return

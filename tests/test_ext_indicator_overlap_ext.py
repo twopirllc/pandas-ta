@@ -86,7 +86,7 @@ class TestOverlapExtension(TestCase):
     def test_linreg_ext(self):
         self.data.ta.linreg(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(self.data.columns[-1], "LR_14")
+        self.assertEqual(self.data.columns[-1], "LINREG_14")
 
     def test_mama_ext(self):
         self.data.ta.mama(append=True)

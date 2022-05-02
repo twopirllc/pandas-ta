@@ -37,9 +37,10 @@ def pgo(
     """
     # Validate
     length = v_pos_default(length, 14)
-    high = v_series(high, length)
-    low = v_series(low, length)
-    close = v_series(close, length)
+    _length = 2 * length
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return

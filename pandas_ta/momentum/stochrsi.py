@@ -3,8 +3,13 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.momentum import rsi
-from pandas_ta.utils import non_zero_range, v_mamode
-from pandas_ta.utils import v_offset, v_pos_default, v_series
+from pandas_ta.utils import (
+    non_zero_range,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def stochrsi(
@@ -49,7 +54,8 @@ def stochrsi(
     rsi_length = v_pos_default(rsi_length, 14)
     k = v_pos_default(k, 3)
     d = v_pos_default(d, 3)
-    close = v_series(close, length + rsi_length + k + d)
+    _length = length + rsi_length + 2
+    close = v_series(close, _length)
 
     if close is None:
         return

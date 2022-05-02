@@ -8,7 +8,15 @@ from numpy import all, append, array, corrcoef, dot, exp, fabs
 from numpy import log, nan, ndarray, ones, seterr, sign, sqrt, sum, triu
 from pandas import DataFrame, Series
 
-from pandas_ta._typing import Array, DictLike, Float, Int, IntFloat, List, Optional
+from pandas_ta._typing import (
+    Array,
+    DictLike,
+    Float,
+    Int,
+    IntFloat,
+    List,
+    Optional
+)
 from pandas_ta.maps import Imports
 from pandas_ta.utils._validate import v_series
 

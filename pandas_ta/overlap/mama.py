@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import arctan, nan, zeros_like
+from numpy import arctan, isnan, nan, zeros_like
 from pandas import DataFrame, Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
@@ -14,7 +14,8 @@ except ImportError:
 
 @njit
 def np_mama(
-    x: Array, fastlimit: IntFloat, slowlimit: IntFloat, prenan: Int
+    x: Array, fastlimit: IntFloat, slowlimit: IntFloat,
+    prenan: Int
 ):
     """Ehler's Mother of Adaptive Moving Averages
     http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
@@ -154,6 +155,9 @@ def mama(
         mama, fama = MAMA(np_close, fastlimit, slowlimit)
     else:
         mama, fama = np_mama(np_close, fastlimit, slowlimit, prenan)
+
+    if all(isnan(mama)) or all(isnan(fama)):
+        return  # Emergency Break
 
     # Name and Category
     _props = f"_{fastlimit}_{slowlimit}"

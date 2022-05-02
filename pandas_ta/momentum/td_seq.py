@@ -32,7 +32,7 @@ def td_seq(
         pd.DataFrame: New feature generated.
     """
     # Validate
-    close = v_series(close)
+    close = v_series(close, 5)
 
     if close is None:
         return

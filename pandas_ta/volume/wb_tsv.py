@@ -2,8 +2,15 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import signed_series, v_drift, v_mamode
-from pandas_ta.utils import v_pos_default, v_offset, v_series, zero
+from pandas_ta.utils import (
+    signed_series,
+    v_drift,
+    v_mamode,
+    v_pos_default,
+    v_offset,
+    v_series,
+    zero
+)
 
 
 def wb_tsv(
@@ -45,7 +52,8 @@ def wb_tsv(
     # Validate
     length = v_pos_default(length, 18)
     signal = v_pos_default(signal, 10)
-    close = v_series(close, max(length, signal))
+    _length = max(length, signal) - 2
+    close = v_series(close, _length)
 
     if close is None:
         return

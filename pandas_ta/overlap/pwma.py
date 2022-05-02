@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
+# from numpy.version import version as np_version
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import pascals_triangle, v_offset
-from pandas_ta.utils import v_ascending, v_pos_default, v_series, weights
+from pandas_ta.utils import (
+    pascals_triangle,
+    v_offset,
+    v_ascending,
+    v_pos_default,
+    v_series,
+    weights
+)
 
 
 def pwma(

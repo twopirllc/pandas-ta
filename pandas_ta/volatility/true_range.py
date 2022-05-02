@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
-from numpy import nan
+from numpy import isnan, nan
 from pandas import concat, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import non_zero_range, v_bool, v_drift
-from pandas_ta.utils import v_offset, v_series, v_talib
+from pandas_ta.utils import (
+    non_zero_range,
+    v_bool,
+    v_drift,
+    v_offset,
+    v_series,
+    v_talib
+)
 
 
 def true_range(
@@ -39,12 +45,13 @@ def true_range(
         pd.Series: New feature
     """
     # Validate
+    drift = v_drift(drift)
     high = v_series(high)
     low = v_series(low)
     close = v_series(close)
+
     mode_tal = v_talib(talib)
     prenan = v_bool(prenan, False)
-    drift = v_drift(drift)
     offset = v_offset(offset)
 
     # Calculate
@@ -59,6 +66,9 @@ def true_range(
         true_range = true_range.abs().max(axis=1)
         if prenan:
             true_range.iloc[:drift] = nan
+
+    if all(isnan(true_range)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

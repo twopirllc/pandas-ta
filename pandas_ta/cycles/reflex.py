@@ -13,7 +13,8 @@ except ImportError:
 
 @njit
 def np_reflex(
-    x: Array, n: Int, k: Int, alpha: IntFloat, pi: IntFloat, sqrt2: IntFloat
+    x: Array, n: Int, k: Int,
+    alpha: IntFloat, pi: IntFloat, sqrt2: IntFloat
 ):
     m, ratio = x.size, 2 * sqrt2 / k
     a = exp(-pi * ratio)
@@ -88,7 +89,8 @@ def reflex(
     # Validate
     length = v_pos_default(length, 20)
     smooth = v_pos_default(smooth, 20)
-    close = v_series(close, max(length, smooth))
+    _length = max(length, smooth) + 1
+    close = v_series(close, _length)
 
     if close is None:
         return

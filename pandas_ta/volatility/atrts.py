@@ -2,10 +2,16 @@
 from numpy import nan, uintc, zeros_like
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
-from pandas_ta.ma import ma
+from pandas_ta.ma import ma as _ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_drift, v_mamode, v_offset
-from pandas_ta.utils import v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 from pandas_ta.volatility import atr
 
 
@@ -16,7 +22,7 @@ except ImportError:
 
 
 @njit
-def np_atrts(x: Array, ma_: Array, atr_: Array, length: Int, ma_length: Int):
+def np_atrts(x: Array, ma: Array, atr_: Array, length: Int, ma_length: Int):
     m = x.size
     k = max(length, ma_length)
 
@@ -24,7 +30,7 @@ def np_atrts(x: Array, ma_: Array, atr_: Array, length: Int, ma_length: Int):
     up = zeros_like(x, dtype=uintc)
     dn = zeros_like(x, dtype=uintc)
 
-    expn = x > ma_
+    expn = x > ma
     up[expn], dn[~expn] = 1, 1
     up[:k], dn[:k] = 0, 0
     result[:k] = nan
@@ -90,7 +96,7 @@ def atrts(
     # Validate
     length = v_pos_default(length, 14)
     ma_length = v_pos_default(ma_length, 20)
-    _length = max(length, ma_length)
+    _length = length + ma_length
     high = v_series(high, _length)
     low = v_series(low, _length)
     close = v_series(close, _length)
@@ -116,7 +122,7 @@ def atrts(
         )
 
     atr_ *= multiplier
-    ma_ = ma(mamode, close, length=ma_length, talib=mode_tal)
+    ma_ = _ma(mamode, close, length=ma_length, talib=mode_tal)
 
     np_close, np_ma, np_atr = close.values, ma_.values, atr_.values
     np_atrts_, _, _ = np_atrts(np_close, np_ma, np_atr, length, ma_length)

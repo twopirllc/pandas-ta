@@ -50,7 +50,7 @@ def aobv(
 
     if slow < fast:
         fast, slow = slow, fast
-    _length = max(fast, slow, max_lookback, min_lookback)
+    _length = max(max_lookback, min_lookback) + slow
 
     close = v_series(close, _length)
     volume = v_series(volume, _length)

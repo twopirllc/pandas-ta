@@ -3,8 +3,15 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.maps import Imports
-from pandas_ta.utils import non_zero_range, tal_ma, v_mamode
-from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    non_zero_range,
+    tal_ma,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 def stochf(
@@ -44,7 +51,7 @@ def stochf(
     # Validate
     k = v_pos_default(k, 14)
     d = v_pos_default(d, 3)
-    _length = max(k, d)
+    _length = k + d - 1
     high = v_series(high, _length)
     low = v_series(low, _length)
     close = v_series(close, _length)

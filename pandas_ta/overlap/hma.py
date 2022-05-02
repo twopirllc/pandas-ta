@@ -32,7 +32,7 @@ def hma(
     """
     # Validate
     length = v_pos_default(length, 10)
-    close = v_series(close, length)
+    close = v_series(close, length + 2)
 
     if close is None:
         return

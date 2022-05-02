@@ -53,9 +53,10 @@ def atr(
     """
     # Validate
     length = v_pos_default(length, 14)
-    high = v_series(high, length)
-    low = v_series(low, length)
-    close = v_series(close, length)
+    _length = length + 1
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return
@@ -75,9 +76,11 @@ def atr(
             high=high, low=low, close=close,
             talib=mode_tal, prenan=prenan, drift=drift
         )
-        sma_nth = tr[0:length].mean()
-        tr[:length - 1] = nan
-        tr.iloc[length - 1] = sma_nth
+        presma = kwargs.pop("presma", True)
+        if presma:
+            sma_nth = tr[0:length].mean()
+            tr[:length - 1] = nan
+            tr.iloc[length - 1] = sma_nth
         atr = ma(mamode, tr, length=length, talib=mode_tal)
 
     percent = kwargs.pop("percent", False)

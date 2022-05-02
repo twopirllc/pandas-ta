@@ -49,7 +49,7 @@ def hilo(
     # Validate
     high_length = v_pos_default(high_length, 13)
     low_length = v_pos_default(low_length, 21)
-    _length = max(high_length, low_length)
+    _length = max(high_length, low_length) + 1
     high = v_series(high, _length)
     low = v_series(low, _length)
     close = v_series(close, _length)

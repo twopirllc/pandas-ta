@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import v_mamode, v_offset, v_pos_default
-from pandas_ta.utils import v_series, v_tradingview
+from pandas_ta.utils import (
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_tradingview
+)
 from pandas_ta.volatility import atr
 
 
@@ -53,7 +59,7 @@ def cksp(
     # TODO: clean up x and q
     x = float(x) if isinstance(x, float) and x > 0 else 1 if tvmode is True else 3
     q = int(q) if isinstance(q, float) and q > 0 else 9 if tvmode is True else 20
-    _length = max(p, q, x)
+    _length = p + q
 
     high = v_series(high, _length)
     low = v_series(low, _length)
@@ -67,6 +73,8 @@ def cksp(
 
     # Calculate
     atr_ = atr(high=high, low=low, close=close, length=p, mamode=mamode)
+    if atr_ is None or all(isnan(atr_)):
+        return
 
     long_stop_ = high.rolling(p).max() - x * atr_
     long_stop = long_stop_.rolling(q).max()

@@ -4,11 +4,19 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.momentum import mom
-# from pandas_ta.overlap import ema, sma
 from pandas_ta.trend import decreasing, increasing
+from pandas_ta.utils import (
+    simplify_columns,
+    unsigned_differences,
+    v_bool,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series
+)
 from pandas_ta.volatility import bbands, kc
-from pandas_ta.utils import simplify_columns, unsigned_differences, v_mamode
-from pandas_ta.utils import v_offset, v_pos_default, v_scalar, v_series
+
 
 def squeeze_pro(
     high: Series, low: Series, close: Series,
@@ -17,6 +25,7 @@ def squeeze_pro(
     kc_scalar_normal: IntFloat = None, kc_scalar_narrow: IntFloat = None,
     mom_length: Int = None, mom_smooth: Int = None,
     use_tr: bool = None, mamode: str = None,
+    prenan: bool = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Squeeze PRO(SQZPRO)
@@ -50,6 +59,8 @@ def squeeze_pro(
         mom_length (int): Momentum Period. Default: 12
         mom_smooth (int): Smoothing Period of Momentum. Default: 6
         mamode (str): Only "ema" or "sma". Default: "sma"
+        prenan (bool): If True, sets nan for all columns up the first
+            valid squeeze value. Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -72,7 +83,7 @@ def squeeze_pro(
     kc_length = v_pos_default(kc_length, 20)
     mom_length = v_pos_default(mom_length, 12)
     mom_smooth = v_pos_default(mom_smooth, 6)
-    _length = max(bb_length, kc_length, mom_length, mom_smooth)
+    _length = max(bb_length, kc_length, mom_length, mom_smooth) + 1
     high = v_series(high, _length)
     low = v_series(low, _length)
     close = v_series(close, _length)
@@ -83,6 +94,7 @@ def squeeze_pro(
     kc_scalar_narrow = v_scalar(kc_scalar_narrow, 1)
     kc_scalar_normal = v_scalar(kc_scalar_normal, 1.5)
     kc_scalar_wide = v_scalar(kc_scalar_wide, 2)
+    prenan = v_bool(prenan, False)
     valid_kc_scaler = kc_scalar_wide > kc_scalar_normal \
         and kc_scalar_normal > kc_scalar_narrow
 
@@ -157,13 +169,28 @@ def squeeze_pro(
     _props += f"_{bb_length}_{bb_std}_{kc_length}_{kc_scalar_wide}_{kc_scalar_normal}_{kc_scalar_narrow}"
     squeeze.name = f"SQZPRO{_props}"
 
+    if asint:
+        squeeze_on_wide = squeeze_on_wide.astype(int)
+        squeeze_on_narrow = squeeze_on_narrow.astype(int)
+        squeeze_on_normal = squeeze_on_normal.astype(int)
+        squeeze_off_wide = squeeze_off_wide.astype(int)
+        no_squeeze = no_squeeze.astype(int)
+
+    if prenan:
+        nanlength = max(bb_length, kc_length) - 2
+        squeeze_on_wide[:nanlength] = nan
+        squeeze_on_narrow[:nanlength] = nan
+        squeeze_on_normal[:nanlength] = nan
+        squeeze_off_wide[:nanlength] = nan
+        no_squeeze[:nanlength] = nan
+
     data = {
         squeeze.name: squeeze,
-        f"SQZPRO_ON_WIDE": squeeze_on_wide.astype(int) if asint else squeeze_on_wide,
-        f"SQZPRO_ON_NORMAL": squeeze_on_normal.astype(int) if asint else squeeze_on_normal,
-        f"SQZPRO_ON_NARROW": squeeze_on_narrow.astype(int) if asint else squeeze_on_narrow,
-        f"SQZPRO_OFF": squeeze_off_wide.astype(int) if asint else squeeze_off_wide,
-        f"SQZPRO_NO": no_squeeze.astype(int) if asint else no_squeeze,
+        f"SQZPRO_ON_WIDE": squeeze_on_wide,
+        f"SQZPRO_ON_NORMAL": squeeze_on_normal,
+        f"SQZPRO_ON_NARROW": squeeze_on_narrow,
+        f"SQZPRO_OFF": squeeze_off_wide,
+        f"SQZPRO_NO": no_squeeze,
     }
     df = DataFrame(data)
     df.name = squeeze.name

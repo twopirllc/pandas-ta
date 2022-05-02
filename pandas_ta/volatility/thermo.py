@@ -2,8 +2,14 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import v_bool, v_drift, v_mamode
-from pandas_ta.utils import v_offset, v_pos_default, v_series
+from pandas_ta.utils import (
+    v_bool,
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def thermo(
@@ -40,8 +46,8 @@ def thermo(
     """
     # Validate
     length = v_pos_default(length, 20)
-    high = v_series(high, length)
-    low = v_series(low, length)
+    high = v_series(high, length + 1)
+    low = v_series(low, length + 1)
 
     if high is None or low is None:
         return

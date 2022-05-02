@@ -2,8 +2,13 @@
 from numpy import inf, fabs, nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import non_zero_range, v_drift, v_offset
-from pandas_ta.utils import v_pos_default, v_series
+from pandas_ta.utils import (
+    non_zero_range,
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def vhf(

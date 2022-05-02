@@ -3,8 +3,15 @@ from pandas import DataFrame, concat, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import rma
-from pandas_ta.utils import signals, v_drift, v_offset, v_pos_default
-from pandas_ta.utils import v_scalar, v_series, v_talib
+from pandas_ta.utils import (
+    signals,
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series,
+    v_talib
+)
 
 
 def rsi(
@@ -39,7 +46,7 @@ def rsi(
     """
     # Validate
     length = v_pos_default(length, 14)
-    close = v_series(close, length)
+    close = v_series(close, length + 1)
 
     if close is None:
         return

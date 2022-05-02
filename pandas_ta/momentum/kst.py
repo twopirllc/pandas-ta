@@ -53,7 +53,9 @@ def kst(
     sma4 = int(sma4) if sma4 and sma4 > 0 else 15
 
     signal = v_pos_default(signal, 9)
-    _length = max(roc1, roc2, roc3, roc4, sma1, sma2, sma3, sma4, signal)
+    _rmax = max(roc1, roc2, roc3, roc4)
+    _smax = max(sma1, sma2, sma3, sma4)
+    _length = _rmax + _smax
     close = v_series(close, _length)
 
     if close is None:

@@ -4,8 +4,15 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import ema, linreg, sma
 from pandas_ta.trend import decreasing, increasing
-from pandas_ta.utils import simplify_columns, unsigned_differences, v_mamode
-from pandas_ta.utils import v_offset, v_pos_default, v_series
+from pandas_ta.utils import (
+    simplify_columns,
+    unsigned_differences,
+    v_bool,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 from pandas_ta.volatility import bbands, kc
 from .mom import mom
 
@@ -16,6 +23,7 @@ def squeeze(
     kc_length: Int = None, kc_scalar: IntFloat = None,
     mom_length: Int = None, mom_smooth: Int = None,
     use_tr: bool = None, mamode: str = None,
+    prenan: bool = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Squeeze (SQZ)
@@ -44,6 +52,8 @@ def squeeze(
         mom_length (int): Momentum Period. Default: 12
         mom_smooth (int): Smoothing Period of Momentum. Default: 6
         mamode (str): Only "ema" or "sma". Default: "sma"
+        prenan (bool): If True, sets nan for all columns up the first
+            valid squeeze value. Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -67,7 +77,7 @@ def squeeze(
     kc_length = v_pos_default(kc_length, 20)
     mom_length = v_pos_default(mom_length, 12)
     mom_smooth = v_pos_default(mom_smooth, 6)
-    _length = max(bb_length, kc_length, mom_length, mom_smooth)
+    _length = max(bb_length, kc_length, mom_length, mom_smooth) + 1
     high = v_series(high, _length)
     low = v_series(low, _length)
     close = v_series(close, _length)
@@ -78,6 +88,7 @@ def squeeze(
     bb_std = v_pos_default(bb_std, 2.0)
     kc_scalar = v_pos_default(kc_scalar, 1.5)
     mamode = v_mamode(mamode, "sma")
+    prenan = v_bool(prenan, False)
     offset = v_offset(offset)
 
     use_tr = kwargs.pop("tr", True)
@@ -140,11 +151,22 @@ def squeeze(
     _props += "_LB" if lazybear else ""
     squeeze.name = f"SQZ{_props}"
 
+    if asint:
+        squeeze_on = squeeze_on.astype(int)
+        squeeze_off = squeeze_off.astype(int)
+        no_squeeze = no_squeeze.astype(int)
+
+    if prenan:
+        nanlength = max(bb_length, kc_length) - 2
+        squeeze_on[:nanlength] = nan
+        squeeze_off[:nanlength] = nan
+        no_squeeze[:nanlength] = nan
+
     data = {
         squeeze.name: squeeze,
-        f"SQZ_ON": squeeze_on.astype(int) if asint else squeeze_on,
-        f"SQZ_OFF": squeeze_off.astype(int) if asint else squeeze_off,
-        f"SQZ_NO": no_squeeze.astype(int) if asint else no_squeeze,
+        f"SQZ_ON": squeeze_on,
+        f"SQZ_OFF": squeeze_off,
+        f"SQZ_NO": no_squeeze,
     }
     df = DataFrame(data)
     df.name = squeeze.name

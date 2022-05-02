@@ -40,9 +40,9 @@ def supertrend(
     """
     # Validate
     length = v_pos_default(length, 7)
-    high = v_series(high, length)
-    low = v_series(low, length)
-    close = v_series(close, length)
+    high = v_series(high, length + 1)
+    low = v_series(low, length + 1)
+    close = v_series(close, length + 1)
 
     if high is None or low is None or close is None:
         return

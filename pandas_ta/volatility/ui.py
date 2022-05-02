@@ -40,7 +40,7 @@ def ui(
     # Validate
     length = v_pos_default(length, 14)
     scalar = v_pos_default(scalar, 100)
-    close = v_series(close, length)
+    close = v_series(close, 2 * length - 1)
 
     if close is None:
         return
@@ -56,9 +56,10 @@ def ui(
     everget = kwargs.pop("everget", False)
     if everget:
         # Everget uses SMA instead of SUM for calculation
-        ui = (sma(d2, length) / length).apply(sqrt)
+        _ui = sma(d2, length)
     else:
-        ui = (d2.rolling(length).sum() / length).apply(sqrt)
+        _ui = d2.rolling(length).sum()
+    ui = sqrt(_ui / length)
 
     # Offset
     if offset != 0:

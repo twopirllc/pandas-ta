@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
+
 from .dema import dema
 from .ema import ema
 from .fwma import fwma
@@ -104,6 +106,8 @@ def zlma(
     kwargs.update({"length": length})
 
     zlma = _ma(mamode, **kwargs)
+    if zlma is None or all(isnan(zlma)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

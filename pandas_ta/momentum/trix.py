@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap.ema import ema
-from pandas_ta.utils import v_drift, v_offset, v_pos_default
-from pandas_ta.utils import v_scalar, v_series
+from pandas_ta.utils import (
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series
+)
 
 
 def trix(
@@ -35,26 +41,31 @@ def trix(
     """
     # Validate
     length = v_pos_default(length, 30)
-    _length = 3 * length - 2
+    signal = v_pos_default(signal, 9)
+    if length < signal:
+        length, signal = signal, length
+    _length = 3 * length - 1
     close = v_series(close, _length)
 
     if close is None:
         return
 
-    signal = v_pos_default(signal, 9)
     scalar = v_scalar(scalar, 100)
     drift = v_drift(drift)
     offset = v_offset(offset)
 
     # Calculate
     ema1 = ema(close=close, length=length, **kwargs)
-    # if all(isnan(ema1)): return  # Emergency Break
+    if all(isnan(ema1)):
+        return  # Emergency Break
 
     ema2 = ema(close=ema1, length=length, **kwargs)
-    # if all(isnan(ema2)): return  # Emergency Break
+    if all(isnan(ema2)):
+        return  # Emergency Break
 
     ema3 = ema(close=ema2, length=length, **kwargs)
-    # if all(isnan(ema3)): return  # Emergency Break
+    if all(isnan(ema3)):
+        return  # Emergency Break
 
     trix = scalar * ema3.pct_change(drift)
     trix_signal = trix.rolling(signal).mean()

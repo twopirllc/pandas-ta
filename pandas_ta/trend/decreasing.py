@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import is_percent, v_bool, v_drift, v_offset
-from pandas_ta.utils import v_pos_default, v_series
+from pandas_ta.utils import (
+    is_percent,
+    v_bool,
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def decreasing(

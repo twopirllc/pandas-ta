@@ -3,7 +3,13 @@ from functools import partial
 from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
 from pandas_ta._typing import (
-    Float, Int, IntFloat, List, MaybeSeriesFrame, Optional, SeriesFrame
+    Float,
+    Int,
+    IntFloat,
+    List,
+    MaybeSeriesFrame,
+    Optional,
+    SeriesFrame
 )
 
 
@@ -99,7 +105,7 @@ def v_offset(var: Int) -> Int:
 def v_pos_default(
     var: IntFloat, default: IntFloat = 0, strict: bool = True, complement: bool = False
 ) -> IntFloat:
-    return partial(v_lowerbound, bound=0)\
+    return partial(v_lowerbound, bound=0) \
         (var=var, default=default, strict=strict, complement=complement)
 
 def v_scalar(var: IntFloat, default: Optional[IntFloat] = 1) -> Float:
@@ -111,10 +117,10 @@ def v_scalar(var: IntFloat, default: Optional[IntFloat] = 1) -> Float:
 def v_series(series: Series, length: Optional[IntFloat] = 0) -> Optional[Series]:
     """Returns None if the Pandas Series does not meet the minimum length
     required for the indicator."""
-    if isinstance(series, Series) and series.empty and series.size >= length:
-        print("[X] Requires a Pandas Series or DataFrame.")
-        return None
-    return series
+    if series is not None and isinstance(series, Series):
+        if series.size >= v_pos_default(length, 0):
+            return series
+    return None
 
 def v_talib(var: bool) -> bool:
     """Returns True by default"""

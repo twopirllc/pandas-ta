@@ -2,7 +2,13 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 def uo(
@@ -46,7 +52,7 @@ def uo(
     fast = v_pos_default(fast, 7)
     medium = v_pos_default(medium, 14)
     slow = v_pos_default(slow, 28)
-    _length = max(fast, medium, slow)
+    _length = max(fast, medium, slow) + 1
     high = v_series(high, _length)
     low = v_series(low, _length)
     close = v_series(close, _length)

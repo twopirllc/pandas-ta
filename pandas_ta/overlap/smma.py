@@ -3,8 +3,13 @@ from numpy import nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import v_mamode, v_offset, v_pos_default
-from pandas_ta.utils import v_series, v_talib
+from pandas_ta.utils import (
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 def smma(

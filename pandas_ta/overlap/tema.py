@@ -35,7 +35,7 @@ def tema(
     """
     # Validate
     length = v_pos_default(length, 10)
-    close = v_series(close, length)
+    close = v_series(close, 3 * length)
 
     if close is None:
         return

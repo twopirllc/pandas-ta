@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import append, arange, array, exp, floor, nan, tensordot
-from numpy.version import version as npVersion
+from numpy.version import version as np_version
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas import Series
 from pandas_ta.utils import strided_window, v_offset, v_pos_default, v_series
@@ -46,6 +46,7 @@ def alma(
         return
 
     sigma = v_pos_default(sigma, 6.0)
+
     if isinstance(dist_offset, float) and 0 <= dist_offset <= 1:
         offset_ = float(dist_offset)
     else:
@@ -60,7 +61,7 @@ def alma(
     weights = exp(-0.5 * ((sigma / length) * (x - k)) ** 2)
     weights /= weights.sum()
 
-    if npVersion >= "1.20.0":
+    if np_version >= "1.20.0":
         from numpy.lib.stride_tricks import sliding_window_view
         window = sliding_window_view(np_close, length)
     else:

@@ -3,8 +3,13 @@ from pandas import concat, DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import ema
-from pandas_ta.utils import signals, v_offset, v_mamode
-from pandas_ta.utils import v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    signals,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 def macd(
@@ -47,7 +52,8 @@ def macd(
     signal = v_pos_default(signal, 9)
     if slow < fast:
         fast, slow = slow, fast
-    close = v_series(close, slow + signal)
+    _length = slow + signal - 1
+    close = v_series(close, _length)
 
     if close is None:
         return

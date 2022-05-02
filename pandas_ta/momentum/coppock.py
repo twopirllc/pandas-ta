@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import wma
@@ -39,7 +40,8 @@ def coppock(
     length = v_pos_default(length, 10)
     fast = v_pos_default(fast, 11)
     slow = v_pos_default(slow, 14)
-    close = v_series(close, max(length, fast, slow))
+    _length = length + fast + slow
+    close = v_series(close, _length)
 
     if close is None:
         return

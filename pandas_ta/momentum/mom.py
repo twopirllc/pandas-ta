@@ -33,7 +33,7 @@ def mom(
     """
     # Validate
     length = v_pos_default(length, 10)
-    close = v_series(close, length)
+    close = v_series(close, length + 1)
 
     if close is None:
         return

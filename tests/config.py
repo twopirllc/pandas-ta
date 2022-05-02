@@ -88,7 +88,7 @@ _tdpy = pandas_ta.RATE["TRADING_DAYS_PER_YEAR"]
 sample_data = load(
         n = [
             -2 * _tdpy, -_tdpy,
-            -90, 0, 90,
+            -89, 0, 89,
             _tdpy, 2 * _tdpy
         ][0],
         verbose=VERBOSE

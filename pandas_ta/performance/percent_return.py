@@ -20,7 +20,8 @@ def percent_return(
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 20
-        cumulative (bool): If True, returns the cumulative returns. Default: False
+        cumulative (bool): If True, returns the cumulative returns.
+            Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -32,7 +33,7 @@ def percent_return(
     """
     # Validate
     length = v_pos_default(length, 1)
-    close = v_series(close, length)
+    close = v_series(close, length + 1)
 
     if close is None:
         return

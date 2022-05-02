@@ -2,8 +2,15 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_drift, v_mamode, v_offset, v_pos_default
-from pandas_ta.utils import v_scalar, v_series, v_talib
+from pandas_ta.utils import (
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series,
+    v_talib
+)
 from pandas_ta.volatility import atr
 
 
@@ -40,9 +47,10 @@ def natr(
     """
     # Validate
     length = v_pos_default(length, 14)
-    high = v_series(high, length)
-    low = v_series(low, length)
-    close = v_series(close, length)
+    _length = length + 1
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
 
     if high is None or low is None or close is None:
         return

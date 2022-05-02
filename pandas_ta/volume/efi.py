@@ -2,8 +2,13 @@
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import v_drift, v_mamode, v_offset
-from pandas_ta.utils import v_pos_default, v_series
+from pandas_ta.utils import (
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def efi(

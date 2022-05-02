@@ -4,8 +4,14 @@ from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
 from pandas_ta.overlap import hlc3
-from pandas_ta.utils import signed_series, v_drift, v_mamode, v_offset
-from pandas_ta.utils import  v_pos_default, v_series
+from pandas_ta.utils import (
+    signed_series,
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def kvo(
@@ -44,7 +50,8 @@ def kvo(
     # Validate
     fast = v_pos_default(fast, 34)
     slow = v_pos_default(slow, 55)
-    _length = max(fast, slow - 1)
+    signal = v_pos_default(signal, 13)
+    _length = max(fast, slow) + signal
     high = v_series(high, _length)
     low = v_series(low, _length)
     close = v_series(close, _length)
@@ -53,7 +60,6 @@ def kvo(
     if high is None or low is None or close is None or volume is None:
         return
 
-    signal = v_pos_default(signal, 13)
     mamode = v_mamode(mamode, "ema")
     drift = v_drift(drift)
     offset = v_offset(offset)

@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import ema
-from pandas_ta.utils import non_zero_range, v_offset
-from pandas_ta.utils import v_pos_default, v_series
+from pandas_ta.utils import (
+    non_zero_range,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def stc(
@@ -106,9 +111,13 @@ def stc(
         xmacd = fastma - slowma
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
 
+    pf[:_length - 1] = nan
+
     stc = Series(pff, index=close.index)
     macd = Series(xmacd, index=close.index)
     stoch = Series(pf, index=close.index)
+
+    stc.iloc[:_length - 1] = nan
 
     # Offset
     if offset != 0:
@@ -133,7 +142,11 @@ def stc(
     stoch.name = f"STCstoch{_props}"
     stc.category = macd.category = stoch.category = "momentum"
 
-    data = {stc.name: stc, macd.name: macd, stoch.name: stoch}
+    data = {
+        stc.name: stc,
+        macd.name: macd,
+        stoch.name: stoch
+    }
     df = DataFrame(data)
     df.name = f"STC{_props}"
     df.category = stc.category

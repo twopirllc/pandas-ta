@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
-from pandas_ta.utils import v_drift, v_mamode, v_offset, v_pos_default
-from pandas_ta.utils import v_scalar, v_series, zero
+from pandas_ta.utils import (
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series,
+    zero
+)
 from pandas_ta.volatility import atr
 
 
@@ -58,7 +66,12 @@ def adx(
     offset = v_offset(offset)
 
     # Calculate
-    atr_ = atr(high=high, low=low, close=close, length=length)
+    atr_ = atr(
+        high=high, low=low, close=close,
+        length=length, prenan=kwargs.pop("prenan", True)
+    )
+    if atr_ is None or all(isnan(atr_)):
+        return
 
     up = high - high.shift(drift)  # high.diff(drift)
     dn = low.shift(drift) - low    # low.diff(-drift).shift(drift)

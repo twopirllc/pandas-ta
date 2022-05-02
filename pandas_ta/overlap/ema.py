@@ -3,7 +3,13 @@ from numpy import nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    v_bool,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 try:
     from numba import njit
@@ -71,7 +77,7 @@ def ema(
     adjust = kwargs.setdefault("adjust", False)
 
     # Calculate
-    if Imports["talib"] and mode_tal:
+    if Imports["talib"] and mode_tal and length > 1:
         from talib import EMA
         ema = EMA(close, length)
     else:

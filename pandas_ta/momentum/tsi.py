@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
 from pandas_ta.overlap import ema
-from pandas_ta.utils import v_drift, v_mamode, v_offset
-from pandas_ta.utils import v_pos_default, v_scalar, v_series
+from pandas_ta.utils import (
+    v_drift,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_scalar,
+    v_series
+)
 
 
 def tsi(
@@ -43,14 +50,18 @@ def tsi(
     # Validate
     fast = v_pos_default(fast, 13)
     slow = v_pos_default(slow, 25)
-    close = v_series(close, max(fast, slow))
+    signal = v_pos_default(signal, 13)
+    if slow < fast:
+        fast, slow = slow, fast
+    _length = slow + signal + 1
+    close = v_series(close, _length)
+
     if "length" in kwargs:
         kwargs.pop("length")
 
     if close is None:
         return
 
-    signal = v_pos_default(signal, 13)
     scalar = v_scalar(scalar, 100)
     mamode = v_mamode(mamode, "ema")
     drift = v_drift(drift)
@@ -59,13 +70,19 @@ def tsi(
     # Calculate
     diff = close.diff(drift)
     slow_ema = ema(close=diff, length=slow, **kwargs)
+    if all(isnan(slow_ema)):
+        return  # Emergency Break
     fast_slow_ema = ema(close=slow_ema, length=fast, **kwargs)
 
     abs_diff = diff.abs()
     abs_slow_ema = ema(close=abs_diff, length=slow, **kwargs)
+    if all(isnan(abs_slow_ema)):
+        return  # Emergency Break
     abs_fast_slow_ema = ema(close=abs_slow_ema, length=fast, **kwargs)
 
     tsi = scalar * fast_slow_ema / abs_fast_slow_ema
+    if all(isnan(tsi)):
+        return  # Emergency Break
     tsi_signal = ma(mamode, tsi, length=signal)
 
     # Offset
