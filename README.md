@@ -158,7 +158,9 @@ We represent millions of investors who want to leverage state-of-the-art data sc
 
 <br/>
 
-Back to [Contents](#contents)
+[VectorBT Pro & Open Source](https://vectorbt.pro/)
+-------------------
+> vectorbt PRO is the next-generation engine for backtesting, algorithmic trading, and research. It's a high-performance, actively-developed, commercial successor to the vectorbt library, one of the world's most innovative open-source backtesting engines. The PRO version extends the standard library with new impressive features and useful enhancements for professionals.
 
 <br/>
 
