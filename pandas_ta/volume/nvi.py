@@ -35,8 +35,8 @@ def nvi(
     """
     # Validate
     length = v_pos_default(length, 1)
-    close = v_series(close, length)
-    volume = v_series(volume, length)
+    close = v_series(close, length + 1)
+    volume = v_series(volume, length + 1)
 
     if close is None or volume is None:
         return

@@ -112,7 +112,7 @@ class TestStudyMethods(TestCase):
         self.category = "Candles"
         self.data.ta.study(pandas_ta.AllStudy, verbose=verbose, timed=timed_test)
 
-    # @skipUnless(verbose, "verbose mode only")
+    @skipUnless(verbose, "verbose mode only")
     def test_all_without_append(self):
         """Study: All sans append"""
         self.category = "All: Sans append"
@@ -230,10 +230,18 @@ class TestStudyMethods(TestCase):
         )
         self.data.ta.study(custom, verbose=verbose, timed=timed_test)
 
+    def test_custom_ohlc(self):
+        """Custom E: OHLC"""
+        self.category = "Custom E: OHLC"
+
+        self.data.rename(columns={"volume": "_v"}, inplace=True)
+        self.data.ta.study(exclude=pandas_ta.Category["volume"], verbose=verbose, timed=timed_test)
+        self.data.rename(columns={"_v": "volume"}, inplace=True)
+
     # @skip
-    def test_custom_e(self):
-        """Custom E"""
-        self.category = "Custom E"
+    def test_custom_study_with_signals(self):
+        """Custom F: Custom Study with Signals"""
+        self.category = "Custom F: Custom Study with Signals"
 
         amat_logret_ta = [
             {"kind": "amat", "fast": 20, "slow": 50 },  # 2

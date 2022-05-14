@@ -41,7 +41,7 @@ def hwc(
         pd.DataFrame: HWM (Mid), HWU (Upper), HWL (Lower) columns.
     """
     # Validate
-    close = v_series(close)
+    close = v_series(close, 1)
     scalar = v_pos_default(scalar, 1)
     channels = v_bool(channels, False)
     na = v_pos_default(na, 0.2)
@@ -49,6 +49,9 @@ def hwc(
     nc = v_pos_default(nc, 0.1)
     nd = v_pos_default(nd, 0.1)
     offset = v_offset(offset)
+
+    if close is None:
+        return
 
     # Calculate Result
     last_a = last_v = last_var = 0

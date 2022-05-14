@@ -17,7 +17,7 @@ def np_prepend(x: Array, n: Int, value: IntFloat = nan) -> Array:
 
 
 @njit
-def np_roll(x: Array, n: Int, fn = None) -> Array:
+def np_rolling(x: Array, n: Int, fn = None) -> Array:
     """Like Pandas Rolling Window. x.rolling(n).fn()"""
     m = x.size
     result = zeros_like(x, dtype=float)

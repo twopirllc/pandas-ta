@@ -607,6 +607,8 @@ class AnalysisIndicators(object):
 
         # If All or a Category, exclude user list if any
         user_excluded = kwargs.pop("exclude", [])
+        if isinstance(user_excluded, str) and len(user_excluded) > 1:
+            user_excluded = [user_excluded]
         if mode["all"] or mode["category"]:
             excluded += user_excluded
 
@@ -634,7 +636,8 @@ class AnalysisIndicators(object):
             if "length" in kwds and kwds["length"] > self._df.shape[0]:
                 _ = True
             if _: removal.append(kwds)
-        if len(removal) > 0: [ta.remove(x) for x in removal]
+        if len(removal) > 0:
+            [ta.remove(x) for x in removal]
 
         verbose = kwargs.pop("verbose", False)
         if verbose:
@@ -1028,11 +1031,6 @@ class AnalysisIndicators(object):
         result = psl(close=close, open_=open_, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def pvo(self, fast=None, slow=None, signal=None, scalar=None, offset: Int = None, **kwargs: DictLike):
-        volume = self._get_column(kwargs.pop("volume", "volume"))
-        result = pvo(volume=volume, fast=fast, slow=slow, signal=signal, scalar=scalar, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
     def qqe(self, length=None, smooth=None, factor=None, mamode=None, offset: Int = None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = qqe(close=close, length=length, smooth=smooth, factor=factor, mamode=mamode, offset=offset, **kwargs)
@@ -1328,24 +1326,6 @@ class AnalysisIndicators(object):
     def vidya(self, length=None, offset: Int = None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = vidya(close=close, length=length, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def vwap(self, anchor=None, offset: Int = None, **kwargs: DictLike):
-        high = self._get_column(kwargs.pop("high", "high"))
-        low = self._get_column(kwargs.pop("low", "low"))
-        close = self._get_column(kwargs.pop("close", "close"))
-        volume = self._get_column(kwargs.pop("volume", "volume"))
-
-        if not self.datetime_ordered():
-            volume.index = self._df.index
-
-        result = vwap(high=high, low=low, close=close, volume=volume, anchor=anchor, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def vwma(self, volume=None, length=None, offset: Int = None, **kwargs: DictLike):
-        close = self._get_column(kwargs.pop("close", "close"))
-        volume = self._get_column(kwargs.pop("volume", "volume"))
-        result = vwma(close=close, volume=volume, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def wcp(self, offset: Int = None, **kwargs: DictLike):
@@ -1768,6 +1748,11 @@ class AnalysisIndicators(object):
         result = pvi(close=close, volume=volume, length=length, initial=initial, signed=signed, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def pvo(self, fast=None, slow=None, signal=None, scalar=None, offset: Int = None, **kwargs: DictLike):
+        volume = self._get_column(kwargs.pop("volume", "volume"))
+        result = pvo(volume=volume, fast=fast, slow=slow, signal=signal, scalar=scalar, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def pvol(self, volume=None, offset: Int = None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
@@ -1784,6 +1769,24 @@ class AnalysisIndicators(object):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
         result = pvt(close=close, volume=volume, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def vwap(self, anchor=None, offset: Int = None, **kwargs: DictLike):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        volume = self._get_column(kwargs.pop("volume", "volume"))
+
+        if not self.datetime_ordered():
+            volume.index = self._df.index
+
+        result = vwap(high=high, low=low, close=close, volume=volume, anchor=anchor, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def vwma(self, volume=None, length=None, offset: Int = None, **kwargs: DictLike):
+        close = self._get_column(kwargs.pop("close", "close"))
+        volume = self._get_column(kwargs.pop("volume", "volume"))
+        result = vwma(close=close, volume=volume, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def wb_tsv(self, length=None, signal=None, offset: Int = None, **kwargs: DictLike):

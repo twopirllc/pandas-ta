@@ -35,8 +35,11 @@ def hlc3(
     mode_tal = v_talib(talib)
     offset = v_offset(offset)
 
+    if high is None or low is None or close is None:
+        return
+
     # Calculate
-    if Imports["talib"] and mode_tal:
+    if Imports["talib"] and mode_tal and close.size:
         from talib import TYPPRICE
         hlc3 = TYPPRICE(high, low, close)
     else:

@@ -64,12 +64,15 @@ def cdl_pattern(
         pd.DataFrame: one column for each pattern.
     """
     # Validate Arguments
-    open_ = v_series(open_)
-    high = v_series(high)
-    low = v_series(low)
-    close = v_series(close)
+    open_ = v_series(open_, 1)
+    high = v_series(high, 1)
+    low = v_series(low, 1)
+    close = v_series(close, 1)
     offset = v_offset(offset)
     scalar = v_scalar(scalar, 100)
+
+    if open_ is None or high is None or low is None or close is None:
+        return
 
     # Patterns that implemented in pandas-ta
     pta_patterns = {"doji": cdl_doji, "inside": cdl_inside}

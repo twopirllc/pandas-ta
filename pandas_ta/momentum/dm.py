@@ -47,8 +47,8 @@ def dm(
     """
     # Validate
     length = v_pos_default(length, 14)
-    high = v_series(high)
-    low = v_series(low)
+    high = v_series(high, length)
+    low = v_series(low, length)
 
     if high is None or low is None:
         return
@@ -58,7 +58,7 @@ def dm(
     drift = v_drift(drift)
     offset = v_offset(offset)
 
-    if Imports["talib"] and mode_tal:
+    if Imports["talib"] and mode_tal and high.size and low.size:
         from talib import MINUS_DM, PLUS_DM
         pos = PLUS_DM(high, low, length)
         neg = MINUS_DM(high, low, length)

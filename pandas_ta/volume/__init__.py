@@ -10,8 +10,11 @@ from .mfi import mfi
 from .nvi import nvi
 from .obv import obv
 from .pvi import pvi
+from .pvo import pvo
 from .pvol import pvol
 from .pvr import pvr
 from .pvt import pvt
 from .vp import vp
+from .vwap import vwap
+from .vwma import vwma
 from .wb_tsv import wb_tsv

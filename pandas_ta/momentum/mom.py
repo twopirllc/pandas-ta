@@ -1,8 +1,27 @@
 # -*- coding: utf-8 -*-
+# from numpy.ma import diff as np_ma_diff
 from pandas import Series
-from pandas_ta._typing import DictLike, Int
+from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
+from pandas_ta.utils import (
+    # np_prepend,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
+
+
+try:
+    from numba import njit
+except ImportError:
+    def njit(_): return _
+
+
+# Mockup
+# @njit
+# def np_mom(x: Array, n: Int):
+#     return np_prepend(np_ma_diff(x, n), n)
 
 
 def mom(

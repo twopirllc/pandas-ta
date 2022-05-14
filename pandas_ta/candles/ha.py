@@ -37,11 +37,14 @@ def ha(
         pd.DataFrame: ha_open, ha_high,ha_low, ha_close columns.
     """
     # Validate
-    open_ = v_series(open_)
-    high = v_series(high)
-    low = v_series(low)
-    close = v_series(close)
+    open_ = v_series(open_, 1)
+    high = v_series(high, 1)
+    low = v_series(low, 1)
+    close = v_series(close, 1)
     offset = v_offset(offset)
+
+    if open_ is None or high is None or low is None or close is None:
+        return
 
     # Calculate
     m = close.size

@@ -31,6 +31,9 @@ def hl2(
     low = v_series(low)
     offset = v_offset(offset)
 
+    if high is None or low is None:
+        return
+
     # Calculate
     avg = 0.5 * (high.values + low.values)
     hl2 = Series(avg, index=high.index)

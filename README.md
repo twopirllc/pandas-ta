@@ -145,8 +145,9 @@ Pandas TA is used by Applications and Services like
 
 <br/>
 
-[Open BB](https://openbb.co/) (previously Gamestonk Terminal)
+[Open BB](https://openbb.co/)
 -------------------
+#### Previously **Gamestonk Terminal**
 > OpenBB is a leading open source investment analysis company.
 We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
 
@@ -158,7 +159,7 @@ We represent millions of investors who want to leverage state-of-the-art data sc
 
 <br/>
 
-[VectorBT Pro & Open Source](https://vectorbt.pro/)
+[VectorBT Pro](https://vectorbt.pro/)
 -------------------
 > vectorbt PRO is the next-generation engine for backtesting, algorithmic trading, and research. It's a high-performance, actively-developed, commercial successor to the vectorbt library, one of the world's most innovative open-source backtesting engines. The PRO version extends the standard library with new impressive features and useful enhancements for professionals.
 
@@ -280,7 +281,7 @@ Back to [Contents](#contents)
 
 # **Issues and Contributions**
 
-Contributions, feedback, and bug squashing are integral to the success of this library. If something you can fix, _please_ do. Your contributon helps everyone!
+Contributions, feedback, and bug squashing are integral to the success of this library. If you see something you can fix, _please_ do. Your contributon helps us all!
 * :stop_sign: _Please_ **DO NOT** email me personally with Pandas TA Bugs, Issues or Feature Requests that are best handled with Github [Issues](https://github.com/twopirllc/pandas-ta/issues).
 
 <br/>
@@ -289,7 +290,7 @@ Contributions, feedback, and bug squashing are integral to the success of this l
 --------------------------------------
 1. Some bugs and features may already be be fixed or implemented in either the [Latest Version](#latest-version) or the the [Development Version](#development-version). _Please_ try them first.
 1. If the _Latest_ or _Development_ Versions do not resolve the bug or address the Issue, try searching both _Open_ and _Closed_ Issues **before** opening a new Issue.
-1. When you creating a new Issue, please be as **detailed** as possible **with** reproducible code, links if any, applicable screenshots, errors, logs, and data samples.
+1. When creating a new Issue, please be as **detailed** as possible **with** reproducible code, links if any, applicable screenshots, errors, logs, and data samples.
     * You **will** be asked again for skipping form questions.
     * Do you have correlation analysis to back your claim?
 
@@ -853,7 +854,7 @@ Back to [Contents](#contents)
 
 <br/>
 
-### **Momentum** (42)
+### **Momentum** (41)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Bias_: **bias**
@@ -878,7 +879,6 @@ Back to [Contents](#contents)
 * _Pretty Good Oscillator_: **pgo**
 * _Percentage Price Oscillator_: **ppo**
 * _Psychological Line_: **psl**
-* _Percentage Volume Oscillator_: **pvo**
 * _Quantitative Qualitative Estimation_: **qqe**
 * _Rate of Change_: **roc**
 * _Relative Strength Index_: **rsi**
@@ -910,7 +910,7 @@ Back to [Contents](#contents)
 
 <br/>
 
-### **Overlap** (37)
+### **Overlap** (35)
 
 * _Bill Williams Alligator_: **alligator**
 * _Arnaud Legoux Moving Average_: **alma**
@@ -948,9 +948,6 @@ Back to [Contents](#contents)
 * _Triple Exponential Moving Average_: **tema**
 * _Triangular Moving Average_: **trima**
 * _Variable Index Dynamic Average_: **vidya**
-* _Volume Weighted Average Price_: **vwap**
-    * **Requires** the DataFrame index to be a DatetimeIndex
-* _Volume Weighted Moving Average_: **vwma**
 * _Weighted Closing Price_: **wcp**
 * _Weighted Moving Average_: **wma**
 * _Zero Lag Moving Average_: **zlma**
@@ -1084,7 +1081,7 @@ Back to [Contents](#contents)
 
 <br/>
 
-### **Volume** (16)
+### **Volume** (19)
 
 * _Accumulation/Distribution Index_: **ad**
 * _Accumulation/Distribution Oscillator_: **adosc**
@@ -1097,10 +1094,14 @@ Back to [Contents](#contents)
 * _Negative Volume Index_: **nvi**
 * _On-Balance Volume_: **obv**
 * _Positive Volume Index_: **pvi**
+* _Percentage Volume Oscillator_: **pvo**
 * _Price-Volume_: **pvol**
 * _Price Volume Rank_: **pvr**
 * _Price Volume Trend_: **pvt**
 * _Volume Profile_: **vp**
+* _Volume Weighted Average Price_: **vwap**
+    * **Requires** the DataFrame index to be a DatetimeIndex
+* _Volume Weighted Moving Average_: **vwma**
 * _Worden Brothers Time Segmented Value_: **wb_tsv**
 
 <br/>
@@ -1114,7 +1115,7 @@ Back to [Contents](#contents)
 <br/>
 
 # **Backtesting**
-While Pandas TA is not a backtesting application, Pandas TA does provide _two_ methods to help generate trading signals for backtesting purposes: **Trend Signals** (```ta.tsignals()```) and **Cross Signals** (```ta.xsignals()```). Both Signal methods return a DataFrame with columns for the Trend, Trades, Entries and Exits.
+While Pandas TA is not a backtesting application, it does provide _two_ trend methods that generate trading signals for backtesting purposes: **Trend Signals** (```ta.tsignals()```) and **Cross Signals** (```ta.xsignals()```). Both Signal methods return a DataFrame with columns for the signal's Trend, Trades, Entries and Exits.
 
 A simple manual backtest using **Trend Signals** can be found in the [TA Analysis Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/TA_Analysis.ipynb) starting at _Trend Creation_ cell.
 
@@ -1123,14 +1124,14 @@ A simple manual backtest using **Trend Signals** can be found in the [TA Analysi
 Trend Signals
 -------------
 * Useful for signals based on trends or **states**.
-* Examples
+* _Examples_
     * **Golden Cross**: ```df.ta.sma(length=50) > df.ta.sma(length=200)```
     * **Positive MACD Histogram**: ```df.ta.macd().iloc[:,1] > 0```
 
 Cross Signals
 -------------
 * Useful for Signal Crossings or **events**.
-* Examples
+* _Examples_
     * RSI crosses above 30 and then below 70
     * ZSCORE crosses above -2 and then below 2.
 
@@ -1144,14 +1145,11 @@ _Ideally_ a backtesting application like [**vectorbt**](https://polakowo.io/vect
 Trend Signal Example
 --------------------
 ```python
-import pandas as pd
 import pandas_ta as ta
 import vectorbt as vbt
 
-df = pd.DataFrame()
-
 # requires 'yfinance' installed
-df = df.ta.ticker("AAPL", timed=True)
+df = ta.df.ta.ticker("AAPL", timed=True)
 
 # Create the "Golden Cross"
 df["GC"] = df.ta.sma(50, append=True) > df.ta.sma(200, append=True)
@@ -1161,6 +1159,31 @@ golden = df.ta.tsignals(df.GC, asbool=True, append=True)
 
 # Create the Signals Portfolio
 pf = vbt.Portfolio.from_signals(df.close, entries=golden.TS_Entries, exits=golden.TS_Exits, freq="D", init_cash=100_000, fees=0.0025, slippage=0.0025)
+
+# Print Portfolio Stats and Return Stats
+print(pf.stats())
+print(pf.returns_stats())
+```
+
+<br/>
+
+Cross Signal Example
+--------------------
+```python
+import pandas_ta as ta
+import vectorbt as vbt
+
+# requires 'yfinance' installed
+df = ta.df.ta.ticker("AAPL", timed=True)
+
+# Signal when RSI crosses above 30 and later below 70
+rsi = df.ta.rsi(append=True)
+
+# Create Cross Signals
+rsi_long = ta.xsignals(rsi, 20, 80, above=True)
+
+# Create the Signals Portfolio
+pf = vbt.Portfolio.from_signals(df.Close, entries=rsi_long.TS_Entries, exits=rsi_long.TS_Exits, freq="D", init_cash=100_000, fees=0.0025, slippage=0.0025)
 
 # Print Portfolio Stats and Return Stats
 print(pf.stats())

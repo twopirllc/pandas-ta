@@ -49,9 +49,9 @@ Category: Dict[str, ListStr] = {
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
         "coppock", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst",
-        "macd", "mom", "pgo", "ppo", "psl", "pvo", "qqe", "roc", "rsi",
-        "rsx", "rvgi", "slope", "smi", "squeeze", "squeeze_pro", "stc",
-        "stoch", "stochf", "stochrsi", "td_seq", "trix", "tsi", "uo", "willr"
+        "macd", "mom", "pgo", "ppo", "psl", "qqe", "roc", "rsi", "rsx",
+        "rvgi", "slope", "smi", "squeeze", "squeeze_pro", "stc", "stoch",
+        "stochf", "stochrsi", "td_seq", "trix", "tsi", "uo", "willr"
     ],
     # Overlap
     "overlap": [
@@ -59,7 +59,7 @@ Category: Dict[str, ListStr] = {
         "hma", "hwma", "ichimoku", "jma", "kama", "linreg", "mama",
         "mcgd", "midpoint", "midprice", "ohlc4", "pwma", "rma", "sinwma",
         "sma", "smma", "ssf", "ssf3", "supertrend", "swma", "t3", "tema",
-        "trima", "vidya", "vwap", "vwma", "wcp", "wma", "zlma"
+        "trima", "vidya", "wcp", "wma", "zlma"
     ],
     # Performance
     "performance": ["log_return", "percent_return"],
@@ -87,7 +87,7 @@ Category: Dict[str, ListStr] = {
     # Note: "vp" or "Volume Profile" is excluded since it does not return a Time Series
     "volume": [
         "ad", "adosc", "aobv", "cmf", "efi", "eom", "kvo", "mfi", "nvi",
-        "obv", "pvi", "pvol", "pvr", "pvt", "wb_tsv"
+        "obv", "pvi", "pvo", "pvol", "pvr", "pvt", "vwap", "vwma", "wb_tsv"
     ],
 }
 

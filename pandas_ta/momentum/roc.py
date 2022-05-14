@@ -1,15 +1,29 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
-from pandas_ta._typing import DictLike, Int, IntFloat
+from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import (
+    np_shift,
     v_offset,
     v_pos_default,
     v_scalar,
     v_series,
     v_talib
 )
-from .mom import mom
+from .mom import mom#, np_mom
+
+
+# try:
+#     from numba import njit
+# except ImportError:
+#     def njit(_): return _
+
+
+# Mockup
+# @njit
+# def np_roc(x: Array, n: Int, k: IntFloat):
+#     result = k * np_mom(x, n) / np_shift(x, n)
+#     return result
 
 
 def roc(

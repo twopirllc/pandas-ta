@@ -47,10 +47,11 @@ def vwap(
         pd.DataFrame: New feature generated.
     """
     # Validate
-    high = v_series(high)
-    low = v_series(low)
-    close = v_series(close)
-    volume = v_series(volume)
+    _length = 1
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
+    volume = v_series(volume, _length)
     bands = v_list(bands)
     offset = v_offset(offset)
 
@@ -60,7 +61,8 @@ def vwap(
         anchor = "D"
 
     typical_price = hlc3(high=high, low=low, close=close)
-    if not v_datetime_ordered(volume) or not v_datetime_ordered(typical_price):
+    if not v_datetime_ordered(volume) or \
+        not v_datetime_ordered(typical_price):
         print("[!] VWAP requires a datetime ordered index.")
         return
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
@@ -52,7 +53,7 @@ def wb_tsv(
     # Validate
     length = v_pos_default(length, 18)
     signal = v_pos_default(signal, 10)
-    _length = max(length, signal) - 2
+    _length = max(length, signal) + 1
     close = v_series(close, _length)
 
     if close is None:
@@ -69,6 +70,8 @@ def wb_tsv(
     cvd = signed_volume * close.diff(drift)
 
     tsv = cvd.rolling(length).sum()
+    if all(isnan(tsv)):
+        return  # Emergency Break
     signal_ = ma(mamode, tsv, length=signal)
     ratio = tsv / signal_
 

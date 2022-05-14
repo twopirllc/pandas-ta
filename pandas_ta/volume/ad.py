@@ -44,7 +44,7 @@ def ad(
     offset = v_offset(offset)
 
     # Calculate
-    if Imports["talib"] and mode_tal:
+    if Imports["talib"] and mode_tal and volume.size:
         from talib import AD
         ad = AD(high, low, close, volume)
     else:
