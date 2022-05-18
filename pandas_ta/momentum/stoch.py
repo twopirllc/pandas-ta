@@ -53,7 +53,7 @@ def stoch(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.DataFrame: %K, %D columns.
+        pd.DataFrame: %K, %D, Histogram columns.
     """
     # Validate
     k = v_pos_default(k, 14)
@@ -78,6 +78,7 @@ def stoch(
             high, low, close, k, d, tal_ma(mamode), d, tal_ma(mamode)
         )
         stoch_k, stoch_d = stoch_[0], stoch_[1]
+        histogram = stoch_k - stoch_d
     else:
         lowest_low = low.rolling(k).min()
         highest_high = high.rolling(k).max()
@@ -93,6 +94,7 @@ def stoch(
 
         stochk_fvi = stoch_k.loc[stoch_k.first_valid_index():, ]
         stoch_d = ma(mamode, stochk_fvi, length=d)
+        histogram = stoch_k - stoch_d
 
     # Offset
     if offset != 0:
@@ -103,18 +105,21 @@ def stoch(
     if "fillna" in kwargs:
         stoch_k.fillna(kwargs["fillna"], inplace=True)
         stoch_d.fillna(kwargs["fillna"], inplace=True)
+        histogram.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         stoch_k.fillna(method=kwargs["fill_method"], inplace=True)
         stoch_d.fillna(method=kwargs["fill_method"], inplace=True)
+        histogram.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _name = "STOCH"
     _props = f"_{k}_{d}_{smooth_k}"
     stoch_k.name = f"{_name}k{_props}"
     stoch_d.name = f"{_name}d{_props}"
+    histogram.name = f"STOCHh{_props}"
     stoch_k.category = stoch_d.category = "momentum"
 
-    data = {stoch_k.name: stoch_k, stoch_d.name: stoch_d}
+    data = {stoch_k.name: stoch_k, stoch_d.name: stoch_d, histogram.name: histogram}
     df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"
     df.category = stoch_k.category
