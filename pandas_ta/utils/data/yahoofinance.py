@@ -91,10 +91,11 @@ def yf(ticker: str, **kwargs) -> DataFrame:
         df = DataFrame()
         try:
             df = yfd.history(
-                period=period,
-                interval=interval,
-                proxy=proxy,
-                **kwargs)
+                    period=period,
+                    interval=interval,
+                    proxy=proxy,
+                    **kwargs
+                )
         except BaseException:
             if yfra.__version__ == "0.1.60":
                 _yfv1_60 = f"[!] If history is not downloading, see yfinance Issue #760 by user djl0.\n" + \

@@ -97,7 +97,10 @@ def stochf(
     stochf_d.name = f"{_name}d{_props}"
     stochf_k.category = stochf_d.category = "momentum"
 
-    data = {stochf_k.name: stochf_k, stochf_d.name: stochf_d}
+    data = {
+        stochf_k.name: stochf_k,
+        stochf_d.name: stochf_d
+    }
     df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"
     df.category = stochf_k.category
