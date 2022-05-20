@@ -4,6 +4,12 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+def _mcgd(x, n, k):
+    d = (k * n * (x[1] / x[0]) ** 4)
+    x[1] = (x[0] + ((x[1] - x[0]) / d))
+    return x[1]
+
+
 def mcgd(
     close: Series, length: Int = None, c: IntFloat = None,
     offset: Int = None, **kwargs: DictLike
@@ -49,13 +55,8 @@ def mcgd(
     # Calculate
     close = close.copy()
 
-    def mcg_(series):
-        denom = (c * length * (series[1] / series[0]) ** 4)
-        series[1] = (series[0] + ((series[1] - series[0]) / denom))
-        return series[1]
-
-    mcg_cell = close[0:].rolling(2, min_periods=2).apply(mcg_, raw=True)
-    mcg_ds = close[:1].append(mcg_cell[1:])
+    mcg_ds = close[0:].rolling(2, min_periods=2) \
+        .apply(_mcgd, kwargs={"n": length, "k": c}, raw=True)
 
     # Offset
     if offset != 0:

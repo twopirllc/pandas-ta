@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import swma
@@ -63,6 +64,9 @@ def rvgi(
 
     rvgi = numerator / denominator
     signal = swma(rvgi, length=swma_length)
+
+    if all(isnan(signal.values)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

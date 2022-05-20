@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
@@ -50,6 +51,9 @@ def dema(
         ema1 = ema(close=close, length=length, talib=mode_tal)
         ema2 = ema(close=ema1, length=length, talib=mode_tal)
         dema = 2 * ema1 - ema2
+
+    if all(isnan(dema.values)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

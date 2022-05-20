@@ -182,7 +182,7 @@ The _minimum_ requirement is [Pandas](https://github.com/pandas-dev/pandas). Tho
 
 Pip
 ---
-The ```pip``` version, _0.3.14b_, is the last stable release.
+The ```pip``` version, _0.3.14b_, is the last stable release. The next **major** release will occur when all the remaining _Hilbert Transform_ indicators from TA Lib are [included](https://github.com/twopirllc/pandas-ta/labels/help%20wanted).
 ```sh
 $ pip install pandas_ta
 ```
@@ -194,19 +194,10 @@ $ pip install pandas_ta[full]
 
 <br/>
 
-Latest Version
---------------
-Best choice! Version: *0.3.64b*
-* Includes all fixes and updates between **pypi** and what is covered in this README.
-```sh
-$ pip install -U git+https://github.com/twopirllc/pandas-ta
-```
-
-<br/>
 
 Development Version
 -------------------
-This branch is kept as stable as possible, but it does include fixed [Issues](https://github.com/twopirllc/pandas-ta/issues), new features and indicators.
+The _development_ version, _0.3.65b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 ```
