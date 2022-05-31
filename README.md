@@ -920,7 +920,7 @@ Back to [Contents](#contents)
 * _Jurik Moving Average_: **jma**
 * _Kaufman's Adaptive Moving Average_: **kama**
 * _Linear Regression_: **linreg**
-* _Ehler's MESA Adapative Moving Average_: **mama**
+* _Ehler's MESA Adaptive Moving Average_: **mama**
     * Includes: **fama**
 * _McGinley Dynamic_: **mcgd**
 * _Midpoint_: **midpoint**

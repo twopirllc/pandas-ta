@@ -14,7 +14,7 @@ def alligator(
 
     The Alligator Indicator was developed by Bill Williams and combines
     moving averages with fractal geometry and the lines are meant to
-    resemeble an alligator opening and closing his mouth.. It attempts to
+    resemble an alligator opening and closing his mouth.. It attempts to
     identify if an asset is trending. It consists of 3 lines: the
     Alligator's Jaw, Teeth, and Lips. Each have different lookback periods
     and but require the user to offset the results; this is avoid data leaks

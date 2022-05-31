@@ -222,7 +222,7 @@ class AnalysisIndicators(object):
 
     @property
     def time_range(self) -> Float:
-        """Returns the time ranges of the DataFrame as a float. Default is in "years". help(ta.toal_time)"""
+        """Returns the time ranges of the DataFrame as a float. Default is in "years". help(ta.total_time)"""
         return total_time(self._df, self._time_range)
 
     @time_range.setter
@@ -717,9 +717,9 @@ class AnalysisIndicators(object):
         else:
             # Without multiprocessing:
             if verbose:
-                _col_msg = f"[i] No mulitproccessing (cores = 0)."
+                _col_msg = f"[i] No multiprocessing (cores = 0)."
                 if has_col_names:
-                    _col_msg = f"[i] No mulitproccessing support for 'col_names' option."
+                    _col_msg = f"[i] No multiprocessing support for 'col_names' option."
                 print(_col_msg)
 
             if mode["custom"]:

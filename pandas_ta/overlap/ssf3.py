@@ -40,7 +40,7 @@ def ssf3(
 
     John F. Ehlers's solution to reduce lag and remove aliasing noise
     with his research in aerospace analog filter design. This is
-    implementation has three poles. Since SSF is a (Resursive) Digital
+    implementation has three poles. Since SSF is a (Recursive) Digital
     Filter, the number of poles determine how many prior recursive SSF bars
     to include in the filter design.
 

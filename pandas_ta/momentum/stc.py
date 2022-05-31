@@ -19,12 +19,12 @@ def stc(
     """Schaff Trend Cycle (STC)
 
     The Schaff Trend Cycle is an evolution of the popular MACD
-    incorportating two cascaded stochastic calculations with additional
+    incorporating two cascaded stochastic calculations with additional
     smoothing.
 
     The STC returns also the beginning MACD result as well as the result
     after the first stochastic including its smoothing. This implementation
-    has been extended for Pandas TA to also allow for separatly feeding any
+    has been extended for Pandas TA to also allow for separately feeding any
     other two moving Averages (as ma1 and ma2) or to skip this to feed an
     oscillator, based on which the Schaff Trend Cycle should be calculated.
 
@@ -55,9 +55,9 @@ def stc(
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        ma1: External MA (mandatory in conjuction with ma2)
-        ma2: External MA (mandatory in conjuction with ma1)
-        osc: External osillator
+        ma1: External MA (mandatory in conjunction with ma2)
+        ma2: External MA (mandatory in conjunction with ma1)
+        osc: External oscillator
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 
@@ -94,14 +94,14 @@ def stc(
 
         if ma1 is None or ma2 is None:
             return
-        # According to external feeded series
+        # According to external feed series
         xmacd = ma1 - ma2
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
     elif isinstance(osc, Series):
         osc = v_series(osc, _length)
         if osc is None:
             return
-        # According to feeded oscillator (should be ranging around 0 x-axis)
+        # According to feed oscillator (should be ranging around 0 x-axis)
         xmacd = osc
         pff, pf = schaff_tc(close, xmacd, tclength, factor)
     else:

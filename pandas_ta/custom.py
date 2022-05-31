@@ -147,7 +147,7 @@ def import_dir(path: str, verbose: bool = True):
 
     >>> import_dir(ta_dir)
 
-    If your custom indicator(s) loaded succesfully then it should behave exactly
+    If your custom indicator(s) loaded successfully then it should behave exactly
     like all other native indicators in pandas_ta, including help functions.
     """
     # ensure that the passed directory exists / is readable
