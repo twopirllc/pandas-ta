@@ -111,7 +111,7 @@ def unsigned_differences(series: Series, amount: Int = None,
 
     Default Example:
     series   = Series([3, 2, 2, 1, 1, 5, 6, 6, 7, 5, 3]) and returns
-    postive  = Series([0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0])
+    positive  = Series([0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0])
     negative = Series([0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1])
     """
     amount = int(amount) if amount is not None else 1

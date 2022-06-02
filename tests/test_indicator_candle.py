@@ -79,7 +79,7 @@ class TestCandle(TestCase):
         self.assertEqual(result.name, "CDL_Z_30_1")
 
     def test_ha(self):
-        """Candle: Heiken Ashi"""
+        """Candle: Heikin Ashi"""
         result = pandas_ta.ha(self.open, self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "Heikin-Ashi")

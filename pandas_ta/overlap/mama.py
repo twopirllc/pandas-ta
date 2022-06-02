@@ -103,9 +103,9 @@ def mama(
     prenan: Int = None, talib: bool = None,
     offset: Int = None, **kwargs: DictLike
 ) -> Series:
-    """Ehler's MESA Adapative Moving Average (MAMA)
+    """Ehler's MESA Adaptive Moving Average (MAMA)
 
-    Ehler's MESA Adapative Moving Average (MAMA) aka the Mother of All Moving
+    Ehler's MESA Adaptive Moving Average (MAMA) aka the Mother of All Moving
     Averages attempts to adapt to the source's dynamic nature. The adapation
     is based on the rate change of phase as measured by the Hilbert
     Transform Discriminator. The advantage of this method of adaptation is

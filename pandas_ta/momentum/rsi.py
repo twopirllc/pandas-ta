@@ -64,8 +64,8 @@ def rsi(
         negative = close.diff(drift)
         positive = negative.copy()
 
-        positive[positive < 0] = 0  # Make negatives 0 for the postive series
-        negative[negative > 0] = 0  # Make postives 0 for the negative series
+        positive[positive < 0] = 0  # Make negatives 0 for the positive series
+        negative[negative > 0] = 0  # Make positives 0 for the negative series
 
         positive_avg = rma(positive, length=length)
         negative_avg = rma(negative, length=length)

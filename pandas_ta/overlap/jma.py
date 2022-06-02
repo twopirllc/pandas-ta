@@ -89,10 +89,10 @@ def jma(
         power = np_power(r_volty, pow1)
         alpha = np_power(beta, power)
 
-        # 1st stage - prelimimary smoothing by adaptive EMA
+        # 1st stage - preliminary smoothing by adaptive EMA
         ma1 = (1 - alpha) * price + alpha * ma1
 
-        # 2nd stage - one more prelimimary smoothing by Kalman filter
+        # 2nd stage - one more preliminary smoothing by Kalman filter
         det0 = (1 - beta) * (price - ma1) + beta * det0
         ma2 = ma1 + pr * det0
 

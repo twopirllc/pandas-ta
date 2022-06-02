@@ -46,7 +46,7 @@ def df_year_to_date(df: DataFrame) -> DataFrame:
 
 
 def final_time(stime: Float) -> str:
-    """Human readable elapsed time. Calculates the final time elasped since
+    """Human readable elapsed time. Calculates the final time elapsed since
     stime and returns a string with microseconds and seconds."""
     time_diff = perf_counter() - stime
     return f"{time_diff * 1000:2.4f} ms ({time_diff:2.4f} s)"

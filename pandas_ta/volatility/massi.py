@@ -13,7 +13,7 @@ def massi(
     """Mass Index (MASSI)
 
     The Mass Index is a non-directional volatility indicator that
-    utilitizes the High-Low Range to identify trend reversals based on
+    utilizes the High-Low Range to identify trend reversals based on
     range expansions.
 
     Sources:

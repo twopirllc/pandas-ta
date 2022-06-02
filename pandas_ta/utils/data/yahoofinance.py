@@ -436,7 +436,7 @@ def yf(ticker: str, **kwargs) -> DataFrame:
                     print(
                         f"[!] Best choice: update yfinance to the latest version.")
                     print(
-                        f"[!] Ignore if aleady patched. Some tickers do not have financials.")
+                        f"[!] Ignore if already patched. Some tickers do not have financials.")
                     print(
                         f"[!] Otherwise to enable Company Financials, see yfinance Issue #517 patch.")
                     print(

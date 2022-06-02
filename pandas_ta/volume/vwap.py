@@ -33,7 +33,7 @@ def vwap(
             https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
             Default: "D".
         bands (list): List of deviations to be calculated. Calculates upper
-            and lower values given a postive list of ints or floats.
+            and lower values given a positive list of ints or floats.
             Default: []
         offset (int): How many periods to offset the result. Default: 0
 

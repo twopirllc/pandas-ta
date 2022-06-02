@@ -5,7 +5,7 @@ from pandas import DataFrame
 from .config import sample_data
 
 
-class TestCylesExtension(TestCase):
+class TestCyclesExtension(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.data = sample_data

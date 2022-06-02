@@ -24,7 +24,7 @@ def atr(
 ) -> Series:
     """Average True Range (ATR)
 
-    Averge True Range is used to measure volatility, especially volatility
+    Average True Range is used to measure volatility, especially volatility
     caused by gaps or limit moves.
 
     Sources:

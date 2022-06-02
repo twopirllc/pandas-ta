@@ -25,7 +25,7 @@ def inertia(
 
     Inertia was developed by Donald Dorsey and was introduced his article
     in September, 1995. It is the Relative Vigor Index smoothed by the Least
-    Squares Moving Average. Postive Inertia when values are greater than 50,
+    Squares Moving Average. Positive Inertia when values are greater than 50,
     Negative Inertia otherwise.
 
     Sources:
