@@ -13,7 +13,7 @@ def ad(
     """Accumulation/Distribution (AD)
 
     Accumulation/Distribution indicator utilizes the relative position
-    of the close to it's High-Low range with volume then cummulated.
+    of the close to it's High-Low range with volume then accumulated.
 
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/accumulationdistribution-ad/

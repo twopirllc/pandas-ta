@@ -131,7 +131,7 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-1:]), ["VHF_28"])
 
-    def test_vortext_ext(self):
+    def test_vortex_ext(self):
         self.data.ta.vortex(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(list(self.data.columns[-2:]), ["VTXP_14", "VTXM_14"])

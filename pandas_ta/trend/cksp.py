@@ -35,7 +35,7 @@ def cksp(
 
     Sources:
         https://www.multicharts.com/discussion/viewtopic.php?t=48914
-        "The New Technical Trader", Wikey 1st ed. ISBN 9780471597803, page 95
+        "The New Technical Trader", Wiley 1st ed. ISBN 9780471597803, page 95
 
     Args:
         close (pd.Series): Series of 'close's
