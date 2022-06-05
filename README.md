@@ -28,7 +28,7 @@ Pandas TA - A Technical Analysis Library in Python 3
 
 <br/>
 
-_Pandas Technical Analysis_ (**Pandas TA**) is a free, Open Source, and easy to use Technical Analysis library with a Pandas DataFrame Extension. It has over 200 indicators, utility functions and TA Lib Candlestick Patterns. Beyond TA feature generation, it has a flat libary structure, it's own DataFrame Extension (called ```ta```), Custom Indicator Sets (called a ```Study```) and Custom Directory creation. Lastly, it includes methods to help with Data Acquisition and Stochastic Sampling, Backtesting Support with Signal and Trend methods, and some basic Performance Metrics.
+_Pandas Technical Analysis_ (**Pandas TA**) is a free, Open Source, and easy to use Technical Analysis library with a Pandas DataFrame Extension. It has over 200 indicators, utility functions and TA Lib Candlestick Patterns. Beyond TA feature generation, it has a flat library structure, it's own DataFrame Extension (called ```ta```), Custom Indicator Sets (called a ```Study```) and Custom Directory creation. Lastly, it includes methods to help with Data Acquisition and Stochastic Sampling, Backtesting Support with Signal and Trend methods, and some basic Performance Metrics.
 
 <br/>
 

@@ -16,7 +16,7 @@ def adosc(
     """Accumulation/Distribution Oscillator or Chaikin Oscillator
 
     Accumulation/Distribution Oscillator indicator utilizes
-    Accumulation/Distribution and treats it similarily to MACD
+    Accumulation/Distribution and treats it similarly to MACD
     or APO.
 
     Sources:

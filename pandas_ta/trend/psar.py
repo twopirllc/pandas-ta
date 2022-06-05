@@ -103,7 +103,7 @@ def psar(
 
         sar = _sar  # Update SAR
 
-        # Seperate long/short sar based on falling
+        # Separate long/short sar based on falling
         if falling:
             short.iloc[row] = sar
         else:

@@ -9,7 +9,7 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
     r"""
     polygon_api - polygon.io API helper function.
 
-    It returns OCHLV data from polygon (A valid subscription is required).
+    It returns OHCLV data from polygon (A valid subscription is required).
     To install the `polygon library <https://github.com/pssolanki111/polygon>`__ ,
     use ``pip install polygon``.
     You can customize the range of data using kwargs ``from_date``,
@@ -21,7 +21,7 @@ def polygon_api(ticker: str, **kwargs) -> DataFrame:
     the **kwarg** ``kind``, defaulting to ``None`` which doesn't
     pull/display any additional info.
 
-    **The function will always return the OCHLV dataframe no matter what
+    **The function will always return the OHCLV dataframe no matter what
     additional info you ask it to pull.** The additional information is
     used for display only (yet?)
 

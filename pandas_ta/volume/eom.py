@@ -19,7 +19,7 @@ def eom(
     """Ease of Movement (EOM)
 
     Ease of Movement is a volume based oscillator that is designed to
-    measure the relationship between price and volume flucuating across
+    measure the relationship between price and volume fluctuating across
     a zero line.
 
     Sources:

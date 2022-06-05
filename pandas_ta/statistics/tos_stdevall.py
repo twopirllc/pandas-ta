@@ -35,7 +35,7 @@ def tos_stdevall(
 
     Returns:
         pd.DataFrame: Central LR, Pairs of Lower and Upper LR Lines based on
-            mulitples of the standard deviation. Default: returns 7 columns.
+            multiples of the standard deviation. Default: returns 7 columns.
     """
     # Validate
     _props = f"TOS_STDEVALL"

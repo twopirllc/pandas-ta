@@ -22,7 +22,7 @@ def kvo(
 ) -> DataFrame:
     """Klinger Volume Oscillator (KVO)
 
-    This indicator was developed by Stephen J. Klinger. It attemps to
+    This indicator was developed by Stephen J. Klinger. It attempts to
     predict price reversals in a market by comparing volume to price.
 
     Sources:

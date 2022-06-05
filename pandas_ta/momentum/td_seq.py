@@ -18,8 +18,8 @@ def td_seq(
         https://tradetrekker.wordpress.com/tdsequential/
 
     Args:
-        close (pd.Series): Series of 'close's
-        asint (bool): If True, fillnas with 0 and change type to int.
+        close (pd.Series): Series of close's
+        asint (bool): If True, fillna's with 0 and change type to int.
             Default: False
         show_all (bool): Show 1 - 13. If set to False, show 6 - 9.
             Default: True
