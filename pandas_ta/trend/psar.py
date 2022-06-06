@@ -96,7 +96,11 @@ def psar(
             _sar = min(low.iloc[row - 1], low.iloc[row - 2], _sar)
 
         if reverse:
-            _sar = ep
+            if falling:
+                _sar = min(low.iloc[row - 1], low.iloc[row - 2], ep)
+            else:
+                _sar = max(high.iloc[row - 1], high.iloc[row - 2], ep)
+
             af = af0
             falling = not falling  # Must come before next line
             ep = low_ if falling else high_
