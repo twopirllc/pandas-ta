@@ -31,7 +31,7 @@ def fisher(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.Series: New feature generated.
+        pd.DataFrame: fisher and signal columns
     """
     # Validate
     length = v_pos_default(length, 9)
