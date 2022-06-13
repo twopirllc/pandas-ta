@@ -1486,11 +1486,11 @@ class AnalysisIndicators(object):
             result = long_run(fast=fast, slow=slow, length=length, offset=offset, **kwargs)
             return self._post_process(result, **kwargs)
 
-    def psar(self, af0=None, af=None, max_af=None, offset: Int = None, **kwargs: DictLike):
+    def psar(self, af0=None, af=None, max_af=None, tv=False, offset: Int = None, **kwargs: DictLike):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", None))
-        result = psar(high=high, low=low, close=close, af0=af0, af=af, max_af=max_af, offset=offset, **kwargs)
+        result = psar(high=high, low=low, close=close, af0=af0, af=af, max_af=max_af, tv=tv, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def qstick(self, length=None, offset: Int = None, **kwargs: DictLike):

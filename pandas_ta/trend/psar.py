@@ -7,7 +7,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, zero
 
 def psar(
     high: Series, low: Series, close: Series = None,
-    af0: IntFloat = None, af: IntFloat = None, max_af: IntFloat = None,
+    af0: IntFloat = None, af: IntFloat = None, max_af: IntFloat = None, tv=False,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Parabolic Stop and Reverse (psar)
@@ -46,8 +46,11 @@ def psar(
     # Validate
     high = v_series(high)
     low = v_series(low)
-    af = v_pos_default(af, 0.02)
-    af0 = v_pos_default(af0,  af)
+
+    paf = v_pos_default(af, 0.02) # paf is used to keep af from parameters
+    af0 = v_pos_default(af0, paf)
+    af = af0
+
     max_af = v_pos_default(max_af, 0.2)
     offset = v_offset(offset)
 
@@ -65,9 +68,9 @@ def psar(
         sar = close.iloc[0]
 
     long = Series(nan, index=high.index)
-    short = long.copy()
+    short = Series(nan, index=high.index)
     reversal = Series(0, index=high.index)
-    _af = long.copy()
+    _af = Series(0, index=high.index)
     _af.iloc[0:2] = af0
 
     # Calculate
@@ -76,30 +79,33 @@ def psar(
         high_ = high.iloc[row]
         low_ = low.iloc[row]
 
+        _sar = sar + af * (ep - sar)
+
         if falling:
-            _sar = sar + af * (ep - sar)
             reverse = high_ > _sar
 
             if low_ < ep:
                 ep = low_
-                af = min(af + af0, max_af)
+                af = min(af + paf, max_af)
 
             _sar = max(high.iloc[row - 1], high.iloc[row - 2], _sar)
         else:
-            _sar = sar + af * (ep - sar)
             reverse = low_ < _sar
 
             if high_ > ep:
                 ep = high_
-                af = min(af + af0, max_af)
+                af = min(af + paf, max_af)
 
             _sar = min(low.iloc[row - 1], low.iloc[row - 2], _sar)
 
         if reverse:
-            if falling:
-                _sar = min(low.iloc[row - 1], low.iloc[row - 2], ep)
+            if tv: # handle trading view version
+                if falling:
+                    _sar = min(low.iloc[row - 1], low.iloc[row - 2], ep)
+                else:
+                    _sar = max(high.iloc[row - 1], high.iloc[row - 2], ep)
             else:
-                _sar = max(high.iloc[row - 1], high.iloc[row - 2], ep)
+                _sar = ep
 
             af = af0
             falling = not falling  # Must come before next line
