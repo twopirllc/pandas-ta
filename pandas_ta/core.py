@@ -1270,6 +1270,11 @@ class AnalysisIndicators(object):
         result = rma(close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def rwi(self, length=None, offset=None, **kwargs):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = rwi(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def sinwma(self, length=None, offset: Int = None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = sinwma(close=close, length=length, offset=offset, **kwargs)
