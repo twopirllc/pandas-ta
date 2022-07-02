@@ -37,6 +37,7 @@ Imports = {
 
 # Not ideal and not dynamic but it works.
 # Will find a dynamic solution later.
+
 Category = {
     # Candles
     "candles": [
@@ -114,3 +115,13 @@ RATE = {
 }
 
 from pandas_ta.core import *
+from pandas_ta.core import __all__ as core_all
+
+__all__ = [
+    'version',
+    'Imports',
+    'Category',
+    'CANGLE_AGG',
+    'EXCHANGE_TZ',
+    'RATE',
+] + core_all 

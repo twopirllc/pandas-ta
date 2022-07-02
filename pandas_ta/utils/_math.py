@@ -25,6 +25,20 @@ from pandas import DataFrame, Series
 from pandas_ta import Imports
 from ._core import verify_series
 
+__all__ = [
+    'combination',
+    'erf',
+    'fibonacci',
+    'geometric_mean',
+    'linear_regression',
+    'log_geometric_mean',
+    'pascals_triangle',
+    'symmetric_triangle',
+    'weights',
+    'zero',
+    'df_error_analysis',
+]
+
 
 def combination(**kwargs: dict) -> int:
     """https://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python"""

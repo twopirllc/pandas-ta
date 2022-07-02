@@ -12,6 +12,20 @@ from ._math import linear_regression, log_geometric_mean
 from pandas_ta import RATE
 from pandas_ta.performance import drawdown, log_return, percent_return
 
+__all__ = [
+    'cagr',
+    'calmar_ratio',
+    'downside_deviation',
+    'jensens_alpha',
+    'log_max_drawdown',
+    'max_drawdown',
+    'optimal_leverage',
+    'pure_profit_score',
+    'sharpe_ratio',
+    'sortino_ratio',
+    'volatility',
+]
+
 
 def cagr(close: Series) -> float:
     """Compounded Annual Growth Rate

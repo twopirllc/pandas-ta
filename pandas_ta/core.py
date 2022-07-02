@@ -10,6 +10,7 @@ import pandas as pd
 from numpy import log10 as npLog10
 from numpy import ndarray as npNdarray
 from pandas.core.base import PandasObject
+from pandas import DataFrame
 
 from pandas_ta import Category, Imports, version
 from pandas_ta.candles.cdl_pattern import ALL_PATTERNS
@@ -23,9 +24,36 @@ from pandas_ta.trend import *
 from pandas_ta.volatility import *
 from pandas_ta.volume import *
 from pandas_ta.utils import *
+from pandas_ta.candles import __all__ as candles_all
+from pandas_ta.cycles import __all__ as cycles_all
+from pandas_ta.momentum import __all__ as momentum_all
+from pandas_ta.overlap import __all__ as overlap_all
+from pandas_ta.performance import __all__ as performance_all
+from pandas_ta.statistics import __all__ as statistics_all
+from pandas_ta.trend import __all__ as trend_all
+from pandas_ta.volatility import __all__ as volatility_all
+from pandas_ta.volume import __all__ as volume_all
+from pandas_ta.utils import __all__ as utils_all
 
+__all__ = [
+    'DataFrame',  # this could be useful
+    'Strategy',
+    'AllStrategy',
+    'CommonStrategy',
+    'AnalysisIndicators',
+]
 
-df = pd.DataFrame()
+__all__ += candles_all
+__all__ += cycles_all
+__all__ += momentum_all
+__all__ += overlap_all
+__all__ += performance_all
+__all__ += statistics_all
+__all__ += trend_all
+__all__ += volatility_all
+__all__ += volume_all
+__all__ += utils_all
+
 
 # Strategy DataClass
 @dataclass

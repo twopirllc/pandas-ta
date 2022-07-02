@@ -8,6 +8,20 @@ from pandas import DataFrame, Series
 from pandas.api.types import is_datetime64_any_dtype
 from pandas_ta import Imports
 
+__all__ = [
+    'category_files',
+    'get_drift',
+    'get_offset',
+    'is_datetime_ordered',
+    'is_percent',
+    'non_zero_range',
+    'recent_maximum_index',
+    'recent_minimum_index',
+    'signed_series',
+    'tal_ma',
+    'unsigned_differences',
+    'verify_series',
+]
 
 def _camelCase2Title(x: str):
     """https://stackoverflow.com/questions/5020906/python-convert-camel-case-to-space-delimited-using-regex-and-taking-acronyms-in"""
