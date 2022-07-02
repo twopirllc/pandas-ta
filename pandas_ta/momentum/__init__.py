@@ -65,7 +65,6 @@ __all__ = [
     'pgo',
     'ppo',
     'psl',
-    'pvo',
     'qqe',
     'roc',
     'rsi',

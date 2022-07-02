@@ -14,7 +14,7 @@ __all__ = [
     'downside_deviation',
     'jensens_alpha',
     'log_max_drawdown',
-    'max_drawdown'
+    'max_drawdown',
     'volatility',
     'sortino_ratio',
     'sharpe_ratio',
