@@ -8,6 +8,20 @@ from pandas_ta.utils._validate import v_series
 from pandas_ta.utils._math import linear_regression, log_geometric_mean
 from pandas_ta.utils._time import total_time
 
+__all__ = [
+    'cagr',
+    'calmar_ratio',
+    'downside_deviation',
+    'jensens_alpha',
+    'log_max_drawdown',
+    'max_drawdown'
+    'volatility',
+    'sortino_ratio',
+    'sharpe_ratio',
+    'pure_profit_score',
+    'optimal_leverage',
+]
+
 
 def cagr(close: Series) -> IntFloat:
     """Compounded Annual Growth Rate
@@ -172,7 +186,6 @@ def optimal_leverage(
     amount = int(capital * opt_leverage)
     return amount
 
-
 def pure_profit_score(close: Series) -> IntFloat:
     """Pure Profit Score of a series.
 
@@ -188,7 +201,6 @@ def pure_profit_score(close: Series) -> IntFloat:
     if r is not nan:
         return r * cagr(close)
     return 0
-
 
 def sharpe_ratio(
     close: Series, benchmark_rate: IntFloat = 0.0, log: bool = False,
@@ -223,7 +235,6 @@ def sharpe_ratio(
         period_std = sqrt(period) * returns.std()
         return (period_mu - benchmark_rate) / period_std
 
-
 def sortino_ratio(
     close: Series, benchmark_rate: IntFloat = 0.0, log: bool = False
 ) -> IntFloat:
@@ -248,7 +259,6 @@ def sortino_ratio(
     result = cagr(close) - benchmark_rate
     result /= downside_deviation(returns)
     return result
-
 
 def volatility(
     close: Series, tf: str = "years", returns: bool = False, log: bool = False
