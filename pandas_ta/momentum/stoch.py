@@ -58,7 +58,7 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=N
 
 
 stoch.__doc__ = \
-    """Stochastic (STOCH)
+"""Stochastic (STOCH)
 
 The Stochastic Oscillator (STOCH) was developed by George Lane in the 1950's.
 He believed this indicator was a good way to measure momentum because changes in
