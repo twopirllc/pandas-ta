@@ -26,8 +26,8 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=N
     stoch = 100 * (close - lowest_low)
     stoch /= non_zero_range(highest_high, lowest_low)
 
-    stoch_k = ma(mamode, stoch.loc[stoch.first_valid_index():,], length=smooth_k)
-    stoch_d = ma(mamode, stoch_k.loc[stoch_k.first_valid_index():,], length=d)
+    stoch_k = ma(mamode, stoch, length=smooth_k)
+    stoch_d = ma(mamode, stoch_k, length=d)
 
     # Offset
     if offset != 0:
@@ -58,7 +58,7 @@ def stoch(high, low, close, k=None, d=None, smooth_k=None, mamode=None, offset=N
 
 
 stoch.__doc__ = \
-"""Stochastic (STOCH)
+    """Stochastic (STOCH)
 
 The Stochastic Oscillator (STOCH) was developed by George Lane in the 1950's.
 He believed this indicator was a good way to measure momentum because changes in
