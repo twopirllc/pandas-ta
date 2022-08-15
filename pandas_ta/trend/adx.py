@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import numpy as np
 from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
@@ -82,12 +83,30 @@ def adx(
     pos = pos.apply(zero)
     neg = neg.apply(zero)
 
-    k = scalar / atr_
-    dmp = k * ma(mamode, pos, length=length)
-    dmn = k * ma(mamode, neg, length=length)
+    # How to treat the initial value of RMA varies one to another.
+    # It follows the way TradingView does, setting it to the average of previous values.
+    # Since 'pandas' does not provide API to control the initial value,
+    # work around it by modifying input value to get desired output.
+    pos.iloc[length-1] = pos[:length].sum()
+    pos[:length-1] = 0
+    neg.iloc[length-1] = neg[:length].sum()
+    neg[:length-1] = 0
 
+    k = scalar / atr_
+    alpha = 1 / length
+    dmp = k * pos.ewm(alpha=alpha, adjust=False, min_periods=length).mean()
+    dmn = k * neg.ewm(alpha=alpha, adjust=False, min_periods=length).mean()
+
+    # The same goes with dx.
     dx = scalar * (dmp - dmn).abs() / (dmp + dmn)
+    dx = dx.shift(-length)
+    dx.iloc[length-1] = dx[:length].sum()
+    dx[:length-1] = 0
+
     adx = ma(mamode, dx, length=lensig)
+    # Rollback shifted rows.
+    adx[: length - 1] = np.nan
+    adx = adx.shift(length)
 
     # Offset
     if offset != 0:
