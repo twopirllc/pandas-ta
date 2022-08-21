@@ -34,3 +34,4 @@ from .vidya import vidya
 from .wcp import wcp
 from .wma import wma
 from .zlma import zlma
+from .pivot import pivots
