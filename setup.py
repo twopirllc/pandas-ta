@@ -60,6 +60,9 @@ setup(
             "sklearn", "statsmodels", "stochastic",
             "talib", "tqdm", "vectorbt", "yfinance",
         ],
-        "test": ["ta-lib"],
+        "test": [
+            "pytest==7.1.2",
+            "ta-lib"
+        ],
     },
 )

@@ -1,0 +1,67 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    if: github.actor != 'dependabot[bot]' && github.ref != 'refs/heads/master'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # If failure occurs on one OS, it is still relevant to see which others may work
+      fail-fast: false
+      matrix:
+        python-version: ["3.9"]
+        os: [ubuntu-latest]
+
+    steps:
+    - name: Github Actor Info
+      run: |
+        echo "Workflow triggered by github actor ${{ github.actor }}"
+    
+    - name: Set up Python 
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Activate Cache for pip
+      uses: actions/cache@v3
+      id: cache-python-env
+      with:
+        path: ${{ env.pythonLocation }}
+        key: "v3-${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}"
+
+    - name: Update pip and friends
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+      if: steps.cache-python-env.outputs.cache-hit != 'true'
+
+    - name: Install TA-lib
+      # Inspiration for this step is taken from here: https://github.com/mrjbq7/ta-lib/blob/master/.github/workflows/tests.yml
+      shell: bash
+      run: |
+        wget https://raw.githubusercontent.com/mrjbq7/ta-lib/master/tools/build_talib_from_source.bash
+        chmod +x build_talib_from_source.bash
+        ./build_talib_from_source.bash $DEPS_PATH
+        python -m pip install TA-lib
+      env:
+        DEPS_PATH: ${{ github.workspace }}/dependencies
+        TA_INCLUDE_PATH: ${{ github.workspace }}/dependencies/include
+        TA_LIBRARY_PATH: ${{ github.workspace }}/dependencies/lib
+
+    - name: Install pandas-ta
+      run: |
+        python -m pip install ".[test]"
+      
+    - name: Run tests
+      shell: bash
+      run: |
+        set -o pipefail # make the below pipe fail if pytests fails
+        python -m pytest .
