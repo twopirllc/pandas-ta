@@ -1,0 +1,70 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-test-report:
+    if: github.actor != 'dependabot[bot]' && github.ref != 'refs/heads/master'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # If failure occurs on one OS, it is still relevant to see which others may work
+      fail-fast: false
+      matrix:
+        python-version: ["3.9"]
+        os: [ubuntu-latest]
+
+    steps:
+    - name: Github Actor Info
+      run: |
+        echo "Workflow triggered by github actor ${{ github.actor }}"
+    
+    - name: Set up Python 
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Activate Cache for pip
+      uses: actions/cache@v3
+      id: cache-python-env
+      with:
+        path: ${{ env.pythonLocation }}
+        key: "v3-${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}"
+
+    - name: Update pip and friends
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+      if: steps.cache-python-env.outputs.cache-hit != 'true'
+
+    - name: Install pandas-ta
+      run: |
+        python -m pip install "".[test]"
+      
+    - name: Run tests
+      shell: bash
+      run: |
+        set -o pipefail # make the below pipe fail if pytests fails
+        python -m pytest -n 3 --junit-xml pytest.xml --cov=pandas-ta . | tee pytest-coverage.txt
+    
+    - name: Pytest coverage comment
+      uses: MishaKav/pytest-coverage-comment@v1.1.29
+      with:
+        pytest-coverage-path: pytest-coverage.txt
+        junitxml-path: pytest.xml
+        create-new-comment: false
+      if: always() && runner.os == 'Linux'
+    
+    - name: Check linting with Black
+      uses: psf/black@stable
+      with:
+        options: "--check --diff --color"
+        src: "."
+        version: "22.3.0"
+      if: always() && runner.os == 'Linux'
