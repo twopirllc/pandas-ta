@@ -569,7 +569,7 @@ class AnalysisIndicators(object):
         An experimental method that by default runs all applicable indicators.
 
         Kwargs:
-            chunksize (bool): Adjust the chunksize for the Multiprocessing Pool.
+            chunksize (int): Adjust the chunksize for the Multiprocessing Pool.
                 Default: Number of cores of the OS
             exclude (list): List of indicator names to exclude. Some are
                 excluded by default for various reasons; they require additional
