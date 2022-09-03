@@ -12,6 +12,21 @@ from pandas_ta._typing import Int, IntFloat, ListStr, Union
 from pandas_ta.utils._validate import v_bool, v_pos_default, v_series
 from pandas_ta.maps import Imports
 
+__all__ = [
+    'camelCase2Title',
+    'category_files',
+    'non_zero_range',
+    'recent_maximum_index',
+    'recent_minimum_index',
+    'rma_pandas',
+    'signed_series',
+    'simplify_columns',
+    'tal_ma',
+    'unsigned_differences',
+    'ms2secs',
+    'speed_test',
+]
+
 
 def camelCase2Title(x: str):
     """https://stackoverflow.com/questions/5020906/python-convert-camel-case-to-space-delimited-using-regex-and-taking-acronyms-in"""

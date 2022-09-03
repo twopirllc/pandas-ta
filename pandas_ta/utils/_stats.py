@@ -4,6 +4,10 @@ from pandas_ta._typing import Array, IntFloat, Number, Union
 from pandas_ta.maps import Imports
 from pandas_ta.utils import hpoly
 
+__all__ = [
+    'inv_norm',
+]
+
 
 def _gaussian_poly_coefficients() -> Array:
     """Three pairs of Polynomial Approximation Coefficients
