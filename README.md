@@ -1266,7 +1266,6 @@ TODO
 
 | **Status** | **Remaining TA Lib Indicators** |
 | - | - |
-| &#9744; | Candlesticks |
 | &#9744; | Indicators: ```ht_dcperiod```, ```ht_dcphase```, ```ht_phasor```, ```ht_sine```, ```ht_trendline```, ```ht_trendmode``` |
 | &#9744; | **Numpy**/**Numba**_-ify_ base indicators |
 
@@ -1274,10 +1273,10 @@ TODO
 
 | **Status** | **Config System** |
 | - | - |
+| &#9744; | Candlesticks |
+| &#9744; | DataFrame Extension property: ```config``` |
 | &#9744; | JSON Config File |
 | | &#9744; JSON Config File Format |
-| &#9744; | DataFrame Extension property: ```config``` |
-| &#9744; | Features |
 
 <br/>
 
