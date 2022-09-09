@@ -4,7 +4,7 @@ from .ifisher import ifisher
 from .remap import remap
 
 __all__ = [
-    'cube',
-    'ifisher',
-    'remap',
+    "cube",
+    "ifisher",
+    "remap",
 ]

@@ -40,16 +40,16 @@ from pandas_ta.custom import create_dir, import_dir
 from pandas_ta.core import AnalysisIndicators
 
 __all__ = [
-    'name',
-    'EXCHANGE_TZ',
-    'RATE',
-    'Category',
-    'Imports',
-    'version',
-    'ma',
-    'create_dir',
-    'import_dir',
-    'AnalysisIndicators',
+    "name",
+    "EXCHANGE_TZ",
+    "RATE",
+    "Category",
+    "Imports",
+    "version",
+    "ma",
+    "create_dir",
+    "import_dir",
+    "AnalysisIndicators",
 ]
 
 __all__ += (

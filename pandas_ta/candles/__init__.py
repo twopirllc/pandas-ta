@@ -6,11 +6,11 @@ from .cdl_z import cdl_z
 from .ha import ha
 
 __all__ = [
-    'cdl_doji',
-    'cdl_inside',
-    'cdl_pattern',
-    'cdl',
-    'CDL_PATTERN_NAMES',
-    'cdl_z',
-    'ha',
+    "cdl_doji",
+    "cdl_inside",
+    "cdl_pattern",
+    "cdl",
+    "CDL_PATTERN_NAMES",
+    "cdl_z",
+    "ha",
 ]
