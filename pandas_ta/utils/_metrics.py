@@ -249,9 +249,9 @@ def volatility(close: Series, tf: str = "years", returns: bool = False, log: boo
     else:
         returns = close
 
-    returns = log_geometric_mean(returns).std()
-    # factor = returns.shape[0] / total_time(returns, tf)
-    # if kwargs.pop("nearest_day", False) and tf.lower() == "years":
-        # factor = int(factor + 1)
-    # return npSqrt(factor) * returns.std()
-    return returns
+    # returns = log_geometric_mean(returns).std()
+    factor = returns.shape[0] / total_time(returns, tf)
+    if kwargs.pop("nearest_day", False) and tf.lower() == "years":
+        factor = int(factor + 1)
+    return npSqrt(factor) * returns.std()
+    #return returns
