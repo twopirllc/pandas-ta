@@ -82,7 +82,7 @@ def total_time(df: DataFrame, tf: str = "years") -> float:
     Useful for annualization."""
     time_diff = df.index[-1] - df.index[0]
     TimeFrame = {
-        "years": time_diff.days / RATE["TRADING_DAYS_PER_YEAR"],
+        "years": time_diff.days / 365.25,
         "months": time_diff.days / 30.417,
         "weeks": time_diff.days / 7,
         "days": time_diff.days,
