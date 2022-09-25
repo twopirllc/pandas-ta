@@ -1,7 +1,32 @@
 # -*- coding: utf-8 -*-
+from numpy import empty_like, maximum, minimum
 from pandas import DataFrame, Series
-from pandas_ta._typing import DictLike, Int
+from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.utils import v_offset, v_series
+
+try:
+    from numba import njit
+except ImportError:
+    def njit(_): return _
+
+
+@njit
+def np_ha(
+    c_open: Array, c_high: Array, c_low: Array, c_close: Array
+):
+    """Heiken-Ashi numpy/njit version"""
+    ha_close = 0.25 * (c_open + c_high + c_low + c_close)
+    ha_open = empty_like(ha_close)
+    ha_open[0] = 0.5 * (c_open[0] + c_close[0])
+
+    m = c_close.size
+    for i in range(1, m):
+        ha_open[i] = 0.5 * (ha_open[i - 1] + ha_close[i - 1])
+
+    ha_high = maximum(maximum(ha_open, ha_close), c_high)
+    ha_low = minimum(minimum(ha_open, ha_close), c_low)
+
+    return ha_open, ha_high, ha_low, ha_close
 
 
 def ha(
@@ -47,20 +72,15 @@ def ha(
         return
 
     # Calculate
-    m = close.size
+    np_open, np_high = open_.values, high.values
+    np_low, np_close = low.values, close.values
+    ha_open, ha_high, ha_low, ha_close = np_ha(np_open, np_high, np_low, np_close)
     df = DataFrame({
-        "HA_open": 0.5 * (open_.iloc[0] + close.iloc[0]),
-        "HA_high": high,
-        "HA_low": low,
-        "HA_close": 0.25 * (open_ + high + low + close),
-    })
-
-    for i in range(1, m):
-        df["HA_open"].iloc[i] = 0.5 * (df["HA_open"].iloc[i - 1] \
-            + df["HA_close"].iloc[i - 1])
-
-    df["HA_high"] = df[["HA_open", "HA_high", "HA_close"]].max(axis=1)
-    df["HA_low"] = df[["HA_open", "HA_low", "HA_close"]].min(axis=1)
+        "HA_open": ha_open,
+        "HA_high": ha_high,
+        "HA_low": ha_low,
+        "HA_close": ha_close,
+    }, index=close.index)
 
     # Offset
     if offset != 0:

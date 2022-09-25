@@ -29,8 +29,8 @@ def np_mama(
     re, im, alpha = sm.copy(), sm.copy(), sm.copy()
     period, phase, mama, fama = sm.copy(), sm.copy(), sm.copy(), sm.copy()
 
-    n = x.size
     # Ehler's starts from 6, TV-LB starts at 3, TALib 32
+    n = x.size
     for i in range(3, n):
         w_period = .075 * period[i - 1] + .54
 
