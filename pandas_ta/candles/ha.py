@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import numpy as np
+from numpy import empty_like, maximum, minimum
 from pandas import DataFrame, Series
-from pandas_ta._typing import DictLike, Int, List
+from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.utils import v_offset, v_series
 
 try:
@@ -11,23 +11,23 @@ except ImportError:
 
 
 @njit
-def heiken_ashi_numpy(c_open, c_high, c_low, c_close):
-    """fast version using numpy and optionally numba"""
-    ha_close = (c_open + c_high + c_low + c_close) / 4
-    ha_open = np.empty_like(ha_close)
-    ha_open[0] = (c_open[0] + c_close[0]) / 2
-    for i in range(1, len(c_close)):
-        ha_open[i] = (ha_open[i - 1] + ha_close[i - 1]) / 2
-    ha_high = np.maximum(np.maximum(ha_open, ha_close), c_high)
-    ha_low = np.minimum(np.minimum(ha_open, ha_close), c_low)
+def np_ha(
+    c_open: Array, c_high: Array, c_low: Array, c_close: Array
+):
+    """Heiken-Ashi numpy/njit version"""
+    ha_close = 0.25 * (c_open + c_high + c_low + c_close)
+    ha_open = empty_like(ha_close)
+    ha_open[0] = 0.5 * (c_open[0] + c_close[0])
+
+    m = c_close.size
+    for i in range(1, m):
+        ha_open[i] = 0.5 * (ha_open[i - 1] + ha_close[i - 1])
+
+    ha_high = maximum(maximum(ha_open, ha_close), c_high)
+    ha_low = minimum(minimum(ha_open, ha_close), c_low)
+
     return ha_open, ha_high, ha_low, ha_close
 
-def heiken_ashi_series(open: Series, high: Series, low: Series, close: Series) -> List[Series]:
-    """takes in series, outputs series."""
-    inputs = [open, high, low, close]
-    outs = heiken_ashi_numpy(open.values, high.values, low.values, close.values)
-    outs = [Series(outs[i], index=inputs[i].index) for i in range(len(inputs))]
-    return outs
 
 def ha(
     open_: Series, high: Series, low: Series, close: Series,
@@ -72,14 +72,15 @@ def ha(
         return
 
     # Calculate
-    ha_open, ha_high, ha_low, ha_close = heiken_ashi_series(open_, high, low, close)
-    m = close.size
+    np_open, np_high = open_.values, high.values
+    np_low, np_close = low.values, close.values
+    ha_open, ha_high, ha_low, ha_close = np_ha(np_open, np_high, np_low, np_close)
     df = DataFrame({
         "HA_open": ha_open,
         "HA_high": ha_high,
         "HA_low": ha_low,
         "HA_close": ha_close,
-    })
+    }, index=close.index)
 
     # Offset
     if offset != 0:

@@ -310,7 +310,7 @@ class TestUtilities(TestCase):
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True), array_5w)
         npt.assert_array_equal(self.utils.pascals_triangle(n=5, weighted=True, inverse=True), array_5iw)
 
-    # @skip
+    @skip
     def test__speed_test(self):
         """Utility[Core]: Indicator Speed Test"""
         result = self.utils.speed_test(self.data, top=10, talib=True, ascending=False, places=4)
@@ -319,7 +319,7 @@ class TestUtilities(TestCase):
         result = self.utils.speed_test(self.data, top=10, ascending=False, places=4)
         self.assertIsInstance(result, DataFrame)
 
-    # @skip
+    @skip
     def test__speed_test_excluded(self):
         """Utility[Core]: Indicator Speed Test sans Excluded"""
         # Top 3 Slowest with TA Lib since: 1/26/2022
@@ -341,6 +341,9 @@ class TestUtilities(TestCase):
     # @skip
     def test__speed_test_verbose(self):
         """Utility[Core]: Verbose Indicator Speed Test"""
+        # For precompiling njit functions
+        result = self.utils.speed_test(self.data, top=5, talib=False, ascending=False, places=4, stats=False, verbose=False)
+
         result = self.utils.speed_test(self.data, top=5, talib=True, ascending=False, places=4, stats=False, verbose=True)
         self.assertIsInstance(result, DataFrame)
 
