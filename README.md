@@ -995,7 +995,9 @@ Back to [Contents](#contents)
 ### **Transform** (3)
 
 * _Cube Transform_: **cube**
+    * Potential data leak due to signal shift.
 * _Inverse Fisher Transform_: **ifisher**
+    * Potential data leak due to signal shift.
 * _ReMap_: **remap**
 
 <br/>
