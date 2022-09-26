@@ -11,20 +11,18 @@ except ImportError:
 
 
 @njit
-def np_ha(
-    c_open: Array, c_high: Array, c_low: Array, c_close: Array
-):
+def np_ha(np_open: Array, np_high: Array, np_low: Array, np_close: Array):
     """Heiken-Ashi numpy/njit version"""
-    ha_close = 0.25 * (c_open + c_high + c_low + c_close)
+    ha_close = 0.25 * (np_open + np_high + np_low + np_close)
     ha_open = empty_like(ha_close)
-    ha_open[0] = 0.5 * (c_open[0] + c_close[0])
+    ha_open[0] = 0.5 * (np_open[0] + np_close[0])
 
-    m = c_close.size
+    m = np_close.size
     for i in range(1, m):
         ha_open[i] = 0.5 * (ha_open[i - 1] + ha_close[i - 1])
 
-    ha_high = maximum(maximum(ha_open, ha_close), c_high)
-    ha_low = minimum(minimum(ha_open, ha_close), c_low)
+    ha_high = maximum(maximum(ha_open, ha_close), np_high)
+    ha_low = minimum(minimum(ha_open, ha_close), np_low)
 
     return ha_open, ha_high, ha_low, ha_close
 
