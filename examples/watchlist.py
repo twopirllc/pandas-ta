@@ -195,12 +195,13 @@ class Watchlist(object):
                 return
         else:
             print(f"[+] Downloading[{self.ds_name}]: {ticker}[{tf}]")
+            df = pd.DataFrame()
             if self.ds_name == "av":
                 df = self.ds.data(ticker, tf)
                 if not df.ta.datetime_ordered:
                     df = df.set_index(pd.DatetimeIndex(df[index]))
             if self.ds_name == "yahoo":
-                df = ta.df.ta.ticker(ticker, timed=self.timed, returns=True)
+                df = df.ta.ticker(ticker, timed=self.timed, returns=True)
                 to_save = f"{self.file_path}/{ticker}_{tf}.csv"
                 print(f"[+] Saving: {to_save}")
                 df.to_csv(to_save, mode="a")
