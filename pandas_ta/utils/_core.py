@@ -155,12 +155,12 @@ def _speed_group(
         df: DataFrame, group: ListStr = [], talib: bool = False,
         index_name: str = "Indicator", p: Int = 4
     ) -> ListStr:
-    times = []
+    result = []
     for i in group:
         r = df.ta(i, talib=talib, timed=True)
         ms = float(r.timed.split(" ")[0].split(" ")[0])
-        times.append({index_name: i, "ms": ms, "secs": ms2secs(ms, p)})
-    return times
+        result.append({index_name: i, "ms": ms, "secs": ms2secs(ms, p)})
+    return result
 
 
 def speed_test(df: DataFrame,

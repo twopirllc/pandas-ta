@@ -157,7 +157,7 @@ class TestStudyMethods(TestCase):
             cores=cores
         )
         self.data.ta.study(custom, verbose=verbose, timed=timed_test)
-        self.assertEqual(len(self.data.columns), 21)
+        self.assertEqual(len(self.data.columns), 22)
 
     # @skipUnless(verbose, "verbose mode only")
     def test_custom_a_without_multiprocessing(self):
@@ -254,13 +254,13 @@ class TestStudyMethods(TestCase):
             amat_logret_ta,  # ta
             "AMAT Log Returns",  # description
         )
-        self.data.ta.study(custom, verbose=verbose, timed=timed_test, ordered=True)
+        self.data.ta.study(custom, verbose=verbose, timed=timed_test, ordered=True, cores=0)
         self.data.ta.tsignals(trend=self.data["AMATe_LR_20_50_2"], append=True)
 
         if "adj close" in self.data.columns or "adj_close" in self.data.columns:
             self.assertEqual(len(self.data.columns), 14)
         else:
-            self.assertEqual(len(self.data.columns), 13)
+            self.assertEqual(len(self.data.columns), 15)
 
     # @skip
     def test_momentum_category(self):

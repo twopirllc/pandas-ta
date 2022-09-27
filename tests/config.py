@@ -3,7 +3,7 @@ import datetime
 from pathlib import Path
 
 from numpy import array
-from pandas import DataFrame, read_csv
+from pandas import DataFrame, DatetimeIndex, read_csv
 import pandas_datareader as pdr
 
 import pandas_ta
@@ -39,6 +39,7 @@ def error_analysis(
 
 def load(**kwargs: DictLike):
     kwargs.setdefault("ticker", "SPY")
+    kwargs.setdefault("fpath", "data/SPY_D.csv")
     kwargs.setdefault("prefix", "PDR_")
     kwargs.setdefault("interval", "d")
 
@@ -50,11 +51,10 @@ def load(**kwargs: DictLike):
     kwargs.setdefault("verbose", False)
 
     print(f"\n{TEST} Pandas TA on {datetime.datetime.now()}")
-    filename = f"{kwargs['prefix']}{kwargs['ticker']}_{kwargs['interval']}.csv"
-    fpath = f"./{Path(filename).suffix.replace('.', '')}/{filename}"
+    fpath = Path(kwargs["fpath"])
     try:
         df = read_csv(
-            Path(fpath),
+            fpath,
             index_col=kwargs["index_col"],
             parse_dates=kwargs["parse_dates"],
             infer_datetime_format=kwargs["infer_datetime_format"],
@@ -76,7 +76,6 @@ def load(**kwargs: DictLike):
 
     df.columns = df.columns.str.lower()
     if kwargs["verbose"]:
-        # print(f"{INFO} {_mode} {kwargs['ticker']}{df.shape} from {filename}")
         print(f"{INFO} {_mode} {kwargs['ticker']}{df.shape} from {fpath}")
         print(f"{INFO} From {df.index[0]} to {df.index[-1]}\n{df}\n")
     return df
@@ -86,6 +85,7 @@ _tdpy = pandas_ta.RATE["TRADING_DAYS_PER_YEAR"]
 # needed to test All indicators individually and within the DataFrame
 # extension. A larger sample may be required because of the Unstable Period
 sample_data = load(
+        fpath="data/SPY_D.csv",
         n = [
             -2 * _tdpy, -_tdpy,
             -89, 0, 89,

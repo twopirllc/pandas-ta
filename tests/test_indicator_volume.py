@@ -194,6 +194,28 @@ class TestVolume(TestCase):
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "VP_10")
 
+    def test_vwap(self):
+        """Volume: VWAP"""
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume_)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "VWAP_D")
+
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume_, bands=[1])
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "VWAP_D")
+
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume_, bands=[-1, 1])
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "VWAP_D")
+
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume_, bands=[1, 2, 4, 8])
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "VWAP_D")
+
+        result = pandas_ta.vwap(self.high, self.low, self.close, self.volume_, bands=[1, 2.5, 4.13])
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "VWAP_D")
+
     def test_wb_tsv(self):
         """Volume: WB TSV"""
         result = pandas_ta.wb_tsv(self.close, self.volume_)
