@@ -6,11 +6,15 @@ labels: enhancement
 assignees: ''
 
 ---
-
-**Which version are you running? The lastest version is Github. Pip is for major releases.**
+**Which version are you running? The lastest version is on Github. Pip is for major releases.**
 ```python
 import pandas_ta as ta
 print(ta.version)
+```
+
+**Do you have _TA Lib_ also installed in your environment?**
+```sh
+$ pip list
 ```
 
 **Upgrade.**

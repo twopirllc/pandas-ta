@@ -69,6 +69,10 @@ setup(
             "python-dotenv", "scipy", "sklearn", "statsmodels", "stochastic",
             "ta-lib", "tqdm", "vectorbt", "yfinance",
         ],
-        "test": ["ta-lib"],
+        "test": [
+            "pytest==7.1.2",
+            "pandas_datareader==0.10.0",
+            "ta-lib"
+        ],
     },
 )

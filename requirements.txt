@@ -1,4 +1,4 @@
-numpy==1.19.5
+numpy==1.22.0
 pandas==1.2.0
 python-dateutil==2.8.1
 pytz==2021.1
