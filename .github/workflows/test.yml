@@ -66,6 +66,7 @@ jobs:
       shell: bash
       run: |
         set -o pipefail # make the below pipe fail if pytests fails
-        python -m unittest -v -f tests/test_indicator_*.py
         python -m unittest -v -f tests/test_utils.py
-        python -m unittest -v -f tests/test_utils_metrics.py
+        python -m unittest -v -f tests/test_indicator_*.py
+        python -m unittest -v -f tests/test_ext_indicator_*.py
+        python -m unittest -v -f tests/test_study.py
