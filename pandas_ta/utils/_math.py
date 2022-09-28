@@ -119,13 +119,13 @@ def geometric_mean(series: Series) -> Float:
     return 0
 
 
-def hpoly(c: Array, x: IntFloat) -> Float:
+def hpoly(x: Array, v: IntFloat) -> Float:
     """Horner Calculation for Polynomial Evaluation (hpoly)
 
     array: np.array of polynomial coefficients
         * Convert list or Series to np.array prior to calling the method for
         best performance
-    x: value to evaluate
+    v: value to evaluate
 
     Example:
     coeffs_0 = [4, -3, 0, 1] # 4x^3 - 3x^2 + 0x + 1
@@ -136,13 +136,13 @@ def hpoly(c: Array, x: IntFloat) -> Float:
     hpoly(coeffs_0, x) => -1224.25
     hpoly(coeffs_1, x) or hpoly(coeffs_2, x) => -1224.25 # Faster
     """
-    if not isinstance(c, ndarray):
-        c_ = array(c)
+    if not isinstance(x, ndarray):
+        x = array(x)
 
-    m, y = c_.size, c_[0]
+    m, y = x.size, x[0]
 
     for i in range(1, m):
-        y = c_[i] + x * y
+        y = x[i] + v * y
     return y
 
 
