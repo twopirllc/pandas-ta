@@ -40,7 +40,7 @@ def kdj(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.Series: New feature generated.
+        pd.DataFrame: k, d, and j columns
     """
     # Validate
     length = v_pos_default(length, 9)

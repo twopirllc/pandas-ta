@@ -44,7 +44,7 @@ def macd(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.DataFrame: macd, histogram, signal columns.
+        pd.DataFrame: macd, histogram, signal columns
     """
     # Validate
     fast = v_pos_default(fast, 12)
