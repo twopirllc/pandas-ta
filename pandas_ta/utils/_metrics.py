@@ -200,7 +200,7 @@ def pure_profit_score(close: Series) -> IntFloat:
     r = linear_regression(close_index, close)["r"]
     if r is not nan:
         return r * cagr(close)
-    return 0
+    return 0.0
 
 def sharpe_ratio(
     close: Series, benchmark_rate: IntFloat = 0.0, log: bool = False,
