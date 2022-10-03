@@ -261,7 +261,8 @@ def sortino_ratio(
     return result
 
 def volatility(
-    close: Series, tf: str = "years", returns: bool = False, log: bool = False
+    close: Series, tf: str = "years", returns: bool = False,
+    log: bool = False, **kwargs: DictLike
 ) -> IntFloat:
     """Volatility of a series. Default: 'years'
 
@@ -288,9 +289,8 @@ def volatility(
     else:
         returns = close
 
-    returns = log_geometric_mean(returns).std()
-    # factor = returns.shape[0] / total_time(returns, tf)
-    # if kwargs.pop("nearest_day", False) and tf.lower() == "years":
-    # factor = int(factor + 1)
-    # return np.sqrt(factor) * returns.std()
-    return returns
+    factor = returns.shape[0] / total_time(returns, tf)
+    if kwargs.pop("nearest_day", False) and tf.lower() == "years":
+        factor = int(factor + 1)
+
+    return sqrt(factor) * returns.std()
