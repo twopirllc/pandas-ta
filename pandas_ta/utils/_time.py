@@ -4,7 +4,7 @@ from time import localtime, perf_counter
 
 from pandas import DataFrame, Series, Timestamp, to_datetime
 from pandas_ta._typing import Float, MaybeSeriesFrame, Optional, Tuple, Union
-from pandas_ta.maps import EXCHANGE_TZ, RATE
+from pandas_ta.maps import EXCHANGE_TZ
 
 __all__ = [
     'df_dates',
@@ -16,7 +16,7 @@ __all__ = [
     'total_time',
     'to_utc',
     'unix_convert',
-    'mtd', 
+    'mtd',
     'qtd',
     'ytd',
 ]
@@ -104,7 +104,7 @@ def total_time(df: DataFrame, tf: str = "years") -> Float:
     Useful for annualization."""
     time_diff = df.index[-1] - df.index[0]
     TimeFrame = {
-        "years": time_diff.days / 365.242199074074074,
+        "years": time_diff.days / 365.242199074074074,  # PR 602
         "months": time_diff.days / 30.417,
         "weeks": time_diff.days / 7,
         "days": time_diff.days,
