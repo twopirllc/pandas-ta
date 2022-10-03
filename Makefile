@@ -1,5 +1,5 @@
-.PHONY: all
-all:
+.PHONY: test
+test:
 	make test_utils
 	make test_metrics
 	make test_ta
@@ -29,10 +29,3 @@ test_ta:
 
 test_utils:
 	python -m unittest -v -f tests/test_utils.py
-
-test:
-	python -m unittest -v -f \
-		tests/test_utils.py \
-		tests/test_indicator_*.py \
-		tests/test_ext_indicator_*.py \
-		tests/test_study.py
