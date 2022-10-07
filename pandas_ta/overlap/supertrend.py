@@ -9,8 +9,7 @@ from pandas_ta.volatility import atr
 
 def supertrend(
     high: Series, low: Series, close: Series,
-    length: Int = None,
-    atr_length: Int = None,
+    length: Int = None, atr_length: Int = None,
     multiplier: IntFloat = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
@@ -27,7 +26,9 @@ def supertrend(
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
-        length (int) : length for ATR calculation. Default: 7
+        length (int) : Length for ATR calculation. Default: 7
+        atr_length (int) : If None, defaults to length otherwise, provides
+            variable of control. Default: length
         multiplier (float): Coefficient for upper and lower band distance to
             midrange. Default: 3.0
         offset (int): How many periods to offset the result. Default: 0

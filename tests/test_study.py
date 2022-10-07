@@ -11,7 +11,7 @@ from .context import pandas_ta
 
 
 # Testing Parameters
-cores = 4# cpu_count() - 1
+cores = cpu_count() - 2 if cpu_count() > 3 else 0
 cumulative = False
 speed_table = False
 timed_test = False
