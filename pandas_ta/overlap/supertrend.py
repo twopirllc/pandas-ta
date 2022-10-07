@@ -9,7 +9,9 @@ from pandas_ta.volatility import atr
 
 def supertrend(
     high: Series, low: Series, close: Series,
-    length: Int = None, multiplier: IntFloat = None,
+    length: Int = None,
+    atr_length: Int = None,
+    multiplier: IntFloat = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Supertrend (supertrend)
@@ -40,6 +42,7 @@ def supertrend(
     """
     # Validate
     length = v_pos_default(length, 7)
+    atr_length = v_pos_default(atr_length, length)
     high = v_series(high, length + 1)
     low = v_series(low, length + 1)
     close = v_series(close, length + 1)
@@ -56,7 +59,7 @@ def supertrend(
     long, short = [nan] * m, [nan] * m
 
     hl2_ = hl2(high, low)
-    matr = multiplier * atr(high, low, close, length)
+    matr = multiplier * atr(high, low, close, atr_length)
     lb = hl2_ - matr  # Lowerband
     ub = hl2_ + matr  # Upperband
     for i in range(1, m):
