@@ -45,7 +45,7 @@ def variance(
     if close is None:
         return
 
-    ddof = int(ddof) if isinstance(ddof, int) and 0 <= ddof < length else 1
+    ddof = int(ddof) if isinstance(ddof, int) and 0 <= ddof < length else 0
     mode_tal = v_talib(talib)
     offset = v_offset(offset)
 
