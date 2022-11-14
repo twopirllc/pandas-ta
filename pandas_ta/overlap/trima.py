@@ -50,9 +50,8 @@ def trima(
         from talib import TRIMA
         trima = TRIMA(close, length)
     else:
-        half_length = round(0.5 * (length + 1))
-        sma1 = sma(close, length=half_length, talib=mode_tal)
-        trima = sma(sma1, length=half_length, talib=mode_tal)
+        sma1 = sma(close, length = round(0.5 * (length + 0.5)))
+        trima = sma(sma1, length = round(0.5 * (length + 1.5)))
 
     # Offset
     if offset != 0:
