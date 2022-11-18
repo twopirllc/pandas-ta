@@ -83,8 +83,8 @@ def ema(
     else:
         if presma:  # TA Lib implementation
             close = close.copy()
-            sma_nth = close[0:length].mean()
-            close[:length - 1] = nan
+            sma_nth = close.iloc[0:length].mean()
+            close.iloc[:length - 1] = nan
             close.iloc[length - 1] = sma_nth
         ema = close.ewm(span=length, adjust=adjust).mean()
 
