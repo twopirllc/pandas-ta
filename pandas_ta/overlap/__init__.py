@@ -34,6 +34,7 @@ from .vidya import vidya
 from .wcp import wcp
 from .wma import wma
 from .zlma import zlma
+from .chandelier_exit import chandelier_exit
 
 __all__ = [
     "alligator",
@@ -71,4 +72,5 @@ __all__ = [
     "wcp",
     "wma",
     "zlma",
+    "chandelier_exit",
 ]

@@ -59,7 +59,7 @@ Category: Dict[str, ListStr] = {
         "hma", "hwma", "ichimoku", "jma", "kama", "linreg", "mama",
         "mcgd", "midpoint", "midprice", "ohlc4", "pwma", "rma", "sinwma",
         "sma", "smma", "ssf", "ssf3", "supertrend", "swma", "t3", "tema",
-        "trima", "vidya", "wcp", "wma", "zlma"
+        "trima", "vidya", "wcp", "wma", "zlma", "chandelier_exit"
     ],
     # Performance
     "performance": ["log_return", "percent_return"],
