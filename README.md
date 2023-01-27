@@ -80,7 +80,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 * Has 130+ indicators and utility functions.
     * **BETA** Also Pandas TA will run TA Lib's version, this includes TA Lib's 63 Chart Patterns.
-* Indicators in Python are tightly correlated with the _de facto_ [TA Lib](https://github.com/mrjbq7/ta-lib) if they share common indicators.
+* Indicators in Python are tightly correlated with the _de facto_ [TA Lib](https://github.com/TA-Lib/ta-lib-python) if they share common indicators.
 * If TA Lib is also installed, TA Lib computations are enabled by default but can be disabled disabled per indicator by using the argument ```talib=False```.
     * For instance to disable TA Lib calculation for **stdev**: ```ta.stdev(df["close"], length=30, talib=False)```.
 * **NEW**! Include External Custom Indicators independent of the builtin Pandas TA indicators. For more information, see ```import_dir``` documentation under ```/pandas_ta/custom.py```.
@@ -94,7 +94,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 
 **Under Development**
 ===================
-**Pandas TA** checks if the user has some common trading packages installed including but not limited to: [**TA Lib**](https://mrjbq7.github.io/ta-lib/), [**Vector BT**](https://github.com/polakowo/vectorbt), [**YFinance**](https://github.com/ranaroussi/yfinance) ... Much of which is _experimental_ and likely to break until it stabilizes more.
+**Pandas TA** checks if the user has some common trading packages installed including but not limited to: [**TA Lib**](https://ta-lib.github.io/ta-lib-python/), [**Vector BT**](https://github.com/polakowo/vectorbt), [**YFinance**](https://github.com/ranaroussi/yfinance) ... Much of which is _experimental_ and likely to break until it stabilizes more.
 * If **TA Lib** installed, existing indicators will _eventually_ get a **TA Lib** version.
 * Easy Downloading of _ohlcv_ data using [yfinance](https://github.com/ranaroussi/yfinance). See ```help(ta.ticker)``` and ```help(ta.yf)``` and examples below.
 * Some Common Performance Metrics
