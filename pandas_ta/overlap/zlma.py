@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import sys
 from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
@@ -21,46 +22,6 @@ from .tema import tema
 from .trima import trima
 from .vidya import vidya
 from .wma import wma
-
-
-# Not ideal but it works. Submit a PR for a better solution. =)
-# This design pattern is undesirable
-def _ma(mamode: str, **kwargs: DictLike):
-    if mamode == "dema":
-        return dema(**kwargs)
-    elif mamode == "fwma":
-        return fwma(**kwargs)
-    elif mamode == "hma":
-        return hma(**kwargs)
-    elif mamode == "linreg":
-        return linreg(**kwargs)
-    elif mamode == "midpoint":
-        return midpoint(**kwargs)
-    elif mamode == "pwma":
-        return pwma(**kwargs)
-    elif mamode == "rma":
-        return rma(**kwargs)
-    elif mamode == "sinwma":
-        return sinwma(**kwargs)
-    elif mamode == "sma":
-        return sma(**kwargs)
-    elif mamode == "ssf":
-        return ssf(**kwargs)
-    elif mamode == "swma":
-        return swma(**kwargs)
-    elif mamode == "t3":
-        return t3(**kwargs)
-    elif mamode == "tema":
-        return tema(**kwargs)
-    elif mamode == "trima":
-        return trima(**kwargs)
-    elif mamode == "vidya":
-        return vidya(**kwargs)
-    elif mamode == "wma":
-        return wma(**kwargs)
-    else:
-        return ema(**kwargs)
-
 
 def zlma(
     close: Series, length: Int = None, mamode: str = None,
@@ -96,6 +57,11 @@ def zlma(
         return
 
     mamode = v_mamode(mamode, "ema")
+    supported_mas = {"dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
+                     "sinwma", "sma", "ssf", "swma", "t3", "tema", "trima", "vidya", "wma"}
+    if mamode not in supported_mas:
+        return
+    
     offset = v_offset(offset)
 
     # Calculate
@@ -104,8 +70,11 @@ def zlma(
 
     kwargs.update({"close": close_})
     kwargs.update({"length": length})
-
-    zlma = _ma(mamode, **kwargs)
+    
+    this = sys.modules[__name__]
+    zlma_func = getattr(this, mamode)
+    zlma = zlma_func(**kwargs)
+    #zlma = _ma(mamode, **kwargs)
     if zlma is None or all(isnan(zlma)):
         return  # Emergency Break
 
