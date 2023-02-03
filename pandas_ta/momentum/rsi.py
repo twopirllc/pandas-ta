@@ -2,7 +2,7 @@
 from pandas import DataFrame, concat, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.overlap import rma
+from pandas_ta.ma import ma
 from pandas_ta.utils import (
     signals,
     v_drift,
@@ -10,14 +10,16 @@ from pandas_ta.utils import (
     v_pos_default,
     v_scalar,
     v_series,
-    v_talib
+    v_talib,
+    v_mamode
 )
 
 
 def rsi(
     close: Series, length: Int = None, scalar: IntFloat = None,
     talib: bool = None, drift: Int = None,
-    offset: Int = None, **kwargs: DictLike
+    offset: Int = None, mamode: str = None,
+    **kwargs: DictLike
 ) -> Series:
     """Relative Strength Index (RSI)
 
@@ -36,6 +38,7 @@ def rsi(
             the TA Lib version. Default: True
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
+        mamode (str): See ``help(ta.ma)``. Default: 'rma'
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
@@ -51,6 +54,7 @@ def rsi(
     if close is None:
         return
 
+    mamode = v_mamode(mamode, "rma")
     scalar = v_scalar(scalar, 100)
     mode_tal = v_talib(talib)
     drift = v_drift(drift)
@@ -67,8 +71,9 @@ def rsi(
         positive[positive < 0] = 0  # Make negatives 0 for the positive series
         negative[negative > 0] = 0  # Make positives 0 for the negative series
 
-        positive_avg = rma(positive, length=length)
-        negative_avg = rma(negative, length=length)
+        positive_avg = ma(mamode, positive, length=length, talib=mode_tal)
+        negative_avg = ma(mamode, negative, length=length, talib=mode_tal)
+
 
         rsi = scalar * positive_avg / (positive_avg + negative_avg.abs())
 
