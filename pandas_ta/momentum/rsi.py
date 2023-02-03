@@ -74,7 +74,6 @@ def rsi(
         positive_avg = ma(mamode, positive, length=length, talib=mode_tal)
         negative_avg = ma(mamode, negative, length=length, talib=mode_tal)
 
-
         rsi = scalar * positive_avg / (positive_avg + negative_avg.abs())
 
     # Offset
