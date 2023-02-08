@@ -35,10 +35,11 @@ def supertrend(high, low, close, length=None, multiplier=None, offset=None, **kw
             dir_[i] = -1
         else:
             dir_[i] = dir_[i - 1]
-            if dir_[i] > 0 and lowerband.iloc[i] < lowerband.iloc[i - 1]:
-                lowerband.iloc[i] = lowerband.iloc[i - 1]
-            if dir_[i] < 0 and upperband.iloc[i] > upperband.iloc[i - 1]:
-                upperband.iloc[i] = upperband.iloc[i - 1]
+            
+        if dir_[i] > 0 and lowerband.iloc[i] < lowerband.iloc[i - 1]:
+            lowerband.iloc[i] = lowerband.iloc[i - 1]
+        if dir_[i] < 0 and upperband.iloc[i] > upperband.iloc[i - 1]:
+            upperband.iloc[i] = upperband.iloc[i - 1]
 
         if dir_[i] > 0:
             trend[i] = long[i] = lowerband.iloc[i]
