@@ -70,10 +70,11 @@ def supertrend(
             dir_[i] = -1
         else:
             dir_[i] = dir_[i - 1]
-            if dir_[i] > 0 and lb.iloc[i] < lb.iloc[i - 1]:
-                lb.iloc[i] = lb.iloc[i - 1]
-            if dir_[i] < 0 and ub.iloc[i] > ub.iloc[i - 1]:
-                ub.iloc[i] = ub.iloc[i - 1]
+            
+        if dir_[i] > 0 and lb.iloc[i] < lb.iloc[i - 1]:
+            lb.iloc[i] = lb.iloc[i - 1]
+        if dir_[i] < 0 and ub.iloc[i] > ub.iloc[i - 1]:
+            ub.iloc[i] = ub.iloc[i - 1]
 
         if dir_[i] > 0:
             trend[i] = long[i] = lb.iloc[i]
