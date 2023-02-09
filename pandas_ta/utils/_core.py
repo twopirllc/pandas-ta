@@ -31,7 +31,10 @@ def get_drift(x: int) -> int:
 
 def get_offset(x: int) -> int:
     """Returns an int, otherwise defaults to zero."""
-    return int(x) if isinstance(x, int) else 0
+    try:
+        return int(x)
+    except ValueError:
+        return 0
 
 
 def is_datetime_ordered(df: DataFrame or Series) -> bool:
