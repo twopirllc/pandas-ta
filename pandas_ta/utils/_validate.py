@@ -61,7 +61,7 @@ def v_float(
 
 def v_int(var: Int, default: Int, ne: Optional[Int] = 0) -> Int:
     """Returns the default if var is not equal to the ne value."""
-    is_ne, is_var = isinstance(ne, int), isinstance(var, int)
+    is_ne, is_var = isinstance(ne, Int), isinstance(var, Int)
     if is_ne and is_var and int(var) != int(ne):
         return int(var)
     return int(default)
