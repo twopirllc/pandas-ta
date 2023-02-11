@@ -1,25 +1,36 @@
-# -*- coding: utf-8 -*-
 """
 VR Volatility Volume Ratio
-TODO: change input to rows and not entire dataframe
 """
 import numpy as np
+from pandas_ta.utils import verify_series
+import pandas as pd
 
-def vr(data, n=None):
+def vr(close, open, volume, n=None):
+        
+    # Validate arguments
     n = n if n and n > 0 else 26
     
+    close = verify_series(close)
+    open = verify_series(open)
+    volume = verify_series(volume)
+    
+    if close is None: return
+    if volume is None: return
+    if open is None: return
+    
+    #calculate
 
     VR = []
 
     AV_volumes, BV_volumes, CV_volumes = [], [], []
-    for index, row in data.iterrows():
+    for i in range(0,len(close)):
 
-        if row["close"] > row["open"]:
-            AV_volumes.append(row["volume"])
-        elif row["close"] < row["open"]:
-            BV_volumes.append(row["volume"])
+        if close[i] > open[i]:
+            AV_volumes.append(volume[i])
+        elif close[i] < open[i]:
+            BV_volumes.append(volume[i])
         else:
-            CV_volumes.append(row["volume"])
+            CV_volumes.append(volume[i])
 
         if len(AV_volumes) == n:
             del AV_volumes[0]
@@ -36,7 +47,11 @@ def vr(data, n=None):
             vr = (avs + (1 / 2) * cvs) / (bvs + (1 / 2) * cvs)
         else:
             vr = 0
-
         VR.append(vr)
+    # Prepare DataFrame to return
+    Final = pd.DataFrame(VR)
+    Final.name = "Volatility_Volume_Ratio"
+    Final.category = "volume"
+        
 
-    return np.asarray(VR)
+    return Final
