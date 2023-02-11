@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 ADXR
 """
@@ -39,13 +38,3 @@ def adxr(high, low, close, n=None):
     ADXR.name = 'ADXR'
     ADXR.category = 'trend'
     return ADXR
-
-
-
-#test
-'''
-import yfinance as yf
-df = yf.download(tickers = 'GD' , period='20d', interval='1d')
-print(adxr(df['High'], df['Low'], df['Close']))
-#print(df)
-'''
