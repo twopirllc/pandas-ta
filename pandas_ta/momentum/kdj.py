@@ -8,28 +8,22 @@ Please reference https://www.moomoo.com/us/learn/detail-what-is-the-kdj-67019-22
 import numpy as np
 def kdj(close, low, high):
     
-
-
+    rsv = (close - low) / (high - low) * 100
     K, D, J = [], [], []
-    last_k, last_d = None, None
-    for c in close:
-        for l in low:
-            for h in high:
-                if last_k is None or last_d is None:
-                    last_k = 50
-                    last_d = 50
+    print((rsv))
 
 
-                rsv = (c - l) / (h - l) * 100
+    K.append( (2 / 3) * 50 + (1 / 3) * rsv[0])
+    
+    
+    D.append((2 / 3) * 50 + (1 / 3) * K[0])
+    
+    for i in range(1,len(rsv)):
+        K.append((2 / 3) * K[i-1] + (1 / 3) * rsv[i])
+        D.append((2 / 3) * D[i-1] + (1 / 3) * K[i])
+        J.append(3 * K[i] - 2 * D[i])
 
-                k = (2 / 3) * last_k + (1 / 3) * rsv
-                d = (2 / 3) * last_d + (1 / 3) * k
-                j = 3 * k - 2 * d
 
-                K.append(k)
-                D.append(d)
-                J.append(j)
-
-                last_k, last_d = k, d
+   
 
     return np.asarray(K), np.asarray(D), np.asarray(J)
