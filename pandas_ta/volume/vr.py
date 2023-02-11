@@ -49,9 +49,9 @@ def vr(close, open, volume, n=None):
             vr = 0
         VR.append(vr)
     # Prepare DataFrame to return
-    Final = pd.DataFrame(VR)
-    Final.name = "Volatility_Volume_Ratio"
-    Final.category = "volume"
+    VR = pd.DataFrame(VR)
+    VR.name = "Volatility_Volume_Ratio"
+    VR.category = "volume"
         
 
-    return Final
+    return VR
