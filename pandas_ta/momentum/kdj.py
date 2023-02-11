@@ -10,7 +10,6 @@ def kdj(close, low, high):
     
     rsv = (close - low) / (high - low) * 100
     K, D, J = [], [], []
-    print((rsv))
 
 
     K.append( (2 / 3) * 50 + (1 / 3) * rsv[0])
