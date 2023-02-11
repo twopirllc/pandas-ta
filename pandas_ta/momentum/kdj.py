@@ -18,7 +18,7 @@ def kdj(close, low, high):
     
     if close is None: return
     if low is None: return
-    if open is None: return
+    if high is None: return
     
     #calculate
     
