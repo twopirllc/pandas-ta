@@ -49,9 +49,10 @@ def dpo(
     t = int(0.5 * length) + 1
     ma = sma(close, length)
 
-    dpo = close - ma.shift(t)
     if centered:
         dpo = (close.shift(t) - ma).shift(-t)
+    else:
+        dpo = close - ma.shift(t)
 
     # Offset
     if offset != 0:

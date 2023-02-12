@@ -40,8 +40,9 @@ def sinwma(
     offset = v_offset(offset)
 
     # Calculate
-    sines = Series([sin((i + 1) * pi / (length + 1))
-                   for i in range(0, length)])
+    sines = Series(
+        [sin((i + 1) * pi / (length + 1)) for i in range(0, length)]
+    )
     w = sines / sines.sum()
 
     sinwma = close.rolling(length, min_periods=length) \
