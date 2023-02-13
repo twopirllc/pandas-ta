@@ -83,13 +83,13 @@ _Pandas Technical Analysis_ (**Pandas TA**) is a free, Open Source, and easy to 
 Large & Lite Weight Library
 ---------------------------
 * Over 200 Indicators, Statistics and Candlestick Patterns.
-    * Over 60 Candlestick Patterns with **[TA Lib](https://github.com/mrjbq7/ta-lib)** indicator integration.
+    * Over 60 Candlestick Patterns with **[TA Lib](https://github.com/TA-Lib/ta-lib-python)** indicator integration.
 * Flat library structure similar to **TA Lib**.
 * Single dependency: [Pandas](https://pandas.pydata.org/)
 
 Accuracy
 --------
-* Indicators are highly correlated, _r > 0.99_, with [TA Lib](https://github.com/mrjbq7/ta-lib) and builtin [TradingView](https://www.tradingview.com/) Indicators.
+* Indicators are highly correlated, _r > 0.99_, with [TA Lib](https://github.com/TA-Lib/ta-lib-python) and builtin [TradingView](https://www.tradingview.com/) Indicators.
     * :chart_with_upwards_trend: Contributions are welcome for improved accuracy and performance.
 
 Performance
@@ -1308,7 +1308,7 @@ Back to [Contents](#contents)
 
 # **Sources**
 ### Technical Analysis
-[Original TA-LIB](http://ta-lib.org/) | [TradingView](http://www.tradingview.com) | [Sierra Chart](https://search.sierrachart.com/?Query=indicators&submitted=true) | [MQL5](https://www.mql5.com) | [FM Labs](https://www.fmlabs.com/reference/default.htm) | [Pro Real Code](https://www.prorealcode.com/prorealtime-indicators) | [User 42](https://user42.tuxfamily.org/chart/manual/index.html) | [Technical Traders](http://technical.traders.com/tradersonline/FeedTT-2014.html)
+[Original TA-LIB](https://ta-lib.org/) | [TradingView](http://www.tradingview.com) | [Sierra Chart](https://search.sierrachart.com/?Query=indicators&submitted=true) | [MQL5](https://www.mql5.com) | [FM Labs](https://www.fmlabs.com/reference/default.htm) | [Pro Real Code](https://www.prorealcode.com/prorealtime-indicators) | [User 42](https://user42.tuxfamily.org/chart/manual/index.html) | [Technical Traders](http://technical.traders.com/tradersonline/FeedTT-2014.html)
 
 ### Supplemental
 [What Every Computer Scientist Should Know About Floating-Point Arithmetic](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html)
