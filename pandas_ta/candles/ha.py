@@ -12,18 +12,23 @@ def ha(open_, high, low, close, offset=None, **kwargs):
     close = v_series(close,1)
     offset = v_offset(offset)
 
-    # Calculate Result
+   # Calculate Result
     m = close.size
+    # store of calcualtions
+    open_zero = 0.5 * (open_.iloc[0] + close.iloc[0])
+    close_zero = 0.25 * (open_ + high + low + close)
     df = DataFrame({
-        "HA_open": 0.5 * (open_.iloc[0] + close.iloc[0]),
+        "HA_open":  open_zero,
         "HA_high": high,
         "HA_low": low,
-        "HA_close": 0.25 * (open_ + high + low + close),
+        "HA_close":close_zero,
     })
-
+    # as lists
+    ha_open = df['HA_open'].tolist()
+    ha_close = close_zero.tolist()
     for i in range(1, m):
-        df["HA_open"][i] = 0.5 * (df["HA_open"][i - 1] + df["HA_close"][i - 1])
-
+        ha_open[i] = (0.5 * (ha_open[i - 1] + ha_close[i - 1]))
+    df["HA_open"] = ha_open
     df["HA_high"] = df[["HA_open", "HA_high", "HA_close"]].max(axis=1)
     df["HA_low"] = df[["HA_open", "HA_low", "HA_close"]].min(axis=1)
 
@@ -40,8 +45,6 @@ def ha(open_, high, low, close, offset=None, **kwargs):
     # Name and Categorize it
     df.name = "Heikin-Ashi"
     df.category = "candles"
-
-    return df
 
 
 ha.__doc__ = \
