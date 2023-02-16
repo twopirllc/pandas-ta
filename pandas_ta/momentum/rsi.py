@@ -6,19 +6,19 @@ from pandas_ta.ma import ma
 from pandas_ta.utils import (
     signals,
     v_drift,
+    v_mamode,
     v_offset,
     v_pos_default,
     v_scalar,
     v_series,
-    v_talib,
-    v_mamode
+    v_talib
 )
 
 
 def rsi(
     close: Series, length: Int = None, scalar: IntFloat = None,
-    talib: bool = None, drift: Int = None,
-    offset: Int = None, mamode: str = None,
+    mamode: str = None, talib: bool = None,
+    drift: Int = None, offset: Int = None,
     **kwargs: DictLike
 ) -> Series:
     """Relative Strength Index (RSI)
@@ -34,11 +34,11 @@ def rsi(
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14
         scalar (float): How much to magnify. Default: 100
+        mamode (str): See ``help(ta.ma)``. Default: 'rma'
         talib (bool): If TA Lib is installed and talib is True, Returns
             the TA Lib version. Default: True
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
-        mamode (str): See ``help(ta.ma)``. Default: 'rma'
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
@@ -54,8 +54,8 @@ def rsi(
     if close is None:
         return
 
-    mamode = v_mamode(mamode, "rma")
     scalar = v_scalar(scalar, 100)
+    mamode = v_mamode(mamode, "rma")
     mode_tal = v_talib(talib)
     drift = v_drift(drift)
     offset = v_offset(offset)
