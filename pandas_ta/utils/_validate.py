@@ -9,7 +9,9 @@ from pandas_ta._typing import (
     List,
     MaybeSeriesFrame,
     Optional,
-    SeriesFrame
+    SeriesFrame,
+    np_floating,
+    np_integer
 )
 
 __all__ = [
@@ -54,16 +56,18 @@ def v_float(
     var: IntFloat, default: IntFloat, ne: Optional[IntFloat] = 0.0
 ) -> Float:
     """Returns the default if var is not equal to the ne value."""
-    is_ne, is_var = isinstance(ne, (float, int)), isinstance(var, (float, int))
-    if is_ne and is_var and float(var) != float(ne):
-        return float(var)
+    _types = (float, int, np_floating, np_integer)
+    if isinstance(ne, _types) and isinstance(var, _types):
+        if float(var) != float(ne):
+            return float(var)
     return float(default)
 
 def v_int(var: Int, default: Int, ne: Optional[Int] = 0) -> Int:
     """Returns the default if var is not equal to the ne value."""
-    is_ne, is_var = isinstance(ne, Int), isinstance(var, Int)
-    if is_ne and is_var and int(var) != int(ne):
+    if isinstance(var, int) and int(var) != int(ne):
         return int(var)
+    if isinstance(var, np_integer) and var.item() != int(ne):
+        return var.item()
     return int(default)
 
 def v_str(var: str, default: str) -> str:

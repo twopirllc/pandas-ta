@@ -391,12 +391,19 @@ class TestUtilities(TestCase):
 
     def test_v_drift(self):
         """Validate: drift"""
-        for s in [0, None, "", [], {}]:
-            self.assertIsInstance(self.utils.v_drift(s), int)
+        _instances = [0, None, "", [], {}, np.int8(5), np.int16(5), np.int32(5), np.int64(5)]
+        for _ in _instances:
+            self.assertIsInstance(self.utils.v_drift(_), int)
 
         self.assertEqual(self.utils.v_drift(-1.1), 1)
         self.assertEqual(self.utils.v_drift(0), 1)
         self.assertEqual(self.utils.v_drift(1.1), 1)
+        self.assertEqual(self.utils.v_drift(5), 5)
+
+        self.assertEqual(self.utils.v_drift(np.int64(-1.1)), -1) # np.int*() converts truncates floats
+        self.assertEqual(self.utils.v_drift(np.int64(0)), 1)
+        self.assertEqual(self.utils.v_drift(np.int64(1.1)), 1)
+        self.assertEqual(self.utils.v_drift(np.int64(5)), 5)
 
     @skip
     def test_v_gtb(self):
@@ -437,11 +444,11 @@ class TestUtilities(TestCase):
             for v in _vars:
                 self.assertIsInstance(self.utils.v_upperbound(v, strict=strict), (float, int))
 
-
     def test_v_offset(self):
         """Validate: offset"""
-        for s in [0, None, "", [], {}]:
-            self.assertIsInstance(self.utils.v_offset(s), int)
+        _instances = [0, None, "", [], {}, np.int8(5), np.int16(5), np.int32(5), np.int64(5)]
+        for _ in _instances:
+            self.assertIsInstance(self.utils.v_offset(_), int)
 
         self.assertEqual(self.utils.v_offset(None), 0)
         self.assertEqual(self.utils.v_offset(-1.1), 0)
@@ -450,6 +457,14 @@ class TestUtilities(TestCase):
         self.assertEqual(self.utils.v_offset(1.1), 0)
         self.assertEqual(self.utils.v_offset(1), 1)
         self.assertEqual(self.utils.v_offset(2), 2)
+
+        self.assertEqual(self.utils.v_offset(np.int64(-1)), -1)
+        self.assertEqual(self.utils.v_offset(np.int64(0)), 0)
+        self.assertEqual(self.utils.v_offset(np.int64(1.1)), 1)
+        self.assertEqual(self.utils.v_offset(np.int64(1)), 1)
+        self.assertEqual(self.utils.v_offset(np.int64(2)), 2)
+        self.assertEqual(self.utils.v_offset(np.int64(-1.1)), -1)
+        self.assertEqual(self.utils.v_offset(np.int64(1.1)), 1)
 
     def test_sample_processes(self):
         """Feature[Math]: sample"""
