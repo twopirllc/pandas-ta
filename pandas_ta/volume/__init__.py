@@ -14,3 +14,4 @@ from .pvol import pvol
 from .pvr import pvr
 from .pvt import pvt
 from .vp import vp
+from .vhm import vhm

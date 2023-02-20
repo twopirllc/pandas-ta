@@ -1747,6 +1747,12 @@ class AnalysisIndicators(BasePandasObject):
         result = pvt(close=close, volume=volume, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def vhm(self, volume=None, length=None, **kwargs):
+        volume = self._get_column(kwargs.pop("volume", "volume"))
+        length = self._get_column(kwargs.pop("length", "length"))
+        result = vhm(volume=volume, length=length, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def vp(self, width=None, percent=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
