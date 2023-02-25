@@ -58,13 +58,13 @@ def below_value(series_a: Series, value: float, asint: bool = True, offset: int 
     return _above_below(series_a, series_b, above=False, asint=asint, offset=offset, **kwargs)
 
 
-def cross_value(series_a: Series, value: float, above: bool = True, asint: bool = True, offset: int = None, **kwargs):
+def cross_value(series_a: Series, value: float,  equal: bool = True, above: bool = True, asint: bool = True, offset: int = None, **kwargs):
     series_b = Series(value, index=series_a.index, name=f"{value}".replace(".", "_"))
 
-    return cross(series_a, series_b, above, asint, offset, **kwargs)
+    return cross(series_a, series_b, equal, above, asint, offset, **kwargs)
 
 
-def cross(series_a: Series, series_b: Series, above: bool = True, asint: bool = True, offset: int = None, **kwargs):
+def cross(series_a: Series, series_b: Series, equal: bool = True, above: bool = True, asint: bool = True, offset: int = None, **kwargs):
     series_a = verify_series(series_a)
     series_b = verify_series(series_b)
     offset = get_offset(offset)
@@ -73,10 +73,14 @@ def cross(series_a: Series, series_b: Series, above: bool = True, asint: bool = 
     series_b.apply(zero)
 
     # Calculate Result
-    current = series_a > series_b  # current is above
-    previous = series_a.shift(1) < series_b.shift(1)  # previous is below
-    # above if both are true, below if both are false
-    cross = current & previous if above else ~current & ~previous
+    if above:
+        current = series_a >= series_b if equal else series_a > series_b  # current is above or equal
+        previous = series_a.shift(1) < series_b.shift(1)  # previous is below
+    else:
+        current = series_a <= series_b if equal else series_a < series_b  # current is below or equal
+        previous = series_a.shift(1) > series_b.shift(1)  # previous is above
+
+    cross = current & previous
 
     if asint:
         cross = cross.astype(int)
