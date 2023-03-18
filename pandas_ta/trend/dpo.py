@@ -14,6 +14,10 @@ def dpo(
     Is an indicator designed to remove trend from price and make it easier to
     identify cycles.
 
+    WARNING: This function may leak future data when used for machine learning
+        if centered=True (default). Set lookahead=False to avoid data leakage.
+        See https://github.com/twopirllc/pandas-ta/issues/60#.
+
     Sources:
         https://www.tradingview.com/scripts/detrendedpriceoscillator/
         https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/dpo
@@ -29,6 +33,7 @@ def dpo(
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
+        lookahead (value, optional): Set False to prevent centering and avoid potential data leakage.
 
     Returns:
         pd.Series: New feature generated.
