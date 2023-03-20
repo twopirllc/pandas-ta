@@ -16,6 +16,10 @@ def tos_stdevall(
     which returns the standard deviation of data for the entire plot or for
     the interval of the last bars defined by the length parameter.
 
+    WARNING: This function may leak future data when used for machine learning.
+        Setting lookahead=False does not currently prevent leakage.
+        See https://github.com/twopirllc/pandas-ta/issues/667.
+
     Sources:
         https://tlc.thinkorswim.com/center/reference/thinkScript/Functions/Statistical/StDevAll
 
