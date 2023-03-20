@@ -12,6 +12,10 @@ def kurtosis(
 
     Calculates the Kurtosis over a rolling period.
 
+    WARNING: This function may leak future data when used for machine learning.
+        Setting lookahead=False does not currently prevent leakage.
+        See https://github.com/twopirllc/pandas-ta/issues/667.
+
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 30
