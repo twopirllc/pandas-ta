@@ -21,7 +21,9 @@ def vp(close, volume, width=None, **kwargs):
     pos_volume.name = volume.name
     neg_volume = -volume * signed_price[signed_price < 0]
     neg_volume.name = volume.name
-    vp = concat([close, pos_volume, neg_volume], axis=1)
+    neut_volume = volume + signed_price[signed_price == 0]
+    neut_volume.name = volume.name
+    vp = concat([close, pos_volume, neg_volume, neut_volume], axis=1)
 
     close_col = f"{vp.columns[0]}"
     high_price_col = f"high_{close_col}"
@@ -31,8 +33,9 @@ def vp(close, volume, width=None, **kwargs):
     volume_col = f"{vp.columns[1]}"
     pos_volume_col = f"pos_{volume_col}"
     neg_volume_col = f"neg_{volume_col}"
+    neut_volume_col = f"neut_{volume_col}"
     total_volume_col = f"total_{volume_col}"
-    vp.columns = [close_col, pos_volume_col, neg_volume_col]
+    vp.columns = [close_col, pos_volume_col, neg_volume_col, neut_volume_col]
 
     # sort_close: Sort by close before splitting into ranges. Default: False
     # If False, it sorts by date index or chronological versus by price
@@ -43,11 +46,12 @@ def vp(close, volume, width=None, **kwargs):
             mean_price_col: mean,
             pos_volume_col: sum,
             neg_volume_col: sum,
+            neut_volume_col: sum,
         })
         vpdf[low_price_col] = [x.left for x in vpdf.index]
         vpdf[high_price_col] = [x.right for x in vpdf.index]
         vpdf = vpdf.reset_index(drop=True)
-        vpdf = vpdf[[low_price_col, mean_price_col, high_price_col, pos_volume_col, neg_volume_col]]
+        vpdf = vpdf[[low_price_col, mean_price_col, high_price_col, pos_volume_col, neg_volume_col, neut_volume_col]]
     else:
         vp_ranges = array_split(vp, width)
         result = ({
@@ -56,9 +60,10 @@ def vp(close, volume, width=None, **kwargs):
             high_price_col: r[close_col].max(),
             pos_volume_col: r[pos_volume_col].sum(),
             neg_volume_col: r[neg_volume_col].sum(),
+            neut_volume_col: r[neut_volume_col].sum(),
         } for r in vp_ranges)
         vpdf = DataFrame(result)
-    vpdf[total_volume_col] = vpdf[pos_volume_col] + vpdf[neg_volume_col]
+    vpdf[total_volume_col] = vpdf[pos_volume_col] + vpdf[neg_volume_col] + vpdf[neut_volume_col]
 
     # Handle fills
     if "fillna" in kwargs:
