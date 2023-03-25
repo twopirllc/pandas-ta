@@ -59,7 +59,7 @@ class TestTrend(TestCase):
     def test_adx_result_should_sync_with_trading_view(self):
         data = sample_adx_data
         high, low, close = data["high"], data["low"], data["close"]
-        result = pandas_ta.adx(high, low, close, talib=False)
+        result = pandas_ta.adx(high, low, close, tvmode=True)
 
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "ADX_14")
@@ -129,6 +129,8 @@ class TestTrend(TestCase):
                 ],
             }
         )
+        print(f"\nADX result:\n{result}")
+        print(f"\nADX expected:\n{expected}\n")
         pdt.assert_frame_equal(result, expected)
 
     def test_amat(self):
