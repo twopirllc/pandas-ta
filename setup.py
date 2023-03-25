@@ -65,7 +65,7 @@ setup(
     # $ pip install -U pandas_ta[full]  # pip
     extras_require={
         "full": [
-            "alphaVantage-api", "matplotlib", "mplfinance", "numba", "polygon"
+            "alphaVantage-api", "matplotlib", "mplfinance", "numba", "polygon",
             "python-dotenv", "scipy", "sklearn", "statsmodels", "stochastic",
             "ta-lib", "tqdm", "vectorbt", "yfinance",
         ],

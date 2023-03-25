@@ -54,7 +54,7 @@ def cksp(
         pd.DataFrame: long and short columns.
     """
     # Validate
-    tvmode = v_tradingview(tvmode)
+    mode_tv = v_tradingview(tvmode)
     p = v_pos_default(p, 10)
     # TODO: clean up x and q
     x = float(x) if isinstance(x, float) and x > 0 else 1 if tvmode is True else 3
@@ -68,7 +68,7 @@ def cksp(
     if high is None or low is None or close is None:
         return
 
-    mamode = v_mamode(mamode, "rma") if tvmode else v_mamode(mamode, "sma")
+    mamode = v_mamode(mamode, "rma") if mode_tv else v_mamode(mamode, "sma")
     offset = v_offset(offset)
 
     # Calculate

@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
-from numpy import isnan
+import numpy as np
+from numpy import isnan, nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
+from pandas_ta.maps import Imports
 from pandas_ta.utils import (
+    v_bool,
     v_drift,
     v_mamode,
     v_offset,
     v_pos_default,
     v_scalar,
     v_series,
+    v_talib,
     zero
 )
 from pandas_ta.volatility import atr
@@ -18,8 +22,8 @@ from pandas_ta.volatility import atr
 def adx(
     high: Series, low: Series, close: Series,
     length: Int = None, lensig: Int = None, scalar: IntFloat = None,
-    mamode: str = None, drift: Int = None,
-    offset: Int = None, **kwargs: DictLike
+    talib: bool = None, tvmode: bool = None, mamode: str = None,
+    drift: Int = None, offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Average Directional Movement (ADX)
 
@@ -38,6 +42,9 @@ def adx(
         lensig (int): Signal Length. Like TradingView's default ADX.
             Default: length
         scalar (float): How much to magnify. Default: 100
+        talib (bool): If TA Lib is installed and talib is True, Returns
+            the TA Lib version. Default: True
+        tvmode (bool): Trading View or book implementation mode. Default: False
         mamode (str): See ``help(ta.ma)``. Default: 'rma'
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
@@ -62,6 +69,9 @@ def adx(
 
     scalar = v_scalar(scalar, 100)
     mamode = v_mamode(mamode, "rma")
+    mode_tal = v_talib(talib)
+    mode_tv = v_bool(tvmode, False)
+
     drift = v_drift(drift)
     offset = v_offset(offset)
 
@@ -73,6 +83,8 @@ def adx(
     if atr_ is None or all(isnan(atr_)):
         return
 
+    k = scalar / atr_
+
     up = high - high.shift(drift)  # high.diff(drift)
     dn = low.shift(drift) - low    # low.diff(-drift).shift(drift)
 
@@ -82,12 +94,41 @@ def adx(
     pos = pos.apply(zero)
     neg = neg.apply(zero)
 
-    k = scalar / atr_
-    dmp = k * ma(mamode, pos, length=length)
-    dmn = k * ma(mamode, neg, length=length)
+    if not mode_tv and Imports["talib"] and mode_tal and length > 1:
+        from talib import ADX, MINUS_DM, PLUS_DM
+        adx = ADX(high, low, close, length)
+        dmp = PLUS_DM(high, low, length)
+        dmn = MINUS_DM(high, low, length)
+    elif mode_tv:
+        # How to treat the initial value of RMA varies one to another.
+        # It follows the way TradingView does, setting it to the average of
+        # previous values. Since 'pandas' does not provide API to control
+        # the initial value, work around it by modifying input value to get
+        # desired output.
+        pos.iloc[length - 1] = pos[:length].sum()
+        pos[:length - 1] = 0
+        neg.iloc[length - 1] = neg[:length].sum()
+        neg[:length - 1] = 0
 
-    dx = scalar * (dmp - dmn).abs() / (dmp + dmn)
-    adx = ma(mamode, dx, length=lensig)
+        alpha = 1 / length
+        dmp = k * pos.ewm(alpha=alpha, adjust=False, min_periods=length).mean()
+        dmn = k * neg.ewm(alpha=alpha, adjust=False, min_periods=length).mean()
+
+        # The same goes with dx.
+        dx = scalar * (dmp - dmn).abs() / (dmp + dmn)
+        dx = dx.shift(-length)
+        dx.iloc[length - 1] = dx[:length].sum()
+        dx[:length - 1] = 0
+
+        adx = ma(mamode, dx, length=lensig)
+        # Rollback shifted rows.
+        adx[:length - 1] = np.nan
+        adx = adx.shift(length)
+    else:
+        dmp = k * ma(mamode, pos, length=length)
+        dmn = k * ma(mamode, neg, length=length)
+        dx = scalar * (dmp - dmn).abs() / (dmp + dmn)
+        adx = ma(mamode, dx, length=lensig)
 
     # Offset
     if offset != 0:

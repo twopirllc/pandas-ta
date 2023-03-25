@@ -6,7 +6,7 @@ from pandas import DataFrame, Series
 
 import talib as tal
 
-from .config import error_analysis, sample_data, CORRELATION, CORRELATION_THRESHOLD
+from .config import error_analysis, sample_data, sample_adx_data, CORRELATION, CORRELATION_THRESHOLD
 from .context import pandas_ta
 
 
@@ -55,6 +55,83 @@ class TestTrend(TestCase):
         result = pandas_ta.adx(self.high, self.low, self.close)
         self.assertIsInstance(result, DataFrame)
         self.assertEqual(result.name, "ADX_14")
+
+    def test_adx_result_should_sync_with_trading_view(self):
+        data = sample_adx_data
+        high, low, close = data["high"], data["low"], data["close"]
+        result = pandas_ta.adx(high, low, close, tvmode=True)
+
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "ADX_14")
+
+        result = result.iloc[13:]
+        result.reset_index(drop=True, inplace=True)
+
+        expected = DataFrame(
+            {
+                "ADX_14":
+                [
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    None,
+                    9.874338,
+                    10.408195,
+                    10.799274,
+                ],
+                "DMP_14": [
+                    None,
+                    13.686598,
+                    14.247809,
+                    13.436449,
+                    17.946530,
+                    17.193874,
+                    19.214901,
+                    17.860325,
+                    16.899406,
+                    16.207983,
+                    15.998908,
+                    15.202702,
+                    14.621306,
+                    14.303707,
+                    13.451093,
+                    12.932243,
+                    12.840198,
+                ],
+                "DMN_14": [
+                    None,
+                    21.954010,
+                    21.055379,
+                    23.102292,
+                    21.120552,
+                    20.234781,
+                    18.827331,
+                    19.298744,
+                    19.029033,
+                    18.250478,
+                    17.414460,
+                    16.772558,
+                    16.131126,
+                    15.780731,
+                    19.097781,
+                    18.361121,
+                    17.689287,
+                ],
+            }
+        )
+        print(f"\nADX result:\n{result}")
+        print(f"\nADX expected:\n{expected}\n")
+        pdt.assert_frame_equal(result, expected)
 
     def test_amat(self):
         """Trend: AMAT"""
