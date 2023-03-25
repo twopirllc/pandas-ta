@@ -15,6 +15,10 @@ def ichimoku(
 
     Developed Pre WWII as a forecasting model for financial markets.
 
+    WARNING: This function may leak future data when used for machine learning
+        if include_chikou=True (default). Set lookahead=False to avoid data leakage.
+        See https://github.com/twopirllc/pandas-ta/issues/60#.
+
     Sources:
         https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/ichimoku-ich/
 
@@ -32,6 +36,7 @@ def ichimoku(
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
+        lookahead (value, optional): Set False to prevent data leakage by excluding the Chikou Span column from the output.
 
     Returns:
         pd.DataFrame: Two DataFrames.

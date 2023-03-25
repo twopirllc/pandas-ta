@@ -60,6 +60,10 @@ def ssf(
     For Everget's calculation on TradingView, set arguments:
         pi = np.pi, sqrt2 = np.sqrt(2)
 
+    WARNING: This function may leak future data when used for machine learning.
+        Setting lookahead=False does not currently prevent leakage.
+        See https://github.com/twopirllc/pandas-ta/issues/667.
+
     Sources:
         http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
         https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
