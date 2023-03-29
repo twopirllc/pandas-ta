@@ -18,22 +18,19 @@ def jma(close, length=None, phase=None, offset=None, **kwargs):
     offset = get_offset(offset)
     if close is None: return
 
-    # Define base variables
+    # Calculate
     jma = npZeroslike(close)
-    volty = npZeroslike(close)
-    v_sum = npZeroslike(close)
+    volty_10 = []
+    vsum_buff = []
 
-    kv = det0 = det1 = ma2 = 0.0
+    vsum = kv = det0 = det1 = ma2 = 0.0
+    print(type(det1))
     jma[0] = ma1 = uBand = lBand = close[0]
 
     # Static variables
-    sum_length = 10
-    length = 0.5 * (_length - 1)
     pr = 0.5 if phase < -100 else 2.5 if phase > 100 else 1.5 + phase * 0.01
-    length1 = max((npLog(npSqrt(length)) / npLog(2.0)) + 2.0, 0)
+    length1 = max((npLog(npSqrt(_length)) / npLog(2.0)) + 2.0, 0)
     pow1 = max(length1 - 2.0, 0.5)
-    length2 = length1 * npSqrt(length)
-    bet = length2 / (length2 + 1)
     beta = 0.45 * (_length - 1) / (0.45 * (_length - 1) + 2.0)
 
     m = close.shape[0]
@@ -43,37 +40,40 @@ def jma(close, length=None, phase=None, offset=None, **kwargs):
         # Price volatility
         del1 = price - uBand
         del2 = price - lBand
-        volty[i] = max(abs(del1),abs(del2)) if abs(del1)!=abs(del2) else 0
-
-        # Relative price volatility factor
-        v_sum[i] = v_sum[i - 1] + (volty[i] - volty[max(i - sum_length, 0)]) / sum_length
-        avg_volty = npAverage(v_sum[max(i - 65, 0):i + 1])
-        d_volty = 0 if avg_volty ==0 else volty[i] / avg_volty
-        r_volty = max(1.0, min(npPower(length1, 1 / pow1), d_volty))
-
-        # Jurik volatility bands
-        pow2 = npPower(r_volty, pow1)
-        kv = npPower(bet, npSqrt(pow2))
         uBand = price if (del1 > 0) else price - (kv * del1)
         lBand = price if (del2 < 0) else price - (kv * del2)
+        volty = max(abs(del1), abs(del2)) if abs(del1) != abs(del2) else 0
 
-        # Jurik Dynamic Factor
-        power = npPower(r_volty, pow1)
-        alpha = npPower(beta, power)
+        # from volty to avolty
+        volty_10.append(volty)
+        if len(volty_10) > 10:
+            volty_10.pop(0)
+        vsum = 0.1 * (volty - volty_10[0]) + vsum
+        vsum_buff.append(vsum)
+        if len(vsum_buff) > 65:
+            vsum_buff.pop(0)
+        avolty = sum(vsum_buff) / len(vsum_buff)
 
-        # 1st stage - prelimimary smoothing by adaptive EMA
-        ma1 = ((1 - alpha) * price) + (alpha * ma1)
+        # from avolty to rvolty
+        rvolty = volty/avolty if avolty != 0 else 0
+        len1 = max(0,(npLog(npSqrt(_length)) / npLog(2.0)) + 2)
+        pow1 = max(len1 - 2.0, 0.5)
+        rvolty = min(rvolty, pow(len1, 1.0 / pow1))
+        rvolty = max(rvolty, 1)
 
-        # 2nd stage - one more prelimimary smoothing by Kalman filter
-        det0 = ((price - ma1) * (1 - beta)) + (beta * det0)
+        # from rvolty to second smoothing
+        pow2 = npPower(rvolty, pow1)
+        beta = 0.45 * (_length - 1) / (0.45 * (_length - 1) + 2)
+        Kv =  npPower(beta, sqrt(pow2))
+        alpha = npPower(beta, pow2)
+        ma1 = (1 - alpha) * price + alpha * ma1
+        det0 = (1 - beta) * (price - ma1) + beta * det0
         ma2 = ma1 + pr * det0
+        det1 = ((1 - alpha) * (1 - alpha) * (ma2 - jma[i-1])) + (alpha * alpha * det1)
+        jma[i] = jma[i - 1] + det1
 
-        # 3rd stage - final smoothing by unique Jurik adaptive filter
-        det1 = ((ma2 - jma[i - 1]) * (1 - alpha) * (1 - alpha)) + (alpha * alpha * det1)
-        jma[i] = jma[i-1] + det1
-
-    # Remove initial lookback data and convert to pandas frame
-    jma[0:_length - 1] = npNaN
+# Remove initial lookback data and convert to pandas frame
+    #jma[0:_length - 1] = npNaN
     jma = Series(jma, index=close.index)
 
     # Offset
