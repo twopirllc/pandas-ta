@@ -54,7 +54,8 @@ def cdl_pattern(open_, high, low, close, name: Union[str, Sequence[str]]="all", 
 
         if n in pta_patterns:
             pattern_result = pta_patterns[n](open_, high, low, close, offset=offset, scalar=scalar, **kwargs)
-            result[pattern_result.name] = pattern_result
+            if pattern_result:
+                result[pattern_result.name] = pattern_result
         else:
             if not Imports["talib"]:
                 print(f"[X] Please install TA-Lib to use {n}. (pip install TA-Lib)")
