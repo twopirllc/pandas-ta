@@ -84,6 +84,9 @@ def stoch(
 
         stoch = 100 * (close - lowest_low)
         stoch /= non_zero_range(highest_high, lowest_low)
+        
+        if not stoch:
+            return
 
         stoch_fvi = stoch.loc[stoch.first_valid_index():, ]
         if smooth_k == 1:
