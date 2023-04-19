@@ -22,6 +22,7 @@ import pandas_ta as ta # pip install pandas_ta
 def colors(colors: str = None, default: str = "GrRd"):
     aliases = {
         # Pairs
+        "BkGy1": ["black1", "gray1"],
         "BkGy": ["black", "gray"],
         "BkSv": ["black", "silver"],
         "BkPr": ["black", "purple"],
