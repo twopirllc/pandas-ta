@@ -1046,27 +1046,6 @@ class AnalysisIndicators(object):
         result = rsi(close=close, length=length, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def pivot(
-        self,
-        anchor=None,
-        method=None,
-        **kwargs: DictLike,
-    ):
-        open_ = self._get_column(kwargs.pop("open", "open"))
-        high = self._get_column(kwargs.pop("high", "high"))
-        low = self._get_column(kwargs.pop("low", "low"))
-        close = self._get_column(kwargs.pop("close", "close"))
-        result = pivots(
-            open_=open_,
-            high=high,
-            low=low,
-            close=close,
-            anchor=anchor,
-            method=method,
-            **kwargs,
-        )
-        return self._post_process(result, **kwargs)
-
     def rsx(self, length=None, drift=None, offset: Int = None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = rsx(close=close, length=length, drift=drift, offset=offset, **kwargs)
@@ -1279,6 +1258,17 @@ class AnalysisIndicators(object):
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
         result = ohlc4(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def pivots(self, method=None, anchor=None, **kwargs: DictLike):
+        open_ = self._get_column(kwargs.pop("open", "open"))
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = pivots(
+            open_=open_, high=high, low=low, close=close,
+            method=method, anchor=anchor, **kwargs,
+        )
         return self._post_process(result, **kwargs)
 
     def pwma(self, length=None, offset: Int = None, **kwargs: DictLike):

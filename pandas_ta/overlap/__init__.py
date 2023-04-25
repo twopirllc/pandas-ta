@@ -18,6 +18,7 @@ from .mcgd import mcgd
 from .midpoint import midpoint
 from .midprice import midprice
 from .ohlc4 import ohlc4
+from .pivots import pivots
 from .pwma import pwma
 from .rma import rma
 from .sinwma import sinwma
@@ -34,4 +35,3 @@ from .vidya import vidya
 from .wcp import wcp
 from .wma import wma
 from .zlma import zlma
-from .pivot import pivots

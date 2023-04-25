@@ -113,6 +113,11 @@ class TestOverlapExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "OHLC4")
 
+    def test_pivots_ext(self):
+        self.data.ta.pivots(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(len(list(self.data.columns[-9:])), 9)
+
     def test_pwma_ext(self):
         self.data.ta.pwma(append=True)
         self.assertIsInstance(self.data, DataFrame)

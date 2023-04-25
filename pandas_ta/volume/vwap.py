@@ -75,12 +75,10 @@ def vwap(
     if bands and len(bands):
         # Calculate vwap stdev bands
         vwap_var = volume * (typical_price - vwap) ** 2
-        vwap_var_sum = vwap_var.groupby(
-            vwap_var.index.to_period(anchor)
-        ).cumsum()
-        vwap_volume_sum = volume.groupby(
-            volume.index.to_period(anchor)
-        ).cumsum()
+        vwap_var_sum = vwap_var \
+            .groupby(vwap_var.index.to_period(anchor)).cumsum()
+        vwap_volume_sum = volume \
+            .groupby(volume.index.to_period(anchor)).cumsum()
         std_volume_weighted = (vwap_var_sum / vwap_volume_sum) ** 0.5
 
     # Name and Category
