@@ -5,10 +5,10 @@ from io import StringIO
 from pathlib import Path
 from sys import float_info as sflt
 
-from numpy import argmax, argmin
+from numpy import argmax, argmin, finfo, float64
 from pandas import DataFrame, Series
 
-from pandas_ta._typing import Int, IntFloat, ListStr, Union
+from pandas_ta._typing import Array, Int, IntFloat, ListStr, Union
 from pandas_ta.utils._validate import v_bool, v_pos_default, v_series
 from pandas_ta.maps import Imports
 
@@ -26,6 +26,12 @@ __all__ = [
     'ms2secs',
     'speed_test',
 ]
+
+
+try:
+    from numba import njit
+except ImportError:
+    def njit(_): return _
 
 
 def camelCase2Title(x: str):
@@ -49,6 +55,14 @@ def non_zero_range(high: Series, low: Series) -> Series:
     diff = high - low
     if diff.eq(0).any().any():
         diff += sflt.epsilon
+    return diff
+
+
+@njit
+def np_nonzero_diff(x: Array, y: Array):
+    diff = x - y
+    if diff.any() == 0:
+        diff += finfo(float64).eps
     return diff
 
 

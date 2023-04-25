@@ -1260,6 +1260,17 @@ class AnalysisIndicators(object):
         result = ohlc4(open_=open_, high=high, low=low, close=close, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def pivots(self, method=None, anchor=None, **kwargs: DictLike):
+        open_ = self._get_column(kwargs.pop("open", "open"))
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = pivots(
+            open_=open_, high=high, low=low, close=close,
+            method=method, anchor=anchor, **kwargs,
+        )
+        return self._post_process(result, **kwargs)
+
     def pwma(self, length=None, offset: Int = None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = pwma(close=close, length=length, offset=offset, **kwargs)

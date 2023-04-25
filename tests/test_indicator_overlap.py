@@ -348,6 +348,65 @@ class TestOverlap(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "OHLC4")
 
+    # @skip
+    def test_pivot_camarilla(self):
+        """Overlap: PIVOT - Camarilla"""
+        result = pandas_ta.pivots(
+            self.open, self.high, self.low, self.close, method="camarilla"
+        )
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "PIVOTS_CAMA_D")
+        self.assertEqual(result.columns.size, 9)
+
+    # @skip
+    def test_pivot_classic(self):
+        """Overlap: PIVOT - Classic"""
+        result = pandas_ta.pivots(
+            self.open, self.high, self.low, self.close, method="classic"
+        )
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "PIVOTS_CLAS_D")
+        self.assertEqual(result.columns.size, 9)
+
+    # @skip
+    def test_pivot_demark(self):
+        """Overlap: PIVOT - Demark"""
+        result = pandas_ta.pivots(
+            self.open, self.high, self.low, self.close, method="demark"
+        )
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "PIVOTS_DEMA_D")
+        self.assertEqual(result.columns.size, 3)
+
+    # @skip
+    def test_pivot_fibonacci(self):
+        """Overlap: PIVOT - Fibonacci"""
+        result = pandas_ta.pivots(
+            self.open, self.high, self.low, self.close, method="fibonacci"
+        )
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "PIVOTS_FIBO_D")
+        self.assertEqual(result.columns.size, 7)
+
+    def test_pivot_traditional(self):
+        """Overlap: PIVOT - Traditional"""
+        result = pandas_ta.pivots(
+            self.open, self.high, self.low, self.close, method=None
+        )
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "PIVOTS_TRAD_D")
+        self.assertEqual(result.columns.size, 9)
+
+    # @skip
+    def test_pivot_woodie(self):
+        """Overlap: PIVOT - Woodie"""
+        result = pandas_ta.pivots(
+            self.open, self.high, self.low, self.close, method="woodie"
+        )
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "PIVOTS_WOOD_D")
+        self.assertEqual(result.columns.size, 9)
+
     def test_pwma(self):
         """Overlap: PWMA"""
         result = pandas_ta.pwma(self.close)

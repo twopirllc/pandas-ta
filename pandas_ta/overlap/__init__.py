@@ -18,6 +18,7 @@ from .mcgd import mcgd
 from .midpoint import midpoint
 from .midprice import midprice
 from .ohlc4 import ohlc4
+from .pivots import pivots
 from .pwma import pwma
 from .rma import rma
 from .sinwma import sinwma
@@ -55,6 +56,7 @@ __all__ = [
     "midpoint",
     "midprice",
     "ohlc4",
+    "pivots",
     "pwma",
     "rma",
     "sinwma",
