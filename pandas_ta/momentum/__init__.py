@@ -82,5 +82,5 @@ __all__ = [
     "trix",
     "tsi",
     "uo",
-    "willr",    
+    "willr",
 ]
