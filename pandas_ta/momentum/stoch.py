@@ -79,14 +79,12 @@ def stoch(
         )
         stoch_k, stoch_d = stoch_[0], stoch_[1]
     else:
-        lowest_low = low.rolling(k).min()
-        highest_high = high.rolling(k).max()
+        ll = low.rolling(k).min()
+        hh = high.rolling(k).max()
 
-        stoch = 100 * (close - lowest_low)
-        stoch /= non_zero_range(highest_high, lowest_low)
-        
-        if not stoch:
-            return
+        stoch = 100 * (close - ll) / non_zero_range(hh, ll)
+
+        if stoch is None: return
 
         stoch_fvi = stoch.loc[stoch.first_valid_index():, ]
         if smooth_k == 1:
