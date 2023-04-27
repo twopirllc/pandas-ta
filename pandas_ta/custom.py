@@ -3,15 +3,14 @@ import importlib
 import os
 import sys
 import types
-
-from os.path import abspath, join, exists, basename, splitext
 from glob import glob
+from os.path import abspath, basename, exists, join, splitext
 
 import pandas_ta
 from pandas_ta._typing import DictLike
 
 
-def bind(name: str, f: types.FunctionType):#, method: types.MethodType = None):
+def bind(name: str, f: types.FunctionType, method: types.MethodType = None):
     """
     Helper function to bind the function and class method defined in a custom
     indicator module to the active pandas_ta instance.
@@ -22,7 +21,7 @@ def bind(name: str, f: types.FunctionType):#, method: types.MethodType = None):
         method (fcn): The class method corresponding to the passed function
     """
     setattr(pandas_ta, name, f)
-    setattr(pandas_ta.AnalysisIndicators, name, f)
+    setattr(pandas_ta.AnalysisIndicators, name, method)
 
 
 def create_dir(path: str, create_categories: bool = True, verbose: bool = True):
@@ -164,40 +163,48 @@ def import_dir(path: str, verbose: bool = True):
 
         # only look in directories which are valid pandas_ta categories
         if dirname not in [*pandas_ta.Category]:
-            if verbose:
-                print(f"[i] Skipping the sub-directory '{dirname}' since it's not a valid pandas_ta category.")
+            if verbose and dirname not in ["__pycache__", "__init__.py"]:
+                print(
+                    f"[i] Skipping the sub-directory '{dirname}' since it's not a valid pandas_ta category."
+                )
             continue
 
         # for each module found in that category (directory)...
         for module in glob(abspath(join(path, dirname, "*.py"))):
             module_name = splitext(basename(module))[0]
+            if module_name not in ["__init__"]:
+                # ensure that the supplied path is included in our python path
+                if d not in sys.path:
+                    sys.path.append(d)
 
-            # ensure that the supplied path is included in our python path
-            if d not in sys.path:
-                sys.path.append(d)
+                # (re)load the indicator module
+                module_functions = load_indicator_module(module_name)
 
-            # (re)load the indicator module
-            module_functions = load_indicator_module(module_name)
+                # figure out which of the modules functions to bind to pandas_ta
+                _callable = module_functions.get(module_name, None)
+                _method_callable = module_functions.get(f"{module_name}_method", None)
 
-            # figure out which of the modules functions to bind to pandas_ta
-            _callable = module_functions.get(module_name, None)
-            _method_callable = module_functions.get(f"{module_name}_method", None)
+                if _callable == None:
+                    print(
+                        f"[X] Unable to find a function named '{module_name}' in the module '{module_name}.py'."
+                    )
+                    continue
+                if _method_callable == None:
+                    missing_method = f"{module_name}_method"
+                    print(
+                        f"[X] Unable to find a method function named '{missing_method}' in the module '{module_name}.py'."
+                    )
+                    continue
 
-            if _callable == None:
-                print(f"[X] Unable to find a function named '{module_name}' in the module '{module_name}.py'.")
-                continue
-            if _method_callable == None:
-                missing_method = f"{module_name}_method"
-                print(f"[X] Unable to find a method function named '{missing_method}' in the module '{module_name}.py'.")
-                continue
+                # add it to the correct category if it's not there yet
+                if module_name not in pandas_ta.Category[dirname]:
+                    pandas_ta.Category[dirname].append(module_name)
 
-            # add it to the correct category if it's not there yet
-            if module_name not in pandas_ta.Category[dirname]:
-                pandas_ta.Category[dirname].append(module_name)
-
-            bind(module_name, _callable, _method_callable)
-            if verbose:
-                print(f"[i] Successfully imported the custom indicator '{module}' into category '{dirname}'.")
+                bind(module_name, _callable, _method_callable)
+                if verbose:
+                    print(
+                        f"[i] Successfully imported the custom indicator '{module}' into category '{dirname}'."
+                    )
 
 
 def load_indicator_module(name: str) -> dict:
