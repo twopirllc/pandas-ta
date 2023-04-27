@@ -2,7 +2,7 @@
 from numpy import NaN, empty_like, select, zeros_like
 from pandas import DataFrame, Series, Timedelta, infer_freq, to_datetime
 from pandas_ta._typing import Array, DictLike
-from pandas_ta.utils import np_nonzero_diff, v_datetime_ordered, v_series, v_str
+from pandas_ta.utils import np_non_zero_range, v_datetime_ordered, v_series, v_str
 
 try:
     from numba import njit
@@ -14,7 +14,7 @@ except ImportError:
 def pivot_camarilla(high: Array, low: Array, close: Array):
     """Camarilla Pivot Points - requires high, low, close"""
     tp = (high + low + close) / 3
-    hl_range = np_nonzero_diff(high, low)
+    hl_range = np_non_zero_range(high, low)
 
     s1 = close - 11 / 120 * hl_range
     s2 = close - 11 / 60 * hl_range
@@ -33,7 +33,7 @@ def pivot_camarilla(high: Array, low: Array, close: Array):
 def pivot_classic(high: Array, low: Array, close: Array):
     """Classic Pivot Points - requires high, low, close"""
     tp = (high + low + close) / 3
-    hl_range = np_nonzero_diff(high, low)
+    hl_range = np_non_zero_range(high, low)
 
     s1 = 2 * tp - high
     s2 = tp - hl_range
@@ -69,7 +69,7 @@ def pivot_demark(open_: Array, high: Array, low: Array, close: Array):
 def pivot_fibonacci(high: Array, low: Array, close: Array):
     """Fibonacci Pivot Points - requires high, low, close"""
     tp = (high + low + close) / 3
-    hl_range = np_nonzero_diff(high, low)
+    hl_range = np_non_zero_range(high, low)
 
     s1 = tp - 0.382 * hl_range
     s2 = tp - 0.618 * hl_range
@@ -86,7 +86,7 @@ def pivot_fibonacci(high: Array, low: Array, close: Array):
 def pivot_traditional(high: Array, low: Array, close: Array):
     """Traditional Pivot Points - requires high, low, close"""
     tp = (high + low + close) / 3
-    hl_range = np_nonzero_diff(high, low)
+    hl_range = np_non_zero_range(high, low)
 
     s1 = 2 * tp - high
     s2 = tp - hl_range
@@ -105,7 +105,7 @@ def pivot_traditional(high: Array, low: Array, close: Array):
 def pivot_woodie(open_: Array, high: Array, low: Array):
     """Woodie Pivot Points - requires open, high, low"""
     tp = (2 * open_ + high + low) / 4
-    hl_range = np_nonzero_diff(high, low)
+    hl_range = np_non_zero_range(high, low)
 
     s1 = 2 * tp - high
     s2 = tp - hl_range

@@ -13,18 +13,19 @@ from pandas_ta.utils._validate import v_bool, v_pos_default, v_series
 from pandas_ta.maps import Imports
 
 __all__ = [
-    'camelCase2Title',
-    'category_files',
-    'non_zero_range',
-    'recent_maximum_index',
-    'recent_minimum_index',
-    'rma_pandas',
-    'signed_series',
-    'simplify_columns',
-    'tal_ma',
-    'unsigned_differences',
-    'ms2secs',
-    'speed_test',
+    "camelCase2Title",
+    "category_files",
+    "non_zero_range",
+    "np_non_zero_range",
+    "recent_maximum_index",
+    "recent_minimum_index",
+    "rma_pandas",
+    "signed_series",
+    "simplify_columns",
+    "tal_ma",
+    "unsigned_differences",
+    "ms2secs",
+    "speed_test",
 ]
 
 
@@ -59,7 +60,7 @@ def non_zero_range(high: Series, low: Series) -> Series:
 
 
 @njit
-def np_nonzero_diff(x: Array, y: Array):
+def np_non_zero_range(x: Array, y: Array):
     diff = x - y
     if diff.any() == 0:
         diff += finfo(float64).eps
