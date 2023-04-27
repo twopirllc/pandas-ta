@@ -5,13 +5,13 @@ from pandas_ta.utils._validate import v_offset, v_series
 from pandas_ta.utils._math import zero
 
 __all__ = [
-    'above',
-    'above_value',
-    'below',
-    'below_value',
-    'cross',
-    'cross_value',
-    'signals',
+    "above",
+    "above_value",
+    "below",
+    "below_value",
+    "cross",
+    "cross_value",
+    "signals",
 ]
 
 
@@ -98,20 +98,24 @@ def below_value(
 
 
 def cross_value(
-    series_a: Series, value: IntFloat, above: bool = True, asint: bool = True,
-    offset: Int = None, **kwargs
+    series_a: Series, value: IntFloat,
+    above: bool = True, equal: bool = True,
+    asint: bool = True, offset: Int = None,
+    **kwargs
 ) -> Series:
     series_b = Series(
-        value, index=series_a.index, name=f"{value}".replace(".", "_")
-        )
+        value,
+        index=series_a.index, name=f"{value}".replace(".", "_")
+    )
 
-    return cross(series_a, series_b, above, asint, offset, **kwargs)
+    return cross(series_a, series_b, above, equal, asint, offset, **kwargs)
 
 
 def cross(
     series_a: Series, series_b: Series,
-    above: bool = True, asint: bool = True,
-    offset: Int = None, **kwargs: DictLike
+    above: bool = True, equal: bool = True,
+    asint: bool = True, offset: Int = None,
+    **kwargs: DictLike
 ) -> Series:
     # Validate
     series_a = v_series(series_a)
@@ -122,10 +126,14 @@ def cross(
     series_b.apply(zero)
 
     # Calculate
-    current = series_a > series_b  # current is above
-    previous = series_a.shift(1) < series_b.shift(1)  # previous is below
-    # above if both are true, below if both are false
-    cross = current & previous if above else ~current & ~previous
+    if above:
+        current = series_a >= series_b if equal else series_a > series_b
+        previous = series_a.shift(1) < series_b.shift(1)
+    else:
+        current = series_a <= series_b if equal else series_a < series_b
+        previous = series_a.shift(1) > series_b.shift(1)
+
+    cross = current & previous
     # ensure there is no cross on the first entry
     cross[0] = False
 
@@ -148,6 +156,7 @@ def signals(
     xserie: Series, xserie_a: Series, xserie_b: Series, cross_series: bool,
     offset: Int
 ) -> DataFrame:
+
     df = DataFrame()
     if xa is not None and isinstance(xa, (int, float)):
         if cross_values:

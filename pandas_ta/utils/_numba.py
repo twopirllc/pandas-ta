@@ -9,9 +9,9 @@ except ImportError:
     def njit(_): return _
 
 __all__ = [
-    'np_prepend',
-    'np_rolling',
-    'np_shift',
+    "np_prepend",
+    "np_rolling",
+    "np_shift",
 ]
 
 

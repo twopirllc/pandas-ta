@@ -139,6 +139,10 @@ class TestUtilities(TestCase):
         self.assertIsInstance(result, Series)
         npt.assert_array_equal(result, self.crosseddf["crossed"])
 
+        result = self.utils.cross(self.crosseddf["a"], self.crosseddf["b"], equal=False)
+        self.assertIsInstance(result, Series)
+        npt.assert_array_equal(result, self.crosseddf["crossed"])
+
     def test_cross_below(self):
         result = self.utils.cross(self.crosseddf["b"], self.crosseddf["a"], above=False)
         self.assertIsInstance(result, Series)
@@ -146,6 +150,10 @@ class TestUtilities(TestCase):
 
         result = self.utils.cross(self.crosseddf["a"], self.crosseddf["b"], above=False)
         self.assertFalse(result[0])
+
+        result = self.utils.cross(self.crosseddf["b"], self.crosseddf["a"], above=False, equal=False)
+        self.assertIsInstance(result, Series)
+        npt.assert_array_equal(result, self.crosseddf["crossed"])
 
     def test_df_dates(self):
         """Utility[Date]: DF Dates"""

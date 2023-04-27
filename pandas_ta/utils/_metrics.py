@@ -5,21 +5,21 @@ from pandas import Series, Timedelta
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import RATE
 from pandas_ta.utils._validate import v_series
-from pandas_ta.utils._math import linear_regression, log_geometric_mean
+from pandas_ta.utils._math import linear_regression
 from pandas_ta.utils._time import total_time
 
 __all__ = [
-    'cagr',
-    'calmar_ratio',
-    'downside_deviation',
-    'jensens_alpha',
-    'log_max_drawdown',
-    'max_drawdown',
-    'volatility',
-    'sortino_ratio',
-    'sharpe_ratio',
-    'pure_profit_score',
-    'optimal_leverage',
+    "cagr",
+    "calmar_ratio",
+    "downside_deviation",
+    "jensens_alpha",
+    "log_max_drawdown",
+    "max_drawdown",
+    "optimal_leverage",
+    "pure_profit_score",
+    "sharpe_ratio",
+    "sortino_ratio",
+    "volatility",
 ]
 
 

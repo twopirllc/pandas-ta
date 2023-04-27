@@ -91,6 +91,11 @@ def adx(
     pos = ((up > dn) & (up > 0)) * up
     neg = ((dn > up) & (dn > 0)) * dn
 
+    # Issue #671 Solution
+    # not_close = ~isclose(up, dn)
+    # pos = ((up > dn) & (up > 0) * up & not_close) * up
+    # neg = ((dn > up) & (dn > 0) * dn & not_close) * dn
+
     pos = pos.apply(zero)
     neg = neg.apply(zero)
 

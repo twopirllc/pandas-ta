@@ -21,19 +21,19 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils._validate import v_series
 
 __all__ = [
-    'fibonacci',
-    'erf',
-    'combination',
-    'geometric_mean',
-    'hpoly',
-    'linear_regression',
-    'log_geometric_mean',
-    'pascals_triangle',
-    'strided_window',
-    'symmetric_triangle',
-    'weights',
-    'zero',
-    'df_error_analysis',
+    "combination",
+    "df_error_analysis",
+    "erf",
+    "fibonacci",
+    "geometric_mean",
+    "hpoly",
+    "linear_regression",
+    "log_geometric_mean",
+    "pascals_triangle",
+    "strided_window",
+    "symmetric_triangle",
+    "weights",
+    "zero",
 ]
 
 

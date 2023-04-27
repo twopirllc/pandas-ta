@@ -15,6 +15,7 @@ from pandas_ta.maps import Imports
 __all__ = [
     "camelCase2Title",
     "category_files",
+    "ms2secs",
     "non_zero_range",
     "np_non_zero_range",
     "recent_maximum_index",
@@ -22,10 +23,9 @@ __all__ = [
     "rma_pandas",
     "signed_series",
     "simplify_columns",
+    "speed_test",
     "tal_ma",
     "unsigned_differences",
-    "ms2secs",
-    "speed_test",
 ]
 
 

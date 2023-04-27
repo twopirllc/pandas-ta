@@ -129,8 +129,6 @@ class TestTrend(TestCase):
                 ],
             }
         )
-        print(f"\nADX result:\n{result}")
-        print(f"\nADX expected:\n{expected}\n")
         pdt.assert_frame_equal(result, expected)
 
     def test_amat(self):
