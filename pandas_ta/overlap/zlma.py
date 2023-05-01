@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-import sys
+from sys import modules as sys_modules
 from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 
+# Available MAs for zlma
 from .dema import dema
 from .ema import ema
 from .fwma import fwma
@@ -22,6 +23,7 @@ from .tema import tema
 from .trima import trima
 from .vidya import vidya
 from .wma import wma
+
 
 def zlma(
     close: Series, length: Int = None, mamode: str = None,
@@ -57,11 +59,14 @@ def zlma(
         return
 
     mamode = v_mamode(mamode, "ema")
-    supported_mas = {"dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
-                     "sinwma", "sma", "ssf", "swma", "t3", "tema", "trima", "vidya", "wma"}
+    supported_mas = [
+        "dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
+        "sinwma", "sma", "ssf", "swma", "t3", "tema", "trima", "vidya", "wma"
+    ]
+
     if mamode not in supported_mas:
         return
-    
+
     offset = v_offset(offset)
 
     # Calculate
@@ -70,11 +75,10 @@ def zlma(
 
     kwargs.update({"close": close_})
     kwargs.update({"length": length})
-    
-    this = sys.modules[__name__]
-    zlma_func = getattr(this, mamode)
-    zlma = zlma_func(**kwargs)
-    #zlma = _ma(mamode, **kwargs)
+
+    fn = getattr(sys_modules[__name__], mamode)
+    zlma = fn(**kwargs)
+
     if zlma is None or all(isnan(zlma)):
         return  # Emergency Break
 
