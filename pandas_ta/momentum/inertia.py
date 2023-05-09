@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import linreg
@@ -92,7 +93,12 @@ def inertia(
         _mode = ""
         rvi_ = rvi(close, length=rvi_length, scalar=scalar, mamode=mamode)
 
+    if all(isnan(rvi_)):
+        return  # Emergency Break
+
     inertia = linreg(rvi_, length=length)
+    if all(isnan(inertia)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:

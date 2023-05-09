@@ -79,8 +79,7 @@ class Study:
             # Check that all elements of the list are dicts.
             # Does not check if the dicts values are valid indicator kwargs
             # User must check indicator documentation for all indicators args.
-            return all([isinstance(_, dict) and len(
-                _.keys()) > 0 for _ in self.ta])
+            return all([isinstance(_, dict) and len(_.keys()) > 0 for _ in self.ta])
         return False
 
     def total_ta(self):

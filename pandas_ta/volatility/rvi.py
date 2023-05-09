@@ -26,8 +26,7 @@ def _rvi(source, length, scalar, mode, drift):
     pos_avg = ma(mode, pos_std, length=length)
     neg_avg = ma(mode, neg_std, length=length)
 
-    result = scalar * pos_avg
-    result /= pos_avg + neg_avg
+    result = scalar * pos_avg / (pos_avg + neg_avg)
     return result
 
 

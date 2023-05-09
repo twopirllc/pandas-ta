@@ -69,8 +69,8 @@ def vwap(
     # Calculate
     _props = f"VWAP_{anchor}"
     wp = typical_price * volume
-    vwap = wp.groupby(wp.index.to_period(anchor)).cumsum()
-    vwap /= volume.groupby(volume.index.to_period(anchor)).cumsum()
+    vwap = wp.groupby(wp.index.to_period(anchor)).cumsum() \
+        / volume.groupby(volume.index.to_period(anchor)).cumsum()
 
     if bands and len(bands):
         # Calculate vwap stdev bands

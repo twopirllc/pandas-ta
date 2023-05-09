@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_int, v_lowerbound, v_offset, v_series
@@ -56,6 +57,9 @@ def cube(
     if signal_offset != 0:
         ct = ct.shift(signal_offset)
         ct_signal = ct_signal.shift(signal_offset)
+
+    if all(isnan(ct)) and all(isnan(ct_signal)):
+        return  # Emergency Break
 
     # Fill
     if "fillna" in kwargs:

@@ -9,6 +9,7 @@ from numpy import log10, ndarray
 from pandas.api.extensions import register_dataframe_accessor
 from pandas.errors import PerformanceWarning
 from pandas import DataFrame, Series
+from pandas import options as pd_options
 
 from pandas_ta._typing import *
 from pandas_ta import *
@@ -268,6 +269,8 @@ class AnalysisIndicators(object):
             if df is None or result is None: return
             else:
                 simplefilter(action="ignore", category=PerformanceWarning)
+                pd_options.mode.chained_assignment = None
+
                 if "col_names" in kwargs and not isinstance(kwargs["col_names"], tuple):
                     kwargs["col_names"] = (kwargs["col_names"],) # Note: tuple(kwargs["col_names"]) doesn't work
 
@@ -279,7 +282,7 @@ class AnalysisIndicators(object):
                             for col, ind_name in zip(result.columns, kwargs["col_names"]):
                                 df[ind_name] = result.loc[:, col]
                         else:
-                            print(f"Not enough col_names were specified : got {len(kwargs['col_names'])}, expected {len(result.columns)}.")
+                            print(f"[!] Not enough col_names were specified : got {len(kwargs['col_names'])}, expected {len(result.columns)}.")
                             return
                     else:
                         # df = result.copy(deep=True) # Breaks Extension Indicators?
@@ -291,6 +294,7 @@ class AnalysisIndicators(object):
                         isinstance(kwargs["col_names"], tuple) else result.name
                     )
                     df[ind_name] = result
+                pd_options.mode.chained_assignment = "warn"
 
     def _check_na_columns(self):
         """Returns the columns in which all it's values are na."""
@@ -357,10 +361,12 @@ class AnalysisIndicators(object):
         else:
             # Append only specific columns to the dataframe (via
             # 'col_numbers':(0,1,3) for example)
-            result = (result.iloc[:, [int(n) for n in kwargs["col_numbers"]]]
-                      if isinstance(result, DataFrame) and
-                      "col_numbers" in kwargs and
-                      kwargs["col_numbers"] is not None else result)
+            result = (
+                result.iloc[:, [int(n) for n in kwargs["col_numbers"]]]
+                if isinstance(result, DataFrame) and
+                "col_numbers" in kwargs and
+                kwargs["col_numbers"] is not None else result
+            )
             # Add prefix/suffix and append to the dataframe
             self._add_prefix_suffix(result=result, **kwargs)
 
@@ -627,17 +633,6 @@ class AnalysisIndicators(object):
         else:
             print(f"[X] Study not available.")
             return None
-
-        # Remove Custom indicators with "length" keyword when larger than the DataFrame
-        # Possible to have other indicator main window lengths to be included
-        removal = []
-        for kwds in ta:
-            _ = False
-            if "length" in kwds and kwds["length"] > self._df.shape[0]:
-                _ = True
-            if _: removal.append(kwds)
-        if len(removal) > 0:
-            [ta.remove(x) for x in removal]
 
         verbose = kwargs.pop("verbose", False)
         if verbose:

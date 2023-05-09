@@ -68,8 +68,7 @@ def stochrsi(
     lowest_rsi = rsi_.rolling(length).min()
     highest_rsi = rsi_.rolling(length).max()
 
-    stoch = 100 * (rsi_ - lowest_rsi)
-    stoch /= non_zero_range(highest_rsi, lowest_rsi)
+    stoch = 100 * (rsi_ - lowest_rsi) / non_zero_range(highest_rsi, lowest_rsi)
 
     stochrsi_k = ma(mamode, stoch, length=k)
     stochrsi_d = ma(mamode, stochrsi_k, length=d)

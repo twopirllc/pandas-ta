@@ -170,6 +170,9 @@ def pivots(
     method = v_str(method, methods[0])
 
     dt_index = close.index
+    if dt_index.size < 3:
+        return  # Emergency Break
+
     if not v_datetime_ordered(close):
         dt_index = to_datetime(close.index, unit="ms")
 

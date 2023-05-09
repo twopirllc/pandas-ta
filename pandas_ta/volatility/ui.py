@@ -49,8 +49,7 @@ def ui(
 
     # Calculate
     highest_close = close.rolling(length).max()
-    downside = scalar * (close - highest_close)
-    downside /= highest_close
+    downside = scalar * (close - highest_close) / highest_close
     d2 = downside * downside
 
     everget = kwargs.pop("everget", False)
