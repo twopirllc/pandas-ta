@@ -1504,6 +1504,14 @@ class AnalysisIndicators(object):
         result = qstick(open_=open_, close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def rwi(self, length=None, lensig=None, mamode=None, scalar=None, drift=None, offset: Int = None, **kwargs: DictLike):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = rwi(high=high, low=low, close=close, length=length, lensig=lensig, mamode=mamode, scalar=scalar,
+                     drift=drift, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def short_run(self, fast=None, slow=None, length=None, offset: Int = None, **kwargs: DictLike):
         if fast is None and slow is None:
             return self._df
