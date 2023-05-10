@@ -11,6 +11,7 @@ from .increasing import increasing
 from .long_run import long_run
 from .psar import psar
 from .qstick import qstick
+from .rwi import rwi
 from .short_run import short_run
 from .trendflex import trendflex
 from .tsignals import tsignals
@@ -32,6 +33,7 @@ __all__ = [
     "long_run",
     "psar",
     "qstick",
+    "rwi",
     "short_run",
     "trendflex",
     "tsignals",

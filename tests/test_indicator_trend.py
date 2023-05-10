@@ -273,6 +273,12 @@ class TestTrend(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "QS_10")
 
+    def test_rwi(self):
+        """Trend: RWI"""
+        result = pandas_ta.rwi(self.high, self.low, self.close)
+        self.assertIsInstance(result, DataFrame)
+        self.assertEqual(result.name, "RWI_14")
+
     def test_short_run(self):
         """Trend: Short Run"""
         result = pandas_ta.short_run(self.close, self.open)

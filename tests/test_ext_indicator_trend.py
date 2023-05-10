@@ -116,6 +116,11 @@ class TestTrendExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "SR_2")
 
+    def test_rwi_ext(self):
+        self.data.ta.rwi(append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(list(self.data.columns[-2:]), ["RWIh_14", "RWIl_14"])
+
     def test_trendflex_ext(self):
         self.data.ta.trendflex(append=True)
         self.assertIsInstance(self.data, DataFrame)
