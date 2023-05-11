@@ -87,7 +87,8 @@ Category: Dict[str, ListStr] = {
     # Note: "vp" or "Volume Profile" is excluded since it does not return a Time Series
     "volume": [
         "ad", "adosc", "aobv", "cmf", "efi", "eom", "kvo", "mfi", "nvi",
-        "obv", "pvi", "pvo", "pvol", "pvr", "pvt", "vwap", "vwma", "wb_tsv"
+        "obv", "pvi", "pvo", "pvol", "pvr", "pvt", "vhm", "vwap", "vwma",
+        "wb_tsv"
     ],
 }
 

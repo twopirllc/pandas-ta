@@ -188,6 +188,16 @@ class TestVolume(TestCase):
         self.assertIsInstance(result, Series)
         self.assertEqual(result.name, "PVT")
 
+    def test_vhm(self):
+        """Volume: VHM"""
+        result = pandas_ta.vhm(self.volume_, 30, 30)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "VHM_30")
+
+        result = pandas_ta.vhm(self.volume_, 10, 20)
+        self.assertIsInstance(result, Series)
+        self.assertEqual(result.name, "VHM_10_20")
+
     def test_vp(self):
         """Volume: VP"""
         result = pandas_ta.vp(self.close, self.volume_)

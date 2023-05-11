@@ -14,6 +14,7 @@ from .pvo import pvo
 from .pvol import pvol
 from .pvr import pvr
 from .pvt import pvt
+from .vhm import vhm
 from .vp import vp
 from .vwap import vwap
 from .vwma import vwma
@@ -35,6 +36,7 @@ __all__ = [
     "pvol",
     "pvr",
     "pvt",
+    "vhm",
     "vp",
     "vwap",
     "vwma",

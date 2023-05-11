@@ -100,6 +100,11 @@ class TestVolumeExtension(TestCase):
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "PVT")
 
+    def test_vhm_ext(self):
+        self.data.ta.vhm(length=30, slength=30, append=True)
+        self.assertIsInstance(self.data, DataFrame)
+        self.assertEqual(self.data.columns[-1], "VHM_30")
+
     def test_wb_tsv_ext(self):
         self.data.ta.wb_tsv(append=True)
         self.assertIsInstance(self.data, DataFrame)

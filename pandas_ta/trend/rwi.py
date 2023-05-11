@@ -43,8 +43,7 @@ def rwi(
     Returns:
         pd.DataFrame: high, low columns.
     """
-
-    # Validate Arguments
+    # Validate
     length = v_pos_default(length, 14)
     high = v_series(high, length)
     low = v_series(low, length)
@@ -58,7 +57,7 @@ def rwi(
     drift = v_drift(drift)
     offset = v_offset(offset)
 
-    # Calculate Result
+    # Calculate
     atr_ = atr(
         high=high, low=low, close=close,
         length=length, mamode=mamode, talib=mode_tal
@@ -73,7 +72,7 @@ def rwi(
         rwi_high = rwi_high.shift(offset)
         rwi_low = rwi_low.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         rwi_high.fillna(kwargs["fillna"], inplace=True)
         rwi_low.fillna(kwargs["fillna"], inplace=True)
@@ -82,7 +81,7 @@ def rwi(
         rwi_high.fillna(method=kwargs["fill_method"], inplace=True)
         rwi_low.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     rwi_high.name = f"RWIh_{length}"
     rwi_low.name = f"RWIl_{length}"
     rwi_high.category = rwi_low.category = "trend"
