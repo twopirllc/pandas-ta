@@ -1518,6 +1518,12 @@ class AnalysisIndicators(BasePandasObject):
             result = xsignals(signal=signal, xa=xa, xb=xb, above=above, long=long, asbool=asbool, trend_offset=trend_offset, trend_reset=trend_reset, offset=offset, **kwargs)
             return self._post_process(result, **kwargs)
 
+    def zigzag(self, pivot_leg=None, price_deviation=None, retrace=None, last_extreme=None, **kwargs):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        result = zigzag(high, low, pivot_leg, price_deviation, retrace=False, last_extreme=False, **kwargs)
+        return self._post_process(result, **kwargs)
+
     # Utility
     def above(self, asint=True, offset=None, **kwargs):
         a = self._get_column(kwargs.pop("close", "a"))
