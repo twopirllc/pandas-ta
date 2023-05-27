@@ -18,7 +18,7 @@ except ImportError:
     def njit(_): return _
 
 
-@njit
+@njit(cache=True)
 def np_sma(x: Array, n: Int):
     """https://github.com/numba/numba/issues/4119"""
     result = convolve(ones(n) / n, x)[n - 1:1 - n]

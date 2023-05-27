@@ -1,47 +1,34 @@
 # -*- coding: utf-8 -*-
-from unittest import TestCase
-from pandas import DataFrame, Series
-
-from .config import sample_data
-from .context import pandas_ta
+import pandas_ta as ta
 
 
-class TestPerformace(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.data = sample_data
-        cls.close = cls.data["close"]
-        cls.islong = (cls.close > pandas_ta.sma(cls.close, length=8)).astype(int)
-        cls.pctret = pandas_ta.percent_return(cls.close, cumulative=False)
-        cls.logret = pandas_ta.percent_return(cls.close, cumulative=False)
+# TA Lib style Tests
+def test_cube(df):
+    result = ta.cube(df.close)
+    assert result.name == "CUBE_3.0_-1"
 
 
-    @classmethod
-    def tearDownClass(cls):
-        del cls.data
-        del cls.close
-        del cls.islong
-        del cls.pctret
-        del cls.logret
-
-    def setUp(self): pass
-    def tearDown(self): pass
+def test_ifisher(df):
+    result = ta.ifisher(df.close)
+    assert result.name == "INVFISHER_1.0"
 
 
-    def test_cube(self):
-        """Transform: Cube"""
-        result = pandas_ta.cube(self.close)
-        self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "CUBE_3.0_-1")
+def test_remap(df):
+    result = ta.remap(df.close)
+    assert result.name == "REMAP_0.0_100.0_-1.0_1.0"
 
-    def test_inverse_fisher(self):
-        """Transform: Inverse Fisher"""
-        result = pandas_ta.ifisher(self.close)
-        self.assertIsInstance(result, DataFrame)
-        self.assertEqual(result.name, "INVFISHER_1.0")
 
-    def test_remap(self):
-        """Transform: Remap"""
-        result = pandas_ta.remap(self.close)
-        self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "REMAP_0.0_100.0_-1.0_1.0")
+# DataFrame Extension Tests
+def test_ext_cube(df):
+    df.ta.cube(append=True)
+    assert list(df.columns[-2:]) == ["CUBE_3.0_-1", "CUBEs_3.0_-1"]
+
+
+def test_ext_ifisher(df):
+    df.ta.ifisher(append=True)
+    assert list(df.columns[-2:]) == ["INVFISHER_1.0", "INVFISHERs_1.0"]
+
+
+def test_ext_remap(df):
+    df.ta.remap(append=True)
+    assert df.columns[-1] == "REMAP_0.0_100.0_-1.0_1.0"

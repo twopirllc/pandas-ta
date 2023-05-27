@@ -35,11 +35,14 @@ def hwma(
         pd.Series: hwma
     """
     # Validate
-    close = v_series(close)
+    close = v_series(close, 1)
     na = float(na) if isinstance(na, float) and 0 < na < 1 else 0.2
     nb = float(nb) if isinstance(nb, float) and 0 < nb < 1 else 0.1
     nc = float(nc) if isinstance(nc, float) and 0 < nc < 1 else 0.1
     offset = v_offset(offset)
+
+    if close is None:
+        return
 
     # Calculate
     last_a = last_v = 0

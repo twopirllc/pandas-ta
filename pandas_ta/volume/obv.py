@@ -34,8 +34,13 @@ def obv(
         pd.Series: New feature generated.
     """
     # Validate
-    close = v_series(close)
-    volume = v_series(volume)
+    _length = 1
+    close = v_series(close, _length)
+    volume = v_series(volume, _length)
+
+    if close is None or volume is None:
+        return
+
     mode_tal = v_talib(talib)
     offset = v_offset(offset)
 

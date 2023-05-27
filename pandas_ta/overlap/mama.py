@@ -12,7 +12,7 @@ except ImportError:
     def njit(_): return _
 
 
-@njit
+@njit(cache=True)
 def np_mama(
     x: Array, fastlimit: IntFloat, slowlimit: IntFloat,
     prenan: Int
@@ -137,7 +137,7 @@ def mama(
         pd.DataFrame: MAMA and FAMA columns.
     """
     # Validate
-    close = v_series(close)
+    close = v_series(close, 1)
 
     if close is None:
         return

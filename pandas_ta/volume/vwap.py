@@ -52,6 +52,10 @@ def vwap(
     low = v_series(low, _length)
     close = v_series(close, _length)
     volume = v_series(volume, _length)
+
+    if high is None or low is None or close is None or volume is None:
+        return
+
     bands = v_list(bands)
     offset = v_offset(offset)
 

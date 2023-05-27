@@ -33,9 +33,14 @@ def wcp(
         pd.Series: New feature generated.
     """
     # Validate
-    high = v_series(high)
-    low = v_series(low)
-    close = v_series(close)
+    _length = 1
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+    close = v_series(close, _length)
+
+    if high is None or low is None or close is None:
+        return
+
     mode_tal = v_talib(talib)
     offset = v_offset(offset)
 

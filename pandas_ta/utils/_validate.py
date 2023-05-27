@@ -81,6 +81,8 @@ def v_ascending(var: bool) -> bool:
     return partial(v_bool, default=True)(var=var)
 
 def v_datetime_ordered(df: SeriesFrame) -> bool:
+    if df.shape[0] < 2:
+        return False
     if is_datetime64_any_dtype(df.index):
         np_dt_index = df.index.to_numpy()
         if np_dt_index[0] < np_dt_index[-1]:
