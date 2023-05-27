@@ -72,7 +72,8 @@ setup(
         "test": [
             "pytest==7.1.2",
             "pandas_datareader==0.10.0",
-            "ta-lib"
+            "ta-lib",
+            "numba"
         ],
     },
 )
