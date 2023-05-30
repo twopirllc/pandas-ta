@@ -17,3 +17,4 @@ from .ttm_trend import ttm_trend
 from .vhf import vhf
 from .vortex import vortex
 from .xsignals import xsignals
+from .zigzag import zigzag
