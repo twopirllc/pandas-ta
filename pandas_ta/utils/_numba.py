@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 from numpy import append, array, empty_like, nan, roll, zeros_like
+from numba import njit
 
 from pandas_ta._typing import Array, Int, IntFloat
-
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
 
 __all__ = [
     "np_prepend",

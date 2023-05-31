@@ -109,7 +109,7 @@ def test_study_all_increment_by_1(df, all_study, talib):
 
 @pytest.mark.parametrize("talib", [False, True])
 @pytest.mark.parametrize("category", categories)
-def test_study_mp_category_talib_cores(df, category, talib):
+def test_study_mp_category_talib(df, category, talib):
     cores = cpu_count() - 2
     initial_columns = df.shape[1]
     df.ta.study(category, cores=cores, talib=talib)

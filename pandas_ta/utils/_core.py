@@ -6,6 +6,7 @@ from pathlib import Path
 from sys import float_info as sflt
 
 from numpy import argmax, argmin, finfo, float64
+from numba import njit
 from pandas import DataFrame, Series
 
 from pandas_ta._typing import Array, Int, IntFloat, ListStr, Union
@@ -27,12 +28,6 @@ __all__ = [
     "tal_ma",
     "unsigned_differences",
 ]
-
-
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
 
 
 def camelCase2Title(x: str):
@@ -59,7 +54,7 @@ def non_zero_range(high: Series, low: Series) -> Series:
     return diff
 
 
-@njit
+@njit(cache=True)
 def np_non_zero_range(x: Array, y: Array):
     diff = x - y
     if diff.any() == 0:

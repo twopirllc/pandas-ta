@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 from numpy import copy, cos, exp
+from numba import njit
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
 
-
-@njit
+@njit(cache=True)
 def np_ssf3(x: Array, n: Int, pi: IntFloat, sqrt3: IntFloat):
     """John F. Ehler's Super Smoother Filter by Everget (3 poles), Tradingview
     https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/"""

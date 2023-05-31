@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN, greater, zeros_like
+from numba import njit
 from pandas import DataFrame, Series, Timedelta, infer_freq, to_datetime
 from pandas_ta._typing import Array, DictLike
 from pandas_ta.utils import np_non_zero_range, v_datetime_ordered, v_series, v_str
 
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
 
-
-@njit
+@njit(cache=True)
 def pivot_camarilla(high: Array, low: Array, close: Array):
     """Camarilla Pivot Points - requires high, low, close"""
     tp = (high + low + close) / 3
@@ -29,7 +25,7 @@ def pivot_camarilla(high: Array, low: Array, close: Array):
     return tp, s1, s2, s3, s4, r1, r2, r3, r4
 
 
-@njit
+@njit(cache=True)
 def pivot_classic(high: Array, low: Array, close: Array):
     """Classic Pivot Points - requires high, low, close"""
     tp = (high + low + close) / 3
@@ -49,7 +45,7 @@ def pivot_classic(high: Array, low: Array, close: Array):
 
 
 
-@njit
+@njit(cache=True)
 def pivot_demark(open_: Array, high: Array, low: Array, close: Array):
     """DeMark Pivot Points - requires open, high, low, close"""
     if (open_ == close).all():
@@ -65,7 +61,7 @@ def pivot_demark(open_: Array, high: Array, low: Array, close: Array):
     return tp, s1, r1
 
 
-@njit
+@njit(cache=True)
 def pivot_fibonacci(high: Array, low: Array, close: Array):
     """Fibonacci Pivot Points - requires high, low, close"""
     tp = (high + low + close) / 3
@@ -82,7 +78,7 @@ def pivot_fibonacci(high: Array, low: Array, close: Array):
     return tp, s1, s2, s3, r1, r2, r3
 
 
-@njit
+@njit(cache=True)
 def pivot_traditional(high: Array, low: Array, close: Array):
     """Traditional Pivot Points - requires high, low, close"""
     tp = (high + low + close) / 3
@@ -101,7 +97,7 @@ def pivot_traditional(high: Array, low: Array, close: Array):
     return tp, s1, s2, s3, s4, r1, r2, r3, r4
 
 
-@njit
+@njit(cache=True)
 def pivot_woodie(open_: Array, high: Array, low: Array):
     """Woodie Pivot Points - requires open, high, low"""
     tp = (2 * open_ + high + low) / 4

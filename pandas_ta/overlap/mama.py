@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import arctan, isnan, nan, zeros_like
+from numba import njit
 from pandas import DataFrame, Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
-
-
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
 
 
 @njit(cache=True)

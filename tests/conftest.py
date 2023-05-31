@@ -18,11 +18,10 @@ PLAY_BEEP = f"osascript -e beep"
 @pytest.fixture(name="df", scope="function")
 def testdf():
     """Yields a truncated df from TEST_CSV file"""
-    df = read_csv(
-        TEST_CSV, index_col=0, parse_dates=True, keep_date_col=True,
-    )
+    df = read_csv(TEST_CSV, index_col=0, parse_dates=True, keep_date_col=True)
     df.drop(columns=["dividends", "stock splits"], inplace=True)
     yield df.iloc[:TEST_ROWS]
+
     del df
     if BEEP: os_system(PLAY_BEEP)
 

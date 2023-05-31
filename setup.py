@@ -20,7 +20,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "3", "94b")),
+    version=".".join(("0", "3", "95b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -30,10 +30,9 @@ setup(
     maintainer_email="appliedmathkj@gmail.com",
     download_url="https://github.com/twopirllc/pandas-ta.git",
     keywords=[
-        "technical analysis", "trading", "backtest", "trading bot",
-        "features",
-        "pandas", "numpy", "vectorbt", "yfinance", "polygon",
-        "python3"
+        "technical analysis", "finance", "trading", "backtest", "trading bot",
+        "features", "pandas", "numpy", "numba", "vectorbt", "yfinance",
+        "polygon", "python3"
     ],
     license="The MIT License (MIT)",
     classifiers=[
@@ -58,7 +57,7 @@ setup(
         "pandas_ta": ["py.typed"],
         "data": ["data/*.csv"],
     },
-    install_requires=["pandas"],
+    install_requires=["pandas", "numba"],
     # List additional groups of dependencies here (e.g. development dependencies).
     # You can install these using the following syntax, for example:
     # $ pip install -e .[full,test]     # locally
