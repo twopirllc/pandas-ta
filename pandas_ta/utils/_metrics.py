@@ -256,8 +256,7 @@ def sortino_ratio(
     else:
         returns = percent_return(close=close)
 
-    result = cagr(close) - benchmark_rate
-    result /= downside_deviation(returns)
+    result = (cagr(close) - benchmark_rate) / downside_deviation(returns)
     return result
 
 def volatility(

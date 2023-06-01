@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import log, nan
+from numpy import isnan, log, nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.overlap import hl2
@@ -65,7 +65,11 @@ def fisher(
         if v > 0.99:
             v = 0.999
         result.append(0.5 * (log((1 + v) / (1 - v)) + result[i - 1]))
+
     fisher = Series(result, index=high.index)
+    if all(isnan(fisher)):
+        return  # Emergency Break
+
     signalma = fisher.shift(signal)
 
     # Offset

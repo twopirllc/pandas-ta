@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 from numpy import append, array, empty_like, nan, roll, zeros_like
+from numba import njit
 
 from pandas_ta._typing import Array, Int, IntFloat
-
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
 
 __all__ = [
     "np_prepend",
@@ -16,15 +12,17 @@ __all__ = [
 
 
 # Utilities
-@njit
+@njit(cache=True)
 def np_prepend(x: Array, n: Int, value: IntFloat = nan) -> Array:
-    """Append array x to an array of values, typically nan."""
+    """Prepend n values, typically np.nan, to array x."""
     return append(array([value] * n), x)
 
 
-@njit
+@njit(cache=True)
 def np_rolling(x: Array, n: Int, fn = None) -> Array:
     """Like Pandas Rolling Window. x.rolling(n).fn()"""
+    if fn is None:
+        return x
     m = x.size
     result = zeros_like(x, dtype=float)
     if n <= 0:
@@ -37,7 +35,7 @@ def np_rolling(x: Array, n: Int, fn = None) -> Array:
     return result
 
 
-@njit
+@njit(cache=True)
 def np_shift(x: Array, n: Int, value: IntFloat = nan) -> Array:
     """np shift
     shift5 - preallocate empty array and assign slice by chrisaycock

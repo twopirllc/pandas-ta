@@ -52,6 +52,10 @@ def vwap(
     low = v_series(low, _length)
     close = v_series(close, _length)
     volume = v_series(volume, _length)
+
+    if high is None or low is None or close is None or volume is None:
+        return
+
     bands = v_list(bands)
     offset = v_offset(offset)
 
@@ -69,8 +73,8 @@ def vwap(
     # Calculate
     _props = f"VWAP_{anchor}"
     wp = typical_price * volume
-    vwap = wp.groupby(wp.index.to_period(anchor)).cumsum()
-    vwap /= volume.groupby(volume.index.to_period(anchor)).cumsum()
+    vwap = wp.groupby(wp.index.to_period(anchor)).cumsum() \
+        / volume.groupby(volume.index.to_period(anchor)).cumsum()
 
     if bands and len(bands):
         # Calculate vwap stdev bands

@@ -72,8 +72,8 @@ def roc(
         from talib import ROC
         roc = ROC(close, length)
     else:
-        roc = scalar * mom(close=close, length=length, talib=mode_tal)
-        roc /= close.shift(length)
+        roc = scalar * mom(close=close, length=length, talib=mode_tal) \
+            / close.shift(length)
 
     # Offset
     if offset != 0:

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# from numpy.ma import diff as np_ma_diff
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.maps import Imports
@@ -12,10 +11,6 @@ from pandas_ta.utils import (
 )
 
 
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
 
 
 # Mockup

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from numpy import nan, uintc, zeros_like
+from numba import njit
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.ma import ma as _ma
@@ -15,13 +16,7 @@ from pandas_ta.utils import (
 from pandas_ta.volatility import atr
 
 
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
-
-
-@njit
+@njit(cache=True)
 def np_atrts(x: Array, ma: Array, atr_: Array, length: Int, ma_length: Int):
     m = x.size
     k = max(length, ma_length)

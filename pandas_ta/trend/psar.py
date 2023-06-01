@@ -44,8 +44,12 @@ def psar(
         pd.DataFrame: long, short, af, and reversal columns.
     """
     # Validate
-    high = v_series(high)
-    low = v_series(low)
+    _length = 1
+    high = v_series(high, _length)
+    low = v_series(low, _length)
+
+    if high is None or low is None:
+        return
 
     paf = v_pos_default(af, 0.02) # paf is used to keep af from parameters
     af0 = v_pos_default(af0, paf)

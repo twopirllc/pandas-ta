@@ -24,7 +24,7 @@ Imports: Dict[str, bool] = {
     "matplotlib": find_spec("matplotlib") is not None,
     "mplfinance": find_spec("mplfinance") is not None,
     "numba": find_spec("numba") is not None,
-    "yaml": find_spec("yaml") is not None,
+    "polygon": find_spec("polygon") is not None,
     "scipy": find_spec("scipy") is not None,
     "sklearn": find_spec("sklearn") is not None,
     "statsmodels": find_spec("statsmodels") is not None,
@@ -32,8 +32,8 @@ Imports: Dict[str, bool] = {
     "talib": find_spec("talib") is not None,
     "tqdm": find_spec("tqdm") is not None,
     "vectorbt": find_spec("vectorbt") is not None,
+    "yaml": find_spec("yaml") is not None,
     "yfinance": find_spec("yfinance") is not None,
-    "polygon": find_spec("polygon") is not None,
 }
 
 # Not ideal and not dynamic but it works.
@@ -73,8 +73,8 @@ Category: Dict[str, ListStr] = {
     # Trend
     "trend": [
         "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
-        "increasing", "long_run", "psar", "qstick", "short_run", "trendflex",
-        "tsignals", "ttm_trend", "vhf", "vortex", "xsignals"
+        "increasing", "long_run", "psar", "qstick", "rwi", "short_run",
+        "trendflex", "tsignals", "ttm_trend", "vhf", "vortex", "xsignals"
     ],
     # Volatility
     "volatility": [
@@ -87,7 +87,8 @@ Category: Dict[str, ListStr] = {
     # Note: "vp" or "Volume Profile" is excluded since it does not return a Time Series
     "volume": [
         "ad", "adosc", "aobv", "cmf", "efi", "eom", "kvo", "mfi", "nvi",
-        "obv", "pvi", "pvo", "pvol", "pvr", "pvt", "vwap", "vwma", "wb_tsv"
+        "obv", "pvi", "pvo", "pvol", "pvr", "pvt", "vhm", "vwap", "vwma",
+        "wb_tsv"
     ],
 }
 

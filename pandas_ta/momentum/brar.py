@@ -64,11 +64,11 @@ def brar(
     hcy[hcy < 0] = 0  # Zero negative values
     cyl[cyl < 0] = 0  # ""
 
-    ar = scalar * high_open_range.rolling(length).sum()
-    ar /= open_low_range.rolling(length).sum()
+    ar = scalar * high_open_range.rolling(length).sum() \
+        / open_low_range.rolling(length).sum()
 
-    br = scalar * hcy.rolling(length).sum()
-    br /= cyl.rolling(length).sum()
+    br = scalar * hcy.rolling(length).sum() \
+        / cyl.rolling(length).sum()
 
     # Offset
     if offset != 0:

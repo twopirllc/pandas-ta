@@ -92,9 +92,8 @@ def ebsw(
 
             # 3 Bar average of wave amplitude and power
             wave = (filter_ + filtHist[1] + filtHist[0]) / 3
-            power_ = filter_ * filter_ + filtHist[1] * filtHist[1] \
-                + filtHist[0] * filtHist[0]
-            power_ /= 3
+            power_ = (filter_ * filter_ + filtHist[1] * filtHist[1] \
+                + filtHist[0] * filtHist[0]) / 3
             # Normalize the Average Wave to Square Root of the Average Power
             wave = wave / sqrt(power_)
 

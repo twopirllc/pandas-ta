@@ -51,9 +51,9 @@ def er(
     # Calculate
     abs_diff = close.diff(length).abs()
     abs_volatility = close.diff(drift).abs()
+    abs_volatility_rsum = abs_volatility.rolling(window=length).sum()
 
-    er = abs_diff
-    er /= abs_volatility.rolling(window=length).sum()
+    er = abs_diff / abs_volatility_rsum
 
     # Offset
     if offset != 0:

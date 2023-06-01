@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import nan
+from numpy import isnan, nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
@@ -76,12 +76,17 @@ def atr(
             high=high, low=low, close=close,
             talib=mode_tal, prenan=prenan, drift=drift
         )
+        if all(isnan(tr)):
+            return  # Emergency Break
         presma = kwargs.pop("presma", True)
         if presma:
             sma_nth = tr[0:length].mean()
             tr[:length - 1] = nan
             tr.iloc[length - 1] = sma_nth
         atr = ma(mamode, tr, length=length, talib=mode_tal)
+
+    if all(isnan(atr)):
+        return  # Emergency Break
 
     percent = kwargs.pop("percent", False)
     if percent:

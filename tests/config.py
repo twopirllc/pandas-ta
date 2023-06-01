@@ -10,11 +10,7 @@ import pandas_ta
 from pandas_ta._typing import DictLike, IntFloat
 
 sample_adx_data = read_csv(
-    f"data/ADX_D.csv",
-    index_col=0,
-    parse_dates=True,
-    infer_datetime_format=True,
-    keep_date_col=True,
+    f"data/ADX_D.csv", index_col=0, parse_dates=True, keep_date_col=True
 )
 
 

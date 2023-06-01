@@ -49,8 +49,7 @@ def pvo(
     # Calculate
     fastma = ema(volume, length=fast)
     slowma = ema(volume, length=slow)
-    pvo = scalar * (fastma - slowma)
-    pvo /= slowma
+    pvo = scalar * (fastma - slowma) / slowma
 
     signalma = ema(pvo, length=signal)
     histogram = pvo - signalma

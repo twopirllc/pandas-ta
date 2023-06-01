@@ -48,8 +48,8 @@ def pgo(
     offset = v_offset(offset)
 
     # Calculate
-    pgo = close - sma(close, length)
-    pgo /= ema(atr(high, low, close, length), length)
+    pgo = (close - sma(close, length)) \
+        / ema(atr(high, low, close, length), length)
 
     # Offset
     if offset != 0:

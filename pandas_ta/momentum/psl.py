@@ -62,8 +62,7 @@ def psl(
     diff.fillna(0, inplace=True)
     diff[diff <= 0] = 0  # Set negative values to zero
 
-    psl = scalar * diff.rolling(length).sum()
-    psl /= length
+    psl = scalar * diff.rolling(length).sum() / length
 
     # Offset
     if offset != 0:

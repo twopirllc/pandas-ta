@@ -52,8 +52,7 @@ def cfo(
 
     # Calculate
     # Finding linear regression of Series
-    cfo = scalar * (close - linreg(close, length=length, tsf=True))
-    cfo /= close
+    cfo = scalar * (close - linreg(close, length=length, tsf=True)) / close
 
     # Offset
     if offset != 0:

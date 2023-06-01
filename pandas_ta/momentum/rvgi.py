@@ -55,12 +55,10 @@ def rvgi(
     high_low_range = non_zero_range(high, low)
     close_open_range = non_zero_range(close, open_)
 
-    numerator = swma(
-        close_open_range, length=swma_length
-    ).rolling(length).sum()
-    denominator = swma(
-        high_low_range, length=swma_length
-    ).rolling(length).sum()
+    numerator = swma(close_open_range, length=swma_length) \
+        .rolling(length).sum()
+    denominator = swma(high_low_range, length=swma_length) \
+        .rolling(length).sum()
 
     rvgi = numerator / denominator
     signal = swma(rvgi, length=swma_length)

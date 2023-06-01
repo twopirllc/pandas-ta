@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.ma import ma
@@ -68,8 +69,10 @@ def ppo(
     else:
         fastma = ma(mamode, close, length=fast, talib=mode_tal)
         slowma = ma(mamode, close, length=slow, talib=mode_tal)
-        ppo = scalar * (fastma - slowma)
-        ppo /= slowma
+        ppo = scalar * (fastma - slowma) / slowma
+
+    if all(isnan(ppo)):
+        return  # Emergency Break
 
     signalma = ma("ema", ppo, length=signal, talib=mode_tal)
     histogram = ppo - signalma

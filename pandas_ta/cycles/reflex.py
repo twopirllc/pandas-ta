@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 from numpy import cos, exp, nan, sqrt, zeros_like
+from numba import njit
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
-try:
-    from numba import njit
-except ImportError:
-    def njit(_): return _
-
-
-@njit
+@njit(cache=True)
 def np_reflex(
     x: Array, n: Int, k: Int,
     alpha: IntFloat, pi: IntFloat, sqrt2: IntFloat

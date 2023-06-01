@@ -72,8 +72,8 @@ def stochf(
         lowest_low = low.rolling(k).min()
         highest_high = high.rolling(k).max()
 
-        stochf_k = 100 * (close - lowest_low)
-        stochf_k /= non_zero_range(highest_high, lowest_low)
+        stochf_k = 100 * (close - lowest_low) \
+            / non_zero_range(highest_high, lowest_low)
         stochfk_fvi = stochf_k.loc[stochf_k.first_valid_index():, ]
         stochf_d = ma(mamode, stochfk_fvi, length=d, talib=mode_tal)
 

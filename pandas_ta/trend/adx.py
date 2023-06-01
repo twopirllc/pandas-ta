@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import numpy as np
 from numpy import isnan, nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
@@ -127,7 +126,7 @@ def adx(
 
         adx = ma(mamode, dx, length=lensig)
         # Rollback shifted rows.
-        adx[:length - 1] = np.nan
+        adx[:length - 1] = nan
         adx = adx.shift(length)
     else:
         dmp = k * ma(mamode, pos, length=length)

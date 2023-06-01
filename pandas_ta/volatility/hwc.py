@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from sys import float_info as sflt
 from numpy import sqrt
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
@@ -76,7 +77,9 @@ def hwc(
             # channel width
             chan_width.append(upper[i] - lower[i])
             # channel percentage price position
-            chan_pct_width.append((close[i] - lower[i]) / (upper[i] - lower[i]))
+            chan_pct_width.append(
+                (close[i] - lower[i]) / (upper[i] - lower[i] + sflt.epsilon)
+            )
 
         # update values
         last_price = close[i]

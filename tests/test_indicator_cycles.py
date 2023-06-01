@@ -1,46 +1,28 @@
 # -*- coding: utf-8 -*-
-from unittest import TestCase, skip
+import pandas_ta as ta
+
 from pandas import Series
 
-from .config import sample_data
-from .context import pandas_ta
+
+# TA Lib style Tests
+def test_ebsw(df):
+    result = ta.ebsw(df.close)
+    assert isinstance(result, Series)
+    assert result.name == "EBSW_40_10"
 
 
-class TestCycles(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.data = sample_data
-        cls.data.columns = cls.data.columns.str.lower()
-        cls.open = cls.data["open"]
-        cls.high = cls.data["high"]
-        cls.low = cls.data["low"]
-        cls.close = cls.data["close"]
-        if "volume" in cls.data.columns:
-            cls.volume = cls.data["volume"]
-
-    @classmethod
-    def tearDownClass(cls):
-        del cls.open
-        del cls.high
-        del cls.low
-        del cls.close
-        if hasattr(cls, "volume"):
-            del cls.volume
-        del cls.data
-
-    def setUp(self): pass
-    def tearDown(self): pass
+def test_reflex(df):
+    result = ta.reflex(df.close)
+    assert isinstance(result, Series)
+    assert result.name == "REFLEX_20_20_0.04"
 
 
-    def test_ebsw(self):
-        """Cycle: EBSW"""
-        result = pandas_ta.ebsw(self.close)
-        self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "EBSW_40_10")
+# DataFrame Extension Tests
+def test_ext_ebsw(df):
+    df.ta.ebsw(append=True)
+    assert df.columns[-1] == "EBSW_40_10"
 
 
-    def test_reflex(self):
-        """Cycle: Reflex"""
-        result = pandas_ta.reflex(self.close)
-        self.assertIsInstance(result, Series)
-        self.assertEqual(result.name, "REFLEX_20_20_0.04")
+def test_ext_reflex(df):
+    df.ta.reflex(append=True)
+    assert df.columns[-1] == "REFLEX_20_20_0.04"
