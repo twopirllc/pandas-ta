@@ -1405,7 +1405,15 @@ class AnalysisIndicators(BasePandasObject):
         close = self._get_column(kwargs.pop("close", "close"))
         result = adx(high=high, low=low, close=close, length=length, lensig=lensig, mamode=mamode, scalar=scalar, drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
-
+    
+    def alphatrend(self, volume=None, src=None, common_period=None, multiplier=None, **kwargs):
+        open = self._get_column(kwargs.pop("open", "open"))
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = alphatrend(open, high, low, close, volume=None, src=None, common_period=None, multiplier=None, **kwargs)
+        return self._post_process(result, **kwargs)
+    
     def amat(self, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs):
         close = self._get_column(kwargs.pop("close", "close"))
         result = amat(close=close, fast=fast, slow=slow, mamode=mamode, lookback=lookback, offset=offset, **kwargs)
@@ -1523,7 +1531,7 @@ class AnalysisIndicators(BasePandasObject):
         low = self._get_column(kwargs.pop("low", "low"))
         result = zigzag(high, low, pivot_leg, price_deviation, retrace=False, last_extreme=False, **kwargs)
         return self._post_process(result, **kwargs)
-
+    
     # Utility
     def above(self, asint=True, offset=None, **kwargs):
         a = self._get_column(kwargs.pop("close", "a"))

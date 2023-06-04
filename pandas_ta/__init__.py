@@ -68,7 +68,7 @@ Category = {
     ],
     # Trend
     "trend": [
-        "adx", "amat", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
+        "adx", "amat", "alphatrend", "aroon", "chop", "cksp", "decay", "decreasing", "dpo",
         "increasing", "long_run", "psar", "qstick", "short_run", "tsignals",
         "ttm_trend", "vhf", "vortex", "xsignals", "zigzag"
     ],
