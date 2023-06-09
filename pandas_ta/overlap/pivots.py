@@ -165,13 +165,14 @@ def pivots(
     ]
     method = v_str(method, methods[0])
 
-    dt_index = close.index
-    if dt_index.size < 3:
+    if close.index.size < 3:
         return  # Emergency Break
 
     if not v_datetime_ordered(close):
-        dt_index = to_datetime(close.index, unit="ms")
+        print("[!] Pivots requires a datetime ordered index.")
+        return
 
+    dt_index = close.index
     freq = infer_freq(dt_index)
 
     if anchor and isinstance(anchor, str) and len(anchor) >= 1:
@@ -189,6 +190,7 @@ def pivots(
                 "close": close.resample(anchor).last()
             }
         )
+        df.dropna(inplace=True)
     else:
         df = DataFrame(
             data={"open": open_, "high": high, "low": low, "close": close},

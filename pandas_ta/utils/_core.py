@@ -168,6 +168,9 @@ def _speed_group(
     result = []
     for i in group:
         r = df.ta(i, talib=talib, timed=True)
+        if r is None:
+            print(f"[S] {i} skipped due to returning None")
+            continue # ta.pivots() sometimes returns None
         ms = float(r.timed.split(" ")[0].split(" ")[0])
         result.append({index_name: i, "ms": ms, "secs": ms2secs(ms, p)})
     return result

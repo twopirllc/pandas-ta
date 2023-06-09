@@ -66,8 +66,8 @@ def natr(
         from talib import NATR
         natr = NATR(high, low, close, length)
     else:
-        natr = scalar / close
-        natr *= atr(
+        natr = (scalar / close) * \
+        atr(
             high=high, low=low, close=close, length=length,
             mamode=mamode, drift=drift, talib=mode_tal,
             offset=offset, **kwargs

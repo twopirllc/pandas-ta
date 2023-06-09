@@ -1260,10 +1260,7 @@ class AnalysisIndicators(object):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         close = self._get_column(kwargs.pop("close", "close"))
-        result = pivots(
-            open_=open_, high=high, low=low, close=close,
-            method=method, anchor=anchor, **kwargs,
-        )
+        result = pivots(open_=open_, high=high, low=low, close=close, method=method, anchor=anchor, **kwargs)
         return self._post_process(result, **kwargs)
 
     def pwma(self, length=None, offset=None, **kwargs: DictLike):

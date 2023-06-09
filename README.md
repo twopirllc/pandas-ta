@@ -197,7 +197,7 @@ $ pip install pandas_ta[full]
 
 Development Version
 -------------------
-The _development_ version, _0.3.95b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
+The _development_ version, _0.3.96b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 ```
@@ -538,7 +538,7 @@ df.ta.cores
 df.ta.ds
 
 # Set the Data Source (ds) so that df.ta.ticker() can download ohlcv data.
-# Available Data Sources: "yf", "polgon"
+# Available Data Sources: "yf", "polygon"
 df.ta.ds = "yf"
 ```
 

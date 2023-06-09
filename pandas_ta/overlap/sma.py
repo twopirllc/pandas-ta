@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import convolve, ndarray, ones
+from numpy import convolve, ones
 from numba import njit
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int

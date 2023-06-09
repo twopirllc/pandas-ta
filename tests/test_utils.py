@@ -277,27 +277,6 @@ def test_inv_norm_value(value, result):
     assert ta.utils.inv_norm(value) == result
 
 
-@mark.parametrize("array,window,result", [
-    (np.ones(5), 2, np.array([np.nan, np.nan, 1.0, 1.0, 1.0, 1.0, 1.0])),
-    (np.ones(5), -2, np.ones(5))
-])
-def test_np_prepend(array, window, result):
-    np.testing.assert_array_equal(ta.np_prepend(array, window), result)
-
-
-@mark.parametrize("array,window,fn,result", [(np.ones(5), 2, None, np.ones(5))])
-def test_np_rolling(array, window, fn, result):
-    np.testing.assert_array_equal(ta.np_rolling(array, window, fn), result)
-
-
-@mark.parametrize("array,window,result", [
-    (np.ones(5), 2, np.array([np.nan, np.nan, 1.0, 1.0, 1.0])),
-    (np.ones(5), -2, np.array([1.0, 1.0, 1.0, np.nan, np.nan]))
-])
-def test_np_shift(array, window, result):
-    np.testing.assert_array_equal(ta.np_shift(array, window), result)
-
-
 def test_symmetric_triangle():
     np.testing.assert_array_equal(ta.utils.symmetric_triangle(), np.array([1,1]))
     np.testing.assert_array_equal(ta.utils.symmetric_triangle(weighted=True), np.array([0.5, 0.5]))
@@ -399,5 +378,5 @@ def test_zero(value, result):
 @mark.parametrize("talib", [False, True])
 @mark.parametrize("verbose", [False, True])
 def test_indicator_speed_talib_verbose(df, talib, verbose):
-    resultdf =ta.speed_test(df, talib=talib, verbose=verbose)
+    resultdf = ta.speed_test(df, talib=talib, verbose=verbose)
     assert isinstance(resultdf, DataFrame)

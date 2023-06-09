@@ -14,6 +14,9 @@ init:
 test_metrics:
 	pytest -vv -s -l --cache-clear tests/test_metrics.py
 
+test_numba:
+	pytest -vv -s -l --cache-clear tests/test_numba.py
+
 test_studies:
 	pytest -vv -s -l --cache-clear tests/test_studies.py
 

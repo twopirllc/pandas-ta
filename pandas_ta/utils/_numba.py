@@ -5,13 +5,22 @@ from numba import njit
 from pandas_ta._typing import Array, Int, IntFloat
 
 __all__ = [
+    "np_prenan",
     "np_prepend",
     "np_rolling",
     "np_shift",
 ]
 
 
-# Utilities
+@njit(cache=True)
+def np_prenan(x: Array, n: Int, value: IntFloat = nan) -> Array:
+    """Prepend n values, typically np.nan, to array x."""
+    if n > 0:
+        x[:n - 1] = value
+        return x
+    return x
+
+
 @njit(cache=True)
 def np_prepend(x: Array, n: Int, value: IntFloat = nan) -> Array:
     """Prepend n values, typically np.nan, to array x."""
