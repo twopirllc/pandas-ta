@@ -1345,14 +1345,6 @@ class AnalysisIndicators(object):
         result = zlma(close=close, length=length, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def chandelier_exit(self, atr_length=None, roll_length=None, multiplier=None, use_close=False, offset=None, **kwargs):
-        high = self._get_column(kwargs.pop("high", "high"))
-        low = self._get_column(kwargs.pop("low", "low"))
-        close = self._get_column(kwargs.pop("close", "close"))
-        result = chandelier_exit(high=high, low=low, close=close, atr_length=atr_length, roll_length=roll_length,
-                                 multiplier=multiplier, use_close=use_close, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
     # Performance
     def log_return(self, length=None, cumulative=False, percent=False, offset: Int = None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
@@ -1594,6 +1586,18 @@ class AnalysisIndicators(object):
     def bbands(self, length=None, std=None, mamode=None, offset: Int = None, **kwargs: DictLike):
         close  = self._get_column(kwargs.pop("close", "close"))
         result = bbands(close=close, length=length, std=std, mamode=mamode, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
+    def chandelier_exit(self, high_length=None, low_length=None, atr_length=None, multiplier=None, mamode=None, talib=None, use_close=None, drift=None, offset=None, **kwargs):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = chandelier_exit(
+            high=high, low=low, close=close,
+            high_length=high_length, low_length=low_length, atr_length=atr_length,
+            multiplier=multiplier, mamode=mamode, talib=talib,
+            use_close=use_close, drift=drift, offset=offset, **kwargs
+        )
         return self._post_process(result, **kwargs)
 
     def donchian(self, lower_length=None, upper_length=None, offset: Int = None, **kwargs: DictLike):

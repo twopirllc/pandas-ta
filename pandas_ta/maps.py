@@ -59,7 +59,7 @@ Category: Dict[str, ListStr] = {
         "hma", "hwma", "ichimoku", "jma", "kama", "linreg", "mama",
         "mcgd", "midpoint", "midprice", "ohlc4", "pwma", "rma", "sinwma",
         "sma", "smma", "ssf", "ssf3", "supertrend", "swma", "t3", "tema",
-        "trima", "vidya", "wcp", "wma", "zlma", "chandelier_exit"
+        "trima", "vidya", "wcp", "wma", "zlma"
     ],
     # Performance
     "performance": ["log_return", "percent_return"],
@@ -78,8 +78,8 @@ Category: Dict[str, ListStr] = {
     ],
     # Volatility
     "volatility": [
-        "aberration", "accbands", "atr", "atrts", "bbands", "donchian",
-        "hwc", "kc", "massi", "natr", "pdist", "rvi", "thermo",
+        "aberration", "accbands", "atr", "atrts", "bbands", "chandelier_exit",
+        "donchian", "hwc", "kc", "massi", "natr", "pdist", "rvi", "thermo",
         "true_range", "ui"
     ],
 
