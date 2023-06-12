@@ -78,8 +78,8 @@ def chandelier_exit(
 
     # Calculate
     atr_ = atr(
-        high=high, low=low, close=close,
-        length=atr_length, talib=mode_tal, **kwargs
+        high=high, low=low, close=close, length=atr_length,
+        mamode=mamode, talib=mode_tal, drift=drift, offset=offset
     )
     if atr_ is None or all(isnan(atr_)):
         return
@@ -119,16 +119,16 @@ def chandelier_exit(
 
     # Name and Category
     _name = "CHDLREXT"
-    df = DataFrame({
-        f"{_name}l": long,
-        f"{_name}s": short,
-        f"{_name}d": direction
-    }, index=close.index)
 
     _props = f"_{high_length}_{low_length}_{atr_length}_{multiplier}"
     if use_close:
         _props = f"_CLOSE_{_props}"
 
+    df = DataFrame({
+        f"{_name}l{_props}": long,
+        f"{_name}s{_props}": short,
+        f"{_name}d{_props}": direction
+    }, index=close.index)
     df.name = f"{_name}{_props}"
     df.category = "volatility"
 

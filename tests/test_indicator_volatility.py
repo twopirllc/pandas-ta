@@ -92,6 +92,12 @@ def test_bbands(df):
     assert result.name == "BBANDS_5_2.0"
 
 
+def test_chandelier_exit(df):
+    result = ta.chandelier_exit(df.high, df.low, df.close, talib=False)
+    assert isinstance(result, DataFrame)
+    assert result.name == "CHDLREXT_22_22_14_2.0"
+
+
 def test_donchian(df):
     result = ta.donchian(df.high, df.low)
     assert isinstance(result, DataFrame)
@@ -232,6 +238,14 @@ def test_ext_bbands(df):
     df.ta.bbands(append=True)
     columns = ["BBL_5_2.0", "BBM_5_2.0", "BBU_5_2.0", "BBB_5_2.0", "BBP_5_2.0"]
     assert list(df.columns[-5:]) == columns
+
+
+def test_ext_chandelier_exit(df):
+    df.ta.chandelier_exit(append=True)
+    columns = [
+        "CHDLREXTl_22_22_14_2.0", "CHDLREXTs_22_22_14_2.0", "CHDLREXTd_22_22_14_2.0"
+    ]
+    assert list(df.columns[-3:]) == columns
 
 
 def test_ext_donchian(df):
