@@ -4,6 +4,7 @@ from .accbands import accbands
 from .atr import atr
 from .atrts import atrts
 from .bbands import bbands
+from .chandelier_exit import chandelier_exit
 from .donchian import donchian
 from .hwc import hwc
 from .kc import kc
@@ -21,6 +22,7 @@ __all__ = [
     "atr",
     "atrts",
     "bbands",
+    "chandelier_exit",
     "donchian",
     "hwc",
     "kc",

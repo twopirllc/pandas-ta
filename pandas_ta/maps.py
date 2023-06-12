@@ -78,8 +78,8 @@ Category: Dict[str, ListStr] = {
     ],
     # Volatility
     "volatility": [
-        "aberration", "accbands", "atr", "atrts", "bbands", "donchian",
-        "hwc", "kc", "massi", "natr", "pdist", "rvi", "thermo",
+        "aberration", "accbands", "atr", "atrts", "bbands", "chandelier_exit",
+        "donchian", "hwc", "kc", "massi", "natr", "pdist", "rvi", "thermo",
         "true_range", "ui"
     ],
 

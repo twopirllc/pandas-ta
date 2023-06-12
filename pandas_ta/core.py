@@ -1604,7 +1604,19 @@ class AnalysisIndicators(object):
         result = bbands(close=close, length=length, std=std, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def donchian(self, lower_length=None, upper_length=None, offset=None, **kwargs: DictLike):
+    def chandelier_exit(self, high_length=None, low_length=None, atr_length=None, multiplier=None, mamode=None, talib=None, use_close=None, drift=None, offset=None, **kwargs):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = chandelier_exit(
+            high=high, low=low, close=close,
+            high_length=high_length, low_length=low_length, atr_length=atr_length,
+            multiplier=multiplier, mamode=mamode, talib=talib,
+            use_close=use_close, drift=drift, offset=offset, **kwargs
+        )
+        return self._post_process(result, **kwargs)
+
+    def donchian(self, lower_length=None, upper_length=None, offset: Int = None, **kwargs: DictLike):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         result = donchian(high=high, low=low, lower_length=lower_length, upper_length=upper_length, offset=offset,
