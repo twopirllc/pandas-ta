@@ -18,9 +18,9 @@ print(ta.version)
 $ pip list
 ```
 
-**Did you upgrade? Did the upgrade resolve the issue?**
+**Have you tried the _development_ version? Did it resolve the issue?**
 ```sh
-$ pip install -U git+https://github.com/twopirllc/pandas-ta
+$ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 ```
 
 **Describe the bug**
