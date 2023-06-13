@@ -125,6 +125,7 @@ az.py
 driver.py
 qd.py
 tdseq.py
+pandas-ta.json
 
 # Local package installs
 ta-lib/
