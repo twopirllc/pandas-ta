@@ -112,6 +112,9 @@ env/**
 # vscode settings
 .vscode/**
 
+# zed settings
+.zed/**
+
 # Original Source (Dev)
 pandas_ta/_wrapper.py
 

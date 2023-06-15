@@ -1,5 +1,5 @@
-.PHONY: test
-test:
+.PHONY: tests
+tests:
 	pytest -vv -s -l tests
 
 caches:
