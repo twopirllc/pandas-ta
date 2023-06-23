@@ -8,6 +8,7 @@ from .hwc import hwc
 from .kc import kc
 from .massi import massi
 from .natr import natr
+from .nwc import nwc
 from .pdist import pdist
 from .rvi import rvi
 from .thermo import thermo

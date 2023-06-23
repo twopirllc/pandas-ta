@@ -1611,6 +1611,13 @@ class AnalysisIndicators(BasePandasObject):
         result = natr(high=high, low=low, close=close, length=length, mamode=mamode, scalar=scalar, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def nwc(self, length=None, kernel=None, scalar=None, **kwargs):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = nwc(close=close, high=high, low=low, length=length, kernel=kernel, scalar=scalar, **kwargs)        
+        return self._post_process(result, **kwargs)
+    
     def pdist(self, drift=None, offset=None, **kwargs):
         open_ = self._get_column(kwargs.pop("open", "open"))
         high = self._get_column(kwargs.pop("high", "high"))

@@ -75,7 +75,7 @@ Category = {
     # Volatility
     "volatility": [
         "aberration", "accbands", "atr", "bbands", "donchian", "hwc", "kc", "massi",
-        "natr", "pdist", "rvi", "thermo", "true_range", "ui"
+        "natr", "nwc", "pdist", "rvi", "thermo", "true_range", "ui"
     ],
 
     # Volume, "vp" or "Volume Profile" is unique
