@@ -87,5 +87,6 @@ def true_range(
     # Name and Category
     true_range.name = f"TRUERANGE_{drift}"
     true_range.category = "volatility"
+    true_range.variable_type = "continuous"
 
     return true_range

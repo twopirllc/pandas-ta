@@ -73,5 +73,6 @@ def ui(
     # Name and Category
     ui.name = f"UI{'' if not everget else 'e'}_{length}"
     ui.category = "volatility"
+    ui.variable_type = "continuous"
 
     return ui

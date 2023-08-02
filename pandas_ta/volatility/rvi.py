@@ -117,5 +117,6 @@ def rvi(
     # Name and Category
     rvi.name = f"RVI{_mode}_{length}"
     rvi.category = "volatility"
+    rvi.variable_type = "continuous"
 
     return rvi

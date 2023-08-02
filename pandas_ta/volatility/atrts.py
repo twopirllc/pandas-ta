@@ -142,5 +142,6 @@ def atrts(
     _props = f"ATRTS{mamode[0]}{'p' if percent else ''}"
     atrts.name = f"{_props}_{length}_{ma_length}_{multiplier}"
     atrts.category = "volatility"
+    atrts.variable_type = "continuous"
 
     return atrts

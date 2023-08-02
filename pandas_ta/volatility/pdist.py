@@ -64,5 +64,6 @@ def pdist(
     # Name and Category
     pdist.name = "PDIST"
     pdist.category = "volatility"
+    pdist.variable_type = "continuous"
 
     return pdist

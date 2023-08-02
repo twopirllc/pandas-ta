@@ -108,8 +108,8 @@ def bbands(
     upper.name = f"BBU_{length}_{std}"
     bandwidth.name = f"BBB_{length}_{std}"
     percent.name = f"BBP_{length}_{std}"
-    upper.category = lower.category = "volatility"
-    mid.category = bandwidth.category = upper.category
+    lower.category = mid.category = upper.category = bandwidth.category = percent.category = "volatility"
+    lower.variable_type = mid.variable_type = upper.variable_type = bandwidth.variable_type = percent.variable_type = "continuous"
 
     data = {
         lower.name: lower, mid.name: mid, upper.name: upper,

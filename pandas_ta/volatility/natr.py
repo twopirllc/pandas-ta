@@ -86,5 +86,6 @@ def natr(
     # Name and Category
     natr.name = f"NATR_{length}"
     natr.category = "volatility"
+    natr.variable_type = "continuous"
 
     return natr

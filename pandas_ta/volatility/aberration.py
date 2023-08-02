@@ -92,8 +92,8 @@ def aberration(
     sg.name = f"ABER_SG{_props}"
     xg.name = f"ABER_XG{_props}"
     atr_.name = f"ABER_ATR{_props}"
-    zg.category = sg.category = "volatility"
-    xg.category = atr_.category = zg.category
+    zg.category = sg.category = xg.category = atr_.category = "volatility"
+    zg.variable_type = sg.variable_type = xg.variable_type = atr_.variable_type = "continuous"
 
     data = {zg.name: zg, sg.name: sg, xg.name: xg, atr_.name: atr_}
     aberdf = DataFrame(data)
