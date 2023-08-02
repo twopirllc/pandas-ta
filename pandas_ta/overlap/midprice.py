@@ -66,5 +66,6 @@ def midprice(
     # Name and Category
     midprice.name = f"MIDPRICE_{length}"
     midprice.category = "overlap"
+    midprice.variable_type = "continuous"
 
     return midprice

@@ -99,8 +99,8 @@ def ichimoku(
     kijun_sen.name = f"IKS_{kijun}"
     chikou_span.name = f"ICS_{kijun}"
 
-    chikou_span.category = kijun_sen.category = tenkan_sen.category = "overlap"
-    span_b.category = span_a.category = chikou_span
+    span_a.category = span_b.category = tenkan_sen.category = kijun_sen.category = chikou_span.category = "overlap"
+    span_a.variable_type = span_b.variable_type = tenkan_sen.variable_type = kijun_sen.variable_type = chikou_span.variable_type = "continuous"
 
     # Prepare Ichimoku DataFrame
     data = {
@@ -114,7 +114,7 @@ def ichimoku(
 
     ichimokudf = DataFrame(data, index=close.index)
     ichimokudf.name = f"ICHIMOKU_{tenkan}_{kijun}_{senkou}"
-    ichimokudf.category = "overlap"
+    ichimokudf.category = span_a.category
 
     # Prepare Span DataFrame
     last = close.index[-1]
@@ -128,6 +128,9 @@ def ichimoku(
         new_dt = date_range(start=last + tdelta, periods=kijun, freq="B")
         spandf = DataFrame(index=new_dt, columns=[span_a.name, span_b.name])
         _span_a.index = _span_b.index = new_dt
+
+    _span_a.category = _span_b.category = "overlap"
+    _span_a.variable_type = _span_b.variable_type = "continuous"
 
     spandf[span_a.name] = _span_a
     spandf[span_b.name] = _span_b

@@ -97,5 +97,6 @@ def kama(
     # Name and Category
     kama.name = f"KAMA_{length}_{fast}_{slow}"
     kama.category = "overlap"
+    kama.variable_type = "continuous"
 
     return kama

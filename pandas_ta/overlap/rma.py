@@ -54,5 +54,6 @@ def rma(
     # Name and Category
     rma.name = f"RMA_{length}"
     rma.category = "overlap"
+    rma.variable_type = "continuous"
 
     return rma

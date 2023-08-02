@@ -232,6 +232,9 @@ def pivots(
 
     # Name and Category
     _props = f"PIVOTS_{method[:4].upper()}_{anchor}"
+    tp.category = s1.category = s2.category = s3.category = s4.category = r1.category = r2.category = r3.category = r4.category = "overlap"
+    tp.variable_type = s1.variable_type = s2.variable_type = s3.variable_type = s4.variable_type = r1.variable_type = r2.variable_type = r3.variable_type = r4.variable_type = "continuous"
+
     df[f"{_props}_P"] = tp
     df[f"{_props}_S1"], df[f"{_props}_S2"] = s1, s2
     df[f"{_props}_S3"], df[f"{_props}_S4"] = s3, s4
@@ -250,6 +253,6 @@ def pivots(
         df.drop(columns=[x for x in df.columns if all(df[x].isna())], inplace=True)
 
     df.name = _props
-    df.category = "overlap"
+    df.category = tp.category
 
     return df

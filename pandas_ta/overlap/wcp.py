@@ -65,5 +65,6 @@ def wcp(
     # Name and Category
     wcp.name = "WCP"
     wcp.category = "overlap"
+    wcp.variable_type = "continuous"
 
     return wcp

@@ -64,5 +64,6 @@ def pwma(
     # Name and Category
     pwma.name = f"PWMA_{length}"
     pwma.category = "overlap"
+    pwma.variable_type = "continuous"
 
     return pwma

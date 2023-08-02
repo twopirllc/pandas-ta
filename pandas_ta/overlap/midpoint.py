@@ -63,5 +63,6 @@ def midpoint(
     # Name and Category
     midpoint.name = f"MIDPOINT_{length}"
     midpoint.category = "overlap"
+    midpoint.variable_type = "continuous"
 
     return midpoint

@@ -63,5 +63,6 @@ def fwma(
     # Name and Category
     fwma.name = f"FWMA_{length}"
     fwma.category = "overlap"
+    fwma.variable_type = "continuous"
 
     return fwma

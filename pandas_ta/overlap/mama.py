@@ -156,6 +156,9 @@ def mama(
 
     # Name and Category
     _props = f"_{fastlimit}_{slowlimit}"
+    mama.category = fama.category = "overlap"
+    mama.variable_type = fama.variable_type = "continuous"
+
     df = DataFrame({
         f"MAMA{_props}": mama,
         f"FAMA{_props}": fama,

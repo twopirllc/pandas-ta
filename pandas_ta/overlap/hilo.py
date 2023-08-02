@@ -96,6 +96,9 @@ def hilo(
 
     # Name and Category
     _props = f"_{high_length}_{low_length}"
+    hilo.category = long.category = short.category = "overlap"
+    hilo.variable_type = long.variable_type = short.variable_type = "continuous"
+
     data = {
         f"HILO{_props}": hilo,
         f"HILOl{_props}": long,

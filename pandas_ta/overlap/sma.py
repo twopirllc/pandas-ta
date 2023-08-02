@@ -97,5 +97,6 @@ def sma(
     # Name and Category
     sma.name = f"SMA_{length}"
     sma.category = "overlap"
+    sma.variable_type = "continuous"
 
     return sma

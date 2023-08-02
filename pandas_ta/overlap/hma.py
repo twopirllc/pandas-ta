@@ -60,5 +60,6 @@ def hma(
     # Name and Category
     hma.name = f"HMA_{length}"
     hma.category = "overlap"
+    hma.variable_type = "continuous"
 
     return hma

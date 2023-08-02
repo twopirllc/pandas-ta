@@ -117,5 +117,6 @@ def jma(
     # Name and Category
     jma.name = f"JMA_{_length}_{phase}"
     jma.category = "overlap"
+    jma.variable_type = "continuous"
 
     return jma

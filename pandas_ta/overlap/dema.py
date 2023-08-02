@@ -68,5 +68,6 @@ def dema(
     # Name and Category
     dema.name = f"DEMA_{length}"
     dema.category = "overlap"
+    dema.variable_type = "continuous"
 
     return dema
