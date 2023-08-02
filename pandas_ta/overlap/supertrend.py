@@ -84,9 +84,6 @@ def supertrend(
     dir_[:length] = [nan] * length
 
     _props = f"_{length}_{multiplier}"
-    trend.category = dir_.category = long.category = short.category = "overlap"
-    trend.variable_type = long.variable_type = short.variable_type = "continuous"
-    dir_.variable_type = "categorical"
 
     df = DataFrame({
         f"SUPERT{_props}": trend,
@@ -94,6 +91,10 @@ def supertrend(
         f"SUPERTl{_props}": long,
         f"SUPERTs{_props}": short,
     }, index=close.index)
+    
+    df[f"SUPERT{_props}"].category = df[f"SUPERTd{_props}"].category = df[f"SUPERTl{_props}"].category = df[f"SUPERTs{_props}"].category = "overlap"
+    df[f"SUPERT{_props}"].variable_type = df[f"SUPERTl{_props}"].variable_type = df[f"SUPERTs{_props}"].variable_type = "continuous"
+    df[f"SUPERTd{_props}"].variable_type = "categorical"
 
     df.name = f"SUPERT{_props}"
     df.category = "overlap"

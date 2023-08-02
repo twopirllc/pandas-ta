@@ -232,14 +232,15 @@ def pivots(
 
     # Name and Category
     _props = f"PIVOTS_{method[:4].upper()}_{anchor}"
-    tp.category = s1.category = s2.category = s3.category = s4.category = r1.category = r2.category = r3.category = r4.category = "overlap"
-    tp.variable_type = s1.variable_type = s2.variable_type = s3.variable_type = s4.variable_type = r1.variable_type = r2.variable_type = r3.variable_type = r4.variable_type = "continuous"
 
     df[f"{_props}_P"] = tp
     df[f"{_props}_S1"], df[f"{_props}_S2"] = s1, s2
     df[f"{_props}_S3"], df[f"{_props}_S4"] = s3, s4
     df[f"{_props}_R1"], df[f"{_props}_R2"] = r1, r2
     df[f"{_props}_R3"], df[f"{_props}_R4"] = r3, r4
+    
+    df[f"{_props}_P"].category = df[f"{_props}_S1"].category = df[f"{_props}_S2"].category = df[f"{_props}_S3"].category = df[f"{_props}_S4"].category = df[f"{_props}_R1"].category = df[f"{_props}_R2"].category = df[f"{_props}_R3"].category = df[f"{_props}_R4"].category = "overlap"
+    df[f"{_props}_P"].variable_type = df[f"{_props}_S1"].variable_type = df[f"{_props}_S2"].variable_type = df[f"{_props}_S3"].variable_type = df[f"{_props}_S4"].variable_type = df[f"{_props}_R1"].variable_type = df[f"{_props}_R2"].variable_type = df[f"{_props}_R3"].variable_type = df[f"{_props}_R4"].variable_type = "continuous"
 
     df.index = df.index + Timedelta(1, anchor.lower())
     if freq is not anchor:
@@ -253,6 +254,6 @@ def pivots(
         df.drop(columns=[x for x in df.columns if all(df[x].isna())], inplace=True)
 
     df.name = _props
-    df.category = tp.category
+    df.category = "overlap"
 
     return df
