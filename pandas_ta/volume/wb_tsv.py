@@ -97,6 +97,7 @@ def wb_tsv(
     signal_.name = f"TSVs{_props}"
     ratio.name = f"TSVr{_props}"
     tsv.category = signal_.category = ratio.category = "volume"
+    tsv.variable_type = signal_.variable_type = ratio.variable_type = "continuous"
 
     data = {tsv.name: tsv, signal_.name: signal_, ratio.name: ratio}
     df = DataFrame(data)

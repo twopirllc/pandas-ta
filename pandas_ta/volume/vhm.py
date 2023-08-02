@@ -77,5 +77,6 @@ def vhm(
     _props = f"VHM_{length}"
     vhm.name = _props if length == slength else f"{_props}_{slength}"
     vhm.category = "volume"
+    vhm.variable_type = "continuous"
 
     return vhm

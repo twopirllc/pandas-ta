@@ -75,5 +75,6 @@ def cmf(
     # Name and Category
     cmf.name = f"CMF_{length}"
     cmf.category = "volume"
+    cmf.variable_type = "continuous"
 
     return cmf

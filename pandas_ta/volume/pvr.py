@@ -50,5 +50,6 @@ def pvr(
     # Name and Category
     pvr.name = f"PVR"
     pvr.category = "volume"
+    pvr.variable_type = "categorical"
 
     return pvr

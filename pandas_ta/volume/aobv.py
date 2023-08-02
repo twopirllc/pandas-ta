@@ -96,10 +96,16 @@ def aobv(
         obv_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     _mode = mamode.lower()[0] if len(mamode) else ""
+    obv_min = obv_.rolling(min_lookback).min()
+    obv_max = obv_.rolling(max_lookback).max()
+    obv_.category = obv_min.category = obv_max.category = mas.category = maf.category = obv_long.category = obv_short.category = "volume"
+    obv_.variable_type = obv_min.variable_type = obv_max.varitable_type = mas.variable_type = maf.variable_type = "continuous"
+    obv_long.variable_type = obv_short.variable_type = "categorical"
+
     data = {
         obv_.name: obv_,
-        f"OBV_min_{min_lookback}": obv_.rolling(min_lookback).min(),
-        f"OBV_max_{max_lookback}": obv_.rolling(max_lookback).max(),
+        f"OBV_min_{min_lookback}": obv_min,
+        f"OBV_max_{max_lookback}": obv_max,
         f"OBV{_mode}_{fast}": maf,
         f"OBV{_mode}_{slow}": mas,
         f"AOBV_LR_{run_length}": obv_long,

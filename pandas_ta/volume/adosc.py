@@ -86,5 +86,6 @@ def adosc(
     # Name and Category
     adosc.name = f"ADOSC_{fast}_{slow}"
     adosc.category = "volume"
+    adosc.variable_type = "continuous"
 
     return adosc

@@ -81,5 +81,6 @@ def eom(
     # Name and Category
     eom.name = f"EOM_{length}_{divisor}"
     eom.category = "volume"
+    eom.variable_type = "continuous"
 
     return eom

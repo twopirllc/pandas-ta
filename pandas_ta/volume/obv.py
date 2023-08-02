@@ -65,5 +65,6 @@ def obv(
     # Name and Category
     obv.name = f"OBV"
     obv.category = "volume"
+    obv.variable_type = "continuous"
 
     return obv

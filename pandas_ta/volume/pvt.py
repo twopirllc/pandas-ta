@@ -58,5 +58,6 @@ def pvt(
     # Name and Category
     pvt.name = f"PVT"
     pvt.category = "volume"
+    pvt.variable_type = "continuous"
 
     return pvt

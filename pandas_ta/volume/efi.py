@@ -69,5 +69,6 @@ def efi(
     # Name and Category
     efi.name = f"EFI_{length}"
     efi.category = "volume"
+    efi.variable_type = "continuous"
 
     return efi

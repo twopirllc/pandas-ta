@@ -65,5 +65,6 @@ def nvi(
     # Name and Category
     nvi.name = f"NVI_{length}"
     nvi.category = "volume"
+    nvi.variable_type = "continuous"
 
     return nvi

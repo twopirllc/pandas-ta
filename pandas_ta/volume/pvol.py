@@ -50,5 +50,6 @@ def pvol(
     # Name and Category
     pvol.name = f"PVOL"
     pvol.category = "volume"
+    pvol.variable_type = "continuous"
 
     return pvol

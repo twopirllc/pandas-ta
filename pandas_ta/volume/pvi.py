@@ -64,5 +64,6 @@ def pvi(
     # Name and Category
     pvi.name = f"PVI_{length}"
     pvi.category = "volume"
+    pvi.variable_type = "continuous"
 
     return pvi
