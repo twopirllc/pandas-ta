@@ -76,6 +76,7 @@ def vortex(
     vip.name = f"VTXP_{length}"
     vim.name = f"VTXM_{length}"
     vip.category = vim.category = "trend"
+    vip.variable_type = vim.variable_type = "continuous"
 
     data = {vip.name: vip, vim.name: vim}
     vtxdf = DataFrame(data)

@@ -89,5 +89,6 @@ def chop(
     # Name and Category
     chop.name = f"CHOP{'ln' if ln else ''}_{length}_{atr_length}_{scalar}"
     chop.category = "trend"
+    chop.variable_type = "continuous"
 
     return chop

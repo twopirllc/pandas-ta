@@ -65,5 +65,6 @@ def vhf(
     # Name and Category
     vhf.name = f"VHF_{length}"
     vhf.category = "trend"
+    vhf.variable_type = "continuous"
 
     return vhf

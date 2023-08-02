@@ -146,6 +146,10 @@ def psar(
         reversal.fillna(method=kwargs["fill_method"], inplace=True)
 
     _params = f"_{af0}_{max_af}"
+    long.category = short.category = _af.category = reversal.category = "trend"
+    long.variable_type = short.variable_type = _af.variable_type = "continuous"
+    reversal.variable_type = "catgorical"
+
     data = {
         f"PSARl{_params}": long,
         f"PSARs{_params}": short,
@@ -154,7 +158,7 @@ def psar(
     }
     psardf = DataFrame(data)
     psardf.name = f"PSAR{_params}"
-    psardf.category = long.category = short.category = "trend"
+    psardf.category = long.category
 
     return psardf
 

@@ -100,6 +100,7 @@ def cksp(
     long_stop.name = f"CKSPl{_props}"
     short_stop.name = f"CKSPs{_props}"
     long_stop.category = short_stop.category = "trend"
+    long_stop.variable_type = short_stop.variable_type = "continuous"
 
     ckspdf = DataFrame({
         long_stop.name: long_stop, short_stop.name: short_stop

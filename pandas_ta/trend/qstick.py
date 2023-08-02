@@ -65,5 +65,6 @@ def qstick(
     # Name and Category
     qstick.name = f"QS_{length}"
     qstick.category = "trend"
+    qstick.variable_type = "continuous"
 
     return qstick

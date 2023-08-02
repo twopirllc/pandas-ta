@@ -91,6 +91,7 @@ def aroon(
     aroon_osc.name = f"AROONOSC_{length}"
 
     aroon_down.category = aroon_up.category = aroon_osc.category = "trend"
+    aroon_down.variable_type = aroon_up.variable_type = aroon_osc.variable_type = "continuous"
 
     data = {
         aroon_down.name: aroon_down,

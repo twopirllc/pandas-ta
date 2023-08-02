@@ -84,5 +84,6 @@ def decreasing(
     _props = f"{'S' if strict else ''}DEC{'p' if percent else ''}"
     decreasing.name = f"{_props}_{length}{_percent}"
     decreasing.category = "trend"
+    decreasing.variable_type = "categorical"
 
     return decreasing
