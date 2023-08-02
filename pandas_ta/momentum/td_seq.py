@@ -70,6 +70,7 @@ def td_seq(
     up_seq.name = f"TD_SEQ_UPa" if show_all else f"TD_SEQ_UP"
     down_seq.name = f"TD_SEQ_DNa" if show_all else f"TD_SEQ_DN"
     up_seq.category = down_seq.category = "momentum"
+    up_seq.variable_type = down_seq.variable_type = "categorical"
 
     data = {up_seq.name: up_seq, down_seq.name: down_seq}
     df = DataFrame(data)

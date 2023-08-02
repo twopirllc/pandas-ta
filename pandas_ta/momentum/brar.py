@@ -88,6 +88,7 @@ def brar(
     ar.name = f"AR{_props}"
     br.name = f"BR{_props}"
     ar.category = br.category = "momentum"
+    ar.variable_type = br.variable_type = "continuous"
 
     brardf = DataFrame({ar.name: ar, br.name: br})
     brardf.name = f"BRAR{_props}"

@@ -74,5 +74,6 @@ def cci(
     # Name and Category
     cci.name = f"CCI_{length}_{c}"
     cci.category = "momentum"
+    cci.variable_type = "continuous"
 
     return cci

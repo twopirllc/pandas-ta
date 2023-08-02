@@ -88,5 +88,6 @@ def roc(
     # Name and Category
     roc.name = f"ROC_{length}"
     roc.category = "momentum"
+    roc.variable_type = "continuous"
 
     return roc

@@ -57,5 +57,6 @@ def bias(
     # Name and Category
     bias.name = f"BIAS_{bma.name}"
     bias.category = "momentum"
+    bias.variable_type = "continuous"
 
     return bias

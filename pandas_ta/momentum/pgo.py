@@ -64,5 +64,6 @@ def pgo(
     # Name and Category
     pgo.name = f"PGO_{length}"
     pgo.category = "momentum"
+    pgo.variable_type = "continuous"
 
     return pgo

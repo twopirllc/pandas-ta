@@ -71,5 +71,6 @@ def bop(
     # Name and Category
     bop.name = f"BOP"
     bop.category = "momentum"
+    bop.variable_type = "continuous"
 
     return bop

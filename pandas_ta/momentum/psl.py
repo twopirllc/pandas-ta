@@ -78,5 +78,6 @@ def psl(
     _props = f"_{length}"
     psl.name = f"PSL{_props}"
     psl.category = "momentum"
+    psl.variable_type = "continuous"
 
     return psl

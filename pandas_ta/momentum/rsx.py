@@ -127,6 +127,7 @@ def rsx(
     # Name and Category
     rsx.name = f"RSX_{length}"
     rsx.category = "momentum"
+    rsx.variable_type = "continuous"
 
     signal_indicators = kwargs.pop("signal_indicators", False)
     if signal_indicators:

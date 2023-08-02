@@ -99,6 +99,7 @@ def ppo(
     histogram.name = f"PPOh{_props}"
     signalma.name = f"PPOs{_props}"
     ppo.category = histogram.category = signalma.category = "momentum"
+    ppo.variable_type = histogram.variable_type = signalma.variable_type = "continuous"
 
     data = {ppo.name: ppo, histogram.name: histogram, signalma.name: signalma}
     df = DataFrame(data)

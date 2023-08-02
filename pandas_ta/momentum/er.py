@@ -68,6 +68,7 @@ def er(
     # Name and Category
     er.name = f"ER_{length}"
     er.category = "momentum"
+    er.variable_type = "continuous"
 
     signal_indicators = kwargs.pop("signal_indicators", False)
     if signal_indicators:

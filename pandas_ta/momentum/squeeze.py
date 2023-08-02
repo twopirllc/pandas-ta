@@ -162,6 +162,10 @@ def squeeze(
         squeeze_off[:nanlength] = nan
         no_squeeze[:nanlength] = nan
 
+    squeeze.category = squeeze_on.category = squeeze_off.category = no_squeeze.category = "momentum"
+    squeeze.variable_type = "continuous"
+    squeeze_on.variable_type = squeeze_off.variable_type = no_squeeze.variable_type = "categorical"
+
     data = {
         squeeze.name: squeeze,
         f"SQZ_ON": squeeze_on,
@@ -170,7 +174,7 @@ def squeeze(
     }
     df = DataFrame(data)
     df.name = squeeze.name
-    df.category = squeeze.category = "momentum"
+    df.category = squeeze.category
 
     # More Detail
     if detailed:

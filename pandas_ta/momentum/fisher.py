@@ -90,6 +90,7 @@ def fisher(
     fisher.name = f"FISHERT{_props}"
     signalma.name = f"FISHERTs{_props}"
     fisher.category = signalma.category = "momentum"
+    fisher.variable_type = signalma.variable_type = "continuous"
 
     data = {fisher.name: fisher, signalma.name: signalma}
     df = DataFrame(data)

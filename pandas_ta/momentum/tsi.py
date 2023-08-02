@@ -102,6 +102,7 @@ def tsi(
     tsi.name = f"TSI_{fast}_{slow}_{signal}"
     tsi_signal.name = f"TSIs_{fast}_{slow}_{signal}"
     tsi.category = tsi_signal.category = "momentum"
+    tsi.variable_type = tsi_signal.variable_type = "continuous"
 
     df = DataFrame({tsi.name: tsi, tsi_signal.name: tsi_signal})
     df.name = f"TSI_{fast}_{slow}_{signal}"

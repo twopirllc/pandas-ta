@@ -91,10 +91,12 @@ def dm(
 
     # Name and Category
     _params = f"_{length}"
+    pos.category = neg.category = "momentum"
+    pos.variable_type = neg.variable_type = "continuous"
     data = {f"DMP{_params}": pos, f"DMN{_params}": neg, }
 
     dmdf = DataFrame(data)
     dmdf.name = f"DM{_params}"
-    dmdf.category = "momentum"
+    dmdf.category = pos.category
 
     return dmdf

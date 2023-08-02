@@ -74,5 +74,6 @@ def slope(
     # Name and Category
     slope.name = f"SLOPE_{length}" if not as_angle else f"ANGLE{'d' if to_degrees else 'r'}_{length}"
     slope.category = "momentum"
+    slope.variable_type = "continuous"
 
     return slope

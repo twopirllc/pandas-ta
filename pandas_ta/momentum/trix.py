@@ -87,6 +87,7 @@ def trix(
     trix.name = f"TRIX_{length}_{signal}"
     trix_signal.name = f"TRIXs_{length}_{signal}"
     trix.category = trix_signal.category = "momentum"
+    trix.variable_type = trix_signal.variable_type = "continuous"
 
     data = {trix.name: trix, trix_signal.name: trix_signal}
     df = DataFrame(data, index=close.index)

@@ -66,5 +66,6 @@ def ao(
     # Name and Category
     ao.name = f"AO_{fast}_{slow}"
     ao.category = "momentum"
+    ao.variable_type = "continuous"
 
     return ao

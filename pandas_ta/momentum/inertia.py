@@ -114,5 +114,6 @@ def inertia(
     _props = f"_{length}_{rvi_length}"
     inertia.name = f"INERTIA{_mode}{_props}"
     inertia.category = "momentum"
+    inertia.variable_type = "continuous"
 
     return inertia

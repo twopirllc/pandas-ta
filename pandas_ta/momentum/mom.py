@@ -75,5 +75,6 @@ def mom(
     # Name and Category
     mom.name = f"MOM_{length}"
     mom.category = "momentum"
+    mom.variable_type = "continuous"
 
     return mom

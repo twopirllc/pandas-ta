@@ -89,5 +89,6 @@ def cmo(
     # Name and Category
     cmo.name = f"CMO_{length}"
     cmo.category = "momentum"
+    cmo.variable_type = "continuous"
 
     return cmo

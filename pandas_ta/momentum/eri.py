@@ -70,6 +70,7 @@ def eri(
     bull.name = f"BULLP_{length}"
     bear.name = f"BEARP_{length}"
     bull.category = bear.category = "momentum"
+    bull.variable_type = bear.variable_type = "continuous"
 
     data = {bull.name: bull, bear.name: bear}
     df = DataFrame(data)

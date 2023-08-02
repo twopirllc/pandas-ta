@@ -92,6 +92,7 @@ def stochrsi(
     stochrsi_k.name = f"{_name}k{_props}"
     stochrsi_d.name = f"{_name}d{_props}"
     stochrsi_k.category = stochrsi_d.category = "momentum"
+    stochrsi_k.variable_type = stochrsi_d.variable_type = "continuous"
 
     data = {
         stochrsi_k.name: stochrsi_k,

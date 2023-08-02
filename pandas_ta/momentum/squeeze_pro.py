@@ -184,6 +184,10 @@ def squeeze_pro(
         squeeze_off_wide[:nanlength] = nan
         no_squeeze[:nanlength] = nan
 
+    squeeze.category = squeeze_on_wide.category = squeeze_on_normal.category = squeeze_on_narrow.category = squeeze_off_wide.category = no_squeeze.category = "momentum"
+    squeeze.variable_type = "continuous"
+    squeeze_on_wide.variable_type = squeeze_on_normal.variable_type = squeeze_on_narrow.variable_type = squeeze_off_wide.variable_type = no_squeeze.variable_type = "categorical"
+
     data = {
         squeeze.name: squeeze,
         f"SQZPRO_ON_WIDE": squeeze_on_wide,
@@ -194,7 +198,7 @@ def squeeze_pro(
     }
     df = DataFrame(data)
     df.name = squeeze.name
-    df.category = squeeze.category = "momentum"
+    df.category = squeeze.category
 
     # More Detail
     if detailed:

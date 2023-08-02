@@ -89,6 +89,7 @@ def rsi(
     # Name and Category
     rsi.name = f"RSI_{length}"
     rsi.category = "momentum"
+    rsi.variable_type = "continuous"
 
     signal_indicators = kwargs.pop("signal_indicators", False)
     if signal_indicators:

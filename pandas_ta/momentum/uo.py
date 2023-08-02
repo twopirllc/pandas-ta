@@ -105,5 +105,6 @@ def uo(
     # Name and Category
     uo.name = f"UO_{fast}_{medium}_{slow}"
     uo.category = "momentum"
+    uo.variable_type = "continuous"
 
     return uo

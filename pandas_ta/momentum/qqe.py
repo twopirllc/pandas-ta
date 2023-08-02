@@ -161,8 +161,8 @@ def qqe(
     rsi_ma.name = f"QQE{_props}_RSI{_mode.upper()}MA"
     qqe_long.name = f"QQEl{_props}"
     qqe_short.name = f"QQEs{_props}"
-    qqe.category = rsi_ma.category = "momentum"
-    qqe_long.category = qqe_short.category = qqe.category
+    qqe.category = rsi_ma.category = qqe_long.category = qqe_short.category = "momentum"
+    qqe.variable_type = rsi_ma.variable_type = qqe_long.variable_type = qqe_short.variable_type = "continuous"
 
     data = {
         qqe.name: qqe, rsi_ma.name: rsi_ma,
