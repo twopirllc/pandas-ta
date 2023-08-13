@@ -69,12 +69,22 @@ def ha(
     np_open, np_high = open_.values, high.values
     np_low, np_close = low.values, close.values
     ha_open, ha_high, ha_low, ha_close = np_ha(np_open, np_high, np_low, np_close)
+    ha_open = Series(ha_open, index=close.index)
+    ha_high = Series(ha_high, index=close.index)
+    ha_low = Series(ha_low, index=close.index)
+    ha_close = Series(ha_close, index=close.index)
+    ha_open.name = "HA_open"
+    ha_high.name = "HA_high"
+    ha_low.name = "HA_low"
+    ha_close.name = "HA_close"
+    ha_open.category = ha_high.category = ha_low.category = ha_close.category = "candles"
+    ha_open.variable_type = ha_high.variable_type = ha_low.variable_type = ha_close.variable_type = "continuous"
     df = DataFrame({
-        "HA_open": ha_open,
-        "HA_high": ha_high,
-        "HA_low": ha_low,
-        "HA_close": ha_close,
-    }, index=close.index)
+        ha_open.name: ha_open,
+        ha_high.name: ha_high,
+        ha_low.name: ha_low,
+        ha_close.name: ha_close,
+    })
 
     # Offset
     if offset != 0:

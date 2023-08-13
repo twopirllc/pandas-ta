@@ -81,5 +81,6 @@ def cdl_doji(
     # Name and Category
     doji.name = f"CDL_DOJI_{length}_{0.01 * factor}"
     doji.category = "candles"
+    doji.variable_type = "categorical"
 
     return doji

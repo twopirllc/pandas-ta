@@ -119,7 +119,10 @@ def cdl_pattern(
                 pattern_result.fillna(
                     method=kwargs["fill_method"], inplace=True)
 
-            result[f"CDL_{n.upper()}"] = pattern_result
+            pattern_result.name = f"CDL_{n.upper()}"
+            pattern_result.category = "candles"
+            pattern_result.variable_type = "categorical"
+            result[pattern_result.name] = pattern_result
 
     if len(result) == 0:
         return

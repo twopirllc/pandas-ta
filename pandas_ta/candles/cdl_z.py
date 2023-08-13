@@ -60,11 +60,19 @@ def cdl_z(
 
     _full = "a" if full else ""
     _props = _full if full else f"_{length}_{ddof}"
+
+    z_open.name = f"open_Z{_props}"
+    z_high.name = f"high_Z{_props}"
+    z_low.name = f"low_Z{_props}"
+    z_close.name = f"close_Z{_props}"
+    z_open.category = z_high.category = z_low.category = z_close.category = "candles"
+    z_open.variable_type = z_high.variable_type = z_low.variable_type = z_close.variable_type = "continuous"
+
     df = DataFrame({
-        f"open_Z{_props}": z_open,
-        f"high_Z{_props}": z_high,
-        f"low_Z{_props}": z_low,
-        f"close_Z{_props}": z_close,
+        z_open.name: z_open,
+        z_high.name: z_high,
+        z_low.name: z_low,
+        z_close.name: z_close,
     })
 
     if full:

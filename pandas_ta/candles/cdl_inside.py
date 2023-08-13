@@ -65,5 +65,6 @@ def cdl_inside(
     # Name and Category
     inside.name = f"CDL_INSIDE"
     inside.category = "candles"
+    inside.variable_type = "categorical"
 
     return inside
