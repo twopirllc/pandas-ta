@@ -76,6 +76,6 @@ def massi(
     # Name and Category
     massi.name = f"MASSI_{fast}_{slow}"
     massi.category = "volatility"
-    massi.variable_type = "continuous"
+    massi.attrs["variable_type"] = "continuous"
 
     return massi

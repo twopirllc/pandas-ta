@@ -129,7 +129,7 @@ def hwc(
     hwc_upper.name = f"HWU{_props}"
     hwc_lower.name = f"HWL{_props}"
     hwc.category = hwc_upper.category = hwc_lower.category = "volatility"
-    hwc.variable_type = hwc_upper.variable_type = hwc_lower.variable_type = "continuous"
+    hwc.attrs["variable_type"] = hwc_upper.attrs["variable_type"] = hwc_lower.attrs["variable_type"] = "continuous"
 
     if channels:
         data = {

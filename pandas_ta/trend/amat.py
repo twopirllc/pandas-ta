@@ -75,7 +75,7 @@ def amat(
         mas_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     mas_long.category = mas_short.category = "trend"
-    mas_long.variable_type = mas_short.variable_type = "categorical"
+    mas_long.attrs["variable_type"] = mas_short.attrs["variable_type"] = "categorical"
 
     amatdf = DataFrame({
         f"AMAT{mamode[0]}_LR_{fast}_{slow}_{lookback}": mas_long,

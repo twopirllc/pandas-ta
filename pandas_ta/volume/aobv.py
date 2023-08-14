@@ -99,8 +99,8 @@ def aobv(
     obv_min = obv_.rolling(min_lookback).min()
     obv_max = obv_.rolling(max_lookback).max()
     obv_.category = obv_min.category = obv_max.category = mas.category = maf.category = obv_long.category = obv_short.category = "volume"
-    obv_.variable_type = obv_min.variable_type = obv_max.varitable_type = mas.variable_type = maf.variable_type = "continuous"
-    obv_long.variable_type = obv_short.variable_type = "categorical"
+    obv_.attrs["variable_type"] = obv_min.attrs["variable_type"] = obv_max.varitable_type = mas.attrs["variable_type"] = maf.attrs["variable_type"] = "continuous"
+    obv_long.attrs["variable_type"] = obv_short.attrs["variable_type"] = "categorical"
 
     data = {
         obv_.name: obv_,

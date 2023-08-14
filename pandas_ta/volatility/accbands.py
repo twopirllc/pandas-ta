@@ -88,7 +88,7 @@ def accbands(
     mid.name = f"ACCBM_{length}"
     upper.name = f"ACCBU_{length}"
     mid.category = upper.category = lower.category = "volatility"
-    mid.variable_type = upper.variable_type = lower.variable_type = "continuous"
+    mid.attrs["variable_type"] = upper.attrs["variable_type"] = lower.attrs["variable_type"] = "continuous"
 
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
     accbandsdf = DataFrame(data)

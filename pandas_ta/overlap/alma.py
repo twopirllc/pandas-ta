@@ -83,6 +83,6 @@ def alma(
     # Name and Category
     alma.name = f"ALMA_{length}_{sigma}_{offset_}"
     alma.category = "overlap"
-    alma.variable_type = "continuous"
+    alma.attrs["variable_type"] = "continuous"
 
     return alma

@@ -113,6 +113,6 @@ def trendflex(
     # Name and Category
     result.name = f"TRENDFLEX_{length}_{smooth}_{alpha}"
     result.category = "trend"
-    result.variable_type = "continuous"
+    result.attrs["variable_type"] = "continuous"
 
     return result

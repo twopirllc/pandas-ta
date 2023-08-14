@@ -61,6 +61,6 @@ def sinwma(
     # Name and Category
     sinwma.name = f"SINWMA_{length}"
     sinwma.category = "overlap"
-    sinwma.variable_type = "continuous"
+    sinwma.attrs["variable_type"] = "continuous"
 
     return sinwma

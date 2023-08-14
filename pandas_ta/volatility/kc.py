@@ -91,7 +91,7 @@ def kc(
     basis.name = f"KCB{_props}"
     upper.name = f"KCU{_props}"
     basis.category = upper.category = lower.category = "volatility"
-    basis.variable_type = upper.variable_type = lower.variable_type = "continuous"
+    basis.attrs["variable_type"] = upper.attrs["variable_type"] = lower.attrs["variable_type"] = "continuous"
 
     data = {lower.name: lower, basis.name: basis, upper.name: upper}
     kcdf = DataFrame(data)

@@ -88,7 +88,7 @@ def vwap(
     # Name and Category
     vwap.name = _props
     vwap.category = "overlap"
-    vwap.variable_type = "continuous"
+    vwap.attrs["variable_type"] = "continuous"
 
     if bands:
         df = DataFrame({vwap.name: vwap}, index=close.index)

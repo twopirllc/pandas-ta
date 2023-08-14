@@ -72,6 +72,6 @@ def hwma(
     # Name and Category
     hwma.name = f"HWMA_{na}_{nb}_{nc}"
     hwma.category = "overlap"
-    hwma.variable_type = "continuous"
+    hwma.attrs["variable_type"] = "continuous"
 
     return hwma

@@ -76,7 +76,7 @@ def pvo(
     histogram.name = f"PVOh{_props}"
     signalma.name = f"PVOs{_props}"
     pvo.category = histogram.category = signalma.category = "momentum"
-    pvo.variable_type = histogram.variable_type = signalma.variable_type = "continuous"
+    pvo.attrs["variable_type"] = histogram.attrs["variable_type"] = signalma.attrs["variable_type"] = "continuous"
 
     data = {pvo.name: pvo, histogram.name: histogram, signalma.name: signalma}
     df = DataFrame(data)

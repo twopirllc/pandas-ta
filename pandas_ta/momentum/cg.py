@@ -55,6 +55,6 @@ def cg(
     # Name and Category
     cg.name = f"CG_{length}"
     cg.category = "momentum"
-    cg.variable_type = "continuous"
+    cg.attrs["variable_type"] = "continuous"
 
     return cg

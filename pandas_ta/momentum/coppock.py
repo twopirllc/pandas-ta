@@ -65,6 +65,6 @@ def coppock(
     # Name and Category
     coppock.name = f"COPC_{fast}_{slow}_{length}"
     coppock.category = "momentum"
-    coppock.variable_type = "continuous"
+    coppock.attrs["variable_type"] = "continuous"
 
     return coppock

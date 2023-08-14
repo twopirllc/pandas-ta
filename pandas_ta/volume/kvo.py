@@ -92,7 +92,7 @@ def kvo(
     kvo.name = f"KVO{_props}"
     kvo_signal.name = f"KVOs{_props}"
     kvo.category = kvo_signal.category = "volume"
-    kvo.variable_type = kvo_signal.variable_type = "continuous"
+    kvo.attrs["variable_type"] = kvo_signal.attrs["variable_type"] = "continuous"
 
     data = {kvo.name: kvo, kvo_signal.name: kvo_signal}
     df = DataFrame(data, index=close.index)

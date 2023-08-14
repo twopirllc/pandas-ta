@@ -66,6 +66,6 @@ def tema(
     # Name and Category
     tema.name = f"TEMA_{length}"
     tema.category = "overlap"
-    tema.variable_type = "continuous"
+    tema.attrs["variable_type"] = "continuous"
 
     return tema

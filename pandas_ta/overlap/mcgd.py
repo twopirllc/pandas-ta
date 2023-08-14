@@ -71,6 +71,6 @@ def mcgd(
     # Name and Category
     mcg_ds.name = f"MCGD_{length}"
     mcg_ds.category = "overlap"
-    mcg_ds.variable_type = "continuous"
+    mcg_ds.attrs["variable_type"] = "continuous"
 
     return mcg_ds

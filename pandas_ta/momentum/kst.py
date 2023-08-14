@@ -90,7 +90,7 @@ def kst(
     kst.name = f"KST_{roc1}_{roc2}_{roc3}_{roc4}_{sma1}_{sma2}_{sma3}_{sma4}"
     kst_signal.name = f"KSTs_{signal}"
     kst.category = kst_signal.category = "momentum"
-    kst.variable_type = kst_signal.variable_type = "continuous"
+    kst.attrs["variable_type"] = kst_signal.attrs["variable_type"] = "continuous"
 
     data = {kst.name: kst, kst_signal.name: kst_signal}
     kstdf = DataFrame(data)

@@ -92,7 +92,7 @@ def dm(
     # Name and Category
     _params = f"_{length}"
     pos.category = neg.category = "momentum"
-    pos.variable_type = neg.variable_type = "continuous"
+    pos.attrs["variable_type"] = neg.attrs["variable_type"] = "continuous"
     data = {f"DMP{_params}": pos, f"DMN{_params}": neg, }
 
     dmdf = DataFrame(data)

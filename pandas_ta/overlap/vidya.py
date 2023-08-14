@@ -72,7 +72,7 @@ def vidya(
     # Name and Category
     vidya.name = f"VIDYA_{length}"
     vidya.category = "overlap"
-    vidya.variable_type = "continuous"
+    vidya.attrs["variable_type"] = "continuous"
 
     return vidya
 

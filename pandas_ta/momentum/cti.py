@@ -54,6 +54,6 @@ def cti(
     # Name and Category
     cti.name = f"CTI_{length}"
     cti.category = "momentum"
-    cti.variable_type = "continuous"
+    cti.attrs["variable_type"] = "continuous"
 
     return cti

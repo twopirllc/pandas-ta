@@ -65,6 +65,6 @@ def decay(
     # Name and Category
     ld.name = f"{_mode}DECAY_{length}"
     ld.category = "trend"
-    ld.variable_type = "continuous"
+    ld.attrs["variable_type"] = "continuous"
 
     return ld

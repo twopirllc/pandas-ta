@@ -52,6 +52,6 @@ def ohlc4(
     # Name and Category
     ohlc4.name = "OHLC4"
     ohlc4.category = "overlap"
-    ohlc4.variable_type = "continuous"
+    ohlc4.attrs["variable_type"] = "continuous"
 
     return ohlc4

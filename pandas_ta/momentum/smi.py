@@ -91,7 +91,7 @@ def smi(
     signalma.name = f"SMIs{_props}"
     osc.name = f"SMIo{_props}"
     smi.category = signalma.category = osc.category = "momentum"
-    smi.variable_type = signalma.variable_type = osc.variable_type = "continuous"
+    smi.attrs["variable_type"] = signalma.attrs["variable_type"] = osc.attrs["variable_type"] = "continuous"
 
     data = {smi.name: smi, signalma.name: signalma, osc.name: osc}
     df = DataFrame(data)

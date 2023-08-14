@@ -51,6 +51,6 @@ def hl2(
     # Name and Category
     hl2.name = "HL2"
     hl2.category = "overlap"
-    hl2.variable_type = "continuous"
+    hl2.attrs["variable_type"] = "continuous"
 
     return hl2

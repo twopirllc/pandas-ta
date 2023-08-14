@@ -141,7 +141,7 @@ def stc(
     macd.name = f"STCmacd{_props}"
     stoch.name = f"STCstoch{_props}"
     stc.category = macd.category = stoch.category = "momentum"
-    stc.variable_type = macd.variable_type = stoch.variable_type = "continuous"
+    stc.attrs["variable_type"] = macd.attrs["variable_type"] = stoch.attrs["variable_type"] = "continuous"
 
     data = {
         stc.name: stc,

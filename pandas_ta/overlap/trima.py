@@ -67,6 +67,6 @@ def trima(
     # Name and Category
     trima.name = f"TRIMA_{length}"
     trima.category = "overlap"
-    trima.variable_type = "continuous"
+    trima.attrs["variable_type"] = "continuous"
 
     return trima

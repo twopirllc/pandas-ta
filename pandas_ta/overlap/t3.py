@@ -78,6 +78,6 @@ def t3(
     # Name and Category
     t3.name = f"T3_{length}_{a}"
     t3.category = "overlap"
-    t3.variable_type = "continuous"
+    t3.attrs["variable_type"] = "continuous"
 
     return t3

@@ -102,8 +102,8 @@ def thermo(
     thermo_long.name = f"THERMOl{_props}"
     thermo_short.name = f"THERMOs{_props}"
     thermo.category = thermo_ma.category = thermo_long.category = thermo_short.category = "volatility"
-    thermo.variable_type = thermo_ma.variable_type = "continuous"
-    thermo_long.variable_type = thermo_short.variable_type = "categorical"
+    thermo.attrs["variable_type"] = thermo_ma.attrs["variable_type"] = "continuous"
+    thermo_long.attrs["variable_type"] = thermo_short.attrs["variable_type"] = "categorical"
 
     data = {
         thermo.name: thermo,

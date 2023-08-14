@@ -83,7 +83,7 @@ def rvgi(
     rvgi.name = f"RVGI_{length}_{swma_length}"
     signal.name = f"RVGIs_{length}_{swma_length}"
     rvgi.category = signal.category = "momentum"
-    rvgi.variable_type = signal.variable_type = "continuous"
+    rvgi.attrs["variable_type"] = signal.attrs["variable_type"] = "continuous"
 
     df = DataFrame({rvgi.name: rvgi, signal.name: signal})
     df.name = f"RVGI_{length}_{swma_length}"

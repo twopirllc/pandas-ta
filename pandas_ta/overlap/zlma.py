@@ -95,6 +95,6 @@ def zlma(
     # Name and Category
     zlma.name = f"ZL_{zlma.name}"
     zlma.category = "overlap"
-    zlma.variable_type = "continuous"
+    zlma.attrs["variable_type"] = "continuous"
 
     return zlma

@@ -104,7 +104,7 @@ def macd(
     histogram.name = f"MACD{_asmode}h{_props}"
     signalma.name = f"MACD{_asmode}s{_props}"
     macd.category = histogram.category = signalma.category = "momentum"
-    macd.variable_type = histogram.variable_type = signalma.variable_type = "continuous"
+    macd.attrs["variable_type"] = histogram.attrs["variable_type"] = signalma.attrs["variable_type"] = "continuous"
 
     data = {
         macd.name: macd,

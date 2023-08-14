@@ -105,6 +105,6 @@ def atr(
     # Name and Category
     atr.name = f"ATR{mamode[0]}{'p' if percent else ''}_{length}"
     atr.category = "volatility"
-    atr.variable_type = "continuous"
+    atr.attrs["variable_type"] = "continuous"
 
     return atr

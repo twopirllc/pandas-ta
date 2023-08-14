@@ -96,7 +96,7 @@ def stochf(
     stochf_k.name = f"{_name}k{_props}"
     stochf_d.name = f"{_name}d{_props}"
     stochf_k.category = stochf_d.category = "momentum"
-    stochf_k.variable_type = stochf_d.variable_type = "continuous"
+    stochf_k.attrs["variable_type"] = stochf_d.attrs["variable_type"] = "continuous"
 
     data = {
         stochf_k.name: stochf_k,

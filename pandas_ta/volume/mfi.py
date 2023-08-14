@@ -98,6 +98,6 @@ def mfi(
     # Name and Category
     mfi.name = f"MFI_{length}"
     mfi.category = "volume"
-    mfi.variable_type = "continuous"
+    mfi.attrs["variable_type"] = "continuous"
 
     return mfi

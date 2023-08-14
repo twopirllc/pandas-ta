@@ -163,8 +163,8 @@ def squeeze(
         no_squeeze[:nanlength] = nan
 
     squeeze.category = squeeze_on.category = squeeze_off.category = no_squeeze.category = "momentum"
-    squeeze.variable_type = "continuous"
-    squeeze_on.variable_type = squeeze_off.variable_type = no_squeeze.variable_type = "categorical"
+    squeeze.attrs["variable_type"] = "continuous"
+    squeeze_on.attrs["variable_type"] = squeeze_off.attrs["variable_type"] = no_squeeze.attrs["variable_type"] = "categorical"
 
     data = {
         squeeze.name: squeeze,

@@ -71,6 +71,6 @@ def ad(
     # Name and Category
     ad.name = "AD" if open_ is None else "ADo"
     ad.category = "volume"
-    ad.variable_type = "continuous"
+    ad.attrs["variable_type"] = "continuous"
 
     return ad

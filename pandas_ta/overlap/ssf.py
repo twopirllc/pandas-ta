@@ -117,6 +117,6 @@ def ssf(
     # Name and Category
     ssf.name = f"SSF{'e' if everget else ''}_{length}"
     ssf.category = "overlap"
-    ssf.variable_type = "continuous"
+    ssf.attrs["variable_type"] = "continuous"
 
     return ssf

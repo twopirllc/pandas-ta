@@ -74,6 +74,6 @@ def willr(
     # Name and Category
     willr.name = f"WILLR_{length}"
     willr.category = "momentum"
-    willr.variable_type = "continuous"
+    willr.attrs["variable_type"] = "continuous"
 
     return willr

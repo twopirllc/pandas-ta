@@ -63,6 +63,6 @@ def swma(
     # Name and Category
     swma.name = f"SWMA_{length}"
     swma.category = "overlap"
-    swma.variable_type = "continuous"
+    swma.attrs["variable_type"] = "continuous"
 
     return swma

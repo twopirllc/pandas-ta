@@ -120,7 +120,7 @@ def stoch(
     stoch_d.name = f"{_name}d{_props}"
     stoch_h.name = f"{_name}h{_props}"
     stoch_k.category = stoch_d.category = stoch_h.category = "momentum"
-    stoch_k.variable_type = stoch_d.variable_type = stoch_h.variable_type = "continuous"
+    stoch_k.attrs["variable_type"] = stoch_d.attrs["variable_type"] = stoch_h.attrs["variable_type"] = "continuous"
 
     data = {
         stoch_k.name: stoch_k,

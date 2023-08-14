@@ -240,7 +240,7 @@ def pivots(
     df[f"{_props}_R3"], df[f"{_props}_R4"] = r3, r4
     
     df[f"{_props}_P"].category = df[f"{_props}_S1"].category = df[f"{_props}_S2"].category = df[f"{_props}_S3"].category = df[f"{_props}_S4"].category = df[f"{_props}_R1"].category = df[f"{_props}_R2"].category = df[f"{_props}_R3"].category = df[f"{_props}_R4"].category = "overlap"
-    df[f"{_props}_P"].variable_type = df[f"{_props}_S1"].variable_type = df[f"{_props}_S2"].variable_type = df[f"{_props}_S3"].variable_type = df[f"{_props}_S4"].variable_type = df[f"{_props}_R1"].variable_type = df[f"{_props}_R2"].variable_type = df[f"{_props}_R3"].variable_type = df[f"{_props}_R4"].variable_type = "continuous"
+    df[f"{_props}_P"].attrs["variable_type"] = df[f"{_props}_S1"].attrs["variable_type"] = df[f"{_props}_S2"].attrs["variable_type"] = df[f"{_props}_S3"].attrs["variable_type"] = df[f"{_props}_S4"].attrs["variable_type"] = df[f"{_props}_R1"].attrs["variable_type"] = df[f"{_props}_R2"].attrs["variable_type"] = df[f"{_props}_R3"].attrs["variable_type"] = df[f"{_props}_R4"].attrs["variable_type"] = "continuous"
 
     df.index = df.index + Timedelta(1, anchor.lower())
     if freq is not anchor:

@@ -68,7 +68,7 @@ def ttm_trend(
     # Name and Category
     tm_trend.name = f"TTM_TRND_{length}"
     tm_trend.category = "momentum"
-    tm_trend.variable_type = "categorical"
+    tm_trend.attrs["variable_type"] = "categorical"
 
     data = {tm_trend.name: tm_trend}
     df = DataFrame(data)

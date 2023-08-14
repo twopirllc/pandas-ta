@@ -185,8 +185,8 @@ def squeeze_pro(
         no_squeeze[:nanlength] = nan
 
     squeeze.category = squeeze_on_wide.category = squeeze_on_normal.category = squeeze_on_narrow.category = squeeze_off_wide.category = no_squeeze.category = "momentum"
-    squeeze.variable_type = "continuous"
-    squeeze_on_wide.variable_type = squeeze_on_normal.variable_type = squeeze_on_narrow.variable_type = squeeze_off_wide.variable_type = no_squeeze.variable_type = "categorical"
+    squeeze.attrs["variable_type"] = "continuous"
+    squeeze_on_wide.attrs["variable_type"] = squeeze_on_normal.attrs["variable_type"] = squeeze_on_narrow.attrs["variable_type"] = squeeze_off_wide.attrs["variable_type"] = no_squeeze.attrs["variable_type"] = "categorical"
 
     data = {
         squeeze.name: squeeze,

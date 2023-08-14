@@ -78,7 +78,7 @@ def ha(
     ha_low.name = "HA_low"
     ha_close.name = "HA_close"
     ha_open.category = ha_high.category = ha_low.category = ha_close.category = "candles"
-    ha_open.variable_type = ha_high.variable_type = ha_low.variable_type = ha_close.variable_type = "continuous"
+    ha_open.attrs["variable_type"] = ha_high.attrs["variable_type"] = ha_low.attrs["variable_type"] = ha_close.attrs["variable_type"] = "continuous"
     df = DataFrame({
         ha_open.name: ha_open,
         ha_high.name: ha_high,

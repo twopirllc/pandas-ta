@@ -86,7 +86,7 @@ def rwi(
     rwi_high.name = f"RWIh_{length}"
     rwi_low.name = f"RWIl_{length}"
     rwi_high.category = rwi_low.category = "trend"
-    rwi_high.variable_type = rwi_low.variable_type = "continuous"
+    rwi_high.attrs["variable_type"] = rwi_low.attrs["variable_type"] = "continuous"
 
     # Prepare DataFrame to return
     data = {rwi_high.name: rwi_high, rwi_low.name: rwi_low}

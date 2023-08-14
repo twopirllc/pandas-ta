@@ -153,6 +153,6 @@ def linreg(
 
     linreg.name += f"_{length}"
     linreg.category = "overlap"
-    linreg.variable_type = "continuous"
+    linreg.attrs["variable_type"] = "continuous"
 
     return linreg

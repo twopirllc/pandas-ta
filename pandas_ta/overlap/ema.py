@@ -98,6 +98,6 @@ def ema(
     # Name and Category
     ema.name = f"EMA_{length}"
     ema.category = "overlap"
-    ema.variable_type = "continuous"
+    ema.attrs["variable_type"] = "continuous"
 
     return ema

@@ -147,8 +147,8 @@ def psar(
 
     _params = f"_{af0}_{max_af}"
     long.category = short.category = _af.category = reversal.category = "trend"
-    long.variable_type = short.variable_type = _af.variable_type = "continuous"
-    reversal.variable_type = "catgorical"
+    long.attrs["variable_type"] = short.attrs["variable_type"] = _af.attrs["variable_type"] = "continuous"
+    reversal.attrs["variable_type"] = "catgorical"
 
     data = {
         f"PSARl{_params}": long,

@@ -85,6 +85,6 @@ def smma(
     # Name and Category
     smma.name = f"SMMA_{length}"
     smma.category = "overlap"
-    smma.variable_type = "continuous"
+    smma.attrs["variable_type"] = "continuous"
 
     return smma

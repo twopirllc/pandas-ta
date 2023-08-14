@@ -59,6 +59,6 @@ def hlc3(
     # Name and Category
     hlc3.name = "HLC3"
     hlc3.category = "overlap"
-    hlc3.variable_type = "continuous"
+    hlc3.attrs["variable_type"] = "continuous"
 
     return hlc3

@@ -162,7 +162,7 @@ def mama(
         f"FAMA{_props}": fama,
     }, index=close.index)
     df[f"MAMA{_props}"].category = df[f"FAMA{_props}"].category = "overlap"
-    df[f"MAMA{_props}"].variable_type = df[f"FAMA{_props}"].variable_type = "continuous"
+    df[f"MAMA{_props}"].attrs["variable_type"] = df[f"FAMA{_props}"].attrs["variable_type"] = "continuous"
 
     df.name = f"MAMA{_props}"
     df.category = "overlap"

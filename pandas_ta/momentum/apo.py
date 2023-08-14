@@ -74,6 +74,6 @@ def apo(
     # Name and Category
     apo.name = f"APO_{fast}_{slow}"
     apo.category = "momentum"
-    apo.variable_type = "continuous"
+    apo.attrs["variable_type"] = "continuous"
 
     return apo

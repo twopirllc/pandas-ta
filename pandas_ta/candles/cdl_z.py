@@ -66,7 +66,7 @@ def cdl_z(
     z_low.name = f"low_Z{_props}"
     z_close.name = f"close_Z{_props}"
     z_open.category = z_high.category = z_low.category = z_close.category = "candles"
-    z_open.variable_type = z_high.variable_type = z_low.variable_type = z_close.variable_type = "continuous"
+    z_open.attrs["variable_type"] = z_high.attrs["variable_type"] = z_low.attrs["variable_type"] = z_close.attrs["variable_type"] = "continuous"
 
     df = DataFrame({
         z_open.name: z_open,

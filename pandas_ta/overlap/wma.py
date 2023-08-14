@@ -81,6 +81,6 @@ def wma(
     # Name and Category
     wma.name = f"WMA_{length}"
     wma.category = "overlap"
-    wma.variable_type = "continuous"
+    wma.attrs["variable_type"] = "continuous"
 
     return wma

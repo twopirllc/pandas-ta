@@ -72,6 +72,6 @@ def dpo(
     # Name and Category
     dpo.name = f"DPO_{length}"
     dpo.category = "trend"
-    dpo.variable_type = "continuous"
+    dpo.attrs["variable_type"] = "continuous"
 
     return dpo

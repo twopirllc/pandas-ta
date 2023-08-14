@@ -77,7 +77,7 @@ def alligator(
     # Name and Category
     _props = f"_{jaw}_{teeth}_{lips}"
     gator_jaw.category = gator_teeth.category = gator_lips.category = "overlap"
-    gator_jaw.variable_type = gator_teeth.variable_type = gator_lips.variable_type = "continuous"
+    gator_jaw.attrs["variable_type"] = gator_teeth.attrs["variable_type"] = gator_lips.attrs["variable_type"] = "continuous"
 
     data = {
         f"AGj{_props}": gator_jaw,

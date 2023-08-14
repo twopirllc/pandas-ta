@@ -67,6 +67,6 @@ def cfo(
     # Name and Category
     cfo.name = f"CFO_{length}"
     cfo.category = "momentum"
-    cfo.variable_type = "continuous"
+    cfo.attrs["variable_type"] = "continuous"
 
     return cfo

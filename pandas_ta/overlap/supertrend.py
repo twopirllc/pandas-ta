@@ -93,8 +93,8 @@ def supertrend(
     }, index=close.index)
     
     df[f"SUPERT{_props}"].category = df[f"SUPERTd{_props}"].category = df[f"SUPERTl{_props}"].category = df[f"SUPERTs{_props}"].category = "overlap"
-    df[f"SUPERT{_props}"].variable_type = df[f"SUPERTl{_props}"].variable_type = df[f"SUPERTs{_props}"].variable_type = "continuous"
-    df[f"SUPERTd{_props}"].variable_type = "categorical"
+    df[f"SUPERT{_props}"].attrs["variable_type"] = df[f"SUPERTl{_props}"].attrs["variable_type"] = df[f"SUPERTs{_props}"].attrs["variable_type"] = "continuous"
+    df[f"SUPERTd{_props}"].attrs["variable_type"] = "categorical"
 
     df.name = f"SUPERT{_props}"
     df.category = "overlap"

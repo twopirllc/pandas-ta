@@ -100,7 +100,7 @@ def ichimoku(
     chikou_span.name = f"ICS_{kijun}"
 
     span_a.category = span_b.category = tenkan_sen.category = kijun_sen.category = chikou_span.category = "overlap"
-    span_a.variable_type = span_b.variable_type = tenkan_sen.variable_type = kijun_sen.variable_type = chikou_span.variable_type = "continuous"
+    span_a.attrs["variable_type"] = span_b.attrs["variable_type"] = tenkan_sen.attrs["variable_type"] = kijun_sen.attrs["variable_type"] = chikou_span.attrs["variable_type"] = "continuous"
 
     # Prepare Ichimoku DataFrame
     data = {
@@ -130,7 +130,7 @@ def ichimoku(
         _span_a.index = _span_b.index = new_dt
 
     _span_a.category = _span_b.category = "overlap"
-    _span_a.variable_type = _span_b.variable_type = "continuous"
+    _span_a.attrs["variable_type"] = _span_b.attrs["variable_type"] = "continuous"
 
     spandf[span_a.name] = _span_a
     spandf[span_b.name] = _span_b

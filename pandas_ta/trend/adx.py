@@ -155,7 +155,7 @@ def adx(
     dmp.name = f"DMP_{length}"
     dmn.name = f"DMN_{length}"
     adx.category = dmp.category = dmn.category = "trend"
-    adx.variable_type = dmp.variable_type = dmn.variable_type = "continuous"
+    adx.attrs["variable_type"] = dmp.attrs["variable_type"] = dmn.attrs["variable_type"] = "continuous"
 
     data = {adx.name: adx, dmp.name: dmp, dmn.name: dmn}
     adxdf = DataFrame(data)

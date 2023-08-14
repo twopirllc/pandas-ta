@@ -84,6 +84,6 @@ def increasing(
     _props = f"{'S' if strict else ''}INC{'p' if percent else ''}"
     increasing.name = f"{_props}_{length}{_percent}"
     increasing.category = "trend"
-    increasing.variable_type = "categorical"
+    increasing.attrs["variable_type"] = "categorical"
 
     return increasing

@@ -125,8 +125,8 @@ def chandelier_exit(
         _props = f"_CLOSE_{_props}"
 
     long.category = short.category = direction.category = "volatility"
-    long.variable_type = short.variable_type = "continuous"
-    direction.variable_type = "categorical"
+    long.attrs["variable_type"] = short.attrs["variable_type"] = "continuous"
+    direction.attrs["variable_type"] = "categorical"
 
     df = DataFrame({
         f"{_name}l{_props}": long,
