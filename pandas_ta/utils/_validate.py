@@ -38,7 +38,7 @@ __all__ = [
 
 
 def is_percent(x: IntFloat) -> bool:
-    if isinstance(x, (int, float)):
+    if isinstance(x, (float, int, np_floating, np_integer)):
         return x is not None and 0 <= x <= 100
     return False
 
@@ -105,8 +105,8 @@ def v_lowerbound(
 ) -> IntFloat:
     """Returns the default if var(iable) not greater(equal) than bound."""
     var_type = None
-    if isinstance(var, float): var_type = float
-    if isinstance(var, int): var_type = int
+    if isinstance(var, (float, np_floating)): var_type = float
+    if isinstance(var, (int, np_integer)): var_type = int
 
     if var_type is None:
         return default
@@ -138,7 +138,7 @@ def v_pos_default(
 
 def v_scalar(var: IntFloat, default: Optional[IntFloat] = 1) -> Float:
     """Returns the default if var is not a float."""
-    if isinstance(var, (float, int)):
+    if isinstance(var, (float, int, np_floating, np_integer)):
         return float(var)
     return float(default)
 
