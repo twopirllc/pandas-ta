@@ -73,10 +73,14 @@ def cross(series_a: Series, series_b: Series, above: bool = True, asint: bool = 
     series_b.apply(zero)
 
     # Calculate Result
-    current = series_a > series_b  # current is above
-    previous = series_a.shift(1) < series_b.shift(1)  # previous is below
-    # above if both are true, below if both are false
-    cross = current & previous if above else ~current & ~previous
+    if above:
+        current = series_a > series_b  # current is above
+        previous = series_a.shift(1) < series_b.shift(1)  # previous is below
+    else:
+        current = series_a < series_b # current is below
+        previous = series_a.shift(1) > series_b.shift(1) # previous is above  
+        
+    cross = current & previous 
 
     if asint:
         cross = cross.astype(int)
