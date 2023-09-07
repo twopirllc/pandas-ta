@@ -48,6 +48,7 @@ def cdl_inside(
     # Calculate
     # TODO: Return if high or low has nan
     inside = (high.diff() < 0) & (low.diff() > 0)
+    inside = inside.apply(lambda x: 100 if x else -100)
 
     if not asbool:
         inside *= candle_color(open_, close)
