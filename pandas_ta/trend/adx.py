@@ -104,7 +104,7 @@ def adx(
         dmp = PLUS_DM(high, low, length)
         dmn = MINUS_DM(high, low, length)
     elif mode_tv:
-        # How to treat the initial value of RMA varies one to another.
+        # How to treat the initial value of RMA varies from one another.
         # It follows the way TradingView does, setting it to the average of
         # previous values. Since 'pandas' does not provide API to control
         # the initial value, work around it by modifying input value to get

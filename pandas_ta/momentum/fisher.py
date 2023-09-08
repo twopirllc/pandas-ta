@@ -59,7 +59,7 @@ def fisher(
     m = high.size
     result = [nan for _ in range(0, length - 1)] + [0]
     for i in range(length, m):
-        v = 0.66 * position.iloc[i] + 0.67 * v
+        v = 0.66 * position.iat[i] + 0.67 * v
         if v < -0.99:
             v = -0.999
         if v > 0.99:

@@ -70,13 +70,13 @@ def hilo(
     low_ma = ma(mamode, low, length=low_length)
 
     for i in range(1, m):
-        if close.iloc[i] > high_ma.iloc[i - 1]:
-            hilo.iloc[i] = long.iloc[i] = low_ma.iloc[i]
-        elif close.iloc[i] < low_ma.iloc[i - 1]:
-            hilo.iloc[i] = short.iloc[i] = high_ma.iloc[i]
+        if close.iat[i] > high_ma.iat[i - 1]:
+            hilo.iat[i] = long.iat[i] = low_ma.iat[i]
+        elif close.iat[i] < low_ma.iat[i - 1]:
+            hilo.iat[i] = short.iat[i] = high_ma.iat[i]
         else:
-            hilo.iloc[i] = hilo.iloc[i - 1]
-            long.iloc[i] = short.iloc[i] = hilo.iloc[i - 1]
+            hilo.iat[i] = hilo.iat[i - 1]
+            long.iat[i] = short.iat[i] = hilo.iat[i - 1]
 
     # Offset
     if offset != 0:

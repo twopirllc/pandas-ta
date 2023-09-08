@@ -97,44 +97,44 @@ def qqe(
     long = Series(0, index=close.index)
     short = Series(0, index=close.index)
     trend = Series(1, index=close.index)
-    qqe = Series(rsi_ma.iloc[0], index=close.index)
+    qqe = Series(rsi_ma.iat[0], index=close.index)
     qqe_long = Series(nan, index=close.index)
     qqe_short = Series(nan, index=close.index)
 
     for i in range(1, m):
-        c_rsi, p_rsi = rsi_ma.iloc[i], rsi_ma.iloc[i - 1]
-        c_long, p_long = long.iloc[i - 1], long.iloc[i - 2]
-        c_short, p_short = short.iloc[i - 1], short.iloc[i - 2]
+        c_rsi, p_rsi = rsi_ma.iat[i], rsi_ma.iat[i - 1]
+        c_long, p_long = long.iat[i - 1], long.iat[i - 2]
+        c_short, p_short = short.iat[i - 1], short.iat[i - 2]
 
         # Long Line
         if p_rsi > c_long and c_rsi > c_long:
-            long.iloc[i] = maximum(c_long, lowerband.iloc[i])
+            long.iat[i] = maximum(c_long, lowerband.iat[i])
         else:
-            long.iloc[i] = lowerband.iloc[i]
+            long.iat[i] = lowerband.iat[i]
 
         # Short Line
         if p_rsi < c_short and c_rsi < c_short:
-            short.iloc[i] = minimum(c_short, upperband.iloc[i])
+            short.iat[i] = minimum(c_short, upperband.iat[i])
         else:
-            short.iloc[i] = upperband.iloc[i]
+            short.iat[i] = upperband.iat[i]
 
         # Trend & QQE Calculation
         # Long: Current RSI_MA value Crosses the Prior Short Line Value
         # Short: Current RSI_MA Crosses the Prior Long Line Value
         if (c_rsi > c_short and p_rsi < p_short) or \
             (c_rsi <= c_short and p_rsi >= p_short):
-            trend.iloc[i] = 1
-            qqe.iloc[i] = qqe_long.iloc[i] = long.iloc[i]
+            trend.iat[i] = 1
+            qqe.iat[i] = qqe_long.iat[i] = long.iat[i]
         elif (c_rsi > c_long and p_rsi < p_long) or \
             (c_rsi <= c_long and p_rsi >= p_long):
-            trend.iloc[i] = -1
-            qqe.iloc[i] = qqe_short.iloc[i] = short.iloc[i]
+            trend.iat[i] = -1
+            qqe.iat[i] = qqe_short.iat[i] = short.iat[i]
         else:
-            trend.iloc[i] = trend.iloc[i - 1]
-            if trend.iloc[i] == 1:
-                qqe.iloc[i] = qqe_long.iloc[i] = long.iloc[i]
+            trend.iat[i] = trend.iat[i - 1]
+            if trend.iat[i] == 1:
+                qqe.iat[i] = qqe_long.iat[i] = long.iat[i]
             else:
-                qqe.iloc[i] = qqe_short.iloc[i] = short.iloc[i]
+                qqe.iat[i] = qqe_short.iat[i] = short.iat[i]
 
     # Offset
     if offset != 0:

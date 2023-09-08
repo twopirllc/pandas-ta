@@ -79,8 +79,8 @@ def kama(
     ma0 = ma(mamode, close.iloc[:length], length=length, **kwargs).iloc[-1]
     result = [nan for _ in range(0, length - 1)] + [ma0]
     for i in range(length, m):
-        result.append(sc.iloc[i] * close.iloc[i] \
-            + (1 - sc.iloc[i]) * result[i - 1])
+        result.append(sc.iat[i] * close.iat[i] \
+            + (1 - sc.iat[i]) * result[i - 1])
 
     kama = Series(result, index=close.index)
 

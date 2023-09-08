@@ -74,7 +74,7 @@ def cdl_pattern(
     if open_ is None or high is None or low is None or close is None:
         return
 
-    # Patterns that implemented in pandas-ta
+    # Patterns implemented in Pandas TA
     pta_patterns = {"doji": cdl_doji, "inside": cdl_inside}
 
     if name == "all":
@@ -93,10 +93,12 @@ def cdl_pattern(
 
         if n in pta_patterns:
             pattern_result = pta_patterns[n](
-                open_, high, low, close, offset=offset, scalar=scalar, **kwargs)
-            if not isinstance(pattern_result,Series):
+                open_, high, low, close, offset=offset, scalar=scalar, **kwargs
+            )
+            if not isinstance(pattern_result, Series):
                 continue
             result[pattern_result.name] = pattern_result
+
         else:
             if not Imports["talib"]:
                 print(f"[X] Please install TA-Lib to use {n}. (pip install TA-Lib)")

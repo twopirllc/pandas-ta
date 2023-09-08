@@ -68,7 +68,7 @@ def rsx(
                 f88 = length - 1.0
             else:
                 f88 = 5.0
-            f8 = 100.0 * close.iloc[i]
+            f8 = 100.0 * close.iat[i]
             f18 = 3.0 / (length + 2.0)
             f20 = 1.0 - f18
         else:
@@ -77,7 +77,7 @@ def rsx(
             else:
                 f90 = f90 + 1
             f10 = f8
-            f8 = 100 * close.iloc[i]
+            f8 = 100 * close.iat[i]
             v8 = f8 - f10
             f28 = f20 * f28 + f18 * v8
             f30 = f18 * f28 + f20 * f30

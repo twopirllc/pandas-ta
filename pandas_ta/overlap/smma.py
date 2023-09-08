@@ -70,7 +70,7 @@ def smma(
     smma.iloc[length - 1] = ma(mamode, close[0:length], length=length, talib=mode_tal).iloc[-1]
 
     for i in range(length, m):
-        smma.iloc[i] = ((length - 1) * smma.iloc[i - 1] + smma.iloc[i]) / length
+        smma.iat[i] = ((length - 1) * smma.iat[i - 1] + smma.iat[i]) / length
 
     # Offset
     if offset != 0:

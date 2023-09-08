@@ -48,6 +48,7 @@ def decay(
         diff = close.shift(1) - exp(-length)
     else:  # "linear"
         diff = close.shift(1) - (1 / length)
+
     diff[0] = close[0]
     tdf = DataFrame({"close": close, "diff": diff, "0": 0})
     ld = tdf.max(axis=1)

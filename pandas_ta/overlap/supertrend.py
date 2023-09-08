@@ -64,21 +64,21 @@ def supertrend(
     lb = hl2_ - matr  # Lowerband
     ub = hl2_ + matr  # Upperband
     for i in range(1, m):
-        if close.iloc[i] > ub.iloc[i - 1]:
+        if close.iat[i] > ub.iat[i - 1]:
             dir_[i] = 1
-        elif close.iloc[i] < lb.iloc[i - 1]:
+        elif close.iat[i] < lb.iat[i - 1]:
             dir_[i] = -1
         else:
             dir_[i] = dir_[i - 1]
-            if dir_[i] > 0 and lb.iloc[i] < lb.iloc[i - 1]:
-                lb.iloc[i] = lb.iloc[i - 1]
-            if dir_[i] < 0 and ub.iloc[i] > ub.iloc[i - 1]:
-                ub.iloc[i] = ub.iloc[i - 1]
+            if dir_[i] > 0 and lb.iat[i] < lb.iat[i - 1]:
+                lb.iat[i] = lb.iat[i - 1]
+            if dir_[i] < 0 and ub.iat[i] > ub.iat[i - 1]:
+                ub.iat[i] = ub.iat[i - 1]
 
         if dir_[i] > 0:
-            trend[i] = long[i] = lb.iloc[i]
+            trend[i] = long[i] = lb.iat[i]
         else:
-            trend[i] = short[i] = ub.iloc[i]
+            trend[i] = short[i] = ub.iat[i]
 
     trend[0] = nan
     dir_[:length] = [nan] * length

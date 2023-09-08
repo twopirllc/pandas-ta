@@ -80,8 +80,8 @@ def psar(
     # Calculate
     m = high.shape[0]
     for row in range(2, m):
-        high_ = high.iloc[row]
-        low_ = low.iloc[row]
+        high_ = high.iat[row]
+        low_ = low.iat[row]
 
         _sar = sar + af * (ep - sar)
 
@@ -92,7 +92,7 @@ def psar(
                 ep = low_
                 af = min(af + paf, max_af)
 
-            _sar = max(high.iloc[row - 1], high.iloc[row - 2], _sar)
+            _sar = max(high.iat[row - 1], high.iat[row - 2], _sar)
         else:
             reverse = low_ < _sar
 
@@ -100,14 +100,14 @@ def psar(
                 ep = high_
                 af = min(af + paf, max_af)
 
-            _sar = min(low.iloc[row - 1], low.iloc[row - 2], _sar)
+            _sar = min(low.iat[row - 1], low.iat[row - 2], _sar)
 
         if reverse:
             if tv: # handle trading view version
                 if falling:
-                    _sar = min(low.iloc[row - 1], low.iloc[row - 2], ep)
+                    _sar = min(low.iat[row - 1], low.iat[row - 2], ep)
                 else:
-                    _sar = max(high.iloc[row - 1], high.iloc[row - 2], ep)
+                    _sar = max(high.iat[row - 1], high.iat[row - 2], ep)
             else:
                 _sar = ep
 
@@ -119,12 +119,12 @@ def psar(
 
         # Separate long/short sar based on falling
         if falling:
-            short.iloc[row] = sar
+            short.iat[row] = sar
         else:
-            long.iloc[row] = sar
+            long.iat[row] = sar
 
-        _af.iloc[row] = af
-        reversal.iloc[row] = int(reverse)
+        _af.iat[row] = af
+        reversal.iat[row] = int(reverse)
 
     # Offset
     if offset != 0:

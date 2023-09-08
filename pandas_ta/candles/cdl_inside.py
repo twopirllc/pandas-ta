@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from pandas import Series
-from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import candle_color, v_offset, v_series
+from pandas_ta._typing import DictLike, Int, IntFloat
+from pandas_ta.utils import candle_color, v_offset, v_scalar, v_series
 
 
 def cdl_inside(
     open_: Series, high: Series, low: Series, close: Series,
-    asbool: bool = False,
+    asbool: bool = False, scalar: IntFloat = None,
     offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Candle Type: Inside Bar
@@ -29,6 +29,7 @@ def cdl_inside(
         low (pd.Series): Series of 'low's
         close (pd.Series): Series of 'close's
         asbool (bool): Returns the boolean result. Default: False
+        scalar (float): How much to magnify. Default: 100
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -43,14 +44,19 @@ def cdl_inside(
     high = v_series(high)
     low = v_series(low)
     close = v_series(close)
+
+    if open_ is None or high is None or low is None or close is None:
+        return
+
     offset = v_offset(offset)
+    scalar = v_scalar(scalar, 100)
 
     # Calculate
     # TODO: Return if high or low has nan
     inside = (high.diff() < 0) & (low.diff() > 0)
 
     if not asbool:
-        inside *= candle_color(open_, close)
+        inside = scalar * inside * candle_color(open_, close)
 
     # Offset
     if offset != 0:

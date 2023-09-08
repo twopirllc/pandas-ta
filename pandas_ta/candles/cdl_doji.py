@@ -64,7 +64,7 @@ def cdl_doji(
     doji = body < 0.01 * factor * hl_range_avg
 
     if naive:
-        doji.iloc[:length] = body < 0.01 * factor * hl_range
+        doji.iat[:length] = body < 0.01 * factor * hl_range
     if asint:
         doji = scalar * doji.astype(int)
 
