@@ -43,15 +43,15 @@ def decay(
 
     # Calculate
     _mode = "L"
+    ld = Series([0] * len(close))
     if mode in ["exp", "exponential"]:
         _mode = "EXP"
-        diff = close.shift(1) - exp(-length)
+        for i in range(1, (len(ld))):
+            ld[i] = max(close[i], ld[i - 1] - exp(-length), 0)
     else:  # "linear"
-        diff = close.shift(1) - (1 / length)
-
-    diff[0] = close[0]
-    tdf = DataFrame({"close": close, "diff": diff, "0": 0})
-    ld = tdf.max(axis=1)
+        for i in range(1, len(ld)):
+            ld[i] = max(close[i], ld[i - 1] - (1/length), 0)
+    ld[0] = close[0]
 
     # Offset
     if offset != 0:
