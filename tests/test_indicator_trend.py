@@ -149,6 +149,13 @@ def test_decay(df):
     assert isinstance(result, Series)
     assert result.name == "EXPDECAY_1"
 
+    tulip = Series([0, 0, 0, 1, 0, 0, 0, 1, 0, 0])
+    expected = Series([0, 0, 0, 1, 0.75, 0.5, 0.25, 1, 0.75, 0.5])
+    result = ta.decay(tulip, length=4, mode="linear")
+    assert isinstance(result, Series)
+    assert result.name == "LDECAY_4"
+    pdt.assert_series_equal(result, expected, check_names=False)
+
 
 def test_decreasing(df):
     result = ta.decreasing(df.close)
