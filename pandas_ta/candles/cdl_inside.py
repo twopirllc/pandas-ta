@@ -1,12 +1,22 @@
 # -*- coding: utf-8 -*-
+from numpy import roll, where
+from numba import njit
 from pandas import Series
-from pandas_ta._typing import DictLike, Int, IntFloat
-from pandas_ta.utils import candle_color, v_offset, v_scalar, v_series
+from pandas_ta._typing import Array, DictLike, Int, IntFloat
+from pandas_ta.utils import v_bool, v_offset, v_offset, v_scalar, v_series
+
+
+@njit(cache=True)
+def np_cdl_inside(high: Array, low: Array):
+    """Inside Bar"""
+    hdiff = where(high - roll(high, 1) < 0, 1, 0)
+    ldiff = where(low - roll(low, 1) > 0, 1, 0)
+    return hdiff & ldiff
 
 
 def cdl_inside(
     open_: Series, high: Series, low: Series, close: Series,
-    asbool: bool = False, scalar: IntFloat = None,
+    asbool: bool = None, scalar: IntFloat = None,
     offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Candle Type: Inside Bar
@@ -48,16 +58,17 @@ def cdl_inside(
     if open_ is None or high is None or low is None or close is None:
         return
 
-    offset = v_offset(offset)
+    asbool = v_bool(asbool, False)
     scalar = v_scalar(scalar, 100)
+    offset = v_offset(offset)
 
     # Calculate
-    # TODO: Return if high or low has nan
-    inside = (high.diff() < 0) & (low.diff() > 0)
-    inside = inside.apply(lambda x: 100 if x else -100)
+    np_high, np_low = high.values, low.values
+    np_inside = np_cdl_inside(np_high, np_low)
+    inside = Series(np_inside, index=close.index, dtype=bool)
 
     if not asbool:
-        inside = scalar * inside * candle_color(open_, close)
+        inside = scalar * inside.astype(int)
 
     # Offset
     if offset != 0:
