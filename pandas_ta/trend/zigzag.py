@@ -107,8 +107,8 @@ Sources:
 
 Calculation:
     ZigZag (high, low, pivot_leg, price_deviation, retrace=False, LastExtreme=False)
-    If  % change > = X, plot ZigZag 
-    
+    If  % change > = X, plot ZigZag
+
     Default Inputs:
         pivot_leg = 5, price_deviation = 10
         retrace = FALSE, LastExtreme = TRUE

@@ -21,12 +21,12 @@ def alphatrend(open, high, low, close, volume=None, src=None, common_period=None
 
     common_period = int(common_period) if common_period is not None else 14
     multiplier = multiplier if (multiplier is not None and multiplier > 0) else 1
-    
+
     if volume is not None:
         volume = verify_series(volume)
 
     if high is None or low is None or close is None: return
-    
+
     def alpha_trend_search(series):
         alpha_trend_ = [0]
         for idx, val in enumerate(series):
@@ -42,39 +42,40 @@ def alphatrend(open, high, low, close, volume=None, src=None, common_period=None
                     alpha_trend_.append(alpha_trend_[idx])
 
         return alpha_trend_[1:]
-    
+
     def momentum_filter(momentum_series):
         df = DataFrame({'upt': upt,
                              'downt': downt})
         df['up50'] = momentum_series >= 50
         df['upt-downt'] = concat([upt[momentum_series >= 50], downt[momentum_series < 50]])
         df[['alpha-trend-val']] = df[['upt-downt']].apply(alpha_trend_search)
-        
+
         return df['alpha-trend-val']
 
     tr = true_range(high, low, close)
     atr = sma(tr, common_period)
-    
+
     src = src_mapping.get(src, src)
-            
+
     upt = (low - atr * multiplier).fillna(0)
-    
     downt = (high + atr * multiplier).fillna(0)
-    
+
     if volume is None:
         rsi_ = rsi(src, common_period)
         up50 = rsi_ >= 50
         alpha_trend_ = momentum_filter(rsi_)
-        
+
     else:
         mfi_ = mfi(high, low, close, volume, common_period)
         up50 = mfi_ >= 50
         alpha_trend_ = momentum_filter(mfi_)
-    
-    alpha_ind = DataFrame({'k1': alpha_trend_, 
-                              'k2': alpha_trend_.shift(2).fillna(0)})
-    alpha_ind.index = src.index
-    
+
+    alpha_ind = DataFrame(
+        {"k1": alpha_trend_,
+         "k2": alpha_trend_.shift(2).fillna(0)},
+         index = src.index
+    )
+
     return alpha_ind
 
 
