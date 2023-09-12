@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .adx import adx
+from .alphatrend import alphatrend
 from .amat import amat
 from .aroon import aroon
 from .chop import chop
@@ -19,6 +20,7 @@ from .ttm_trend import ttm_trend
 from .vhf import vhf
 from .vortex import vortex
 from .xsignals import xsignals
+from .zigzag import zigzag
 
 __all__ = [
     "adx",
@@ -41,4 +43,5 @@ __all__ = [
     "vhf",
     "vortex",
     "xsignals",
+    "zigzag"
 ]
