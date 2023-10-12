@@ -3,7 +3,7 @@ from numpy import nan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.overlap import hl2
-from pandas_ta.utils import v_offset, v_pos_default, v_series
+from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 from pandas_ta.volatility import atr
 
 
@@ -32,7 +32,8 @@ def supertrend(
             variable of control. Default: length
         multiplier (float): Coefficient for upper and lower band distance to
             midrange. Default: 3.0
-        atr_mamode (str) : Can be used to specify the type of MA to be used for ATR calculation.
+        atr_mamode (str) : MA type to be used for ATR calculation.
+            See ``help(ta.ma)``. Default: 'rma'
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -54,6 +55,7 @@ def supertrend(
         return
 
     multiplier = v_pos_default(multiplier, 3.0)
+    atr_mamode = v_mamode(atr_mamode, "rma")
     offset = v_offset(offset)
 
     # Calculate
@@ -63,8 +65,9 @@ def supertrend(
 
     hl2_ = hl2(high, low)
     matr = multiplier * atr(high, low, close, atr_length, mamode=atr_mamode)
-    lb = hl2_ - matr  # Lowerband
-    ub = hl2_ + matr  # Upperband
+    lb = hl2_ - matr
+    ub = hl2_ + matr
+
     for i in range(1, m):
         if close.iat[i] > ub.iat[i - 1]:
             dir_[i] = 1
