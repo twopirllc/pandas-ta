@@ -11,6 +11,7 @@ def supertrend(
     high: Series, low: Series, close: Series,
     length: Int = None, atr_length: Int = None,
     multiplier: IntFloat = None,
+    atr_mamode : str = None,
     offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
     """Supertrend (supertrend)
@@ -31,6 +32,7 @@ def supertrend(
             variable of control. Default: length
         multiplier (float): Coefficient for upper and lower band distance to
             midrange. Default: 3.0
+        atr_mamode (str) : Can be used to specify the type of MA to be used for ATR calculation.
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -60,7 +62,7 @@ def supertrend(
     long, short = [nan] * m, [nan] * m
 
     hl2_ = hl2(high, low)
-    matr = multiplier * atr(high, low, close, atr_length)
+    matr = multiplier * atr(high, low, close, atr_length, mamode=atr_mamode)
     lb = hl2_ - matr  # Lowerband
     ub = hl2_ + matr  # Upperband
     for i in range(1, m):
