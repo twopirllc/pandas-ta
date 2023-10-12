@@ -74,8 +74,8 @@ def donchian(
     mid.category = upper.category = lower.category = "volatility"
 
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
-    dcdf = DataFrame(data)
-    dcdf.name = f"DC_{lower_length}_{upper_length}"
-    dcdf.category = mid.category
+    df = DataFrame(data, index=high.index)
+    df.name = f"DC_{lower_length}_{upper_length}"
+    df.category = mid.category
 
-    return dcdf
+    return df

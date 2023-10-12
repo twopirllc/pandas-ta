@@ -93,7 +93,7 @@ def smi(
     smi.category = signalma.category = osc.category = "momentum"
 
     data = {smi.name: smi, signalma.name: signalma, osc.name: osc}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"SMI{_props}"
     df.category = smi.category
 

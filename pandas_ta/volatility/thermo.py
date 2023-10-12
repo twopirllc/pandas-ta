@@ -110,7 +110,7 @@ def thermo(
         thermo_long.name: thermo_long,
         thermo_short.name: thermo_short
     }
-    df = DataFrame(data)
+    df = DataFrame(data, index=high.index)
     df.name = f"THERMO{_props}"
     df.category = thermo.category
 

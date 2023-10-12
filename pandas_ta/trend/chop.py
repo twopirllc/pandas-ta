@@ -37,7 +37,7 @@ def chop(
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 14
         atr_length (int): Length for ATR. Default: 1
-        ln (bool): If True, uses ln otherwise log10. Default: False
+        ln (bool): When True, it uses 'ln' instead of 'log10'. Default: False
         scalar (float): How much to magnify. Default: 100
         drift (int): The difference period. Default: 1
         offset (int): How many periods to offset the result. Default: 0

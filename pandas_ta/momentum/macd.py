@@ -108,8 +108,9 @@ def macd(
     data = {
         macd.name: macd,
         histogram.name: histogram,
-        signalma.name: signalma}
-    df = DataFrame(data)
+        signalma.name: signalma
+    }
+    df = DataFrame(data, index=close.index)
     df.name = f"MACD{_asmode}{_props}"
     df.category = macd.category
 

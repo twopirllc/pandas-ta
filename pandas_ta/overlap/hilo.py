@@ -99,7 +99,8 @@ def hilo(
     data = {
         f"HILO{_props}": hilo,
         f"HILOl{_props}": long,
-        f"HILOs{_props}": short}
+        f"HILOs{_props}": short
+    }
     df = DataFrame(data, index=close.index)
 
     df.name = f"HILO{_props}"

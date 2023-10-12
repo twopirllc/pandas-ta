@@ -96,8 +96,8 @@ def aberration(
     xg.category = atr_.category = zg.category
 
     data = {zg.name: zg, sg.name: sg, xg.name: xg, atr_.name: atr_}
-    aberdf = DataFrame(data)
-    aberdf.name = f"ABER{_props}"
-    aberdf.category = zg.category
+    df = DataFrame(data, index=close.index)
+    df.name = f"ABER{_props}"
+    df.category = zg.category
 
-    return aberdf
+    return df

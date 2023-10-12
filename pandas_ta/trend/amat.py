@@ -74,13 +74,15 @@ def amat(
         mas_long.fillna(method=kwargs["fill_method"], inplace=True)
         mas_short.fillna(method=kwargs["fill_method"], inplace=True)
 
-    amatdf = DataFrame({
-        f"AMAT{mamode[0]}_LR_{fast}_{slow}_{lookback}": mas_long,
-        f"AMAT{mamode[0]}_SR_{fast}_{slow}_{lookback}": mas_short
-    })
+    _props = f"_{fast}_{slow}_{lookback}"
+    data = {
+        f"AMAT{mamode[0]}_LR{_props}": mas_long,
+        f"AMAT{mamode[0]}_SR{_props}": mas_short
+    }
+    df = DataFrame(data, index=close.index)
 
     # Name and Category
-    amatdf.name = f"AMAT{mamode[0]}_{fast}_{slow}_{lookback}"
-    amatdf.category = "trend"
+    df.name = f"AMAT{mamode[0]}{_props}"
+    df.category = "trend"
 
-    return amatdf
+    return df

@@ -89,8 +89,9 @@ def brar(
     br.name = f"BR{_props}"
     ar.category = br.category = "momentum"
 
-    brardf = DataFrame({ar.name: ar, br.name: br})
-    brardf.name = f"BRAR{_props}"
-    brardf.category = "momentum"
+    data = {ar.name: ar, br.name: br}
+    df = DataFrame(data, index=close.index)
+    df.name = f"BRAR{_props}"
+    df.category = "momentum"
 
-    return brardf
+    return df

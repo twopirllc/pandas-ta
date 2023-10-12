@@ -84,12 +84,13 @@ def supertrend(
     dir_[:length] = [nan] * length
 
     _props = f"_{length}_{multiplier}"
-    df = DataFrame({
+    data = {
         f"SUPERT{_props}": trend,
         f"SUPERTd{_props}": dir_,
         f"SUPERTl{_props}": long,
-        f"SUPERTs{_props}": short,
-    }, index=close.index)
+        f"SUPERTs{_props}": short
+    }
+    df = DataFrame(data, index=close.index)
 
     df.name = f"SUPERT{_props}"
     df.category = "overlap"

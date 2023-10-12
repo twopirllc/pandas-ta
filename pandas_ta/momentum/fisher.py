@@ -92,7 +92,7 @@ def fisher(
     fisher.category = signalma.category = "momentum"
 
     data = {fisher.name: fisher, signalma.name: signalma}
-    df = DataFrame(data)
+    df = DataFrame(data, index=high.index)
     df.name = f"FISHERT{_props}"
     df.category = fisher.category
 

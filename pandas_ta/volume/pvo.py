@@ -78,7 +78,7 @@ def pvo(
     pvo.category = histogram.category = signalma.category = "momentum"
 
     data = {pvo.name: pvo, histogram.name: histogram, signalma.name: signalma}
-    df = DataFrame(data)
+    df = DataFrame(data, index=volume.index)
     df.name = pvo.name
     df.category = pvo.category
 

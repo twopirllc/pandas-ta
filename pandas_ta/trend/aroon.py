@@ -96,10 +96,10 @@ def aroon(
     data = {
         aroon_down.name: aroon_down,
         aroon_up.name: aroon_up,
-        aroon_osc.name: aroon_osc,
+        aroon_osc.name: aroon_osc
     }
-    aroondf = DataFrame(data)
-    aroondf.name = f"AROON_{length}"
-    aroondf.category = aroon_down.category
+    df = DataFrame(data, index=high.index)
+    df.name = f"AROON_{length}"
+    df.category = aroon_down.category
 
-    return aroondf
+    return df

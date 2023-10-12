@@ -147,7 +147,7 @@ def stc(
         macd.name: macd,
         stoch.name: stoch
     }
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"STC{_props}"
     df.category = stc.category
 

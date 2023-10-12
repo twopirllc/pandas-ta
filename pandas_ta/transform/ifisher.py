@@ -92,7 +92,7 @@ def ifisher(
     inv_fisher.category = signal.category = "transform"
 
     data = {inv_fisher.name: inv_fisher, signal.name: signal}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"INVFISHER{_props}"
     df.category = inv_fisher.category
 

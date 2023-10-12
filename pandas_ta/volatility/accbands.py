@@ -90,8 +90,8 @@ def accbands(
     mid.category = upper.category = lower.category = "volatility"
 
     data = {lower.name: lower, mid.name: mid, upper.name: upper}
-    accbandsdf = DataFrame(data)
-    accbandsdf.name = f"ACCBANDS_{length}"
-    accbandsdf.category = mid.category
+    df = DataFrame(data, index=close.index)
+    df.name = f"ACCBANDS_{length}"
+    df.category = mid.category
 
-    return accbandsdf
+    return df

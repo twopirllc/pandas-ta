@@ -101,10 +101,9 @@ def cksp(
     short_stop.name = f"CKSPs{_props}"
     long_stop.category = short_stop.category = "trend"
 
-    ckspdf = DataFrame({
-        long_stop.name: long_stop, short_stop.name: short_stop
-    })
-    ckspdf.name = f"CKSP{_props}"
-    ckspdf.category = long_stop.category
+    data = {long_stop.name: long_stop, short_stop.name: short_stop}
+    df = DataFrame(data, index=close.index)
+    df.name = f"CKSP{_props}"
+    df.category = long_stop.category
 
-    return ckspdf
+    return df

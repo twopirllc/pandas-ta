@@ -1,117 +1,164 @@
 # -*- coding: utf-8 -*-
-from pandas import DataFrame, concat
-from pandas_ta import true_range, sma, rsi, mfi
-from pandas_ta.utils import get_offset, verify_series
+from numpy import isnan, nan, zeros
+from numba import njit
+from pandas import DataFrame, Series
+from pandas_ta._typing import Array, DictLike, Int, IntFloat
+from pandas_ta.momentum import rsi
+from pandas_ta.volatility import atr
+from pandas_ta.volume.mfi import mfi
+from pandas_ta.utils import (
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_str,
+    v_talib
+)
 
 
-def alphatrend(open, high, low, close, volume=None, src=None, common_period=None, multiplier=None, **kwargs):
-    """Indicator: Alpha Trend"""
-    open = verify_series(open)
-    high = verify_series(high)
-    low = verify_series(low)
-    close = verify_series(close)
+@njit(cache=True)
+def np_alpha(low_atr: Array, high_atr: Array, momo_threshold: Array):
+    """Alphatrend alpha threshold calculation"""
+    m = momo_threshold.size
+    alpha = zeros(m)
 
-    src_mapping = {
-        'open': open,
-        'high': high,
-        'low': low,
-        'close': close
-    }
-    src = src if src in src_mapping.keys() else 'close'
+    for i in range(1, m):
+        if momo_threshold[i]:
+            if low_atr[i] < alpha[i - 1]:
+                alpha[i] = alpha[i - 1]
+            else:
+                alpha[i] = low_atr[i]
+        else:
+            if high_atr[i] > alpha[i - 1]:
+                alpha[i] = alpha[i - 1]
+            else:
+                alpha[i] = high_atr[i]
+    alpha[0] = nan
 
-    common_period = int(common_period) if common_period is not None else 14
-    multiplier = multiplier if (multiplier is not None and multiplier > 0) else 1
+    return alpha
+
+
+def alphatrend(
+    open_: Series, high: Series, low: Series, close: Series,
+    volume: Series = None, src: str = None,
+    length: int = None, multiplier: IntFloat = None,
+    threshold: IntFloat = None, lag: Int = None,
+    mamode: str = None, talib: bool = None,
+    offset: Int = None, **kwargs: DictLike
+):
+    """ Alpha Trend (alphatrend)
+
+    Alpha Trend attemps to solve the problems of Magic Trend. For instance, it
+    tries to ilter out sideways market conditions and yield more accurate
+    BUY/SELL signals
+
+    Sources:
+        https://www.tradingview.com/script/o50NYLAZ-AlphaTrend/
+        https://github.com/OnlyFibonacci/AlgoSeyri/blob/main/alphaTrendIndicator.py
+
+    Args:
+        open (pd.series): series of 'open's
+        high (pd.Series): Series of 'high's
+        low (pd.Series): Series of 'low's
+        close (pd.Series): Series of 'close's
+        volume (pd.Series): Series of 'volume's. Default: None
+        src (str): One of 'open', 'high', 'low' or 'close'. Default: 'close'
+        length (int): Length for ATR, MFI, or RSI. Default: 14
+        multiplier (float): Trailing ATR value. Default: 1
+        threshold (float): Momentum threshold. Default: 50
+        lag (int): Lag period of main trend. Default: 2
+        offset (int): How many periods to offset the result. Default: 0
+
+    Kwargs:
+        fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
+
+    Returns:
+        pd.DataFrame: trend, trendlag of all the input.
+    """
+    # Validate
+    length = v_pos_default(length, 14)
+    open_ = v_series(open_, length)
+    high = v_series(high, length)
+    low = v_series(low, length)
+    close = v_series(close, length)
+
+    if open_ is None or high is None or low is None or close is None:
+        return
+
+    _src = {"open": open_, "high": high, "low": low, "close": close}
+    src = v_str(src, "close")
+    src = src if src in _src.keys() else "close"
+
+    multiplier = v_pos_default(multiplier, 1)
+    threshold = v_pos_default(threshold, 50)
+    lag = v_pos_default(lag, 2)
+
+    mamode = v_mamode(mamode, "sma")
+    mode_tal = v_talib(talib)
+    offset = v_offset(offset)
 
     if volume is not None:
-        volume = verify_series(volume)
+        volume = v_series(volume)
+        if volume is None:
+            return
 
-    if high is None or low is None or close is None: return
-
-    def alpha_trend_search(series):
-        alpha_trend_ = [0]
-        for idx, val in enumerate(series):
-            if up50.iloc[idx]:
-                if alpha_trend_[idx] < val:
-                    alpha_trend_.append(val)
-                else:
-                    alpha_trend_.append(alpha_trend_[idx])
-            else:
-                if alpha_trend_[idx] > val:
-                    alpha_trend_.append(val)
-                else:
-                    alpha_trend_.append(alpha_trend_[idx])
-
-        return alpha_trend_[1:]
-
-    def momentum_filter(momentum_series):
-        df = DataFrame({'upt': upt,
-                             'downt': downt})
-        df['up50'] = momentum_series >= 50
-        df['upt-downt'] = concat([upt[momentum_series >= 50], downt[momentum_series < 50]])
-        df[['alpha-trend-val']] = df[['upt-downt']].apply(alpha_trend_search)
-
-        return df['alpha-trend-val']
-
-    tr = true_range(high, low, close)
-    atr = sma(tr, common_period)
-
-    src = src_mapping.get(src, src)
-
-    upt = (low - atr * multiplier).fillna(0)
-    downt = (high + atr * multiplier).fillna(0)
-
-    if volume is None:
-        rsi_ = rsi(src, common_period)
-        up50 = rsi_ >= 50
-        alpha_trend_ = momentum_filter(rsi_)
-
-    else:
-        mfi_ = mfi(high, low, close, volume, common_period)
-        up50 = mfi_ >= 50
-        alpha_trend_ = momentum_filter(mfi_)
-
-    alpha_ind = DataFrame(
-        {"k1": alpha_trend_,
-         "k2": alpha_trend_.shift(2).fillna(0)},
-         index = src.index
+    # Calculate
+    atr_ = atr(
+        high=high, low=low, close=close, length=length,
+        mamode=mamode, talib=mode_tal
     )
 
-    return alpha_ind
+    if atr_ is None or all(isnan(atr_)):
+        return
 
+    lower_atr = low - atr_ * multiplier
+    upper_atr = high + atr_ * multiplier
 
-alphatrend.__doc__ = \
-""" Alpha Trend Inddicator
+    momo = None
+    if volume is None:
+        momo = rsi(close=_src[src], length=length, mamode=mamode, talib=mode_tal)
+    else:
+        momo = mfi(
+            high=high, low=low, close=close, volume=volume,
+            length=length, talib=mode_tal
+        )
 
-In Magic Trend we had some problems, Alpha Trend tries to solve those problems such as:
+    if momo is None:
+        return
 
-1-To minimize stop losses and overcome sideways market conditions.
-2-To have more accurate BUY/SELL signals during trending market conditions.
-3- To have significant support and resistance levels.
-4- To bring together indicators from different categories that are compatible with each other and make a meaningful combination regarding momentum, trend, volatility, volume and trailing stop loss.
+    np_upper_atr, np_lower_atr = upper_atr.values, lower_atr.values
 
-Sources:
-    https://www.tradingview.com/script/o50NYLAZ-AlphaTrend/
-    https://github.com/OnlyFibonacci/AlgoSeyri/blob/main/alphaTrendIndicator.py
+    at = np_alpha(np_lower_atr, np_upper_atr, momo.values >= threshold)
+    at = Series(at, index=close.index)
 
-    Default Inputs:
-        volume: None, if left blank, it will be None, otherwise it's a series.
-        multiplier: 1 which is the factor of trailing ATR value
-	common_period: 14 which is the length of ATR MFI and RSI
-	src: 'close' is default for source of ATRm MFI or RSI. However, `src` variable can also be to 'open', 'high' or 'low'
-    See Source links
+    atl = at.shift(lag)
 
-Args:
-    open (pd.series): series of 'open's
-    high (pd.Series): Series of 'high's
-    low (pd.Series): Series of 'low's
-    close (pd.Series): Series of 'close's
-    volume (pd.Series): Series of 'volume's. Default: None
-    src (str): can be 'open', 'high', 'low' or 'close'. Default: 'close'
-    multiplier (float): lfactor of trailing ATR value. Default: 1
-    common_period (int): length of ATR MFI and RSI. Default: 14
-    
-Kwargs:
+    if all(isnan(at)) or all(isnan(atl)):
+        return  # Emergency Break
 
-Returns:
-    pd.DataFrame: index, k1, and k2 of all the input.
-"""
+    # Offset
+    if offset != 0:
+        at = at.shift(offset)
+        atl = atl.shift(offset)
+
+    # Fill
+    if "fillna" in kwargs:
+        at.fillna(kwargs["fillna"], inplace=True)
+        atl.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        at.fillna(method=kwargs["fill_method"], inplace=True)
+        atl.fillna(method=kwargs["fill_method"], inplace=True)
+
+    # Name and Category
+    _props = f"_{length}_{multiplier}_{threshold}"
+    at.name = f"ALPHAT{_props}"
+    atl.name = f"ALPHATl{_props}_{lag}"
+    at.category = atl.category = "trend"
+
+    data = {at.name: at, atl.name: atl}
+    df = DataFrame(data, index=close.index)
+    df.name = at.name
+    df.category = at.category
+
+    return df

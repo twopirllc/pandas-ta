@@ -150,13 +150,14 @@ def psar(
         f"PSARl{_params}": long,
         f"PSARs{_params}": short,
         f"PSARaf{_params}": _af,
-        f"PSARr{_params}": reversal,
+        f"PSARr{_params}": reversal
     }
-    psardf = DataFrame(data)
-    psardf.name = f"PSAR{_params}"
-    psardf.category = long.category = short.category = "trend"
+    df = DataFrame(data, index=high.index)
+    df.name = f"PSAR{_params}"
+    df.category = long.category = short.category = "trend"
 
-    return psardf
+    return df
+
 
 def _falling(high, low, drift: int = 1):
     """Returns the last -DM value"""

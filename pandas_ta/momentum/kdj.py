@@ -89,8 +89,9 @@ def kdj(
     j.name = f"J{_params}"
     k.category = d.category = j.category = "momentum"
 
-    kdjdf = DataFrame({k.name: k, d.name: d, j.name: j})
-    kdjdf.name = f"KDJ{_params}"
-    kdjdf.category = "momentum"
+    data = {k.name: k, d.name: d, j.name: j}
+    df = DataFrame(data, index=close.index)
+    df.name = f"KDJ{_params}"
+    df.category = "momentum"
 
-    return kdjdf
+    return df

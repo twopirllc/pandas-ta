@@ -93,8 +93,8 @@ def kc(
     basis.category = upper.category = lower.category = "volatility"
 
     data = {lower.name: lower, basis.name: basis, upper.name: upper}
-    kcdf = DataFrame(data)
-    kcdf.name = f"KC{_props}"
-    kcdf.category = basis.category
+    df = DataFrame(data, index=close.index)
+    df.name = f"KC{_props}"
+    df.category = basis.category
 
-    return kcdf
+    return df

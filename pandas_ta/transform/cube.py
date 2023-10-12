@@ -75,7 +75,8 @@ def cube(
     ct_signal.name = f"CUBEs{_props}"
     ct.category = ct_signal.category = "transform"
 
-    df = DataFrame({ct.name: ct, ct_signal.name: ct_signal})
+    data = {ct.name: ct, ct_signal.name: ct_signal}
+    df = DataFrame(data, index=close.index)
     df.name = f"CUBE{_props}"
     df.category = ct.category
 

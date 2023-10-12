@@ -124,11 +124,12 @@ def chandelier_exit(
     if use_close:
         _props = f"_CLOSE_{_props}"
 
-    df = DataFrame({
+    data = {
         f"{_name}l{_props}": long,
         f"{_name}s{_props}": short,
         f"{_name}d{_props}": direction
-    }, index=close.index)
+    }
+    df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"
     df.category = "volatility"
 

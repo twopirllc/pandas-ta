@@ -93,11 +93,8 @@ def stochrsi(
     stochrsi_d.name = f"{_name}d{_props}"
     stochrsi_k.category = stochrsi_d.category = "momentum"
 
-    data = {
-        stochrsi_k.name: stochrsi_k,
-        stochrsi_d.name: stochrsi_d
-    }
-    df = DataFrame(data)
+    data = {stochrsi_k.name: stochrsi_k, stochrsi_d.name: stochrsi_d}
+    df = DataFrame(data, index=close.index)
     df.name = f"{_name}{_props}"
     df.category = stochrsi_k.category
 

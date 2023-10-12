@@ -156,10 +156,8 @@ def mama(
 
     # Name and Category
     _props = f"_{fastlimit}_{slowlimit}"
-    df = DataFrame({
-        f"MAMA{_props}": mama,
-        f"FAMA{_props}": fama,
-    }, index=close.index)
+    data = {f"MAMA{_props}": mama, f"FAMA{_props}": fama}
+    df = DataFrame(data, index=close.index)
 
     df.name = f"MAMA{_props}"
     df.category = "overlap"

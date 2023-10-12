@@ -99,7 +99,7 @@ def wb_tsv(
     tsv.category = signal_.category = ratio.category = "volume"
 
     data = {tsv.name: tsv, signal_.name: signal_, ratio.name: ratio}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"TSV{_props}"
     df.category = tsv.category
 

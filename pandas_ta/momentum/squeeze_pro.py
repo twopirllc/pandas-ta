@@ -190,9 +190,9 @@ def squeeze_pro(
         f"SQZPRO_ON_NORMAL": squeeze_on_normal,
         f"SQZPRO_ON_NARROW": squeeze_on_narrow,
         f"SQZPRO_OFF": squeeze_off_wide,
-        f"SQZPRO_NO": no_squeeze,
+        f"SQZPRO_NO": no_squeeze
     }
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = squeeze.name
     df.category = squeeze.category = "momentum"
 

@@ -165,11 +165,14 @@ def qqe(
     qqe_long.category = qqe_short.category = qqe.category
 
     data = {
-        qqe.name: qqe, rsi_ma.name: rsi_ma,
-        # long.name: long, short.name: short
-        qqe_long.name: qqe_long, qqe_short.name: qqe_short
+        qqe.name: qqe,
+        rsi_ma.name: rsi_ma,
+        # long.name: long,
+        # short.name: short
+        qqe_long.name: qqe_long,
+        qqe_short.name: qqe_short
     }
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"QQE{_props}"
     df.category = qqe.category
 

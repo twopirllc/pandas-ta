@@ -72,7 +72,7 @@ def eri(
     bull.category = bear.category = "momentum"
 
     data = {bull.name: bull, bear.name: bear}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"ERI_{length}"
     df.category = bull.category
 

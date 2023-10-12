@@ -1441,6 +1441,21 @@ class AnalysisIndicators(object):
                      drift=drift, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def alphatrend(self, volume=None, src=None, length=None, multiplier=None, threshold=None, lag=None, mamode=None, talib=None, offset=None, **kwargs: DictLike):
+        open_ = self._get_column(kwargs.pop("open", "open"))
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        if volume is not None:
+            volume = self._get_column(kwargs.pop("volume", "volume"))
+        result = alphatrend(
+            open_=open_, high=high, low=low, close=close, volume=volume,
+            src=src, length=length, multiplier=multiplier,
+            threshold=threshold, lag=lag, mamode=mamode,
+            talib=talib, offset=offset, **kwargs
+        )
+        return self._post_process(result, **kwargs)
+
     def amat(self, fast=None, slow=None, mamode=None, lookback=None, offset=None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = amat(close=close, fast=fast, slow=slow, mamode=mamode, lookback=lookback, offset=offset, **kwargs)
@@ -1568,6 +1583,18 @@ class AnalysisIndicators(object):
             result = xsignals(signal=signal, xa=xa, xb=xb, above=above, long=long, asbool=asbool,
                               trend_offset=trend_offset, trend_reset=trend_reset, offset=offset, **kwargs)
             return self._post_process(result, **kwargs)
+
+    # def zigzag(self, close=None, pivot_leg=None, price_deviation=None, retrace=None, last_extreme=None, offset=None, **kwargs: DictLike):
+    #     high = self._get_column(kwargs.pop("high", "high"))
+    #     low = self._get_column(kwargs.pop("low", "low"))
+    #     if close is not None:
+    #         close = self._get_column(kwargs.pop("close", "close"))
+    #     result = zigzag(
+    #         high=high, low=low, close=close,
+    #         pivot_leg=pivot_leg, price_deviation=price_deviation,
+    #         retrace=retrace, last_extreme=last_extreme,
+    #         offset=offset, **kwargs)
+    #     return self._post_process(result, **kwargs)
 
     # Volatility
     def aberration(self, length=None, atr_length=None, offset=None, **kwargs: DictLike):

@@ -144,7 +144,7 @@ def hwc(
             hwc_upper.name: hwc_upper,
             hwc_lower.name: hwc_lower
         }
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"HWC_{scalar}"
     df.category = hwc.category
 

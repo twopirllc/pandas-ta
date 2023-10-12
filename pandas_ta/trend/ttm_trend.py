@@ -69,8 +69,7 @@ def ttm_trend(
     tm_trend.name = f"TTM_TRND_{length}"
     tm_trend.category = "momentum"
 
-    data = {tm_trend.name: tm_trend}
-    df = DataFrame(data)
+    df = DataFrame({tm_trend.name: tm_trend}, index=close.index)
     df.name = f"TTMTREND_{length}"
     df.category = tm_trend.category
 

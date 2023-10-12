@@ -166,9 +166,9 @@ def squeeze(
         squeeze.name: squeeze,
         f"SQZ_ON": squeeze_on,
         f"SQZ_OFF": squeeze_off,
-        f"SQZ_NO": no_squeeze,
+        f"SQZ_NO": no_squeeze
     }
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = squeeze.name
     df.category = squeeze.category = "momentum"
 

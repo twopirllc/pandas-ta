@@ -84,7 +84,8 @@ def rvgi(
     signal.name = f"RVGIs_{length}_{swma_length}"
     rvgi.category = signal.category = "momentum"
 
-    df = DataFrame({rvgi.name: rvgi, signal.name: signal})
+    data = {rvgi.name: rvgi, signal.name: signal}
+    df = DataFrame(data, index=close.index)
     df.name = f"RVGI_{length}_{swma_length}"
     df.category = rvgi.category
 

@@ -89,7 +89,7 @@ def rwi(
 
     # Prepare DataFrame to return
     data = {rwi_high.name: rwi_high, rwi_low.name: rwi_low}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = f"RWI_{length}"
     df.category = "trend"
 

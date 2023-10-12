@@ -157,8 +157,8 @@ def adx(
     adx.category = dmp.category = dmn.category = "trend"
 
     data = {adx.name: adx, dmp.name: dmp, dmn.name: dmn}
-    adxdf = DataFrame(data)
-    adxdf.name = f"ADX_{lensig}"
-    adxdf.category = "trend"
+    df = DataFrame(data, index=close.index)
+    df.name = f"ADX_{lensig}"
+    df.category = "trend"
 
-    return adxdf
+    return df

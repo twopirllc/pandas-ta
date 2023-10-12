@@ -2,7 +2,8 @@
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.trend import long_run, short_run
+from pandas_ta.trend.long_run import long_run
+from pandas_ta.trend.short_run import short_run
 from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 from .obv import obv
 
@@ -103,12 +104,12 @@ def aobv(
         f"OBV{_mode}_{fast}": maf,
         f"OBV{_mode}_{slow}": mas,
         f"AOBV_LR_{run_length}": obv_long,
-        f"AOBV_SR_{run_length}": obv_short,
+        f"AOBV_SR_{run_length}": obv_short
     }
-    aobvdf = DataFrame(data)
+    df = DataFrame(data, index=close.index)
 
     # Name and Category
-    aobvdf.name = f"AOBV{_mode}_{fast}_{slow}_{min_lookback}_{max_lookback}_{run_length}"
-    aobvdf.category = "volume"
+    df.name = f"AOBV{_mode}_{fast}_{slow}_{min_lookback}_{max_lookback}_{run_length}"
+    df.category = "volume"
 
-    return aobvdf
+    return df

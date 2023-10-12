@@ -100,8 +100,12 @@ def ppo(
     signalma.name = f"PPOs{_props}"
     ppo.category = histogram.category = signalma.category = "momentum"
 
-    data = {ppo.name: ppo, histogram.name: histogram, signalma.name: signalma}
-    df = DataFrame(data)
+    data = {
+        ppo.name: ppo,
+        histogram.name: histogram,
+        signalma.name: signalma
+    }
+    df = DataFrame(data, index=close.index)
     df.name = f"PPO{_props}"
     df.category = ppo.category
 

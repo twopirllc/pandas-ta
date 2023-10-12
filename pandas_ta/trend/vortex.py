@@ -78,8 +78,8 @@ def vortex(
     vip.category = vim.category = "trend"
 
     data = {vip.name: vip, vim.name: vim}
-    vtxdf = DataFrame(data)
-    vtxdf.name = f"VTX_{length}"
-    vtxdf.category = "trend"
+    df = DataFrame(data, index=close.index)
+    df.name = f"VTX_{length}"
+    df.category = "trend"
 
-    return vtxdf
+    return df

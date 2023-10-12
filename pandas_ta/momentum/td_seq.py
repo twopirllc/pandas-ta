@@ -72,7 +72,7 @@ def td_seq(
     up_seq.category = down_seq.category = "momentum"
 
     data = {up_seq.name: up_seq, down_seq.name: down_seq}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.index = close.index  # Only works here for some reason?
     df.name = "TD_SEQ"
     df.category = up_seq.category

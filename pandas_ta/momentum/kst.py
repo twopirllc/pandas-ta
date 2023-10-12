@@ -92,8 +92,8 @@ def kst(
     kst.category = kst_signal.category = "momentum"
 
     data = {kst.name: kst, kst_signal.name: kst_signal}
-    kstdf = DataFrame(data)
-    kstdf.name = f"KST_{roc1}_{roc2}_{roc3}_{roc4}_{sma1}_{sma2}_{sma3}_{sma4}_{signal}"
-    kstdf.category = "momentum"
+    df = DataFrame(data, index=close.index)
+    df.name = f"KST_{roc1}_{roc2}_{roc3}_{roc4}_{sma1}_{sma2}_{sma3}_{sma4}_{signal}"
+    df.category = "momentum"
 
-    return kstdf
+    return df

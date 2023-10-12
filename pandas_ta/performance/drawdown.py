@@ -65,7 +65,7 @@ def drawdown(
     dd.category = dd_pct.category = dd_log.category = "performance"
 
     data = {dd.name: dd, dd_pct.name: dd_pct, dd_log.name: dd_log}
-    df = DataFrame(data)
+    df = DataFrame(data, index=close.index)
     df.name = dd.name
     df.category = dd.category
 

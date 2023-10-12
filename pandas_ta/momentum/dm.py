@@ -90,11 +90,10 @@ def dm(
         neg.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    _params = f"_{length}"
-    data = {f"DMP{_params}": pos, f"DMN{_params}": neg, }
+    _props = f"_{length}"
+    data = {f"DMP{_props}": pos, f"DMN{_props}": neg}
+    df = DataFrame(data, index=high.index)
+    df.name = f"DM{_props}"
+    df.category = "momentum"
 
-    dmdf = DataFrame(data)
-    dmdf.name = f"DM{_params}"
-    dmdf.category = "momentum"
-
-    return dmdf
+    return df

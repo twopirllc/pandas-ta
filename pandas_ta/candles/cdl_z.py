@@ -60,12 +60,13 @@ def cdl_z(
 
     _full = "a" if full else ""
     _props = _full if full else f"_{length}_{ddof}"
-    df = DataFrame({
+    data = {
         f"open_Z{_props}": z_open,
         f"high_Z{_props}": z_high,
         f"low_Z{_props}": z_low,
         f"close_Z{_props}": z_close,
-    })
+    }
+    df = DataFrame(data, index=close.index)
 
     if full:
         df.fillna(method="backfill", axis=0, inplace=True)

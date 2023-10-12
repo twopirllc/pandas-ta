@@ -68,11 +68,16 @@ def test_adx(df):
     pdt.assert_frame_equal(result, expected_tv_adx)
 
 
+def test_alphatrend(df):
+    result = ta.alphatrend(df.open, df.high, df.low, df.close)
+    assert isinstance(result, DataFrame)
+    assert result.name == "ALPHAT_14_1_50"
+
+
 def test_amat(df):
     result = ta.amat(df.close)
     assert isinstance(result, DataFrame)
     assert result.name == "AMATe_8_21_2"
-
 
 def test_aroon(df):
     result = ta.aroon(df.high, df.low, talib=False)
@@ -258,6 +263,11 @@ def test_vortex(df):
 def test_ext_adx(df):
     df.ta.adx(append=True)
     assert list(df.columns[-3:]) == ["ADX_14", "DMP_14", "DMN_14"]
+
+
+def test_ext_alphatrend(df):
+    df.ta.alphatrend(append=True)
+    assert list(df.columns[-2:]) == ["ALPHAT_14_1_50", "ALPHATl_14_1_50_2"]
 
 
 def test_ext_amat(df):
