@@ -52,7 +52,7 @@ Category: Dict[str, ListStr] = {
         "coppock", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst",
         "macd", "mom", "pgo", "ppo", "psl", "qqe", "roc", "rsi", "rsx",
         "rvgi", "slope", "smi", "squeeze", "squeeze_pro", "stc", "stoch",
-        "stochf", "stochrsi", "td_seq", "trix", "tsi", "uo", "willr"
+        "stochf", "stochrsi", "td_seq", "tmo", "trix", "tsi", "uo", "willr"
     ],
     # Overlap
     "overlap": [

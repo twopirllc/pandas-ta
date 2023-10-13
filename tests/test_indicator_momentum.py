@@ -515,6 +515,10 @@ def test_stochrsi(df):
         except Exception as ex:
             error_analysis(result.iloc[:, 0], CORRELATION, ex, newline=False)
 
+def test_tmo(self):
+    result = ta.tmo(df.open, df.close)
+    self.assertIsInstance(result, DataFrame)
+    self.assertEqual(result.name, "TMO_14_5_3")
 
 def test_trix(df):
     result = ta.trix(df.close)
@@ -770,6 +774,12 @@ def test_ext_stochrsi(df):
 def test_ext_td_seq(df):
     df.ta.td_seq(append=True)
     assert list(df.columns[-2:]) == ["TD_SEQ_UPa", "TD_SEQ_DNa"]
+
+
+def test_tmo(self):
+    result = pandas_ta.tmo(self.open, self.close)
+    self.assertIsInstance(result, DataFrame)
+    self.assertEqual(result.name, "TMO_14_5_3")
 
 
 def test_ext_trix(df):
