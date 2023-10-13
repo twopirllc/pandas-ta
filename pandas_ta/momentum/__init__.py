@@ -36,6 +36,7 @@ from .stoch import stoch
 from .stochf import stochf
 from .stochrsi import stochrsi
 from .td_seq import td_seq
+from .tmo import tmo
 from .trix import trix
 from .tsi import tsi
 from .uo import uo
@@ -79,6 +80,7 @@ __all__ = [
     "stochf",
     "stochrsi",
     "td_seq",
+    "tmo",
     "trix",
     "tsi",
     "uo",

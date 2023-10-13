@@ -9,7 +9,7 @@ categories = DataFrame().ta.categories() + \
 [pytest.param(ta.CommonStudy, id="common"), pytest.param(ta.AllStudy, id="all")]
 
 # +/- when adding/removing indicators
-ALL_COLUMNS = 317
+ALL_COLUMNS = 321
 
 
 def test_all_study_props(all_study):
@@ -31,7 +31,7 @@ def test_common_study_props(common_study):
 
 
 @pytest.mark.parametrize("category,columns", [
-    ("candles", 70), ("cycles", 2), ("momentum", 73), ("overlap", 56),
+    ("candles", 70), ("cycles", 2), ("momentum", 77), ("overlap", 56),
     ("performance", 2), ("statistics", 16), ("transform", 5), ("trend", 29),
     ("volatility", 36), ("volume", 28),
     pytest.param(ta.AllStudy, ALL_COLUMNS, id=f"all-{ALL_COLUMNS}"),
@@ -89,7 +89,7 @@ def test_study_custom_e(df, custom_study_e, talib):
 
 @pytest.mark.parametrize("talib", [False, True])
 def test_study_all_multirun(df, all_study, talib):
-    all_columns = 604  # +/- when adding/removing indicators
+    all_columns = 608  # +/- when adding/removing indicators
     initial_columns = df.shape[1]
     df.ta.study(all_study, length=10, cores=0, talib=talib)
     df.ta.study(all_study, length=50, cores=0, talib=talib)

@@ -1117,6 +1117,12 @@ class AnalysisIndicators(object):
         result = td_seq(close=close, asint=asint, offset=offset, show_all=show_all, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def tmo(self, tmo_length=None, calc_length=None, smooth_length=None, mamode=None, compute_momentum=False, normalize_signal=False, offset=None, **kwargs: DictLike):
+        open_ = self._get_column(kwargs.pop("open", "open"))
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = tmo(open_=open_, close=close, tmo_length=tmo_length, calc_length=calc_length, smooth_length=smooth_length, mamode=mamode, compute_momentum=compute_momentum, normalize_signal=normalize_signal, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+ 
     def trix(self, length=None, signal=None, scalar=None, drift=None, offset=None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = trix(close=close, length=length, signal=signal, scalar=scalar, drift=drift, offset=offset, **kwargs)
