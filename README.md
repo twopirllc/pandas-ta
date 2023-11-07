@@ -81,7 +81,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is an easy to use library that lever
 * Has 130+ indicators and utility functions.
     * **BETA** Also Pandas TA will run TA Lib's version, this includes TA Lib's 63 Chart Patterns.
 * Indicators in Python are tightly correlated with the _de facto_ [TA Lib](https://github.com/mrjbq7/ta-lib) if they share common indicators.
-* If TA Lib is also installed, TA Lib computations are enabled by default but can be disabled disabled per indicator by using the argument ```talib=False```.
+* If TA Lib is also installed, TA Lib computations are enabled by default but can be disabled per indicator by using the argument ```talib=False```.
     * For instance to disable TA Lib calculation for **stdev**: ```ta.stdev(df["close"], length=30, talib=False)```.
 * **NEW**! Include External Custom Indicators independent of the builtin Pandas TA indicators. For more information, see ```import_dir``` documentation under ```/pandas_ta/custom.py```.
 * Example Jupyter Notebook with **vectorbt** Portfolio Backtesting with Pandas TA's ```ta.tsignals``` method.
