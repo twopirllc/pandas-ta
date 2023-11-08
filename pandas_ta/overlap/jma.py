@@ -50,7 +50,7 @@ def jma(
     v_sum = zeros_like(close)
 
     kv = det0 = det1 = ma2 = 0.0
-    jma[0] = ma1 = uBand = lBand = close[0]
+    jma[0] = ma1 = uBand = lBand = close.iloc[0]
 
     # Static variables
     sum_length = 10
@@ -64,7 +64,7 @@ def jma(
 
     m = close.shape[0]
     for i in range(1, m):
-        price = close[i]
+        price = close.iloc[i]
 
         # Price volatility
         del1 = price - uBand

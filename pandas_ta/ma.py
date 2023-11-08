@@ -5,6 +5,7 @@ from pandas_ta.overlap.dema import dema
 from pandas_ta.overlap.ema import ema
 from pandas_ta.overlap.fwma import fwma
 from pandas_ta.overlap.hma import hma
+from pandas_ta.overlap.jma import jma
 from pandas_ta.overlap.linreg import linreg
 from pandas_ta.overlap.midpoint import midpoint
 from pandas_ta.overlap.pwma import pwma
@@ -43,11 +44,11 @@ def ma(name: str = None, source: Series = None, **kwargs: DictLike) -> Series:
         pd.Series: New feature generated.
     """
     _mas = [
-        "dema", "ema", "fwma", "hma", "linreg", "midpoint", "pwma", "rma",
+        "dema", "ema", "fwma", "hma", 'jma', "linreg", "midpoint", "pwma", "rma",
         "sinwma", "sma", "ssf", "swma", "t3", "tema", "trima", "vidya", "wma"
     ]
     if name is None and source is None:
-        return _mas
+        return None
     elif isinstance(name, str) and name.lower() in _mas:
         name = name.lower()
     else:  # "ema"
@@ -56,6 +57,7 @@ def ma(name: str = None, source: Series = None, **kwargs: DictLike) -> Series:
     if   name == "dema": return dema(source, **kwargs)
     elif name == "fwma": return fwma(source, **kwargs)
     elif name == "hma": return hma(source, **kwargs)
+    elif name == "jma": return jma(source, **kwargs)
     elif name == "linreg": return linreg(source, **kwargs)
     elif name == "midpoint": return midpoint(source, **kwargs)
     elif name == "pwma": return pwma(source, **kwargs)
