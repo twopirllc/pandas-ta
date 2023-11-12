@@ -68,7 +68,7 @@ def stc(
     fast = v_pos_default(fast, 12)
     slow = v_pos_default(slow, 26)
     tclength = v_pos_default(tclength, 10)
-    if slow < fast:                # mandatory condition, but might be confusing
+    if slow < fast:
         fast, slow = slow, fast
     _length = max(tclength, fast, slow)
     close = v_series(close, _length)
