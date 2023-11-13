@@ -64,11 +64,30 @@ def kvo(
     drift = v_drift(drift)
     offset = v_offset(offset)
 
-    # Calculate
-    signed_volume = volume * signed_series(hlc3(high, low, close), -1)
-    sv = signed_volume.loc[signed_volume.first_valid_index():, ]
+    # Calculate Trend (T) and Trend groups (dtrend)
+    trend = signed_series(hlc3(high, low, close), 1)
+    dtrend = trend.diff().ne(0).cumsum()
 
-    kvo = ma(mamode, sv, length=fast) - ma(mamode, sv, length=slow)
+    # Calculate the Daily Measurement (dm)
+    dm = high - low
+
+    # Calculate the Cumulative Measurement (cm)
+    df = DataFrame({'dtrend': dtrend, 'dm': dm})
+    df['dm_cumsum'] = df.groupby('dtrend')['dm'].cumsum()
+    mask = df['dtrend'].ne(df['dtrend'].shift())
+    df.loc[mask, 'previous_dm'] = df['dm'].shift()
+    df['previous_dm'].ffill(inplace=True)
+    cm = df['dm_cumsum'].add(df['previous_dm'], fill_value=0)
+
+    # Avoid division by zero by adding a small number to 'cm' where it's zero
+    cm += cm.where(cm == 0, 1e-10)
+
+    # Calculate the Volume Force (VF)
+    vf = volume * (2 * ((dm / cm) - 1)) * trend * 100
+
+    kvo = ma(mamode, vf, length=fast) - ma(mamode, vf, length=slow)
+    kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():,], length=signal)
+
     if kvo is None or all(isnan(kvo.values)):
         return  # Emergency Break
 
