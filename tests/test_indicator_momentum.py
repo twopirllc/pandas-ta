@@ -516,6 +516,16 @@ def test_stochrsi(df):
             error_analysis(result.iloc[:, 0], CORRELATION, ex, newline=False)
 
 
+def test_tmo(df):
+    result = ta.tmo(df.open, df.close)
+    assert isinstance(result, DataFrame)
+    assert result.name == "TMO_14_5_3"
+
+    result = ta.tmo(df.open, df.close, compute_momentum=True)
+    assert isinstance(result, DataFrame)
+    assert result.name == "TMO_14_5_3"
+
+
 def test_trix(df):
     result = ta.trix(df.close)
     assert isinstance(result, DataFrame)
@@ -770,6 +780,12 @@ def test_ext_stochrsi(df):
 def test_ext_td_seq(df):
     df.ta.td_seq(append=True)
     assert list(df.columns[-2:]) == ["TD_SEQ_UPa", "TD_SEQ_DNa"]
+
+
+def test_ext_tmo(df):
+    df.ta.tmo(append=True)
+    columns = ["TMO_14_5_3", "TMOs_14_5_3", "TMOM_14_5_3", "TMOMs_14_5_3"]
+    assert list(df.columns[-4:]) == columns
 
 
 def test_ext_trix(df):
