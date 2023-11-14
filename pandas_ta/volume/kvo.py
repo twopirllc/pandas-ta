@@ -83,15 +83,14 @@ def kvo(
     cm += cm.where(cm == 0, 1e-10)
 
     # Calculate the Volume Force (VF)
-    vf = volume * (2 * ((dm / cm) - 1)) * trend * 100
+    vf = volume * (-2 * ((dm / cm) - 1)) * trend * 100
 
     kvo = ma(mamode, vf, length=fast, **kwargs) - ma(mamode, vf, length=slow, **kwargs)
-    kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():,], length=signal)
+    kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():,], length=signal,  **kwargs)
 
     if kvo is None or all(isnan(kvo.values)):
         return  # Emergency Break
 
-    kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():, ], length=signal)
     if kvo_signal is None or all(isnan(kvo_signal.values)):
         return  # Emergency Break
 
@@ -108,8 +107,8 @@ def kvo(
         kvo.fillna(method=kwargs["fill_method"], inplace=True)
         kvo_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Category
-    _props = f"_{fast}_{slow}_{signal}"
+    # Name and Categorize it
+    _props = f"_{fast}_{slow}_{signal}_{mamode}"
     kvo.name = f"KVO{_props}"
     kvo_signal.name = f"KVOs{_props}"
     kvo.category = kvo_signal.category = "volume"
