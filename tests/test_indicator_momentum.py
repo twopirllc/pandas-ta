@@ -521,6 +521,10 @@ def test_tmo(df):
     assert isinstance(result, DataFrame)
     assert result.name == "TMO_14_5_3"
 
+    result = ta.tmo(df.open, df.close, compute_momentum=True)
+    assert isinstance(result, DataFrame)
+    assert result.name == "TMO_14_5_3"
+
 
 def test_trix(df):
     result = ta.trix(df.close)
@@ -780,7 +784,7 @@ def test_ext_td_seq(df):
 
 def test_ext_tmo(df):
     df.ta.tmo(append=True)
-    columns = ["TMO_14_5_3", "TMOs_14_5_3", "TMO_mom_14_5_3", "TMOs_mom_14_5_3"]
+    columns = ["TMO_14_5_3", "TMOs_14_5_3", "TMOM_14_5_3", "TMOMs_14_5_3"]
     assert list(df.columns[-4:]) == columns
 
 
