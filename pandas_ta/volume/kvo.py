@@ -85,7 +85,7 @@ def kvo(
     # Calculate the Volume Force (VF)
     vf = volume * (2 * ((dm / cm) - 1)) * trend * 100
 
-    kvo = ma(mamode, vf, length=fast) - ma(mamode, vf, length=slow)
+    kvo = ma(mamode, vf, length=fast, **kwargs) - ma(mamode, vf, length=slow, **kwargs)
     kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():,], length=signal)
 
     if kvo is None or all(isnan(kvo.values)):
