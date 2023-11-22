@@ -941,6 +941,12 @@ class AnalysisIndicators(object):
         result = coppock(close=close, length=length, fast=fast, slow=slow, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def crsi(self, length_rsi=None, length_streak=None, length_rank=None,
+    drift=None, offset=None, **kwargs: DictLike):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = crsi(close=close, length_rsi=length_rsi, length_streak=length_streak, length_rank=length_rank, drift=drift, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def cti(self, length=None, offset=None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = cti(close=close, length=length, offset=offset, **kwargs)
