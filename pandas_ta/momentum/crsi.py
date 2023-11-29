@@ -15,7 +15,7 @@ from pandas_ta.utils import (
 )
 
 
-def calculate_streak_conv(prices: Array1d) -> Array1d:
+def consecutive_streak(prices: Array1d) -> Array1d:
     """Calculate the streak of consecutive price increases or decreases.
 
     This function computes the streak of consecutive daily price increases
@@ -37,18 +37,17 @@ def calculate_streak_conv(prices: Array1d) -> Array1d:
 
     Example:
     >>> prices = np.array([100, 101, 102, 100, 100, 101, 102, 103])
-    >>> result = calculate_streak_conv(prices)
+    >>> result = consecutive_streak(prices)
     >>> expected_result = np.array([0, 1, 1, -1, 0, 1, 1, 1])
     >>> np.array_equal(result, expected_result)
     True
-
     """
     diff = np.diff(prices)
     streaks = np.sign(diff)
     return np.concatenate(([0], streaks))
 
 
-def calculate_percent_rank(close: Series, lookback: Int) -> Series:
+def percent_rank(close: Series, lookback: Int) -> Series:
     """Calculate the Percent Rank of daily returns over given period.
 
     The Percent Rank compares today's return with the one-day returns from each
@@ -72,14 +71,12 @@ def calculate_percent_rank(close: Series, lookback: Int) -> Series:
 
     Example:
     >>> close = Series([100, 80, 75, 123, 140, 80, 70, 40, 100, 120])
-    >>> result = calculate_percent_rank(close, 3)
+    >>> result = percent_rank(close, 3)
     >>> expected_result = Series([np.nan, np.nan, np.nan, \
         66.666667, 66.666667, 0.0, 33.333333, 0.0, 100.0, 66.666667])
     >>> np.allclose(result, expected_result, rtol=1e-6, equal_nan=True)
     True
-
     """
-
     daily_returns_np = close.pct_change().to_numpy()
 
     rolling_windows = np.lib.stride_tricks.sliding_window_view(
@@ -95,15 +92,9 @@ def calculate_percent_rank(close: Series, lookback: Int) -> Series:
 
 
 def crsi(
-    close: Series,
-    length_rsi: Int = None,
-    length_streak: Int = None,
-    length_rank: Int = None,
-    scalar: IntFloat = None,
-    talib: bool = None,
-    drift: Int = None,
-    offset: Int = None,
-    **kwargs: DictLike,
+    close: Series, length_rsi: Int = None, length_streak: Int = None,
+    length_rank: Int = None, scalar: IntFloat = None, talib: bool = None,
+    drift: Int = None, offset: Int = None, **kwargs: DictLike,
 ) -> Series:
     """Connors Relative Strength Index (RSI)
 
@@ -135,9 +126,7 @@ def crsi(
 
     Returns:
         pd.Series: New feature generated
-
     """
-
     # Validate
     length_rsi = v_pos_default(length_rsi, 3)
     length_streak = v_pos_default(length_streak, 2)
@@ -157,39 +146,27 @@ def crsi(
     offset = v_offset(offset)
 
     # Initial streaks calculation
-    streak = Series(calculate_streak_conv(close.to_numpy()), index=close.index)
+    streak = Series(consecutive_streak(close.to_numpy()), index=close.index)
 
     if Imports["talib"] and mode_tal:
         from talib import RSI
-
         close_rsi = RSI(close, length_rsi)
         streak_rsi = RSI(streak, length_streak)
-
-    # Both TA-lib and Pandas-TA use the Wilder's RSI and its smoothing
-    # function.
     else:
+        # Both TA-lib and Pandas-TA use the Wilder's RSI and its smoothing
+        # function.
         close_rsi = rsi(
-            close,
-            length=length_rsi,
-            scalar=scalar,
-            talib=talib,
-            drift=drift,
-            offset=offset,
-            **kwargs,
+            close, length=length_rsi, scalar=scalar, talib=talib,
+            drift=drift, offset=offset, **kwargs
         )
 
         streak_rsi = rsi(
-            streak,
-            length=length_streak,
-            scalar=scalar,
-            talib=talib,
-            drift=drift,
-            offset=offset,
-            **kwargs,
+            streak, length=length_streak, scalar=scalar, talib=talib,
+            drift=drift, offset=offset, **kwargs
         )
 
     # Percent rank and final arithmetic mean
-    percent_rank = calculate_percent_rank(close, length_rank)
+    percent_rank = percent_rank(close, length_rank)
     crsi = (close_rsi + streak_rsi + percent_rank) / 3.0
 
     # Offset
