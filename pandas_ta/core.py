@@ -669,6 +669,8 @@ class AnalysisIndicators(object):
                 # based on total ta indicators
                 if mp_chunksize > _total_ta:
                     _chunksize = mp_chunksize - 1
+                elif mp_chunksize > 0:
+                    _chunksize = mp_chunksize
                 else:
                     _chunksize = int(log10(_total_ta)) + 1
                 if verbose:
@@ -685,7 +687,7 @@ class AnalysisIndicators(object):
                     # Custom multiprocessing pool. Must be ordered for Chained Strategies
                     # May fix this to cpus if Chaining/Composition if it remains
                     if Imports["tqdm"] and verbose:
-                        results = tqdm(pool.map(self._mp_worker, custom_ta, _chunksize))
+                        results = tqdm(pool.map(self._mp_worker, custom_ta, _chunksize), total=len(custom_ta) // _chunksize)
                     else:
                         results = pool.map(self._mp_worker, custom_ta, _chunksize)
                 else:
@@ -693,12 +695,12 @@ class AnalysisIndicators(object):
                     # All and Categorical multiprocessing pool.
                     if all_ordered:
                         if Imports["tqdm"] and verbose:
-                            results = tqdm(pool.imap(self._mp_worker, default_ta, _chunksize)) # Order over Speed
+                            results = tqdm(pool.imap(self._mp_worker, default_ta, _chunksize, total=len(default_ta) // _chunksize)) # Order over Speed
                         else:
                             results = pool.imap(self._mp_worker, default_ta, _chunksize) # Order over Speed
                     else:
                         if Imports["tqdm"] and verbose:
-                            results = tqdm(pool.imap_unordered(self._mp_worker, default_ta, _chunksize)) # Speed over Order
+                            results = tqdm(pool.imap_unordered(self._mp_worker, default_ta, _chunksize, total=len(default_ta) // _chunksize)) # Speed over Order
                         else:
                             results = pool.imap_unordered(self._mp_worker, default_ta, _chunksize) # Speed over Order
                 if results is None:
