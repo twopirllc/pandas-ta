@@ -6,11 +6,9 @@ from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.utils import v_offset, v_pos_default, v_series, v_str
 
 
-@njit(cache=True)
-def np_exponential_decay(x: Array, n: Int):
-    """Exponential Decay
-    Source: https://tulipindicators.org/edecay
-    """
+# Exponential Decay - https://tulipindicators.org/edecay
+@njit
+def np_exponential_decay(x, n):
     m, rate = x.size, 1.0 - (1.0 / n)
 
     result = zeros_like(x, dtype="float")
@@ -22,11 +20,9 @@ def np_exponential_decay(x: Array, n: Int):
     return result
 
 
-@njit(cache=True)
-def np_linear_decay(x: Array, n: Int):
-    """Linear Decay
-    https://tulipindicators.org/decay
-    """
+# Linear Decay -https://tulipindicators.org/decay
+@njit
+def np_linear_decay(x, n):
     m, rate = x.size, 1.0 / n
 
     result = zeros_like(x, dtype="float")

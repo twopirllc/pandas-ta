@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from numpy import isnan
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.volatility import atr
@@ -63,6 +64,8 @@ def rwi(
         high=high, low=low, close=close,
         length=length, mamode=mamode, talib=mode_tal
     )
+    if all(isnan(atr_)):
+        return  # Emergency Break
     denom = atr_ * (length ** 0.5)
 
     rwi_high = (high - low.shift(length)) / denom

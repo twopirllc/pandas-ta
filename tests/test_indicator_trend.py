@@ -41,9 +41,11 @@ def test_adx(df):
     result = ta.adx(df.high, df.low, df.close, talib=False)
     assert isinstance(result, DataFrame)
     assert result.name == "ADX_14"
+    assert len(result.columns) == 4
 
     try:
         expected = tal.ADX(df.high, df.low, df.close)
+        result.drop(result.columns[1], axis=1, inplace=True)
         pdt.assert_series_equal(result, expected, check_names=False)
     except AssertionError:
         try:
@@ -64,6 +66,7 @@ def test_adx(df):
     assert result.name == "ADX_14"
 
     result = result.iloc[13:]
+    result.drop(result.columns[1], axis=1, inplace=True)
     result.reset_index(drop=True, inplace=True)
     pdt.assert_frame_equal(result, expected_tv_adx)
 
@@ -262,7 +265,7 @@ def test_vortex(df):
 # DataFrame Extension Tests
 def test_ext_adx(df):
     df.ta.adx(append=True)
-    assert list(df.columns[-3:]) == ["ADX_14", "DMP_14", "DMN_14"]
+    assert list(df.columns[-4:]) == ["ADX_14", "ADXR_14_2", "DMP_14", "DMN_14"]
 
 
 def test_ext_alphatrend(df):

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import nan, uintc, zeros_like
+from numpy import isnan, nan, uintc, zeros_like
 from numba import njit
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
@@ -16,8 +16,8 @@ from pandas_ta.utils import (
 from pandas_ta.volatility import atr
 
 
-@njit(cache=True)
-def np_atrts(x: Array, ma: Array, atr_: Array, length: Int, ma_length: Int):
+@njit
+def np_atrts(x, ma, atr_, length, ma_length):
     m = x.size
     k = max(length, ma_length)
 
@@ -115,6 +115,9 @@ def atrts(
             mamode=mamode, drift=drift, talib=mode_tal,
             offset=offset, **kwargs
         )
+
+    if all(isnan(atr_)):
+        return  # Emergency Break
 
     atr_ *= multiplier
     ma_ = _ma(mamode, close, length=ma_length, talib=mode_tal)

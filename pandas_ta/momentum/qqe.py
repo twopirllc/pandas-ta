@@ -31,8 +31,8 @@ def qqe(
     a Short trend when the Smoothed RSI crosses the previous lowerband.
 
     Based on QQE.mq5 by EarnForex Copyright © 2010
-    based on version by Tim Hyder (2008),
-    based on version by Roman Ignatov (2006)
+    Based on version by Tim Hyder (2008),
+    Based on version by Roman Ignatov (2006)
 
     Sources:
         https://www.tradingview.com/script/IYfA9R2k-QQE-MT4/

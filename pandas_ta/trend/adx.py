@@ -19,8 +19,8 @@ from pandas_ta.volatility import atr
 
 
 def adx(
-    high: Series, low: Series, close: Series,
-    length: Int = None, lensig: Int = None, scalar: IntFloat = None,
+    high: Series, low: Series, close: Series, length: Int = None,
+    lensig: Int = None, adxr_length: Int = None, scalar: IntFloat = None,
     talib: bool = None, tvmode: bool = None, mamode: str = None,
     drift: Int = None, offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
@@ -40,6 +40,7 @@ def adx(
         length (int): It's period. Default: 14
         lensig (int): Signal Length. Like TradingView's default ADX.
             Default: length
+        adxr_length (int): ADXR lookback. Default: 2
         scalar (float): How much to magnify. Default: 100
         talib (bool): If TA Lib is installed and talib is True, Returns
             the TA Lib version. Default: True
@@ -53,12 +54,13 @@ def adx(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.DataFrame: adx, dmp, dmn columns.
+        pd.DataFrame: adx, adxr, dmp, dmn columns.
     """
     # Validate
     length = v_pos_default(length, 14)
     lensig = v_pos_default(lensig, length)
-    _length = max(length, lensig)
+    adxr_length = v_pos_default(adxr_length, 2)
+    _length = max(length, lensig, adxr_length)
     high = v_series(high, _length)
     low = v_series(low, _length)
     close = v_series(close, _length)
@@ -134,29 +136,35 @@ def adx(
         dx = scalar * (dmp - dmn).abs() / (dmp + dmn)
         adx = ma(mamode, dx, length=lensig)
 
+    adxr = 0.5 * (adx + adx.shift(adxr_length))
+
     # Offset
     if offset != 0:
-        dmp = dmp.shift(offset)
-        dmn = dmn.shift(offset)
         adx = adx.shift(offset)
+        adxr = adxr.shift(offset)
+        dmn = dmn.shift(offset)
+        dmp = dmp.shift(offset)
 
     # Fill
     if "fillna" in kwargs:
         adx.fillna(kwargs["fillna"], inplace=True)
+        adxr.fillna(kwargs["fillna"], inplace=True)
         dmp.fillna(kwargs["fillna"], inplace=True)
         dmn.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         adx.fillna(method=kwargs["fill_method"], inplace=True)
+        adxr.fillna(method=kwargs["fill_method"], inplace=True)
         dmp.fillna(method=kwargs["fill_method"], inplace=True)
         dmn.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     adx.name = f"ADX_{lensig}"
+    adxr.name = f"ADXR_{lensig}_{adxr_length}"
     dmp.name = f"DMP_{length}"
     dmn.name = f"DMN_{length}"
     adx.category = dmp.category = dmn.category = "trend"
 
-    data = {adx.name: adx, dmp.name: dmp, dmn.name: dmn}
+    data = {adx.name: adx, adxr.name: adxr, dmp.name: dmp, dmn.name: dmn}
     df = DataFrame(data, index=close.index)
     df.name = f"ADX_{lensig}"
     df.category = "trend"

@@ -6,9 +6,8 @@ from pandas_ta._typing import Array, DictLike
 from pandas_ta.utils import np_non_zero_range, v_datetime_ordered, v_series, v_str
 
 
-@njit(cache=True)
-def pivot_camarilla(high: Array, low: Array, close: Array):
-    """Camarilla Pivot Points - requires high, low, close"""
+@njit
+def pivot_camarilla(high, low, close):
     tp = (high + low + close) / 3
     hl_range = np_non_zero_range(high, low)
 
@@ -25,9 +24,8 @@ def pivot_camarilla(high: Array, low: Array, close: Array):
     return tp, s1, s2, s3, s4, r1, r2, r3, r4
 
 
-@njit(cache=True)
-def pivot_classic(high: Array, low: Array, close: Array):
-    """Classic Pivot Points - requires high, low, close"""
+@njit
+def pivot_classic(high, low, close):
     tp = (high + low + close) / 3
     hl_range = np_non_zero_range(high, low)
 
@@ -44,10 +42,8 @@ def pivot_classic(high: Array, low: Array, close: Array):
     return tp, s1, s2, s3, s4, r1, r2, r3, r4
 
 
-
-@njit(cache=True)
-def pivot_demark(open_: Array, high: Array, low: Array, close: Array):
-    """DeMark Pivot Points - requires open, high, low, close"""
+@njit
+def pivot_demark(open_, high, low, close):
     if (open_ == close).all():
         tp = 0.25 * (high + low + 2 * close)
     elif greater(close, open_).all():
@@ -61,9 +57,8 @@ def pivot_demark(open_: Array, high: Array, low: Array, close: Array):
     return tp, s1, r1
 
 
-@njit(cache=True)
-def pivot_fibonacci(high: Array, low: Array, close: Array):
-    """Fibonacci Pivot Points - requires high, low, close"""
+@njit
+def pivot_fibonacci(high, low, close):
     tp = (high + low + close) / 3
     hl_range = np_non_zero_range(high, low)
 
@@ -78,9 +73,8 @@ def pivot_fibonacci(high: Array, low: Array, close: Array):
     return tp, s1, s2, s3, r1, r2, r3
 
 
-@njit(cache=True)
-def pivot_traditional(high: Array, low: Array, close: Array):
-    """Traditional Pivot Points - requires high, low, close"""
+@njit
+def pivot_traditional(high, low, close):
     tp = (high + low + close) / 3
     hl_range = np_non_zero_range(high, low)
 
@@ -97,9 +91,8 @@ def pivot_traditional(high: Array, low: Array, close: Array):
     return tp, s1, s2, s3, s4, r1, r2, r3, r4
 
 
-@njit(cache=True)
-def pivot_woodie(open_: Array, high: Array, low: Array):
-    """Woodie Pivot Points - requires open, high, low"""
+@njit
+def pivot_woodie(open_, high, low):
     tp = (2 * open_ + high + low) / 4
     hl_range = np_non_zero_range(high, low)
 

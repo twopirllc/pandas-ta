@@ -31,15 +31,12 @@ def cmo(
     Args:
         close (pd.Series): Series of 'close's
         scalar (float): How much to magnify. Default: 100
-        talib (bool): If TA Lib is installed and talib is True, Returns
-            the TA Lib version. If TA Lib is not installed but talib is True,
-            it runs the Python version TA Lib. Default: True
+        talib (bool): If True, uses TA-Libs implementation. Otherwise uses
+            EMA version. Default: True
         drift (int): The short period. Default: 1
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        talib (bool): If True, uses TA-Libs implementation. Otherwise uses
-            EMA version. Default: True
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 

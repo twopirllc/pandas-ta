@@ -16,9 +16,9 @@ from pandas_ta.utils import (
 )
 
 
-@njit(cache=True)
-def np_alpha(low_atr: Array, high_atr: Array, momo_threshold: Array):
-    """Alphatrend alpha threshold calculation"""
+# Alphatrend alpha threshold calculation
+@njit
+def np_alpha(low_atr, high_atr, momo_threshold):
     m = momo_threshold.size
     alpha = zeros(m)
 

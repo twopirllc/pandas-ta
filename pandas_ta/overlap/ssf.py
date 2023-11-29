@@ -6,11 +6,10 @@ from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
-@njit(cache=True)
-def np_ssf(x: Array, n: Int, pi: IntFloat, sqrt2: IntFloat):
-    """Ehler's Super Smoother Filter
-    http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
-    """
+# Ehler's Super Smoother Filter
+# http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
+@njit
+def np_ssf(x, n, pi, sqrt2):
     m, ratio, result = x.size, sqrt2 / n, copy(x)
     a = exp(-pi * ratio)
     b = 2 * a * cos(180 * ratio)
@@ -23,11 +22,10 @@ def np_ssf(x: Array, n: Int, pi: IntFloat, sqrt2: IntFloat):
     return result
 
 
-@njit(cache=True)
-def np_ssf_everget(x: Array, n: Int, pi: IntFloat, sqrt2: IntFloat):
-    """John F. Ehler's Super Smoother Filter by Everget (2 poles), Tradingview
-    https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
-    """
+# John F. Ehler's Super Smoother Filter by Everget (2 poles), Tradingview
+# https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
+@njit
+def np_ssf_everget(x, n, pi, sqrt2):
     m, arg, result = x.size, pi * sqrt2 / n, copy(x)
     a = exp(-arg)
     b = 2 * a * cos(arg)

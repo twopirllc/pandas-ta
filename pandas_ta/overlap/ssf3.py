@@ -6,10 +6,10 @@ from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
-@njit(cache=True)
-def np_ssf3(x: Array, n: Int, pi: IntFloat, sqrt3: IntFloat):
-    """John F. Ehler's Super Smoother Filter by Everget (3 poles), Tradingview
-    https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/"""
+# John F. Ehler's Super Smoother Filter by Everget (3 poles), Tradingview
+# https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
+@njit
+def np_ssf3(x, n, pi, sqrt3):
     m, result = x.size, copy(x)
     a = exp(-pi / n)
     b = 2 * a * cos(-pi * sqrt3 / n)

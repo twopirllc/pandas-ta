@@ -6,11 +6,8 @@ from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
-@njit(cache=True)
-def np_reflex(
-    x: Array, n: Int, k: Int,
-    alpha: IntFloat, pi: IntFloat, sqrt2: IntFloat
-):
+@njit
+def np_reflex(x, n, k, alpha, pi, sqrt2):
     m, ratio = x.size, 2 * sqrt2 / k
     a = exp(-pi * ratio)
     b = 2 * a * cos(180 * ratio)

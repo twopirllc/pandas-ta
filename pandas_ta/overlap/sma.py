@@ -13,9 +13,9 @@ from pandas_ta.utils import (
 )
 
 
-@njit(cache=True)
-def np_sma(x: Array, n: Int):
-    """https://github.com/numba/numba/issues/4119"""
+# Fast SMA Options: https://github.com/numba/numba/issues/4119
+@njit
+def np_sma(x, n):
     result = convolve(ones(n) / n, x)[n - 1:1 - n]
     return np_prepend(result, n - 1)
 

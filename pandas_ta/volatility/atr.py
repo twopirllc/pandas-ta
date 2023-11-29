@@ -78,6 +78,7 @@ def atr(
         )
         if all(isnan(tr)):
             return  # Emergency Break
+
         presma = kwargs.pop("presma", True)
         if presma:
             sma_nth = tr[0:length].mean()

@@ -2,12 +2,20 @@
 from numpy import nan
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series
+from pandas_ta.maps import Imports
+from pandas_ta.utils import (
+    v_drift,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 def vidya(
-    close: Series, length: Int = None, drift: Int = None,
-    offset: Int = None, **kwargs: DictLike
+    close: Series, length: Int = None,
+    drift: Int = None, offset: Int = None,
+    talib: bool = None, **kwargs: DictLike
 ) -> Series:
     """Variable Index Dynamic Average (VIDYA)
 
@@ -27,12 +35,6 @@ def vidya(
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        adjust (bool, optional): Use adjust option for EMA calculation.
-            Default: False
-        sma (bool, optional): If True, uses SMA for initial value for EMA
-            calculation. Default: True
-        talib (bool): If True, uses TA-Libs implementation for CMO.
-            Otherwise uses EMA version. Default: True
         fillna (value, optional): pd.DataFrame.fillna(value)
         fill_method (value, optional): Type of fill method
 
@@ -46,13 +48,21 @@ def vidya(
     if close is None:
         return
 
+    mode_tal = v_talib(talib)
     drift = v_drift(drift)
     offset = v_offset(offset)
 
     # Calculate
     m = close.size
     alpha = 2 / (length + 1)
-    abs_cmo = _cmo(close, length, drift).abs()
+
+    if Imports["talib"] and mode_tal:
+        from talib import CMO
+        cmo_ = CMO(close, length)
+    else:
+        cmo_ = _cmo(close, length, drift)
+    abs_cmo = cmo_.abs()
+
     vidya = Series(0, index=close.index)
     for i in range(length, m):
         vidya.iat[i] = alpha * abs_cmo.iat[i] * close.iat[i] + \

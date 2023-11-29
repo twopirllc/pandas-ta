@@ -65,8 +65,8 @@ def non_zero_range(high: Series, low: Series) -> Series:
     return diff
 
 
-@njit(cache=True)
-def np_non_zero_range(x: Array, y: Array):
+@njit
+def np_non_zero_range(x, y):
     diff = x - y
     if diff.any() == 0:
         diff += finfo(float64).eps

@@ -6,9 +6,8 @@ from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.utils import v_offset, v_series
 
 
-@njit(cache=True)
-def np_ha(np_open: Array, np_high: Array, np_low: Array, np_close: Array):
-    """Heiken-Ashi - numpy/numba version"""
+@njit
+def np_ha(np_open, np_high, np_low, np_close):
     ha_close = 0.25 * (np_open + np_high + np_low + np_close)
     ha_open = empty_like(ha_close)
     ha_open[0] = 0.5 * (np_open[0] + np_close[0])

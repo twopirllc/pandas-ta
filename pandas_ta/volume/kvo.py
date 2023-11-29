@@ -65,11 +65,13 @@ def kvo(
     offset = v_offset(offset)
 
     # Calculate
-    signed_volume = volume * signed_series(hlc3(high, low, close), 1)
+    signed_volume = volume * signed_series(hlc3(high, low, close), -1)
     sv = signed_volume.loc[signed_volume.first_valid_index():, ]
+
     kvo = ma(mamode, sv, length=fast) - ma(mamode, sv, length=slow)
     if kvo is None or all(isnan(kvo.values)):
         return  # Emergency Break
+
     kvo_signal = ma(mamode, kvo.loc[kvo.first_valid_index():, ], length=signal)
     if kvo_signal is None or all(isnan(kvo_signal.values)):
         return  # Emergency Break

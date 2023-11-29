@@ -12,24 +12,24 @@ __all__ = [
 ]
 
 
-@njit(cache=True)
-def np_prenan(x: Array, n: Int, value: IntFloat = nan) -> Array:
-    """Prepend n values, typically np.nan, to array x."""
+# Prepend n values, typically np.nan, to array x.
+@njit
+def np_prenan(x, n, value = nan):
     if n > 0:
         x[:n - 1] = value
         return x
     return x
 
 
-@njit(cache=True)
-def np_prepend(x: Array, n: Int, value: IntFloat = nan) -> Array:
-    """Prepend n values, typically np.nan, to array x."""
+# Prepend n values, typically np.nan, to array x.
+@njit
+def np_prepend(x, n, value = nan):
     return append(array([value] * n), x)
 
 
-@njit(cache=True)
-def np_rolling(x: Array, n: Int, fn = None) -> Array:
-    """Like Pandas Rolling Window. x.rolling(n).fn()"""
+# Like Pandas Rolling Window. x.rolling(n).fn()
+@njit
+def np_rolling(x, n, fn = None):
     if fn is None:
         return x
     m = x.size
@@ -44,12 +44,11 @@ def np_rolling(x: Array, n: Int, fn = None) -> Array:
     return result
 
 
-@njit(cache=True)
-def np_shift(x: Array, n: Int, value: IntFloat = nan) -> Array:
-    """np shift
-    shift5 - preallocate empty array and assign slice by chrisaycock
-    https://stackoverflow.com/questions/30399534/shift-elements-in-a-numpy-array
-    """
+# np shift
+# shift5 - preallocate empty array and assign slice by chrisaycock
+# https://stackoverflow.com/questions/30399534/shift-elements-in-a-numpy-array
+@njit
+def np_shift(x, n, value = nan):
     result = empty_like(x)
     if n > 0:
         result[:n] = value

@@ -197,7 +197,7 @@ $ pip install pandas_ta[full]
 
 Development Version
 -------------------
-The _development_ version, _0.4.5b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
+The _development_ version, _0.4.6b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 ```
@@ -1011,7 +1011,7 @@ Back to [Contents](#contents)
 ### **Trend** (21)
 
 * _Average Directional Movement Index_: **adx**
-    * Also includes **dmp** and **dmn** in the resultant DataFrame.
+    * Also includes **adxr**, **dmp** and **dmn** in the resultant DataFrame.
 * _Alpha Trend_: **alphatrend**
 * _Archer Moving Averages Trends_: **amat**
 * _Aroon & Aroon Oscillator_: **aroon**

@@ -6,9 +6,8 @@ from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_bool, v_offset, v_offset, v_scalar, v_series
 
 
-@njit(cache=True)
-def np_cdl_inside(high: Array, low: Array):
-    """Inside Bar"""
+@njit
+def np_cdl_inside(high, low):
     hdiff = where(high - roll(high, 1) < 0, 1, 0)
     ldiff = where(low - roll(low, 1) > 0, 1, 0)
     return hdiff & ldiff
