@@ -136,6 +136,12 @@ def test_cti(df):
     assert result.name == "CTI_12"
 
 
+def test_crsi(df):
+    result = ta.crsi(df.close)
+    assert isinstance(result, Series)
+    assert result.name == "CRSI_3_2_100"
+
+
 def test_er(df):
     result = ta.er(df.close)
     assert isinstance(result, Series)
@@ -637,9 +643,19 @@ def test_ext_coppock(df):
     assert df.columns[-1] == "COPC_11_14_10"
 
 
+def test_ext_crsi(df):
+    df.ta.crsi(append=True)
+    assert df.columns[-1] == "CRSI_3_2_100"
+
+
 def test_ext_cti(df):
     df.ta.cti(append=True)
     assert df.columns[-1] == "CTI_12"
+
+
+def test_ext_crsi(df):
+    df.ta.crsi(append=True)
+    assert df.columns[-1] == "CRSI_3_2_100"
 
 
 def test_ext_er(df):

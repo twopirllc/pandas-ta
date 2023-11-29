@@ -31,7 +31,7 @@ def test_common_study_props(common_study):
 
 
 @pytest.mark.parametrize("category,columns", [
-    ("candles", 70), ("cycles", 2), ("momentum", 77), ("overlap", 56),
+    ("candles", 70), ("cycles", 2), ("momentum", 78), ("overlap", 56),
     ("performance", 2), ("statistics", 16), ("transform", 5), ("trend", 30),
     ("volatility", 36), ("volume", 28),
     pytest.param(ta.AllStudy, ALL_COLUMNS, id=f"all-{ALL_COLUMNS}"),

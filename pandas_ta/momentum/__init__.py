@@ -9,6 +9,7 @@ from .cfo import cfo
 from .cg import cg
 from .cmo import cmo
 from .coppock import coppock
+from .crsi import crsi
 from .cti import cti
 from .dm import dm
 from .er import er
@@ -53,6 +54,7 @@ __all__ = [
     "cg",
     "cmo",
     "coppock",
+    "crsi",
     "cti",
     "dm",
     "er",

@@ -856,6 +856,7 @@ Back to [Contents](#contents)
 * _Center of Gravity_: **cg**
 * _Chande Momentum Oscillator_: **cmo**
 * _Coppock Curve_: **coppock**
+* _Connors Relative Strenght Index_: **crsi**
 * _Correlation Trend Indicator_: **cti**
     * A wrapper for ```ta.linreg(series, r=True)```
 * _Directional Movement_: **dm**

@@ -49,7 +49,7 @@ Category: Dict[str, ListStr] = {
     # Momentum
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
-        "coppock", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst",
+        "coppock", "crsi", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst",
         "macd", "mom", "pgo", "ppo", "psl", "qqe", "roc", "rsi", "rsx",
         "rvgi", "slope", "smi", "squeeze", "squeeze_pro", "stc", "stoch",
         "stochf", "stochrsi", "td_seq", "tmo", "trix", "tsi", "uo", "willr"
