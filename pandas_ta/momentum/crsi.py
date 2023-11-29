@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from pandas import Series
-
 from pandas_ta._typing import Array1d, DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.momentum.rsi import rsi
@@ -15,7 +14,7 @@ from pandas_ta.utils import (
 )
 
 
-def consecutive_streak(prices: Array1d) -> Array1d:
+def consecutive_streak(x: Array1d) -> Array1d:
     """Calculate the streak of consecutive price increases or decreases.
 
     This function computes the streak of consecutive daily price increases
@@ -42,12 +41,12 @@ def consecutive_streak(prices: Array1d) -> Array1d:
     >>> np.array_equal(result, expected_result)
     True
     """
-    diff = np.diff(prices)
+    diff = np.diff(x)
     streaks = np.sign(diff)
     return np.concatenate(([0], streaks))
 
 
-def percent_rank(close: Series, lookback: Int) -> Series:
+def percent_rank(x: Series, lookback: Int) -> Series:
     """Calculate the Percent Rank of daily returns over given period.
 
     The Percent Rank compares today's return with the one-day returns from each
@@ -77,7 +76,7 @@ def percent_rank(close: Series, lookback: Int) -> Series:
     >>> np.allclose(result, expected_result, rtol=1e-6, equal_nan=True)
     True
     """
-    daily_returns_np = close.pct_change().to_numpy()
+    daily_returns_np = x.pct_change().to_numpy()
 
     rolling_windows = np.lib.stride_tricks.sliding_window_view(
         daily_returns_np, window_shape=(lookback + 1,)
@@ -85,10 +84,10 @@ def percent_rank(close: Series, lookback: Int) -> Series:
     comparison_matrix = rolling_windows[:, :-1] < rolling_windows[:, -1, np.newaxis]
 
     percent_ranks = np.nanmean(comparison_matrix, axis=1) * 100
-    padded_percent_ranks = np.full(len(close), np.nan)
+    padded_percent_ranks = np.full(len(x), np.nan)
     padded_percent_ranks[lookback:] = percent_ranks
 
-    return Series(padded_percent_ranks, index=close.index)
+    return Series(padded_percent_ranks, index=x.index)
 
 
 def crsi(
@@ -112,9 +111,9 @@ def crsi(
 
     Args:
         close (pd.Series): Series of 'close's
-        length_rsi (int): It's period. Default: 3
-        length_streak (int): It's period. Default: 2
-        length_rank (int): It's period. Default: 100
+        length_rsi (int): The RSI period. Default: 3
+        length_streak (int): The Streak RSI period. Default: 2
+        length_rank (int): Percent Rank length. Default: 100
         scalar (float): How much to magnify. Default: 100
         talib (bool): Use TAlib for RSI if available. Default: True
         drift (int): The difference period. Default: 1
@@ -145,8 +144,9 @@ def crsi(
     drift = v_drift(drift)
     offset = v_offset(offset)
 
-    # Initial streaks calculation
-    streak = Series(consecutive_streak(close.to_numpy()), index=close.index)
+    # Calculate
+    np_close = close.values
+    streak = Series(consecutive_streak(np_close), index=close.index)
 
     if Imports["talib"] and mode_tal:
         from talib import RSI
@@ -165,9 +165,8 @@ def crsi(
             drift=drift, offset=offset, **kwargs
         )
 
-    # Percent rank and final arithmetic mean
-    percent_rank = percent_rank(close, length_rank)
-    crsi = (close_rsi + streak_rsi + percent_rank) / 3.0
+    pr = percent_rank(close, length_rank)
+    crsi = (close_rsi + streak_rsi + pr) / 3.0
 
     # Offset
     if offset != 0:

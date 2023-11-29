@@ -56,7 +56,7 @@ _Pandas Technical Analysis_ (**Pandas TA**) is a free, Open Source, and easy to 
 * [Indicators by Category](#indicators-by-category)
     * [Candles](#candles-64)
     * [Cycles](#cycles-2)
-    * [Momentum](#momentum-42)
+    * [Momentum](#momentum-43)
     * [Overlap](#overlap-36)
     * [Performance](#performance-3)
     * [Statistics](#statistics-11)
@@ -845,7 +845,7 @@ Back to [Contents](#contents)
 
 <br/>
 
-### **Momentum** (42)
+### **Momentum** (43)
 * _Awesome Oscillator_: **ao**
 * _Absolute Price Oscillator_: **apo**
 * _Bias_: **bias**
