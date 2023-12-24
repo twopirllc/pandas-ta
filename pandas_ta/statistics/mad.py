@@ -5,6 +5,11 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+def mad_(series: Series):
+    """Mean Absolute Deviation"""
+    return fabs(series - series.mean()).mean()
+
+
 def mad(
     close: Series, length: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -39,10 +44,6 @@ def mad(
     offset = v_offset(offset)
 
     # Calculate
-    def mad_(series):
-        """Mean Absolute Deviation"""
-        return fabs(series - series.mean()).mean()
-
     mad = close.rolling(length, min_periods=min_periods).apply(mad_, raw=True)
 
     # Offset

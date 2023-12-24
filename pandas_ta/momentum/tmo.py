@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
-
-import numpy as np
+from numpy import broadcast_to, isnan, nan, nansum, newaxis, pad, sign, zeros
+from numpy.lib.stride_tricks import sliding_window_view
 from pandas import DataFrame, Series
 
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import v_bool, v_mamode, v_offset, v_pos_default, v_series
+from pandas_ta.utils import (
+    v_bool,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
 
 
 def sum_signed_rolling_deltas(
-    close: Series, open_: Series, length: Int, exclusive: bool = True
+    open_: Series, close: Series, length: Int, exclusive: bool = True
 ) -> Series:
     """Sum of signed rolling price deltas
 
@@ -46,39 +52,29 @@ def sum_signed_rolling_deltas(
     >>> np.allclose(result, expected_result, rtol=1e-6, equal_nan=True)
     True
     """
-
     if not exclusive:
         length -= 1
 
-    rolling_open = np.lib.stride_tricks.sliding_window_view(
-        open_, window_shape=length)[:-1]
+    rolling_open = sliding_window_view(open_, window_shape=length)[:-1]
 
-    close_broadcasted = np.broadcast_to(
-        close[length:].to_numpy()[:, np.newaxis], rolling_open.shape
+    close_broadcasted = broadcast_to(
+        close[length:].to_numpy()[:, newaxis], rolling_open.shape
     )
 
-    signed_deltas = np.sign(close_broadcasted - rolling_open)
-    sum_signed_deltas = np.nansum(signed_deltas, axis=1).astype(float)
+    signed_deltas = sign(close_broadcasted - rolling_open)
+    sum_signed_deltas = nansum(signed_deltas, axis=1).astype(float)
 
     return Series(
-        np.pad(sum_signed_deltas, (length, 0),
-               mode="constant", constant_values=np.nan),
+        pad(sum_signed_deltas, (length, 0), mode="constant", constant_values=nan),
         index=close.index,
     )
 
 
 def tmo(
-    open_: Series,
-    close: Series,
-    tmo_length: Int = None,
-    calc_length: Int = None,
-    smooth_length: Int = None,
-    mamode: str = None,
-    compute_momentum: bool = False,
-    normalize_signal: bool = False,
-    exclusive_window: bool = True,
-    offset: Int = None,
-    **kwargs: DictLike,
+    open_: Series, close: Series,
+    tmo_length: Int = None, calc_length: Int = None, smooth_length: Int = None,
+    momentum: bool = False, normalize: bool = False, exclusive: bool = True,
+    mamode: str = None, offset: Int = None, **kwargs: DictLike,
 ) -> DataFrame:
     """True Momentum Oscillator (TMO)
 
@@ -108,11 +104,11 @@ def tmo(
         calc_length (Int): Initial moving average window. Default: 5
         smooth_length (Int): Main and smooth signal MA window. Default: 3
         mamode (str): See ``help(ta.ma)``. Default: 'ema'
-        compute_momentum (bool): Compute main and smooth momentum.
+        momentum (bool): Compute main and smooth momentum.
             Default: False
-        normalize_signal (bool): Normalize TMO values to [-100,100].
+        normalize (bool): Normalize TMO values to [-100,100].
             Default: False
-        exclusive_window (bool): Exclusive or inclusive rolling window, where
+        exclusive (bool): Exclusive or inclusive rolling window, where
             the lookback is made over n days, or n-1, if we consider the rolling
             window period should include the current date.
         offset (Int): How many periods to offset the result. Default: 0
@@ -125,14 +121,13 @@ def tmo(
         DataFrame: main, smooth, main momentum, smooth momentum
 
     """
-
     # Validate
     tmo_length = v_pos_default(tmo_length, 14)
     calc_length = v_pos_default(calc_length, 5)
     smooth_length = v_pos_default(smooth_length, 3)
     mamode = v_mamode(mamode, "ema")
-    compute_momentum = v_bool(compute_momentum, False)
-    normalize_signal = v_bool(normalize_signal, False)
+    compute_momentum = v_bool(momentum, False)
+    normalize_signal = v_bool(normalize, False)
 
     _length = max(tmo_length, calc_length, smooth_length)
     open_ = v_series(open_, _length)
@@ -146,26 +141,28 @@ def tmo(
         return None
 
     signed_diff_sum = sum_signed_rolling_deltas(
-        close, open_, tmo_length, exclusive=exclusive_window
+        open_, close, tmo_length, exclusive=exclusive
     )
+    if all(isnan(signed_diff_sum)):
+        return None  # Emergency Break
 
     initial_ma = ma(mamode, signed_diff_sum, length=calc_length)
-    if all(np.isnan(initial_ma)):
+    if all(isnan(initial_ma)):
         return None  # Emergency Break
 
     main = ma(mamode, initial_ma, length=smooth_length)
-    if all(np.isnan(main)):
+    if all(isnan(main)):
         return None  # Emergency Break
 
     smooth = ma(mamode, main, length=smooth_length)
-    if all(np.isnan(smooth)):
+    if all(isnan(smooth)):
         return None  # Emergency Break
 
     if compute_momentum:
         mom_main = main - main.shift(tmo_length)
         mom_smooth = smooth - smooth.shift(tmo_length)
     else:
-        zero_array = np.zeros(main.size)
+        zero_array = zeros(main.size)
         mom_main = Series(zero_array, index=main.index)
         mom_smooth = Series(zero_array, index=smooth.index)
 
@@ -191,7 +188,6 @@ def tmo(
 
     # Name and Category
     _props = f"_{tmo_length}_{calc_length}_{smooth_length}"
-
     main.name = f"TMO{_props}"
     smooth.name = f"TMOs{_props}"
     mom_main.name = f"TMOM{_props}"

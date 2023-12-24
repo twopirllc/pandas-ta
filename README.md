@@ -153,6 +153,12 @@ We represent millions of investors who want to leverage state-of-the-art data sc
 
 <br/>
 
+[QUANTCONNECT](https://www.quantconnect.com/)
+-------------------
+> QUANTCONNECT powers your quantitative research with a cutting-edge, unified API for research, backtesting, and live trading on the world's leading algorithmic trading platform.
+
+<br/>
+
 [Tune TA](https://github.com/jmrichardson/tuneta)
 -------------------
 > TuneTA optimizes technical indicators using a distance correlation measure to a user defined target feature such as next day return. Indicator parameter(s) are selected using clustering techniques to avoid "peak" or "lucky" values. The set of tuned indicators can be ...
@@ -197,7 +203,7 @@ $ pip install pandas_ta[full]
 
 Development Version
 -------------------
-The _development_ version, _0.4.8b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
+The _development_ version, _0.4.9b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 ```

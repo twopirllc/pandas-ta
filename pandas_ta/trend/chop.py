@@ -8,7 +8,7 @@ from pandas_ta.utils import (
     v_offset,
     v_pos_default,
     v_scalar,
-    v_series,
+    v_series
 )
 from pandas_ta.volatility import atr
 

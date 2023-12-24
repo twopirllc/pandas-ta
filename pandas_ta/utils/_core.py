@@ -192,7 +192,7 @@ def speed_test(df: DataFrame,
         top: Int = None, talib: bool = False,
         ascending: bool = False, sortby: str = "secs",
         gradient: bool = False, places: Int = 5, stats: bool = False,
-        verbose: bool = False
+        verbose: bool = False, silent: bool = False
     ) -> DataFrame:
     """Speed Test
 
@@ -212,7 +212,8 @@ def speed_test(df: DataFrame,
         places (Int): Decimal places. Default: 5
         stats (bool): Returns a Tuple of two DataFrames. The second tuple
             contains Stats on the performance time. Default: False
-        verbose (bool): Default: False
+        verbose (bool): Display more info. Default: False
+        silent (bool): Display nothing. Default: False
 
     Returns:
         pd.DataFrame: if stats is False
@@ -226,6 +227,7 @@ def speed_test(df: DataFrame,
     top = int(top) if isinstance(top, int) and top > 0 else None
     stats = v_bool(stats, False)
     verbose = v_bool(verbose, False)
+    silent = v_bool(silent, False)
 
     _ichimoku = ["ichimoku"]
     if excluded is None and isinstance(only, list) and len(only) > 0:
@@ -264,7 +266,9 @@ def speed_test(df: DataFrame,
     if top:
         _title = f"  {_quick_slow} {top} Indicators [{tdf.shape[0]}]"
         tdf = tdf.head(top)
-    print(f"\n{_div}\n{_title}\n{_observations}\n{_div}\n{tdf}\n\n{_div}\n{_perfstats}\n\n{_div}\n")
+
+    if not silent:
+        print(f"\n{_div}\n{_title}\n{_observations}\n{_div}\n{tdf}\n\n{_div}\n{_perfstats}\n\n{_div}\n")
 
     if isinstance(gradient, bool) and gradient:
         return tdf.style.background_gradient("autumn_r"), total_timedf

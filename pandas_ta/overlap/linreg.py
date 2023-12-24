@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from sys import float_info as sflt
 from numpy import arctan, nan, pi, zeros_like
 from numpy.version import version as np_version
 from pandas import Series
@@ -9,8 +10,10 @@ from pandas_ta.utils import (
     v_offset,
     v_pos_default,
     v_series,
-    v_talib
+    v_talib,
+    zero
 )
+
 
 def linreg(
     close: Series, length: Int = None, talib: bool = None,
@@ -111,6 +114,8 @@ def linreg(
                 y2_sum = (series * series).sum()
                 rn = length * xy_sum - x_sum * y_sum
                 rd = (divisor * (length * y2_sum - y_sum * y_sum)) ** 0.5
+                if zero(rd) == 0:
+                    rd = sflt.epsilon
                 return rn / rd
 
             return m * length + b if not tsf else m * (length - 1) + b
