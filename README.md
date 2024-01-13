@@ -108,7 +108,7 @@ Stable
 ------
 The ```pip``` version is the last stable release. Version: *0.3.14b*
 ```sh
-$ pip install pandas_ta
+$ pip install pandas-ta
 ```
 
 Latest Version
