@@ -1,8 +1,85 @@
 # -*- coding: utf-8 -*-
-from numpy import nan
+from numpy import nan, zeros_like, arctan
+from numba import njit
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series, zero
+
+
+@njit
+def np_ht_trendline(x):
+    # Variables used for the Hilbert Transformation
+    a, b = 0.0962, 0.5769
+
+    m = x.size
+    smooth_price = zeros_like(m)
+    de_trender = zeros_like(m)
+    q1 = zeros_like(m)
+    i1 = zeros_like(m)
+    i2 = zeros_like(m)
+    q2 = zeros_like(m)
+    _re = zeros_like(m)
+    _im = zeros_like(m)
+    i_trend = zeros_like(m)
+
+    period, _prev_i2, _prev_q2, _re, _im, smooth_period = 0, 0, 0, 0, 0, 0
+
+    for i in range(x.size):
+        if i > 50:
+            smooth_price[i] = (4 * x[i] + 3 * x[i - 1] + 2 * x[i - 2] + x[i - 3]) / 10
+        else:
+            smooth_price[i] = 0
+
+    for i in range(x.size):
+        adjusted_prev_period = 0.075 * period + 0.54
+
+        de_trender = (a * smooth_price[i] + b * smooth_price[i - 2] -
+                      b * smooth_price[i - 4] - a * smooth_price[i - 6]) * adjusted_prev_period
+
+        q1[i] = (a * de_trender[i] + b * de_trender[i-2] -
+                 b * de_trender[i-4] - a * de_trender[i-6]) * adjusted_prev_period
+        i1[i] = de_trender[i-3]
+        ji = (a * i1[i] + b * i1[i-2] - b * i1[i-4] - a * i1[i-6]) * adjusted_prev_period
+        jq = (a * q1[i] + b * q1[i-2] - b * q1[i-4] - a * q1[i-6]) * adjusted_prev_period
+
+        i2[i] = i1[i] - jq
+        q2[i] = q1[i] + ji
+
+        i2 = 0.2 * i2[i] + 0.8 * i2[i-1]
+        q2 = 0.2 * q2[i] + 0.8 * q2[i-1]
+
+        _re[i] = i2[i] * i2[i-1] + q2[i] * q2[i-1]
+        _im[i] = i2[i] * q2[i-1] - q2[i] * i2[i-1]
+
+        _re[i] = 0.2 * _re[i] + 0.8 * _re[i-1]
+        _im[i] = 0.2 * _im[i] + 0.8 * _im[i-1]
+
+        new_period = 0
+        if _re[i] and _im[i]:
+            new_period = 360 / arctan(_re[i]/_im[i])
+        if new_period > 1.5 * period:
+            new_period = 1.5 * period
+        if new_period < 0.67 * period:
+            new_period = 0.67 * period
+        if new_period < 6:
+            new_period = 6
+        if new_period > 50:
+            new_period = 50
+        period = 0.2 * new_period + 0.8 * period
+        smooth_period = 0.33 * period + 0.67 * smooth_period
+
+        dc_period = int(smooth_period + 0.5)
+        temp_real = 0
+        for k in range(dc_period):
+            temp_real += x[i-k]
+
+        if dc_period > 0:
+            temp_real /= dc_period
+
+        i_trend[i] = temp_real
+        trend_line = (4 * i_trend[i] + 3 * i_trend[i-1] + 2 * i_trend[i-2] + i_trend[i-3]) / 10.0
+
+    return trend_line
 
 
 def ht_trendline(
@@ -39,12 +116,9 @@ def ht_trendline(
         from talib import HT_TRENDLINE
         trend_line = HT_TRENDLINE(close)
     else:
-        # Variables used for the Hilbert Transformation
-        a = 0.0962
-        b = 0.5769
-
-        # calculate ht_trendline
-        trend_line = None
+        # calculate ht_trendline using numba
+        np_close = close.values
+        trend_line = np_ht_trendline(np_close)
 
     offset = v_offset(offset)
 
