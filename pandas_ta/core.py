@@ -1512,6 +1512,11 @@ class AnalysisIndicators(object):
         result = dpo(close=close, length=length, centered=centered, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def ht_trendline(self, offset=None, **kwargs: DictLike):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = ht_trendline(close=close, offset=offset)
+        return self._post_process(result, **kwargs)
+
     def increasing(self, length=None, strict=None, asint=None, offset=None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = increasing(close=close, length=length, strict=strict, asint=asint, offset=offset, **kwargs)
