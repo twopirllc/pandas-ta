@@ -76,7 +76,7 @@ Category: Dict[str, ListStr] = {
         "adx", "alphatrend", "amat", "aroon", "chop", "cksp", "decay",
         "decreasing", "dpo", "increasing", "long_run", "psar", "qstick",
         "rwi", "short_run", "trendflex", "tsignals", "ttm_trend", "vhf",
-        "vortex", "xsignals"
+        "vortex", "xsignals", "zigzag"
     ],
     # Volatility
     "volatility": [
