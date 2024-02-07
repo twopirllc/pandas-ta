@@ -20,7 +20,7 @@ def np_rolling_hl(highs, lows, window_size):
     rollings_types = zeros(candles_len)
     rollings_values = zeros(candles_len)
 
-    left_side, right_side = int(floor(window_size / 2)) + 1, int(floor(window_size / 2)) + 1
+    left_side, right_side = int(floor(window_size / 2)), int(floor(window_size / 2)) + 1
     for i in range(left_side, candles_len - right_side):  # sample_array = [*[left-window], *[center], *[right-window]]
         lows_center = lows[i]
         highs_center = highs[i]
@@ -181,14 +181,21 @@ def zigzag(
                                                                                   deviation=price_deviation)
     _types, _values, _dev = map_zigzag(_zigzags_idx, _zigzags_types, _zigzags_values, _zigzags_dev, len(high))
 
-    # Fix and fill working code
-
     # Offset
-    # if offset != 0:
+    if offset != 0:
+        _types = _types.shift(offset)
+        _values = _values.shift(offset)
+        _dev = _dev.shift(offset)
 
     # Fill
-    # if "fillna" in kwargs:
-    # if "fill_method" in kwargs:
+    if "fillna" in kwargs:
+        _types.fillna(kwargs["fillna"], inplace=True)
+        _values.fillna(kwargs["fillna"], inplace=True)
+        _dev.fillna(kwargs["fillna"], inplace=True)
+    if "fill_method" in kwargs:
+        _types.fillna(method=kwargs["fill_method"], inplace=True)
+        _values.fillna(method=kwargs["fill_method"], inplace=True)
+        _dev.fillna(method=kwargs["fill_method"], inplace=True)
 
     _params = f"_{price_deviation}%_{pivot_leg}"
     data = {
