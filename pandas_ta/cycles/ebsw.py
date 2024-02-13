@@ -77,7 +77,7 @@ def ebsw(
             # HighPass filter cyclic components whose periods are shorter than
             # Duration input
             alpha1 = (1 - sin(360 / length)) / cos(360 / length)
-            hp = 0.5 * (1 + alpha1) * (close[i] - lastClose) + alpha1 * lastHP
+            hp = 0.5 * (1 + alpha1) * (close.iloc[i] - lastClose) + alpha1 * lastHP
 
             # Smooth with a Super Smoother Filter from equation 3-3
             a1 = exp(-sqrt(2) * pi / bars)
@@ -102,7 +102,7 @@ def ebsw(
             # remove first element of list (left) -> updating/trim
             filtHist.pop(0)
             lastHP = hp
-            lastClose = close[i]
+            lastClose = close.iloc[i]
             result.append(wave)
 
     else:  # this version is the default version
@@ -120,7 +120,7 @@ def ebsw(
         c1 = 1 - c2 - c3
 
         for i in range(length, m):
-            hp = 0.5 * (1 + alpha1) * (close[i] - lastClose) + alpha1 * lastHP
+            hp = 0.5 * (1 + alpha1) * (close.iloc[i] - lastClose) + alpha1 * lastHP
 
             # Rotate filters to overwrite oldest value
             filtHist = roll(filtHist, -1)
@@ -134,7 +134,7 @@ def ebsw(
 
             # Update past values
             lastHP = hp
-            lastClose = close[i]
+            lastClose = close.iloc[i]
             result.append(wave)
 
     ebsw = Series(result, index=close.index)

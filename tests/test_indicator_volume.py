@@ -175,6 +175,10 @@ def test_vp(df):
     assert isinstance(result, DataFrame)
     assert result.name == "VP_10"
 
+    result = ta.vp(df.close, df.volume, sort=True)
+    assert isinstance(result, DataFrame)
+    assert result.name == "VP_10"
+
 
 @mark.parametrize("bands,dtype", [
     (None, Series), ([1], DataFrame), ([-1, 1], DataFrame),

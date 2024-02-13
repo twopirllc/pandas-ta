@@ -61,12 +61,12 @@ def vidya(
         cmo_ = CMO(close, length)
     else:
         cmo_ = _cmo(close, length, drift)
-    abs_cmo = cmo_.abs()
+    abs_cmo = cmo_.abs().astype(float)
 
-    vidya = Series(0, index=close.index)
+    vidya = Series(0.0, index=close.index)
     for i in range(length, m):
-        vidya.iat[i] = alpha * abs_cmo.iat[i] * close.iat[i] + \
-            vidya.iat[i - 1] * (1 - alpha * abs_cmo.iat[i])
+        vidya.iloc[i] = alpha * abs_cmo.iloc[i] * close.iloc[i] + \
+            vidya.iloc[i - 1] * (1 - alpha * abs_cmo.iloc[i])
     vidya.replace({0: nan}, inplace=True)
 
     # Offset

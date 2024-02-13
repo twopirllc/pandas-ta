@@ -259,7 +259,11 @@ def test_mama(df):
 
     try:
         expected = tal.MAMA(df.close)
-        pdt.assert_series_equal(result, expected, check_names=False)
+        expecteddf = DataFrame({
+            "MAMA_0.5_0.05": expected[0],
+            "FAMA_0.5_0.05": expected[1]
+        })
+        pdt.assert_frame_equal(result, expecteddf)
     except AssertionError:
         try:
             corr = ta.utils.df_error_analysis(result, expected)

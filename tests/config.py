@@ -10,9 +10,9 @@ import pandas_ta
 from pandas_ta._typing import DictLike, IntFloat
 
 sample_adx_data = read_csv(
-    f"data/ADX_D.csv", index_col=0, parse_dates=True, keep_date_col=True
+    f"data/ADX_D.csv", index_col=0,
+    parse_dates=True, date_format="%f"
 )
-
 
 ALERT: str = f"[!]"
 INFO: str = f"[i]"
@@ -49,8 +49,6 @@ def load(**kwargs: DictLike):
 
     kwargs.setdefault("index_col", 0)
     kwargs.setdefault("parse_dates", True)
-    kwargs.setdefault("infer_datetime_format", True)
-    kwargs.setdefault("keep_date_col", True)
 
     kwargs.setdefault("verbose", False)
 
@@ -61,8 +59,6 @@ def load(**kwargs: DictLike):
             fpath,
             index_col=kwargs["index_col"],
             parse_dates=kwargs["parse_dates"],
-            infer_datetime_format=kwargs["infer_datetime_format"],
-            keep_date_col=kwargs["index_col"],
         )
         _mode = "Loading"
     except BaseException as err:

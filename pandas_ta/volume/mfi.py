@@ -81,9 +81,9 @@ def mfi(
 
         psum = tdf["+mf"].rolling(length).sum()
         nsum = tdf["-mf"].rolling(length).sum()
-        tdf["mr"] = psum / nsum
+        # tdf["mr"] = psum / nsum
         mfi = 100 * psum / (psum + nsum)
-        tdf["mfi"] = mfi
+        # tdf["mfi"] = mfi
 
     # Offset
     if offset != 0:

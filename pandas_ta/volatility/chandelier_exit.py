@@ -97,9 +97,9 @@ def chandelier_exit(
     downtrend = -(close < short.shift(drift)).astype(int)
 
     direction = uptrend + downtrend
-    if direction[0] == 0:
-        direction[0] = 1
-    direction = direction.replace(0, nan).fillna(method="ffill")
+    if direction.iloc[0] == 0:
+        direction.iloc[0] = 1
+    direction = direction.replace(0, nan).ffill()
 
     # Offset
     if offset != 0:

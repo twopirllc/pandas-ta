@@ -74,7 +74,7 @@ def psar(
     long = Series(nan, index=high.index)
     short = Series(nan, index=high.index)
     reversal = Series(0, index=high.index)
-    _af = Series(0, index=high.index)
+    _af = Series(0.0, index=high.index)
     _af.iloc[0:2] = af0
 
     # Calculate

@@ -13,6 +13,7 @@ env_ta/
 # Distribution / packaging
 .Python
 env/
+env11/
 build/
 develop-eggs/
 dist/
@@ -119,16 +120,8 @@ env/**
 pandas_ta/_wrapper.py
 
 # twopirllc stuff
-notes.md
 setup.cfg
-doc.py
-pandas_pips
-reqs.txt
-az.py
-driver.py
-qd.py
-tdseq.py
-pandas-ta.json
+Dockerfile
 
 # Local package installs
 ta-lib/
@@ -147,6 +140,7 @@ data/TV_5min.csv
 data/tulip.csv
 examples/*.csv
 jnb/*
+notes/*
 csv/*
 
 *.txt

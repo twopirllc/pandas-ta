@@ -180,17 +180,6 @@ class AnalysisIndicators(object):
             self._cores = cpus
 
     @property
-    def ds(self) -> str:
-        """Returns the current Data Source. Default: "yf"."""
-        return self._ds
-
-    @ds.setter
-    def ds(self, value: str) -> None:
-        """property: df.ta.ds = "yf" """
-        if isinstance(value, str) and len(value):
-            self._ds = value
-
-    @property
     def exchange(self) -> str:
         """Returns the current Exchange. Default: "NYSE"."""
         return self._exchange
@@ -492,7 +481,7 @@ class AnalysisIndicators(object):
             "config",
             "cores",
             # "custom",
-            "ds",
+            # "ds",
             "exchange",
             "last_run",
             "sample",
@@ -761,20 +750,14 @@ class AnalysisIndicators(object):
         if returns:
             return self._df
 
-    def ticker(self, ticker: str, ds: str = None, **kwargs: DictLike):
+    def ticker(self, ticker: str = None, period: str = None, **kwargs: DictLike):
         """ticker
 
-        This method downloads Historical Data if the package yfinance is
-        installed. Additionally it can run a ta.Study; Builtin or Custom. It
-        returns a DataFrame if there the DataFrame is not empty, otherwise it
-        exits. For additional yfinance arguments, use help(ta.yf).
-        Alternatively, if you have a Polygon API Key, you can use it as well;
-        use help(ta.polygon_api) for more information.
+        This method downloads Historical Data using the yfinance package if it
+        is installed. Additionally it can run a ta.Study after download.
 
         Historical Data
         >>> df = df.ta.ticker("aapl")
-        If polygon API installed, include api_key argument
-        >>> df = df.ta.ticker("aapl", ds="polygon", api_key="your API KEY")
         More specifically (for Yahoo Finance)
         >>> df = df.ta.ticker("aapl", period="max", interval="1d", kind=None)
 
@@ -794,47 +777,53 @@ class AnalysisIndicators(object):
         Args:
             ticker (str): Any string for a ticker you would use with yfinance.
                 Default: "SPY"
-            ds (str): Options: "polygon" and "yahoo". Default: "yahoo"
+            period (str): See the yfinance history() method for more options.
+                Default: "max"
+                https://github.com/ranaroussi/yfinance/blob/main/yfinance/base.py
         Kwargs:
             kind (str): Options see above. Default: "history"
             study (str | ta.Study): Which study to apply after
                 downloading chart history. Default: None
+            timed (bool): Print download time to stdout. Default: False
 
-            See help(ta.yf) or help(ta.polygon_api) for additional kwargs
+            For additional yfinance history() keyword arguments:
+                https://github.com/ranaroussi/yfinance
 
         Returns:
-            Exits if the DataFrame is empty or None
-            Otherwise it returns a DataFrame
+            DataFrame or None
         """
-        # _frequencies = ["1s", "5s", "15s", "30s", "1m", "5m", "15m", "30m", "45m", "1h", "2h", "4h", "D", "W", "M"]
-        ds = ds.lower() if isinstance(ds, str) else self.ds
+        if not Imports["yfinance"]:
+            print(f"[X] Please install yfinance to use this method. (pip install yfinance)")
+            return
+
+        # Pandas TA keywords to remove from **kwargs
         strategy = kwargs.pop("strategy", None)
         study = kwargs.pop("study", strategy)
-        timed = kwargs.setdefault("timed", False)
+        timed = kwargs.pop("timed", False)
 
-        if isinstance(ticker, str):
-            tickers = [ticker]
+        # yfinance keywords to filter from **kwargs
+        ticker = v_str(ticker, "SPY")
+        period = v_str(period, "max")
+        interval = kwargs.pop("interval", "1d")
+        proxy = kwargs.pop("proxy", {})
 
-        if isinstance(ticker, list):
-            ticker = ticker.pop()
+        df, stime = DataFrame(), None
+        if ticker is not None:
+            import yfinance as yf
 
-        # Fetch Data
-        if ds == "polygon":
+            yfd = yf.Ticker(ticker)
+
             if timed: stime = perf_counter()
-            df = polygon_api(ticker, **kwargs)
-        elif ds in ["yahoo", "yf"]:
-            if timed: stime = perf_counter()
-            df = yf(ticker, **kwargs)
+            df = yfd.history(
+                period=period, interval=interval,
+                proxy=proxy, **kwargs
+            )
         else:
             return None
 
         if timed:
             df.timed = final_time(stime)
-            print(f"[+] {ds} | {ticker}{df.shape}: {df.timed}")
-
-        if df is None or df.empty:
-            print(f"[X] DataFrame is empty: {df.shape}")
-            return None
+            print(f"[+] yf | {ticker}{df.shape}: {df.timed}")
 
         self._df = df
 

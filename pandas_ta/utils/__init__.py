@@ -9,7 +9,6 @@ from ._stats import *
 from ._study import *
 from ._time import *
 from ._validate import *
-from .data import *
 from ._candles import __all__ as _candles_all
 from ._core import __all__ as _core_all
 from ._math import __all__ as _math_all
@@ -20,7 +19,6 @@ from ._stats import __all__ as _stats_all
 from ._study import __all__ as _study_all
 from ._time import __all__ as _time_all
 from ._validate import __all__ as _validate_all
-from .data import __all__ as data_all
 
 __all__ = (
     _candles_all
@@ -33,5 +31,4 @@ __all__ = (
     + _study_all
     + _time_all
     + _validate_all
-    + data_all
 )

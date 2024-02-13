@@ -296,7 +296,7 @@ def test_ppo(df):
 
     try:
         expected = tal.PPO(df.close)
-        pdt.assert_series_equal(result, expected, check_names=False)
+        pdt.assert_series_equal(result.iloc[:,0], expected, check_names=False)
     except AssertionError:
         try:
             corr = ta.utils.df_error_analysis(result, expected)

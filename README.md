@@ -203,7 +203,7 @@ $ pip install pandas_ta[full]
 
 Development Version
 -------------------
-The _development_ version, _0.4.9b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
+The _development_ version, _0.4.10b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
 ```
@@ -537,17 +537,6 @@ df.ta.cores = 0
 df.ta.cores
 ```
 
-## **ds**
-
-```python
-# Gets the Data Source (ds). Default: "yf"
-df.ta.ds
-
-# Set the Data Source (ds) so that df.ta.ticker() can download ohlcv data.
-# Available Data Sources: "yf", "polygon"
-df.ta.ds = "yf"
-```
-
 ## **exchange**
 
 ```python
@@ -670,19 +659,6 @@ df.ta.reverse()
 
 <br/>
 
-## **sample**
-
-Used to generate [Stochastic Samples](#stochastic-samples).
-```python
-# The 'sample' method returns a stochastic sample
-df.ta.sample(**kwargs)
-
-# For list of arguments, see:
-help(ta.sample)
-```
-
-<br/>
-
 ## **study**
 
 The heart of Pandas TA DataFrame Extension; formerly **strategy**. See the [Pandas TA Study](#pandas-ta-study) section for more details.
@@ -725,19 +701,6 @@ spydf = assets["SPY_D"]
 
 # For more info
 help(ta.yf)
-```
-
-<br/>
-
-### [Polygon](https://github.com/pssolanki111/polygon)
-
-```python
-# Download Chart history from Polygon. (pip install polygon)
-polygon_api_key = # Your Polygon API Key
-df = df.ta.ticker("aapl", ds="polygon", api_key=polygon_api_key) # Default ticker is "SPY"
-
-# For more info
-help(ta.polygon_api)
 ```
 
 <br/>
@@ -1207,44 +1170,10 @@ Back to [Contents](#contents)
 
 # BETA
 
-Pandas TA also includes features: _Stochastic Processes_ and _Performance Metrics_.
+Pandas TA also includes basic _Performance Metrics_.
 * :chart_with_upwards_trend: Contributions are welcome to improve and stablize them.
 
 <br/>
-
-## **Stochastic Samples**
-_Need fake data?_ Pandas TA can utilize the [stochastic](https://github.com/crflynn/stochastic) package to Generate Sample Processes. For additional arguments and features, use ```help(ta.sample)```
-
-<br/>
-
-Brief Example
--------------
-```python
-# pip install stochastic
-
-# Returns a Sample Realization Object
-sp = ta.sample() # Sample Process Object
-print(sp)
-
-# List of Object properties and methods
-print(", ".join([x for x in dir(sp) if not x.startswith('_')]))
-
-print(sp.np) # Return process as Numpy ndarray
-print(sp.df) # Return process as Pandas DataFrame
-
-# List of available processes
-print(sp.processes)
-# Returns type of process used
-print(sp.process)
-
-# List of available noises
-print(sp.noises)
-# Returns type of noise used
-print(sp.noise)
-
-# See the help for more options and examples
-help(ta.sample)
-```
 
 Back to [Contents](#contents)
 
@@ -1296,16 +1225,6 @@ TODO
 | &#9744; | DataFrame Extension property: ```config``` |
 | &#9744; | JSON Config File |
 | | &#9744; JSON Config File Format |
-
-<br/>
-
-
-| **Status** | **Data Acquisition** |
-| - | - |
-| &#10004; | [Yahoo Finance](https://github.com/ranaroussi/yfinance) _Default_ |
-| &#10004; | [Polygon](https://github.com/pssolanki111/polygon) |
-| &#9744; | [AlphaVantage](https://github.com/twopirllc/AlphaVantageAPI) |
-| &#9744; | [Financial Modeling Prep](https://github.com/daxm/fmpsdk) |
 
 <br/>
 

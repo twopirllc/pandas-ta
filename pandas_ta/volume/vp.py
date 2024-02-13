@@ -72,18 +72,26 @@ def vp(
     if sort:
         vp[mean_price_col] = vp[close_col]
         vpdf = vp.groupby(
-            cut(vp[close_col], width, include_lowest=True, precision=2)
-        ).agg({mean_price_col: mean, pos_volume_col: sum, neg_volume_col: sum})
+            cut(vp[close_col], width, include_lowest=True, precision=2),
+            observed=False
+        ).agg({
+            mean_price_col: mean,
+            pos_volume_col: sum,
+            neg_volume_col: sum,
+            neut_volume_col: sum
+        })
+
         vpdf[low_price_col] = [x.left for x in vpdf.index]
         vpdf[high_price_col] = [x.right for x in vpdf.index]
         vpdf = vpdf.reset_index(drop=True)
+
         vpdf = vpdf[[
             low_price_col, mean_price_col, high_price_col,
             pos_volume_col, neg_volume_col, neut_volume_col
         ]]
     else:
         vp_ranges = array_split(vp, width)
-        result = ({
+        result = list({
             low_price_col: r[close_col].min(),
             mean_price_col: r[close_col].mean(),
             high_price_col: r[close_col].max(),
@@ -91,7 +99,9 @@ def vp(
             neg_volume_col: r[neg_volume_col].sum(),
             neut_volume_col: r[neut_volume_col].sum(),
         } for r in vp_ranges)
+
         vpdf = DataFrame(result)
+
     vpdf[total_volume_col] = vpdf[pos_volume_col] + vpdf[neg_volume_col]
 
     # Fill

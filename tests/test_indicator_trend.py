@@ -13,8 +13,8 @@ sample_adx_data = read_csv(
     f"data/ADX_D.csv",
     index_col=0,
     parse_dates=True,
-    infer_datetime_format=True,
-    keep_date_col=True,
+    # date_format="%f"
+    date_format="%m/%d/%Y %I:%M:%S `%p"
 )
 
 expected_tv_adx = DataFrame({
@@ -45,8 +45,7 @@ def test_adx(df):
 
     try:
         expected = tal.ADX(df.high, df.low, df.close)
-        result.drop(result.columns[1], axis=1, inplace=True)
-        pdt.assert_series_equal(result, expected, check_names=False)
+        pdt.assert_series_equal(result.iloc[0], expected, check_names=False)
     except AssertionError:
         try:
             corr = ta.utils.df_error_analysis(result, expected)
