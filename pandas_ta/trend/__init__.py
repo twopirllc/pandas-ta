@@ -8,6 +8,7 @@ from .cksp import cksp
 from .decay import decay
 from .decreasing import decreasing
 from .dpo import dpo
+from .ht_trendline import ht_trendline
 from .increasing import increasing
 from .long_run import long_run
 from .psar import psar
@@ -31,6 +32,7 @@ __all__ = [
     "decay",
     "decreasing",
     "dpo",
+    "ht_trendline",
     "increasing",
     "long_run",
     "psar",
