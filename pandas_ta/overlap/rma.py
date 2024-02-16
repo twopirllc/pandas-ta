@@ -13,7 +13,7 @@ def rma(close, length=None, offset=None, **kwargs):
     if close is None: return
 
     # Calculate Result
-    rma = close.ewm(alpha=alpha, min_periods=length).mean()
+    rma = close.ewm(alpha=alpha, min_periods=length, adjust=False).mean()
 
     # Offset
     if offset != 0:
