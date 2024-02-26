@@ -68,6 +68,7 @@ def linreg(
     r = kwargs.pop("r", False)
     slope = kwargs.pop("slope", False)
     tsf = kwargs.pop("tsf", False)
+    stdev = kwargs.pop("stdev", False)
 
     # Calculate
     np_close = close.values
@@ -75,15 +76,15 @@ def linreg(
     if Imports["talib"] and mode_tal and not r:
         from talib import LINEARREG, LINEARREG_ANGLE, LINEARREG_INTERCEPT, LINEARREG_SLOPE, TSF
         if tsf:
-            linreg = TSF(close, timeperiod=length)
+            _linreg = TSF(close, timeperiod=length)
         elif slope:
-            linreg = LINEARREG_SLOPE(close, timeperiod=length)
+            _linreg = LINEARREG_SLOPE(close, timeperiod=length)
         elif intercept:
-            linreg = LINEARREG_INTERCEPT(close, timeperiod=length)
+            _linreg = LINEARREG_INTERCEPT(close, timeperiod=length)
         elif angle:
-            linreg = LINEARREG_ANGLE(close, timeperiod=length)
+            _linreg = LINEARREG_ANGLE(close, timeperiod=length)
         else:
-            linreg = LINEARREG(close, timeperiod=length)
+            _linreg = LINEARREG(close, timeperiod=length)
     else:
         linreg_ = zeros_like(np_close)
         # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
@@ -119,6 +120,17 @@ def linreg(
                 return rn / rd
 
             return m * length + b if not tsf else m * (length - 1) + b
+        
+        def stdevlinreg(close, length):
+            x_value = close
+            stdev = close
+            slope = linreg(close=close, length=length, slope=True)
+            tsf = linreg(close=close, length=length, tsf=True)
+            variance = 0
+            for i in range(1, length):
+                variance += (x_value.shift(i) - (tsf - i * slope)) ** 2
+            stdev = (variance / (length - 1)) ** 0.5
+            return stdev
 
         if np_version >= "1.20.0":
             from numpy.lib.stride_tricks import sliding_window_view
@@ -133,30 +145,36 @@ def linreg(
                     np_close, length)
             ]
 
-        linreg = Series([nan] * (length - 1) + linreg_, index=close.index)
+        _linreg = Series([nan] * (length - 1) + linreg_, index=close.index)
 
     # Offset
     if offset != 0:
-        linreg = linreg.shift(offset)
+        _linreg = _linreg.shift(offset)
+
+    # Standard Deviation
+    if stdev:
+        _linreg = stdevlinreg(close, length)
 
     # Fill
     if "fillna" in kwargs:
-        linreg.fillna(kwargs["fillna"], inplace=True)
+        _linreg.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
-        linreg.fillna(method=kwargs["fill_method"], inplace=True)
+        _linreg.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    linreg.name = f"LINREG"
+    _linreg.name = f"LINREG"
     if slope:
-        linreg.name += "m"
+        _linreg.name += "m"
     if intercept:
-        linreg.name += "b"
+        _linreg.name += "b"
     if angle:
-        linreg.name += "a"
+        _linreg.name += "a"
     if r:
-        linreg.name += "r"
+        _linreg.name += "r"
+    if stdev:
+        _linreg.name += "stdev"
 
-    linreg.name += f"_{length}"
-    linreg.category = "overlap"
+    _linreg.name += f"_{length}"
+    _linreg.category = "overlap"
 
-    return linreg
+    return _linreg
