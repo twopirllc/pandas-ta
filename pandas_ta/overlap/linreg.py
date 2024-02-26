@@ -44,6 +44,7 @@ def linreg(
         r (bool, optional): If True, returns it's correlation 'r'.
             Default: False.
         slope (bool, optional): If True, returns the slope. Default: False.
+        stdev (bool, optional): If True, returns the Standard Deviation.
         tsf (bool, optional): If True, returns the Time Series Forecast value.
             Default: False.
         fillna (value, optional): pd.DataFrame.fillna(value)
