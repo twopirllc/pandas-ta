@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from numpy import NaN, greater, zeros_like
 from numba import njit
-from pandas import DataFrame, Series, Timedelta, infer_freq, to_datetime
-from pandas_ta._typing import Array, DictLike
+from pandas import DataFrame, Series, infer_freq
+from pandas_ta._typing import DictLike
 from pandas_ta.utils import np_non_zero_range, v_datetime_ordered, v_series, v_str
-
+import pandas as pd
 
 @njit
 def pivot_camarilla(high, low, close):
@@ -231,13 +231,24 @@ def pivots(
     df[f"{_props}_R1"], df[f"{_props}_R2"] = r1, r2
     df[f"{_props}_R3"], df[f"{_props}_R4"] = r3, r4
 
-    df.index = df.index + Timedelta(1, anchor.lower())
+    # Support for Pandas v1.4.x and v2.2.x
+    td_mapping = {
+        'Y': 'years',
+        'YE': 'years',
+        'M': 'months',
+        'ME': 'months',
+        'D': 'days',
+    }
+    time_unit = td_mapping.get(anchor.upper(), None)
+    if time_unit:
+        time_delta = pd.DateOffset(**{time_unit: 1})
+        df.index = df.index + time_delta
+    else:
+        print(f"[!] Unsupported time anchor {anchor}.")
+
     if freq is not anchor:
         df = df.reindex(dt_index, method="ffill")
     df = df.iloc[:,4:]
-
-    # hm = df.loc[lambda x: (x.index.hour == 23) & (x.index.minute == 59)].iloc[0].name
-    # df.loc[:hm] = NaN
 
     if method in ["demark", "fibonacci"]:
         df.drop(columns=[x for x in df.columns if all(df[x].isna())], inplace=True)
