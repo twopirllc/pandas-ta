@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
-from sys import float_info as sflt
-from numpy import arctan, nan, pi, zeros_like
-from numpy.version import version as np_version
+import numpy as np
+import pandas as pd
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import (
-    strided_window,
     v_offset,
     v_pos_default,
     v_series,
-    v_talib,
-    zero
+    v_talib
 )
-
 
 def linreg(
     close: Series, length: Int = None, talib: bool = None,
@@ -69,94 +65,81 @@ def linreg(
     slope = kwargs.pop("slope", False)
     tsf = kwargs.pop("tsf", False)
 
-    # Calculate
-    np_close = close.values
-
     if Imports["talib"] and mode_tal and not r:
         from talib import LINEARREG, LINEARREG_ANGLE, LINEARREG_INTERCEPT, LINEARREG_SLOPE, TSF
         if tsf:
-            linreg = TSF(close, timeperiod=length)
+            _linreg = TSF(close, timeperiod=length)
         elif slope:
-            linreg = LINEARREG_SLOPE(close, timeperiod=length)
+            _linreg = LINEARREG_SLOPE(close, timeperiod=length)
         elif intercept:
-            linreg = LINEARREG_INTERCEPT(close, timeperiod=length)
+            _linreg = LINEARREG_INTERCEPT(close, timeperiod=length)
         elif angle:
-            linreg = LINEARREG_ANGLE(close, timeperiod=length)
+            _linreg = LINEARREG_ANGLE(close, timeperiod=length)
         else:
-            linreg = LINEARREG(close, timeperiod=length)
+            _linreg = LINEARREG(close, timeperiod=length)
     else:
-        linreg_ = zeros_like(np_close)
-        # [1, 2, ..., n] from 1 to n keeps Sum(xy) low
-        x = range(1, length + 1)
+        np_close = close.to_numpy()
+        x = np.arange(1, length + 1)
         x_sum = 0.5 * length * (length + 1)
         x2_sum = x_sum * (2 * length + 1) / 3
-        divisor = length * x2_sum - x_sum * x_sum
+        divisor = length * x2_sum - x_sum ** 2
 
-        # Needs to be reworked outside the method
-        def linear_regression(series):
-            y_sum = series.sum()
-            xy_sum = (x * series).sum()
-
-            m = (length * xy_sum - x_sum * y_sum) / divisor
-            if slope:
-                return m
-            b = (y_sum * x2_sum - x_sum * xy_sum) / divisor
-            if intercept:
-                return b
-
-            if angle:
-                theta = arctan(m)
-                if degrees:
-                    theta *= 180 / pi
-                return theta
-
-            if r:
-                y2_sum = (series * series).sum()
-                rn = length * xy_sum - x_sum * y_sum
-                rd = (divisor * (length * y2_sum - y_sum * y_sum)) ** 0.5
-                if zero(rd) == 0:
-                    rd = sflt.epsilon
-                return rn / rd
-
-            return m * length + b if not tsf else m * (length - 1) + b
-
-        if np_version >= "1.20.0":
+        if np.__version__ >= "1.20.0":
             from numpy.lib.stride_tricks import sliding_window_view
-            linreg_ = [
-                linear_regression(_) for _ in sliding_window_view(
-                    np_close, length)
-            ]
-
+            windows = sliding_window_view(np_close, window_shape=length)
         else:
-            linreg_ = [
-                linear_regression(_) for _ in strided_window(
-                    np_close, length)
-            ]
+            windows = np.array([np_close[i:i+length] for i in range(len(np_close)-length+1)])
 
-        linreg = Series([nan] * (length - 1) + linreg_, index=close.index)
+        y_sums = windows.sum(axis=1)
+        xy_sums = (x * windows).sum(axis=1)
+        m_values = (length * xy_sums - x_sum * y_sums) / divisor
+        b_values = (y_sums * x2_sum - x_sum * xy_sums) / divisor
+
+        if slope:
+            result = m_values
+        elif intercept:
+            result = b_values
+        elif angle:
+            theta = np.arctan(m_values)
+            if degrees:
+                theta *= 180 / np.pi
+            result = theta
+        elif r:
+            y2_sums = (windows ** 2).sum(axis=1)
+            rn = length * xy_sums - x_sum * y_sums
+            rd = np.sqrt(divisor * (length * y2_sums - y_sums ** 2))
+            rd[rd == 0] = np.finfo(float).eps  # Prevent division by zero
+            result = rn / rd
+        else:
+            result = m_values * length + b_values
+
+        # Match the length of the input series
+        _linreg = np.concatenate((np.full(length - 1, np.nan), result))
+
+        _linreg = pd.Series(_linreg, index=close.index)
 
     # Offset
     if offset != 0:
-        linreg = linreg.shift(offset)
+        _linreg = _linreg.shift(offset)
 
     # Fill
     if "fillna" in kwargs:
-        linreg.fillna(kwargs["fillna"], inplace=True)
+        _linreg.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
-        linreg.fillna(method=kwargs["fill_method"], inplace=True)
+        _linreg.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    linreg.name = f"LINREG"
+    _linreg.name = "LINREG"
     if slope:
-        linreg.name += "m"
+        _linreg.name += "m"
     if intercept:
-        linreg.name += "b"
+        _linreg.name += "b"
     if angle:
-        linreg.name += "a"
+        _linreg.name += "a"
     if r:
-        linreg.name += "r"
+        _linreg.name += "r"
 
-    linreg.name += f"_{length}"
-    linreg.category = "overlap"
+    _linreg.name += f"_{length}"
+    _linreg.category = "overlap"
 
-    return linreg
+    return _linreg

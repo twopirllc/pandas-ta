@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import arange, dot
+import numpy as np
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
@@ -54,32 +54,26 @@ def wma(
     # Calculate
     if Imports["talib"] and mode_tal:
         from talib import WMA
-        wma = WMA(close, length)
+        _wma = WMA(close, length)
     else:
         total_weight = 0.5 * length * (length + 1)
-        weights_ = Series(arange(1, length + 1))
-        weights = weights_ if asc else weights_[::-1]
-
-        def linear(w):
-            def _compute(x):
-                return dot(x, w) / total_weight
-            return _compute
-
-        close_ = close.rolling(length, min_periods=length)
-        wma = close_.apply(linear(weights), raw=True)
+        weights = np.arange(1, length + 1) if asc else np.arange(length, 0, -1)
+        _wma = np.convolve(close, weights[::-1], 'valid') / total_weight
+        _wma = np.concatenate((np.full(length-1, np.nan), _wma))
+        _wma = Series(_wma, index=close.index)
 
     # Offset
     if offset != 0:
-        wma = wma.shift(offset)
+        _wma = _wma.shift(offset)
 
     # Fill
     if "fillna" in kwargs:
-        wma.fillna(kwargs["fillna"], inplace=True)
+        _wma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
-        wma.fillna(method=kwargs["fill_method"], inplace=True)
+        _wma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    wma.name = f"WMA_{length}"
-    wma.category = "overlap"
+    _wma.name = f"WMA_{length}"
+    _wma.category = "overlap"
 
-    return wma
+    return _wma

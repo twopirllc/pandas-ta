@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import numpy as np
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import (
@@ -6,10 +7,8 @@ from pandas_ta.utils import (
     v_ascending,
     v_offset,
     v_pos_default,
-    v_series,
-    weights
+    v_series
 )
-
 
 def fwma(
     close: Series, length: Int = None, asc: bool = None,
@@ -47,21 +46,26 @@ def fwma(
 
     # Calculate
     fibs = fibonacci(n=length, weighted=True)
-    fwma = close.rolling(length, min_periods=length) \
-        .apply(weights(fibs), raw=True)
+    # Reverse the weights
+    fib_weights = fibs[::-1]
+    # Total weight for normalization
+    total_weight = fibs.sum()
+    fwma_values = np.convolve(close, fib_weights, 'valid') / total_weight
+    _fwma = np.concatenate((np.full(length-1, np.nan), fwma_values))
+    _fwma = Series(_fwma, index=close.index)
 
     # Offset
     if offset != 0:
-        fwma = fwma.shift(offset)
+        _fwma = _fwma.shift(offset)
 
     # Fill
     if "fillna" in kwargs:
-        fwma.fillna(kwargs["fillna"], inplace=True)
+        _fwma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
-        fwma.fillna(method=kwargs["fill_method"], inplace=True)
+        _fwma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    fwma.name = f"FWMA_{length}"
-    fwma.category = "overlap"
+    _fwma.name = f"FWMA_{length}"
+    _fwma.category = "overlap"
 
-    return fwma
+    return _fwma
