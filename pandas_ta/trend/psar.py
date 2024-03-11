@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from numpy import nan
+import numpy as np
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series, zero
-
 
 def psar(
     high: Series, low: Series, close: Series = None,
@@ -51,6 +50,11 @@ def psar(
     if high is None or low is None:
         return
 
+    orig_high = high.copy()
+    orig_low = low.copy()
+    # Numpy arrays offer some performance improvements
+    high, low = high.values, low.values
+
     paf = v_pos_default(af, 0.02) # paf is used to keep af from parameters
     af0 = v_pos_default(af0, paf)
     af = af0
@@ -58,73 +62,58 @@ def psar(
     max_af = v_pos_default(max_af, 0.2)
     offset = v_offset(offset)
 
-    # Falling if the first NaN -DM is positive
-    falling = _falling(high.iloc[:2], low.iloc[:2])
-    if falling:
-        sar = high.iloc[0]
-        ep = low.iloc[0]
-    else:
-        sar = low.iloc[0]
-        ep = high.iloc[0]
-
+    # Set up
+    m = high.size
+    sar = np.zeros(m)
+    long = np.full(m, np.nan)
+    short = np.full(m, np.nan)
+    reversal = np.zeros(m, dtype=int)
+    _af = np.zeros(m)
+    _af[:2] = af0
+    falling = _falling(orig_high.iloc[:2], orig_low.iloc[:2])
+    ep = low[0] if falling else high[0]
     if close is not None:
         close = v_series(close)
-        sar = close.iloc[0]
-
-    long = Series(nan, index=high.index)
-    short = Series(nan, index=high.index)
-    reversal = Series(0, index=high.index)
-    _af = Series(0, index=high.index)
-    _af.iloc[0:2] = af0
+        sar[0] = close.iloc[0]
+    else:
+        sar[0] = high[0] if falling else low[0]
 
     # Calculate
-    m = high.shape[0]
-    for row in range(2, m):
-        high_ = high.iat[row]
-        low_ = low.iat[row]
-
-        _sar = sar + af * (ep - sar)
+    for row in range(1, m):
+        sar[row] = sar[row-1] + af * (ep - sar[row-1])
 
         if falling:
-            reverse = high_ > _sar
-
-            if low_ < ep:
-                ep = low_
-                af = min(af + paf, max_af)
-
-            _sar = max(high.iat[row - 1], high.iat[row - 2], _sar)
+            reverse = high[row] > sar[row]
+            if low[row] < ep:
+                ep = low[row]
+                af = min(af + af0, max_af)
+            sar[row] = max(high[row-1], sar[row])
         else:
-            reverse = low_ < _sar
-
-            if high_ > ep:
-                ep = high_
-                af = min(af + paf, max_af)
-
-            _sar = min(low.iat[row - 1], low.iat[row - 2], _sar)
+            reverse = low[row] < sar[row]
+            if high[row] > ep:
+                ep = high[row]
+                af = min(af + af0, max_af)
+            sar[row] = min(low[row-1], sar[row])
 
         if reverse:
-            if tv: # handle trading view version
-                if falling:
-                    _sar = min(low.iat[row - 1], low.iat[row - 2], ep)
-                else:
-                    _sar = max(high.iat[row - 1], high.iat[row - 2], ep)
-            else:
-                _sar = ep
-
+            sar[row] = ep
             af = af0
-            falling = not falling  # Must come before next line
-            ep = low_ if falling else high_
+            falling = not falling
+            ep = low[row] if falling else high[row]
 
-        sar = _sar  # Update SAR
-
-        # Separate long/short sar based on falling
+        # Separate long/short SAR based on falling
         if falling:
-            short.iat[row] = sar
+            short[row] = sar[row]
         else:
-            long.iat[row] = sar
+            long[row] = sar[row]
 
-        _af.iat[row] = af
-        reversal.iat[row] = int(reverse)
+        _af[row] = af
+        reversal[row] = int(reverse)
+
+    _af = Series(_af, index=orig_high.index)
+    long = Series(long, index=orig_high.index)
+    short = Series(short, index=orig_high.index)
+    reversal = Series(reversal, index=orig_high.index)
 
     # Offset
     if offset != 0:
@@ -152,12 +141,11 @@ def psar(
         f"PSARaf{_params}": _af,
         f"PSARr{_params}": reversal
     }
-    df = DataFrame(data, index=high.index)
+    df = DataFrame(data, index=orig_high.index)
     df.name = f"PSAR{_params}"
     df.category = long.category = short.category = "trend"
 
     return df
-
 
 def _falling(high, low, drift: int = 1):
     """Returns the last -DM value"""
