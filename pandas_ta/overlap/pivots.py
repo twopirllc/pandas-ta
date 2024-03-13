@@ -1,10 +1,23 @@
 # -*- coding: utf-8 -*-
 from numpy import greater, nan, zeros_like
 from numba import njit
-from pandas import DataFrame, Series, infer_freq
+from pandas import DataFrame, DateOffset, Series, infer_freq
 from pandas_ta._typing import DictLike
-from pandas_ta.utils import np_non_zero_range, v_datetime_ordered, v_series, v_str
-import pandas as pd
+from pandas_ta.utils import (
+    np_non_zero_range,
+    v_datetime_ordered,
+    v_series,
+    v_str
+)
+
+# Support for Pandas v1.4.x and v2.2.x
+td_mapping = {
+    'Y': 'years',
+    'YE': 'years',
+    'M': 'months',
+    'ME': 'months',
+    'D': 'days',
+}
 
 @njit
 def pivot_camarilla(high, low, close):
@@ -231,17 +244,9 @@ def pivots(
     df[f"{_props}_R1"], df[f"{_props}_R2"] = r1, r2
     df[f"{_props}_R3"], df[f"{_props}_R4"] = r3, r4
 
-    # Support for Pandas v1.4.x and v2.2.x
-    td_mapping = {
-        'Y': 'years',
-        'YE': 'years',
-        'M': 'months',
-        'ME': 'months',
-        'D': 'days',
-    }
     time_unit = td_mapping.get(anchor.upper(), None)
     if time_unit:
-        time_delta = pd.DateOffset(**{time_unit: 1})
+        time_delta = DateOffset(**{time_unit: 1})
         df.index = df.index + time_delta
     else:
         print(f"[!] Unsupported time anchor {anchor}.")
