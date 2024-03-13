@@ -180,6 +180,27 @@ def test_dpo(df):
     assert result.name == "DPO_20"
 
 
+def test_ht_trendline(df):
+    result = ta.ht_trendline(df.close, talib=False)
+    assert isinstance(result, Series)
+    assert result.name == "HT_TL"
+
+    try:
+        expected = tal.HT_TRENDLINE(df.close)
+        pdt.assert_series_equal(result, expected, check_names=False)
+    except AssertionError:
+        try:
+            corr = ta.utils.df_error_analysis(result, expected)
+            print(f"{corr=}")
+            assert corr > CORRELATION_THRESHOLD
+        except Exception as ex:
+            error_analysis(result, CORRELATION, ex)
+
+    result = ta.ht_trendline(df.close)
+    assert isinstance(result, Series)
+    assert result.name == "HT_TL"
+
+
 def test_increasing(df):
     result = ta.increasing(df.close)
     assert isinstance(result, Series)

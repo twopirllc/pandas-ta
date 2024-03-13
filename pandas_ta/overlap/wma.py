@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from numpy import arange, dot
+from numpy import arange, dot, float64, nan, zeros_like
+from numba import njit
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
@@ -10,6 +11,25 @@ from pandas_ta.utils import (
     v_series,
     v_talib
 )
+
+
+@njit
+def np_wma(x, n, asc, prenan):
+    m = x.size
+    w = arange(1, n + 1, dtype=float64)
+    result = zeros_like(x, dtype=float64)
+
+    if not asc:
+        w = w[::-1]
+
+    for i in range(n - 1, m):
+        result[i] = (w * x[i - n + 1:i + 1]).sum()
+    result *= 2 / (n * n + n)
+
+    if prenan:
+        result[:n - 1] = nan
+
+    return result
 
 
 def wma(
@@ -56,17 +76,9 @@ def wma(
         from talib import WMA
         wma = WMA(close, length)
     else:
-        total_weight = 0.5 * length * (length + 1)
-        weights_ = Series(arange(1, length + 1))
-        weights = weights_ if asc else weights_[::-1]
-
-        def linear(w):
-            def _compute(x):
-                return dot(x, w) / total_weight
-            return _compute
-
-        close_ = close.rolling(length, min_periods=length)
-        wma = close_.apply(linear(weights), raw=True)
+        np_close = close.values
+        wma_ = np_wma(np_close, length, asc, True)
+        wma = Series(wma_, index=close.index)
 
     # Offset
     if offset != 0:

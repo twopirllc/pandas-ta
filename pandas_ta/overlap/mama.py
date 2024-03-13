@@ -11,37 +11,39 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 # http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
 @njit
 def np_mama(x, fastlimit, slowlimit, prenan):
-    a1, a2 = 0.0962, 0.5769
-    p_w, smp_w, smp_w_c = 0.2, 0.33, 0.67 # smp_w + smp_w_c = 1
+    a, b, m = 0.0962, 0.5769, x.size
+    p_w, smp_w, smp_w_c = 0.2, 0.33, 0.67
 
-    sm = zeros_like(x)
-    dt, smp, q1, q2 = sm.copy(), sm.copy(), sm.copy(), sm.copy()
-    i1, i2, jI, jQ = sm.copy(), sm.copy(), sm.copy(), sm.copy()
-    re, im, alpha = sm.copy(), sm.copy(), sm.copy()
-    period, phase, mama, fama = sm.copy(), sm.copy(), sm.copy(), sm.copy()
+    wma4 = zeros_like(x)
+    dt, smp = zeros_like(x), zeros_like(x)
+    i1, i2 = zeros_like(x), zeros_like(x)
+    ji, jq = zeros_like(x), zeros_like(x)
+    q1, q2 = zeros_like(x), zeros_like(x)
+    re, im, alpha = zeros_like(x), zeros_like(x), zeros_like(x)
+    period, phase = zeros_like(x), zeros_like(x)
+    mama, fama = zeros_like(x), zeros_like(x)
 
-    # Ehler's starts from 6, TV-LB starts at 3, TALib 32
-    n = x.size
-    for i in range(3, n):
-        w_period = .075 * period[i - 1] + .54
+    # Ehler's starts from 6, TV-LB from 3, TALib from 32
+    for i in range(3, m):
+        adj_prev_period = 0.075 * period[i - 1] + 0.54
 
-        # Smoother and Detrend the Smoother
-        sm[i] = 0.4 * x[i] + 0.3 * x[i - 1] + 0.2 * x[i - 2] + 0.1 * x[i - 3]
-        dt[i] = w_period * (a1 * sm[i] + a2 * sm[i - 2] - a2 * sm[i - 4] - a1 * sm[i - 6])
+        # WMA(x,4) & Detrended WMA(x,4)
+        wma4[i] = 0.4 * x[i] + 0.3 * x[i - 1] + 0.2 * x[i - 2] + 0.1 * x[i - 3]
+        dt[i] = adj_prev_period * (a * wma4[i] + b * wma4[i - 2] - b * wma4[i - 4] - a * wma4[i - 6])
 
         # Quadrature(Detrender) and In Phase Component
-        q1[i] = w_period * (a1 * dt[i] + a2 * dt[i - 2] - a2 * dt[i - 4] - a1 * dt[i - 6])
+        q1[i] = adj_prev_period * (a * dt[i] + b * dt[i - 2] - b * dt[i - 4] - a * dt[i - 6])
         i1[i] = dt[i - 3]
 
-        # Phase advance I1 and Q1 by 90 degrees
-        jI[i] = w_period * (a1 * i1[i] + a2 * i1[i - 2] - a2 * i1[i - 4] - a1 * i1[i - 6])
-        jQ[i] = w_period * (a1 * q1[i] + a2 * q1[i - 2] - a2 * q1[i - 4] - a1 * q1[i - 6])
+        # Phase Q1 and I1 by 90 degrees
+        ji[i] = adj_prev_period * (a * i1[i] + b * i1[i - 2] - b * i1[i - 4] - a * i1[i - 6])
+        jq[i] = adj_prev_period * (a * q1[i] + b * q1[i - 2] - b * q1[i - 4] - a * q1[i - 6])
 
         # Phasor Addition for 3 Bar Averaging
-        i2[i] = i1[i] - jQ[i]
-        q2[i] = q1[i] + jI[i]
+        i2[i] = i1[i] - jq[i]
+        q2[i] = q1[i] + ji[i]
 
-        # Smooth I and Q components
+        # Smooth I2 & Q2
         i2[i] = p_w * i2[i] + (1 - p_w) * i2[i - 1]
         q2[i] = p_w * q2[i] + (1 - p_w) * q2[i - 1]
 
@@ -49,6 +51,7 @@ def np_mama(x, fastlimit, slowlimit, prenan):
         re[i] = i2[i] * i2[i - 1] + q2[i] * q2[i - 1]
         im[i] = i2[i] * q2[i - 1] + q2[i] * i2[i - 1]
 
+        # Smooth Re & Im
         re[i] = p_w * re[i] + (1 - p_w) * re[i - 1]
         im[i] = p_w * im[i] + (1 - p_w) * im[i - 1]
 

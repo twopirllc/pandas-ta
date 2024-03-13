@@ -376,10 +376,9 @@ def test_rsx(df):
     assert result.name == "RSX_14"
 
 
-@mark.skip(reason="AttributeError: 'Series' object has no attribute 'df'")
 def test_rvgi(df):
-    result = ta.rvgi(df.open, df.high, df.low. df.close) # Weird Exception
-    assert isinstance(result, Series)
+    result = ta.rvgi(df.open, df.high, df.low, df.close)
+    assert isinstance(result, DataFrame)
     assert result.name == "RVGI_14_4"
 
 

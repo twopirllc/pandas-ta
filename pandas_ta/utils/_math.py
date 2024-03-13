@@ -4,9 +4,13 @@ from math import floor as mfloor
 from operator import mul
 from sys import float_info as sflt
 
-from numpy import all, append, array, corrcoef, dot, exp, fabs
-from numpy import log, nan, ndarray, ones, seterr, sign, sqrt, sum, triu
+from numpy import (
+    all, append, array, corrcoef, dot, exp, fabs, float64,
+    log, nan, ndarray, ones, seterr, sign, sqrt, sum, triu,
+    zeros
+)
 from pandas import DataFrame, Series
+from numba import njit
 
 from pandas_ta._typing import (
     Array,
@@ -78,31 +82,21 @@ def erf(x: IntFloat) -> Float:
                * t + a1) * t * exp(-x * x)
     return x_sign * y  # erf(-x) = -erf(x)
 
-def fibonacci(
-    n: Int = 2, weighted: bool = False, zero: bool = False
-) -> Array:
-    """Fibonacci Sequence as a numpy array"""
-    n = int(fabs(n)) if n >= 0 else 2
 
-    if zero:
-        a, b = 0, 1
-    else:
-        n -= 1
-        a, b = 1, 1
+@njit
+def fibonacci(n, weighted):
+    n = n if n > 1 else 2
+    sqrt5 = sqrt(5.0)
+    phi, psi = 0.5 * (1.0 + sqrt5), 0.5 * (1.0 - sqrt5)
 
-    result = array([a])
-    for _ in range(0, n):
-        a, b = b, a + b
-        result = append(result, a)
+    result = zeros(n)
+    for i in range(0, n):
+        result[i] = float(phi ** (i + 1) - psi ** (i + 1)) / sqrt5
 
     if weighted:
-        fib_sum = sum(result)
-        if fib_sum > 0:
-            return result / fib_sum
-        else:
-            return result
-    else:
-        return result
+        return result / result.sum()
+    return result
+
 
 def geometric_mean(series: Series) -> Float:
     """Returns the Geometric Mean for a Series of positive values."""
@@ -216,7 +210,7 @@ def strided_window(x: Array, length: Int) -> Array:
 def symmetric_triangle(
     n: Int = None, weighted: bool = False
 ) -> Optional[List[int]]:
-    """Symmetric Triangle with n >= 2
+    """Symmetric Triangle whenever n >= 2
 
     Returns a numpy array of the nth row of Symmetric Triangle.
     n=4  => triangle: [1, 2, 2, 1]

@@ -135,7 +135,7 @@ def cross(
 
     cross = current & previous
     # ensure there is no cross on the first entry
-    cross[0] = False
+    cross.iloc[0] = False
 
     if asint:
         cross = cross.astype(int)

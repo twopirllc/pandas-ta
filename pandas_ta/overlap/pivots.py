@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import NaN, greater, zeros_like
+from numpy import greater, nan, zeros_like
 from numba import njit
 from pandas import DataFrame, Series, Timedelta, infer_freq, to_datetime
 from pandas_ta._typing import Array, DictLike
@@ -197,7 +197,7 @@ def pivots(
 
     # Create nan arrays for "demark" and "fibonacci" pivots
     _nan_array = zeros_like(np_close)
-    _nan_array[:] = NaN
+    _nan_array[:] = nan
     tp = s1 = s2 = s3 = s4 = r1 = r2 = r3 = r4 = _nan_array
 
     # Calculate

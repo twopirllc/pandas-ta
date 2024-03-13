@@ -66,8 +66,8 @@ def rwi(
     )
     if all(isnan(atr_)):
         return  # Emergency Break
-    denom = atr_ * (length ** 0.5)
 
+    denom = atr_ * (length ** 0.5)
     rwi_high = (high - low.shift(length)) / denom
     rwi_low = (high.shift(length) - low) / denom
 

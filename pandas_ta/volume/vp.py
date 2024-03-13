@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from warnings import simplefilter
+
 from numpy import array_split, mean, sum
 from pandas import cut, concat, DataFrame, Series
 from pandas_ta._typing import DictLike, Int
@@ -67,10 +69,12 @@ def vp(
     total_volume_col = f"total_{volume_col}"
     vp.columns = [close_col, pos_volume_col, neg_volume_col, neut_volume_col]
 
+    simplefilter(action="ignore", category=FutureWarning)
     # sort: Sort by close before splitting into ranges. Default: False
     # If False, it sorts by date index or chronological versus by price
     if sort:
         vp[mean_price_col] = vp[close_col]
+
         vpdf = vp.groupby(
             cut(vp[close_col], width, include_lowest=True, precision=2),
             observed=False

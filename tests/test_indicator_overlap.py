@@ -266,11 +266,18 @@ def test_mama(df):
         pdt.assert_frame_equal(result, expecteddf)
     except AssertionError:
         try:
-            corr = ta.utils.df_error_analysis(result, expected)
-            print(f"{corr=}")
-            assert corr > CORRELATION_THRESHOLD
+            mama_corr = ta.utils.df_error_analysis(result.iloc[:, 0], expecteddf.iloc[:, 0])
+            assert mama_corr > CORRELATION_THRESHOLD
+            print(f"{mama_corr=}")
         except Exception as ex:
-            error_analysis(result, CORRELATION, ex)
+            error_analysis(result.iloc[:, 0], CORRELATION, ex)
+
+        try:
+            fama_corr = ta.utils.df_error_analysis(result.iloc[:, 1], expecteddf.iloc[:, 1])
+            assert fama_corr > CORRELATION_THRESHOLD
+            print(f"{fama_corr=}")
+        except Exception as ex:
+            error_analysis(result.iloc[:, 1], CORRELATION, ex)
 
     result = ta.mama(df.close)
     assert isinstance(result, DataFrame)

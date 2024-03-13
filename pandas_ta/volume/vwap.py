@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from warnings import simplefilter
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int, List
 from pandas_ta.overlap import hlc3
@@ -73,6 +74,7 @@ def vwap(
     # Calculate
     _props = f"VWAP_{anchor}"
     wp = typical_price * volume
+    simplefilter(action="ignore", category=UserWarning)
     vwap = wp.groupby(wp.index.to_period(anchor)).cumsum() \
         / volume.groupby(volume.index.to_period(anchor)).cumsum()
 

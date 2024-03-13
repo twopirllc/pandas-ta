@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import isnan, nan, zeros
+from numpy import isnan, nan, zeros_like
 from numba import njit
 from pandas import DataFrame, Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
@@ -16,11 +16,10 @@ from pandas_ta.utils import (
 )
 
 
-# Alphatrend alpha threshold calculation
 @njit
 def np_alpha(low_atr, high_atr, momo_threshold):
     m = momo_threshold.size
-    alpha = zeros(m)
+    alpha = zeros_like(low_atr)
 
     for i in range(1, m):
         if momo_threshold[i]:

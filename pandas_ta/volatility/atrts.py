@@ -135,13 +135,13 @@ def atrts(
     if offset != 0:
         atrts = atrts.shift(offset)
 
-    # Handle fills
+    # Fill
     if "fillna" in kwargs:
         atrts.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
         atrts.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Categorize it
+    # Name and Category
     _props = f"ATRTS{mamode[0]}{'p' if percent else ''}"
     atrts.name = f"{_props}_{length}_{ma_length}_{multiplier}"
     atrts.category = "volatility"

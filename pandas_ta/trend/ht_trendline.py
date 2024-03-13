@@ -1,95 +1,92 @@
 # -*- coding: utf-8 -*-
-from numpy import nan, zeros_like, arctan, zeros
+from numpy import arctan, copy, isnan, nan, rad2deg, zeros_like, zeros
 from numba import njit
-from pandas import DataFrame, Series
+from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
-from pandas_ta.utils import v_offset, v_series, v_talib
+from pandas_ta.utils import (
+    v_bool,
+    v_offset,
+    v_pos_default,
+    v_series,
+    v_talib
+)
 
 
 @njit
 def np_ht_trendline(x):
-    # Variables used for the Hilbert Transformation
-    a, b = 0.0962, 0.5769
-    rad_to_deg = 45 / arctan(1)
-    period, smooth_period = 0.0, 0.0
+    a, b, m = 0.0962, 0.5769, x.size
 
-    m = x.size
-    smooth_price = zeros(m)
-    de_trender = zeros(m)
-    q1 = zeros(m)
-    i1 = zeros(m)
-    i2 = zeros(m)
-    q2 = zeros(m)
-    _re = zeros(m)
-    _im = zeros(m)
-    i_trend = zeros(m)
-    trend_line = zeros(m)
+    wma4, dt = zeros_like(x), zeros_like(x)
+    q1, q2 = zeros_like(x), zeros_like(x)
+    ji, jq = zeros_like(x), zeros_like(x)
+    i1, i2 = zeros_like(x), zeros_like(x)
+    re, im = zeros_like(x), zeros_like(x)
+    period, smooth_period = zeros_like(x), zeros_like(x)
+    i_trend = zeros_like(x)
 
-    for i in range(x.size):
-        if i < 50:
-            smooth_price[i] = 0
-        else:
-            smooth_price[i] = (4 * x[i] + 3 * x[i - 1] + 2 * x[i - 2] + x[i - 3]) / 10
+    result = zeros_like(x)
+    result[:13] = x[:13]
 
-        adjusted_prev_period = 0.075 * period + 0.54
+    # Ehler's starts from 6, TALib from 63
+    for i in range(6, m):
+        adj_prev_period = 0.075 * period[i - 1] + 0.54
 
-        de_trender[i] = (a * smooth_price[i] + b * smooth_price[i - 2] -
-                         b * smooth_price[i - 4] - a * smooth_price[i - 6]) * adjusted_prev_period
+        wma4[i] = 0.4 * x[i] + 0.3 * x[i - 1] + 0.2 * x[i - 2] + 0.1 * x[i - 3]
+        dt[i] = adj_prev_period * (a * wma4[i] + b * wma4[i - 2] - b * wma4[i - 4] - a * wma4[i - 6])
 
-        q1[i] = (a * de_trender[i] + b * de_trender[i - 2] -
-                 b * de_trender[i - 4] - a * de_trender[i - 6]) * adjusted_prev_period
-        i1[i] = de_trender[i - 3]
-        ji = (a * i1[i] + b * i1[i - 2] - b * i1[i - 4] - a * i1[i - 6]) * adjusted_prev_period
-        jq = (a * q1[i] + b * q1[i - 2] - b * q1[i - 4] - a * q1[i - 6]) * adjusted_prev_period
+        q1[i] = adj_prev_period * (a * dt[i] + b * dt[i - 2] - b * dt[i - 4] - a * dt[i - 6])
+        i1[i] = dt[i - 3]
 
-        i2[i] = i1[i] - jq
-        q2[i] = q1[i] + ji
+        ji[i] = adj_prev_period * (a * i1[i] + b * i1[i - 2] - b * i1[i - 4] - a * i1[i - 6])
+        jq[i] = adj_prev_period * (a * q1[i] + b * q1[i - 2] - b * q1[i - 4] - a * q1[i - 6])
+
+        i2[i] = i1[i] - jq[i]
+        q2[i] = q1[i] + ji[i]
 
         i2[i] = 0.2 * i2[i] + 0.8 * i2[i - 1]
         q2[i] = 0.2 * q2[i] + 0.8 * q2[i - 1]
 
-        _re[i] = i2[i] * i2[i - 1] + q2[i] * q2[i - 1]
-        _im[i] = i2[i] * q2[i - 1] - q2[i] * i2[i - 1]
+        re[i] = i2[i] * i2[i - 1] + q2[i] * q2[i - 1]
+        im[i] = i2[i] * q2[i - 1] - q2[i] * i2[i - 1]
 
-        _re[i] = 0.2 * _re[i] + 0.8 * _re[i - 1]
-        _im[i] = 0.2 * _im[i] + 0.8 * _im[i - 1]
+        re[i] = 0.2 * re[i] + 0.8 * re[i - 1]
+        im[i] = 0.2 * im[i] + 0.8 * im[i - 1]
 
-        new_period = 0
-        if _re[i] != 0 and _im[i] != 0:
-            new_period = 360 / (arctan(_im[i]/_re[i]) * rad_to_deg)
-        if new_period > 1.5 * period:
-            new_period = 1.5 * period
-        if new_period < 0.67 * period:
-            new_period = 0.67 * period
-        if new_period < 6:
-            new_period = 6
-        if new_period > 50:
-            new_period = 50
-        period = 0.2 * new_period + 0.8 * period
-        smooth_period = 0.33 * period + 0.67 * smooth_period
+        if re[i] != 0 and im[i] != 0:
+            period[i] = 360.0 / rad2deg(arctan(im[i] / re[i]))
+        if period[i] > 1.5 * period[i - 1]:
+            period[i] = 1.5 * period[i - 1]
+        if period[i] < 0.67 * period[i - 1]:
+            period[i] = 0.67 * period[i - 1]
+        if period[i] < 6.0:
+            period[i] = 6.0
+        if period[i] > 50.0:
+            period[i] = 50.0
+        period[i] = 0.2 * period[i] + 0.8 * period[i - 1]
+        smooth_period[i] = 0.33 * period[i] + 0.67 * smooth_period[i - 1]
 
-        dc_period = int(smooth_period + 0.5)
-        temp_real = 0
+        dc_period = int(smooth_period[i] + 0.5)
+        dcp_avg = 0
         for k in range(dc_period):
-            temp_real += x[i - k]
+            dcp_avg += x[i - k]
 
         if dc_period > 0:
-            temp_real /= dc_period
+            dcp_avg /= dc_period
 
-        i_trend[i] = temp_real
+        i_trend[i] = dcp_avg
 
-        if i < 12:
-            trend_line[i] = x[i]
-        else:
-            trend_line[i] = (4 * i_trend[i] + 3 * i_trend[i - 1] + 2 * i_trend[i - 2] + i_trend[i - 3]) / 10.0
+        if i > 12:
+            result[i] = 0.4 * i_trend[i] + 0.3 * i_trend[i - 1] + 0.2 * i_trend[i - 2] + 0.1 * i_trend[i - 3]
 
-    return trend_line
+    return result
 
 
 def ht_trendline(
-        close: Series = None, talib: bool = None, offset: Int = None, **kwargs: DictLike
-) -> DataFrame:
+    close: Series = None, talib: bool = None,
+    prenan: Int = None, offset: Int = None,
+    **kwargs: DictLike
+) -> Series:
     """Hilbert Transform TrendLine (Also known as Instantaneous TrendLine)
     By removing Dominant Cycle (DC) of the time-series from itself, ht_trendline is calculated.
 
@@ -100,7 +97,9 @@ def ht_trendline(
     Args:
         close (pd.Series): Series of 'close's.
         talib (bool): If TA Lib is installed and talib is True, Returns
-            the TA Lib version. Default: None
+            the TA Lib version. Default: True
+        prenan (int): Prenans to apply. Ehler's 6 or 12, TALib 63
+            Default: 63
         offset (int, optional): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -111,38 +110,40 @@ def ht_trendline(
         pd.DataFrame: Hilbert Transformation Instantaneous Trend-line.
     """
     # Validate
-    _length = 1
-    close = v_series(close, _length)
+    prenan = v_pos_default(prenan, 63)
+    close = v_series(close, prenan)
 
     if close is None:
         return
 
     mode_tal = v_talib(talib)
+    offset = v_offset(offset)
+
     if Imports["talib"] and mode_tal:
         from talib import HT_TRENDLINE
-        trend_line = HT_TRENDLINE(close)
+        tl = HT_TRENDLINE(close)
     else:
-        # calculate ht_trendline using numba
         np_close = close.values
-        trend_line = np_ht_trendline(np_close)
+        np_tl = np_ht_trendline(np_close)
 
-    offset = v_offset(offset)
+        if prenan > 0:
+            np_tl[:prenan] = nan
+        tl = Series(np_tl, index=close.index)
+
+    if all(isnan(tl)):
+        return  # Emergency Break
 
     # Offset
     if offset != 0:
-        trend_line = trend_line.shift(offset)
+        trend_line = tl.shift(offset)
 
     # Fill
     if "fillna" in kwargs:
-        trend_line.fillna(kwargs["fillna"], inplace=True)
+        tl.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
-        trend_line.fillna(method=kwargs["fill_method"], inplace=True)
+        tl.fillna(method=kwargs["fill_method"], inplace=True)
 
-    data = {
-        "ht_trendline": trend_line,
-    }
-    df = DataFrame(data, index=close.index)
-    df.name = "ht_trendline"
-    df.category = "trend"
+    tl.name = f"HT_TL"
+    tl.category = "trend"
 
-    return df
+    return tl

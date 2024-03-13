@@ -150,26 +150,17 @@ def test_df_dates(df):
 
 
 def test_fibonacci():
-    np.testing.assert_array_equal(ta.utils.fibonacci(zero=True), np.array([0, 1, 1]))
-    np.testing.assert_array_equal(ta.utils.fibonacci(zero=False), np.array([1, 1]))
+    np.testing.assert_array_equal(ta.utils.fibonacci(0, False), np.array([1, 1]))
+    np.testing.assert_array_equal(ta.utils.fibonacci(5, False), np.array([1, 1, 2, 3, 5]))
 
-    np.testing.assert_array_equal(ta.utils.fibonacci(n=0, zero=True, weighted=False), np.array([0]))
-    np.testing.assert_array_equal(ta.utils.fibonacci(n=0, zero=False, weighted=False), np.array([1]))
-
-    np.testing.assert_array_equal(ta.utils.fibonacci(n=5, zero=True, weighted=False), np.array([0, 1, 1, 2, 3, 5]))
-    np.testing.assert_array_equal(ta.utils.fibonacci(n=5, zero=False, weighted=False), np.array([1, 1, 2, 3, 5]))
-
-    assert isinstance(ta.utils.fibonacci(zero=True, weighted=False), np.ndarray)
+    assert isinstance(ta.utils.fibonacci(2, False), np.ndarray)
 
 
 def test_fibonacci_weighted():
-    np.testing.assert_array_equal(ta.utils.fibonacci(n=0, zero=True, weighted=True), np.array([0]))
-    np.testing.assert_array_equal(ta.utils.fibonacci(n=0, zero=False, weighted=True), np.array([1]))
+    np.testing.assert_array_equal(ta.utils.fibonacci(0, True), np.array([0.5, 0.5]))
+    np.testing.assert_allclose(ta.utils.fibonacci(5, True), np.array([1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
 
-    np.testing.assert_allclose(ta.utils.fibonacci(n=5, zero=True, weighted=True), np.array([0, 1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
-    np.testing.assert_allclose(ta.utils.fibonacci(n=5, zero=False, weighted=True), np.array([1 / 12, 1 / 12, 1 / 6, 1 / 4, 5 / 12]))
-
-    assert isinstance(ta.utils.fibonacci(zero=True, weighted=True), np.ndarray)
+    assert isinstance(ta.utils.fibonacci(2, True), np.ndarray)
 
 
 def test_geometric_mean(df):
