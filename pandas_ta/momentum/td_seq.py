@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from numpy import where
 from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_bool, v_offset, v_series
@@ -67,8 +66,8 @@ def td_seq(
         down_seq.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
-    up_seq.name = f"TD_SEQ_UPa" if show_all else f"TD_SEQ_UP"
-    down_seq.name = f"TD_SEQ_DNa" if show_all else f"TD_SEQ_DN"
+    up_seq.name = "TD_SEQ_UPa" if show_all else "TD_SEQ_UP"
+    down_seq.name = "TD_SEQ_DNa" if show_all else "TD_SEQ_DN"
     up_seq.category = down_seq.category = "momentum"
 
     data = {up_seq.name: up_seq, down_seq.name: down_seq}
@@ -79,22 +78,10 @@ def td_seq(
 
     return df
 
-
-def sequence_count(series: Series):
-    index = series.where(series == False).last_valid_index()
-
-    if index is None:
-        return series.count()
-    else:
-        s = series[series.index > index]
-        return s.count()
-
-
 def calc_td(series: Series, direction: str, show_all: bool):
     td_bool = series.diff(4) > 0 if direction == "up" else series.diff(4) < 0
-    td_num = where(td_bool, td_bool.rolling(13, min_periods=0) \
-        .apply(sequence_count), 0)
-    td_num = Series(td_num)
+    cumsum = td_bool.cumsum()
+    td_num = cumsum - cumsum.where(~td_bool).ffill().fillna(0)
 
     if show_all:
         td_num = td_num.mask(td_num == 0)
