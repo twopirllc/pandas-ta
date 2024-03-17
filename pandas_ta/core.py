@@ -1806,10 +1806,10 @@ class AnalysisIndicators(object):
         result = obv(close=close, volume=volume, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def pvi(self, length=None, initial=None, signed=True, offset=None, **kwargs: DictLike):
+    def pvi(self, length=None, initial=None, mamode=None, offset=None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         volume = self._get_column(kwargs.pop("volume", "volume"))
-        result = pvi(close=close, volume=volume, length=length, initial=initial, signed=signed, offset=offset, **kwargs)
+        result = pvi(close=close, volume=volume, length=length, initial=initial, mamode=mamode, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def pvo(self, fast=None, slow=None, signal=None, scalar=None, offset=None, **kwargs: DictLike):
