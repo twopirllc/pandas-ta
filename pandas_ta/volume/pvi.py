@@ -4,8 +4,7 @@ import numpy as np
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.momentum import roc
-from pandas_ta.utils import signed_series, v_offset, v_mamode, v_pos_default, v_series
+from pandas_ta.utils import v_offset, v_mamode, v_pos_default, v_series
 
 def pvi(
     close: Series, volume: Series, length: Int = None, initial: Int = None,
@@ -33,8 +32,9 @@ def pvi(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.DataFrame: New DataFrame with ['close', 'volume', 'PVI_1', 'PVIs_<length>']
+        pd.DataFrame: New DataFrame with ['PVI_1', 'PVIs_<length>']
     """
+
     # Validate
     mamode = v_mamode(mamode, "ema")
     length = v_pos_default(length, 255)
@@ -46,24 +46,16 @@ def pvi(
     if close is None or volume is None:
         return
 
-    # Create a dataframe from the close and volume series
-    # retain index of the close series
-    df = close.to_frame('close')
-    df['volume'] = volume
-
-    df['PVI_1'] = pd.Series(dtype=float)
-    df.iloc[0, df.columns.get_loc('PVI_1')] = initial
-
     # Get numpy arrays of the data
-    close_prices = df['close'].values
-    volumes = df['volume'].values
-    pvis = np.empty(len(df))
+    close_prices = close.to_numpy()
+    volumes = volume.to_numpy()
+    pvis = np.empty(len(close_prices))
 
     # Set the first value from from initial
-    pvis[0] = df.iloc[0]['PVI_1']
+    pvis[0] = initial
 
     # Calculate
-    for i in range(1, len(df)):
+    for i in range(1, len(close_prices)):
         if volumes[i] > volumes[i-1]:
             # PVI = Yesterday’s PVI + [[(Close – Yesterday’s Close) / Yesterday’s Close] * Yesterday’s PVI
             pvis[i] = pvis[i-1] + (((close_prices[i] - close_prices[i-1]) / close_prices[i-1]) * pvis[i-1])
@@ -71,9 +63,10 @@ def pvi(
             # PVI = Yesterday’s PVI
             pvis[i] = pvis[i-1]
 
-    # Update the df
-    df['PVI_1'] = pvis
-    df.name = "PVI_1"
+    data = {
+        'PVI_1': pvis,
+    }
+    df = pd.DataFrame(data, index=close.index)
 
     if offset != 0:
         df['PVI_1'] = df['PVI_1'].shift(offset)

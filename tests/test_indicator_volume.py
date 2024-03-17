@@ -253,7 +253,7 @@ def test_ext_nvi(df):
 
 def test_ext_pvi(df):
     df.ta.pvi(append=True)
-    assert list(df.columns) == ["close", "volume", "PVI_1", "PVIs_255"]
+    assert list(df.columns[-2:]) == ["PVI_1", "PVIs_255"]
 
 
 def test_ext_pvol(df):
