@@ -237,6 +237,10 @@ def test_linreg_slope(df):
     assert isinstance(result, Series)
     assert result.name == "LINREGm_14"
 
+def test_linreg_stdev(df):
+    result = ta.linreg(df.close, stdev=True, talib=False)
+    assert isinstance(result, Series)
+    assert result.name == "LINREGstdev_14"
 
 def test_ma(df):
     result = ta.ma()
