@@ -6,6 +6,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_scalar, v_series
 from .tsi import tsi
 
 
+
 def smi(
     close: Series, fast: Int = None, slow: Int = None,
     signal: Int = None, scalar: IntFloat = None,
@@ -37,7 +38,6 @@ def smi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: smi, signal, oscillator columns.
@@ -79,10 +79,6 @@ def smi(
         smi.fillna(kwargs["fillna"], inplace=True)
         signalma.fillna(kwargs["fillna"], inplace=True)
         osc.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        smi.fillna(method=kwargs["fill_method"], inplace=True)
-        signalma.fillna(method=kwargs["fill_method"], inplace=True)
-        osc.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     # _scalar = f"_{scalar}" if scalar != 1 else ""

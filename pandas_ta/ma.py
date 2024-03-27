@@ -20,6 +20,7 @@ from pandas_ta.overlap.vidya import vidya
 from pandas_ta.overlap.wma import wma
 
 
+
 def ma(name: str = None, source: Series = None, **kwargs: DictLike) -> Series:
     """Simple MA Utility for easier MA selection
 

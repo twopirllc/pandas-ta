@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def brar(
     open_: Series, high: Series, low: Series, close: Series,
     length: Int = None, scalar: IntFloat = None, drift: Int = None,
@@ -36,7 +37,6 @@ def brar(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: ar, br columns.
@@ -79,9 +79,6 @@ def brar(
     if "fillna" in kwargs:
         ar.fillna(kwargs["fillna"], inplace=True)
         br.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ar.fillna(method=kwargs["fill_method"], inplace=True)
-        br.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}"

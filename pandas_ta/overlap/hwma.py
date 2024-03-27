@@ -4,6 +4,7 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_series
 
 
+
 def hwma(
     close: Series,
     na: IntFloat = None, nb: IntFloat = None, nc: IntFloat = None,
@@ -29,7 +30,6 @@ def hwma(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: hwma
@@ -66,8 +66,6 @@ def hwma(
     # Fill
     if "fillna" in kwargs:
         hwma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        hwma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     hwma.name = f"HWMA_{na}_{nb}_{nc}"

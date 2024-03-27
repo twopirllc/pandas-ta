@@ -7,6 +7,7 @@ from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 from pandas_ta.volatility import atr
 
 
+
 def supertrend(
     high: Series, low: Series, close: Series,
     length: Int = None, atr_length: Int = None,
@@ -38,7 +39,6 @@ def supertrend(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: SUPERT (trend), SUPERTd (direction),
@@ -107,8 +107,5 @@ def supertrend(
     # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
-
-    if "fill_method" in kwargs:
-        df.fillna(method=kwargs["fill_method"], inplace=True)
 
     return df

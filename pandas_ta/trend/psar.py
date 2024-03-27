@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series, zero
 
 
+
 def psar(
     high: Series, low: Series, close: Series = None,
     af0: IntFloat = None, af: IntFloat = None, max_af: IntFloat = None, tv=False,
@@ -38,7 +39,6 @@ def psar(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: long, short, af, and reversal columns.
@@ -139,11 +139,6 @@ def psar(
         long.fillna(kwargs["fillna"], inplace=True)
         short.fillna(kwargs["fillna"], inplace=True)
         reversal.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        _af.fillna(method=kwargs["fill_method"], inplace=True)
-        long.fillna(method=kwargs["fill_method"], inplace=True)
-        short.fillna(method=kwargs["fill_method"], inplace=True)
-        reversal.fillna(method=kwargs["fill_method"], inplace=True)
 
     _params = f"_{af0}_{max_af}"
     data = {

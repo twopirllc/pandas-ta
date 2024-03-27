@@ -6,6 +6,7 @@ from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 @njit
 def np_reflex(x, n, k, alpha, pi, sqrt2):
     m, ratio = x.size, 2 * sqrt2 / k
@@ -73,8 +74,6 @@ def reflex(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
-
     Returns:
         pd.Series: New feature generated.
     """
@@ -105,9 +104,6 @@ def reflex(
     # Fill
     if "fillna" in kwargs:
         result.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        result.fillna(method=kwargs["fill_method"], inplace=True)
-
     # Name and Category
     result.name = f"REFLEX_{length}_{smooth}_{alpha}"
     result.category = "cycles"

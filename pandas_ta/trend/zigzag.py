@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def zigzag(
     high: Series, low: Series, close: Series = None,
     pivot_leg: int = None, price_deviation: IntFloat = None,
@@ -45,7 +46,6 @@ def zigzag(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: swing, and swing_type (high or low).
@@ -81,6 +81,5 @@ def zigzag(
 
     # Fill
     # if "fillna" in kwargs:
-    # if "fill_method" in kwargs:
 
     # Name and Category

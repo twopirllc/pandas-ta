@@ -13,18 +13,6 @@ from pandas_ta.utils import (
 )
 
 
-# Almost there
-# @njit
-# def np_ema(x: np.ndarray, n: int):
-#     m = x.size
-#     result = np.zeros(m)
-#     a = 1 / (n + 1)
-#     for i in range(1, m):
-#         result[i] = a * x[i - 1] + (1 - a) * x[i]
-#     result[0] = np.nan
-#     return result
-#     # return np_prepend(result, n - 1)
-
 
 def ema(
     close: Series, length: Int = None,
@@ -56,7 +44,6 @@ def ema(
     Kwargs:
         adjust (bool, optional): Default: False
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -92,8 +79,6 @@ def ema(
     # Fill
     if "fillna" in kwargs:
         ema.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ema.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     ema.name = f"EMA_{length}"

@@ -6,6 +6,7 @@ from pandas_ta.overlap import sma
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def ui(
     close: Series, length: Int = None, scalar: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -29,10 +30,9 @@ def ui(
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
-        fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
         everget (value, optional): TradingView's Evergets SMA instead of SUM
             calculation. Default: False
+        fillna (value, optional): pd.DataFrame.fillna(value)
 
     Returns:
         pd.Series: New feature
@@ -67,8 +67,6 @@ def ui(
     # Fill
     if "fillna" in kwargs:
         ui.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ui.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     ui.name = f"UI{'' if not everget else 'e'}_{length}"

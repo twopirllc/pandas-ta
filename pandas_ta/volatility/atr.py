@@ -16,6 +16,7 @@ from pandas_ta.utils import (
 from .true_range import true_range
 
 
+
 def atr(
     high: Series, low: Series, close: Series, length: Int = None,
     mamode: str = None, talib: bool = None,
@@ -46,7 +47,6 @@ def atr(
     Kwargs:
         percent (bool, optional): Return as percentage. Default: False
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -100,8 +100,6 @@ def atr(
     # Fill
     if "fillna" in kwargs:
         atr.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        atr.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     atr.name = f"ATR{mamode[0]}{'p' if percent else ''}_{length}"

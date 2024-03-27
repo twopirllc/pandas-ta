@@ -4,7 +4,7 @@ from numba import njit
 from pandas import DataFrame, DateOffset, Series, infer_freq
 from pandas_ta._typing import DictLike
 from pandas_ta.utils import (
-    np_non_zero_range,
+    nb_non_zero_range,
     v_datetime_ordered,
     v_series,
     v_str
@@ -19,10 +19,12 @@ td_mapping = {
     'D': 'days',
 }
 
+
+
 @njit
 def pivot_camarilla(high, low, close):
     tp = (high + low + close) / 3
-    hl_range = np_non_zero_range(high, low)
+    hl_range = nb_non_zero_range(high, low)
 
     s1 = close - 11 / 120 * hl_range
     s2 = close - 11 / 60 * hl_range
@@ -40,7 +42,7 @@ def pivot_camarilla(high, low, close):
 @njit
 def pivot_classic(high, low, close):
     tp = (high + low + close) / 3
-    hl_range = np_non_zero_range(high, low)
+    hl_range = nb_non_zero_range(high, low)
 
     s1 = 2 * tp - high
     s2 = tp - hl_range
@@ -73,7 +75,7 @@ def pivot_demark(open_, high, low, close):
 @njit
 def pivot_fibonacci(high, low, close):
     tp = (high + low + close) / 3
-    hl_range = np_non_zero_range(high, low)
+    hl_range = nb_non_zero_range(high, low)
 
     s1 = tp - 0.382 * hl_range
     s2 = tp - 0.618 * hl_range
@@ -89,7 +91,7 @@ def pivot_fibonacci(high, low, close):
 @njit
 def pivot_traditional(high, low, close):
     tp = (high + low + close) / 3
-    hl_range = np_non_zero_range(high, low)
+    hl_range = nb_non_zero_range(high, low)
 
     s1 = 2 * tp - high
     s2 = tp - hl_range
@@ -107,7 +109,7 @@ def pivot_traditional(high, low, close):
 @njit
 def pivot_woodie(open_, high, low):
     tp = (2 * open_ + high + low) / 4
-    hl_range = np_non_zero_range(high, low)
+    hl_range = nb_non_zero_range(high, low)
 
     s1 = 2 * tp - high
     s2 = tp - hl_range
@@ -152,7 +154,6 @@ def pivots(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: New feature generated.

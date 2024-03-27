@@ -14,6 +14,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def stochf(
     high: Series, low: Series, close: Series,
     k: Int = None, d: Int = None,
@@ -43,7 +44,6 @@ def stochf(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: Fast %K, %D columns.
@@ -86,9 +86,6 @@ def stochf(
     if "fillna" in kwargs:
         stochf_k.fillna(kwargs["fillna"], inplace=True)
         stochf_d.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        stochf_k.fillna(method=kwargs["fill_method"], inplace=True)
-        stochf_d.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _name = "STOCHF"

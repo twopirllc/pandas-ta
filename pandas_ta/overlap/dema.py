@@ -7,6 +7,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from .ema import ema
 
 
+
 def dema(
     close: Series, length: Int = None, talib: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -28,7 +29,6 @@ def dema(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -62,8 +62,6 @@ def dema(
     # Fill
     if "fillna" in kwargs:
         dema.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        dema.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     dema.name = f"DEMA_{length}"

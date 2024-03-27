@@ -7,6 +7,7 @@ from pandas_ta.statistics import mad
 from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 
 
+
 def cci(
     high: Series, low: Series, close: Series, length: Int = None,
     c: IntFloat = None, talib: bool = None,
@@ -32,7 +33,6 @@ def cci(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -68,8 +68,6 @@ def cci(
     # Fill
     if "fillna" in kwargs:
         cci.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        cci.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     cci.name = f"CCI_{length}_{c}"

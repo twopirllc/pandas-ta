@@ -13,8 +13,9 @@ from pandas_ta.utils import (
 )
 
 
+
 @njit
-def np_wma(x, n, asc, prenan):
+def nb_wma(x, n, asc, prenan):
     m = x.size
     w = arange(1, n + 1, dtype=float64)
     result = zeros_like(x, dtype=float64)
@@ -55,7 +56,6 @@ def wma(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -77,7 +77,7 @@ def wma(
         wma = WMA(close, length)
     else:
         np_close = close.values
-        wma_ = np_wma(np_close, length, asc, True)
+        wma_ = nb_wma(np_close, length, asc, True)
         wma = Series(wma_, index=close.index)
 
     # Offset
@@ -87,8 +87,6 @@ def wma(
     # Fill
     if "fillna" in kwargs:
         wma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        wma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     wma.name = f"WMA_{length}"

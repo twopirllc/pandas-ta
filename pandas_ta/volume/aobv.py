@@ -8,6 +8,7 @@ from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 from .obv import obv
 
 
+
 def aobv(
     close: Series, volume: Series, fast: Int = None, slow: Int = None,
     max_lookback: Int = None, min_lookback: Int = None,
@@ -38,7 +39,6 @@ def aobv(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: OBV_MIN, OBV_MAX, OBV_FMA, OBV_SMA, OBV_LR, OBV_SR columns.
@@ -89,12 +89,6 @@ def aobv(
         mas.fillna(kwargs["fillna"], inplace=True)
         obv_long.fillna(kwargs["fillna"], inplace=True)
         obv_short.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        obv_.fillna(method=kwargs["fill_method"], inplace=True)
-        maf.fillna(method=kwargs["fill_method"], inplace=True)
-        mas.fillna(method=kwargs["fill_method"], inplace=True)
-        obv_long.fillna(method=kwargs["fill_method"], inplace=True)
-        obv_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     _mode = mamode.lower()[0] if len(mamode) else ""
     data = {

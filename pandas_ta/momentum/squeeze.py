@@ -17,6 +17,7 @@ from pandas_ta.volatility import bbands, kc
 from .mom import mom
 
 
+
 def squeeze(
     high: Series, low: Series, close: Series,
     bb_length: Int = None, bb_std: IntFloat = None,
@@ -66,7 +67,6 @@ def squeeze(
         detailed (value, optional): Return additional variations of SQZ for
             visualization. Default: False
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: SQZ, SQZ_ON, SQZ_OFF, NO_SQZ columns by default. More
@@ -139,11 +139,6 @@ def squeeze(
         squeeze_on.fillna(kwargs["fillna"], inplace=True)
         squeeze_off.fillna(kwargs["fillna"], inplace=True)
         no_squeeze.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        squeeze.fillna(method=kwargs["fill_method"], inplace=True)
-        squeeze_on.fillna(method=kwargs["fill_method"], inplace=True)
-        squeeze_off.fillna(method=kwargs["fill_method"], inplace=True)
-        no_squeeze.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = "" if use_tr else "hlr"
@@ -203,13 +198,6 @@ def squeeze(
             pos_dec.fillna(kwargs["fillna"], inplace=True)
             neg_dec.fillna(kwargs["fillna"], inplace=True)
             neg_inc.fillna(kwargs["fillna"], inplace=True)
-        if "fill_method" in kwargs:
-            sqz_inc.fillna(method=kwargs["fill_method"], inplace=True)
-            sqz_dec.fillna(method=kwargs["fill_method"], inplace=True)
-            pos_inc.fillna(method=kwargs["fill_method"], inplace=True)
-            pos_dec.fillna(method=kwargs["fill_method"], inplace=True)
-            neg_dec.fillna(method=kwargs["fill_method"], inplace=True)
-            neg_inc.fillna(method=kwargs["fill_method"], inplace=True)
 
         df[f"SQZ_INC"] = sqz_inc
         df[f"SQZ_DEC"] = sqz_dec

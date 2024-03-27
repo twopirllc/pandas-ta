@@ -3,12 +3,14 @@ from numpy import sign
 from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import (
+    nb_idiff,
     v_drift,
     v_offset,
     v_pos_default,
     v_scalar,
     v_series
 )
+
 
 
 def psl(
@@ -36,7 +38,6 @@ def psl(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -71,8 +72,6 @@ def psl(
     # Fill
     if "fillna" in kwargs:
         psl.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        psl.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}"

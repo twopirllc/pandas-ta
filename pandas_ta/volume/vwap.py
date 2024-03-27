@@ -6,6 +6,7 @@ from pandas_ta.overlap import hlc3
 from pandas_ta.utils import v_datetime_ordered, v_list, v_offset, v_series
 
 
+
 def vwap(
     high: Series, low: Series, close: Series, volume: Series,
     anchor: str = None, bands: List = None,
@@ -40,7 +41,6 @@ def vwap(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -114,11 +114,6 @@ def vwap(
             df.fillna(kwargs["fillna"], inplace=True)
         else:
             vwap.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        if bands and not df.empty:
-            df.fillna(method=kwargs["fill_method"], inplace=True)
-        else:
-            vwap.fillna(method=kwargs["fill_method"], inplace=True)
 
     if bands and not df.empty:
         return df

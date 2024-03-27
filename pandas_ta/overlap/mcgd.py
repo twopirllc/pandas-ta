@@ -4,6 +4,7 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def _mcgd(x, n, k):
     d = (k * n * (x[1] / x[0]) ** 4)
     x[1] = (x[0] + ((x[1] - x[0]) / d))
@@ -37,7 +38,6 @@ def mcgd(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -65,8 +65,6 @@ def mcgd(
     # Fill
     if "fillna" in kwargs:
         mcg_ds.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        mcg_ds.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     mcg_ds.name = f"MCGD_{length}"

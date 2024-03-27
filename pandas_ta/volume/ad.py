@@ -5,6 +5,7 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils import non_zero_range, v_offset, v_series, v_talib
 
 
+
 def ad(
     high: Series, low: Series, close: Series, volume: Series,
     open_: Series = None, talib: bool = None,
@@ -30,7 +31,6 @@ def ad(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -65,8 +65,6 @@ def ad(
     # Fill
     if "fillna" in kwargs:
         ad.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ad.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     ad.name = "AD" if open_ is None else "ADo"

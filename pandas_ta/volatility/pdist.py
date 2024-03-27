@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import non_zero_range, v_drift, v_offset, v_series
 
 
+
 def pdist(
     open_: Series, high: Series, low: Series, close: Series,
     drift: Int = None,
@@ -27,7 +28,6 @@ def pdist(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -58,8 +58,6 @@ def pdist(
     # Fill
     if "fillna" in kwargs:
         pdist.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        pdist.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     pdist.name = "PDIST"

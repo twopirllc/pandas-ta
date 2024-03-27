@@ -18,6 +18,7 @@ from pandas_ta.utils import (
 from pandas_ta.volatility import bbands, kc
 
 
+
 def squeeze_pro(
     high: Series, low: Series, close: Series,
     bb_length: Int = None, bb_std: IntFloat = None,
@@ -71,7 +72,6 @@ def squeeze_pro(
         detailed (value, optional): Return additional variations of SQZ for
             visualization. Default: False
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: SQZPRO, SQZPRO_ON_WIDE, SQZPRO_ON_NORMAL,
@@ -156,13 +156,6 @@ def squeeze_pro(
         squeeze_on_narrow.fillna(kwargs["fillna"], inplace=True)
         squeeze_off_wide.fillna(kwargs["fillna"], inplace=True)
         no_squeeze.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        squeeze.fillna(method=kwargs["fill_method"], inplace=True)
-        squeeze_on_wide.fillna(method=kwargs["fill_method"], inplace=True)
-        squeeze_on_normal.fillna(method=kwargs["fill_method"], inplace=True)
-        squeeze_on_narrow.fillna(method=kwargs["fill_method"], inplace=True)
-        squeeze_off_wide.fillna(method=kwargs["fill_method"], inplace=True)
-        no_squeeze.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = "" if use_tr else "hlr"
@@ -227,14 +220,6 @@ def squeeze_pro(
             pos_dec.fillna(kwargs["fillna"], inplace=True)
             neg_dec.fillna(kwargs["fillna"], inplace=True)
             neg_inc.fillna(kwargs["fillna"], inplace=True)
-
-        if "fill_method" in kwargs:
-            sqz_inc.fillna(method=kwargs["fill_method"], inplace=True)
-            sqz_dec.fillna(method=kwargs["fill_method"], inplace=True)
-            pos_inc.fillna(method=kwargs["fill_method"], inplace=True)
-            pos_dec.fillna(method=kwargs["fill_method"], inplace=True)
-            neg_dec.fillna(method=kwargs["fill_method"], inplace=True)
-            neg_inc.fillna(method=kwargs["fill_method"], inplace=True)
 
         df[f"SQZPRO_INC"] = sqz_inc
         df[f"SQZPRO_DEC"] = sqz_dec

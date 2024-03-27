@@ -3,6 +3,7 @@ from pandas import Series
 from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import (
+    v_bool,
     v_drift,
     v_mamode,
     v_offset,
@@ -14,10 +15,11 @@ from pandas_ta.utils import (
 from pandas_ta.volatility import atr
 
 
+
 def natr(
     high: Series, low: Series, close: Series,
     length: Int = None, scalar: IntFloat = None, mamode: str = None,
-    talib: bool = None, drift: Int = None,
+    talib: bool = None, prenan: bool = None, drift: Int = None,
     offset: Int = None, **kwargs: DictLike
 ) -> Series:
     """Normalized Average True Range (NATR)
@@ -36,11 +38,12 @@ def natr(
         mamode (str): See ``help(ta.ma)``. Default: 'ema'
         talib (bool): If TA Lib is installed and talib is True, Returns
             the TA Lib version. Default: True
+        prenan (bool): If True, behave like TA Lib ATR with some initial nan
+            based on drift (typically 1). Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature
@@ -58,6 +61,7 @@ def natr(
     scalar = v_scalar(scalar, 100)
     mamode = v_mamode(mamode, "ema")
     mode_tal = v_talib(talib)
+    prenan = v_bool(prenan, False)
     drift = v_drift(drift)
     offset = v_offset(offset)
 
@@ -70,7 +74,7 @@ def natr(
         atr(
             high=high, low=low, close=close, length=length,
             mamode=mamode, drift=drift, talib=mode_tal,
-            offset=offset, **kwargs
+            prenan=prenan, offset=offset, **kwargs
         )
 
     # Offset
@@ -80,8 +84,6 @@ def natr(
     # Fill
     if "fillna" in kwargs:
         natr.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        natr.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     natr.name = f"NATR_{length}"

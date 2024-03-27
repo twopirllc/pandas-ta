@@ -5,6 +5,7 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 
 
+
 def midprice(
     high: Series, low: Series, length: Int = None, talib: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -23,7 +24,6 @@ def midprice(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -60,8 +60,6 @@ def midprice(
     # Fill
     if "fillna" in kwargs:
         midprice.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        midprice.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     midprice.name = f"MIDPRICE_{length}"

@@ -13,6 +13,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def rwi(
     high: Series, low: Series, close: Series,
     length: Int = None, mamode: str = None, talib: bool = None,
@@ -39,7 +40,6 @@ def rwi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: high, low columns.
@@ -80,10 +80,6 @@ def rwi(
     if "fillna" in kwargs:
         rwi_high.fillna(kwargs["fillna"], inplace=True)
         rwi_low.fillna(kwargs["fillna"], inplace=True)
-
-    if "fill_method" in kwargs:
-        rwi_high.fillna(method=kwargs["fill_method"], inplace=True)
-        rwi_low.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     rwi_high.name = f"RWIh_{length}"

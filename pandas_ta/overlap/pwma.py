@@ -12,6 +12,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def pwma(
     close: Series, length: Int = None, asc: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -31,7 +32,6 @@ def pwma(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -58,8 +58,6 @@ def pwma(
     # Fill
     if "fillna" in kwargs:
         pwma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        pwma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     pwma.name = f"PWMA_{length}"

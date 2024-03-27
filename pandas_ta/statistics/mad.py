@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def mad_(series: Series):
     """Mean Absolute Deviation"""
     return fabs(series - series.mean()).mean()
@@ -25,7 +26,6 @@ def mad(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -53,8 +53,6 @@ def mad(
     # Fill
     if "fillna" in kwargs:
         mad.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        mad.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     mad.name = f"MAD_{length}"

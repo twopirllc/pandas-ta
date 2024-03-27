@@ -6,6 +6,7 @@ from pandas_ta.ma import ma
 from pandas_ta.utils import v_mamode, v_offset, v_pos_default, v_series
 
 
+
 def hilo(
     high: Series, low: Series, close: Series,
     high_length: Int = None, low_length: Int = None, mamode: str = None,
@@ -41,7 +42,6 @@ def hilo(
         adjust (bool): Default: True
         presma (bool, optional): If True, uses SMA for initial value.
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: HILO (line), HILOl (long), HILOs (short) columns.
@@ -89,10 +89,6 @@ def hilo(
         hilo.fillna(kwargs["fillna"], inplace=True)
         long.fillna(kwargs["fillna"], inplace=True)
         short.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        hilo.fillna(method=kwargs["fill_method"], inplace=True)
-        long.fillna(method=kwargs["fill_method"], inplace=True)
-        short.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{high_length}_{low_length}"

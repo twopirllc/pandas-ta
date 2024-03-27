@@ -5,7 +5,6 @@ from pkg_resources import get_distribution, DistributionNotFound
 
 from pandas_ta._typing import Dict, IntFloat, ListStr
 
-
 _dist = get_distribution("pandas_ta")
 try:
     # Normalize case for Windows systems
@@ -49,10 +48,11 @@ Category: Dict[str, ListStr] = {
     # Momentum
     "momentum": [
         "ao", "apo", "bias", "bop", "brar", "cci", "cfo", "cg", "cmo",
-        "coppock", "crsi", "cti", "er", "eri", "fisher", "inertia", "kdj", "kst",
-        "macd", "mom", "pgo", "ppo", "psl", "qqe", "roc", "rsi", "rsx",
-        "rvgi", "slope", "smi", "squeeze", "squeeze_pro", "stc", "stoch",
-        "stochf", "stochrsi", "td_seq", "tmo", "trix", "tsi", "uo", "willr"
+        "coppock", "crsi", "cti", "er", "eri", "exhc", "fisher", "inertia",
+        "kdj", "kst", "macd", "mom", "pgo", "ppo", "psl", "qqe", "roc",
+        "rsi", "rsx", "rvgi", "slope", "smi", "squeeze", "squeeze_pro",
+        "stc", "stoch", "stochf", "stochrsi", "tmo", "trix", "tsi", "uo",
+        "willr"
     ],
     # Overlap
     "overlap": [

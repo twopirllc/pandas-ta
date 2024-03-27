@@ -6,6 +6,7 @@ from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_bool, v_offset, v_offset, v_scalar, v_series
 
 
+
 @njit
 def np_cdl_inside(high, low):
     hdiff = where(high - roll(high, 1) < 0, 1, 0)
@@ -43,7 +44,6 @@ def cdl_inside(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature
@@ -76,9 +76,6 @@ def cdl_inside(
     # Fill
     if "fillna" in kwargs:
         inside.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        inside.fillna(method=kwargs["fill_method"], inplace=True)
-
     # Name and Category
     inside.name = f"CDL_INSIDE"
     inside.category = "candles"

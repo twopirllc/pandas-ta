@@ -12,6 +12,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def vidya(
     close: Series, length: Int = None,
     drift: Int = None, offset: Int = None,
@@ -36,7 +37,6 @@ def vidya(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -76,8 +76,6 @@ def vidya(
     # Fill
     if "fillna" in kwargs:
         vidya.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        vidya.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     vidya.name = f"VIDYA_{length}"

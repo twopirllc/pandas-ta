@@ -88,9 +88,9 @@ sample_data = load(
         fpath="data/SPY_D.csv",
         n = [
             -2 * _tdpy, -_tdpy,
-            -89, 0, 89,
+            -200, -89, 0, 89, 200,
             _tdpy, 2 * _tdpy
-        ][0],
+        ][2],
         verbose=VERBOSE
     )
 

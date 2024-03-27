@@ -12,6 +12,7 @@ from pandas_ta.utils import (
 from pandas_ta.volatility import atr
 
 
+
 def cksp(
     high: Series, low: Series, close: Series,
     p: Int = None, x: IntFloat = None, q: Int = None,
@@ -48,7 +49,6 @@ def cksp(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: long and short columns.
@@ -91,9 +91,6 @@ def cksp(
     if "fillna" in kwargs:
         long_stop.fillna(kwargs["fillna"], inplace=True)
         short_stop.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        long_stop.fillna(method=kwargs["fill_method"], inplace=True)
-        short_stop.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{p}_{x}_{q}"

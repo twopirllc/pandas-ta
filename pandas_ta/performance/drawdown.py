@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_offset, v_series
 
 
+
 def drawdown(
     close: Series, offset: Int = None, **kwargs: DictLike
 ) -> DataFrame:
@@ -23,7 +24,6 @@ def drawdown(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: drawdown, drawdown percent, drawdown log columns
@@ -53,10 +53,6 @@ def drawdown(
         dd.fillna(kwargs["fillna"], inplace=True)
         dd_pct.fillna(kwargs["fillna"], inplace=True)
         dd_log.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        dd.fillna(method=kwargs["fill_method"], inplace=True)
-        dd_pct.fillna(method=kwargs["fill_method"], inplace=True)
-        dd_log.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     dd.name = "DD"

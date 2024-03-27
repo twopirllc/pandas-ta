@@ -12,6 +12,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def thermo(
     high: Series, low: Series, length: Int = None,
     long: Int = None, short: Int = None,
@@ -39,7 +40,6 @@ def thermo(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: thermo, thermo_ma, thermo_long, thermo_short columns.
@@ -89,11 +89,6 @@ def thermo(
         thermo_ma.fillna(kwargs["fillna"], inplace=True)
         thermo_long.fillna(kwargs["fillna"], inplace=True)
         thermo_short.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        thermo.fillna(method=kwargs["fill_method"], inplace=True)
-        thermo_ma.fillna(method=kwargs["fill_method"], inplace=True)
-        thermo_long.fillna(method=kwargs["fill_method"], inplace=True)
-        thermo_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}_{long}_{short}"

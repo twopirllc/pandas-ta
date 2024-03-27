@@ -5,6 +5,7 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 
 
+
 def willr(
     high: Series, low: Series, close: Series,
     length: Int = None, talib: bool = None,
@@ -29,7 +30,6 @@ def willr(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -68,8 +68,6 @@ def willr(
     # Fill
     if "fillna" in kwargs:
         willr.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        willr.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     willr.name = f"WILLR_{length}"

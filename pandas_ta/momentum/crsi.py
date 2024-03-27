@@ -1,7 +1,16 @@
 # -*- coding: utf-8 -*-
-import numpy as np
+from numpy import (
+    concatenate,
+    diff,
+    full,
+    nan,
+    nanmean,
+    newaxis,
+    sign,
+)
+from numpy.lib.stride_tricks import sliding_window_view
 from pandas import Series
-from pandas_ta._typing import Array1d, DictLike, Int, IntFloat
+from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.momentum.rsi import rsi
 from pandas_ta.utils import (
@@ -14,7 +23,8 @@ from pandas_ta.utils import (
 )
 
 
-def consecutive_streak(x: Array1d) -> Array1d:
+
+def consecutive_streak(x: Array) -> Array:
     """Calculate the streak of consecutive price increases or decreases.
 
     This function computes the streak of consecutive daily price increases
@@ -41,9 +51,7 @@ def consecutive_streak(x: Array1d) -> Array1d:
     >>> np.array_equal(result, expected_result)
     True
     """
-    diff = np.diff(x)
-    streaks = np.sign(diff)
-    return np.concatenate(([0], streaks))
+    return concatenate(([0], sign(diff(x))))
 
 
 def percent_rank(x: Series, lookback: Int) -> Series:
@@ -78,13 +86,11 @@ def percent_rank(x: Series, lookback: Int) -> Series:
     """
     daily_returns_np = x.pct_change().to_numpy()
 
-    rolling_windows = np.lib.stride_tricks.sliding_window_view(
-        daily_returns_np, window_shape=(lookback + 1,)
-    )
-    comparison_matrix = rolling_windows[:, :-1] < rolling_windows[:, -1, np.newaxis]
+    rolling_windows = sliding_window_view(daily_returns_np, window_shape=(lookback + 1,))
+    comparison_matrix = rolling_windows[:, :-1] < rolling_windows[:, -1, newaxis]
 
-    percent_ranks = np.nanmean(comparison_matrix, axis=1) * 100
-    padded_percent_ranks = np.full(len(x), np.nan)
+    percent_ranks = nanmean(comparison_matrix, axis=1) * 100
+    padded_percent_ranks = full(len(x), nan)
     padded_percent_ranks[lookback:] = percent_ranks
 
     return Series(padded_percent_ranks, index=x.index)
@@ -121,7 +127,6 @@ def crsi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated
@@ -175,8 +180,6 @@ def crsi(
     # Fill
     if "fillna" in kwargs:
         crsi.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        crsi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     crsi.name = f"CRSI_{length_rsi}_{length_streak}_{length_rank}"

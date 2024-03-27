@@ -6,6 +6,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from .ema import ema
 
 
+
 def tema(
     close: Series, length: Int = None, talib: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -28,7 +29,6 @@ def tema(
         adjust (bool): Default: True
         presma (bool, optional): If True, uses SMA for initial value.
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -60,8 +60,6 @@ def tema(
     # Fill
     if "fillna" in kwargs:
         tema.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        tema.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     tema.name = f"TEMA_{length}"

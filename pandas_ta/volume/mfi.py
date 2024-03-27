@@ -6,13 +6,14 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.overlap import hlc3
 from pandas_ta.utils import (
-    np_non_zero_range,
+    nb_non_zero_range,
     v_drift,
     v_offset,
     v_pos_default,
     v_series,
     v_talib
 )
+
 
 
 def mfi(
@@ -41,7 +42,6 @@ def mfi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -86,8 +86,6 @@ def mfi(
     # Fill
     if "fillna" in kwargs:
         mfi.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        mfi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     mfi.name = f"MFI_{length}"

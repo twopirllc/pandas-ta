@@ -5,7 +5,7 @@ from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import (
-    np_prepend,
+    nb_prepend,
     v_offset,
     v_pos_default,
     v_series,
@@ -13,24 +13,12 @@ from pandas_ta.utils import (
 )
 
 
+
 # Fast SMA Options: https://github.com/numba/numba/issues/4119
 @njit
-def np_sma(x, n):
+def nb_sma(x, n):
     result = convolve(ones(n) / n, x)[n - 1:1 - n]
-    return np_prepend(result, n - 1)
-
-# SMA: Alternative Implementations
-# @njit
-# def np_sma(x: np.ndarray, n: int):
-#     result = np.convolve(x, np.ones(n), mode="valid") / n
-#     return np_prepend(result, n - 1)
-
-# @njit
-# def np_sma(x: np.ndarray, n: int):
-#     csum = np.cumsum(x, dtype=float)
-#     csum[n:] = csum[n:] - csum[:-n]
-#     result = csum[n - 1:] / n
-#     return np_prepend(result, n - 1)
+    return nb_prepend(result, n - 1)
 
 
 def sma(
@@ -56,7 +44,6 @@ def sma(
         adjust (bool): Default: True
         presma (bool, optional): If True, uses SMA for initial value.
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -81,7 +68,7 @@ def sma(
         sma = SMA(close, length)
     else:
         np_close = close.values
-        sma = np_sma(np_close, length)
+        sma = nb_sma(np_close, length)
         sma = Series(sma, index=close.index)
 
     # Offset
@@ -91,8 +78,6 @@ def sma(
     # Fill
     if "fillna" in kwargs:
         sma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        sma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     sma.name = f"SMA_{length}"

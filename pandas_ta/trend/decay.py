@@ -6,9 +6,10 @@ from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.utils import v_offset, v_pos_default, v_series, v_str
 
 
+
 # Exponential Decay - https://tulipindicators.org/edecay
 @njit
-def np_exponential_decay(x, n):
+def nb_exponential_decay(x, n):
     m, rate = x.size, 1.0 - (1.0 / n)
 
     result = zeros_like(x, dtype="float")
@@ -22,7 +23,7 @@ def np_exponential_decay(x, n):
 
 # Linear Decay -https://tulipindicators.org/decay
 @njit
-def np_linear_decay(x, n):
+def nb_linear_decay(x, n):
     m, rate = x.size, 1.0 / n
 
     result = zeros_like(x, dtype="float")
@@ -55,7 +56,6 @@ def decay(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -75,9 +75,9 @@ def decay(
 
     if mode in ["exp", "exponential"]:
         _mode = "EXP"
-        result = np_exponential_decay(np_close, length)
+        result = nb_exponential_decay(np_close, length)
     else:  # "linear"
-        result = np_linear_decay(np_close, length)
+        result = nb_linear_decay(np_close, length)
 
     result = Series(result, index=close.index)
 
@@ -88,8 +88,6 @@ def decay(
     # Fill
     if "fillna" in kwargs:
         result.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        result.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     result.name = f"{_mode}DECAY_{length}"

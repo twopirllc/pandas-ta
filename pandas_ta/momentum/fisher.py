@@ -6,6 +6,7 @@ from pandas_ta.overlap import hl2
 from pandas_ta.utils import high_low_range, v_offset, v_pos_default, v_series
 
 
+
 def fisher(
     high: Series, low: Series, length: Int = None, signal: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -28,7 +29,6 @@ def fisher(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: fisher and signal columns
@@ -81,9 +81,6 @@ def fisher(
     if "fillna" in kwargs:
         fisher.fillna(kwargs["fillna"], inplace=True)
         signalma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        fisher.fillna(method=kwargs["fill_method"], inplace=True)
-        signalma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}_{signal}"

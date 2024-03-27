@@ -14,6 +14,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def stoch(
     high: Series, low: Series, close: Series,
     k: Int = None, d: Int = None, smooth_k: Int = None,
@@ -50,7 +51,6 @@ def stoch(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: %K, %D, Histogram columns.
@@ -108,10 +108,6 @@ def stoch(
         stoch_k.fillna(kwargs["fillna"], inplace=True)
         stoch_d.fillna(kwargs["fillna"], inplace=True)
         stoch_h.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        stoch_k.fillna(method=kwargs["fill_method"], inplace=True)
-        stoch_d.fillna(method=kwargs["fill_method"], inplace=True)
-        stoch_h.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _name = "STOCH"

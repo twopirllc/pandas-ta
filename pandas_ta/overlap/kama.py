@@ -13,6 +13,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def kama(
     close: Series, length: Int = None, fast: Int = None, slow: Int = None,
     mamode: str = None, drift: Int = None,
@@ -43,7 +44,6 @@ def kama(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -91,8 +91,6 @@ def kama(
     # Fill
     if "fillna" in kwargs:
         kama.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        kama.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     kama.name = f"KAMA_{length}_{fast}_{slow}"

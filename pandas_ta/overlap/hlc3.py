@@ -5,6 +5,7 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils import v_offset, v_series, v_talib
 
 
+
 def hlc3(
     high: Series, low: Series, close: Series, talib: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -21,8 +22,6 @@ def hlc3(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value). Only works if
-            result is offset.
-        fill_method (value, optional): Type of fill method. Only works if
             result is offset.
 
     Returns:
@@ -53,8 +52,6 @@ def hlc3(
         # Fill
         if "fillna" in kwargs:
             hlc3.fillna(kwargs["fillna"], inplace=True)
-        if "fill_method" in kwargs:
-            hlc3.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     hlc3.name = "HLC3"

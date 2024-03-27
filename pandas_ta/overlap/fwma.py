@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def fwma(
     close: Series, length: Int = None, asc: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -30,7 +31,6 @@ def fwma(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -57,8 +57,6 @@ def fwma(
     # Fill
     if "fillna" in kwargs:
         fwma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        fwma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     fwma.name = f"FWMA_{length}"

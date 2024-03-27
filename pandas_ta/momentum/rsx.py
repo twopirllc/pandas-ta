@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def rsx(
     close: Series, length: Int = None, drift: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -35,7 +36,6 @@ def rsx(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -121,8 +121,6 @@ def rsx(
     # Fill
     if "fillna" in kwargs:
         rsx.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        rsx.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     rsx.name = f"RSX_{length}"

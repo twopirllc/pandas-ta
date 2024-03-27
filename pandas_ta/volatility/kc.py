@@ -13,6 +13,7 @@ from pandas_ta.utils import (
 from .true_range import true_range
 
 
+
 def kc(
     high: Series, low: Series, close: Series,
     length: Int = None, scalar: IntFloat = None,
@@ -41,7 +42,6 @@ def kc(
             When False, use a high - low as it's range calculation.
             Default: True
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: lower, basis, upper columns.
@@ -80,10 +80,6 @@ def kc(
         lower.fillna(kwargs["fillna"], inplace=True)
         basis.fillna(kwargs["fillna"], inplace=True)
         upper.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        lower.fillna(method=kwargs["fill_method"], inplace=True)
-        basis.fillna(method=kwargs["fill_method"], inplace=True)
-        upper.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"{mamode.lower()[0] if len(mamode) else ''}_{length}_{scalar}"

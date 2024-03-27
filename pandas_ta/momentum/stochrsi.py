@@ -12,6 +12,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def stochrsi(
     close: Series, length: Int = None, rsi_length: Int = None,
     k: Int = None, d: Int = None, mamode: str = None,
@@ -44,7 +45,6 @@ def stochrsi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: RSI %K, RSI %D columns.
@@ -82,9 +82,6 @@ def stochrsi(
     if "fillna" in kwargs:
         stochrsi_k.fillna(kwargs["fillna"], inplace=True)
         stochrsi_d.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        stochrsi_k.fillna(method=kwargs["fill_method"], inplace=True)
-        stochrsi_d.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _name = "STOCHRSI"

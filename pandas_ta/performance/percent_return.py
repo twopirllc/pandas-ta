@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
+
 def percent_return(
     close: Series, length: Int = None, cumulative: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -26,7 +27,6 @@ def percent_return(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -57,8 +57,6 @@ def percent_return(
     # Fill
     if "fillna" in kwargs:
         pct_return.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        pct_return.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     pct_return.name = f"{'CUM' if cumulative else ''}PCTRET_{length}"

@@ -18,6 +18,7 @@ from pandas_ta.utils import (
 from pandas_ta.volatility import atr
 
 
+
 def adx(
     high: Series, low: Series, close: Series, length: Int = None,
     lensig: Int = None, adxr_length: Int = None, scalar: IntFloat = None,
@@ -51,7 +52,6 @@ def adx(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: adx, adxr, dmp, dmn columns.
@@ -151,11 +151,6 @@ def adx(
         adxr.fillna(kwargs["fillna"], inplace=True)
         dmp.fillna(kwargs["fillna"], inplace=True)
         dmn.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        adx.fillna(method=kwargs["fill_method"], inplace=True)
-        adxr.fillna(method=kwargs["fill_method"], inplace=True)
-        dmp.fillna(method=kwargs["fill_method"], inplace=True)
-        dmn.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     adx.name = f"ADX_{lensig}"

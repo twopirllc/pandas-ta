@@ -5,6 +5,7 @@ from pandas_ta.momentum import roc
 from pandas_ta.utils import signed_series, v_offset, v_pos_default, v_series
 
 
+
 def nvi(
     close: Series, volume: Series, length: Int = None, initial: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -28,7 +29,6 @@ def nvi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -59,8 +59,6 @@ def nvi(
     # Fill
     if "fillna" in kwargs:
         nvi.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        nvi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     nvi.name = f"NVI_{length}"

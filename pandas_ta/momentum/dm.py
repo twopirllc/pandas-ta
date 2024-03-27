@@ -14,6 +14,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def dm(
     high: Series, low: Series, length: Int = None,
     mamode: str = None, talib: bool = None, drift: Int = None,
@@ -40,7 +41,6 @@ def dm(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: DMP (+DM) and DMN (-DM) columns.
@@ -85,9 +85,6 @@ def dm(
     if "fillna" in kwargs:
         pos.fillna(kwargs["fillna"], inplace=True)
         neg.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        pos.fillna(method=kwargs["fill_method"], inplace=True)
-        neg.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}"

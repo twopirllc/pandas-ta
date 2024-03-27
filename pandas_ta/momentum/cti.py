@@ -5,6 +5,7 @@ from pandas_ta.overlap import linreg
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def cti(
     close: Series, length: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -24,7 +25,6 @@ def cti(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: Series of the CTI values for the given period.
@@ -48,8 +48,6 @@ def cti(
     # Fill
     if "fillna" in kwargs:
         cti.fillna(method=kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        cti.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     cti.name = f"CTI_{length}"

@@ -7,6 +7,7 @@ from .long_run import long_run
 from .short_run import short_run
 
 
+
 def amat(
     close: Series, fast: Int = None, slow: Int = None,
     lookback: Int = None, mamode: str = None,
@@ -34,7 +35,6 @@ def amat(
     Kwargs:
         run_length (int): Trend length for OBV long and short runs. Default: 2
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: AMAT_LR, AMAT_SR columns.
@@ -69,10 +69,6 @@ def amat(
     if "fillna" in kwargs:
         mas_long.fillna(kwargs["fillna"], inplace=True)
         mas_short.fillna(kwargs["fillna"], inplace=True)
-
-    if "fill_method" in kwargs:
-        mas_long.fillna(method=kwargs["fill_method"], inplace=True)
-        mas_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     _props = f"_{fast}_{slow}_{lookback}"
     data = {

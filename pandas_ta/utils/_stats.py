@@ -7,6 +7,7 @@ from pandas_ta.utils import hpoly
 __all__ = ["inv_norm"]
 
 
+
 def _gaussian_poly_coefficients() -> Array:
     """Three pairs of Polynomial Approximation Coefficients
     for the Gaussian Normal CDF"""

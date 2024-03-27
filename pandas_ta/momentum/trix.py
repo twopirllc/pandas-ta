@@ -12,6 +12,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def trix(
     close: Series, length: Int = None, signal: Int = None,
     scalar: IntFloat = None, drift: Int = None,
@@ -34,7 +35,6 @@ def trix(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -79,9 +79,6 @@ def trix(
     if "fillna" in kwargs:
         trix.fillna(kwargs["fillna"], inplace=True)
         trix_signal.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        trix.fillna(method=kwargs["fill_method"], inplace=True)
-        trix_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     trix.name = f"TRIX_{length}_{signal}"

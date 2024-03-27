@@ -5,6 +5,7 @@ from pandas_ta.momentum import roc
 from pandas_ta.utils import v_drift, v_offset, v_series
 
 
+
 def pvt(
     close: Series, volume: Series, drift: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -25,7 +26,6 @@ def pvt(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -52,8 +52,6 @@ def pvt(
     # Fill
     if "fillna" in kwargs:
         pvt.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        pvt.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     pvt.name = f"PVT"

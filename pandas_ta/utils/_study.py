@@ -15,6 +15,7 @@ __all__ = [
 ]
 
 
+
 # Study DataClass
 @dataclass
 class Study:

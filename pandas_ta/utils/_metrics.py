@@ -23,6 +23,7 @@ __all__ = [
 ]
 
 
+
 def cagr(close: Series) -> IntFloat:
     """Compounded Annual Growth Rate
 

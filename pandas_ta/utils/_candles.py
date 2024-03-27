@@ -5,6 +5,7 @@ from pandas_ta.utils._core import non_zero_range
 __all__ = ["candle_color", "high_low_range", "real_body"]
 
 
+
 def candle_color(open_: Series, close: Series) -> Series:
     """Candle Change
 

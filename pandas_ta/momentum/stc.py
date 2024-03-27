@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def stc(
     close: Series, tclength: Int = None,
     fast: Int = None, slow: Int = None, factor: IntFloat = None,
@@ -59,7 +60,6 @@ def stc(
         ma2: External MA (mandatory in conjunction with ma1)
         osc: External oscillator
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: stc, macd, stoch
@@ -130,10 +130,6 @@ def stc(
         stc.fillna(kwargs["fillna"], inplace=True)
         macd.fillna(kwargs["fillna"], inplace=True)
         stoch.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        stc.fillna(method=kwargs["fill_method"], inplace=True)
-        macd.fillna(method=kwargs["fill_method"], inplace=True)
-        stoch.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{tclength}_{fast}_{slow}_{factor}"

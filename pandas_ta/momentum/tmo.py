@@ -14,6 +14,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def sum_signed_rolling_deltas(
     open_: Series, close: Series, length: Int, exclusive: bool = True
 ) -> Series:
@@ -115,7 +116,6 @@ def tmo(
 
     Kwargs:
         fillna (value, optional): DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         DataFrame: main, smooth, main momentum, smooth momentum
@@ -179,12 +179,6 @@ def tmo(
         smooth.fillna(kwargs["fillna"], inplace=True)
         mom_main.fillna(kwargs["fillna"], inplace=True)
         mom_smooth.fillna(kwargs["fillna"], inplace=True)
-
-    if "fill_method" in kwargs:
-        main.fillna(method=kwargs["fill_method"], inplace=True)
-        smooth.fillna(method=kwargs["fill_method"], inplace=True)
-        mom_main.fillna(method=kwargs["fill_method"], inplace=True)
-        mom_smooth.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{tmo_length}_{calc_length}_{smooth_length}"

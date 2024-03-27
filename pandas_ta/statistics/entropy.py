@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def entropy(
     close: Series, length: Int = None, base: IntFloat = None,
     offset: Int = None, **kwargs: DictLike
@@ -26,7 +27,6 @@ def entropy(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -52,8 +52,6 @@ def entropy(
     # Fill
     if "fillna" in kwargs:
         entropy.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        entropy.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     entropy.name = f"ENTP_{length}"

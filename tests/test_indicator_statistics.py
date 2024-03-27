@@ -47,7 +47,7 @@ def test_skew(df):
 
 
 def test_stdev(df):
-    result = ta.stdev(df.close, talib=False)
+    result = ta.stdev(df.close, talib=False, ddof=0)
     assert isinstance(result, Series)
     assert result.name == "STDEV_30"
 
@@ -76,7 +76,7 @@ def test_tos_stdevall(df, length, stds, name, columns):
 
 
 def test_variance(df):
-    result = ta.variance(df.close, talib=False)
+    result = ta.variance(df.close, talib=False, ddof=0)
     assert isinstance(result, Series)
     assert result.name == "VAR_30"
 

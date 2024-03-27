@@ -18,8 +18,8 @@ __all__ = [
     "category_files",
     "client_exists",
     "ms2secs",
+    "nb_non_zero_range",
     "non_zero_range",
-    "np_non_zero_range",
     "recent_maximum_index",
     "recent_minimum_index",
     "rma_pandas",
@@ -29,6 +29,7 @@ __all__ = [
     "tal_ma",
     "unsigned_differences",
 ]
+
 
 
 def camelCase2Title(x: str):
@@ -66,7 +67,7 @@ def non_zero_range(high: Series, low: Series) -> Series:
 
 
 @njit
-def np_non_zero_range(x, y):
+def nb_non_zero_range(x, y):
     diff = x - y
     if diff.any() == 0:
         diff += finfo(float64).eps

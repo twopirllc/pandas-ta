@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def vhm(
         volume: Series, length: Int = None, slength = None,
         mamode: str = None, offset: Int = None, **kwargs: DictLike
@@ -41,7 +42,6 @@ def vhm(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -69,9 +69,6 @@ def vhm(
     # Fill
     if "fillna" in kwargs:
         vhm.fillna(kwargs["fillna"], inplace=True)
-
-    if "fill_method" in kwargs:
-        vhm.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"VHM_{length}"

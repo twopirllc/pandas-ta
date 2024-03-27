@@ -7,6 +7,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from .variance import variance
 
 
+
 def stdev(
     close: Series, length: Int = None,
     ddof: Int = None, talib: bool = None,
@@ -30,7 +31,6 @@ def stdev(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -62,8 +62,6 @@ def stdev(
     # Fill
     if "fillna" in kwargs:
         stdev.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        stdev.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     stdev.name = f"STDEV_{length}"

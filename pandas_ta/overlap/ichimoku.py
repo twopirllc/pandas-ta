@@ -5,6 +5,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series
 from .midprice import midprice
 
 
+
 def ichimoku(
     high: Series, low: Series, close: Series,
     tenkan: Int = None, kijun: Int = None, senkou: Int = None,
@@ -35,8 +36,8 @@ def ichimoku(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
-        lookahead (value, optional): Set False to prevent data leakage by excluding the Chikou Span column from the output.
+        lookahead (value, optional): To prevent data leakage by
+            the Chikou Span column, set to False.
 
     Returns:
         pd.DataFrame: Two DataFrames.
@@ -87,10 +88,6 @@ def ichimoku(
         span_a.fillna(kwargs["fillna"], inplace=True)
         span_b.fillna(kwargs["fillna"], inplace=True)
         chikou_span.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        span_a.fillna(method=kwargs["fill_method"], inplace=True)
-        span_b.fillna(method=kwargs["fill_method"], inplace=True)
-        chikou_span.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     span_a.name = f"ISA_{tenkan}"

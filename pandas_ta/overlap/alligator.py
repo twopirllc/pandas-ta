@@ -5,6 +5,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from .smma import smma
 
 
+
 def alligator(
     close: Series, jaw: Int = None, teeth: Int = None, lips: Int = None,
     talib: bool = None, offset: Int = None, **kwargs: DictLike
@@ -35,7 +36,6 @@ def alligator(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: JAW, TEETH, LIPS columns.
@@ -68,10 +68,6 @@ def alligator(
         gator_jaw.fillna(kwargs["fillna"], inplace=True)
         gator_teeth.fillna(kwargs["fillna"], inplace=True)
         gator_lips.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        gator_jaw.fillna(method=kwargs["fill_method"], inplace=True)
-        gator_teeth.fillna(method=kwargs["fill_method"], inplace=True)
-        gator_lips.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{jaw}_{teeth}_{lips}"

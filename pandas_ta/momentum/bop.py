@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def bop(
     open_: Series, high: Series, low: Series, close: Series,
     scalar: IntFloat = None, talib: bool = None,
@@ -35,7 +36,6 @@ def bop(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -65,8 +65,6 @@ def bop(
     # Fill
     if "fillna" in kwargs:
         bop.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        bop.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     bop.name = f"BOP"

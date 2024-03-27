@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def ebsw(
     close: Series, length: Int = None, bars: Int = None,
     initial_version: bool = False,
@@ -45,8 +46,6 @@ def ebsw(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
-
     Returns:
         pd.Series: New feature generated.
     """
@@ -146,9 +145,6 @@ def ebsw(
     # Fill
     if "fillna" in kwargs:
         ebsw.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ebsw.fillna(method=kwargs["fill_method"], inplace=True)
-
     # Name and Category
     ebsw.name = f"EBSW_{length}_{bars}"
     ebsw.category = "cycles"

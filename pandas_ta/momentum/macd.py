@@ -12,6 +12,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def macd(
     close: Series, fast: Int = None, slow: Int = None,
     signal: Int = None, talib: bool = None,
@@ -41,7 +42,6 @@ def macd(
         asmode (value, optional): When True, enables AS version of MACD.
             Default: False
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: macd, histogram, signal columns
@@ -92,10 +92,6 @@ def macd(
         macd.fillna(kwargs["fillna"], inplace=True)
         histogram.fillna(kwargs["fillna"], inplace=True)
         signalma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        macd.fillna(method=kwargs["fill_method"], inplace=True)
-        histogram.fillna(method=kwargs["fill_method"], inplace=True)
-        signalma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _asmode = "AS" if as_mode else ""

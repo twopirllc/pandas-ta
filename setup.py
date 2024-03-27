@@ -19,7 +19,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "4", "11b")),
+    version=".".join(("0", "4", "12b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -53,22 +53,29 @@ setup(
         "pandas_ta": ["py.typed"],
         "data": ["data/*.csv"],
     },
-    install_requires=["pandas", "numba"],
+    install_requires=[
+        "numba>=0.59.0",
+        "numpy>=1.26.4",
+        "pandas>=2.2.0",
+        "pandas-datareader",
+        "scipy>=1.12"
+    ],
     # List additional groups of dependencies here (e.g. development dependencies).
     # You can install these using the following syntax, for example:
     # $ pip install -e .[full,test]     # locally
     # $ pip install -U pandas_ta[full]  # pip
     extras_require={
         "full": [
-            "alphaVantage-api", "matplotlib", "mplfinance", "numba", "polygon",
-            "python-dotenv", "scipy", "sklearn", "statsmodels", "stochastic",
-            "ta-lib", "tqdm", "vectorbt", "yfinance",
+            "alphaVantage-api", "matplotlib", "mplfinance",
+            "python-dotenv", "sklearn", "statsmodels", "stochastic",
+            "TA-Lib>=0.4.28", "tqdm", "vectorbt", "yfinance>=0.2.36"
         ],
         "test": [
+            "numba>=0.59.0",
+            "numpy>=1.26.4",
+            "pandas_datareader>=0.10.0",
             "pytest==7.1.2",
-            "pandas_datareader==0.10.0",
-            "ta-lib",
-            "numba"
+            "TA-Lib>=0.4.28"
         ],
     },
 )

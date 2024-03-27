@@ -187,6 +187,7 @@ def test_ht_trendline(df):
 
     try:
         expected = tal.HT_TRENDLINE(df.close)
+        corr = ta.utils.df_error_analysis(result, expected)
         pdt.assert_series_equal(result, expected, check_names=False)
     except AssertionError:
         try:
@@ -338,6 +339,11 @@ def test_ext_decreasing(df):
 def test_ext_dpo(df):
     df.ta.dpo(append=True)
     assert df.columns[-1] == "DPO_20"
+
+
+def test_ext_ht_trendline(df):
+    df.ta.ht_trendline(append=True)
+    assert df.columns[-1] == "HT_TL"
 
 
 def test_ext_increasing(df):

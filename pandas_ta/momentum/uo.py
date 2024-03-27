@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def uo(
     high: Series, low: Series, close: Series,
     fast: Int = None, medium: Int = None, slow: Int = None,
@@ -43,7 +44,6 @@ def uo(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -99,8 +99,6 @@ def uo(
     # Fill
     if "fillna" in kwargs:
         uo.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        uo.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     uo.name = f"UO_{fast}_{medium}_{slow}"

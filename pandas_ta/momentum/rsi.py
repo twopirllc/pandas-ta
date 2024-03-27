@@ -15,6 +15,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def rsi(
     close: Series, length: Int = None, scalar: IntFloat = None,
     mamode: str = None, talib: bool = None,
@@ -42,7 +43,6 @@ def rsi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -83,8 +83,6 @@ def rsi(
     # Fill
     if "fillna" in kwargs:
         rsi.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        rsi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     rsi.name = f"RSI_{length}"

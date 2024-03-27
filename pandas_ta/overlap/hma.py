@@ -6,6 +6,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series
 from .wma import wma
 
 
+
 def hma(
     close: Series, length: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -25,7 +26,6 @@ def hma(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -54,8 +54,6 @@ def hma(
     # Fill
     if "fillna" in kwargs:
         hma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        hma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     hma.name = f"HMA_{length}"

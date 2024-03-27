@@ -4,6 +4,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def donchian(
     high: Series, low: Series,
     lower_length: Int = None, upper_length: Int = None,
@@ -26,7 +27,6 @@ def donchian(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: lower, mid, upper columns.
@@ -56,10 +56,6 @@ def donchian(
         lower.fillna(kwargs["fillna"], inplace=True)
         mid.fillna(kwargs["fillna"], inplace=True)
         upper.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        lower.fillna(method=kwargs["fill_method"], inplace=True)
-        mid.fillna(method=kwargs["fill_method"], inplace=True)
-        upper.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Offset
     if offset != 0:

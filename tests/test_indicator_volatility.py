@@ -22,7 +22,7 @@ def test_accbands(df):
 
 
 def test_atr(df):
-    result = ta.atr(df.high, df.low, df.close, talib=False)
+    result = ta.atr(df.high, df.low, df.close, talib=False, prenan=True)
     assert isinstance(result, Series)
     assert result.name == "ATRr_14"
 
@@ -135,12 +135,12 @@ def test_massi(df):
 
 
 def test_natr(df):
-    result = ta.natr(df.high, df.low, df.close, talib=False)
+    result = ta.natr(df.high, df.low, df.close, talib=False, prenan=True)
     assert isinstance(result, Series)
     assert result.name == "NATR_14"
 
     try:
-        expected = tal.ATR(df.high, df.low, df.close)
+        expected = tal.NATR(df.high, df.low, df.close)
         pdt.assert_series_equal(result, expected, check_names=False)
     except AssertionError:
         try:

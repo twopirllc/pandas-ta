@@ -114,6 +114,7 @@ env/**
 .vscode/**
 
 # zed settings
+.zed
 .zed/**
 
 # Original Source (Dev)

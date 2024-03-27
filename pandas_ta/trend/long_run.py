@@ -6,6 +6,7 @@ from .decreasing import decreasing
 from .increasing import increasing
 
 
+
 def long_run(
     fast: Series, slow: Series, length: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -34,7 +35,6 @@ def long_run(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -63,8 +63,6 @@ def long_run(
     # Fill
     if "fillna" in kwargs:
         long_run.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        long_run.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     long_run.name = f"LR_{length}"

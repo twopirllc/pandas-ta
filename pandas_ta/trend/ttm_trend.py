@@ -5,6 +5,7 @@ from pandas_ta.overlap import hl2
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def ttm_trend(
     high: Series, low: Series, close: Series, length: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -29,7 +30,6 @@ def ttm_trend(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: ttm_trend.
@@ -62,8 +62,6 @@ def ttm_trend(
     # Fill
     if "fillna" in kwargs:
         tm_trend.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        tm_trend.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     tm_trend.name = f"TTM_TRND_{length}"

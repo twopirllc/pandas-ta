@@ -10,6 +10,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def er(
     close: Series, length: Int = None, drift: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -33,7 +34,6 @@ def er(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -62,8 +62,6 @@ def er(
     # Fill
     if "fillna" in kwargs:
         er.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        er.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     er.name = f"ER_{length}"

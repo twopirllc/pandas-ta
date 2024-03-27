@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-from numpy import copy, cos, exp
+from numpy import copy, cos, exp, zeros_like
 from numba import njit
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 # John F. Ehler's Super Smoother Filter by Everget (3 poles), Tradingview
 # https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
 @njit
-def np_ssf3(x, n, pi, sqrt3):
+def nb_ssf3(x, n, pi, sqrt3):
     m, result = x.size, copy(x)
     a = exp(-pi / n)
     b = 2 * a * cos(-pi * sqrt3 / n)
@@ -20,6 +21,7 @@ def np_ssf3(x, n, pi, sqrt3):
     d2 = b + c
     d1 = 1 - d2 - d3 - d4
 
+    # result[:3] = x[:3]
     for i in range(3, m):
         result[i] = d1 * x[i] + d2 * result[i - 1] \
             + d3 * result[i - 2] + d4 * result[i - 3]
@@ -60,7 +62,6 @@ def ssf3(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -78,7 +79,7 @@ def ssf3(
 
     # Calculate
     np_close = close.values
-    ssf = np_ssf3(np_close, length, pi, sqrt3)
+    ssf = nb_ssf3(np_close, length, pi, sqrt3)
     ssf = Series(ssf, index=close.index)
 
     # Offset
@@ -88,8 +89,6 @@ def ssf3(
     # Fill
     if "fillna" in kwargs:
         ssf.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ssf.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     ssf.name = f"SSF3_{length}"

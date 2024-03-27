@@ -14,6 +14,7 @@ from pandas_ta.utils import (
 from .rsi import rsi
 
 
+
 def qqe(
     close: Series, length: Int = None,
     smooth: Int = None, factor: IntFloat = None,
@@ -50,7 +51,6 @@ def qqe(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: QQE, RSI_MA (basis), QQEl (long), QQEs (short) columns.
@@ -149,11 +149,6 @@ def qqe(
         qqe.fillna(kwargs["fillna"], inplace=True)
         qqe_long.fillna(kwargs["fillna"], inplace=True)
         qqe_short.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        rsi_ma.fillna(method=kwargs["fill_method"], inplace=True)
-        qqe.fillna(method=kwargs["fill_method"], inplace=True)
-        qqe_long.fillna(method=kwargs["fill_method"], inplace=True)
-        qqe_short.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"{_mode}_{length}_{smooth}_{factor}"

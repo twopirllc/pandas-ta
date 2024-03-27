@@ -7,6 +7,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series
 from .roc import roc
 
 
+
 def coppock(
     close: Series, length: Int = None, fast: Int = None, slow: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -31,7 +32,6 @@ def coppock(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -59,8 +59,6 @@ def coppock(
     # Fill
     if "fillna" in kwargs:
         coppock.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        coppock.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     coppock.name = f"COPC_{fast}_{slow}_{length}"

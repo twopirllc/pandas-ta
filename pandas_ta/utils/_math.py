@@ -11,7 +11,6 @@ from numpy import (
 )
 from pandas import DataFrame, Series
 from numba import njit
-
 from pandas_ta._typing import (
     Array,
     DictLike,
@@ -39,6 +38,7 @@ __all__ = [
     "weights",
     "zero",
 ]
+
 
 
 def combination(
@@ -114,7 +114,7 @@ def geometric_mean(series: Series) -> Float:
 
 
 def hpoly(x: Array, v: IntFloat) -> Float:
-    """Horner Calculation for Polynomial Evaluation (hpoly)
+    """Horner's Calculation for Polynomial Evaluation (hpoly)
 
     array: np.array of polynomial coefficients
         * Convert list or Series to np.array prior to calling the method for

@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_int, v_lowerbound, v_offset, v_series
 
 
+
 def cube(
     close: Series, pwr: IntFloat = None, signal_offset: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -34,7 +35,6 @@ def cube(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: New feature generated.
@@ -65,9 +65,6 @@ def cube(
     if "fillna" in kwargs:
         ct.fillna(kwargs["fillna"], inplace=True)
         ct_signal.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ct.fillna(method=kwargs["fill_method"], inplace=True)
-        ct_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{pwr}_{signal_offset}"

@@ -6,6 +6,7 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
+
 def hwc(
     close: Series, scalar: IntFloat = None, channels: bool = None,
     na: IntFloat = None, nb: IntFloat = None,
@@ -36,7 +37,6 @@ def hwc(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: HWM (Mid), HWU (Upper), HWL (Lower) columns.
@@ -114,14 +114,6 @@ def hwc(
         if channels:
             hwc_width.fillna(kwargs["fillna"], inplace=True)
             hwc_pctwidth.fillna(kwargs["fillna"], inplace=True)
-
-    if "fill_method" in kwargs:
-        hwc.fillna(method=kwargs["fill_method"], inplace=True)
-        hwc_upper.fillna(method=kwargs["fill_method"], inplace=True)
-        hwc_lower.fillna(method=kwargs["fill_method"], inplace=True)
-        if channels:
-            hwc_width.fillna(method=kwargs["fill_method"], inplace=True)
-            hwc_pctwidth.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{scalar}"

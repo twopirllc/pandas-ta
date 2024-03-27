@@ -7,6 +7,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import signed_series, v_bool, v_pos_default, v_series
 
 
+
 def vp(
     close: Series, volume: Series,
     width: Int = None, sort: bool = None,
@@ -32,7 +33,6 @@ def vp(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: New feature generated.
@@ -111,8 +111,6 @@ def vp(
     # Fill
     if "fillna" in kwargs:
         vpdf.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        vpdf.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     vpdf.name = f"VP_{width}"

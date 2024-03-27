@@ -13,8 +13,9 @@ from pandas_ta.utils import (
 )
 
 
+
 @njit
-def np_ht_trendline(x):
+def nb_ht_trendline(x):
     a, b, m = 0.0962, 0.5769, x.size
 
     wma4, dt = zeros_like(x), zeros_like(x)
@@ -22,7 +23,7 @@ def np_ht_trendline(x):
     ji, jq = zeros_like(x), zeros_like(x)
     i1, i2 = zeros_like(x), zeros_like(x)
     re, im = zeros_like(x), zeros_like(x)
-    period, smooth_period = zeros_like(x), zeros_like(x)
+    period, smp = zeros_like(x), zeros_like(x)
     i_trend = zeros_like(x)
 
     result = zeros_like(x)
@@ -64,9 +65,9 @@ def np_ht_trendline(x):
         if period[i] > 50.0:
             period[i] = 50.0
         period[i] = 0.2 * period[i] + 0.8 * period[i - 1]
-        smooth_period[i] = 0.33 * period[i] + 0.67 * smooth_period[i - 1]
+        smp[i] = 0.33 * period[i] + 0.67 * smp[i - 1]
 
-        dc_period = int(smooth_period[i] + 0.5)
+        dc_period = int(smp[i] + 0.5)
         dcp_avg = 0
         for k in range(dc_period):
             dcp_avg += x[i - k]
@@ -87,8 +88,11 @@ def ht_trendline(
     prenan: Int = None, offset: Int = None,
     **kwargs: DictLike
 ) -> Series:
-    """Hilbert Transform TrendLine (Also known as Instantaneous TrendLine)
-    By removing Dominant Cycle (DC) of the time-series from itself, ht_trendline is calculated.
+    """Hilbert Transform TrendLine (HT_TL)
+
+    The Hilbert Transform TrendLine or Instantaneous TrendLine as described
+    in Ehler's "Rocket Science for Traders" Book attempts to smooth the
+    source by using a bespoke application of the Hilbert Transform.
 
     Sources:
         https://c.mql5.com/forextsd/forum/59/023inst.pdf
@@ -104,7 +108,6 @@ def ht_trendline(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: Hilbert Transformation Instantaneous Trend-line.
@@ -124,7 +127,7 @@ def ht_trendline(
         tl = HT_TRENDLINE(close)
     else:
         np_close = close.values
-        np_tl = np_ht_trendline(np_close)
+        np_tl = nb_ht_trendline(np_close)
 
         if prenan > 0:
             np_tl[:prenan] = nan
@@ -140,8 +143,6 @@ def ht_trendline(
     # Fill
     if "fillna" in kwargs:
         tl.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        tl.fillna(method=kwargs["fill_method"], inplace=True)
 
     tl.name = f"HT_TL"
     tl.category = "trend"

@@ -4,6 +4,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import non_zero_range, v_offset, v_pos_default, v_series
 
 
+
 def cmf(
     high: Series, low: Series, close: Series, volume: Series,
     open_: Series = None, length: Int = None,
@@ -29,7 +30,6 @@ def cmf(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -69,8 +69,6 @@ def cmf(
     # Fill
     if "fillna" in kwargs:
         cmf.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        cmf.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     cmf.name = f"CMF_{length}"

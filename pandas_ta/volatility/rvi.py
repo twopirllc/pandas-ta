@@ -15,6 +15,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def _rvi(source, length, scalar, mode, drift):
     """RVI"""
     std = stdev(source, length)
@@ -62,7 +63,6 @@ def rvi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: lower, basis, upper columns.
@@ -111,8 +111,6 @@ def rvi(
     # Fill
     if "fillna" in kwargs:
         rvi.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        rvi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     rvi.name = f"RVI{_mode}_{length}"

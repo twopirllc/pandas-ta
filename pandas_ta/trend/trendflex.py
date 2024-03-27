@@ -6,10 +6,11 @@ from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 # Ehler's Trendflex
 # http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html
 @njit
-def np_trendflex(x, n, k, alpha, pi, sqrt2):
+def nb_trendflex(x, n, k, alpha, pi, sqrt2):
     m, ratio = x.size, 2 * sqrt2 / k
     a = exp(-pi * ratio)
     b = 2 * a * cos(180 * ratio)
@@ -73,7 +74,6 @@ def trendflex(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -93,7 +93,7 @@ def trendflex(
 
     # Calculate
     np_close = close.values
-    result = np_trendflex(np_close, length, smooth, alpha, pi, sqrt2)
+    result = nb_trendflex(np_close, length, smooth, alpha, pi, sqrt2)
     result[:length] = nan
     result = Series(result, index=close.index)
 
@@ -104,8 +104,6 @@ def trendflex(
     # Fill
     if "fillna" in kwargs:
         result.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        result.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     result.name = f"TRENDFLEX_{length}_{smooth}_{alpha}"

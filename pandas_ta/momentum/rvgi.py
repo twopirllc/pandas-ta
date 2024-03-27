@@ -6,6 +6,7 @@ from pandas_ta.overlap import swma
 from pandas_ta.utils import non_zero_range, v_offset, v_pos_default, v_series
 
 
+
 def rvgi(
     open_: Series, high: Series, low: Series, close: Series,
     length: Int = None, swma_length: Int = None,
@@ -32,7 +33,6 @@ def rvgi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -75,9 +75,6 @@ def rvgi(
     if "fillna" in kwargs:
         rvgi.fillna(kwargs["fillna"], inplace=True)
         signal.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        rvgi.fillna(method=kwargs["fill_method"], inplace=True)
-        signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     rvgi.name = f"RVGI_{length}_{swma_length}"

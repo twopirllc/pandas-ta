@@ -5,6 +5,7 @@ from pandas_ta.statistics import zscore
 from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 
+
 def cdl_z(
     open_: Series, high: Series, low: Series, close: Series,
     length: Int = None, full: bool = None, ddof: Int = None,
@@ -30,7 +31,6 @@ def cdl_z(
             the length if less than a percentage of it's high-low range.
             Default: False
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: CDL_DOJI column.
@@ -78,8 +78,6 @@ def cdl_z(
     # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        df.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     df.name = f"CDL_Z{_props}"

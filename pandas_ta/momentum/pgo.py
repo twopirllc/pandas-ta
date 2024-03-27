@@ -6,6 +6,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series
 from pandas_ta.volatility import atr
 
 
+
 def pgo(
     high: Series, low: Series, close: Series, length: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -30,7 +31,6 @@ def pgo(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -58,8 +58,6 @@ def pgo(
     # Fill
     if "fillna" in kwargs:
         pgo.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        pgo.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     pgo.name = f"PGO_{length}"

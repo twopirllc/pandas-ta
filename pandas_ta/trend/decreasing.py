@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def decreasing(
     close: Series, length: Int = None, strict: bool = None,
     asint: bool = None, percent: IntFloat = None, drift: Int = None,
@@ -35,7 +36,6 @@ def decreasing(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -76,8 +76,6 @@ def decreasing(
     # Fill
     if "fillna" in kwargs:
         decreasing.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        decreasing.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _percent = f"_{0.01 * percent}" if percent else ''

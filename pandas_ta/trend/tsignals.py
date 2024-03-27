@@ -4,6 +4,7 @@ from pandas_ta._typing import DictLike, Int
 from pandas_ta.utils import v_bool, v_drift, v_int, v_offset, v_series
 
 
+
 def tsignals(
     trend: Series, asbool: bool = None,
     trend_reset: Int = None, trade_offset: Int = None, drift: Int = None,
@@ -43,7 +44,6 @@ def tsignals(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame with columns:
@@ -86,8 +86,6 @@ def tsignals(
     # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        df.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     df.name = f"TS"

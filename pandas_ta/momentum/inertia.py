@@ -15,6 +15,7 @@ from pandas_ta.utils import (
 from pandas_ta.volatility import rvi
 
 
+
 def inertia(
     close: Series, high: Series = None, low: Series = None,
     length: Int = None, rvi_length: Int = None, scalar: IntFloat = None,
@@ -48,7 +49,6 @@ def inertia(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -107,8 +107,6 @@ def inertia(
     # Fill
     if "fillna" in kwargs:
         inertia.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        inertia.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}_{rvi_length}"

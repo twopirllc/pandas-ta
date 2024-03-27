@@ -14,6 +14,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def tsi(
     close: Series, fast: Int = None, slow: Int = None,
     signal: Int = None, scalar: IntFloat = None,
@@ -42,7 +43,6 @@ def tsi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: tsi, signal.
@@ -94,9 +94,6 @@ def tsi(
     if "fillna" in kwargs:
         tsi.fillna(kwargs["fillna"], inplace=True)
         tsi_signal.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        tsi.fillna(method=kwargs["fill_method"], inplace=True)
-        tsi_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     tsi.name = f"TSI_{fast}_{slow}_{signal}"

@@ -15,6 +15,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def bbands(
     close: Series, length: Int = None, std: IntFloat = None, ddof: Int = 0,
     mamode: str = None, talib: bool = None,
@@ -43,7 +44,6 @@ def bbands(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: lower, mid, upper, bandwidth, and percent columns.
@@ -93,12 +93,6 @@ def bbands(
         upper.fillna(kwargs["fillna"], inplace=True)
         bandwidth.fillna(kwargs["fillna"], inplace=True)
         percent.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        lower.fillna(method=kwargs["fill_method"], inplace=True)
-        mid.fillna(method=kwargs["fill_method"], inplace=True)
-        upper.fillna(method=kwargs["fill_method"], inplace=True)
-        bandwidth.fillna(method=kwargs["fill_method"], inplace=True)
-        percent.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}_{std}"

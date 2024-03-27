@@ -14,6 +14,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def kvo(
     high: Series, low: Series, close: Series, volume: Series,
     fast: Int = None, slow: Int = None, signal: Int = None,
@@ -42,7 +43,6 @@ def kvo(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: KVO and Signal columns.
@@ -85,9 +85,6 @@ def kvo(
     if "fillna" in kwargs:
         kvo.fillna(kwargs["fillna"], inplace=True)
         kvo_signal.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        kvo.fillna(method=kwargs["fill_method"], inplace=True)
-        kvo_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{fast}_{slow}_{signal}"

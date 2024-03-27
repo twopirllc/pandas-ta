@@ -5,6 +5,7 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils import v_lowerbound, v_offset, v_series, v_talib
 
 
+
 def variance(
     close: Series, length: Int = None,
     ddof: Int = None, talib: bool = None,
@@ -29,7 +30,6 @@ def variance(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -63,8 +63,6 @@ def variance(
     # Fill
     if "fillna" in kwargs:
         variance.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        variance.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     variance.name = f"VAR_{length}"

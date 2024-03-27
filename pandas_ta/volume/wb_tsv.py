@@ -14,6 +14,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def wb_tsv(
     close: Series, volume: Series,
     length: Int = None, signal: Int = None,
@@ -45,7 +46,6 @@ def wb_tsv(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: tsv, signal, ratio
@@ -86,10 +86,6 @@ def wb_tsv(
         tsv.fillna(kwargs["fillna"], inplace=True)
         signal_.fillna(kwargs["fillna"], inplace=True)
         ratio.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        tsv.fillna(method=kwargs["fill_method"], inplace=True)
-        signal_.fillna(method=kwargs["fill_method"], inplace=True)
-        ratio.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}_{signal}"

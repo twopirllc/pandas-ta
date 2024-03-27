@@ -7,6 +7,7 @@ from pandas_ta.utils import tal_ma, v_mamode, v_offset
 from pandas_ta.utils import v_pos_default, v_series, v_talib
 
 
+
 def apo(
     close: Series, fast: Int = None, slow: Int = None,
     mamode: str = None, talib: bool = None,
@@ -33,7 +34,6 @@ def apo(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -68,9 +68,6 @@ def apo(
     # Fill
     if "fillna" in kwargs:
         apo.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        apo.fillna(method=kwargs["fill_method"], inplace=True)
-
     # Name and Category
     apo.name = f"APO_{fast}_{slow}"
     apo.category = "momentum"

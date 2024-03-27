@@ -5,6 +5,7 @@ from pandas_ta._typing import DictLike, Int, List
 from pandas_ta.utils import v_list, v_lowerbound, v_offset, v_series
 
 
+
 def tos_stdevall(
     close: Series, length: Int = None,
     stds: List = None, ddof: Int = None,
@@ -35,7 +36,6 @@ def tos_stdevall(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: Central LR, Pairs of Lower and Upper LR Lines based on
@@ -90,8 +90,6 @@ def tos_stdevall(
     # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        df.fillna(method=kwargs["fill_method"], inplace=True)
 
     df.name = f"{_props}"
     df.category = "statistics"

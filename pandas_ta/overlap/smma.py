@@ -12,6 +12,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def smma(
     close: Series, length: Int = None,
     mamode: str = None, talib: bool = None,
@@ -43,7 +44,6 @@ def smma(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -79,8 +79,6 @@ def smma(
     # Fill
     if "fillna" in kwargs:
         smma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        smma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     smma.name = f"SMMA_{length}"

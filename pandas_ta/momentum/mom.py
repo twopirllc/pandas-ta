@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from numba import njit
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.maps import Imports
 from pandas_ta.utils import (
-    # np_prepend,
+    nb_idiff,
     v_offset,
     v_pos_default,
     v_series,
@@ -12,11 +13,9 @@ from pandas_ta.utils import (
 
 
 
-
-# Mockup
-# @njit
-# def np_mom(x: Array, n: Int):
-#     return np_prepend(np_ma_diff(x, n), n)
+@njit
+def nb_mom(x, n):
+    return nb_idiff(x, n)
 
 
 def mom(
@@ -40,7 +39,6 @@ def mom(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -60,7 +58,9 @@ def mom(
         from talib import MOM
         mom = MOM(close, length)
     else:
-        mom = close.diff(length)
+        np_close = close.values
+        _mom = nb_mom(np_close, length)
+        mom = Series(_mom, index=close.index)
 
     # Offset
     if offset != 0:
@@ -69,8 +69,6 @@ def mom(
     # Fill
     if "fillna" in kwargs:
         mom.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        mom.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     mom.name = f"MOM_{length}"

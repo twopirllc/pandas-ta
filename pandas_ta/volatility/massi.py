@@ -6,6 +6,7 @@ from pandas_ta.overlap import ema
 from pandas_ta.utils import non_zero_range, v_offset, v_pos_default, v_series
 
 
+
 def massi(
     high: Series, low: Series, fast: Int = None, slow: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -28,7 +29,6 @@ def massi(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -70,8 +70,6 @@ def massi(
     # Fill
     if "fillna" in kwargs:
         massi.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        massi.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     massi.name = f"MASSI_{fast}_{slow}"

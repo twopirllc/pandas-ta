@@ -3,7 +3,7 @@ import pandas.testing as pdt
 import talib as tal
 import pandas_ta as ta
 
-from pandas import DataFrame, Series
+from pandas import DataFrame, Series, concat
 from pytest import mark
 
 from .config import CORRELATION, CORRELATION_THRESHOLD, error_analysis
@@ -182,6 +182,16 @@ def test_eri(df):
     result = ta.eri(df.high, df.low, df.close)
     assert isinstance(result, DataFrame)
     assert result.name == "ERI_13"
+
+
+def test_exhc(df):
+    result = ta.exhc(df.close)
+    assert isinstance(result, DataFrame)
+    assert result.name == "EXHCa"
+
+    result = ta.exhc(df.close, show_all=False)
+    assert isinstance(result, DataFrame)
+    assert result.name == "EXHC"
 
 
 def test_fisher(df):
@@ -537,12 +547,6 @@ def test_trix(df):
     assert result.name == "TRIX_30_9"
 
 
-def test_td_seq(df):
-    result = ta.td_seq(df.close)
-    assert isinstance(result, DataFrame)
-    assert result.name == "TD_SEQ"
-
-
 def test_tsi(df):
     result = ta.tsi(df.close)
     assert isinstance(result, DataFrame)
@@ -665,6 +669,11 @@ def test_ext_er(df):
 def test_ext_eri(df):
     df.ta.eri(append=True)
     assert list(df.columns[-2:]) == ["BULLP_13", "BEARP_13"]
+
+
+def test_ext_exhc(df):
+    df.ta.exhc(append=True)
+    assert list(df.columns[-2:]) == ["EXHC_DNa", "EXHC_UPa"]
 
 
 def test_ext_fisher(df):
@@ -790,11 +799,6 @@ def test_ext_stochf(df):
 def test_ext_stochrsi(df):
     df.ta.stochrsi(append=True)
     assert list(df.columns[-2:]) == ["STOCHRSIk_14_14_3_3", "STOCHRSId_14_14_3_3"]
-
-
-def test_ext_td_seq(df):
-    df.ta.td_seq(append=True)
-    assert list(df.columns[-2:]) == ["TD_SEQ_UPa", "TD_SEQ_DNa"]
 
 
 def test_ext_tmo(df):

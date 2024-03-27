@@ -16,25 +16,26 @@ from pandas_ta.utils import (
 )
 
 
+
 @njit
-def np_alpha(low_atr, high_atr, momo_threshold):
+def nb_alpha(low_atr, high_atr, momo_threshold):
     m = momo_threshold.size
-    alpha = zeros_like(low_atr)
+    result = zeros_like(low_atr)
 
     for i in range(1, m):
         if momo_threshold[i]:
-            if low_atr[i] < alpha[i - 1]:
-                alpha[i] = alpha[i - 1]
+            if low_atr[i] < result[i - 1]:
+                result[i] = result[i - 1]
             else:
-                alpha[i] = low_atr[i]
+                result[i] = low_atr[i]
         else:
-            if high_atr[i] > alpha[i - 1]:
-                alpha[i] = alpha[i - 1]
+            if high_atr[i] > result[i - 1]:
+                result[i] = result[i - 1]
             else:
-                alpha[i] = high_atr[i]
-    alpha[0] = nan
+                result[i] = high_atr[i]
+    result[0] = nan
 
-    return alpha
+    return result
 
 
 def alphatrend(
@@ -70,7 +71,6 @@ def alphatrend(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: trend, trendlag of all the input.
@@ -128,7 +128,7 @@ def alphatrend(
 
     np_upper_atr, np_lower_atr = upper_atr.values, lower_atr.values
 
-    at = np_alpha(np_lower_atr, np_upper_atr, momo.values >= threshold)
+    at = nb_alpha(np_lower_atr, np_upper_atr, momo.values >= threshold)
     at = Series(at, index=close.index)
 
     atl = at.shift(lag)
@@ -145,9 +145,6 @@ def alphatrend(
     if "fillna" in kwargs:
         at.fillna(kwargs["fillna"], inplace=True)
         atl.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        at.fillna(method=kwargs["fill_method"], inplace=True)
-        atl.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}_{multiplier}_{threshold}"

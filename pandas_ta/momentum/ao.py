@@ -5,6 +5,7 @@ from pandas_ta.overlap import sma
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def ao(
     high: Series, low: Series, fast: Int = None, slow: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -28,7 +29,6 @@ def ao(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -60,9 +60,6 @@ def ao(
     # Fill
     if "fillna" in kwargs:
         ao.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ao.fillna(method=kwargs["fill_method"], inplace=True)
-
     # Name and Category
     ao.name = f"AO_{fast}_{slow}"
     ao.category = "momentum"

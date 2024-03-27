@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
-from numpy import arctan, pi
+from numpy import arctan, pi, rad2deg
 from pandas import Series
 from pandas_ta._typing import DictLike, Int
-from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
+from pandas_ta.utils import (
+    nb_idiff,
+    v_bool,
+    v_offset,
+    v_pos_default,
+    v_series
+)
+
 
 
 def slope(
@@ -17,16 +24,6 @@ def slope(
 
     Source: Algebra
 
-    Calculation:
-        Default Inputs:
-            length=1
-        slope = close.diff(length) / length
-
-        if as_angle:
-            slope = slope.apply(atan)
-            if to_degrees:
-                slope *= 180 / PI
-
     Args:
         close (pd.Series): Series of 'close's
         length (int): It's period. Default: 1
@@ -38,7 +35,6 @@ def slope(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -55,11 +51,13 @@ def slope(
     offset = v_offset(offset)
 
     # Calculate
-    slope = close.diff(length) / length
+    np_close = close.values
+    _slope = nb_idiff(np_close, length) / length
     if as_angle:
-        slope = slope.apply(arctan)
+        _slope = arctan(_slope)
         if to_degrees:
-            slope *= 180 / pi
+            _slope = rad2deg(_slope)
+    slope = Series(_slope, index=close.index)
 
     # Offset
     if offset != 0:
@@ -68,8 +66,6 @@ def slope(
     # Fill
     if "fillna" in kwargs:
         slope.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        slope.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     slope.name = f"SLOPE_{length}" if not as_angle else f"ANGLE{'d' if to_degrees else 'r'}_{length}"

@@ -13,6 +13,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def aroon(
     high: Series, low: Series,
     length: Int = None, scalar: IntFloat = None, talib: bool = None,
@@ -37,7 +38,6 @@ def aroon(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: aroon_up, aroon_down, aroon_osc columns.
@@ -81,10 +81,6 @@ def aroon(
         aroon_up.fillna(kwargs["fillna"], inplace=True)
         aroon_down.fillna(kwargs["fillna"], inplace=True)
         aroon_osc.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        aroon_up.fillna(method=kwargs["fill_method"], inplace=True)
-        aroon_down.fillna(method=kwargs["fill_method"], inplace=True)
-        aroon_osc.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     aroon_up.name = f"AROONU_{length}"

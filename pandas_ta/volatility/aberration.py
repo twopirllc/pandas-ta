@@ -6,6 +6,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series
 from .atr import atr
 
 
+
 def aberration(
     high: Series, low: Series, close: Series,
     length: Int = None, atr_length: Int = None,
@@ -19,18 +20,6 @@ def aberration(
         Few internet resources on definitive definition.
         Request by Github user homily, issue #46
 
-    Calculation:
-        Default Inputs:
-            length=5, atr_length=15
-        ATR = Average True Range
-        SMA = Simple Moving Average
-
-        ATR = ATR(length=atr_length)
-        JG = TP = HLC3(high, low, close)
-        ZG = SMA(JG, length)
-        SG = ZG + ATR
-        XG = ZG - ATR
-
     Args:
         high (pd.Series): Series of 'high's
         low (pd.Series): Series of 'low's
@@ -41,7 +30,6 @@ def aberration(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: zg, sg, xg, atr columns.
@@ -80,11 +68,6 @@ def aberration(
         sg.fillna(kwargs["fillna"], inplace=True)
         xg.fillna(kwargs["fillna"], inplace=True)
         atr_.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        zg.fillna(method=kwargs["fill_method"], inplace=True)
-        sg.fillna(method=kwargs["fill_method"], inplace=True)
-        xg.fillna(method=kwargs["fill_method"], inplace=True)
-        atr_.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{length}_{atr_length}"

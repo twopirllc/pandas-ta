@@ -7,6 +7,7 @@ from pandas_ta.utils import real_body, v_offset, v_pos_default
 from pandas_ta.utils import v_scalar, v_series
 
 
+
 def cdl_doji(
     open_: Series, high: Series, low: Series, close: Series,
     length: Int = None, factor: IntFloat = None, scalar: IntFloat = None,
@@ -37,7 +38,6 @@ def cdl_doji(
             the length if less than a percentage of it's high-low range.
             Default: False
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: CDL_DOJI column.
@@ -75,8 +75,6 @@ def cdl_doji(
     # Fill
     if "fillna" in kwargs:
         doji.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        doji.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     doji.name = f"CDL_DOJI_{length}_{0.01 * factor}"

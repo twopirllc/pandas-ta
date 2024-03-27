@@ -11,6 +11,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def cfo(
     close: Series, length: Int = None,
     scalar: IntFloat = None, drift: Int = None,
@@ -34,7 +35,6 @@ def cfo(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -61,8 +61,6 @@ def cfo(
     # Fill
     if "fillna" in kwargs:
         cfo.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        cfo.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     cfo.name = f"CFO_{length}"

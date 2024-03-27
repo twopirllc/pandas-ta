@@ -7,6 +7,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from .ema import ema
 
 
+
 def t3(
     close: Series, length: Int = None, a: IntFloat = None, talib: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -31,7 +32,6 @@ def t3(
         adjust (bool): Default: True
         presma (bool, optional): If True, uses SMA for initial value.
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -72,8 +72,6 @@ def t3(
     # Fill
     if "fillna" in kwargs:
         t3.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        t3.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     t3.name = f"T3_{length}_{a}"

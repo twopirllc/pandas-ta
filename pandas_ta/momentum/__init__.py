@@ -14,6 +14,7 @@ from .cti import cti
 from .dm import dm
 from .er import er
 from .eri import eri
+from .exhc import exhc
 from .fisher import fisher
 from .inertia import inertia
 from .kdj import kdj
@@ -36,7 +37,6 @@ from .stc import stc
 from .stoch import stoch
 from .stochf import stochf
 from .stochrsi import stochrsi
-from .td_seq import td_seq
 from .tmo import tmo
 from .trix import trix
 from .tsi import tsi
@@ -59,6 +59,7 @@ __all__ = [
     "dm",
     "er",
     "eri",
+    "exhc",
     "fisher",
     "inertia",
     "kdj",
@@ -81,7 +82,6 @@ __all__ = [
     "stoch",
     "stochf",
     "stochrsi",
-    "td_seq",
     "tmo",
     "trix",
     "tsi",

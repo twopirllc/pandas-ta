@@ -568,7 +568,8 @@ class AnalysisIndicators(object):
                 Default: Number of cores of the OS
             exclude (list): List of indicator names to exclude. Some are
                 excluded by default for various reasons; they require additional
-                sources, performance (td_seq), not a time series chart (vp) etc.
+                sources (tsignals, xsignals), performance, , not a time series
+                chart (vp) etc.
             name (str): Select all indicators or indicators by
                 Category such as: "candles", "cycles", "momentum", "overlap",
                 "performance", "statistics", "trend", "volatility", "volume", or
@@ -962,6 +963,11 @@ class AnalysisIndicators(object):
         result = eri(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
+    def exhc(self, length=None, cap=None, asint=None, show_all=None, nozeros=None, offset=None, **kwargs: DictLike):
+        close = self._get_column(kwargs.pop("close", "close"))
+        result = exhc(close=close, length=length, cap=cap, asint=asint, show_all=show_all, nozeros=nozeros, offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
+
     def fisher(self, length=None, signal=None, offset=None, **kwargs: DictLike):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
@@ -1108,11 +1114,6 @@ class AnalysisIndicators(object):
         close = self._get_column(kwargs.pop("close", "close"))
         result = stochrsi(high=high, low=low, close=close, length=length, rsi_length=rsi_length, k=k, d=d,
                           mamode=mamode, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
-    def td_seq(self, asint=None, offset=None, show_all=None, **kwargs: DictLike):
-        close = self._get_column(kwargs.pop("close", "close"))
-        result = td_seq(close=close, asint=asint, offset=offset, show_all=show_all, **kwargs)
         return self._post_process(result, **kwargs)
 
     def tmo(self, tmo_length=None, calc_length=None, smooth_length=None, mamode=None, compute_momentum=False, normalize_signal=False, offset=None, **kwargs: DictLike):
@@ -1501,9 +1502,9 @@ class AnalysisIndicators(object):
         result = dpo(close=close, length=length, centered=centered, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
-    def ht_trendline(self, offset=None, **kwargs: DictLike):
+    def ht_trendline(self, talib=None, prenan=None, offset=None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
-        result = ht_trendline(close=close, offset=offset)
+        result = ht_trendline(close=close, talib=talib, prenan=prenan, offset=offset, **kwargs)
         return self._post_process(result, **kwargs)
 
     def increasing(self, length=None, strict=None, asint=None, offset=None, **kwargs: DictLike):

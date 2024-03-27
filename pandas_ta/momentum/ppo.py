@@ -15,6 +15,7 @@ from pandas_ta.utils import (
 )
 
 
+
 def ppo(
     close: Series, fast: Int = None, slow: Int = None, signal: Int = None,
     scalar: IntFloat = None, mamode: str = None, talib: bool = None,
@@ -40,7 +41,6 @@ def ppo(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: ppo, histogram, signal columns
@@ -88,10 +88,6 @@ def ppo(
         ppo.fillna(kwargs["fillna"], inplace=True)
         histogram.fillna(kwargs["fillna"], inplace=True)
         signalma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        ppo.fillna(method=kwargs["fill_method"], inplace=True)
-        histogram.fillna(method=kwargs["fill_method"], inplace=True)
-        signalma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     _props = f"_{fast}_{slow}_{signal}"

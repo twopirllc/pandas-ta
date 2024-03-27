@@ -5,6 +5,7 @@ from pandas_ta.overlap import ema
 from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
+
 def eri(
     high: Series, low: Series, close: Series, length: Int = None,
     offset: Int = None, **kwargs: DictLike
@@ -32,7 +33,6 @@ def eri(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: bull power and bear power columns.
@@ -62,9 +62,6 @@ def eri(
     if "fillna" in kwargs:
         bull.fillna(kwargs["fillna"], inplace=True)
         bear.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        bull.fillna(method=kwargs["fill_method"], inplace=True)
-        bear.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     bull.name = f"BULLP_{length}"

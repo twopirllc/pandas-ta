@@ -5,6 +5,7 @@ from pandas_ta.maps import Imports
 from pandas_ta.utils import signed_series, v_offset, v_series, v_talib
 
 
+
 def obv(
     close: Series, volume: Series, talib: bool = None,
     offset: Int = None, **kwargs: DictLike
@@ -28,7 +29,6 @@ def obv(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -59,8 +59,6 @@ def obv(
     # Fill
     if "fillna" in kwargs:
         obv.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        obv.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     obv.name = f"OBV"

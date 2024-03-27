@@ -7,6 +7,7 @@ from pandas_ta._typing import DictLike, Int, IntFloat
 from pandas_ta.utils import v_float, v_offset, v_pos_default, v_series
 
 
+
 def jma(
     close: Series, length: IntFloat = None, phase: IntFloat = None,
     offset: Int = None, **kwargs: DictLike
@@ -29,7 +30,6 @@ def jma(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -111,8 +111,6 @@ def jma(
     # Fill
     if "fillna" in kwargs:
         jma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        jma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     jma.name = f"JMA_{_length}_{phase}"

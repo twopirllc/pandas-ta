@@ -13,6 +13,7 @@ from pandas_ta.utils import (
 from pandas_ta.volatility import atr
 
 
+
 def chop(
     high: Series, low: Series, close: Series,
     length: Int = None, atr_length: Int = None,
@@ -44,7 +45,6 @@ def chop(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -83,8 +83,6 @@ def chop(
     # Fill
     if "fillna" in kwargs:
         chop.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        chop.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     chop.name = f"CHOP{'ln' if ln else ''}_{length}_{atr_length}_{scalar}"

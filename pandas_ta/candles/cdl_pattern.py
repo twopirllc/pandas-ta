@@ -6,6 +6,7 @@ from pandas_ta.utils import v_offset, v_scalar, v_series
 from pandas_ta.candles import cdl_doji, cdl_inside
 
 
+
 ALL_PATTERNS = [
     "2crows", "3blackcrows", "3inside", "3linestrike", "3outside",
     "3starsinsouth", "3whitesoldiers", "abandonedbaby", "advanceblock",
@@ -58,8 +59,6 @@ def cdl_pattern(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
-
     Returns:
         pd.DataFrame: one column for each pattern.
     """
@@ -117,10 +116,6 @@ def cdl_pattern(
             # Fill
             if "fillna" in kwargs:
                 pattern_result.fillna(kwargs["fillna"], inplace=True)
-            if "fill_method" in kwargs:
-                pattern_result.fillna(
-                    method=kwargs["fill_method"], inplace=True)
-
             result[f"CDL_{n.upper()}"] = pattern_result
 
     if len(result) == 0:

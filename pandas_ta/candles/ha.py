@@ -6,6 +6,7 @@ from pandas_ta._typing import Array, DictLike, Int
 from pandas_ta.utils import v_offset, v_series
 
 
+
 @njit
 def np_ha(np_open, np_high, np_low, np_close):
     ha_close = 0.25 * (np_open + np_high + np_low + np_close)
@@ -49,7 +50,6 @@ def ha(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: ha_open, ha_high,ha_low, ha_close columns.
@@ -82,8 +82,6 @@ def ha(
     # Fill
     if "fillna" in kwargs:
         df.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        df.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     df.name = "Heikin-Ashi"

@@ -6,6 +6,7 @@ from pandas import Series
 from pandas_ta.utils import strided_window, v_offset, v_pos_default, v_series
 
 
+
 def alma(
     close: Series, length: Int = None,
     sigma: IntFloat = None, dist_offset: IntFloat = None,
@@ -33,7 +34,6 @@ def alma(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -77,8 +77,6 @@ def alma(
     # Fill
     if "fillna" in kwargs:
         alma.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        alma.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     alma.name = f"ALMA_{length}_{sigma}_{offset_}"

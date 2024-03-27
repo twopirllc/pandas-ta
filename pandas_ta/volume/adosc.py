@@ -7,6 +7,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 from pandas_ta.volume import ad
 
 
+
 def adosc(
     high: Series, low: Series, close: Series, volume: Series,
     open_: Series = None, fast: Int = None, slow: Int = None,
@@ -36,7 +37,6 @@ def adosc(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -80,8 +80,6 @@ def adosc(
     # Fill
     if "fillna" in kwargs:
         adosc.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        adosc.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     adosc.name = f"ADOSC_{fast}_{slow}"

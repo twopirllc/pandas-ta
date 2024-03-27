@@ -5,6 +5,7 @@ from pandas_ta.utils import v_drift, v_offset, v_pos_default, v_series
 from .roc import roc
 
 
+
 def kst(
     close: Series, signal: Int = None,
     roc1: Int = None, roc2: Int = None, roc3: Int = None, roc4: Int = None,
@@ -36,7 +37,6 @@ def kst(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: kst and kst_signal columns
@@ -82,9 +82,6 @@ def kst(
     if "fillna" in kwargs:
         kst.fillna(kwargs["fillna"], inplace=True)
         kst_signal.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        kst.fillna(method=kwargs["fill_method"], inplace=True)
-        kst_signal.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     kst.name = f"KST_{roc1}_{roc2}_{roc3}_{roc4}_{sma1}_{sma2}_{sma3}_{sma4}"

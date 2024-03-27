@@ -1,29 +1,24 @@
 # -*- coding: utf-8 -*-
+from numba import njit
 from pandas import Series
 from pandas_ta._typing import Array, DictLike, Int, IntFloat
 from pandas_ta.maps import Imports
 from pandas_ta.utils import (
-    np_shift,
+    nb_idiff,
+    nb_shift,
     v_offset,
     v_pos_default,
     v_scalar,
     v_series,
     v_talib
 )
-from .mom import mom#, np_mom
+from .mom import mom
 
 
-# try:
-#     from numba import njit
-# except ImportError:
-#     def njit(_): return _
 
-
-# Mockup
-# @njit
-# def np_roc(x: Array, n: Int, k: IntFloat):
-#     result = k * np_mom(x, n) / np_shift(x, n)
-#     return result
+@njit
+def nb_roc(x, n, k):
+    return k * nb_idiff(x, n) / nb_shift(x, n)
 
 
 def roc(
@@ -51,7 +46,6 @@ def roc(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
-        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.Series: New feature generated.
@@ -72,8 +66,11 @@ def roc(
         from talib import ROC
         roc = ROC(close, length)
     else:
-        roc = scalar * mom(close=close, length=length, talib=mode_tal) \
-            / close.shift(length)
+        # roc = scalar * mom(close=close, length=length, talib=mode_tal) \
+            # / close.shift(length)
+        np_close = close.values
+        _roc = nb_roc(np_close, length, scalar)
+        roc = Series(_roc, index=close.index)
 
     # Offset
     if offset != 0:
@@ -82,8 +79,6 @@ def roc(
     # Fill
     if "fillna" in kwargs:
         roc.fillna(kwargs["fillna"], inplace=True)
-    if "fill_method" in kwargs:
-        roc.fillna(method=kwargs["fill_method"], inplace=True)
 
     # Name and Category
     roc.name = f"ROC_{length}"
