@@ -67,6 +67,8 @@ def np_find_zigzags(rolling_idx, rolling_types, rolling_values, deviation):
             else:
                 current_deviation = (rolling_values[i] - zigzag_values[num_zigzag]) / rolling_values[i]
                 if current_deviation > deviation / 100:
+                    if zigzag_idx[num_zigzag] == rolling_idx[i]:
+                        continue
                     num_zigzag += 1
                     zigzag_idx[num_zigzag] = rolling_idx[i]
                     zigzag_types[num_zigzag] = rolling_types[i]
@@ -85,6 +87,8 @@ def np_find_zigzags(rolling_idx, rolling_types, rolling_values, deviation):
             else:
                 current_deviation = (zigzag_values[num_zigzag] - rolling_values[i]) / rolling_values[i]
                 if current_deviation > deviation / 100:
+                    if zigzag_idx[num_zigzag] == rolling_idx[i]:
+                        continue
                     num_zigzag += 1
                     zigzag_idx[num_zigzag] = rolling_idx[i]
                     zigzag_types[num_zigzag] = rolling_types[i]
