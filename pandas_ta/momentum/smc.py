@@ -86,7 +86,10 @@ def smc(df):
     day_adr = df["high"].rolling(window=14).max() - df["low"].rolling(window=14).min()
     df["top_imbalance_percentage"] = (df["top_imbalance_size"] / day_adr) * 100
     df["bottom_imbalance_percentage"] = (df["bottom_imbalance_size"] / day_adr) * 100
-
+    df["volatility"] = df["high"] - df["low"]
+    df["vol_avg"] = df["volatility"].rolling(window=20).mean()
+    df["high_volatility"] = df["volatility"] > 1.5 * df["vol_avg"]
+    
     # Adding flags for significant imbalances
     df["top_imbalance_flag"] = (df["top_imbalance_size"] > 0) & (
         df["top_imbalance_percentage"] > 1
