@@ -3,6 +3,7 @@ from .context import pandas_ta
 
 from unittest import skip, TestCase
 from pandas import DataFrame
+import pandas as pd
 
 
 class TestMomentumExtension(TestCase):
@@ -14,9 +15,11 @@ class TestMomentumExtension(TestCase):
     def tearDownClass(cls):
         del cls.data
 
-    def setUp(self): pass
-    def tearDown(self): pass
+    def setUp(self):
+        pass
 
+    def tearDown(self):
+        pass
 
     def test_ao_ext(self):
         self.data.ta.ao(append=True)
@@ -111,12 +114,17 @@ class TestMomentumExtension(TestCase):
     def test_kst_ext(self):
         self.data.ta.kst(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ["KST_10_15_20_30_10_10_10_15", "KSTs_9"])
+        self.assertEqual(
+            list(self.data.columns[-2:]), ["KST_10_15_20_30_10_10_10_15", "KSTs_9"]
+        )
 
     def test_macd_ext(self):
         self.data.ta.macd(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["MACD_12_26_9", "MACDh_12_26_9", "MACDs_12_26_9"])
+        self.assertEqual(
+            list(self.data.columns[-3:]),
+            ["MACD_12_26_9", "MACDh_12_26_9", "MACDs_12_26_9"],
+        )
 
     def test_mom_ext(self):
         self.data.ta.mom(append=True)
@@ -131,7 +139,10 @@ class TestMomentumExtension(TestCase):
     def test_ppo_ext(self):
         self.data.ta.ppo(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["PPO_12_26_9", "PPOh_12_26_9", "PPOs_12_26_9"])
+        self.assertEqual(
+            list(self.data.columns[-3:]),
+            ["PPO_12_26_9", "PPOh_12_26_9", "PPOs_12_26_9"],
+        )
 
     def test_psl_ext(self):
         self.data.ta.psl(append=True)
@@ -141,12 +152,23 @@ class TestMomentumExtension(TestCase):
     def test_pvo_ext(self):
         self.data.ta.pvo(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["PVO_12_26_9", "PVOh_12_26_9", "PVOs_12_26_9"])
+        self.assertEqual(
+            list(self.data.columns[-3:]),
+            ["PVO_12_26_9", "PVOh_12_26_9", "PVOs_12_26_9"],
+        )
 
     def test_qqe_ext(self):
         self.data.ta.qqe(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-4:]), ["QQE_14_5_4.236", "QQE_14_5_4.236_RSIMA", "QQEl_14_5_4.236", "QQEs_14_5_4.236"])
+        self.assertEqual(
+            list(self.data.columns[-4:]),
+            [
+                "QQE_14_5_4.236",
+                "QQE_14_5_4.236_RSIMA",
+                "QQEl_14_5_4.236",
+                "QQEs_14_5_4.236",
+            ],
+        )
 
     def test_roc_ext(self):
         self.data.ta.roc(append=True)
@@ -184,49 +206,73 @@ class TestMomentumExtension(TestCase):
     def test_smi_ext(self):
         self.data.ta.smi(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["SMI_5_20_5", "SMIs_5_20_5", "SMIo_5_20_5"])
+        self.assertEqual(
+            list(self.data.columns[-3:]), ["SMI_5_20_5", "SMIs_5_20_5", "SMIo_5_20_5"]
+        )
 
         self.data.ta.smi(scalar=10, append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["SMI_5_20_5_10.0", "SMIs_5_20_5_10.0", "SMIo_5_20_5_10.0"])
+        self.assertEqual(
+            list(self.data.columns[-3:]),
+            ["SMI_5_20_5_10.0", "SMIs_5_20_5_10.0", "SMIo_5_20_5_10.0"],
+        )
 
     def test_squeeze_ext(self):
         self.data.ta.squeeze(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-4:]), ["SQZ_20_2.0_20_1.5", "SQZ_ON", "SQZ_OFF", "SQZ_NO"])
+        self.assertEqual(
+            list(self.data.columns[-4:]),
+            ["SQZ_20_2.0_20_1.5", "SQZ_ON", "SQZ_OFF", "SQZ_NO"],
+        )
 
         self.data.ta.squeeze(tr=False, append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-4:]),
-            ["SQZ_ON", "SQZ_OFF", "SQZ_NO", "SQZhlr_20_2.0_20_1.5"]
+        self.assertEqual(
+            list(self.data.columns[-4:]),
+            ["SQZ_ON", "SQZ_OFF", "SQZ_NO", "SQZhlr_20_2.0_20_1.5"],
         )
 
     def test_squeeze_pro_ext(self):
         self.data.ta.squeeze_pro(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-4:]), ["SQZPRO_ON_NORMAL", "SQZPRO_ON_NARROW", "SQZPRO_OFF", "SQZPRO_NO"])
+        self.assertEqual(
+            list(self.data.columns[-4:]),
+            ["SQZPRO_ON_NORMAL", "SQZPRO_ON_NARROW", "SQZPRO_OFF", "SQZPRO_NO"],
+        )
 
         self.data.ta.squeeze_pro(tr=False, append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(
             list(self.data.columns[-4:]),
-            ["SQZPRO_ON_NARROW", "SQZPRO_OFF", "SQZPRO_NO", "SQZPROhlr_20_2.0_20_2_1.5_1"]
+            [
+                "SQZPRO_ON_NARROW",
+                "SQZPRO_OFF",
+                "SQZPRO_NO",
+                "SQZPROhlr_20_2.0_20_2_1.5_1",
+            ],
         )
 
     def test_stc_ext(self):
         self.data.ta.stc(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-3:]), ["STC_10_12_26_0.5", "STCmacd_10_12_26_0.5", "STCstoch_10_12_26_0.5"])
+        self.assertEqual(
+            list(self.data.columns[-3:]),
+            ["STC_10_12_26_0.5", "STCmacd_10_12_26_0.5", "STCstoch_10_12_26_0.5"],
+        )
 
     def test_stoch_ext(self):
         self.data.ta.stoch(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ["STOCHk_14_3_3", "STOCHd_14_3_3"])
+        self.assertEqual(
+            list(self.data.columns[-2:]), ["STOCHk_14_3_3", "STOCHd_14_3_3"]
+        )
 
     def test_stochrsi_ext(self):
         self.data.ta.stochrsi(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ["STOCHRSIk_14_14_3_3", "STOCHRSId_14_14_3_3"])
+        self.assertEqual(
+            list(self.data.columns[-2:]), ["STOCHRSIk_14_14_3_3", "STOCHRSId_14_14_3_3"]
+        )
 
     @skip
     def test_td_seq_ext(self):
@@ -247,7 +293,9 @@ class TestMomentumExtension(TestCase):
     def test_tsi_ext(self):
         self.data.ta.tsi(append=True)
         self.assertIsInstance(self.data, DataFrame)
-        self.assertEqual(list(self.data.columns[-2:]), ["TSI_13_25_13", "TSIs_13_25_13"])
+        self.assertEqual(
+            list(self.data.columns[-2:]), ["TSI_13_25_13", "TSIs_13_25_13"]
+        )
 
     def test_uo_ext(self):
         self.data.ta.uo(append=True)
@@ -258,3 +306,50 @@ class TestMomentumExtension(TestCase):
         self.data.ta.willr(append=True)
         self.assertIsInstance(self.data, DataFrame)
         self.assertEqual(self.data.columns[-1], "WILLR_14")
+
+    def test_smc(self):
+        result = pandas_ta.momentum.smc(self.data.copy())
+        # Filter out the columns specific to the SMC results
+        result_filtered = result[
+            [
+                "up",
+                "down",
+                "doji",
+                "body_hi",
+                "body_lo",
+                "body",
+                "body_avg",
+                "has_up_shadow",
+                "has_dn_shadow",
+                "down_trend",
+                "top_imbalance_size",
+                "bottom_imbalance_size",
+                "top_imbalance_percentage",
+                "bottom_imbalance_percentage",
+                "top_imbalance_flag",
+                "bottom_imbalance_flag",
+            ]
+        ]
+        expected_columns = [
+            "up",
+            "down",
+            "doji",
+            "body_hi",
+            "body_lo",
+            "body",
+            "body_avg",
+            "has_up_shadow",
+            "has_dn_shadow",
+            "down_trend",
+            "top_imbalance_size",
+            "bottom_imbalance_size",
+            "top_imbalance_percentage",
+            "bottom_imbalance_percentage",
+            "top_imbalance_flag",
+            "bottom_imbalance_flag",
+        ]
+        self.assertEqual(
+            sorted(list(result_filtered.columns)), sorted(expected_columns)
+        )
+        self.assertTrue(result_filtered.notnull().all().all())
+        self.assertTrue(result.notnull().all().all())

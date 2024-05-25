@@ -703,6 +703,7 @@ df = df.ta.cdl_pattern(name=["doji", "inside"])
 * _Relative Vigor Index_: **rvgi**
 * _Schaff Trend Cycle_: **stc**
 * _Slope_: **slope**
+* _Smart Money Concept_: **smc**
 * _SMI Ergodic_ **smi**
 * _Squeeze_: **squeeze**
     * Default is John Carter's. Enable Lazybear's with ```lazybear=True```
