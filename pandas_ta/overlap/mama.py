@@ -10,7 +10,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_talib
 
 # Ehler's Mother of Adaptive Moving Averages
 # http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
-@njit
+@njit(cache=True)
 def nb_mama(x, fastlimit, slowlimit, prenan):
     a, b, m = 0.0962, 0.5769, x.size
     p_w, smp_w, smp_w_c = 0.2, 0.33, 0.67

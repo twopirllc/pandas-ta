@@ -9,7 +9,7 @@ from pandas_ta.utils import v_bool, v_offset, v_pos_default, v_series
 
 # Ehler's Super Smoother Filter
 # http://traders.com/documentation/feedbk_docs/2014/01/traderstips.html
-@njit
+@njit(cache=True)
 def nb_ssf(x, n, pi, sqrt2):
     m, ratio, result = x.size, sqrt2 / n, copy(x)
     a = exp(-pi * ratio)
@@ -26,7 +26,7 @@ def nb_ssf(x, n, pi, sqrt2):
 
 # John F. Ehler's Super Smoother Filter by Everget (2 poles), Tradingview
 # https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
-@njit
+@njit(cache=True)
 def nb_ssf_everget(x, n, pi, sqrt2):
     m, arg, result = x.size, pi * sqrt2 / n, copy(x)
     a = exp(-arg)

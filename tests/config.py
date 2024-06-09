@@ -68,11 +68,12 @@ def load(**kwargs: DictLike):
         df.to_csv(Path(fpath), mode="a")
         _mode = "Downloading"
 
-    kwargs.setdefault("n", 0)
-    if kwargs["n"] > 0:
-        df = df[:kwargs["n"]]
-    elif kwargs['n'] < 0:
-        df = df[kwargs["n"]:]
+    kwargs.setdefault("n", None)
+    if isinstance(kwargs["n"], int):
+        if kwargs["n"] > 0:
+            df = df[:kwargs["n"]]
+        elif kwargs['n'] < 0:
+            df = df[kwargs["n"]:]
 
     df.columns = df.columns.str.lower()
     if kwargs["verbose"]:
@@ -90,7 +91,7 @@ sample_data = load(
             -2 * _tdpy, -_tdpy,
             -200, -89, 0, 89, 200,
             _tdpy, 2 * _tdpy
-        ][2],
+        ][4],
         verbose=VERBOSE
     )
 

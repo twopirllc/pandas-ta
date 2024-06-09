@@ -8,7 +8,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series, v_str
 
 
 # Exponential Decay - https://tulipindicators.org/edecay
-@njit
+@njit(cache=True)
 def nb_exponential_decay(x, n):
     m, rate = x.size, 1.0 - (1.0 / n)
 
@@ -22,7 +22,7 @@ def nb_exponential_decay(x, n):
 
 
 # Linear Decay -https://tulipindicators.org/decay
-@njit
+@njit(cache=True)
 def nb_linear_decay(x, n):
     m, rate = x.size, 1.0 / n
 

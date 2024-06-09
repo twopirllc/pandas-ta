@@ -9,7 +9,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 # Ehler's Trendflex
 # http://traders.com/Documentation/FEEDbk_docs/2020/02/TradersTips.html
-@njit
+@njit(cache=True)
 def nb_trendflex(x, n, k, alpha, pi, sqrt2):
     m, ratio = x.size, 2 * sqrt2 / k
     a = exp(-pi * ratio)

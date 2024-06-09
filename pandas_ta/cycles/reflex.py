@@ -7,7 +7,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 
 
-@njit
+@njit(cache=True)
 def np_reflex(x, n, k, alpha, pi, sqrt2):
     m, ratio = x.size, 2 * sqrt2 / k
     a = exp(-pi * ratio)

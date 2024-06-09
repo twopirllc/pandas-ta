@@ -87,7 +87,7 @@ class AnalysisIndicators(object):
 
     4. Ways of calling an indicator.
     4a. Standard: Calling just the APO indicator without "ta" DataFrame extension.
-    >>> ta.apo(df["close"])
+    >>> ta.apo(df["close"])  # or ta.apo(df.close)
     4b. DataFrame Extension: Calling just the APO indicator with "ta" DataFrame extension.
     >>> df.ta.apo()
     4c. DataFrame Extension (kind): Calling APO using 'kind'
@@ -172,7 +172,7 @@ class AnalysisIndicators(object):
 
     @cores.setter
     def cores(self, value: Int) -> None:
-        """property: df.ta.cores = integer"""
+        """property: df.ta.cores = 0 <= int <= cpu_count"""
         cpus = cpu_count()
         if value is not None and isinstance(value, int):
             self._cores = int(value) if 0 <= value <= cpus else cpus
@@ -760,7 +760,7 @@ class AnalysisIndicators(object):
         Historical Data
         >>> df = df.ta.ticker("aapl")
         More specifically (for Yahoo Finance)
-        >>> df = df.ta.ticker("aapl", period="max", interval="1d", kind=None)
+        >>> df = df.ta.ticker("aapl", period="max", interval="1d")
 
         Changing the period of Historical Data
         Period is used instead of start/end
@@ -772,23 +772,19 @@ class AnalysisIndicators(object):
         Retrieves the past month in hours
         >>> df = df.ta.ticker("aapl", period="1mo", interval="1h")
 
-        Show everything
-        >>> df = df.ta.ticker("aapl", kind="all")
-
         Args:
             ticker (str): Any string for a ticker you would use with yfinance.
                 Default: "SPY"
             period (str): See the yfinance history() method for more options.
                 Default: "max"
-                https://github.com/ranaroussi/yfinance/blob/main/yfinance/base.py
+
         Kwargs:
-            kind (str): Options see above. Default: "history"
-            study (str | ta.Study): Which study to apply after
-                downloading chart history. Default: None
+            study (str | ta.Study): Which study to apply after downloading.
+                Default: None
             timed (bool): Print download time to stdout. Default: False
 
             For additional yfinance history() keyword arguments:
-                https://github.com/ranaroussi/yfinance
+                https://github.com/ranaroussi/yfinance/blob/main/yfinance/base.py
 
         Returns:
             DataFrame or None

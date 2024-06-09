@@ -16,7 +16,7 @@ from .mom import mom
 
 
 
-@njit
+@njit(cache=True)
 def nb_roc(x, n, k):
     return k * nb_idiff(x, n) / nb_shift(x, n)
 

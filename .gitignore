@@ -14,6 +14,7 @@ env_ta/
 .Python
 env/
 env11/
+env12/
 build/
 develop-eggs/
 dist/
@@ -88,8 +89,16 @@ celerybeat-schedule
 # pycharm
 .idea/*
 
+# pytest
+.pytest_cache/
+
+# pytest debug logs generated via --debug
+pytestdebug.log
+
 # dotenv
 .env
+.env11
+.env12
 
 # virtualenv
 .venv

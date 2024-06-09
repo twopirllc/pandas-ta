@@ -15,7 +15,7 @@ from pandas_ta.utils import (
 
 
 # Fast SMA Options: https://github.com/numba/numba/issues/4119
-@njit
+@njit(cache=True)
 def nb_sma(x, n):
     result = convolve(ones(n) / n, x)[n - 1:1 - n]
     return nb_prepend(result, n - 1)

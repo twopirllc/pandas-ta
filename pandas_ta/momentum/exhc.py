@@ -28,7 +28,7 @@ from pandas_ta.utils import (
 
 
 
-@njit
+@njit(cache=True)
 def nb_exhc(x, n, cap, lb, ub, show_all):
     x_diff = nb_idiff(x, n)
     neg_diff, pos_diff = x_diff < 0, x_diff > 0

@@ -7,7 +7,7 @@ from pandas_ta.utils import v_offset, v_series
 
 
 
-@njit
+@njit(cache=True)
 def np_ha(np_open, np_high, np_low, np_close):
     ha_close = 0.25 * (np_open + np_high + np_low + np_close)
     ha_open = empty_like(ha_close)

@@ -14,7 +14,7 @@ from pandas_ta.utils import (
 
 
 
-@njit
+@njit(cache=True)
 def nb_wma(x, n, asc, prenan):
     m = x.size
     w = arange(1, n + 1, dtype=float64)

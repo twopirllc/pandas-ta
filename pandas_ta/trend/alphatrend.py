@@ -17,7 +17,7 @@ from pandas_ta.utils import (
 
 
 
-@njit
+@njit(cache=True)
 def nb_alpha(low_atr, high_atr, momo_threshold):
     m = momo_threshold.size
     result = zeros_like(low_atr)

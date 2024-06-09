@@ -83,7 +83,7 @@ def erf(x: IntFloat) -> Float:
     return x_sign * y  # erf(-x) = -erf(x)
 
 
-@njit
+@njit(cache=True)
 def fibonacci(n, weighted):
     n = n if n > 1 else 2
     sqrt5 = sqrt(5.0)

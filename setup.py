@@ -19,7 +19,7 @@ setup(
         "pandas_ta.volatility",
         "pandas_ta.volume"
     ],
-    version=".".join(("0", "4", "12b")),
+    version=".".join(("0", "4", "13b")),
     description=long_description,
     long_description=long_description,
     author="Kevin Johnson",
@@ -75,7 +75,8 @@ setup(
             "numpy>=1.26.4",
             "pandas_datareader>=0.10.0",
             "pytest==7.1.2",
-            "TA-Lib>=0.4.28"
+            "TA-Lib>=0.4.28",
+            "yfinance>=0.2.36"
         ],
     },
 )

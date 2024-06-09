@@ -17,7 +17,7 @@ from pandas_ta.volatility import atr
 
 
 
-@njit
+@njit(cache=True)
 def nb_atrts(x, ma, atr_, length, ma_length):
     m = x.size
     k = max(length, ma_length)

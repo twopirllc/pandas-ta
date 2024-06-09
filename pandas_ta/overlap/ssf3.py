@@ -9,7 +9,7 @@ from pandas_ta.utils import v_offset, v_pos_default, v_series
 
 # John F. Ehler's Super Smoother Filter by Everget (3 poles), Tradingview
 # https://www.tradingview.com/script/VdJy0yBJ-Ehlers-Super-Smoother-Filter/
-@njit
+@njit(cache=True)
 def nb_ssf3(x, n, pi, sqrt3):
     m, result = x.size, copy(x)
     a = exp(-pi / n)

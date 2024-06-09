@@ -21,7 +21,7 @@ td_mapping = {
 
 
 
-@njit
+@njit(cache=True)
 def pivot_camarilla(high, low, close):
     tp = (high + low + close) / 3
     hl_range = nb_non_zero_range(high, low)
@@ -39,7 +39,7 @@ def pivot_camarilla(high, low, close):
     return tp, s1, s2, s3, s4, r1, r2, r3, r4
 
 
-@njit
+@njit(cache=True)
 def pivot_classic(high, low, close):
     tp = (high + low + close) / 3
     hl_range = nb_non_zero_range(high, low)
@@ -57,7 +57,7 @@ def pivot_classic(high, low, close):
     return tp, s1, s2, s3, s4, r1, r2, r3, r4
 
 
-@njit
+@njit(cache=True)
 def pivot_demark(open_, high, low, close):
     if (open_ == close).all():
         tp = 0.25 * (high + low + 2 * close)
@@ -72,7 +72,7 @@ def pivot_demark(open_, high, low, close):
     return tp, s1, r1
 
 
-@njit
+@njit(cache=True)
 def pivot_fibonacci(high, low, close):
     tp = (high + low + close) / 3
     hl_range = nb_non_zero_range(high, low)
@@ -88,7 +88,7 @@ def pivot_fibonacci(high, low, close):
     return tp, s1, s2, s3, r1, r2, r3
 
 
-@njit
+@njit(cache=True)
 def pivot_traditional(high, low, close):
     tp = (high + low + close) / 3
     hl_range = nb_non_zero_range(high, low)
@@ -106,7 +106,7 @@ def pivot_traditional(high, low, close):
     return tp, s1, s2, s3, s4, r1, r2, r3, r4
 
 
-@njit
+@njit(cache=True)
 def pivot_woodie(open_, high, low):
     tp = (2 * open_ + high + low) / 4
     hl_range = nb_non_zero_range(high, low)

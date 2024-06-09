@@ -13,7 +13,7 @@ from pandas_ta.utils import (
 
 
 
-@njit
+@njit(cache=True)
 def nb_mom(x, n):
     return nb_idiff(x, n)
 

@@ -66,7 +66,7 @@ def non_zero_range(high: Series, low: Series) -> Series:
     return diff
 
 
-@njit
+@njit(cache=True)
 def nb_non_zero_range(x, y):
     diff = x - y
     if diff.any() == 0:

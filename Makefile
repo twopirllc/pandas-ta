@@ -3,10 +3,14 @@ tests:
 	pytest -vvv -s -l tests
 
 caches:
-	find ./pandas_ta | grep -E "(__pycache__|\.pyc|\.pyo$\)"
+	find pandas_ta -type d -name "__pycache__"
+	find tests -type d -name "__pycache__"
+	find __pycache__ -type d -name "__pycache__"
 
 clean:
-	find . -name '*.pyc' -exec rm -f {} +
+	find pandas_ta -type d -name "__pycache__" -exec rm -r {} +
+	find tests -type d -name "__pycache__" -exec rm -r {} +
+	find __pycache__ -type d -name "__pycache__" -exec rm -r {} +
 
 init:
 	pip install -r requirements.txt

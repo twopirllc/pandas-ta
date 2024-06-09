@@ -14,7 +14,7 @@ from pandas_ta.utils import (
 
 
 
-@njit
+@njit(cache=True)
 def nb_ht_trendline(x):
     a, b, m = 0.0962, 0.5769, x.size
 
