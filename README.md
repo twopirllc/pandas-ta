@@ -1101,7 +1101,7 @@ Back to [Contents](#contents)
 
 While Pandas TA is not a backtesting application, it does provide _two_ trend methods that generate trading signals for backtesting purposes: **Trend Signals** (`ta.tsignals()`) and **Cross Signals** (`ta.xsignals()`). Both Signal methods return a DataFrame with columns for the signal's Trend, Trades, Entries and Exits.
 
-A simple manual backtest using **Trend Signals** can be found in the [TA Analysis Notebook](https://github.com/twopirllc/pandas-ta/blob/main/examples/TA_Analysis.ipynb) starting at _Trend Creation_ cell.
+A simple manual backtest using **Trend Signals** can be found in the [TA Analysis Notebook](https://github.com/twopirllc/pandas-ta/blob/development/examples/TA_Analysis.ipynb) starting at _Trend Creation_ cell.
 
 <br/>
 
