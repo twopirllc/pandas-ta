@@ -49,7 +49,7 @@ def wcp(
         from talib import WCLPRICE
         wcp = WCLPRICE(high, low, close)
     else:
-        weight = high.values + low.values + 2 * close.values
+        weight = high.to_numpy() + low.to_numpy() + 2 * close.to_numpy()
         wcp = Series(weight, index=close.index)
 
     # Offset

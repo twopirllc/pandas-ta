@@ -137,9 +137,13 @@ def test_obv(df):
 
 
 def test_pvi(df):
-    result = ta.pvi(df.close, df.volume)
-    assert isinstance(result, Series)
-    assert result.name == "PVI_1"
+    result = ta.pvi(df.close, df.volume, length=10)
+    assert isinstance(result, DataFrame)
+    assert result.name == "PVI"
+
+    result = ta.pvi(df.close, df.volume, length=10, overlay=True)
+    assert isinstance(result, DataFrame)
+    assert df.close.iloc[0] == result.iloc[0,0]
 
 
 def test_pvol(df):
@@ -251,9 +255,9 @@ def test_ext_nvi(df):
     assert df.columns[-1] == "NVI_1"
 
 
-def test_ext_pvi(df):
-    df.ta.pvi(append=True)
-    assert df.columns[-1] == "PVI_1"
+# def test_ext_pvi(df):
+    df.ta.pvi(length=10, append=True)
+    assert list(df.columns[-2:]) == ["PVI", "PVIe_10"]
 
 
 def test_ext_pvol(df):

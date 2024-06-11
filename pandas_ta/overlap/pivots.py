@@ -204,10 +204,10 @@ def pivots(
             index=dt_index
         )
 
-    np_open = df.open.values
-    np_high = df.high.values
-    np_low = df.low.values
-    np_close = df.close.values
+    np_open = df.open.to_numpy()
+    np_high = df.high.to_numpy()
+    np_low = df.low.to_numpy()
+    np_close = df.close.to_numpy()
 
     # Create nan arrays for "demark" and "fibonacci" pivots
     _nan_array = zeros_like(np_close)

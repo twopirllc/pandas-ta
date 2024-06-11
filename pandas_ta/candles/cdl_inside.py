@@ -62,7 +62,7 @@ def cdl_inside(
     offset = v_offset(offset)
 
     # Calculate
-    np_high, np_low = high.values, low.values
+    np_high, np_low = high.to_numpy(), low.to_numpy()
     np_inside = np_cdl_inside(np_high, np_low)
     inside = Series(np_inside, index=close.index, dtype=bool)
 

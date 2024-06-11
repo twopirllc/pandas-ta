@@ -42,7 +42,7 @@ def log_return(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
+    np_close = close.to_numpy()
     if cumulative:
         r = np_close / np_close[0]
     else:

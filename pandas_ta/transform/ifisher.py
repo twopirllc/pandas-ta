@@ -55,14 +55,14 @@ def ifisher(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
+    np_close = close.to_numpy()
     is_remapped = logical_and(np_close >= -1, np_close <= 1)
     if not all(is_remapped):
         np_max, np_min = max(np_close), min(np_close)
         close_map = remap(close, from_min=np_min, from_max=np_max, to_min=-1, to_max=1)
-        if close_map is None or all(isnan(close_map.values)):
+        if close_map is None or all(isnan(close_map.to_numpy())):
             return  # Emergency Break
-        np_close = close_map.values
+        np_close = close_map.to_numpy()
     amped = exp(amp * np_close)
     result = (amped - 1) / (amped + 1)
 

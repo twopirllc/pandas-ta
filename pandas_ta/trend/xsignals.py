@@ -93,7 +93,7 @@ def xsignals(
 
     # Modify trades to fill gaps for trends
     trades.replace({0: nan}, inplace=True)
-    trades.interpolate(method="pad", inplace=True)
+    trades.ffill(limit_area="inside", inplace=True) # or trades.bfill(limit_area="inside", inplace=True)
     trades.fillna(0, inplace=True)
 
     trends = (trades > 0).astype(int)

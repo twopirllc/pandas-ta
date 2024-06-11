@@ -126,8 +126,8 @@ def ht_trendline(
         from talib import HT_TRENDLINE
         tl = HT_TRENDLINE(close)
     else:
-        np_close = close.values
-        np_tl = nb_ht_trendline(np_close)
+        np_close = close.to_numpy()
+        np_tl = np_ht_trendline(np_close)
 
         if prenan > 0:
             np_tl[:prenan] = nan

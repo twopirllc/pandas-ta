@@ -68,8 +68,8 @@ def mfi(
     else:
         m, _ones = close.size, ones(length)
 
-        tp = (high.values + low.values + close.values) / 3.0
-        smf = tp * volume.values * where(tp > roll(tp, shift=drift), 1, -1)
+        tp = (high.to_numpy() + low.to_numpy() + close.to_numpy()) / 3.0
+        smf = tp * volume.to_numpy() * where(tp > roll(tp, shift=drift), 1, -1)
 
         pos, neg = maximum(smf, 0), maximum(-smf, 0)
         avg_gain, avg_loss = convolve(pos, _ones)[:m], convolve(neg, _ones)[:m]

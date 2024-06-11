@@ -92,8 +92,8 @@ def trendflex(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
-    result = nb_trendflex(np_close, length, smooth, alpha, pi, sqrt2)
+    np_close = close.to_numpy()
+    result = np_trendflex(np_close, length, smooth, alpha, pi, sqrt2)
     result[:length] = nan
     result = Series(result, index=close.index)
 

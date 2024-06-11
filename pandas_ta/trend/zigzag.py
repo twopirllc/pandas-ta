@@ -60,7 +60,7 @@ def zigzag(
 
     if close is not None:
         close = v_series(close, _length + 1)
-        np_close = close.values
+        np_close = close.to_numpy()
         if close is None:
             return
 
@@ -70,7 +70,7 @@ def zigzag(
     offset = v_offset(offset)
 
     # Calculation
-    np_high, np_low = high.values, low.values
+    np_high, np_low = high.to_numpy(), low.to_numpy()
     highest_high = high.rolling(window=pivot_leg, center=True, min_periods=0).max()
     lowest_low = low.rolling(window=pivot_leg, center=True, min_periods=0).min()
 
