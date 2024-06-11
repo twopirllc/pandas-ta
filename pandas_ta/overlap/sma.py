@@ -68,7 +68,7 @@ def sma(
         sma = SMA(close, length)
     else:
         np_close = close.to_numpy()
-        sma = np_sma(np_close, length)
+        sma = nb_sma(np_close, length)
         sma = Series(sma, index=close.index)
 
     # Offset

@@ -79,7 +79,7 @@ def ssf3(
 
     # Calculate
     np_close = close.to_numpy()
-    ssf = np_ssf3(np_close, length, pi, sqrt3)
+    ssf = nb_ssf3(np_close, length, pi, sqrt3)
     ssf = Series(ssf, index=close.index)
 
     # Offset

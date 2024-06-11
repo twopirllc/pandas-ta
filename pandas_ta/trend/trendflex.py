@@ -93,7 +93,7 @@ def trendflex(
 
     # Calculate
     np_close = close.to_numpy()
-    result = np_trendflex(np_close, length, smooth, alpha, pi, sqrt2)
+    result = nb_trendflex(np_close, length, smooth, alpha, pi, sqrt2)
     result[:length] = nan
     result = Series(result, index=close.index)
 

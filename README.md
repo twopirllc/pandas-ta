@@ -204,7 +204,7 @@ $ pip install pandas_ta[full]
 
 ## Development Version
 
-The _development_ version, _0.4.13b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
+The _development_ version, _0.4.14b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
 
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development

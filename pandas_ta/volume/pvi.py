@@ -14,7 +14,7 @@ from pandas_ta.utils import (
 
 
 @njit(cache=True)
-def np_pvi(np_close, np_volume, initial):
+def nb_pvi(np_close, np_volume, initial):
     result = zeros_like(np_close, dtype=float64)
     result[0] = initial
 
@@ -77,7 +77,7 @@ def pvi(
 
     # Calculate
     np_close, np_volume = close.to_numpy(), volume.to_numpy()
-    _pvi = np_pvi(np_close, np_volume, initial)
+    _pvi = nb_pvi(np_close, np_volume, initial)
 
     pvi = Series(_pvi, index=close.index)
     pvi_ma = ma(mamode, pvi, length=length)
@@ -102,7 +102,9 @@ def pvi(
     pvi_ma.name = f"PVI{_props}"
     pvi.category = pvi_ma.category = "volume"
 
-    data = { pvi.name: pvi,  pvi_ma.name: pvi_ma }
+    data = { pvi.name: pvi}
+    if np_close.size > length + 1:
+        data[pvi_ma.name] = pvi_ma
     df = DataFrame(data, index=close.index)
 
     # Name and Category

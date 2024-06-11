@@ -9,7 +9,7 @@ import pandas_ta as ta
 
 from pandas import read_csv
 
-TEST_ROWS = 300
+TEST_ROWS = 200
 TEST_CSV = f"data/SPY_D.csv"
 
 BEEP = False
