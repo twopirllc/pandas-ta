@@ -63,7 +63,7 @@ def rvgi(
     rvgi = numerator / denominator
     signal = swma(rvgi, length=swma_length)
 
-    if all(isnan(signal.values)):
+    if all(isnan(signal.to_numpy())):
         return  # Emergency Break
 
     # Offset

@@ -55,7 +55,7 @@ def alma(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
+    np_close = close.to_numpy()
     x = arange(length)
     k = floor(offset_ * (length - 1))
     weights = exp(-0.5 * ((sigma / length) * (x - k)) ** 2)

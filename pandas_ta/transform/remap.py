@@ -50,7 +50,7 @@ def remap(
     frange, trange = from_max - from_min, to_max - to_min
     if frange <= 0 or trange <= 0:
         return
-    result = to_min + (trange / frange) * (close.values - from_min)
+    result = to_min + (trange / frange) * (close.to_numpy() - from_min)
     result = Series(result, index=close.index)
 
     # Offset

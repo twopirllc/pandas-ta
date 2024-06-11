@@ -80,7 +80,7 @@ def sma(
         from talib import SMA
         sma = SMA(close, length)
     else:
-        np_close = close.values
+        np_close = close.to_numpy()
         sma = np_sma(np_close, length)
         sma = Series(sma, index=close.index)
 

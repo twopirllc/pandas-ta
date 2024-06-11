@@ -52,7 +52,7 @@ def dema(
         ema2 = ema(close=ema1, length=length, talib=mode_tal)
         dema = 2 * ema1 - ema2
 
-    if all(isnan(dema.values)):
+    if all(isnan(dema.to_numpy())):
         return  # Emergency Break
 
     # Offset

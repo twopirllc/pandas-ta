@@ -126,9 +126,9 @@ def alphatrend(
     if momo is None:
         return
 
-    np_upper_atr, np_lower_atr = upper_atr.values, lower_atr.values
+    np_upper_atr, np_lower_atr = upper_atr.to_numpy(), lower_atr.to_numpy()
 
-    at = np_alpha(np_lower_atr, np_upper_atr, momo.values >= threshold)
+    at = np_alpha(np_lower_atr, np_upper_atr, momo.to_numpy() >= threshold)
     at = Series(at, index=close.index)
 
     atl = at.shift(lag)

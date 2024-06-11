@@ -77,7 +77,7 @@ def ssf3(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
+    np_close = close.to_numpy()
     ssf = np_ssf3(np_close, length, pi, sqrt3)
     ssf = Series(ssf, index=close.index)
 

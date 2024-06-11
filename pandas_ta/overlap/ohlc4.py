@@ -36,7 +36,7 @@ def ohlc4(
     offset = v_offset(offset)
 
     # Calculate
-    avg = 0.25 * (open_.values + high.values + low.values + close.values)
+    avg = 0.25 * (open_.to_numpy() + high.to_numpy() + low.to_numpy() + close.to_numpy())
     ohlc4 = Series(avg, index=close.index)
 
     # Offset

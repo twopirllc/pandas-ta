@@ -1,15 +1,38 @@
 # -*- coding: utf-8 -*-
-import pandas as pd
-import numpy as np
-from pandas import Series
+from numba import njit
+from numpy import empty, float64, zeros_like
+from pandas import DataFrame, Series
 from pandas_ta._typing import DictLike, Int
 from pandas_ta.ma import ma
-from pandas_ta.utils import v_offset, v_mamode, v_pos_default, v_series
+from pandas_ta.utils import (
+    v_bool,
+    v_mamode,
+    v_offset,
+    v_pos_default,
+    v_series
+)
+
+
+@njit(cache=True)
+def np_pvi(np_close, np_volume, initial):
+    result = zeros_like(np_close, dtype=float64)
+    result[0] = initial
+
+    m = np_close.size
+    for i in range(1, m):
+        if np_volume[i] > np_volume[i - 1]:
+            result[i] = result[i - i] * (np_close[i] / np_close[i - 1])
+        else:
+            result[i] = result[i - i]
+
+    return result
+
 
 def pvi(
     close: Series, volume: Series, length: Int = None, initial: Int = None,
-    mamode: str = None, offset: Int = None, **kwargs: DictLike
-) -> pd.DataFrame:
+    mamode: str = None, overlay: bool = None, offset: Int = None,
+    **kwargs: DictLike
+) -> DataFrame:
     """Positive Volume Index (PVI)
 
     The Positive Volume Index is a cumulative indicator that uses volume
@@ -17,6 +40,7 @@ def pvi(
     conjunction with NVI.
 
     Sources:
+        https://www.sierrachart.com/index.php?page=doc/StudiesReference.php&ID=101
         https://www.investopedia.com/terms/p/pvi.asp
 
     Args:
@@ -25,6 +49,8 @@ def pvi(
         length (int): The short period. Default: 255
         initial (int): The short period. Default: 100
         mamode (str): See ``help(ta.ma)``. Default: 'ema'
+        overlay (bool): Sets the initial value to initial close so PVI
+            can be overlaid the price chart. Default: False
         offset (int): How many periods to offset the result. Default: 0
 
     Kwargs:
@@ -32,52 +58,55 @@ def pvi(
         fill_method (value, optional): Type of fill method
 
     Returns:
-        pd.DataFrame: New DataFrame with ['PVI_1', 'PVIs_<length>']
+        pd.DataFrame: DataFrame with PVI and PVI Signal columns
     """
-
     # Validate
-    mamode = v_mamode(mamode, "ema")
     length = v_pos_default(length, 255)
     close = v_series(close, length + 1)
     volume = v_series(volume, length + 1)
-    initial = v_pos_default(initial, 100)
-    offset = v_offset(offset)
 
     if close is None or volume is None:
         return
 
-    # Get numpy arrays of the data
-    close_prices = close.to_numpy()
-    volumes = volume.to_numpy()
-    pvis = np.empty(len(close_prices))
-
-    # Set the first value from from initial
-    pvis[0] = initial
+    mamode = v_mamode(mamode, "ema")
+    overlay = v_bool(overlay, False)
+    if overlay:
+        initial = close.iloc[0]
+    initial = v_pos_default(initial, 100)
+    offset = v_offset(offset)
 
     # Calculate
-    for i in range(1, len(close_prices)):
-        if volumes[i] > volumes[i-1]:
-            # PVI = Yesterday’s PVI + [[(Close – Yesterday’s Close) / Yesterday’s Close] * Yesterday’s PVI
-            pvis[i] = pvis[i-1] + (((close_prices[i] - close_prices[i-1]) / close_prices[i-1]) * pvis[i-1])
-        else:
-            # PVI = Yesterday’s PVI
-            pvis[i] = pvis[i-1]
+    np_close, np_volume = close.to_numpy(), volume.to_numpy()
+    _pvi = np_pvi(np_close, np_volume, initial)
 
-    data = {
-        'PVI_1': pvis,
-    }
-    df = pd.DataFrame(data, index=close.index)
+    pvi = Series(_pvi, index=close.index)
+    pvi_ma = ma(mamode, pvi, length=length)
 
+    # Offset
     if offset != 0:
-        df['PVI_1'] = df['PVI_1'].shift(offset)
-
-    sig_series = ma(mamode, df['PVI_1'], length=length)
-    df[f'PVIs_{length}'] = sig_series
+        pvi = pvi.shift(offset)
+        pvi_ma = pvi_ma.shift(offset)
 
     # Fill
     if "fillna" in kwargs:
-        df.fillna(kwargs["fillna"], inplace=True)
+        pvi.fillna(kwargs["fillna"], inplace=True)
+        pvi_ma.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
-        df.fillna(method=kwargs["fill_method"], inplace=True)
+        pvi.fillna(method=kwargs["fill_method"], inplace=True)
+        pvi_ma.fillna(method=kwargs["fill_method"], inplace=True)
+
+    # Name and Category
+    _mode = mamode.lower()[0] if len(mamode) else ""
+    _props = f"{_mode}_{length}"
+    pvi.name = f"PVI"
+    pvi_ma.name = f"PVI{_props}"
+    pvi.category = pvi_ma.category = "volume"
+
+    data = { pvi.name: pvi,  pvi_ma.name: pvi_ma }
+    df = DataFrame(data, index=close.index)
+
+    # Name and Category
+    df.name = pvi.name
+    df.category = pvi.category
 
     return df

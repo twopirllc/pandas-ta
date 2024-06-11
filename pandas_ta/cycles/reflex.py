@@ -93,7 +93,7 @@ def reflex(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
+    np_close = close.to_numpy()
     result = np_reflex(np_close, length, smooth, alpha, pi, sqrt2)
     result[:length] = nan
     result = Series(result, index=close.index)

@@ -104,7 +104,7 @@ def geometric_mean(series: Series) -> Float:
     if n < 1:
         return series.iloc[0]
 
-    has_zeros = 0 in series.values
+    has_zeros = 0 in series.to_numpy()
     if has_zeros:
         series = series.fillna(0) + 1
     if all(series > 0):

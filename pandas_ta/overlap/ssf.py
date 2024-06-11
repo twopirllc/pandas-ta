@@ -95,7 +95,7 @@ def ssf(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
+    np_close = close.to_numpy()
     if everget:
         ssf = np_ssf_everget(np_close, length, pi, sqrt2)
     else:

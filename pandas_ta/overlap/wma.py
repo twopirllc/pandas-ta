@@ -76,7 +76,7 @@ def wma(
         from talib import WMA
         wma = WMA(close, length)
     else:
-        np_close = close.values
+        np_close = close.to_numpy()
         wma_ = np_wma(np_close, length, asc, True)
         wma = Series(wma_, index=close.index)
 

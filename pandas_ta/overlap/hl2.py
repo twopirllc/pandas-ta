@@ -35,7 +35,7 @@ def hl2(
         return
 
     # Calculate
-    avg = 0.5 * (high.values + low.values)
+    avg = 0.5 * (high.to_numpy() + low.to_numpy())
     hl2 = Series(avg, index=high.index)
 
     # Offset

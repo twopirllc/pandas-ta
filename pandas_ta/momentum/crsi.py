@@ -145,7 +145,7 @@ def crsi(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
+    np_close = close.to_numpy()
     streak = Series(consecutive_streak(np_close), index=close.index)
 
     if Imports["talib"] and mode_tal:

@@ -65,8 +65,8 @@ def ha(
         return
 
     # Calculate
-    np_open, np_high = open_.values, high.values
-    np_low, np_close = low.values, close.values
+    np_open, np_high = open_.to_numpy(), high.to_numpy()
+    np_low, np_close = low.to_numpy(), close.to_numpy()
     ha_open, ha_high, ha_low, ha_close = np_ha(np_open, np_high, np_low, np_close)
     df = DataFrame({
         "HA_open": ha_open,

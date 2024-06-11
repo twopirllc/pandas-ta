@@ -71,7 +71,7 @@ def decay(
     offset = v_offset(offset)
 
     # Calculate
-    _mode, np_close = "L", close.values
+    _mode, np_close = "L", close.to_numpy()
 
     if mode in ["exp", "exponential"]:
         _mode = "EXP"

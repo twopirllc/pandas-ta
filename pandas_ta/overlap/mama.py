@@ -143,7 +143,7 @@ def mama(
     offset = v_offset(offset)
 
     # Calculate
-    np_close = close.values
+    np_close = close.to_numpy()
     if Imports["talib"] and mode_tal:
         from talib import MAMA
         mama, fama = MAMA(np_close, fastlimit, slowlimit)

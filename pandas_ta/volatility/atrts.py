@@ -122,7 +122,7 @@ def atrts(
     atr_ *= multiplier
     ma_ = _ma(mamode, close, length=ma_length, talib=mode_tal)
 
-    np_close, np_ma, np_atr = close.values, ma_.values, atr_.values
+    np_close, np_ma, np_atr = close.to_numpy(), ma_.to_numpy(), atr_.to_numpy()
     np_atrts_, _, _ = np_atrts(np_close, np_ma, np_atr, length, ma_length)
 
     percent = kwargs.pop("percent", False)
