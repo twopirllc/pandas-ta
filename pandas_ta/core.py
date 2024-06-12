@@ -1590,17 +1590,17 @@ class AnalysisIndicators(object):
                               trend_offset=trend_offset, trend_reset=trend_reset, offset=offset, **kwargs)
             return self._post_process(result, **kwargs)
 
-    # def zigzag(self, close=None, pivot_leg=None, price_deviation=None, retrace=None, last_extreme=None, offset=None, **kwargs: DictLike):
-    #     high = self._get_column(kwargs.pop("high", "high"))
-    #     low = self._get_column(kwargs.pop("low", "low"))
-    #     if close is not None:
-    #         close = self._get_column(kwargs.pop("close", "close"))
-    #     result = zigzag(
-    #         high=high, low=low, close=close,
-    #         pivot_leg=pivot_leg, price_deviation=price_deviation,
-    #         retrace=retrace, last_extreme=last_extreme,
-    #         offset=offset, **kwargs)
-    #     return self._post_process(result, **kwargs)
+    def zigzag(self, close=None, pivot_leg=None, price_deviation=None, retrace=None, last_extreme=None, offset=None, **kwargs: DictLike):
+        high = self._get_column(kwargs.pop("high", "high"))
+        low = self._get_column(kwargs.pop("low", "low"))
+        if close is not None:
+            close = self._get_column(kwargs.pop("close", "close"))
+        result = zigzag(
+            high=high, low=low, close=close,
+            pivot_leg=pivot_leg, price_deviation=price_deviation,
+            retrace=retrace, last_extreme=last_extreme,
+            offset=offset, **kwargs)
+        return self._post_process(result, **kwargs)
 
     # Volatility
     def aberration(self, length=None, atr_length=None, offset=None, **kwargs: DictLike):
