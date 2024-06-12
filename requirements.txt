@@ -2,13 +2,13 @@ ipython==8.21.0
 matplotlib==3.8.2
 matplotlib-inline==0.1.6
 multitasking==0.0.11
-numba==0.59.0
+numba==0.59.1
 numpy==1.26.4
-pandas==2.2.0
+pandas==2.2.2
 pandas-datareader==0.10.0
 pyarrow==15.0.0
-scipy==1.12.0
+scipy==1.13.1
 setuptools=70.0.0
 streamlit==1.31.0
 TA-Lib==0.4.28
-yfinance==0.2.36
+yfinance==0.2.40
