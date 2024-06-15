@@ -1563,13 +1563,6 @@ class AnalysisIndicators(object):
             result = tsignals(trend, asbool=asbool, trend_offset=trend_offset, trend_reset=trend_reset, offset=offset, **kwargs)
             return self._post_process(result, **kwargs)
 
-    def ttm_trend(self, length=None, offset=None, **kwargs: DictLike):
-        high = self._get_column(kwargs.pop("high", "high"))
-        low = self._get_column(kwargs.pop("low", "low"))
-        close = self._get_column(kwargs.pop("close", "close"))
-        result = ttm_trend(high=high, low=low, close=close, length=length, offset=offset, **kwargs)
-        return self._post_process(result, **kwargs)
-
     def vhf(self, length=None, drift=None, offset=None, **kwargs: DictLike):
         close = self._get_column(kwargs.pop("close", "close"))
         result = vhf(close=close, length=length, drift=drift, offset=offset, **kwargs)
@@ -1590,16 +1583,17 @@ class AnalysisIndicators(object):
                               trend_offset=trend_offset, trend_reset=trend_reset, offset=offset, **kwargs)
             return self._post_process(result, **kwargs)
 
-    def zigzag(self, close=None, pivot_leg=None, price_deviation=None, retrace=None, last_extreme=None, offset=None, **kwargs: DictLike):
+    def zigzag(self, close=None, legs=None, deviation=None, retrace=None, last_extreme=None, offset=None, **kwargs: DictLike):
         high = self._get_column(kwargs.pop("high", "high"))
         low = self._get_column(kwargs.pop("low", "low"))
         if close is not None:
             close = self._get_column(kwargs.pop("close", "close"))
         result = zigzag(
             high=high, low=low, close=close,
-            pivot_leg=pivot_leg, price_deviation=price_deviation,
+            legs=legs, deviation=deviation,
             retrace=retrace, last_extreme=last_extreme,
-            offset=offset, **kwargs)
+            offset=offset, **kwargs
+        )
         return self._post_process(result, **kwargs)
 
     # Volatility

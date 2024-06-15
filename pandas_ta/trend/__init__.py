@@ -17,7 +17,6 @@ from .rwi import rwi
 from .short_run import short_run
 from .trendflex import trendflex
 from .tsignals import tsignals
-from .ttm_trend import ttm_trend
 from .vhf import vhf
 from .vortex import vortex
 from .xsignals import xsignals
@@ -42,7 +41,6 @@ __all__ = [
     "short_run",
     "trendflex",
     "tsignals",
-    "ttm_trend",
     "vhf",
     "vortex",
     "xsignals",

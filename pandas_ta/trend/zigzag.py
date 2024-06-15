@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import isnan, nan, zeros, zeros_like, floor
+from numpy import floor, isnan, nan, zeros, zeros_like
 from numba import njit
 from pandas import Series, DataFrame
 from pandas_ta._typing import DictLike, Int, IntFloat
@@ -11,16 +11,17 @@ from pandas_ta.utils import (
 )
 
 
+
 @njit(cache=True)
-def nb_rolling_hl(np_high, np_low, window):
-    extremums = 0
+def nb_rolling_hl(np_high, np_low, window_size):
     m = np_high.size
-    idx, value = zeros(m), zeros(m)
-    kind = zeros(m)   # High Swing = 1, Low Swing = -1
+    idx = zeros(m)
+    swing = zeros(m)  # where a high = 1 and low = -1
+    value = zeros(m)
 
-    left = int(floor(window / 2))
+    extremums = 0
+    left = int(floor(window_size / 2))
     right = left + 1
-
     # sample_array = [*[left-window], *[center], *[right-window]]
     for i in range(left, m - right):
         low_center = np_low[i]
@@ -30,95 +31,97 @@ def nb_rolling_hl(np_high, np_low, window):
 
         if (low_center <= low_window).all():
             idx[extremums] = i
-            kind[extremums] = -1
+            swing[extremums] = -1
             value[extremums] = low_center
             extremums += 1
 
         if (high_center >= high_window).all():
             idx[extremums] = i
-            kind[extremums] = 1
+            swing[extremums] = 1
             value[extremums] = high_center
             extremums += 1
 
-    return idx[:extremums], kind[:extremums], value[:extremums]
+    return idx[:extremums], swing[:extremums], value[:extremums]
 
 
 @njit(cache=True)
-def nb_find_zigzags(idx, kind, value, deviation):
-    rolling_len, zigzags = idx.size, 0
+def nb_find_zigzags(idx, swing, value, deviation):
+    zz_idx = zeros_like(idx)
+    zz_swing = zeros_like(swing)
+    zz_value = zeros_like(value)
+    zz_dev = zeros_like(idx)
 
-    idx = zeros_like(idx)
-    zigzag_types = zeros_like(kind)
-    zigzag_values = zeros_like(value)
-    zigzag_dev = zeros(rolling_len)
+    zigzags = 0
+    zz_idx[zigzags] = idx[-1]
+    zz_swing[zigzags] = swing[-1]
+    zz_value[zigzags] = value[-1]
+    zz_dev[zigzags] = 0
 
-    idx[zigzags] = idx[-1]
-    zigzag_types[zigzags] = kind[-1]
-    zigzag_values[zigzags] = value[-1]
-    zigzag_dev[zigzags] = 0
-
-    for i in range(rolling_len - 2, -1, -1):
+    m = idx.size
+    for i in range(m - 2, -1, -1):
         # last point in zigzag is bottom
-        if zigzag_types[zigzags] == -1:
-            if kind[i] == -1:
-                if zigzag_values[zigzags] > value[i] and zigzags > 1:
-                    current_deviation = (zigzag_values[zigzags - 1] - value[i]) / value[i]
-                    idx[zigzags] = idx[i]
-                    zigzag_types[zigzags] = kind[i]
-                    zigzag_values[zigzags] = value[i]
-                    zigzag_dev[zigzags - 1] = 100 * current_deviation
+        if zz_swing[zigzags] == -1:
+            if swing[i] == -1:
+                if zz_value[zigzags] > value[i] and zigzags > 1:
+                    current_dev = (zz_value[zigzags - 1] - value[i]) / value[i]
+                    zz_idx[zigzags] = idx[i]
+                    zz_swing[zigzags] = swing[i]
+                    zz_value[zigzags] = value[i]
+                    zz_dev[zigzags - 1] = 100 * current_dev
             else:
-                current_deviation = (value[i] - zigzag_values[zigzags]) / value[i]
-                if current_deviation > deviation / 100:
-                    if idx[zigzags] == idx[i]:
+                current_dev = (value[i] - zz_value[zigzags]) / value[i]
+                if current_dev > 0.01 * deviation:
+                    if zz_idx[zigzags] == idx[i]:
                         continue
                     zigzags += 1
-                    idx[zigzags] = idx[i]
-                    zigzag_types[zigzags] = kind[i]
-                    zigzag_values[zigzags] = value[i]
-                    zigzag_dev[zigzags - 1] = 100 * current_deviation
+                    zz_idx[zigzags] = idx[i]
+                    zz_swing[zigzags] = swing[i]
+                    zz_value[zigzags] = value[i]
+                    zz_dev[zigzags - 1] = 100 * current_dev
 
         # last point in zigzag is peak
         else:
-            if kind[i] == 1:
-                if zigzag_values[zigzags] < value[i] and zigzags > 1:
-                    current_deviation = (value[i] - zigzag_values[zigzags - 1]) / value[i]
-                    idx[zigzags] = idx[i]
-                    zigzag_types[zigzags] = kind[i]
-                    zigzag_values[zigzags] = value[i]
-                    zigzag_dev[zigzags - 1] = 100 * current_deviation
+            if swing[i] == 1:
+                if zz_value[zigzags] < value[i] and zigzags > 1:
+                    current_dev = (value[i] - zz_value[zigzags - 1]) / value[i]
+                    zz_idx[zigzags] = idx[i]
+                    zz_swing[zigzags] = swing[i]
+                    zz_value[zigzags] = value[i]
+                    zz_dev[zigzags - 1] = 100 * current_dev
             else:
-                current_deviation = (zigzag_values[zigzags] - value[i]) / value[i]
-                if current_deviation > deviation / 100:
-                    if idx[zigzags] == idx[i]:
+                current_dev = (zz_value[zigzags] - value[i]) / value[i]
+                if current_dev > 0.01 * deviation:
+                    if zz_idx[zigzags] == idx[i]:
                         continue
                     zigzags += 1
-                    idx[zigzags] = idx[i]
-                    zigzag_types[zigzags] = kind[i]
-                    zigzag_values[zigzags] = value[i]
-                    zigzag_dev[zigzags - 1] = 100 * current_deviation
+                    zz_idx[zigzags] = idx[i]
+                    zz_swing[zigzags] = swing[i]
+                    zz_value[zigzags] = value[i]
+                    zz_dev[zigzags - 1] = 100 * current_dev
 
-    return idx[:zigzags + 1], zigzag_types[:zigzags + 1], \
-        zigzag_values[:zigzags + 1], zigzag_dev[:zigzags + 1]
+    _n = zigzags + 1
+    return zz_idx[:_n], zz_swing[:_n], zz_value[:_n], zz_dev[:_n]
 
 
 @njit(cache=True)
-def nb_map_zigzag(zigzag_idx, zigzag_types, zigzag_values, zigzag_dev, candles_num):
-    _values = zeros(candles_num)
-    _types = zeros(candles_num)
-    _dev = zeros(candles_num)
+def nb_map_zigzag(idx, swing, value, deviation, n):
+    swing_map = zeros(n)
+    value_map = zeros(n)
+    dev_map = zeros(n)
 
-    for i, index in enumerate(zigzag_idx):
-        _values[int(index)] = zigzag_values[i]
-        _types[int(index)] = zigzag_types[i]
-        _dev[int(index)] = zigzag_dev[i]
+    for j, i in enumerate(idx):
+        i = int(i)
+        swing_map[i] = swing[j]
+        value_map[i] = value[j]
+        dev_map[i] = deviation[j]
 
-    for i in range(candles_num):
-        if _types[i] == 0:
-            _values[i] = nan
-            _types[i] = nan
-            _dev[i] = nan
-    return _types, _values, _dev
+    for i in range(n):
+        if swing_map[i] == 0:
+            swing_map[i] = nan
+            value_map[i] = nan
+            dev_map[i] = nan
+
+    return swing_map, value_map, dev_map
 
 
 
@@ -128,7 +131,7 @@ def zigzag(
     retrace: bool = None, last_extreme: bool = None,
     offset: Int = None, **kwargs: DictLike
 ):
-    """Zigzag (ZIGZAG)
+    """ Zigzag (ZIGZAG)
 
     Zigzag attempts to filter out smaller price movments while highlighting
     trend direction. It does not predict future trends, but it does identify
@@ -156,22 +159,24 @@ def zigzag(
 
     Kwargs:
         fillna (value, optional): pd.DataFrame.fillna(value)
+        fill_method (value, optional): Type of fill method
 
     Returns:
         pd.DataFrame: swing, and swing_type (high or low).
     """
     # Validate
-    _length = 0
-    legs = _length = v_pos_default(legs, 10)
-    high = v_series(high, _length + 1)
-    low = v_series(low, _length + 1)
+    legs = v_pos_default(legs, 10)
+    _length = legs + 1
+    # print(f"\n{legs=}  {_length=}")
+    high = v_series(high, _length)
+    low = v_series(low, _length)
 
     if high is None or low is None:
         return
 
     if close is not None:
-        close = v_series(close, _length + 1)
-        np_close = close.to_numpy()
+        close = v_series(close,_length)
+        np_close = close.values
         if close is None:
             return
 
@@ -182,36 +187,38 @@ def zigzag(
 
     # Calculation
     np_high, np_low = high.to_numpy(), low.to_numpy()
+    hli, hls, hlv = nb_rolling_hl(np_high, np_low, legs)
+    # print(f"{len(high)=}  {np_high.size=}")
+    # print(f"\nhli[{hli.size}]: {hli}\nhls[{hls.size}]: {hls}\nhlv[{hlv.size}]: {hlv}\n")
 
-    _rollings_idx, _rollings_types, _rollings_values = nb_rolling_hl(np_high, np_low, legs)
+    zzi, zzs, zzv, zzd = nb_find_zigzags(hli, hls, hlv, deviation)
+    # print(f"\nzzi[{zzi.size}]: {zzi}\nzzs[{zzs.size}]: {zzs}\nzzv[{zzv.size}]: {zzv}\nzzd[{zzd.size}]: {zzd}\n")
 
-    _zigzags_idx, _zigzags_types, _zigzags_values, _zigzags_dev = \
-        nb_find_zigzags(_rollings_idx, _rollings_types, _rollings_values, deviation=deviation)
-    _types, _values, _dev = \
-        nb_map_zigzag(_zigzags_idx, _zigzags_types, _zigzags_values, _zigzags_dev, len(high))
+
+    zz_swing, zz_value, zz_dev = nb_map_zigzag(zzi, zzs, zzv, zzd, np_high.size)
+    # print(f"\nzz_swing[{zz_swing.size}]: {zz_swing}\nzz_value[{zz_value.size}]: {zz_value}\nzz_dev[{zz_dev.size}]: {zz_dev}\n")
 
     # Offset
     if offset != 0:
-        _types = _types.shift(offset)
-        _values = _values.shift(offset)
-        _dev = _dev.shift(offset)
+        zz_swing = zz_swing.shift(offset)
+        zz_value = zz_value.shift(offset)
+        zz_dev = zz_dev.shift(offset)
 
     # Fill
     if "fillna" in kwargs:
-        _types.fillna(kwargs["fillna"], inplace=True)
-        _values.fillna(kwargs["fillna"], inplace=True)
-        _dev.fillna(kwargs["fillna"], inplace=True)
+        zz_swing.fillna(kwargs["fillna"], inplace=True)
+        zz_value.fillna(kwargs["fillna"], inplace=True)
+        zz_dev.fillna(kwargs["fillna"], inplace=True)
     if "fill_method" in kwargs:
-        _types.fillna(method=kwargs["fill_method"], inplace=True)
-        _values.fillna(method=kwargs["fill_method"], inplace=True)
-        _dev.fillna(method=kwargs["fill_method"], inplace=True)
+        zz_swing.fillna(method=kwargs["fill_method"], inplace=True)
+        zz_value.fillna(method=kwargs["fill_method"], inplace=True)
+        zz_dev.fillna(method=kwargs["fill_method"], inplace=True)
 
-    # Name and Category
     _props = f"_{deviation}%_{legs}"
     data = {
-        f"ZIGZAGt{_props}": _types,
-        f"ZIGZAGv{_props}": _values,
-        f"ZIGZAGd{_props}": _dev,
+        f"ZIGZAGs{_props}": zz_swing,
+        f"ZIGZAGv{_props}": zz_value,
+        f"ZIGZAGd{_props}": zz_dev,
     }
     df = DataFrame(data, index=high.index)
     df.name = f"ZIGZAG{_props}"

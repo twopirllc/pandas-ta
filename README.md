@@ -204,7 +204,7 @@ $ pip install pandas_ta[full]
 
 ## Development Version
 
-The _development_ version, _0.4.14b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
+The _development_ version, _0.4.15b_, includes _numerous_ bug fixes, speed improvements and better documentation since release, _0.3.14b_.
 
 ```sh
 $ pip install -U git+https://github.com/twopirllc/pandas-ta.git@development
@@ -1011,10 +1011,10 @@ Back to [Contents](#contents)
 - _Trendflex_: **trendflex**
   - **reflex** companion
 - _Trend Signals_: **tsignals**
-- _TTM Trend_: **ttm_trend**
 - _Vertical Horizontal Filter_: **vhf**
 - _Vortex_: **vortex**
 - _Cross Signals_: **xsignals**
+- _Zigzag_: **zigzag**
 
 <br/>
 

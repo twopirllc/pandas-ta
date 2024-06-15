@@ -9,7 +9,7 @@ categories = DataFrame().ta.categories() + \
 [pytest.param(ta.CommonStudy, id="common"), pytest.param(ta.AllStudy, id="all")]
 
 # +/- when adding/removing indicators
-ALL_COLUMNS = 323
+ALL_COLUMNS = 325
 
 
 def test_all_study_props(all_study):
@@ -32,7 +32,7 @@ def test_common_study_props(common_study):
 
 @pytest.mark.parametrize("category,columns", [
     ("candles", 70), ("cycles", 2), ("momentum", 78), ("overlap", 56),
-    ("performance", 2), ("statistics", 16), ("transform", 5), ("trend", 31),
+    ("performance", 2), ("statistics", 16), ("transform", 5), ("trend", 33),
     ("volatility", 36), ("volume", 27),
     pytest.param(ta.AllStudy, ALL_COLUMNS, id=f"all-{ALL_COLUMNS}"),
     pytest.param(ta.CommonStudy, 5, id="common-5"),

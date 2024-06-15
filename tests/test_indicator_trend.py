@@ -265,12 +265,6 @@ def test_trendflex(df):
     assert result.name == "TRENDFLEX_20_20_0.04"
 
 
-def test_ttm_trend(df):
-    result = ta.ttm_trend(df.high, df.low, df.close)
-    assert isinstance(result, DataFrame)
-    assert result.name == "TTMTREND_6"
-
-
 def test_vhf(df):
     result = ta.vhf(df.high, df.low, df.close)
     assert isinstance(result, Series)
@@ -281,6 +275,30 @@ def test_vortex(df):
     result = ta.vortex(df.high, df.low, df.close)
     assert isinstance(result, DataFrame)
     assert result.name == "VTX_14"
+
+
+def test_zigzag(df):
+    result = ta.zigzag(df.high, df.low)
+    assert isinstance(result, DataFrame)
+    assert result.name == "ZIGZAG_5.0%_10"
+
+    result = ta.zigzag(df.high, df.low, df.close)
+    assert isinstance(result, DataFrame)
+    assert result.name == "ZIGZAG_5.0%_10"
+
+    notna = result.iloc[:,0].notna()
+    high_pivotsdf = result[notna & (result["ZIGZAGs_5.0%_10"]==1)]
+    assert isinstance(high_pivotsdf, DataFrame)
+    assert high_pivotsdf.shape[0] == 1
+
+    low_pivotsdf  = result[notna & (result["ZIGZAGs_5.0%_10"]==-1)]
+    assert isinstance(low_pivotsdf, DataFrame)
+    assert low_pivotsdf.shape[0] == 1
+
+    all_pivotsdf = result[notna]
+    assert isinstance(all_pivotsdf, DataFrame)
+    assert all_pivotsdf.shape[0] == low_pivotsdf.shape[0] + high_pivotsdf.shape[0]
+
 
 
 # DataFrame Extension Tests
@@ -396,11 +414,6 @@ def test_ext_trendflex(df):
     assert df.columns[-1] == "TRENDFLEX_20_20_0.04"
 
 
-def test_ext_ttm_trend(df):
-    df.ta.ttm_trend(append=True)
-    assert df.columns[-1] == "TTM_TRND_6"
-
-
 def test_ext_vhf(df):
     df.ta.vhf(append=True)
     assert df.columns[-1] == "VHF_28"
@@ -409,3 +422,8 @@ def test_ext_vhf(df):
 def test_ext_vortex(df):
     df.ta.vortex(append=True)
     assert list(df.columns[-2:]) == ["VTXP_14", "VTXM_14"]
+
+
+def test_ext_zigzag(df):
+    df.ta.zigzag(append=True)
+    assert list(df.columns[-3:]) == ["ZIGZAGs_5.0%_10", "ZIGZAGv_5.0%_10", "ZIGZAGd_5.0%_10"]
