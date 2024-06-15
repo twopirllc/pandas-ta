@@ -167,7 +167,6 @@ def zigzag(
     # Validate
     legs = v_pos_default(legs, 10)
     _length = legs + 1
-    # print(f"\n{legs=}  {_length=}")
     high = v_series(high, _length)
     low = v_series(low, _length)
 
@@ -188,15 +187,8 @@ def zigzag(
     # Calculation
     np_high, np_low = high.to_numpy(), low.to_numpy()
     hli, hls, hlv = nb_rolling_hl(np_high, np_low, legs)
-    # print(f"{len(high)=}  {np_high.size=}")
-    # print(f"\nhli[{hli.size}]: {hli}\nhls[{hls.size}]: {hls}\nhlv[{hlv.size}]: {hlv}\n")
-
     zzi, zzs, zzv, zzd = nb_find_zigzags(hli, hls, hlv, deviation)
-    # print(f"\nzzi[{zzi.size}]: {zzi}\nzzs[{zzs.size}]: {zzs}\nzzv[{zzv.size}]: {zzv}\nzzd[{zzd.size}]: {zzd}\n")
-
-
     zz_swing, zz_value, zz_dev = nb_map_zigzag(zzi, zzs, zzv, zzd, np_high.size)
-    # print(f"\nzz_swing[{zz_swing.size}]: {zz_swing}\nzz_value[{zz_value.size}]: {zz_value}\nzz_dev[{zz_dev.size}]: {zz_dev}\n")
 
     # Offset
     if offset != 0:
