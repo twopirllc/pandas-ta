@@ -191,13 +191,13 @@ The _minimum_ requirement is [Pandas](https://github.com/pandas-dev/pandas). Tho
 The `pip` version, _0.3.14b_, is the last stable release. The next **major** release will occur when all the remaining _Hilbert Transform_ indicators from TA Lib are [included](https://github.com/twopirllc/pandas-ta/labels/help%20wanted).
 
 ```sh
-$ pip install pandas_ta
+$ pip install pandas-ta
 ```
 
 How about **All**?
 
 ```sh
-$ pip install pandas_ta[full]
+$ pip install pandas-ta[full]
 ```
 
 <br/>
