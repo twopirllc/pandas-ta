@@ -162,8 +162,8 @@ def schaff_tc(close, xmacd, tclength, factor):
 
     for i in range(1, m):
         # %Fast K of MACD
-        if lowest_xmacd[i] > 0:
-            stoch1[i] = 100 * ((xmacd[i] - lowest_xmacd[i]) / xmacd_range[i])
+        if lowest_xmacd.iloc[i] > 0:
+            stoch1[i] = 100 * ((xmacd.iloc[i] - lowest_xmacd.iloc[i]) / xmacd_range.iloc[i])
         else:
             stoch1[i] = stoch1[i - 1]
         # Smoothed Calculation for % Fast D of MACD

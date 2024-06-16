@@ -100,7 +100,7 @@ def cdl_pattern(
 
         else:
             if not Imports["talib"]:
-                print(f"[X] Please install TA-Lib to use {n}. (pip install TA-Lib)")
+                print(f"[X] Install TA-Lib to use {n}. (pip install TA-Lib)")
                 continue
 
             pf = tala.Function(f"CDL{n.upper()}")

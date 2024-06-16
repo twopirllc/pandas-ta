@@ -68,7 +68,7 @@ def vwap(
     typical_price = hlc3(high=high, low=low, close=close)
     if not v_datetime_ordered(volume) or \
         not v_datetime_ordered(typical_price):
-        print("[!] VWAP requires a datetime ordered index.")
+        print("[!] VWAP requires an ordered DatetimeIndex.")
         return
 
     # Calculate

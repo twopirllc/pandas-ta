@@ -176,7 +176,7 @@ def pivots(
         return  # Emergency Break
 
     if not v_datetime_ordered(close):
-        print("[!] Pivots requires a datetime ordered index.")
+        print("[!] Pivots requires an ordered DatetimeIndex.")
         return
 
     dt_index = close.index

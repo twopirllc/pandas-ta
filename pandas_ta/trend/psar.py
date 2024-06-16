@@ -79,36 +79,36 @@ def psar(
         sar[0] = high[0] if falling else low[0]
 
     # Calculate
-    for row in range(1, m):
-        sar[row] = sar[row-1] + af * (ep - sar[row-1])
+    for i in range(1, m):
+        sar[i] = sar[i - 1] + af * (ep - sar[i - 1])
 
         if falling:
-            reverse = high[row] > sar[row]
-            if low[row] < ep:
-                ep = low[row]
+            reverse = high[i] > sar[i]
+            if low[i] < ep:
+                ep = low[i]
                 af = min(af + af0, max_af)
-            sar[row] = max(high[row-1], sar[row])
+            sar[i] = max(high[i - 1], sar[i])
         else:
-            reverse = low[row] < sar[row]
-            if high[row] > ep:
-                ep = high[row]
+            reverse = low[i] < sar[i]
+            if high[i] > ep:
+                ep = high[i]
                 af = min(af + af0, max_af)
-            sar[row] = min(low[row-1], sar[row])
+            sar[i] = min(low[i - 1], sar[i])
 
         if reverse:
-            sar[row] = ep
+            sar[i] = ep
             af = af0
             falling = not falling
-            ep = low[row] if falling else high[row]
+            ep = low[i] if falling else high[i]
 
         # Separate long/short SAR based on falling
         if falling:
-            short[row] = sar[row]
+            short[i] = sar[i]
         else:
-            long[row] = sar[row]
+            long[i] = sar[i]
 
-        _af[row] = af
-        reversal[row] = int(reverse)
+        _af[i] = af
+        reversal[i] = int(reverse)
 
     _af = Series(_af, index=orig_high.index)
     long = Series(long, index=orig_high.index)
