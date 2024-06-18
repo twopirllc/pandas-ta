@@ -16,7 +16,7 @@ def percent_return(close, length=None, cumulative=None, offset=None, **kwargs):
     if cumulative:
         pct_return = (close / close.iloc[0]) - 1
     else:
-        pct_return = close.pct_change(length) # (close / close.shift(length)) - 1
+        pct_return = close.pct_change(length,fill_method=None) # (close / close.shift(length)) - 1
 
     # Offset
     if offset != 0:
@@ -58,7 +58,6 @@ Args:
 
 Kwargs:
     fillna (value, optional): pd.DataFrame.fillna(value)
-    fill_method (value, optional): Type of fill method
 
 Returns:
     pd.Series: New feature generated.
