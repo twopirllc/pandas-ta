@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from numpy import array, infty, log, nan, pi, sqrt
+from numpy import array, inf, log, nan, pi, sqrt
 from pandas_ta._typing import Array, IntFloat, Number, Union
 from pandas_ta.maps import Imports
 from pandas_ta.utils import hpoly
