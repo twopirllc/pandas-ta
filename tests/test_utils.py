@@ -260,13 +260,13 @@ def test_inv_norm_isnan(value, result):
     reason="Passes on Mac... yet fails on Ubuntu 3.9 (Github Action)"
 )
 @mark.parametrize("value,result", [
-    (0, -np.infty), (1 - 0.96, -1.7506860712521692),
+    (0, -np.inf), (1 - 0.96, -1.7506860712521692),
 #    (1 - 0.8646, -1.101222112591979), # FAILs with Python 3.11.7 on Mac
     param(1 - 0.8646, -1.101222112591979, marks=mark.xfail),
     (0.5, 0),
 #    (0.8646, 1.101222112591979), # FAILs with Python 3.11.7 on Mac
     param(0.8646, 1.101222112591979, marks=mark.xfail),
-    (0.96, 1.7506860712521692), (1, np.infty)
+    (0.96, 1.7506860712521692), (1, np.inf)
 ])
 def test_inv_norm_value(value, result):
     assert ta.utils.inv_norm(value) == result
