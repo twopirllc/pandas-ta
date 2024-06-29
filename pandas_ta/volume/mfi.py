@@ -27,7 +27,7 @@ def mfi(high, low, close, volume, length=None, talib=None, drift=None, offset=No
         typical_price = hlc3(high=high, low=low, close=close)
         raw_money_flow = typical_price * volume
 
-        tdf = DataFrame({"diff": 0, "rmf": raw_money_flow, "+mf": 0, "-mf": 0})
+        tdf = DataFrame({"diff": 0, "rmf": raw_money_flow, "+mf": 0.0, "-mf": 0.0})
 
         tdf.loc[(typical_price.diff(drift) > 0), "diff"] = 1
         tdf.loc[tdf["diff"] == 1, "+mf"] = raw_money_flow
